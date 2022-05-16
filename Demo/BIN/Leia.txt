@@ -1,0 +1,1 @@
+Extraia todos os arquivos da pasta BIN aqui.
