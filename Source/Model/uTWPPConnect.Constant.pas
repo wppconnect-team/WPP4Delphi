@@ -56,7 +56,6 @@ Const
 
   FrmConsole_Browser_Created            = WM_APP + $100;
   FrmConsole_Browser_Direto             = WM_APP + $101;
-  //TWPPConnectJS_JSUrlPadrao                 = 'https://raw.githubusercontent.com/mikelustosa/Projeto-TWPPConnect/master/Source/JS/js.abr';
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
   TWPPConnectJS_JSUrlPadrao                 = 'https://raw.githubusercontent.com/marcelo386/arquivo_Inject/main/js.abr';
   TWPPConnectJS_JSLinhasMInimas             = 1400;

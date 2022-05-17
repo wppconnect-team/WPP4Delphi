@@ -1,8 +1,8 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  Caption = 'Demo TInject'
-  ClientHeight = 496
+  Caption = 'WPPConnect Demo'
+  ClientHeight = 691
   ClientWidth = 1102
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object frmPrincipal: TfrmPrincipal
   TextHeight = 13
   object Lbl_Avisos: TLabel
     Left = 0
-    Top = 464
+    Top = 659
     Width = 1102
     Height = 13
     Align = alBottom
@@ -30,12 +30,10 @@ object frmPrincipal: TfrmPrincipal
     Left = 3
     Top = 3
     Width = 1096
-    Height = 458
-    ActivePage = TabSheet1
+    Height = 653
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = -2
-    ExplicitTop = 0
     object TabSheet1: TTabSheet
       Caption = 'Autentica'#231#227'o / Authentication'
       object Pnl_Config: TPanel
@@ -43,7 +41,7 @@ object frmPrincipal: TfrmPrincipal
         Left = 375
         Top = 3
         Width = 710
-        Height = 424
+        Height = 619
         Align = alClient
         BorderStyle = bsSingle
         Caption = 'Pnl_Config'
@@ -53,7 +51,7 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 0
         DesignSize = (
           708
-          422)
+          617)
         object Image1: TImage
           Left = 19
           Top = 232
@@ -213,14 +211,15 @@ object frmPrincipal: TfrmPrincipal
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7FDD6D3
             F6BBB8F0B5B8F0B6B7F1BFBCF2DEDCF8F9FAFDFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
-          OnClick = SpeedButton4Click
         end
         object SpeedButton8: TSpeedButton
           Left = 337
           Top = 278
           Width = 339
           Height = 29
-          Caption = '                  Youtube TInject Corporate                   '
+          Caption = 
+            '                  Youtube TWPPConnect Corporate                 ' +
+            '  '
           Flat = True
           Glyph.Data = {
             76080000424D760800000000000036000000280000001F000000160000000100
@@ -291,7 +290,6 @@ object frmPrincipal: TfrmPrincipal
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7FDD6D3
             F6BBB8F0B5B8F0B6B7F1BFBCF2DEDCF8F9FAFDFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
-          OnClick = SpeedButton8Click
         end
         object SpeedButton11: TSpeedButton
           Left = 336
@@ -432,7 +430,6 @@ object frmPrincipal: TfrmPrincipal
             F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F6F6F7F7F7F6F7
             F9F8F9FEF9FFFFFAFFFFFAFFFFF9FFFFF8F9FEF6F7F9F7F7F7F7F6F6F7F7F7F7
             F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7}
-          OnClick = SpeedButton7Click
         end
         object Panel3: TPanel
           AlignWithMargins = True
@@ -575,7 +572,7 @@ object frmPrincipal: TfrmPrincipal
         Left = 3
         Top = 3
         Width = 366
-        Height = 424
+        Height = 619
         Align = alLeft
         BorderStyle = bsSingle
         Caption = 'Panel2'
@@ -585,7 +582,7 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 1
         DesignSize = (
           364
-          422)
+          617)
         object whatsOn: TImage
           Left = 150
           Top = 149
@@ -3199,7 +3196,7 @@ object frmPrincipal: TfrmPrincipal
         end
         object Label3: TLabel
           Left = 1
-          Top = 312
+          Top = 507
           Width = 362
           Height = 80
           Align = alBottom
@@ -3810,7 +3807,7 @@ object frmPrincipal: TfrmPrincipal
         end
         object SpeedButton3: TSpeedButton
           Left = 1
-          Top = 392
+          Top = 587
           Width = 362
           Height = 29
           Align = alBottom
@@ -3904,12 +3901,12 @@ object frmPrincipal: TfrmPrincipal
         Left = 0
         Top = 0
         Width = 249
-        Height = 430
+        Height = 625
         Align = alLeft
         TabOrder = 0
         DesignSize = (
           249
-          430)
+          625)
         object Label1: TLabel
           Left = 5
           Top = 7
@@ -3931,18 +3928,25 @@ object frmPrincipal: TfrmPrincipal
           Height = 13
           Caption = 'Video Link'
         end
+        object Label12: TLabel
+          Left = 8
+          Top = 304
+          Width = 79
+          Height = 13
+          Caption = 'Url Link Preview:'
+        end
         object mem_message: TMemo
           Left = 5
           Top = 68
           Width = 238
-          Height = 37
+          Height = 232
           Anchors = [akLeft, akTop, akBottom]
           TabOrder = 1
         end
         object btSendTextAndFile: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 245
+          Top = 440
           Width = 239
           Height = 25
           Align = alBottom
@@ -3955,7 +3959,7 @@ object frmPrincipal: TfrmPrincipal
         object btSendText: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 214
+          Top = 409
           Width = 239
           Height = 25
           Align = alBottom
@@ -3993,7 +3997,7 @@ object frmPrincipal: TfrmPrincipal
         object btStatusBat: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 400
+          Top = 595
           Width = 239
           Height = 25
           Align = alBottom
@@ -4006,7 +4010,7 @@ object frmPrincipal: TfrmPrincipal
         object btSendContact: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 276
+          Top = 471
           Width = 239
           Height = 25
           Align = alBottom
@@ -4019,7 +4023,7 @@ object frmPrincipal: TfrmPrincipal
         object btCheckNumber: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 369
+          Top = 564
           Width = 239
           Height = 25
           Align = alBottom
@@ -4032,7 +4036,7 @@ object frmPrincipal: TfrmPrincipal
         object btIsConnected: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 152
+          Top = 347
           Width = 239
           Height = 25
           Align = alBottom
@@ -4045,7 +4049,7 @@ object frmPrincipal: TfrmPrincipal
         object btSendLocation: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 338
+          Top = 533
           Width = 239
           Height = 25
           Align = alBottom
@@ -4058,7 +4062,7 @@ object frmPrincipal: TfrmPrincipal
         object btSendLinkWithPreview: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 307
+          Top = 502
           Width = 239
           Height = 25
           Align = alBottom
@@ -4070,15 +4074,16 @@ object frmPrincipal: TfrmPrincipal
         end
         object ed_videoLink: TEdit
           Left = 5
-          Top = 130
+          Top = 320
           Width = 238
           Height = 21
           TabOrder = 11
+          Text = 'https://wppconnect-team.github.io/wa-js/index.html'
         end
         object btSendTextButton: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 183
+          Top = 378
           Width = 239
           Height = 25
           Align = alBottom
@@ -4093,7 +4098,7 @@ object frmPrincipal: TfrmPrincipal
         Left = 249
         Top = 0
         Width = 839
-        Height = 430
+        Height = 625
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Panel1'
@@ -4102,7 +4107,7 @@ object frmPrincipal: TfrmPrincipal
         object Splitter1: TSplitter
           Left = 481
           Top = 0
-          Height = 430
+          Height = 625
           ExplicitLeft = 240
           ExplicitTop = 72
           ExplicitHeight = 100
@@ -4111,7 +4116,7 @@ object frmPrincipal: TfrmPrincipal
           Left = 484
           Top = 0
           Width = 241
-          Height = 430
+          Height = 625
           Align = alLeft
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -4144,7 +4149,7 @@ object frmPrincipal: TfrmPrincipal
             Left = 5
             Top = 49
             Width = 231
-            Height = 376
+            Height = 571
             Align = alClient
             Columns = <>
             LargeImages = ImageList1
@@ -4162,7 +4167,7 @@ object frmPrincipal: TfrmPrincipal
           Left = 252
           Top = 0
           Width = 229
-          Height = 430
+          Height = 625
           Align = alLeft
           TabOrder = 1
           object Panel4: TPanel
@@ -4198,7 +4203,7 @@ object frmPrincipal: TfrmPrincipal
             Left = 5
             Top = 49
             Width = 219
-            Height = 376
+            Height = 571
             Align = alClient
             Columns = <>
             LargeImages = ImageList1
@@ -4216,7 +4221,7 @@ object frmPrincipal: TfrmPrincipal
           Left = 0
           Top = 0
           Width = 252
-          Height = 430
+          Height = 625
           Align = alLeft
           TabOrder = 2
           object lblNumeroConectado: TLabel
@@ -4276,7 +4281,7 @@ object frmPrincipal: TfrmPrincipal
           object btCleanChat: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 338
+            Top = 533
             Width = 242
             Height = 25
             Align = alBottom
@@ -4289,7 +4294,7 @@ object frmPrincipal: TfrmPrincipal
           object btGetMe: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 400
+            Top = 595
             Width = 242
             Height = 25
             Align = alBottom
@@ -4302,7 +4307,7 @@ object frmPrincipal: TfrmPrincipal
           object btnTestCheckNumber: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 369
+            Top = 564
             Width = 242
             Height = 25
             Align = alBottom
@@ -4315,7 +4320,7 @@ object frmPrincipal: TfrmPrincipal
           object btGetSeveralStatus: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 307
+            Top = 502
             Width = 242
             Height = 25
             Align = alBottom
@@ -4328,7 +4333,7 @@ object frmPrincipal: TfrmPrincipal
           object btGetStatus: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 276
+            Top = 471
             Width = 242
             Height = 25
             Align = alBottom
@@ -4379,6 +4384,174 @@ object frmPrincipal: TfrmPrincipal
               TextHint = 'Inf. Desejada Aqui'
             end
           end
+          object Button13: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 440
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Bot'#245'es Simples'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 6
+            OnClick = Button13Click
+            ExplicitLeft = 10
+            ExplicitTop = 448
+          end
+          object Button14: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 409
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar List Message Menu'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 7
+            OnClick = Button14Click
+            ExplicitLeft = 10
+            ExplicitTop = 417
+          end
+          object Button15: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 378
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Stickers'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 8
+            OnClick = Button15Click
+            ExplicitLeft = 10
+            ExplicitTop = 386
+          end
+          object Button16: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 347
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Audio'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 9
+            OnClick = Button16Click
+            ExplicitLeft = 10
+            ExplicitTop = 355
+          end
+          object Button17: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 316
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Imagem com Bot'#227'o'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 10
+            OnClick = Button17Click
+            ExplicitLeft = 10
+            ExplicitTop = 355
+          end
+          object Button18: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 285
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Video com Bot'#227'o'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 11
+            OnClick = Button18Click
+            ExplicitLeft = 10
+            ExplicitTop = 355
+          end
+          object Button20: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 254
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Link Preview'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 12
+            OnClick = Button20Click
+            ExplicitLeft = 10
+            ExplicitTop = 355
+          end
+          object Button21: TButton
+            AlignWithMargins = True
+            Left = 5
+            Top = 223
+            Width = 242
+            Height = 25
+            Align = alBottom
+            Caption = 'Enviar Localiza'#231#227'o com Bot'#227'o'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ImageIndex = 0
+            Images = ImageList1
+            ParentFont = False
+            TabOrder = 13
+            OnClick = Button21Click
+            ExplicitLeft = 10
+            ExplicitTop = 355
+          end
         end
       end
     end
@@ -4387,7 +4560,7 @@ object frmPrincipal: TfrmPrincipal
       ImageIndex = 3
       DesignSize = (
         1088
-        430)
+        625)
       object Image2: TImage
         Left = 744
         Top = 32
@@ -4454,7 +4627,7 @@ object frmPrincipal: TfrmPrincipal
         Left = 3
         Top = 3
         Width = 1082
-        Height = 424
+        Height = 619
         Align = alClient
         BorderStyle = bsSingle
         Caption = 'Pnl_Config'
@@ -4464,7 +4637,7 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 0
         DesignSize = (
           1080
-          422)
+          617)
         object lbl_idGroup: TLabel
           Left = 11
           Top = 109
@@ -5203,7 +5376,7 @@ object frmPrincipal: TfrmPrincipal
           Left = 11
           Top = 125
           Width = 232
-          Height = 294
+          Height = 489
           Anchors = [akLeft, akTop, akBottom]
           Columns = <>
           LargeImages = ImageList1
@@ -5220,7 +5393,7 @@ object frmPrincipal: TfrmPrincipal
           Left = 249
           Top = 224
           Width = 199
-          Height = 195
+          Height = 390
           Anchors = [akLeft, akTop, akBottom]
           Columns = <>
           LargeImages = ImageList1
@@ -5387,12 +5560,12 @@ object frmPrincipal: TfrmPrincipal
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 477
+    Top = 672
     Width = 1102
     Height = 19
     Panels = <
       item
-        Text = 'Aplicativo DEMO do componente TInject - www.tinject.com.br'
+        Text = 'Aplicativo DEMO do componente WPPConnect'
         Width = 640
       end
       item
@@ -5413,8 +5586,8 @@ object frmPrincipal: TfrmPrincipal
   object ImageList1: TImageList
     ColorDepth = cdDefault
     DrawingStyle = dsTransparent
-    Left = 872
-    Top = 256
+    Left = 936
+    Top = 160
     Bitmap = {
       494C010104000800040010001000FFFFFFFF0510FFFFFFFFFFFFFFFF424D7600
       0000000000007600000028000000400000002000000001000400000000000004
@@ -5472,7 +5645,7 @@ object frmPrincipal: TfrmPrincipal
     Left = 596
     Top = 94
   end
-  object TInject1: TInject
+  object TWPPConnect1: TWPPConnect
     InjectJS.AutoUpdateTimeOut = 20
     Config.AutoDelay = 30
     Config.ReceiveAttachmentAuto = False
@@ -5482,27 +5655,27 @@ object frmPrincipal: TfrmPrincipal
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
-    OnGetAllContactList = TInject1GetAllContactList
-    OnGetAllGroupList = TInject1GetAllGroupList
-    OnGetAllGroupAdmins = TInject1GetAllGroupAdmins
-    OnGetQrCode = TInject1GetQrCode
-    OnGetChatList = TInject1GetChatList
-    OnGetUnReadMessages = TInject1GetUnReadMessages
-    OnGetAllGroupContacts = TInject1GetAllGroupContacts
-    OnGetStatus = TInject1GetStatus
-    OnGetBatteryLevel = TInject1GetBatteryLevel
-    OnIsConnected = TInject1IsConnected
-    OnLowBattery = TInject1LowBattery
-    OnGetCheckIsValidNumber = TInject1GetCheckIsValidNumber
-    OnGetProfilePicThumb = TInject1GetProfilePicThumb
-    OnGetMyNumber = TInject1GetMyNumber
-    OnDisconnected = TInject1Disconnected
-    OnDisconnectedBrute = TInject1DisconnectedBrute
-    OnErroAndWarning = TInject1ErroAndWarning
-    OnGetStatusMessage = TInject1GetStatusMessage
-    OnGetInviteGroup = TInject1GetInviteGroup
-    OnGetMe = TInject1GetMe
-    OnNewGetNumber = TInject1NewGetNumber
+    OnGetAllContactList = TWPPConnect1GetAllContactList
+    OnGetAllGroupList = TWPPConnect1GetAllGroupList
+    OnGetAllGroupAdmins = TWPPConnect1GetAllGroupAdmins
+    OnGetQrCode = TWPPConnect1GetQrCode
+    OnGetChatList = TWPPConnect1GetChatList
+    OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
+    OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
+    OnGetStatus = TWPPConnect1GetStatus
+    OnGetBatteryLevel = TWPPConnect1GetBatteryLevel
+    OnIsConnected = TWPPConnect1IsConnected
+    OnLowBattery = TWPPConnect1LowBattery
+    OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
+    OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
+    OnGetMyNumber = TWPPConnect1GetMyNumber
+    OnDisconnected = TWPPConnect1Disconnected
+    OnDisconnectedBrute = TWPPConnect1DisconnectedBrute
+    OnErroAndWarning = TWPPConnect1ErroAndWarning
+    OnGetStatusMessage = TWPPConnect1GetStatusMessage
+    OnGetInviteGroup = TWPPConnect1GetInviteGroup
+    OnGetMe = TWPPConnect1GetMe
+    OnNewGetNumber = TWPPConnect1NewGetNumber
     Left = 200
     Top = 320
   end

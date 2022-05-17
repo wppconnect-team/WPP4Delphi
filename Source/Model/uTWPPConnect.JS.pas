@@ -337,7 +337,8 @@ begin
       if LCsv.Registros.RecordCount > 0 Then
       begin
         InjectJSDefine.FVersion_JS         := LCsv.Registros.FieldByName('Version_JS').AsString;
-        InjectJSDefine.FVersion_TWPPConnectMin := LCsv.Registros.FieldByName('Version_TWPPConnectMin').AsString;
+        //InjectJSDefine.FVersion_TWPPConnectMin := LCsv.Registros.FieldByName('Version_TWPPConnectMin').AsString;
+        InjectJSDefine.FVersion_TWPPConnectMin := LCsv.Registros.FieldByName('Version_TInjectMin').AsString;
         InjectJSDefine.FVersion_CEF4Min    := LCsv.Registros.FieldByName('Version_CEF4Min').AsString;
         Result := true;
       end;

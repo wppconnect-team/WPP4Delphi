@@ -9,8 +9,9 @@ uses
 
   //############ ATENCAO AQUI ####################
   //units adicionais obrigatorias
-   uTInject.ConfigCEF, uTInject,            uTInject.Constant,      uTInject.JS,     uInjectDecryptFile,
-   uTInject.Console,   uTInject.Diversos,   uTInject.AdjustNumber,  uTInject.Config, uTInject.Classes,
+   uTWPPConnect.ConfigCEF, uTWPPConnect,            uTWPPConnect.Constant,      uTWPPConnect.JS,     uWPPConnectDecryptFile,
+   uTWPPConnect.Console,   uTWPPConnect.Diversos,   uTWPPConnect.AdjustNumber,  uTWPPConnect.Config, uTWPPConnect.Classes,
+   uTWPPConnect.Emoticons,
 
   //units Opcionais (dependendo do que ira fazer)
    System.NetEncoding, System.TypInfo,  WinInet,
@@ -23,7 +24,7 @@ uses
 
 type
   TfrmPrincipal = class(TForm)
-    TInject1: TInject;
+    TWPPConnect1: TWPPConnect;
     OpenDialog1: TOpenDialog;
     TrayIcon1: TTrayIcon;
     ImageList1: TImageList;
@@ -136,6 +137,15 @@ type
     SpeedButton8: TSpeedButton;
     SpeedButton11: TSpeedButton;
     SpeedButton7: TSpeedButton;
+    Button13: TButton;
+    Button14: TButton;
+    Button15: TButton;
+    Button16: TButton;
+    Button17: TButton;
+    Button18: TButton;
+    Button20: TButton;
+    Label12: TLabel;
+    Button21: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btSendTextClick(Sender: TObject);
@@ -144,26 +154,26 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
 
-    procedure TInject1GetUnReadMessages(Const Chats: TChatList);
+    procedure TWPPConnect1GetUnReadMessages(Const Chats: TChatList);
     procedure listaChatsDblClick(Sender: TObject);
     procedure listaContatosDblClick(Sender: TObject);
     procedure TrayIcon1Click(Sender: TObject);
     procedure ApplicationEvents1Minimize(Sender: TObject);
-    procedure TInject1GetStatus(Sender: TObject);
+    procedure TWPPConnect1GetStatus(Sender: TObject);
     procedure btStatusBatClick(Sender: TObject);
     procedure Edt_DDIPDRExit(Sender: TObject);
     procedure ed_numChange(Sender: TObject);
     procedure ed_numSelect(Sender: TObject);
-    procedure TInject1GetMyNumber(Sender: TObject);
-    procedure TInject1ErroAndWarning(Sender: TObject; const PError,      PInfoAdc: string);
+    procedure TWPPConnect1GetMyNumber(Sender: TObject);
+    procedure TWPPConnect1ErroAndWarning(Sender: TObject; const PError,      PInfoAdc: string);
     procedure Timer2Timer(Sender: TObject);
-    procedure TInject1GetChatList(const Chats: TChatList);
-    procedure TInject1GetAllContactList(      const AllContacts: TRetornoAllContacts);
+    procedure TWPPConnect1GetChatList(const Chats: TChatList);
+    procedure TWPPConnect1GetAllContactList(      const AllContacts: TRetornoAllContacts);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure TInject1GetQrCode(COnst Sender: TObject; const QrCode: TResultQRCodeClass);
+    procedure TWPPConnect1GetQrCode(COnst Sender: TObject; const QrCode: TResultQRCodeClass);
     procedure whatsOnClick(Sender: TObject);
-    procedure TInject1LowBattery(Sender: TObject);
-    procedure TInject1DisconnectedBrute(Sender: TObject);
+    procedure TWPPConnect1LowBattery(Sender: TObject);
+    procedure TWPPConnect1DisconnectedBrute(Sender: TObject);
     procedure chk_3Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -172,47 +182,52 @@ type
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     procedure btCheckNumberClick(Sender: TObject);
-    procedure TInject1GetCheckIsValidNumber(Sender: TObject; Number: string;      IsValid: Boolean);
+    procedure TWPPConnect1GetCheckIsValidNumber(Sender: TObject; Number: string;      IsValid: Boolean);
     procedure btIsConnectedClick(Sender: TObject);
-    procedure TInject1IsConnected(Sender: TObject; Connected: Boolean);
-    procedure TInject1GetBatteryLevel(Sender: TObject);
+    procedure TWPPConnect1IsConnected(Sender: TObject; Connected: Boolean);
+    procedure TWPPConnect1GetBatteryLevel(Sender: TObject);
     procedure btSendLinkWithPreviewClick(Sender: TObject);
     procedure btSendLocationClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure WebBrowser1DocumentComplete(ASender: TObject;      const pDisp: IDispatch; const URL: OleVariant);
-    procedure TInject1GetProfilePicThumb(Sender: TObject; Base64: string);
+    procedure TWPPConnect1GetProfilePicThumb(Sender: TObject; Base64: string);
     procedure Button5Click(Sender: TObject);
     procedure listaGruposClick(Sender: TObject);
-    procedure TInject1GetAllGroupList(const AllGroups: TRetornoAllGroups);
-    procedure TInject1GetAllGroupContacts(      const Contacts: TClassAllGroupContacts);
+    procedure TWPPConnect1GetAllGroupList(const AllGroups: TRetornoAllGroups);
+    procedure TWPPConnect1GetAllGroupContacts(      const Contacts: TClassAllGroupContacts);
     procedure listaParticipantesClick(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
-    procedure TInject1GetAllGroupAdmins(    const AllGroups: TRetornoAllGroupAdmins);
+    procedure TWPPConnect1GetAllGroupAdmins(    const AllGroups: TRetornoAllGroupAdmins);
     procedure btSetProfileNameClick(Sender: TObject);
     procedure btnRemoveGroupLinkClick(Sender: TObject);
     procedure btSetProfileStatusClick(Sender: TObject);
     procedure btCleanChatClick(Sender: TObject);
     procedure btGetStatusClick(Sender: TObject);
-    procedure TInject1GetStatusMessage(const Result: TResponseStatusMessage);
+    procedure TWPPConnect1GetStatusMessage(const Result: TResponseStatusMessage);
     procedure btGetSeveralStatusClick(Sender: TObject);
     procedure Button19Click(Sender: TObject);
-    procedure TInject1GetInviteGroup(const Invite: string);
-    procedure TInject1GetMe(const vMe: TGetMeClass);
+    procedure TWPPConnect1GetInviteGroup(const Invite: string);
+    procedure TWPPConnect1GetMe(const vMe: TGetMeClass);
     procedure btGetMeClick(Sender: TObject);
     procedure btnTestCheckNumberClick(Sender: TObject);
-    procedure TInject1NewGetNumber(const vCheckNumber: TReturnCheckNumber);
+    procedure TWPPConnect1NewGetNumber(const vCheckNumber: TReturnCheckNumber);
     procedure listaChatsClick(Sender: TObject);
     procedure ed_numKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure SpeedButton4Click(Sender: TObject);
-    procedure TInject1Disconnected(Sender: TObject);
-    procedure SpeedButton8Click(Sender: TObject);
+    procedure TWPPConnect1Disconnected(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
-    procedure SpeedButton7Click(Sender: TObject);
     procedure btSendTextButtonClick(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
+    procedure Button18Click(Sender: TObject);
+    procedure Button20Click(Sender: TObject);
+    procedure Button21Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -260,13 +275,13 @@ begin
     End;
 
     GlobalCEFApp.LogConsoleActive := true;
-    ComboBox1.ItemIndex   := Integer(TInject1.LanguageInject);
+    ComboBox1.ItemIndex   := Integer(TWPPConnect1.LanguageInject);
     TabSheet2.TabVisible  := False;
     TabSheet3.TabVisible  := False;
     TabSheet4.TabVisible  := False;
-    chk_apagarMsg.Checked := TInject1.Config.AutoDelete;
-    LabeledEdit1.text     := TInject1.Config.ControlSendTimeSec.ToString;
-    LabeledEdit2.Text     := TInject1.Config.SecondsMonitor.ToString;
+    chk_apagarMsg.Checked := TWPPConnect1.Config.AutoDelete;
+    LabeledEdit1.text     := TWPPConnect1.Config.ControlSendTimeSec.ToString;
+    LabeledEdit2.Text     := TWPPConnect1.Config.SecondsMonitor.ToString;
   finally
     FIniciando := False;
   end;
@@ -320,7 +335,7 @@ end;
 
 procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  TInject1.ShutDown;
+  TWPPConnect1.ShutDown;
 //  FreeAndNil(GlobalCEFApp);
 end;
 
@@ -348,21 +363,21 @@ end;
 
 procedure TfrmPrincipal.btCheckNumberClick(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  //TInject1.CheckIsValidNumber(ed_num.Text); deprecated
-  TInject1.NewCheckIsValidNumber(ed_num.Text);
+  //TWPPConnect1.CheckIsValidNumber(ed_num.Text); deprecated
+  TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);
 end;
 
 procedure TfrmPrincipal.btSendContactClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
     //               Dest                    Contact
     //               ex: 558199301443@c.us   558187576958@c.us
-    TInject1.sendContact(ed_num.Text,        mem_message.Text);
+    TWPPConnect1.sendContact(ed_num.Text,        mem_message.Text);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -372,10 +387,10 @@ end;
 procedure TfrmPrincipal.btSendLinkWithPreviewClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.sendLinkPreview(ed_num.Text, ed_videoLink.Text, mem_message.Text);
+    TWPPConnect1.sendLinkPreview(ed_num.Text, ed_videoLink.Text, mem_message.Text);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -385,10 +400,10 @@ end;
 procedure TfrmPrincipal.btSendLocationClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
     //                    number        lat         lgn        Message link
-    TInject1.sendLocation(ed_num.Text, '-70.4078', '25.3789', 'Segue a localização');
+    TWPPConnect1.sendLocation(ed_num.Text, '-70.4078', '25.3789', 'Segue a localização');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -401,10 +416,10 @@ Begin
      Exit;
 
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        exit;
 
-    TInject1.SendFile(ed_num.Text, openDialog1.FileName,  mem_message.Text);
+    TWPPConnect1.SendFile(ed_num.Text, openDialog1.FileName,  mem_message.Text);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -416,10 +431,10 @@ const buttons = '[{buttonId: "id1", buttonText:{displayText: "OPTION1"}, type: 1
 const footer = 'Choose option';
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.sendButtons(ed_num.Text, mem_message.Text, Buttons, footer);
+    TWPPConnect1.sendButtons(ed_num.Text, mem_message.Text, Buttons, footer);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -429,10 +444,10 @@ end;
 
 procedure TfrmPrincipal.btIsConnectedClick(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.CheckIsConnected();
+  TWPPConnect1.CheckIsConnected();
 end;
 
 
@@ -481,37 +496,468 @@ end;}
 
 procedure TfrmPrincipal.Button10Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupJoinViaLink(edt_groupInviteLink.Text);
+  TWPPConnect1.groupJoinViaLink(edt_groupInviteLink.Text);
 end;
 
 procedure TfrmPrincipal.Button11Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupLeave(lbl_idGroup.Caption);
+  TWPPConnect1.groupLeave(lbl_idGroup.Caption);
 end;
 
 procedure TfrmPrincipal.Button12Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupDelete(lbl_idGroup.Caption);
+  TWPPConnect1.groupDelete(lbl_idGroup.Caption);
+end;
+
+procedure TfrmPrincipal.Button13Click(Sender: TObject);
+var
+  S_RETORNO, options : wideString;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+
+    options :=
+      'useTemplateButtons: true,' +
+      'createChat: true,' +
+      'buttons:' +
+      '['+
+        '{url: "https://novo.megaonline.com.br/", text: "🌐️ Acesse Nosso Site"},' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '{id: "idVISITASIM", text: "Sim"},' +
+        '{id: "idVISITANAO", text: "Não"}' +
+      ']' +
+      ',footer: "Escolha uma Opção"';
+
+    S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
+
+    TWPPConnect1.SendButtons(ed_num.Text, S_RETORNO, options, '');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TfrmPrincipal.Button14Click(Sender: TObject);
+var
+  titleText, subtitleText, description, buttontext, menu, menu2, menu3 : string;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+    titleText := 'Forma de Pagamento';
+    subtitleText := 'Selecione um item, por favor';
+
+
+    buttontext := 'buttonText:"Opcoes"';
+    description := 'description:"Como deseja pagar pelo servico"';
+
+
+    menu2 := '[{title:"sectionTitle",rows:[{title:"ListItem1",description:"desc"},{title:"ListItem2",description:"desc2"}]}]';
+    //menu := ' ';
+    menu :=
+      'buttonText:"Formas de Pagamento",' +
+      'description:"Como deseja pagar pelo servico",' +
+      'sections:'+
+      '[' +
+      '{ title: "Na Hora", rows: [{ rowId: "idDinheiro", title: "\💵 Dinheiro", description: "Receber no local." }]},' +
+      '{ title: "On-line", rows: [{ rowId: "idFormas", title: "\💱 Pix", description: "Chave: 123456789"},' +
+        '{ title: "1 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "2 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "3 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "4 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "5 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "6 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "7 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "8 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "9 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ title: "10 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ title: "11 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ title: "12 Cartao Credito", description: "Pode parcelar em ate 12x"}' +
+      ']' +
+      '}]';
+
+    menu3 :=
+      'buttonText:"Opcoes",' +
+      'description:"Como deseja pagar pelo servico",' +
+      'sections:'+
+      '[{ ' +
+      '    title: "Section 1",' +
+      '    rows: [{' +
+      '        rowId: "rowid1", ' +
+      '        title: "Row 1", ' +
+      '        description: "Hello its description 1", ' +
+      '    }, { ' +
+      '        rowId: "rowid2", ' +
+      '        title: "Row 2", ' +
+      '        description: "Hello its description 2", ' +
+      '    }] ' +
+      '}] ';
+
+
+    //TWPPConnect.SendListMenu(ed_num.text, titleText, subtitleText, description, ButtonText, menu, '');
+    TWPPConnect1.SendListMessage(ed_num.text, ButtonText, description, menu, '');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TfrmPrincipal.Button15Click(Sender: TObject);
+var
+  content, options, options_Figurinha, options_Imagem, options_Audio,
+    description, buttontext, menu, menu2, menu3 : string;
+  LBase64 : TStringList;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+
+      content := mem_message.Text;
+
+      options_Audio :=
+        'type: "audio", ' +
+        'isPtt: true'; // false for common audio
+
+      options :=
+        'createChat: true, ' +
+        'useTemplateButtons: true, ' +
+        'title: "Novidades",  ' +
+        'footer: "Imagem com Botão",  ' +
+        'buttons: [ ' +
+        '  { ' +
+        '    url: "https://novo.megaonline.com.br/", ' +
+        '    text: "Acesse Nosso Site" ' +
+        '  }, ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  { ' +
+        '    id: "001",  ' +
+        '    text: "Show de Bola"  ' +
+        '  },  ' +
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "Curti"  ' +
+        '  }  ' +
+        ']  ';
+
+      options_Figurinha := 'type: "sticker"';
+
+      options_Imagem :=
+         '  type: "image", ' +
+         '  caption: "My image",  ' +
+         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
+
+      //Imagem com Temporaria Somente 1 Visualização
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Audio
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+
+      //Botões IMAGEM
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Botões VIDEO
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Figurinha Stickers
+      TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+    FINALLY
+      freeAndNil(LBase64);
+    END;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+
+end;
+
+procedure TfrmPrincipal.Button16Click(Sender: TObject);
+var
+  content, options, options_Figurinha, options_Imagem, options_Audio,
+    description, buttontext, menu, menu2, menu3 : string;
+  LBase64 : TStringList;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Audio.txt');
+
+      content := mem_message.Text;
+
+      options_Audio :=
+        'type: "audio", ' +
+        'isPtt: true'; // false for common audio
+
+      options :=
+        'createChat: true, ' +
+        'useTemplateButtons: true, ' +
+        'title: "Novidades",  ' +
+        'footer: "Imagem com Botão",  ' +
+        'buttons: [ ' +
+        '  { ' +
+        '    url: "https://novo.megaonline.com.br/", ' +
+        '    text: "Acesse Nosso Site" ' +
+        '  }, ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  { ' +
+        '    id: "001",  ' +
+        '    text: "Show de Bola"  ' +
+        '  },  ' +
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "Curti"  ' +
+        '  }  ' +
+        ']  ';
+
+      options_Figurinha := 'type: "sticker"';
+
+      options_Imagem :=
+         '  type: "image", ' +
+         '  caption: "My image",  ' +
+         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
+
+      //Imagem com Temporaria Somente 1 Visualização
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Audio
+      TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+
+      //Botões IMAGEM
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Botões VIDEO
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Figurinha Stickers
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+    FINALLY
+      freeAndNil(LBase64);
+    END;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+
+end;
+
+procedure TfrmPrincipal.Button17Click(Sender: TObject);
+var
+  content, options, options_Figurinha, options_Imagem, options_Audio,
+    description, buttontext, menu, menu2, menu3 : string;
+  LBase64 : TStringList;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+
+      content := mem_message.Text;
+
+      options_Audio :=
+        'type: "audio", ' +
+        'isPtt: true'; // false for common audio
+
+      options :=
+        'createChat: true, ' +
+        'useTemplateButtons: true, ' +
+        'title: "Novidades",  ' +
+        'footer: "Imagem com Botão",  ' +
+        'buttons: [ ' +
+        '  { ' +
+        '    url: "https://novo.megaonline.com.br/", ' +
+        '    text: "Acesse Nosso Site" ' +
+        '  }, ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  { ' +
+        '    id: "001",  ' +
+        '    text: "Show de Bola"  ' +
+        '  },  ' +
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "Curti"  ' +
+        '  }  ' +
+        ']  ';
+
+      options_Figurinha := 'type: "sticker"';
+
+      options_Imagem :=
+         '  type: "image", ' +
+         '  caption: "My image",  ' +
+         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
+
+      //Imagem com Temporaria Somente 1 Visualização
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Audio
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+
+      //Botões IMAGEM
+      TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Botões VIDEO
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Figurinha Stickers
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+    FINALLY
+      freeAndNil(LBase64);
+    END;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+
+end;
+
+procedure TfrmPrincipal.Button18Click(Sender: TObject);
+var
+  content, options, options_Figurinha, options_Imagem, options_Audio,
+    description, buttontext, menu, menu2, menu3 : string;
+  LBase64 : TStringList;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+
+      content := mem_message.Text;
+
+      options_Audio :=
+        'type: "audio", ' +
+        'isPtt: true'; // false for common audio
+
+      options :=
+        'createChat: true, ' +
+        'useTemplateButtons: true, ' +
+        'title: "Novidades",  ' +
+        'footer: "Video com Botão",  ' +
+        'buttons: [ ' +
+        '  { ' +
+        '    url: "https://novo.megaonline.com.br/", ' +
+        '    text: "Acesse Nosso Site" ' +
+        '  }, ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  { ' +
+        '    id: "001",  ' +
+        '    text: "Show de Bola"  ' +
+        '  },  ' +
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "Curti"  ' +
+        '  }  ' +
+        ']  ';
+
+      options_Figurinha := 'type: "sticker"';
+
+      options_Imagem :=
+         '  type: "image", ' +
+         '  caption: "My image",  ' +
+         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
+
+      //Imagem com Temporaria Somente 1 Visualização
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Audio
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+
+      //Botões IMAGEM
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Botões VIDEO
+      TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+
+      //Figurinha Stickers
+      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+    FINALLY
+      freeAndNil(LBase64);
+    END;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+
 end;
 
 procedure TfrmPrincipal.btGetSeveralStatusClick(Sender: TObject);
 begin
   try
     FStatus := false;
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.GetStatusContact('558196988474@c.us');
-    TInject1.GetStatusContact('558198007759@c.us');
+    TWPPConnect1.GetStatusContact('558196988474@c.us');
+    TWPPConnect1.GetStatusContact('558198007759@c.us');
   finally
 
   end;
@@ -520,10 +966,10 @@ end;
 procedure TfrmPrincipal.btGetMeClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.GetMe();
+    TWPPConnect1.GetMe();
   finally
 
   end;
@@ -531,28 +977,28 @@ end;
 
 procedure TfrmPrincipal.Button19Click(Sender: TObject);
 begin
-   if not TInject1.Auth then
+   if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.GetGroupInviteLink(lbl_idGroup.Caption);//  '558192317066-1592044430@g.us'
+  TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);//  '558192317066-1592044430@g.us'
 end;
 
 procedure TfrmPrincipal.btCleanChatClick(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.CleanALLChat(ed_num.Text);
+  TWPPConnect1.CleanALLChat(ed_num.Text);
 end;
 
 procedure TfrmPrincipal.btGetStatusClick(Sender: TObject);
 begin
   try
     FStatus := true;
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.GetStatusContact(ed_num.Text);
+    TWPPConnect1.GetStatusContact(ed_num.Text);
   finally
 
   end;
@@ -561,10 +1007,10 @@ end;
 procedure TfrmPrincipal.btnRemoveGroupLinkClick(Sender: TObject);
 begin   try
 
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.GroupRemoveInviteLink(lbl_idGroup.Caption);
+    TWPPConnect1.GroupRemoveInviteLink(lbl_idGroup.Caption);
   finally
 
   end;
@@ -573,10 +1019,10 @@ end;
 procedure TfrmPrincipal.btSetProfileNameClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.SetProfileName(ed_profileData.Text);
+    TWPPConnect1.SetProfileName(ed_profileData.Text);
   finally
 
   end;
@@ -585,10 +1031,10 @@ end;
 procedure TfrmPrincipal.btSetProfileStatusClick(Sender: TObject);
 begin
    try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.SetStatus(ed_profileData.Text);
+    TWPPConnect1.SetStatus(ed_profileData.Text);
   finally
 
   end;
@@ -596,75 +1042,152 @@ end;
 
 procedure TfrmPrincipal.btnTestCheckNumberClick(Sender: TObject);
 begin
- if not TInject1.Auth then
+ if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.NewCheckIsValidNumber('558195833533@c.us');
-  TInject1.NewCheckIsValidNumber('558195833532@c.us');
-  TInject1.NewCheckIsValidNumber('558195833531@c.us');
+  TWPPConnect1.NewCheckIsValidNumber('558195833533@c.us');
+  TWPPConnect1.NewCheckIsValidNumber('558195833532@c.us');
+  TWPPConnect1.NewCheckIsValidNumber('558195833531@c.us');
 end;
 
 procedure TfrmPrincipal.Button1Click(Sender: TObject);
 var
   JS: string;
 begin
-  if (not TInject1.Auth)  then
+  if (not TWPPConnect1.Auth)  then
     Exit;
 
-  TInject1.getProfilePicThumb(FChatID);
+  TWPPConnect1.getProfilePicThumb(FChatID);
+end;
+
+procedure TfrmPrincipal.Button20Click(Sender: TObject);
+ var
+  options: string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+    options :=
+      'linkPreview: { ' +
+      'title: "WPPConnect", ' +
+      'description: "WPPConnect/WA-JS" }';
+
+    TWPPConnect1.sendLinkPreview(ed_num.text, ed_videoLink.text, options);
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TfrmPrincipal.Button21Click(Sender: TObject);
+var
+  options : string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+      Exit;
+
+    options :=
+      'lat: -22.95201, ' +
+      'lng: -43.2102601, ' +
+      'name: "Cristo Rendentor", ' +
+      'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ", ' +
+      'url: "https://santuariocristoredentor.com.br/", ' +
+      'useTemplateButtons: true, ' +
+      'createChat: true, ' +
+      'title: "Cristo Rendentor",  ' +
+      'footer: "Pacote de Viagem",  ' +
+      'buttons: [ ' +
+      '  { ' +
+      '    url: "https://www.cvc.com.br/destinos/rio-de-janeiro-brasil", ' +
+      '    text: "Compre o Pacote de Viagem" ' +
+      '  }, ' +
+      '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+      '  { ' +
+      '    id: "001",  ' +
+      '    text: "Quero Conhecer"  ' +
+      '  },  ' +
+      '  {  ' +
+      '    id: "002",  ' +
+      '    text: "Curti"  ' +
+      '  }  ' +
+      ']  ';
+
+    TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
 end;
 
 procedure TfrmPrincipal.Button2Click(Sender: TObject);
 begin
-  TInject1.getAllContacts;
+  TWPPConnect1.getAllContacts;
 end;
 
 procedure TfrmPrincipal.Button3Click(Sender: TObject);
 begin
-  TInject1.getAllChats;
+  TWPPConnect1.getAllChats;
 end;
 
 procedure TfrmPrincipal.Button4Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
     Exit;
 
-  TInject1.createGroup(edt_nomeGrupo.Text, edt_foneParticipante.Text);
+  TWPPConnect1.createGroup(edt_nomeGrupo.Text, edt_foneParticipante.Text);
   edt_nomeGrupo.Clear;
   edt_foneParticipante.Clear;
 end;
 
 procedure TfrmPrincipal.Button5Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.getAllGroups;
+  TWPPConnect1.getAllGroups;
 end;
 
 procedure TfrmPrincipal.Button6Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupAddParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
+  TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
 end;
 
 procedure TfrmPrincipal.btStatusBatClick(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.GetBatteryStatus;
+  TWPPConnect1.GetBatteryStatus;
 end;
 
 procedure TfrmPrincipal.btSendTextClick(Sender: TObject);
 begin
   try
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
        Exit;
 
-    TInject1.send(ed_num.Text, mem_message.Text);
+    TWPPConnect1.send(ed_num.Text, mem_message.Text);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -673,26 +1196,26 @@ end;
 
 procedure TfrmPrincipal.Button7Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupRemoveParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
+  TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
 end;
 
 procedure TfrmPrincipal.Button8Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupPromoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
+  TWPPConnect1.groupPromoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
 end;
 
 procedure TfrmPrincipal.Button9Click(Sender: TObject);
 begin
-  if not TInject1.Auth then
+  if not TWPPConnect1.Auth then
      Exit;
 
-  TInject1.groupDemoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
+  TWPPConnect1.groupDemoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
 end;
 
 procedure TfrmPrincipal.chk_3Click(Sender: TObject);
@@ -716,7 +1239,7 @@ begin
 
   {
    ##### modo 1
-  TInject1.GetContacts(ComboBox1.Text, ComboBox1.Items);
+  TWPPConnect1.GetContacts(ComboBox1.Text, ComboBox1.Items);
   if ComboBox1.Items.Count <= 0 then
      ComboBox1.Style := csSimple else
      ComboBox1.Style := csOwnerDrawFixed;
@@ -774,38 +1297,38 @@ begin
   if FIniciando then
      Exit;
 
-  TInject1.Config.AutoDelete            := chk_apagarMsg.Checked;
-  //TInject1.Config.AutoStart           := chk_AutoStart.Checked;
+  TWPPConnect1.Config.AutoDelete            := chk_apagarMsg.Checked;
+  //TWPPConnect1.Config.AutoStart           := chk_AutoStart.Checked;
 
-  TInject1.Config.ControlSendTimeSec    := StrToIntDef(LabeledEdit1.Text, 8);
-  TInject1.Config.SecondsMonitor        := StrToIntDef(LabeledEdit2.Text, 3);
+  TWPPConnect1.Config.ControlSendTimeSec    := StrToIntDef(LabeledEdit1.Text, 8);
+  TWPPConnect1.Config.SecondsMonitor        := StrToIntDef(LabeledEdit2.Text, 3);
 
 
-//  TInject1.Config.ShowRandom          := .Checked;
-//  TInject1.Config.SyncContacts        := .Checked;
+//  TWPPConnect1.Config.ShowRandom          := .Checked;
+//  TWPPConnect1.Config.SyncContacts        := .Checked;
 
-  TInject1.AjustNumber.LengthDDI         := StrToIntDef(Edt_LengDDI.text , 2);
-  TInject1.AjustNumber.LengthDDD         := StrToIntDef(Edt_LengDDD.text , 2);
-  TInject1.AjustNumber.LengthPhone       := StrToIntDef(Edt_LengFone.text, 8);
-  TInject1.AjustNumber.DDIDefault        := StrToIntDef(Edt_DDIPDR.text  , 55);
-  TInject1.AjustNumber.AllowOneDigitMore := CheckBox4.Checked;
+  TWPPConnect1.AjustNumber.LengthDDI         := StrToIntDef(Edt_LengDDI.text , 2);
+  TWPPConnect1.AjustNumber.LengthDDD         := StrToIntDef(Edt_LengDDD.text , 2);
+  TWPPConnect1.AjustNumber.LengthPhone       := StrToIntDef(Edt_LengFone.text, 8);
+  TWPPConnect1.AjustNumber.DDIDefault        := StrToIntDef(Edt_DDIPDR.text  , 55);
+  TWPPConnect1.AjustNumber.AllowOneDigitMore := CheckBox4.Checked;
 
   ExecuteFilter;
 
-  TInject1.LanguageInject                := TLanguageInject(ComboBox1.ItemIndex);
+  TWPPConnect1.LanguageInject                := TLanguageInject(ComboBox1.ItemIndex);
 end;
 
-procedure TfrmPrincipal.TInject1Disconnected(Sender: TObject);
+procedure TfrmPrincipal.TWPPConnect1Disconnected(Sender: TObject);
 begin
   ShowMessage('Conexão foi finalizada');
 end;
 
-procedure TfrmPrincipal.TInject1DisconnectedBrute(Sender: TObject);
+procedure TfrmPrincipal.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
   ShowMessage('Conexão foi finalizada pelo celular');
 end;
 
-procedure TfrmPrincipal.TInject1ErroAndWarning(Sender: TObject;
+procedure TfrmPrincipal.TWPPConnect1ErroAndWarning(Sender: TObject;
   const PError, PInfoAdc: string);
 begin
   Timer2.Enabled        := False;
@@ -815,7 +1338,7 @@ begin
   Timer2.Enabled        := True;
 end;
 
-procedure TfrmPrincipal.TInject1GetAllContactList(
+procedure TfrmPrincipal.TWPPConnect1GetAllContactList(
   const AllContacts: TRetornoAllContacts);
 var
   AContact: TContactClass;
@@ -831,7 +1354,7 @@ begin
 
 end;
 
-procedure TfrmPrincipal.TInject1GetAllGroupAdmins(
+procedure TfrmPrincipal.TWPPConnect1GetAllGroupAdmins(
   const AllGroups: TRetornoAllGroupAdmins);
 var
   i: integer;
@@ -844,7 +1367,7 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.TInject1GetAllGroupContacts(
+procedure TfrmPrincipal.TWPPConnect1GetAllGroupContacts(
   const Contacts: TClassAllGroupContacts);
 var
   JSonValue       : TJSonValue;
@@ -862,7 +1385,7 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.TInject1GetAllGroupList(
+procedure TfrmPrincipal.TWPPConnect1GetAllGroupList(
   const AllGroups: TRetornoAllGroups);
 var
   i: integer;
@@ -876,13 +1399,13 @@ begin
 
 end;
 
-procedure TfrmPrincipal.TInject1GetBatteryLevel(Sender: TObject);
+procedure TfrmPrincipal.TWPPConnect1GetBatteryLevel(Sender: TObject);
 begin
-  Lbl_Avisos.Caption  := 'O telefone '  + TInject(Sender).MyNumber + ' está com '+ TInject(Sender).BatteryLevel.ToString + '% de bateria';
-  btStatusBat.caption := 'Status da bateria (' + TInject(Sender).BatteryLevel.ToString + '%)';
+  Lbl_Avisos.Caption  := 'O telefone '  + TWPPConnect(Sender).MyNumber + ' está com '+ TWPPConnect(Sender).BatteryLevel.ToString + '% de bateria';
+  btStatusBat.caption := 'Status da bateria (' + TWPPConnect(Sender).BatteryLevel.ToString + '%)';
 end;
 
-procedure TfrmPrincipal.TInject1GetChatList(const Chats: TChatList);
+procedure TfrmPrincipal.TWPPConnect1GetChatList(const Chats: TChatList);
 var
   AChat: TChatClass;
 begin
@@ -891,7 +1414,7 @@ begin
     AddChatList('('+ AChat.unreadCount.ToString + ') ' + AChat.name + ' - ' + AChat.id);
 end;
 
-procedure TfrmPrincipal.TInject1GetCheckIsValidNumber(Sender: TObject;
+procedure TfrmPrincipal.TWPPConnect1GetCheckIsValidNumber(Sender: TObject;
   Number: string; IsValid: Boolean);
 begin
   if IsValid then
@@ -899,12 +1422,12 @@ begin
      ShowMessage('Whatsapp Invalid') ;
 end;
 
-procedure TfrmPrincipal.TInject1GetInviteGroup(const Invite: string);
+procedure TfrmPrincipal.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
  ShowMessage(Invite);
 end;
 
-procedure TfrmPrincipal.TInject1GetMe(const vMe: TGetMeClass);
+procedure TfrmPrincipal.TWPPConnect1GetMe(const vMe: TGetMeClass);
 var aList : TStringList;
 begin
  try
@@ -943,12 +1466,12 @@ begin
  end;
 end;
 
-procedure TfrmPrincipal.TInject1GetMyNumber(Sender: TObject);
+procedure TfrmPrincipal.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
-  lblNumeroConectado.Caption :=   TInject(Sender).MyNumber;
+  lblNumeroConectado.Caption :=   TWPPConnect(Sender).MyNumber;
 end;
 
-procedure TfrmPrincipal.TInject1GetProfilePicThumb(Sender: TObject;
+procedure TfrmPrincipal.TWPPConnect1GetProfilePicThumb(Sender: TObject;
   Base64: string);
 var
   LInput: TMemoryStream;
@@ -983,26 +1506,26 @@ begin
   lThread.Start;
 end;
 
-procedure TfrmPrincipal.TInject1GetQrCode(Const Sender: TObject;  const QrCode: TResultQRCodeClass);
+procedure TfrmPrincipal.TWPPConnect1GetQrCode(Const Sender: TObject;  const QrCode: TResultQRCodeClass);
 begin
-  if TInject1.FormQrCodeType = TFormQrCodeType(Ft_none) then
+  if TWPPConnect1.FormQrCodeType = TFormQrCodeType(Ft_none) then
      Image1.Picture := QrCode.AQrCodeImage else
      Image1.Picture := nil; //Limpa foto
 end;
 
-procedure TfrmPrincipal.TInject1GetStatus(Sender: TObject);//Const PStatus : TStatusType; Const PFormQrCode: TFormQrCodeType);
+procedure TfrmPrincipal.TWPPConnect1GetStatus(Sender: TObject);//Const PStatus : TStatusType; Const PFormQrCode: TFormQrCodeType);
 begin
   if not Assigned(Sender) Then
      Exit;
 
   try
-    TabSheet2.TabVisible   := (TInject(Sender).Status = Inject_Initialized);
-    TabSheet3.TabVisible   := (TInject(Sender).Status = Inject_Initialized);
-    TabSheet4.TabVisible   := (TInject(Sender).Status = Inject_Initialized);
+    TabSheet2.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
+    TabSheet3.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
+    TabSheet4.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
   Except
   end;
 
-  if (TInject(Sender).Status = Inject_Initialized) then
+  if (TWPPConnect(Sender).Status = Inject_Initialized) then
   begin
     lblStatus.Caption            := 'Online';
     lblStatus.Font.Color         := $0000AE11;
@@ -1021,45 +1544,45 @@ begin
 
 
   Label3.Visible := False;
-  case TInject(Sender).status of
-    Server_ConnectedDown       : Label3.Caption := TInject(Sender).StatusToStr;
-    Server_Disconnected        : Label3.Caption := TInject(Sender).StatusToStr;
-    Server_Disconnecting       : Label3.Caption := TInject(Sender).StatusToStr;
+  case TWPPConnect(Sender).status of
+    Server_ConnectedDown       : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Server_Disconnected        : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Server_Disconnecting       : Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Server_Connected           : Label3.Caption := '';
-    Server_Connecting          : Label3.Caption := TInject(Sender).StatusToStr;
-    Inject_Initializing        : Label3.Caption := TInject(Sender).StatusToStr;
-    Inject_Initialized         : Label3.Caption := TInject(Sender).StatusToStr;
-    Server_ConnectingNoPhone   : Label3.Caption := TInject(Sender).StatusToStr;
-    Server_ConnectingReaderCode: Label3.Caption := TInject(Sender).StatusToStr;
-    Server_TimeOut             : Label3.Caption := TInject(Sender).StatusToStr;
-    Inject_Destroying          : Label3.Caption := TInject(Sender).StatusToStr;
-    Inject_Destroy             : Label3.Caption := TInject(Sender).StatusToStr;
+    Server_Connecting          : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Inject_Initializing        : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Inject_Initialized         : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Server_ConnectingNoPhone   : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Server_ConnectingReaderCode: Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Server_TimeOut             : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Inject_Destroying          : Label3.Caption := TWPPConnect(Sender).StatusToStr;
+    Inject_Destroy             : Label3.Caption := TWPPConnect(Sender).StatusToStr;
   end;
   If Label3.Caption <> '' Then
      Label3.Visible := true;
 
 
-  If TInject(Sender).Status in [Server_ConnectingNoPhone, Server_TimeOut] Then
+  If TWPPConnect(Sender).Status in [Server_ConnectingNoPhone, Server_TimeOut] Then
   Begin
-    if TInject(Sender).FormQrCodeType = Ft_Desktop then
+    if TWPPConnect(Sender).FormQrCodeType = Ft_Desktop then
     Begin
-       if TInject(Sender).Status = Server_ConnectingNoPhone then
-          TInject1.FormQrCodeStop;
+       if TWPPConnect(Sender).Status = Server_ConnectingNoPhone then
+          TWPPConnect1.FormQrCodeStop;
     end else
     Begin
-      if TInject(Sender).Status = Server_ConnectingNoPhone then
+      if TWPPConnect(Sender).Status = Server_ConnectingNoPhone then
       Begin
-        if not TInject(Sender).FormQrCodeShowing then
-           TInject(Sender).FormQrCodeShowing := True;
+        if not TWPPConnect(Sender).FormQrCodeShowing then
+           TWPPConnect(Sender).FormQrCodeShowing := True;
       end else
       begin
-        TInject(Sender).FormQrCodeReloader;
+        TWPPConnect(Sender).FormQrCodeReloader;
       end;
     end;
   end;
 end;
 
-procedure TfrmPrincipal.TInject1GetStatusMessage(
+procedure TfrmPrincipal.TWPPConnect1GetStatusMessage(
   const Result: TResponseStatusMessage);
 var
   i: integer;
@@ -1077,12 +1600,12 @@ begin
     end;
 end;
 
-procedure TfrmPrincipal.TInject1GetUnReadMessages(Const Chats: TChatList);
+procedure TfrmPrincipal.TWPPConnect1GetUnReadMessages(Const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
   contato, telefone: string;
-  injectDecrypt: TInjectDecryptFile;
+  WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
     for AChat in Chats.result do
     begin
@@ -1097,11 +1620,11 @@ begin
 
             //Tratando o tipo do arquivo recebido e faz o download para pasta \BIN\temp
             case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
-              0: begin injectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
-              1: begin injectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'jpg', AChat.id); end;
-              2: begin injectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp4', AChat.id); end;
-              3: begin injectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
-              4: begin injectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'pdf', AChat.id); end;
+              0: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
+              1: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'jpg', AChat.id); end;
+              2: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp4', AChat.id); end;
+              3: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
+              4: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'pdf', AChat.id); end;
             end;
             sleepNoFreeze(100);
             memo_unReadMessage.Lines.Add(PChar( 'Nome Contato: ' + Trim(AMessage.Sender.pushName)));
@@ -1117,7 +1640,7 @@ begin
             ed_profilePicThumbURL.text := AChat.contact.profilePicThumb;
 
 
-            TInject1.ReadMessages(AChat.id);
+            TWPPConnect1.ReadMessages(AChat.id);
 
             if chk_AutoResposta.Checked then
                VerificaPalavraChave(AMessage.body, '', telefone, contato);
@@ -1127,7 +1650,7 @@ begin
     end;
 end;
 
-procedure TfrmPrincipal.TInject1IsConnected(Sender: TObject;
+procedure TfrmPrincipal.TWPPConnect1IsConnected(Sender: TObject;
   Connected: Boolean);
 begin
   if Connected = true then
@@ -1135,15 +1658,15 @@ begin
   showMessage('Desconectado / Not connected')
 end;
 
-procedure TfrmPrincipal.TInject1LowBattery(Sender: TObject);
+procedure TfrmPrincipal.TWPPConnect1LowBattery(Sender: TObject);
 begin
   Timer2.Enabled        := False;
-  Lbl_Avisos.Caption    := 'Alarme de BATERIA.  Você está com ' + TInject(Sender).BatteryLevel.ToString + '%';
+  Lbl_Avisos.Caption    := 'Alarme de BATERIA.  Você está com ' + TWPPConnect(Sender).BatteryLevel.ToString + '%';
   Lbl_Avisos.Font.Color := clRed;
   Timer2.Enabled        := True;
 end;
 
-procedure TfrmPrincipal.TInject1NewGetNumber(
+procedure TfrmPrincipal.TWPPConnect1NewGetNumber(
   const vCheckNumber: TReturnCheckNumber);
 begin if vCheckNumber.valid then
   Showmessage(vCheckNumber.id + ' é um numero Válido')
@@ -1159,7 +1682,7 @@ end;
 
 procedure TfrmPrincipal.listaChatsDblClick(Sender: TObject);
 begin
-  ed_num.Text := TInject1.GetChat(listaChats.Selected.Index).id;
+  ed_num.Text := TWPPConnect1.GetChat(listaChats.Selected.Index).id;
   lblContactNumber.Caption := ed_num.Text;
 end;
 
@@ -1192,10 +1715,10 @@ begin
     lbl_idGroup.Caption :=  Copy(listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1], 0,
       Pos('@', listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1]))+'g.us';
 
-    if not TInject1.Auth then
+    if not TWPPConnect1.Auth then
       Exit;
 
-    TInject1.listGroupContacts(lbl_idGroup.Caption);
+    TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
   end;
 end;
 
@@ -1210,49 +1733,34 @@ end;
 
 procedure TfrmPrincipal.SpeedButton11Click(Sender: TObject);
 begin
-  ShellExecute(Handle, 'open', 'https://github.com/mikelustosa/Projeto-TInject', '', '', 1);
+  ShellExecute(Handle, 'open', 'https://github.com/wppconnect-team', '', '', 1);
 end;
 
 procedure TfrmPrincipal.SpeedButton1Click(Sender: TObject);
 begin
-  if not TInject1.Auth(false) then
+  if not TWPPConnect1.Auth(false) then
   Begin
-    TInject1.FormQrCodeType := TFormQrCodeType(Rdb_FormaConexao.ItemIndex);
-    TInject1.FormQrCodeStart;
+    TWPPConnect1.FormQrCodeType := TFormQrCodeType(Rdb_FormaConexao.ItemIndex);
+    TWPPConnect1.FormQrCodeStart;
   End;
 
-  if not TInject1.FormQrCodeShowing then
-     TInject1.FormQrCodeShowing := True;
+  if not TWPPConnect1.FormQrCodeShowing then
+     TWPPConnect1.FormQrCodeShowing := True;
 
 end;
 
 procedure TfrmPrincipal.SpeedButton2Click(Sender: TObject);
 begin
-  ShellExecute(Handle, 'open', 'http://mikelustosa.kpages.online/tinject', '', '', 1);
+  ShellExecute(Handle, 'open', 'https://github.com/wppconnect-team/WPP4Delphi', '', '', 1);
 end;
 
 procedure TfrmPrincipal.SpeedButton3Click(Sender: TObject);
 begin
-  if not TInject1.auth then
+  if not TWPPConnect1.auth then
     exit;
 
-   TInject1.Logtout;
-   TInject1.Disconnect;
-end;
-
-procedure TfrmPrincipal.SpeedButton4Click(Sender: TObject);
-begin
-  ShellExecute(Handle, 'open', 'https://www.youtube.com/user/mikelustosa', '', '', 1);
-end;
-
-procedure TfrmPrincipal.SpeedButton7Click(Sender: TObject);
-begin
-ShellExecute(Handle, 'open', 'https://api.whatsapp.com/send?phone=558199301443&text=Preciso%20de%20suporte', '', '', 1);
-end;
-
-procedure TfrmPrincipal.SpeedButton8Click(Sender: TObject);
-begin
-  ShellExecute(Handle, 'open', 'https://youtu.be/dZ1RRXKbjCU', '', '', 1);
+   TWPPConnect1.Logtout;
+   TWPPConnect1.Disconnect;
 end;
 
 procedure TfrmPrincipal.Timer2Timer(Sender: TObject);
@@ -1280,14 +1788,14 @@ begin
       ( POS('INICIO', AnsiUpperCase(pMensagem))     > 0 ) or ( POS('OI', AnsiUpperCase(pMensagem))        > 0 )then
       begin
         mensagem :=
-        TInject1.Emoticons.AtendenteH+ 'Olá *'+pContato+'!*\n\n'+
-        'Você está no auto atendimento do *TInject*!\n\n'+
+        TWPPConnect1.Emoticons.AtendenteH+ 'Olá *'+pContato+'!*\n\n'+
+        'Você está no auto atendimento do *WPPConnect*!\n\n'+
         'Digite um número:\n\n'+
-        TInject1.Emoticons.Um             +' Suporte\n\n'+
-        TInject1.Emoticons.Dois           +' Consultar CEP\n\n'+
-        TInject1.Emoticons.Tres           +' Financeiro\n\n'+
-        TInject1.Emoticons.Quatro         +' Horários de atendimento\n\n';
-        TInject1.SendFile(pTelefone, ExtractFileDir(Application.ExeName)+'\Img\softmais.png', mensagem);
+        TWPPConnect1.Emoticons.Um             +' Suporte\n\n'+
+        TWPPConnect1.Emoticons.Dois           +' Consultar CEP\n\n'+
+        TWPPConnect1.Emoticons.Tres           +' Financeiro\n\n'+
+        TWPPConnect1.Emoticons.Quatro         +' Horários de atendimento\n\n';
+        TWPPConnect1.SendFile(pTelefone, ExtractFileDir(Application.ExeName)+'\Img\softmais.png', mensagem);
         Result := True;
         exit;
       end;
@@ -1331,8 +1839,8 @@ end;
 
 procedure TfrmPrincipal.whatsOnClick(Sender: TObject);
 begin
-  if not TInject1.FormQrCodeShowing then
-     TInject1.FormQrCodeShowing := True;
+  if not TWPPConnect1.FormQrCodeShowing then
+     TWPPConnect1.FormQrCodeShowing := True;
 end;
 
 end.

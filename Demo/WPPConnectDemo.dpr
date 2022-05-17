@@ -1,9 +1,9 @@
-program TInject;
+program WPPConnectDemo;
 
 uses
   Vcl.Forms,
   Windows,
-  uTInject.ConfigCEF,
+  uTWPPConnect.ConfigCEF,
   iniFiles,
   SysUtils,
   u_principal in 'u_principal.pas' {frmPrincipal};
@@ -22,11 +22,11 @@ begin
   arqIni  := Tinifile.Create(ExtractFilePath(Application.ExeName)+ 'config.ini');
 
   GlobalCEFApp.PathLogFile          := '';
-  GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('CONFIG', 'FRAMEWORK', '');  //'C:\TInject\Projeto-TInject-master\Demo\BIN';
-  GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('CONFIG', 'RESOURCES', ''); //'C:\TInject\Projeto-TInject-master\Demo\BIN';
-  GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('CONFIG', 'LOCALES', '');  //'C:\TInject\Projeto-TInject-master\Demo\BIN\locales';
-  GlobalCEFApp.Pathcache            := arqIni.ReadString('CONFIG', 'CACHE', ''); //'C:\TInject\Projeto-TInject-master\Demo\BIN\Cache';
-  GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('CONFIG', 'USERDATA', ''); //'C:\TInject\Projeto-TInject-master\Demo\BIN\User Data';
+  GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('CONFIG', 'FRAMEWORK', '');  //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN';
+  GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('CONFIG', 'RESOURCES', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN';
+  GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('CONFIG', 'LOCALES', '');  //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\locales';
+  GlobalCEFApp.Pathcache            := arqIni.ReadString('CONFIG', 'CACHE', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\Cache';
+  GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('CONFIG', 'USERDATA', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\User Data';
  }
 
   //Forma 1 GlobalCEFApp.Pathxx       := '';                      //Irá procura procurar o Arquivo PADRAO no mesmo local do EXE
