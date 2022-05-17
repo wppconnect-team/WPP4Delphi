@@ -1,34 +1,15 @@
 ﻿{####################################################################################################################
-                              TWPPConnect - Componente de comunicação (Não Oficial)
-                                            www.TWPPConnect.com.br
-                                            Novembro de 2019
+                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                                           www.wppconnect.com.br
+                                            Maio de 2022
 ####################################################################################################################
-    Owner.....: Mike W. Lustosa            - mikelustosa@gmail.com   - +55 81 9.9630-2385
-    Developer.: Joathan Theiller           - jtheiller@hotmail.com   -
-                Daniel Oliveira Rodrigues  - Dor_poa@hotmail.com     - +55 51 9.9155-9228
+    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
+    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
+
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Mike W. Lustosa;
-     - Colocar na evolução as Modificação juntamente com as informaçoes do colaborador: Data, Nova Versao, Autor;
-     - Mantenha sempre a versao mais atual acima das demais;
-     - Todo Commit ao repositório deverá ser declarado as mudança na UNIT e ainda o Incremento da Versão de
-       compilação (último digito);
-
-####################################################################################################################
-                                  Evolução do Código
-####################################################################################################################
-  Autor........:
-  Email........:
-  Data.........:
-  Identificador:
-  Modificação..:
-
-  Autor........: Luiz Alves
-  Email........: cprmlao@gmail.com
-  Data.........: 17/12/2019
-  Identificador: @LuizAlvez
-  Modificação..: Adicionadas novas propriedades das mensagens conforme verificação com o LOG
+       Marcelo;
 
 ####################################################################################################################
 }
@@ -301,14 +282,13 @@ type
     constructor Create(pAJsonString: string);
   end;
 
-  //Mike 29/12/2020
   TResponseIsDelivered = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
   end;
 
 
-  TResponseIsConnected = class(TClassPadraoString) //mike
+  TResponseIsConnected = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
   end;
@@ -359,7 +339,7 @@ type
     FId       : String;
     FOwner    : String;
     FParticipants: TArray<TParticipantsClass>;
-    FPendingParticipants:TArray<TParticipantsClass>;  //@LuizAlvez
+    FPendingParticipants:TArray<TParticipantsClass>;
     FRestrict    : Boolean;
   public
     constructor Create(pAJsonString: string);
@@ -374,7 +354,7 @@ type
     property owner    : String       read FOwner      write FOwner;
     property restrict : Boolean      read FRestrict   write FRestrict;
     property participants: TArray<TParticipantsClass>        read FParticipants        write FParticipants;
-    property pendingParticipants: TArray<TParticipantsClass> read FPendingParticipants Write FPendingParticipants;  //@LuizAlvez
+    property pendingParticipants: TArray<TParticipantsClass> read FPendingParticipants Write FPendingParticipants;
   end;
 
 
@@ -482,7 +462,6 @@ type
     FIsUser       : Boolean;
     FIsWAContact  : Boolean;
 
-    //Mike teste ok 16/02/2021 --
     FProfilePicThumb : string;
     //--
 
@@ -533,7 +512,6 @@ type
     property remote:      String   read FRemote      write FRemote;
   end;
 
-  //Experimental - Mike
   TButtonsClass = class(TClassPadrao)
   private
     FID            :string;
@@ -673,9 +651,8 @@ type
     FBroadcast       : Boolean;
     FMentionedJidList: TArray<String>;
 
-    //Experimental - Mike
+
     FButtons          : TArray<TButtonsClass>;
-    //Experimental - Mike
 
     FIsForwarded     : Boolean;
     FLabels          : TArray<String>;
@@ -754,9 +731,9 @@ type
     property mediaData  : TMediaDataClass     read FMediaData          write FMediaData;
     property mentionedJidList: TArray<String> read FMentionedJidList   write FMentionedJidList;
 
-    //Experimental - Mike
+
     property buttons: TArray<TButtonsClass>    read FButtons             write FButtons;
-    //Experimental - Mike
+
 
     property notifyName : String              read FNotifyName         write FNotifyName;
     property recvFresh  : Boolean             read FRecvFresh          write FRecvFresh;
@@ -779,7 +756,7 @@ type
     property star       : Boolean             read FStar               write FStar;
     property t          : Extended            read FT                  write FT;
     property timestamp  : Extended            read FTimestamp          write FTimestamp;
-    property &to        : String              read FTo                 write FTo;   //@LuizAlvez
+    property &to        : String              read FTo                 write FTo;
     property &type      : String              read FType               write FType;
     property profilePicThumb          : String   read FprofilePicThumb           write FprofilePicThumb;
     //Marcelo 29/01/2022
@@ -954,7 +931,6 @@ Public
   constructor Create(pAJsonString: string);
 end;
 
-//Mike
 //TRetornoAllGroups = class(TClassPadraoList<TContactClass>)
 //Public
 //  constructor Create(pAJsonString: string);
@@ -1054,8 +1030,8 @@ private
   FPushname     : String;
   FStatusMute   : Boolean;
   FType         : String;
-  FName         : String;//@LuizAlvez
-  FverifiedName : String;//@LuizAlvez
+  FName         : String;
+  FverifiedName : String;
   //MARCELO 27/04/2022
   FisContactSyncCompleted: Extended;
 public
@@ -1076,9 +1052,9 @@ public
   property pushname:        String         read FPushname         write FPushname;
   property statusMute:      Boolean        read FStatusMute       write FStatusMute;
   property &type:           String         read FType             write FType;
-  property name:            String         read FName             write FName;          //@LuizAlvez
-  property verifiedName:    String         read FverifiedName     write FverifiedName;  //@LuizAlvez
-  property profilePicThumb: String         read FProfilePicThumb  write FProfilePicThumb;  //@mikelustosa
+  property name:            String         read FName             write FName;
+  property verifiedName:    String         read FverifiedName     write FverifiedName;
+  property profilePicThumb: String         read FProfilePicThumb  write FProfilePicThumb;
   //MARCELO 27/04/2022
   property isContactSyncCompleted:  Extended read FisContactSyncCompleted  write FisContactSyncCompleted;
 end;
@@ -1516,7 +1492,7 @@ end;
 destructor TGroupMetadataClass.Destroy;
 begin
   ClearArray(FParticipants);
-  ClearArray(FPendingParticipants);     //@LuizAlvez
+  ClearArray(FPendingParticipants);
   inherited;
 end;
 

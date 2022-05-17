@@ -1,7 +1,7 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
                                            www.wppconnect.com.br
-                                            Novembro de 2019
+                                            Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
     Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
@@ -189,7 +189,7 @@ end;
 
 Procedure TCEFConfig.SetDefault;
 begin
-  if not FInDesigner then //padrão aqui é if not FInDesigner - Mike 28/12/2020
+  if not FInDesigner then //padrão aqui é if not FInDesigner
   Begin
     FIniFIle.WriteString ('Informacao', 'Aplicativo vinculado',    Application.ExeName);
     FIniFIle.WriteBool   ('Informacao', 'Valor True',    True);

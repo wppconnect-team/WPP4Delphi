@@ -1,7 +1,7 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
                                            www.wppconnect.com.br
-                                            Novembro de 2019
+                                            Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
     Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
@@ -202,7 +202,6 @@ type
     Property  IsConnected       : Boolean              Read FGetIsConnected;
     Property  MyNumber          : String               Read FMyNumber;
 
-    //Mike 29/12/2020
     Property  IsDelivered       : String               Read FIsDelivered;
 
     property  Authenticated     : boolean              read TestConnect;
@@ -248,7 +247,6 @@ type
     property OnGetProfilePicThumb        : TOnGetProfilePicThumb      read FOnGetProfilePicThumb           write FOnGetProfilePicThumb;
     property OnGetMyNumber               : TNotifyEvent               read FOnGetMyNumber                  write FOnGetMyNumber;
 
-    //Mike 29/12/2020
     property OnGetIsDelivered            : TNotifyEvent               read FOnGetIsDelivered               write FOnGetIsDelivered;
 
 
@@ -1230,7 +1228,7 @@ begin
       FOnGetAllGroupAdmins(TRetornoAllGroupAdmins(PReturnClass))
   end;
 
-  //Mike 03/06/2020
+  //03/06/2020
   If PTypeHeader = Th_getAllGroupContacts Then
   Begin
     if Assigned(OnGetAllGroupContacts) then
@@ -1246,7 +1244,7 @@ begin
   end;
 
 
-  //Mike 29/12/2020
+  //29/12/2020
   if PTypeHeader = Th_getIsDelivered then
   Begin
     FIsDelivered := FAdjustNumber.FormatOut(PValue);

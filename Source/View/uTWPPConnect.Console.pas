@@ -1,7 +1,7 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
                                            www.wppconnect.com.br
-                                            Novembro de 2019
+                                            Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
     Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
@@ -1752,9 +1752,9 @@ end;
 
 procedure TFrmConsole.FormShow(Sender: TObject);
 begin
-  Lbl_Caption.Caption      := 'WhatsReport Mega Online Software'; //Text_FrmConsole_Caption;
+  Lbl_Caption.Caption      := 'WPPConnect '; //Text_FrmConsole_Caption;
   Lbl_Caption.Caption       := Lbl_Caption.Caption + ' CEF lib ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.LibCefVersion + ' Chrome ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.ChromeVersion; //+ ' TWPPConnect V. ' + TWPPConnectVersion;
-  Lbl_Versao.Caption       := 'V. ' + TWPPConnectVersion;
+  Lbl_Versao.Caption       := 'V. 2.2.2' + ''; //TWPPConnectVersion;
 end;
 
 procedure TFrmConsole.Form_Normal;

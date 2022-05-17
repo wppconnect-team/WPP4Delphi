@@ -1,29 +1,16 @@
 ﻿{####################################################################################################################
-                              TWPPConnect - Componente de comunicação (Não Oficial)
-                                           www.TWPPConnect.com.br
+                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                                           www.wppconnect.com.br
                                             Novembro de 2019
 ####################################################################################################################
-    Owner.....: Mike W. Lustosa            - mikelustosa@gmail.com   - +55 81 9.9630-2385
-    Developer.: Joathan Theiller           - jtheiller@hotmail.com   -
-                Robson André de Morais     - robinhodemorais@gmail.com
+    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
+    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
 
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Mike W. Lustosa;
-     - Colocar na evolução as Modificação juntamente com as informaçoes do colaborador: Data, Nova Versao, Autor;
-     - Mantenha sempre a versao mais atual acima das demais;
-     - Todo Commit ao repositório deverá ser declarado as mudança na UNIT e ainda o Incremento da Versão de
-       compilação (último digito);
+       Marcelo;
 
-####################################################################################################################
-                                  Evolução do Código
-####################################################################################################################
-  Autor........:
-  Email........:
-  Data.........:
-  Identificador:
-  Modificação..:
 ####################################################################################################################
 }
 

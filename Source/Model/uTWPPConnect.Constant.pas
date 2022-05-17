@@ -1,28 +1,16 @@
 ﻿{####################################################################################################################
-                              TWPPConnect - Componente de comunicação (Não Oficial)
-                                           www.TWPPConnect.com.br
-                                            Novembro de 2019
+                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                                           www.wppconnect.com.br
+                                            Maio de 2022
 ####################################################################################################################
-    Owner.....: Mike W. Lustosa            - mikelustosa@gmail.com   - +55 81 9.9630-2385
-    Developer.: Joathan Theiller           - jtheiller@hotmail.com   -
-                Daniel Oliveira Rodrigues  - Dor_poa@hotmail.com     - +55 51 9.9155-9228
+    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
+    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
+
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Mike W. Lustosa;
-     - Colocar na evolução as Modificação juntamente com as informaçoes do colaborador: Data, Nova Versao, Autor;
-     - Mantenha sempre a versao mais atual acima das demais;
-     - Todo Commit ao repositório deverá ser declarado as mudança na UNIT e ainda o Incremento da Versão de
-       compilação (último digito);
+       Marcelo;
 
-####################################################################################################################
-                                  Evolução do Código
-####################################################################################################################
-  Autor........:
-  Email........:
-  Data.........:
-  Identificador:
-  Modificação..:
 ####################################################################################################################
 }
 unit uTWPPConnect.Constant;
@@ -34,7 +22,7 @@ Uses Winapi.Messages, System.SysUtils, typinfo, REST.Json;
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion                  = '3.5.0.0'; //  08/09/2021  //Alterado por Mike Lustosa
+  TWPPConnectVersion                  = '3.5.0.0'; //  08/09/2021
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -196,7 +184,7 @@ resourcestring
   MSG_ExceptGlobalCef                  = '';
   MSG_WarningClosing                   = '';
   MSG_ExceptMisc                       = '';
-  Text_FrmConsole_Caption              = 'WhatsReport Mega Online Software';
+  Text_FrmConsole_Caption              = 'WPP Connect';
   Text_FrmConsole_LblMsg               = '';
   MSG_WarningClassUnknown              = '';
   MSG_Exceptlibeay32dll                = '';
