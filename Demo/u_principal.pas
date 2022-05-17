@@ -134,7 +134,6 @@ type
     btSendTextButton: TButton;
     SpeedButton2: TSpeedButton;
     SpeedButton4: TSpeedButton;
-    SpeedButton8: TSpeedButton;
     SpeedButton11: TSpeedButton;
     SpeedButton7: TSpeedButton;
     Button13: TButton;
