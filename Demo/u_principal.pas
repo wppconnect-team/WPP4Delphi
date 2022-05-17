@@ -146,6 +146,7 @@ type
     Button20: TButton;
     Label12: TLabel;
     Button21: TButton;
+    Button22: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btSendTextClick(Sender: TObject);
@@ -228,6 +229,7 @@ type
     procedure Button18Click(Sender: TObject);
     procedure Button20Click(Sender: TObject);
     procedure Button21Click(Sender: TObject);
+    procedure Button22Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -1131,6 +1133,30 @@ begin
 
     TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
 
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TfrmPrincipal.Button22Click(Sender: TObject);
+var
+  options : string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+       Exit;
+
+    options := '';
+
+    TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options);
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
