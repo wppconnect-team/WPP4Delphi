@@ -132,7 +132,6 @@ type
     Label11: TLabel;
     btSendTextButton: TButton;
     SpeedButton2: TSpeedButton;
-    SpeedButton4: TSpeedButton;
     SpeedButton11: TSpeedButton;
     SpeedButton7: TSpeedButton;
     Button13: TButton;
@@ -1888,7 +1887,7 @@ begin
         TWPPConnect1.Emoticons.Dois           +' Consultar CEP\n\n'+
         TWPPConnect1.Emoticons.Tres           +' Financeiro\n\n'+
         TWPPConnect1.Emoticons.Quatro         +' Horários de atendimento\n\n';
-        TWPPConnect1.SendFile(pTelefone, ExtractFileDir(Application.ExeName)+'\Img\softmais.png', mensagem);
+        TWPPConnect1.SendFile(pTelefone, ExtractFileDir(Application.ExeName)+'\Img\WPPCONNECT4Delphi.png', mensagem);
         Result := True;
         exit;
       end;
