@@ -12098,6 +12098,7 @@ window.WAPI.sendFileMessage2 = async function(chatid, content, options) {
 };
 
 
+
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
 window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
