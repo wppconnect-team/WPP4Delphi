@@ -9,10 +9,21 @@
 [![WhatsApp Group](https://img.shields.io/badge/WhatsApp-Group-25D366?logo=whatsapp)](https://chat.whatsapp.com/HzLflMQVjOPK9bpjzlxcMO)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCD7J9LG08PmGQrF5IS7Yv9A?label=YouTube)](https://www.youtube.com/c/wppconnect)
 
-## Getting started
+## ⚙️ Installation
+Installation is done using the [`boss install`](https://github.com/HashLoad/boss) command:
+``` sh
+boss install github.com/wppconnect-team/WPP4Delphi
+```
 
-Under construction
+## ⚡️ Quickstart Delphi
+```delphi
+// under construction
+```
 
+## ⚡️ Quickstart Lazarus
+```delphi
+// under construction
+```
 ## License
 
 Copyright 2021 WPPConnect Team
