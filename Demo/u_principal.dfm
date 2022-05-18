@@ -23,7 +23,6 @@ object frmPrincipal: TfrmPrincipal
     Height = 13
     Align = alBottom
     Caption = ' '
-    ExplicitTop = 659
     ExplicitWidth = 3
   end
   object PageControl1: TPageControl
@@ -35,10 +34,8 @@ object frmPrincipal: TfrmPrincipal
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 665
     object TabSheet1: TTabSheet
       Caption = 'Autentica'#231#227'o / Authentication'
-      ExplicitHeight = 625
       object Pnl_Config: TPanel
         AlignWithMargins = True
         Left = 375
@@ -52,7 +49,6 @@ object frmPrincipal: TfrmPrincipal
         ParentCtl3D = False
         ShowCaption = False
         TabOrder = 0
-        ExplicitHeight = 619
         DesignSize = (
           708
           641)
@@ -426,7 +422,6 @@ object frmPrincipal: TfrmPrincipal
         ParentCtl3D = False
         ShowCaption = False
         TabOrder = 1
-        ExplicitHeight = 619
         DesignSize = (
           364
           641)
@@ -3744,6 +3739,9 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet3: TTabSheet
       Caption = 'A'#231#245'es Manuais / Actions'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 625
       object groupEnvioMsg: TGroupBox
         Left = 0
@@ -4476,6 +4474,9 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet4: TTabSheet
       Caption = 'Logs'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 625
       DesignSize = (
         1088
@@ -4541,6 +4542,9 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet2: TTabSheet
       Caption = 'A'#231#245'es em grupo /  Group actions'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 625
       object Panel5: TPanel
         AlignWithMargins = True
@@ -5483,6 +5487,9 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet5: TTabSheet
       Caption = 'LogEnvio'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 637
       object memo_unReadMessageEnv: TMemo
         Left = 8
@@ -5516,7 +5523,6 @@ object frmPrincipal: TfrmPrincipal
         Text = 'Offline'
         Width = 50
       end>
-    ExplicitTop = 672
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Imagens|*jpg;*.jpg;*.bmp;*.png;*.pdf;*.mp4;*.mp3;*.rar'
