@@ -15,6 +15,7 @@
 package TWPP4DelphiCollection;
 
 {$R *.res}
+{$R *.dres}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -42,8 +43,9 @@ package TWPP4DelphiCollection;
 {$DESCRIPTION 'WPP4Delphi'}
 {$IMPLICITBUILD OFF}
 
-rrequires
+requires
   designide,
+  rtl,
   DbxCommonDriver,
   dbrtl,
   IndySystem,
@@ -63,7 +65,8 @@ rrequires
   CEF4Delphi,
   VclSmp;
 
-ocontains
+contains
+  uSplash in '..\Source\Other\uSplash.pas',
   uTWPPConnect.FrmConfigNetWork in '..\Source\View\uTWPPConnect.FrmConfigNetWork.pas' {FrmConfigNetWork},
   uTWPPConnect.Console in '..\Source\View\uTWPPConnect.Console.pas' {FrmConsole},
   uTWPPConnect.FrmQRCode in '..\Source\View\uTWPPConnect.FrmQRCode.pas' {FrmQRCode},
@@ -81,6 +84,6 @@ ocontains
   uTWPPConnect.JS in '..\Source\Model\uTWPPConnect.JS.pas',
   uCSV.Import in '..\Source\Model\uCSV.Import.pas' {u_principal in '..\Demo\u_principal.pas' {frmPrincipal};
 
-d.
+end.
 
 
