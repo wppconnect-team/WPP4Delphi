@@ -1,7 +1,7 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
-                                           www.wppconnect.com.br
-                                            Novembro de 2019
+                                           https://wppconnect-team.github.io/
+                                            Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
     Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414

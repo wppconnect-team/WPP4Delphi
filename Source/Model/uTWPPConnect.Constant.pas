@@ -1,6 +1,6 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
-                                           www.wppconnect.com.br
+                                           https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
@@ -22,11 +22,11 @@ Uses Winapi.Messages, System.SysUtils, typinfo, REST.Json;
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion                  = '3.5.0.0'; //  08/09/2021
+  TWPPConnectVersion              = '3.5.0.0'; //  17/05/2022
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
-  NomeArquivoInject               = 'js.abr';
+  NomeArquivoInject               = 'js.abr';//'wppconnect-wa.js';
   NomeArquivoIni                  = 'ConfTWPPConnect.ini';
   MsMaxFindJSinDesigner           = 15000;
   VersaoMinima_CF4_Major          = 78;
@@ -39,17 +39,18 @@ Const
   ConfigCEF_Path_Cache            = 'cache';
   ConfigCEF_Path_UserData         = 'User Data';
   JsonOptionClassPadrao           = [joDateIsUTC, joDateFormatISO8601, joIgnoreEmptyStrings, joIgnoreEmptyArrays];
-//  ConsoleRetornText_Disconect     = 'failed: WebSocket is closed before the connection is established';
+  //ConsoleRetornText_Disconect      = 'failed: WebSocket is closed before the connection is established';
   FrmConsole_Browser_ContextPhoneOff = '<div class="_1fpj- app-wrapper-web">';
 
   FrmConsole_Browser_Created            = WM_APP + $100;
   FrmConsole_Browser_Direto             = WM_APP + $101;
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
-  TWPPConnectJS_JSUrlPadrao                 = 'https://raw.githubusercontent.com/marcelo386/arquivo_Inject/main/js.abr';
-  TWPPConnectJS_JSLinhasMInimas             = 1400;
+  TWPPConnectJS_JSUrlPadrao             = 'https://raw.githubusercontent.com/marcelo386/arquivo_Inject/main/js.abr';
+  TWPPConnectJS_JSLinhasMInimas         = 1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
+
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
   FrmConsole_JS_GetBatteryLevel         = 'window.WAPI.getBatteryLevel();';
   FrmConsole_JS_GetMyNumber             = 'getMyNumber();';
@@ -66,48 +67,12 @@ Const
   FrmConsole_JS_VAR_DeleteMessages      = 'window.WAPI.deleteConversation("<#MSG_PHONE#>")';
   FrmConsole_JS_VAR_SendBase64          = 'window.WAPI.sendImage("<#MSG_BASE64#>","<#MSG_PHONE#>", "<#MSG_NOMEARQUIVO#>", "<#MSG_CORPO#>")';
   FrmConsole_JS_VAR_SendMsg             = 'window.WAPI.sendMessageToID("<#MSG_PHONE#>","<#MSG_CORPO#>")';
-
-  //MARCELO 03/05/2022
-  FrmConsole_JS_VAR_markIsComposing     = 'WPP.chat.markIsComposing("<#MSG_PHONE#>", 5000);';
-  FrmConsole_JS_VAR_markIsRead          = 'WPP.chat.markIsRead("<#MSG_PHONE#>");';
-  FrmConsole_JS_VAR_markIsRecording     = 'WPP.chat.markIsRecording("<#MSG_PHONE#>", 5000);';
-  FrmConsole_JS_VAR_markIsUnread        = 'WPP.chat.markIsUnread("<#MSG_PHONE#>");';
-  //FrmConsole_JS_VAR_getMessageById      = 'WPP.chat.getMessageById(["<#MSGKEY#>"]);';
-  FrmConsole_JS_VAR_getMessageById      = 'window.WAPI.getMessageById2("<#MSGKEY#>");';
-
-
-  //Adicionado Por Marcelo 26/04/2022
-  //FrmConsole_JS_VAR_SendButtons         = 'window.WAPI.sendButtons("<#MSG_PHONE#>","<#MSG_TITLE#>",<#MSG_BUTTONS#>,"<#MSG_FOOTER#>")';
-  FrmConsole_JS_VAR_SendButtons         = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>","<#MSG_TITLE#>",{<#MSG_BUTTONS#>});';
-
-  //Alterado Por Marcelo 10/05/2022
-  FrmConsole_JS_VAR_SendTextMessage     = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>});';
-
-  FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
-
-  //Adicionado Por Marcelo 01/03/2022
-  FrmConsole_JS_VAR_SendListMenu        = 'window.WAPI.sendListMenu("<#MSG_PHONE#>","<#MSG_TITLE#>","<#MSG_SUBTITLE#>","<#MSG_DESCRIPTION#>","<#MSG_BUTTONTEXT#>",<#MSG_MENU#>);';
-
-  //Adicionado Por Marcelo 30/04/2022
-  FrmConsole_JS_VAR_sendListMessage     = 'WPP.chat.sendListMessage("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
-  FrmConsole_JS_VAR_sendFileMessage     = 'window.WAPI.sendFileMessage2("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
-  FrmConsole_JS_VAR_sendLocationMessage = 'WPP.chat.sendLocationMessage("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} );';
-
-  FrmConsole_JS_VAR_isBeta              = 'window.WAPI.isBeta();';
-
-  FrmConsole_JS_VAR_SendTyping          = 'Store.WapQuery.sendChatstateComposing("<#MSG_PHONE#>");';
-
-  //Adicionado Por Marcelo 09/05/2022
-  FrmConsole_JS_VAR_SendLinkPreview     = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>", "<#MSG_LINK#>", {<#MSG_CORPO#>} );';
-  //FrmConsole_JS_VAR_SendLinkPreview     = 'window.WAPI.sendLinkWithAutoPreview("<#MSG_PHONE#>", "<#MSG_LINK#>", "<#MSG_CORPO#>")';
-
-  FrmConsole_JS_VAR_SendLocation        = 'window.WAPI.sendLocation("<#MSG_PHONE#>", "<#MSG_LAT#>", "<#MSG_LNG#>", "<#MSG_CORPO#>")';
-  FrmConsole_JS_VAR_Logout              = 'localStorage.clear(); location.reload();';
-
-  //MARCELO 02/05/2022
-  FrmConsole_JS_VAR_SendContact         = 'WPP.chat.sendVCardContactMessage("<#MSG_PHONE_DEST#>", "<#MSG_PHONE#>", {} )';
   //FrmConsole_JS_VAR_SendContact         = 'window.WAPI.sendVCard("<#MSG_PHONE_DEST#>", "<#MSG_PHONE#>", "<#MSG_NAMECONTACT#>" )';
 
+  FrmConsole_JS_VAR_isBeta              = 'window.WAPI.isBeta();';
+  FrmConsole_JS_VAR_SendTyping          = 'Store.WapQuery.sendChatstateComposing("<#MSG_PHONE#>");';
+  FrmConsole_JS_VAR_SendLocation        = 'window.WAPI.sendLocation("<#MSG_PHONE#>", "<#MSG_LAT#>", "<#MSG_LNG#>", "<#MSG_CORPO#>")';
+  FrmConsole_JS_VAR_Logout              = 'localStorage.clear(); location.reload();';
   FrmConsole_JS_VAR_CheckIsValidNumber  = 'window.WAPI.isValidNumber("<#MSG_PHONE#>")'+
                                         '.then(result => SetConsoleMessage("GetCheckIsValidNumber", JSON.stringify(result)))'+
                                         '.catch(error => SetConsoleMessage("GetCheckIsValidNumber", JSON.stringify(error)));';
@@ -150,6 +115,41 @@ Const
   FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");';
   FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");';
   FrmConsole_JS_VAR_checkNumberStatus       = 'window.WAPI.checkNumberStatus("<#PHONE#>");';
+  //Adicionado Por Marcelo 01/03/2022 deprecated
+  FrmConsole_JS_VAR_SendListMenu        = 'window.WAPI.sendListMenu("<#MSG_PHONE#>","<#MSG_TITLE#>","<#MSG_SUBTITLE#>","<#MSG_DESCRIPTION#>","<#MSG_BUTTONTEXT#>",<#MSG_MENU#>);';
+
+
+  //WPPConnect
+
+  //MARCELO 03/05/2022
+  FrmConsole_JS_VAR_markIsComposing     = 'WPP.chat.markIsComposing("<#MSG_PHONE#>", 5000);';
+  FrmConsole_JS_VAR_markIsRead          = 'WPP.chat.markIsRead("<#MSG_PHONE#>");';
+  FrmConsole_JS_VAR_markIsRecording     = 'WPP.chat.markIsRecording("<#MSG_PHONE#>", 5000);';
+  FrmConsole_JS_VAR_markIsUnread        = 'WPP.chat.markIsUnread("<#MSG_PHONE#>");';
+  //FrmConsole_JS_VAR_getMessageById      = 'WPP.chat.getMessageById(["<#MSGKEY#>"]);';
+  FrmConsole_JS_VAR_getMessageById      = 'window.WAPI.getMessageById2("<#MSGKEY#>");';
+
+
+  //Adicionado Por Marcelo 26/04/2022
+  //FrmConsole_JS_VAR_SendButtons         = 'window.WAPI.sendButtons("<#MSG_PHONE#>","<#MSG_TITLE#>",<#MSG_BUTTONS#>,"<#MSG_FOOTER#>")';
+  FrmConsole_JS_VAR_SendButtons         = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>","<#MSG_TITLE#>",{<#MSG_BUTTONS#>});';
+
+  //Alterado Por Marcelo 10/05/2022
+  FrmConsole_JS_VAR_SendTextMessage     = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>});';
+  FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
+
+
+  //Adicionado Por Marcelo 30/04/2022
+  FrmConsole_JS_VAR_sendListMessage     = 'WPP.chat.sendListMessage("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
+  FrmConsole_JS_VAR_sendFileMessage     = 'window.WAPI.sendFileMessage2("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
+  FrmConsole_JS_VAR_sendLocationMessage = 'WPP.chat.sendLocationMessage("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} );';
+
+  //Adicionado Por Marcelo 09/05/2022
+  FrmConsole_JS_VAR_SendLinkPreview     = 'WPP.chat.sendTextMessage("<#MSG_PHONE#>", "<#MSG_LINK#>", {<#MSG_CORPO#>} );';
+  //FrmConsole_JS_VAR_SendLinkPreview     = 'window.WAPI.sendLinkWithAutoPreview("<#MSG_PHONE#>", "<#MSG_LINK#>", "<#MSG_CORPO#>")';
+
+  //MARCELO 02/05/2022
+  FrmConsole_JS_VAR_SendContact         = 'WPP.chat.sendVCardContactMessage("<#MSG_PHONE_DEST#>", "<#MSG_PHONE#>", {} )';
 
 
 resourcestring

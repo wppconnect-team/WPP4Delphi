@@ -1,6 +1,6 @@
 ﻿{####################################################################################################################
                               WPPCONNECT - Componente de comunicação (Não Oficial)
-                                           www.wppconnect.com.br
+                                           https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
@@ -1569,6 +1569,7 @@ begin
       //Get(Purl, FReturnUrl);
 
       DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'wppconnect-wa.js');
 
 
     Except

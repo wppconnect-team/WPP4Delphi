@@ -81,7 +81,6 @@ type
     btCheckNumber: TButton;
     btIsConnected: TButton;
     btSendLocation: TButton;
-    btSendLinkWithPreview: TButton;
     Label6: TLabel;
     ed_videoLink: TEdit;
     Button1: TButton;
@@ -146,6 +145,10 @@ type
     Label12: TLabel;
     Button21: TButton;
     Button22: TButton;
+    TabSheet5: TTabSheet;
+    memo_unReadMessageEnv: TMemo;
+    Button23: TButton;
+    Button24: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btSendTextClick(Sender: TObject);
@@ -229,6 +232,8 @@ type
     procedure Button20Click(Sender: TObject);
     procedure Button21Click(Sender: TObject);
     procedure Button22Click(Sender: TObject);
+    procedure Button23Click(Sender: TObject);
+    procedure Button24Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -540,7 +545,7 @@ begin
       'createChat: true,' +
       'buttons:' +
       '['+
-        '{url: "https://novo.megaonline.com.br/", text: "🌐️ Acesse Nosso Site"},' +
+        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
         '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
@@ -666,7 +671,7 @@ begin
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
         '  { ' +
-        '    url: "https://novo.megaonline.com.br/", ' +
+        '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
@@ -746,7 +751,7 @@ begin
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
         '  { ' +
-        '    url: "https://novo.megaonline.com.br/", ' +
+        '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
@@ -826,7 +831,7 @@ begin
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
         '  { ' +
-        '    url: "https://novo.megaonline.com.br/", ' +
+        '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
@@ -905,10 +910,10 @@ begin
         'footer: "Video com Botão",  ' +
         'buttons: [ ' +
         '  { ' +
-        '    url: "https://novo.megaonline.com.br/", ' +
+        '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
@@ -1043,12 +1048,9 @@ end;
 
 procedure TfrmPrincipal.btnTestCheckNumberClick(Sender: TObject);
 begin
- if not TWPPConnect1.Auth then
-     Exit;
+ if not TWPPConnect1.Auth then   Exit;
 
-  TWPPConnect1.NewCheckIsValidNumber('558195833533@c.us');
-  TWPPConnect1.NewCheckIsValidNumber('558195833532@c.us');
-  TWPPConnect1.NewCheckIsValidNumber('558195833531@c.us');
+  TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
 end;
 
 procedure TfrmPrincipal.Button1Click(Sender: TObject);
@@ -1119,7 +1121,7 @@ begin
       '    url: "https://www.cvc.com.br/destinos/rio-de-janeiro-brasil", ' +
       '    text: "Compre o Pacote de Viagem" ' +
       '  }, ' +
-      '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+      '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
       '  { ' +
       '    id: "001",  ' +
       '    text: "Quero Conhecer"  ' +
@@ -1160,6 +1162,41 @@ begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
+end;
+
+procedure TfrmPrincipal.Button23Click(Sender: TObject);
+var
+  reaction, IdMensagem: string;
+begin
+  reaction := '"' + TWPPConnectEmoticons.Corarao + '"';
+
+  if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+  begin
+
+    TWPPConnect1.SendReactionMessage(IdMensagem, reaction);
+  end;
+end;
+
+procedure TfrmPrincipal.Button24Click(Sender: TObject);
+var
+  option, content, IdMensagem: string;
+begin
+  content := '';
+  IdMensagem := '';
+  option := '';
+
+  if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+  begin
+    if InputQuery('Informe Sua Resposta.', 'Resposta: ', content) then
+    begin
+      //option := option + '' + IdMensagem+ '';
+      option := 'quotedMsg: "' + IdMensagem+ '"';
+      TWPPConnect1.SendTextMessage(ed_num.text, content, option);
+    end;
+  end;
+  //WPP.chat.sendTextMessage('[number]@c.us', 'This is a reply', {quotedMsg: 'true_[number]@c.us_3EB0F435D95D32C4C638'})
+
+
 end;
 
 procedure TfrmPrincipal.Button2Click(Sender: TObject);
@@ -1629,7 +1666,7 @@ procedure TfrmPrincipal.TWPPConnect1GetUnReadMessages(Const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
     for AChat in Chats.result do
@@ -1641,9 +1678,12 @@ begin
 
           if not AMessage.sender.isMe then  //Não exibe mensages enviadas por mim
           begin
-            memo_unReadMessage.Clear;
+            //memo_unReadMessage.Clear;
+            FChatID := AChat.id;
+            telefone  :=  Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
+            contato   :=  AMessage.Sender.pushName;
 
-            //Tratando o tipo do arquivo recebido e faz o download para pasta \BIN\temp
+            //Tratando o tipo do arquivo recebido e faz o download para pasta \temp
             case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
               0: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
               1: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'jpg', AChat.id); end;
@@ -1651,16 +1691,23 @@ begin
               3: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
               4: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'pdf', AChat.id); end;
             end;
-            sleepNoFreeze(100);
-            memo_unReadMessage.Lines.Add(PChar( 'Nome Contato: ' + Trim(AMessage.Sender.pushName)));
-              memo_unReadMessage.Lines.Add(PChar( 'Chat Id     : ' + AChat.id));
-            FChatID := AChat.id;
-
-            memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: '      + AMessage.&type));
+            SleepNoFreeze(100);
+            memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushName)));
+            memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));
+            memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
+            memo_unReadMessage.Lines.Add(PChar('Chat Id: ' + AChat.id));
             memo_unReadMessage.Lines.Add( StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
+            memo_unReadMessage.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack) ));
+            selectedButtonId := AMessage.selectedButtonId;
 
-            telefone  :=  Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
-            contato   :=  AMessage.Sender.pushName;
+            try
+              quotedMsg_caption := AMessage.quotedMsg.Caption; //Mensagem Original do Click do Botão
+            except on E: Exception do
+              quotedMsg_caption := '';
+            end;
+
+            if selectedButtonId = '' then
+              selectedButtonId := AMessage.selectedId;
 
             ed_profilePicThumbURL.text := AChat.contact.profilePicThumb;
 
@@ -1668,7 +1715,28 @@ begin
             TWPPConnect1.ReadMessages(AChat.id);
 
             if chk_AutoResposta.Checked then
-               VerificaPalavraChave(AMessage.body, '', telefone, contato);
+              VerificaPalavraChave(AMessage.body, '', telefone, contato);
+          end
+          else
+          begin
+            memo_unReadMessageEnv.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushName)));
+            memo_unReadMessageEnv.Lines.Add(PChar('UniqueID: '      + AMessage.id));
+            memo_unReadMessageEnv.Lines.Add(PChar('Tipo mensagem: '      + AMessage.&type));
+            memo_unReadMessageEnv.Lines.Add(PChar('Chat Id: ' + AChat.id));
+            memo_unReadMessageEnv.Lines.Add(StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
+            memo_unReadMessageEnv.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack) ));
+            selectedButtonId := AMessage.selectedButtonId;
+
+            try
+              quotedMsg_caption := AMessage.quotedMsg.Caption; //Mensagem Original do Click do Botão
+            except on E: Exception do
+              quotedMsg_caption := '';
+            end;
+
+            if selectedButtonId = '' then
+              selectedButtonId := AMessage.selectedId;
+
+
           end;
         end;
       end;
