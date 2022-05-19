@@ -39,7 +39,6 @@ type
     Label2: TLabel;
     mem_message: TMemo;
     btSendTextAndFile: TButton;
-    btSendText: TButton;
     Panel1: TPanel;
     groupListaChats: TGroupBox;
     Button3: TButton;
@@ -80,7 +79,6 @@ type
     SpeedButton3: TSpeedButton;
     btCheckNumber: TButton;
     btIsConnected: TButton;
-    btSendLocation: TButton;
     Label6: TLabel;
     ed_videoLink: TEdit;
     Button1: TButton;
@@ -130,7 +128,6 @@ type
     lblContactStatus: TLabel;
     lblContactNumber: TLabel;
     Label11: TLabel;
-    btSendTextButton: TButton;
     SpeedButton2: TSpeedButton;
     SpeedButton11: TSpeedButton;
     SpeedButton7: TSpeedButton;
@@ -143,14 +140,14 @@ type
     Button20: TButton;
     Label12: TLabel;
     Button21: TButton;
-    Button22: TButton;
     TabSheet5: TTabSheet;
     memo_unReadMessageEnv: TMemo;
     Button23: TButton;
     Button24: TButton;
+    Button22: TButton;
+    Button25: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btSendTextClick(Sender: TObject);
     procedure btSendTextAndFileClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -189,7 +186,6 @@ type
     procedure TWPPConnect1IsConnected(Sender: TObject; Connected: Boolean);
     procedure TWPPConnect1GetBatteryLevel(Sender: TObject);
     procedure btSendLinkWithPreviewClick(Sender: TObject);
-    procedure btSendLocationClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure WebBrowser1DocumentComplete(ASender: TObject;      const pDisp: IDispatch; const URL: OleVariant);
     procedure TWPPConnect1GetProfilePicThumb(Sender: TObject; Base64: string);
@@ -221,7 +217,6 @@ type
     procedure ed_numKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure TWPPConnect1Disconnected(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
-    procedure btSendTextButtonClick(Sender: TObject);
     procedure Button13Click(Sender: TObject);
     procedure Button14Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
@@ -233,6 +228,7 @@ type
     procedure Button22Click(Sender: TObject);
     procedure Button23Click(Sender: TObject);
     procedure Button24Click(Sender: TObject);
+    procedure Button25Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -378,6 +374,20 @@ end;
 procedure TfrmPrincipal.btSendContactClick(Sender: TObject);
 begin
   try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if Trim(mem_message.Text) = '' then
+    begin
+      messageDlg('Informe o Número do Contato para Continuar', mtWarning, [mbOk], 0);
+      mem_message.SetFocus;
+      Exit;
+    end;
+
     if not TWPPConnect1.Auth then
        Exit;
     //               Dest                    Contact
@@ -402,23 +412,17 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.btSendLocationClick(Sender: TObject);
-begin
-  try
-    if not TWPPConnect1.Auth then
-       Exit;
-    //                    number        lat         lgn        Message link
-    TWPPConnect1.sendLocation(ed_num.Text, '-70.4078', '25.3789', 'Segue a localização');
-  finally
-    ed_num.SelectAll;
-    ed_num.SetFocus;
-  end;
-end;
-
 procedure TfrmPrincipal.btSendTextAndFileClick(Sender: TObject);
 Begin
+  if Trim(ed_num.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    ed_num.SetFocus;
+    Exit;
+  end;
+
   if not OpenDialog1.Execute then
-     Exit;
+    Exit;
 
   try
     if not TWPPConnect1.Auth then
@@ -429,22 +433,6 @@ Begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
-end;
-
-procedure TfrmPrincipal.btSendTextButtonClick(Sender: TObject);
-const buttons = '[{buttonId: "id1", buttonText:{displayText: "OPTION1"}, type: 1}, {buttonId: "id2", buttonText: {displayText: "OPTION2"}, type: 1}]';
-const footer = 'Choose option';
-begin
-  try
-    if not TWPPConnect1.Auth then
-       Exit;
-
-    TWPPConnect1.sendButtons(ed_num.Text, mem_message.Text, Buttons, footer);
-  finally
-    ed_num.SelectAll;
-    ed_num.SetFocus;
-  end;
-
 end;
 
 procedure TfrmPrincipal.btIsConnectedClick(Sender: TObject);
@@ -1151,6 +1139,13 @@ begin
       Exit;
     end;
 
+    if Trim(mem_message.Text) = '' then
+    begin
+      messageDlg('Informe o Texto da Mensagem para Continuar', mtWarning, [mbOk], 0);
+      mem_message.SetFocus;
+      Exit;
+    end;
+
     if not TWPPConnect1.Auth then
        Exit;
 
@@ -1198,6 +1193,39 @@ begin
 
 end;
 
+procedure TfrmPrincipal.Button25Click(Sender: TObject);
+var
+  option, rawMessage: string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if Trim(mem_message.Text) = '' then
+    begin
+      messageDlg('Informe o Texto da Mensagem para Continuar', mtWarning, [mbOk], 0);
+      mem_message.SetFocus;
+      Exit;
+    end;
+
+    if not TWPPConnect1.Auth then
+       Exit;
+
+    rawMessage := mem_message.Text;
+
+    TWPPConnect1.markIsComposing(ed_num.Text, '5000');
+    SleepNoFreeze(5000);
+    TWPPConnect1.SendRawMessage(ed_num.Text, rawMessage, option);
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
 procedure TfrmPrincipal.Button2Click(Sender: TObject);
 begin
   TWPPConnect1.getAllContacts;
@@ -1240,19 +1268,6 @@ begin
      Exit;
 
   TWPPConnect1.GetBatteryStatus;
-end;
-
-procedure TfrmPrincipal.btSendTextClick(Sender: TObject);
-begin
-  try
-    if not TWPPConnect1.Auth then
-       Exit;
-
-    TWPPConnect1.send(ed_num.Text, mem_message.Text);
-  finally
-    ed_num.SelectAll;
-    ed_num.SetFocus;
-  end;
 end;
 
 procedure TfrmPrincipal.Button7Click(Sender: TObject);

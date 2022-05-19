@@ -3739,10 +3739,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet3: TTabSheet
       Caption = 'A'#231#245'es Manuais / Actions'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 625
       object groupEnvioMsg: TGroupBox
         Left = 0
         Top = 0
@@ -3750,7 +3746,6 @@ object frmPrincipal: TfrmPrincipal
         Height = 649
         Align = alLeft
         TabOrder = 0
-        ExplicitHeight = 625
         DesignSize = (
           249
           649)
@@ -3793,30 +3788,22 @@ object frmPrincipal: TfrmPrincipal
         object btSendTextAndFile: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 495
+          Top = 526
           Width = 239
           Height = 25
           Align = alBottom
           Caption = 'Enviar Texto e Arquivo / Text and file'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
           ImageIndex = 0
           Images = ImageList1
+          ParentFont = False
           TabOrder = 2
           OnClick = btSendTextAndFileClick
-          ExplicitTop = 440
-        end
-        object btSendText: TButton
-          AlignWithMargins = True
-          Left = 5
-          Top = 464
-          Width = 239
-          Height = 25
-          Align = alBottom
-          Caption = 'Enviar Apenas Texto / Send text'
-          ImageIndex = 0
-          Images = ImageList1
-          TabOrder = 3
-          OnClick = btSendTextClick
-          ExplicitTop = 409
+          ExplicitTop = 495
         end
         object ed_num: TComboBox
           Left = 4
@@ -3840,7 +3827,7 @@ object frmPrincipal: TfrmPrincipal
           Width = 88
           Height = 17
           Caption = 'Auto Procurar'
-          TabOrder = 4
+          TabOrder = 3
           OnClick = Edt_DDIPDRExit
         end
         object btStatusBat: TButton
@@ -3850,26 +3837,31 @@ object frmPrincipal: TfrmPrincipal
           Width = 239
           Height = 25
           Align = alBottom
-          Caption = 'Status da Bateria / Battery status'
+          Caption = 'Status da Bateria MD deprecated'
           ImageIndex = 0
           Images = ImageList1
-          TabOrder = 5
+          TabOrder = 4
           OnClick = btStatusBatClick
-          ExplicitTop = 595
         end
         object btSendContact: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 526
+          Top = 557
           Width = 239
           Height = 25
           Align = alBottom
           Caption = 'Enviar contato / Send contact'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
           ImageIndex = 0
           Images = ImageList1
-          TabOrder = 6
+          ParentFont = False
+          TabOrder = 5
           OnClick = btSendContactClick
-          ExplicitTop = 471
+          ExplicitTop = 526
         end
         object btCheckNumber: TButton
           AlignWithMargins = True
@@ -3881,64 +3873,35 @@ object frmPrincipal: TfrmPrincipal
           Caption = 'Verificar n'#250'mero / Check number'
           ImageIndex = 0
           Images = ImageList1
-          TabOrder = 7
+          TabOrder = 6
           OnClick = btCheckNumberClick
-          ExplicitTop = 564
         end
         object btIsConnected: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 402
+          Top = 495
           Width = 239
           Height = 25
           Align = alBottom
           Caption = 'Checar conex'#227'o / Check connection'
           ImageIndex = 0
           Images = ImageList1
-          TabOrder = 8
+          TabOrder = 7
           OnClick = btIsConnectedClick
-          ExplicitTop = 347
-        end
-        object btSendLocation: TButton
-          AlignWithMargins = True
-          Left = 5
-          Top = 557
-          Width = 239
-          Height = 25
-          Align = alBottom
-          Caption = 'Enviar localiza'#231#227'o / Send location'
-          ImageIndex = 0
-          Images = ImageList1
-          TabOrder = 9
-          OnClick = btSendLocationClick
-          ExplicitTop = 533
+          ExplicitTop = 402
         end
         object ed_videoLink: TEdit
           Left = 5
           Top = 320
           Width = 238
           Height = 21
-          TabOrder = 10
+          TabOrder = 8
           Text = 'https://wppconnect-team.github.io/'
-        end
-        object btSendTextButton: TButton
-          AlignWithMargins = True
-          Left = 5
-          Top = 433
-          Width = 239
-          Height = 25
-          Align = alBottom
-          Caption = 'Enviar Texto com bot'#245'es / Buttons text'
-          ImageIndex = 0
-          Images = ImageList1
-          TabOrder = 11
-          OnClick = btSendTextButtonClick
-          ExplicitTop = 378
         end
         object Button24: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 371
+          Top = 433
           Width = 239
           Height = 25
           Align = alBottom
@@ -3951,10 +3914,51 @@ object frmPrincipal: TfrmPrincipal
           ImageIndex = 0
           Images = ImageList1
           ParentFont = False
-          TabOrder = 12
+          TabOrder = 9
           OnClick = Button24Click
+          ExplicitTop = 371
+        end
+        object Button22: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 402
+          Width = 239
+          Height = 25
+          Align = alBottom
+          Caption = 'Enviar Texto Simples'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ImageIndex = 0
+          Images = ImageList1
+          ParentFont = False
+          TabOrder = 10
+          OnClick = Button22Click
           ExplicitLeft = 10
-          ExplicitTop = 379
+          ExplicitTop = 410
+        end
+        object Button25: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 464
+          Width = 239
+          Height = 25
+          Align = alBottom
+          Caption = 'Typing Mais Mensagem'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ImageIndex = 0
+          Images = ImageList1
+          ParentFont = False
+          TabOrder = 11
+          OnClick = Button25Click
+          ExplicitLeft = 4
+          ExplicitTop = 473
         end
       end
       object Panel1: TPanel
@@ -3967,7 +3971,6 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Panel1'
         ShowCaption = False
         TabOrder = 1
-        ExplicitHeight = 625
         object Splitter1: TSplitter
           Left = 481
           Top = 0
@@ -3989,7 +3992,6 @@ object frmPrincipal: TfrmPrincipal
           Font.Style = []
           ParentFont = False
           TabOrder = 0
-          ExplicitHeight = 625
           object Button3: TButton
             AlignWithMargins = True
             Left = 5
@@ -4026,7 +4028,6 @@ object frmPrincipal: TfrmPrincipal
             ViewStyle = vsSmallIcon
             OnClick = listaChatsClick
             OnDblClick = listaChatsDblClick
-            ExplicitHeight = 571
           end
         end
         object groupListaContatos: TGroupBox
@@ -4036,7 +4037,6 @@ object frmPrincipal: TfrmPrincipal
           Height = 649
           Align = alLeft
           TabOrder = 1
-          ExplicitHeight = 625
           object Panel4: TPanel
             Left = 2
             Top = 15
@@ -4082,7 +4082,6 @@ object frmPrincipal: TfrmPrincipal
             ViewStyle = vsSmallIcon
             OnClick = listaContatosClick
             OnDblClick = listaContatosDblClick
-            ExplicitHeight = 571
           end
         end
         object GroupBox2: TGroupBox
@@ -4092,7 +4091,6 @@ object frmPrincipal: TfrmPrincipal
           Height = 649
           Align = alLeft
           TabOrder = 2
-          ExplicitHeight = 625
           object lblNumeroConectado: TLabel
             Left = 2
             Top = 112
@@ -4159,7 +4157,6 @@ object frmPrincipal: TfrmPrincipal
             Images = ImageList1
             TabOrder = 0
             OnClick = btCleanChatClick
-            ExplicitTop = 533
           end
           object btGetMe: TButton
             AlignWithMargins = True
@@ -4173,7 +4170,6 @@ object frmPrincipal: TfrmPrincipal
             Images = ImageList1
             TabOrder = 1
             OnClick = btGetMeClick
-            ExplicitTop = 595
           end
           object btnTestCheckNumber: TButton
             AlignWithMargins = True
@@ -4187,7 +4183,6 @@ object frmPrincipal: TfrmPrincipal
             Images = ImageList1
             TabOrder = 2
             OnClick = btnTestCheckNumberClick
-            ExplicitTop = 564
           end
           object btGetSeveralStatus: TButton
             AlignWithMargins = True
@@ -4201,7 +4196,6 @@ object frmPrincipal: TfrmPrincipal
             Images = ImageList1
             TabOrder = 3
             OnClick = btGetSeveralStatusClick
-            ExplicitTop = 502
           end
           object btGetStatus: TButton
             AlignWithMargins = True
@@ -4215,7 +4209,6 @@ object frmPrincipal: TfrmPrincipal
             Images = ImageList1
             TabOrder = 4
             OnClick = btGetStatusClick
-            ExplicitTop = 471
           end
           object Panel7: TPanel
             AlignWithMargins = True
@@ -4276,8 +4269,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 6
             OnClick = Button13Click
-            ExplicitLeft = 10
-            ExplicitTop = 448
           end
           object Button14: TButton
             AlignWithMargins = True
@@ -4297,8 +4288,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 7
             OnClick = Button14Click
-            ExplicitLeft = 10
-            ExplicitTop = 417
           end
           object Button15: TButton
             AlignWithMargins = True
@@ -4318,8 +4307,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 8
             OnClick = Button15Click
-            ExplicitLeft = 10
-            ExplicitTop = 386
           end
           object Button16: TButton
             AlignWithMargins = True
@@ -4339,8 +4326,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 9
             OnClick = Button16Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
           end
           object Button17: TButton
             AlignWithMargins = True
@@ -4360,8 +4345,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 10
             OnClick = Button17Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
           end
           object Button18: TButton
             AlignWithMargins = True
@@ -4381,8 +4364,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 11
             OnClick = Button18Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
           end
           object Button20: TButton
             AlignWithMargins = True
@@ -4402,8 +4383,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 12
             OnClick = Button20Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
           end
           object Button21: TButton
             AlignWithMargins = True
@@ -4423,34 +4402,11 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 13
             OnClick = Button21Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
-          end
-          object Button22: TButton
-            AlignWithMargins = True
-            Left = 5
-            Top = 216
-            Width = 242
-            Height = 25
-            Align = alBottom
-            Caption = 'Enviar Texto Simples'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ImageIndex = 0
-            Images = ImageList1
-            ParentFont = False
-            TabOrder = 14
-            OnClick = Button22Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
           end
           object Button23: TButton
             AlignWithMargins = True
             Left = 5
-            Top = 185
+            Top = 216
             Width = 242
             Height = 25
             Align = alBottom
@@ -4463,10 +4419,9 @@ object frmPrincipal: TfrmPrincipal
             ImageIndex = 0
             Images = ImageList1
             ParentFont = False
-            TabOrder = 15
+            TabOrder = 14
             OnClick = Button23Click
-            ExplicitLeft = 10
-            ExplicitTop = 355
+            ExplicitTop = 185
           end
         end
       end
@@ -4474,10 +4429,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet4: TTabSheet
       Caption = 'Logs'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 625
       DesignSize = (
         1088
         649)
@@ -4539,13 +4490,29 @@ object frmPrincipal: TfrmPrincipal
         TextHint = 'ProfilePicThumbURL'
       end
     end
+    object TabSheet5: TTabSheet
+      Caption = 'LogEnvio'
+      ImageIndex = 4
+      object memo_unReadMessageEnv: TMemo
+        Left = 8
+        Top = 17
+        Width = 1025
+        Height = 616
+        BorderStyle = bsNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Lines.Strings = (
+          '...')
+        ParentFont = False
+        TabOrder = 0
+      end
+    end
     object TabSheet2: TTabSheet
       Caption = 'A'#231#245'es em grupo /  Group actions'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 625
       object Panel5: TPanel
         AlignWithMargins = True
         Left = 3
@@ -4559,7 +4526,6 @@ object frmPrincipal: TfrmPrincipal
         ParentCtl3D = False
         ShowCaption = False
         TabOrder = 0
-        ExplicitHeight = 619
         DesignSize = (
           1080
           641)
@@ -5312,7 +5278,6 @@ object frmPrincipal: TfrmPrincipal
           TabOrder = 1
           ViewStyle = vsSmallIcon
           OnClick = listaGruposClick
-          ExplicitHeight = 489
         end
         object listaParticipantes: TListView
           AlignWithMargins = True
@@ -5330,7 +5295,6 @@ object frmPrincipal: TfrmPrincipal
           TabOrder = 2
           ViewStyle = vsSmallIcon
           OnClick = listaParticipantesClick
-          ExplicitHeight = 390
         end
         object Button5: TButton
           AlignWithMargins = True
@@ -5482,30 +5446,6 @@ object frmPrincipal: TfrmPrincipal
           TabOrder = 15
           OnClick = btnRemoveGroupLinkClick
         end
-      end
-    end
-    object TabSheet5: TTabSheet
-      Caption = 'LogEnvio'
-      ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 637
-      object memo_unReadMessageEnv: TMemo
-        Left = 8
-        Top = 17
-        Width = 1025
-        Height = 616
-        BorderStyle = bsNone
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Lines.Strings = (
-          '...')
-        ParentFont = False
-        TabOrder = 0
       end
     end
   end

@@ -177,6 +177,10 @@ type
     //Adicionado Por Marcelo 10/05/2022
     procedure SendTextMessage(phoneNumber, content, options: string; etapa: string = '');
 
+    //Adicionado Por Marcelo 18/05/2022
+    procedure sendRawMessage(phoneNumber, rawMessage, options: string; etapa: string = '');
+    procedure markIsComposing(phoneNumber, duration: string; etapa: string = '');
+
     //Adicionado Por Marcelo 10/05/2022
     procedure SendReactionMessage(UniqueID, Reaction: string; etapa: string = '');
 
@@ -820,6 +824,7 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   titleText := CaractersWeb(titleText);
+
   LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendButtons;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_TITLE#',       Trim(titleText));
@@ -865,18 +870,15 @@ begin
 
     //SalvaLog(content, 'CONSOLE');
 
-    //LJS   := FrmConsole_JS_VAR_markIsComposing + FrmConsole_JS_VAR_sendFileMessage;
-    //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendFileMessage;
-    LJS   := FrmConsole_JS_VAR_sendFileMessage;
+
+    LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendFileMessage;
     FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
 
     SalvaLog(LJS + #13#10, 'CONSOLE');
 
-    //FrmConsole_JS_AlterVar(LJS, '#DELAY#',  '5000');
     ExecuteJS(LJS, true);
-
 
   FINALLY
     freeAndNil(LBase64);
@@ -936,10 +938,8 @@ begin
 
   description := CaractersWeb(description);
   buttonText := CaractersWeb(buttonText);
-  //menu := CaractersWeb(menu);
 
-  //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendListMessage;
-  LJS   := FrmConsole_JS_VAR_sendListMessage;
+  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendListMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
   FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
@@ -1013,6 +1013,21 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TFrmConsole.sendRawMessage(phoneNumber, rawMessage, options, etapa: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_sendRawMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_RAW#',      Trim(rawMessage));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.SendReactionMessage(UniqueID, Reaction, etapa: string);
 var
   Ljs: string;
@@ -1035,30 +1050,16 @@ var
   LBase64: TStringList;
   i : integer;
 begin
-  //Adicionado Por Marcelo 01/03/2022
+
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
-  LLine := '';
-  LBase64 := TStringList.Create;
-  TRY
-    {LBase64.Text := content;
-    for i := 0 to LBase64.Count -1  do
-      LLine := LLine + LBase64[i];
-    content := LLine;}
-
-    //LJS   := FrmConsole_JS_VAR_markIsComposing + FrmConsole_JS_VAR_SendTextMessage;
-    //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendTextMessage;
-    LJS   := FrmConsole_JS_VAR_SendTextMessage;
-    FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
-    FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
-    FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
-
-    ExecuteJS(LJS, true);
-
-  FINALLY
-    freeAndNil(LBase64);
-  END;
+  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendTextMessage;
+  //LJS   := FrmConsole_JS_VAR_SendTextMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.Send(vNum, vText: string);
@@ -1930,6 +1931,27 @@ begin
   //  raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_Logout;
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markIsComposing(phoneNumber, duration, etapa: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  try
+    duration = IntToStr(StrToInt(duration));
+  except
+    duration := '5000';
+  end;
+
+
+  LJS   := FrmConsole_JS_VAR_markIsComposing;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#',      duration);
+
   ExecuteJS(LJS, true);
 end;
 
