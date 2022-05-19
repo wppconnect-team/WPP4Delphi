@@ -1942,11 +1942,10 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   try
-    duration = IntToStr(StrToInt(duration));
+    duration := IntToStr(StrToInt(duration));
   except
     duration := '5000';
   end;
-
 
   LJS   := FrmConsole_JS_VAR_markIsComposing;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));

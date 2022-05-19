@@ -1133,7 +1133,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendTextMessage(phoneNumber, duration);
+            FrmConsole.markIsComposing(phoneNumber, duration);
             if etapa <> '' then
             begin
               FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
