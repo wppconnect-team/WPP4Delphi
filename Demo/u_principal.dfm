@@ -31,7 +31,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 3
     Width = 1096
     Height = 677
-    ActivePage = TabSheet4
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -3091,7 +3091,7 @@ object frmPrincipal: TfrmPrincipal
         object Button24: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 433
+          Top = 402
           Width = 239
           Height = 25
           Align = alBottom
@@ -3110,7 +3110,7 @@ object frmPrincipal: TfrmPrincipal
         object Button22: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 402
+          Top = 371
           Width = 239
           Height = 25
           Align = alBottom
@@ -3144,6 +3144,25 @@ object frmPrincipal: TfrmPrincipal
           ParentFont = False
           TabOrder = 11
           OnClick = Button25Click
+        end
+        object Button26: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 433
+          Width = 239
+          Height = 25
+          Align = alBottom
+          Caption = 'Status da Mensagem'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ImageIndex = 0
+          Images = ImageList1
+          ParentFont = False
+          TabOrder = 12
+          OnClick = Button26Click
         end
       end
       object Panel1: TPanel
@@ -3195,7 +3214,6 @@ object frmPrincipal: TfrmPrincipal
             ParentFont = False
             TabOrder = 0
             OnClick = Button3Click
-            ExplicitWidth = 231
           end
           object listaChats: TListView
             AlignWithMargins = True
@@ -3214,7 +3232,6 @@ object frmPrincipal: TfrmPrincipal
             ViewStyle = vsSmallIcon
             OnClick = listaChatsClick
             OnDblClick = listaChatsDblClick
-            ExplicitWidth = 236
           end
         end
         object groupListaContatos: TGroupBox
@@ -4741,6 +4758,7 @@ object frmPrincipal: TfrmPrincipal
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetBatteryLevel = TWPPConnect1GetBatteryLevel
+    OnGetMessageById = TWPPConnect1GetMessageById
     OnIsConnected = TWPPConnect1IsConnected
     OnLowBattery = TWPPConnect1LowBattery
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
@@ -4755,5 +4773,16 @@ object frmPrincipal: TfrmPrincipal
     OnNewGetNumber = TWPPConnect1NewGetNumber
     Left = 200
     Top = 328
+  end
+  object FDMemTable1: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 620
+    Top = 291
   end
 end

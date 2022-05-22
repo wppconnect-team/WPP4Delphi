@@ -118,6 +118,7 @@ type
     FrmQRCode               : TFrmQRCode;
     FFormType               : TFormQrCodeType;
     FHeaderAtual            : TTypeHeader;
+    FMessagesList           : TMessagesList;
     FChatList               : TChatList;
     FChatList2              : TChatList;
     FMonitorLowBattry       : Boolean;
@@ -156,6 +157,7 @@ type
     Property  FormQrCode      : TFrmQRCode                Read FrmQRCode;
     Property  ChatList        : TChatList                 Read FChatList;
     //Property  ChatList       : TChatList2                Read FChatList2;
+    Property  MessagesList    : TMessagesList             Read FMessagesList;
     property  OnErrorInternal : TOnErroInternal           Read FOnErrorInternal           Write FOnErrorInternal;
     Property  MonitorLowBattry     : Boolean              Read FMonitorLowBattry          Write FMonitorLowBattry;
     Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
@@ -1259,12 +1261,15 @@ begin
 
     //Marcelo 06/05/2022
     Th_getMessageById   : begin
-                            //LOutClass2 := TMessagesList.Create(LResultStr);
-                            LOutClass2 := TMessagesClass.Create(LResultStr);
+                            if Assigned(FMessagesList) then
+                               FMessagesList.Free;
+
+                            FMessagesList := TMessagesList.Create(LResultStr);
+                            //LOutClass2 := TMessagesClass.Create(LResultStr);
                             try
-                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                              SendNotificationCenterDirect(PResponse.TypeHeader, FMessagesList);
                             finally
-                              FreeAndNil(LOutClass2);
+                              //FreeAndNil(LOutClass2);
                             end;
                           end;
 

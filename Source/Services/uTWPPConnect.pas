@@ -51,7 +51,8 @@ type
   TOnNewCheckNumber         = procedure(Const vCheckNumber : TReturnCheckNumber) of object;
 
   //Adicionado Por Marcelo 06/05/2022
-  TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
+  //TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
+  TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
 
 
   TWPPConnect = class(TComponent)
@@ -1214,7 +1215,8 @@ begin
     If PTypeHeader = Th_GetMessageById Then
     Begin
       if Assigned(OnGetMessageById) then
-         OnGetMessageById(TMessagesClass(PReturnClass));
+         OnGetMessageById(TMessagesList(PReturnClass));
+         //OnGetMessageById(TMessagesClass(PReturnClass));
 
     end;
 
