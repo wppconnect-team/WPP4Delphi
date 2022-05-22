@@ -146,6 +146,7 @@ type
     Button24: TButton;
     Button22: TButton;
     Button25: TButton;
+    Image4: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btSendTextAndFileClick(Sender: TObject);
@@ -229,6 +230,7 @@ type
     procedure Button23Click(Sender: TObject);
     procedure Button24Click(Sender: TObject);
     procedure Button25Click(Sender: TObject);
+    procedure SpeedButton7Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -280,6 +282,7 @@ begin
     TabSheet2.TabVisible  := False;
     TabSheet3.TabVisible  := False;
     TabSheet4.TabVisible  := False;
+    TabSheet5.TabVisible  := False;
     chk_apagarMsg.Checked := TWPPConnect1.Config.AutoDelete;
     LabeledEdit1.text     := TWPPConnect1.Config.ControlSendTimeSec.ToString;
     LabeledEdit2.Text     := TWPPConnect1.Config.SecondsMonitor.ToString;
@@ -1598,6 +1601,7 @@ begin
     TabSheet2.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
     TabSheet3.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
     TabSheet4.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
+    TabSheet5.TabVisible   := (TWPPConnect(Sender).Status = Inject_Initialized);
   Except
   end;
 
@@ -1610,7 +1614,8 @@ begin
   begin
     SpeedButton3.Enabled              := false;
     lblStatus.Caption            := 'Offline';
-    lblStatus.Font.Color         := $002894FF;
+    //lblStatus.Font.Color         := $002894FF;
+    lblStatus.Font.Color         := clGrayText;
   end;
 
   StatusBar1.Panels[1].Text  := lblStatus.Caption;
@@ -1868,6 +1873,11 @@ begin
 
    TWPPConnect1.Logtout;
    TWPPConnect1.Disconnect;
+end;
+
+procedure TfrmPrincipal.SpeedButton7Click(Sender: TObject);
+begin
+  ShellExecute(Handle, 'open', 'https://discord.gg/JU5JGGKGNG', '', '', 1);
 end;
 
 procedure TfrmPrincipal.Timer2Timer(Sender: TObject);
