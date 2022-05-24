@@ -14,7 +14,7 @@ uses
    uTWPPConnect.Emoticons,
 
   //units Opcionais (dependendo do que ira fazer)
-   System.NetEncoding, System.TypInfo,  WinInet, REST.Response.Adapter,
+   System.NetEncoding, System.TypInfo,  WinInet, u_Messagem, DateUtils,
 
   Vcl.StdCtrls, System.ImageList, Vcl.ImgList, Vcl.AppEvnts, Vcl.ComCtrls,
   Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.Mask, Data.DB, Vcl.DBCtrls, Vcl.Grids,
@@ -244,7 +244,6 @@ type
     FNameContact:  string;
     FChatID: string;
     Procedure ExecuteFilter;
-    procedure JsonToDataset(aDataset: TDataSet; aJSON: string);
 
   public
     { Public declarations }
@@ -297,29 +296,6 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.JsonToDataset(aDataset: TDataSet; aJSON: string);
-var
-  JObj: TJSONArray;
-  vConv : TCustomRESTResponseDataSetAdapter;//TCustomJSONDataSetAdapter;
-begin
-  if (aJSON = EmptyStr) then
-  begin
-    Exit;
-  end;
-
-  JObj := TJSONObject.ParseJSONValue(aJSON) as TJSONArray;
-  //vConv := TCustomJSONDataSetAdapter.Create(Nil);
-  vConv := TCustomRESTResponseDataSetAdapter.Create(Nil);
-
-  try
-    vConv.Dataset := aDataset;
-    vConv.NestedElements := True;
-    vConv.UpdateDataSet(JObj);
-  finally
-    vConv.Free;
-    JObj.Free;
-  end;
-end;
 
 procedure TfrmPrincipal.AddContactList(ANumber: String);
 var
@@ -1592,64 +1568,36 @@ procedure TfrmPrincipal.TWPPConnect1GetMessageById(const Mensagem: TMessagesList
 var
   StatusMensagem, wlo_Json : string;
   AMensagem : TMessagesClass;
+  JMessagem : TMessagemStatusClass;
 var
   lAJsonObj: TJSONValue;
 begin
+  try
+    wlo_Json := Mensagem.JsonString;
 
+    JMessagem := TMessagemStatusClass.FromJsonString(wlo_Json);
 
-  {for AMensagem in Mensagem.result do
-  begin
-
-    if AMensagem.ack = 1 then
-      StatusMensagem := 'Entregue'
+    if JMessagem.result.ack = 1 then
+      StatusMensagem := 'Enviada'
     else
-    if AMensagem.ack = 2 then
+    if JMessagem.result.ack = 2 then
       StatusMensagem := 'Recebida'
     else
-    if AMensagem.ack = 3 then
+    if JMessagem.result.ack = 3 then
       StatusMensagem := 'Visualizada';
 
     memo_unReadMessage.Lines.Add('');
     memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
-    memo_unReadMessage.Lines.Add('Telefone: ' + AMensagem.to);
-    memo_unReadMessage.Lines.Add('Id Mensagem: ' + AMensagem.id);
-    memo_unReadMessage.Lines.Add('Mensagem: ' + AMensagem.body);
-    //memo_unReadMessage.Lines.Add('Tempo: ' + AMensagem.t);
+    memo_unReadMessage.Lines.Add('Telefone: ' + JMessagem.result.&to);
+    memo_unReadMessage.Lines.Add('Id Mensagem: ' + JMessagem.result.id._serialized);
+    memo_unReadMessage.Lines.Add('Mensagem: ' + JMessagem.result.body);
+    memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime( JMessagem.result.t )));
+    memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime( JMessagem.result.ephemeralStartTimestamp )));
 
     ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
-  end;
-  }
-  try
-    wlo_Json := '[' + Mensagem.JsonString + ']';
-    JsonToDataset(FDMemTable1, wlo_Json);
-
-
-    if FDMemTable1.RecordCount > 0 then
-    begin
-      while not FDMemTable1.Eof do
-      begin
-        if FDMemTable1.FieldByName('result.ack').AsString = '1' then
-          StatusMensagem := 'Entregue'
-        else
-        if FDMemTable1.FieldByName('result.ack').AsString = '2' then
-          StatusMensagem := 'Recebida'
-        else
-        if FDMemTable1.FieldByName('result.ack').AsString = '3' then
-          StatusMensagem := 'Visualizada';
-
-        memo_unReadMessage.Lines.Add('');
-        memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
-        memo_unReadMessage.Lines.Add('Telefone: ' + FDMemTable1.FieldByName('result.to').AsString);
-        memo_unReadMessage.Lines.Add('Id Mensagem: ' + FDMemTable1.FieldByName('result.id').AsString);
-        memo_unReadMessage.Lines.Add('Mensagem: ' + FDMemTable1.FieldByName('result.body').AsString);
-        memo_unReadMessage.Lines.Add('Tempo: ' + FDMemTable1.FieldByName('result.t').AsString);
-
-        ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
-        FDMemTable1.Next;
-      end;
-    end;
   except on E: Exception do
   end;
+
 end;
 
 procedure TfrmPrincipal.TWPPConnect1GetMyNumber(Sender: TObject);
