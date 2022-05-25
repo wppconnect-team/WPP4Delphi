@@ -170,7 +170,7 @@ type
     procedure SendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);     deprecated; //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
-    procedure Logtout();
+    procedure Logout();
     procedure GetBatteryStatus;
     procedure CheckIsValidNumber(PNumberPhone: string);
     procedure NewCheckIsValidNumber(PNumberPhone : string);
@@ -185,6 +185,9 @@ type
     procedure GroupDemoteParticipant(PIDGroup, PNumber: string);
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
+
+    procedure BloquearContato(PIDContato: String);
+    procedure DesbloquearContato(PIDContato: String);
 
     procedure GroupJoinViaLink(PLinkGroup: string);
     procedure GroupRemoveInviteLink(PIDGroup: string);
@@ -308,6 +311,45 @@ begin
 
   Result := FrmConsole.ConfigureNetWork;
 end; }
+
+procedure TWPPConnect.BloquearContato(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.BloquearContato(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
 
 function TWPPConnect.CheckDelivered: String;
 var
@@ -526,6 +568,47 @@ begin
     FrmConsole.ReadMessagesAndDelete(PNumberPhone);//Deleta a conversa
   end;
 
+end;
+
+procedure TWPPConnect.DesbloquearContato(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesbloquearContato(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 destructor TWPPConnect.Destroy;
@@ -1076,7 +1159,7 @@ begin
      FormQrCodeStart(False);
 end;
 
-procedure TWPPConnect.Logtout;
+procedure TWPPConnect.Logout;
 var
   lThread : TThread;
 begin
