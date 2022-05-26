@@ -1926,7 +1926,7 @@ begin
   if not TWPPConnect1.auth then
     exit;
 
-   TWPPConnect1.Logtout;
+   TWPPConnect1.Logout;
    TWPPConnect1.Disconnect;
 end;
 

@@ -87,6 +87,7 @@ type
       const params: ICefContextMenuParams; const model: ICefMenuModel);
     procedure Button2Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
+    procedure Img_BrasilClick(Sender: TObject);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -190,6 +191,10 @@ type
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
+
+    //Adicionado por Daniel 25/05/2022
+    procedure BloquearContato(vContato: string);
+    procedure DesbloquearContato(vContato: string);
     procedure CheckDelivered;
     procedure SendContact(vNumDest, vNum:string; vNameContact: string = '');
     procedure SendBase64(vBase64, vNum, vFileName, vText:string);
@@ -250,6 +255,18 @@ uses
 procedure TFrmConsole.App_EventMinimize(Sender: TObject);
 begin
   Hide;
+end;
+
+procedure TFrmConsole.BloquearContato(vContato: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_BlockContact;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.BrowserDestroyMsg(var aMessage : TMessage);
@@ -699,6 +716,18 @@ var
 begin
   LJS := FrmConsole_JS_VAR_DeleteMessages;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vID)), False);
+end;
+
+procedure TFrmConsole.DesbloquearContato(vContato: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_unBlockContact ;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
 end;
 
 Procedure TFrmConsole.DisConnect;
@@ -1783,6 +1812,15 @@ begin
 end;
 
 procedure TFrmConsole.Image2Click(Sender: TObject);
+var TempPoint : Tpoint;
+begin
+ TempPoint.X := 200;
+ TempPoint.Y := 200;
+
+ Chromium1.ShowDevTools(TempPoint, nil);
+end;
+
+procedure TFrmConsole.Img_BrasilClick(Sender: TObject);
 var TempPoint : Tpoint;
 begin
  TempPoint.X := 200;
