@@ -2326,8 +2326,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.2.2
-
+//WPPCONNECT v2.3.0
 
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
@@ -2910,7 +2909,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     z(e >>>= 0, "offset");
                     const t = this[e],
                         r = this[e + 7];
-                    void 0 !== t && void 0 !== r || q(e, this.length - 8);
+                    void 0 !== t && void 0 !== r || $(e, this.length - 8);
                     const n = t + 256 * this[++e] + 65536 * this[++e] + this[++e] * 2 ** 24,
                         o = this[++e] + 256 * this[++e] + 65536 * this[++e] + r * 2 ** 24;
                     return BigInt(n) + (BigInt(o) << BigInt(32))
@@ -2918,7 +2917,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     z(e >>>= 0, "offset");
                     const t = this[e],
                         r = this[e + 7];
-                    void 0 !== t && void 0 !== r || q(e, this.length - 8);
+                    void 0 !== t && void 0 !== r || $(e, this.length - 8);
                     const n = t * 2 ** 24 + 65536 * this[++e] + 256 * this[++e] + this[++e],
                         o = this[++e] * 2 ** 24 + 65536 * this[++e] + 256 * this[++e] + r;
                     return (BigInt(n) << BigInt(32)) + BigInt(o)
@@ -2954,14 +2953,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     z(e >>>= 0, "offset");
                     const t = this[e],
                         r = this[e + 7];
-                    void 0 !== t && void 0 !== r || q(e, this.length - 8);
+                    void 0 !== t && void 0 !== r || $(e, this.length - 8);
                     const n = this[e + 4] + 256 * this[e + 5] + 65536 * this[e + 6] + (r << 24);
                     return (BigInt(n) << BigInt(32)) + BigInt(t + 256 * this[++e] + 65536 * this[++e] + this[++e] * 2 ** 24)
                 })), u.prototype.readBigInt64BE = Z((function(e) {
                     z(e >>>= 0, "offset");
                     const t = this[e],
                         r = this[e + 7];
-                    void 0 !== t && void 0 !== r || q(e, this.length - 8);
+                    void 0 !== t && void 0 !== r || $(e, this.length - 8);
                     const n = (t << 24) + 65536 * this[++e] + 256 * this[++e] + this[++e];
                     return (BigInt(n) << BigInt(32)) + BigInt(this[++e] * 2 ** 24 + 65536 * this[++e] + 256 * this[++e] + r)
                 })), u.prototype.readFloatLE = function(e, t) {
@@ -3114,7 +3113,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         let o;
                         throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new U.ERR_OUT_OF_RANGE("value", o, e)
                     }! function(e, t, r) {
-                        z(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || q(t, e.length - (r + 1))
+                        z(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || $(t, e.length - (r + 1))
                     }(n, o, i)
                 }
 
@@ -3122,7 +3121,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if ("number" != typeof e) throw new U.ERR_INVALID_ARG_TYPE(t, "number", e)
                 }
 
-                function q(e, t, r) {
+                function $(e, t, r) {
                     if (Math.floor(e) !== e) throw z(e, r), new U.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
                     if (t < 0) throw new U.ERR_BUFFER_OUT_OF_BOUNDS;
                     throw new U.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
@@ -3136,7 +3135,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         o = r;
                     return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = G(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = G(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
                 }), RangeError);
-                const $ = /[^+/0-9A-Za-z-_]/g;
+                const q = /[^+/0-9A-Za-z-_]/g;
 
                 function K(e, t) {
                     let r;
@@ -3184,7 +3183,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function V(e) {
                     return n.toByteArray(function(e) {
-                        if ((e = (e = e.split("=")[0]).trim().replace($, "")).length < 2) return "";
+                        if ((e = (e = e.split("=")[0]).trim().replace(q, "")).length < 2) return "";
                         for (; e.length % 4 != 0;) e += "=";
                         return e
                     }(e))
@@ -6398,6 +6397,30 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }))
                 }()))
             },
+            1200: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.unarchive = t.archive = void 0;
+                const n = r(3327),
+                    o = r(8910),
+                    i = r(1489);
+                async function s(e, t = !0) {
+                    const r = (0, n.assertWid)(e),
+                        s = (0, n.assertGetChat)(r);
+                    if (s.archive === t) throw new o.WPPError((t ? "archive" : "unarchive") + "_error", `The chat ${r.toString()} is already ${t?"archived":"unarchived"}`, {
+                        wid: r,
+                        archive: t
+                    });
+                    return await (0, i.setArchive)(s, t), {
+                        wid: r,
+                        archive: t
+                    }
+                }
+                t.archive = s, t.unarchive = async function(e) {
+                    return s(e, !1)
+                }
+            },
             1314: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -6622,222 +6645,246 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.getMessages = t.getMessageById = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canMute = void 0;
-                var n = r(1314);
+                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.getMessages = t.getMessageById = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canMute = t.unarchive = t.archive = void 0;
+                var n = r(1200);
+                Object.defineProperty(t, "archive", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.archive
+                    }
+                }), Object.defineProperty(t, "unarchive", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.unarchive
+                    }
+                });
+                var o = r(1314);
                 Object.defineProperty(t, "canMute", {
                     enumerable: !0,
                     get: function() {
-                        return n.canMute
+                        return o.canMute
                     }
                 });
-                var o = r(6534);
+                var i = r(6534);
                 Object.defineProperty(t, "clear", {
                     enumerable: !0,
                     get: function() {
-                        return o.clear
+                        return i.clear
                     }
                 });
-                var i = r(7814);
+                var s = r(7814);
                 Object.defineProperty(t, "delete", {
                     enumerable: !0,
                     get: function() {
-                        return i.delete
+                        return s.delete
                     }
                 });
-                var s = r(8826);
+                var a = r(8826);
                 Object.defineProperty(t, "deleteMessage", {
                     enumerable: !0,
                     get: function() {
-                        return s.deleteMessage
+                        return a.deleteMessage
                     }
                 });
-                var a = r(3438);
+                var u = r(3438);
                 Object.defineProperty(t, "downloadMedia", {
                     enumerable: !0,
                     get: function() {
-                        return a.downloadMedia
+                        return u.downloadMedia
                     }
                 });
-                var u = r(7242);
+                var c = r(7242);
                 Object.defineProperty(t, "find", {
                     enumerable: !0,
                     get: function() {
-                        return u.find
+                        return c.find
                     }
                 });
-                var c = r(89);
+                var l = r(89);
                 Object.defineProperty(t, "generateMessageID", {
                     enumerable: !0,
                     get: function() {
-                        return c.generateMessageID
+                        return l.generateMessageID
                     }
                 });
-                var l = r(8309);
+                var d = r(8309);
                 Object.defineProperty(t, "get", {
                     enumerable: !0,
                     get: function() {
-                        return l.get
+                        return d.get
                     }
                 });
-                var d = r(8491);
+                var f = r(8491);
                 Object.defineProperty(t, "getMessageById", {
                     enumerable: !0,
                     get: function() {
-                        return d.getMessageById
+                        return f.getMessageById
                     }
                 });
-                var f = r(3311);
+                var p = r(3311);
                 Object.defineProperty(t, "getMessages", {
                     enumerable: !0,
                     get: function() {
-                        return f.getMessages
+                        return p.getMessages
                     }
                 });
-                var p = r(3089);
+                var m = r(3089);
                 Object.defineProperty(t, "markIsComposing", {
                     enumerable: !0,
                     get: function() {
-                        return p.markIsComposing
+                        return m.markIsComposing
                     }
                 });
-                var m = r(8292);
+                var h = r(8292);
                 Object.defineProperty(t, "markIsPaused", {
                     enumerable: !0,
                     get: function() {
-                        return m.markIsPaused
+                        return h.markIsPaused
                     }
                 });
-                var h = r(9256);
+                var g = r(9256);
                 Object.defineProperty(t, "markIsRead", {
                     enumerable: !0,
                     get: function() {
-                        return h.markIsRead
+                        return g.markIsRead
                     }
                 });
-                var g = r(2818);
+                var y = r(2818);
                 Object.defineProperty(t, "markIsRecording", {
                     enumerable: !0,
                     get: function() {
-                        return g.markIsRecording
+                        return y.markIsRecording
                     }
                 });
-                var y = r(5433);
+                var b = r(5433);
                 Object.defineProperty(t, "markIsUnread", {
                     enumerable: !0,
                     get: function() {
-                        return y.markIsUnread
+                        return b.markIsUnread
                     }
                 });
-                var b = r(6915);
+                var v = r(6915);
                 Object.defineProperty(t, "mute", {
                     enumerable: !0,
                     get: function() {
-                        return b.mute
+                        return v.mute
                     }
                 });
-                var v = r(9558);
+                var _ = r(9558);
                 Object.defineProperty(t, "openChatAt", {
                     enumerable: !0,
                     get: function() {
-                        return v.openChatAt
+                        return _.openChatAt
                     }
                 });
-                var _ = r(4310);
+                var M = r(4310);
                 Object.defineProperty(t, "openChatBottom", {
                     enumerable: !0,
                     get: function() {
-                        return _.openChatBottom
+                        return M.openChatBottom
                     }
                 });
-                var M = r(444);
+                var w = r(444);
                 Object.defineProperty(t, "openChatFromUnread", {
                     enumerable: !0,
                     get: function() {
-                        return M.openChatFromUnread
+                        return w.openChatFromUnread
                     }
                 });
-                var w = r(8471);
+                var P = r(3177);
+                Object.defineProperty(t, "pin", {
+                    enumerable: !0,
+                    get: function() {
+                        return P.pin
+                    }
+                }), Object.defineProperty(t, "unpin", {
+                    enumerable: !0,
+                    get: function() {
+                        return P.unpin
+                    }
+                });
+                var O = r(8471);
                 Object.defineProperty(t, "prepareLinkPreview", {
                     enumerable: !0,
                     get: function() {
-                        return w.prepareLinkPreview
+                        return O.prepareLinkPreview
                     }
                 });
-                var P = r(9872);
+                var j = r(9872);
                 Object.defineProperty(t, "prepareMessageButtons", {
                     enumerable: !0,
                     get: function() {
-                        return P.prepareMessageButtons
+                        return j.prepareMessageButtons
                     }
                 });
-                var O = r(8384);
+                var x = r(8384);
                 Object.defineProperty(t, "prepareRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return O.prepareRawMessage
+                        return x.prepareRawMessage
                     }
                 });
-                var j = r(18);
+                var C = r(18);
                 Object.defineProperty(t, "sendFileMessage", {
                     enumerable: !0,
                     get: function() {
-                        return j.sendFileMessage
+                        return C.sendFileMessage
                     }
                 });
-                var x = r(8851);
+                var S = r(8851);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return x.sendListMessage
+                        return S.sendListMessage
                     }
                 });
-                var C = r(2814);
+                var I = r(2814);
                 Object.defineProperty(t, "sendLocationMessage", {
                     enumerable: !0,
                     get: function() {
-                        return C.sendLocationMessage
+                        return I.sendLocationMessage
                     }
                 });
-                var S = r(682);
+                var E = r(682);
                 Object.defineProperty(t, "sendRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return S.sendRawMessage
+                        return E.sendRawMessage
                     }
                 });
-                var I = r(3065);
+                var k = r(3065);
                 Object.defineProperty(t, "sendReactionToMessage", {
                     enumerable: !0,
                     get: function() {
-                        return I.sendReactionToMessage
+                        return k.sendReactionToMessage
                     }
                 });
-                var E = r(6627);
+                var T = r(6627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return E.sendTextMessage
+                        return T.sendTextMessage
                     }
                 });
-                var k = r(6017);
+                var B = r(6017);
                 Object.defineProperty(t, "sendVCardContactMessage", {
                     enumerable: !0,
                     get: function() {
-                        return k.sendVCardContactMessage
+                        return B.sendVCardContactMessage
                     }
                 });
-                var T = r(7709);
+                var L = r(7709);
                 Object.defineProperty(t, "starMessage", {
                     enumerable: !0,
                     get: function() {
-                        return T.starMessage
+                        return L.starMessage
                     }
                 });
-                var B = r(8205);
+                var A = r(8205);
                 Object.defineProperty(t, "unmute", {
                     enumerable: !0,
                     get: function() {
-                        return B.unmute
+                        return A.unmute
                     }
                 })
             },
@@ -6851,9 +6898,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = r(758);
                 t.markIsComposing = async function(e, t) {
                     const r = (0, n.assertGetChat)(e);
-                    await r.presence.subscribe(), await o.ChatPresence.markComposing(r), r.pausedTimerId && (clearTimeout(r.pausedTimerId), r.unset("pausedTimerId")), t && (r.pausedTimerId = setTimeout((() => {
-                        (0, i.markIsPaused)(e)
-                    }), t))
+                    await r.presence.subscribe(), await o.ChatPresence.markComposing(r), r.pausedTimerId && (clearTimeout(r.pausedTimerId), r.unset("pausedTimerId")), t && await new Promise((n => {
+                        r.pausedTimerId = setTimeout((() => {
+                            (0, i.markIsPaused)(e).then(n, n)
+                        }), t)
+                    }))
                 }
             },
             8292: (e, t, r) => {
@@ -6894,9 +6943,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = r(758);
                 t.markIsRecording = async function(e, t) {
                     const r = (0, n.assertGetChat)(e);
-                    await r.presence.subscribe(), await o.ChatPresence.markRecording(r), t && (r.pausedTimerId = setTimeout((() => {
-                        (0, i.markIsPaused)(e)
-                    }), t))
+                    await r.presence.subscribe(), await o.ChatPresence.markRecording(r), t && await new Promise((n => {
+                        r.pausedTimerId = setTimeout((() => {
+                            (0, i.markIsPaused)(e).then(n, n)
+                        }), t)
+                    }))
                 }
             },
             5433: (e, t, r) => {
@@ -6982,6 +7033,30 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const t = (0, n.assertWid)(e),
                         r = await (0, n.assertFindChat)(t);
                     return await o.Cmd.openChatFromUnread(r)
+                }
+            },
+            3177: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.unpin = t.pin = void 0;
+                const n = r(3327),
+                    o = r(8910),
+                    i = r(1489);
+                async function s(e, t = !0) {
+                    const r = (0, n.assertWid)(e),
+                        s = (0, n.assertGetChat)(r);
+                    if (s.pin === t) throw new o.WPPError((t ? "pin" : "unpin") + "_error", `The chat ${r.toString()} is already ${t?"pinned":"unpinned"}`, {
+                        wid: r,
+                        pin: t
+                    });
+                    return await (0, i.setPin)(s, t), {
+                        wid: r,
+                        pin: t
+                    }
+                }
+                t.pin = s, t.unpin = async function(e) {
+                    return s(e, !1)
                 }
             },
             8471: function(e, t, r) {
@@ -9183,129 +9258,136 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return a.isReady
                     }
-                }), t.config = i(r(8913)), t.blocklist = i(r(5140)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(3606)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
-                var u = r(5267);
+                });
+                var u = r(8913);
+                Object.defineProperty(t, "config", {
+                    enumerable: !0,
+                    get: function() {
+                        return u.config
+                    }
+                }), t.blocklist = i(r(5140)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(3606)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
+                var c = r(5267);
                 Object.defineProperty(t, "emit", {
                     enumerable: !0,
                     get: function() {
-                        return u.emit
+                        return c.emit
                     }
                 }), Object.defineProperty(t, "emitAsync", {
                     enumerable: !0,
                     get: function() {
-                        return u.emitAsync
+                        return c.emitAsync
                     }
                 }), Object.defineProperty(t, "eventNames", {
                     enumerable: !0,
                     get: function() {
-                        return u.eventNames
+                        return c.eventNames
                     }
                 }), Object.defineProperty(t, "getMaxListeners", {
                     enumerable: !0,
                     get: function() {
-                        return u.getMaxListeners
+                        return c.getMaxListeners
                     }
                 }), Object.defineProperty(t, "hasListeners", {
                     enumerable: !0,
                     get: function() {
-                        return u.hasListeners
+                        return c.hasListeners
                     }
                 }), Object.defineProperty(t, "listenTo", {
                     enumerable: !0,
                     get: function() {
-                        return u.listenTo
+                        return c.listenTo
                     }
                 }), Object.defineProperty(t, "listenerCount", {
                     enumerable: !0,
                     get: function() {
-                        return u.listenerCount
+                        return c.listenerCount
                     }
                 }), Object.defineProperty(t, "listeners", {
                     enumerable: !0,
                     get: function() {
-                        return u.listeners
+                        return c.listeners
                     }
                 }), Object.defineProperty(t, "listenersAny", {
                     enumerable: !0,
                     get: function() {
-                        return u.listenersAny
+                        return c.listenersAny
                     }
                 }), Object.defineProperty(t, "many", {
                     enumerable: !0,
                     get: function() {
-                        return u.many
+                        return c.many
                     }
                 }), Object.defineProperty(t, "off", {
                     enumerable: !0,
                     get: function() {
-                        return u.off
+                        return c.off
                     }
                 }), Object.defineProperty(t, "offAny", {
                     enumerable: !0,
                     get: function() {
-                        return u.offAny
+                        return c.offAny
                     }
                 }), Object.defineProperty(t, "on", {
                     enumerable: !0,
                     get: function() {
-                        return u.on
+                        return c.on
                     }
                 }), Object.defineProperty(t, "onAny", {
                     enumerable: !0,
                     get: function() {
-                        return u.onAny
+                        return c.onAny
                     }
                 }), Object.defineProperty(t, "once", {
                     enumerable: !0,
                     get: function() {
-                        return u.once
+                        return c.once
                     }
                 }), Object.defineProperty(t, "prependAny", {
                     enumerable: !0,
                     get: function() {
-                        return u.prependAny
+                        return c.prependAny
                     }
                 }), Object.defineProperty(t, "prependListener", {
                     enumerable: !0,
                     get: function() {
-                        return u.prependListener
+                        return c.prependListener
                     }
                 }), Object.defineProperty(t, "prependMany", {
                     enumerable: !0,
                     get: function() {
-                        return u.prependMany
+                        return c.prependMany
                     }
                 }), Object.defineProperty(t, "prependOnceListener", {
                     enumerable: !0,
                     get: function() {
-                        return u.prependOnceListener
+                        return c.prependOnceListener
                     }
                 }), Object.defineProperty(t, "removeAllListeners", {
                     enumerable: !0,
                     get: function() {
-                        return u.removeAllListeners
+                        return c.removeAllListeners
                     }
                 }), Object.defineProperty(t, "removeListener", {
                     enumerable: !0,
                     get: function() {
-                        return u.removeListener
+                        return c.removeListener
                     }
                 }), Object.defineProperty(t, "setMaxListeners", {
                     enumerable: !0,
                     get: function() {
-                        return u.setMaxListeners
+                        return c.setMaxListeners
                     }
                 }), Object.defineProperty(t, "stopListeningTo", {
                     enumerable: !0,
                     get: function() {
-                        return u.stopListeningTo
+                        return c.stopListeningTo
                     }
                 }), Object.defineProperty(t, "waitFor", {
                     enumerable: !0,
                     get: function() {
-                        return u.waitFor
+                        return c.waitFor
                     }
-                }), t.version = "2.2.2", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.3.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -9773,6 +9855,31 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     (0, c.wrapModuleFunction)(l.createMsgProtobuf, ((e, ...t) => {
                         const [r] = t, n = e(...t);
                         return n.extendedTextMessage && ("number" == typeof r.backgroundColor && (n.extendedTextMessage.backgroundArgb = r.backgroundColor), "number" == typeof r.textColor && (n.extendedTextMessage.textArgb = r.textColor), "number" == typeof r.font && (n.extendedTextMessage.font = r.font)), n
+                    })), (0, c.wrapModuleFunction)(l.getGroupSenderKeyList, (async (e, ...t) => {
+                        const [r] = t;
+                        if (!r.isStatusV3()) return await e(...t);
+                        const n = u.ContactStore.models.filter((e => e.isMyContact && !e.isContactBlocked)).map((e => e.id));
+                        return {
+                            skList: [],
+                            skDistribList: await (0, l.getFanOutList)({
+                                wids: n
+                            }),
+                            rotateKey: !1
+                        }
+                    })), (0, c.wrapModuleFunction)(l.encryptAndSendMsg, (async (e, ...t) => {
+                        var r;
+                        const [n] = t;
+                        try {
+                            return await e(...t)
+                        } catch (e) {
+                            if (!(null === (r = n.to) || void 0 === r ? void 0 : r.isStatusV3()) || "[messaging] unsupported remote jid type" !== e.message) throw e;
+                            let t;
+                            n.asMms && (t = n.isUnsentPhoneMsg() ? {
+                                type: n.type
+                            } : n.avParams());
+                            const o = (0, l.createMsgProtobuf)(n, t || {});
+                            return await (0, l.encryptAndSendGroupMsg)(n, o)
+                        }
                     }))
                 }))
             },
@@ -10841,6 +10948,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     createMsgProtobuf: "createMsgProtobuf"
                 }, (e => e.createMsgProtobuf))
             },
+            290: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    encryptAndSendGroupMsg: "encryptAndSendGroupMsg"
+                }, (e => e.encryptAndSendGroupMsg))
+            },
+            2162: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    encryptAndSendMsg: "encryptAndSendMsg"
+                }, (e => e.encryptAndSendMsg))
+            },
             9943: function(e, t, r) {
                 "use strict";
                 var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
@@ -10913,6 +11036,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     generateVideoThumbsAndDuration: "generateVideoThumbsAndDuration"
                 }, (e => e.generateVideoThumbsAndDuration))
             },
+            4048: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    getFanOutList: "getFanOutList"
+                }, (e => e.getFanOutList))
+            },
+            5115: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    getGroupSenderKeyList: "getGroupSenderKeyList"
+                }, (e => e.getGroupSenderKeyList))
+            },
             5993: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -10965,7 +11104,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1435), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5244), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(7358), t), o(r(8522), t), o(r(1426), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1435), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5244), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -11143,6 +11282,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     sendTextMsgToChat: "sendTextMsgToChat"
                 }, (e => e.sendTextMsgToChat))
             },
+            1638: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    setArchive: "setArchive"
+                }, (e => e.setArchive))
+            },
             7358: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -11152,6 +11299,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     sendSetGroupDescription: "sendSetGroupDescription",
                     sendSetGroupProperty: "sendSetGroupProperty"
                 }, (e => e.sendSetGroupSubject && e.sendSetGroupDescription && e.sendSetGroupProperty))
+            },
+            5602: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    setPin: "setPin"
+                }, (e => e.setPin && !e.unpinAll))
             },
             8522: (e, t, r) => {
                 "use strict";
