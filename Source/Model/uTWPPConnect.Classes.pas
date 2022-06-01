@@ -165,10 +165,21 @@ type
   end;
 
 
-  TResponseGetProfilePicThumb = class(TClassPadrao)
+  {TResponseGetProfilePicThumb = class(TClassPadrao)
   private
     fBase64: String;
   Public
+    Property Base64 : String   Read fBase64  Write fBase64;
+    constructor Create(pAJsonString: string);
+    destructor  Destroy;       override;
+  end;}
+  //Marcelo 01/06/2022
+  TResponseGetProfilePicThumb = class(TClassPadrao)
+  private
+    fID : String;
+    fBase64: String;
+  Public
+    Property ID : String read FID write FID;
     Property Base64 : String   Read fBase64  Write fBase64;
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -1681,10 +1692,23 @@ end;
 
 { TResponseGetProfilePicThumb }
 
-constructor TResponseGetProfilePicThumb.Create(pAJsonString: string);
+{constructor TResponseGetProfilePicThumb.Create(pAJsonString: string);
 begin
   Base64 :=  copy(pAJsonString, 34, length(pAJsonString) - 35);
-  //Base64 := pAJsonString;
+end;}
+
+//Marcelo 01/06/2022
+constructor TResponseGetProfilePicThumb.Create(pAJsonString: string);
+var
+  lAJsonObj: TJSONValue;
+  v : String;
+begin
+  // TEMI
+//  Base64 :=  copy(pAJsonString, 34, length(pAJsonString) - 35);
+  v := copy(pAJsonString, 11, length(pAJsonString) - 11);
+  inherited Create(v);
+  Base64 :=  copy(Base64, 23, length(Base64));
+
 end;
 
 destructor TResponseGetProfilePicThumb.Destroy;

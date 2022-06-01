@@ -1328,9 +1328,6 @@ object frameLogin: TframeLogin
     Width = 185
     Height = 47
     Caption = 'Logout'
-    HotImageIndex = 1
-    ImageIndex = 0
-    Images = ImageList1
     TabOrder = 1
     OnClick = SpeedButton3Click
   end

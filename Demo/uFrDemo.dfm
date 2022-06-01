@@ -1782,6 +1782,7 @@ object frDemo: TfrDemo
     inherited memo_unReadMessage: TMemo
       Width = 1008
       Height = 418
+      ExplicitTop = 89
       ExplicitWidth = 1008
       ExplicitHeight = 418
     end

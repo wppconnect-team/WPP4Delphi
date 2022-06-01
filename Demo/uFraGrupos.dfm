@@ -52,8 +52,6 @@ object frameGrupos: TframeGrupos
       Top = 262
       Width = 23
       Height = 22
-      ImageIndex = 11
-      Images = ImageList1
       Flat = True
       OnClick = SpeedButton1Click
     end
@@ -94,8 +92,6 @@ object frameGrupos: TframeGrupos
         Height = 25
         Align = alBottom
         Caption = 'Criar Grupo'
-        ImageIndex = 0
-        Images = ImageList1
         TabOrder = 2
         OnClick = btnCriarGrupoClick
       end
@@ -127,8 +123,6 @@ object frameGrupos: TframeGrupos
         Height = 25
         Align = alBottom
         Caption = 'Entrar'
-        ImageIndex = 1
-        Images = ImageList1
         TabOrder = 1
         OnClick = btnEntrarLinkClick
       end
@@ -177,8 +171,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Listar Grupos'
-        ImageIndex = 10
-        Images = ImageList1
         TabOrder = 0
         OnClick = btnListarGruposClick
       end
@@ -199,8 +191,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Promover ADM'
-        ImageIndex = 4
-        Images = ImageList1
         TabOrder = 0
         OnClick = btnPromoverClick
       end
@@ -212,8 +202,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Despromover ADM'
-        ImageIndex = 5
-        Images = ImageList1
         TabOrder = 1
         OnClick = btnDespromoverClick
       end
@@ -225,8 +213,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Sair do Grupo'
-        ImageIndex = 6
-        Images = ImageList1
         TabOrder = 2
         OnClick = BitBtn5Click
       end
@@ -238,8 +224,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Deletar Grupo'
-        ImageIndex = 7
-        Images = ImageList1
         TabOrder = 3
         OnClick = BitBtn6Click
       end
@@ -251,8 +235,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Gerar Link de Convite'
-        ImageIndex = 8
-        Images = ImageList1
         TabOrder = 4
         OnClick = btnGerarLinkConviteClick
       end
@@ -264,8 +246,6 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Cancelar Link de Convite'
-        ImageIndex = 9
-        Images = ImageList1
         TabOrder = 5
         OnClick = btnCancelaLinkClick
       end
@@ -363,8 +343,6 @@ object frameGrupos: TframeGrupos
             Height = 32
             Hint = 'Remover Participante'
             Align = alTop
-            ImageIndex = 3
-            Images = ImageList1
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -397,8 +375,6 @@ object frameGrupos: TframeGrupos
             Height = 32
             Hint = 'Adicionar Participante'
             Align = alCustom
-            ImageIndex = 2
-            Images = ImageList1
             ParentShowHint = False
             ShowHint = True
             TabOrder = 1

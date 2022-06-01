@@ -70,7 +70,6 @@ type
     procedure TWPPConnect1GetUnReadMessages(const Chats: TChatList);
     procedure TWPPConnect1GetStatusMessage(const Result
       : TResponseStatusMessage);
-    procedure TWPPConnect1GetProfilePicThumb(Sender: TObject; Base64: string);
     procedure btnAbrirZapClick(Sender: TObject);
     procedure ctbtnCategories0Items3Click(Sender: TObject);
     procedure ctbtnCategories0Items4Click(Sender: TObject);
@@ -78,6 +77,7 @@ type
     procedure TWPPConnect1Get_sendFileMessage(const Mensagem: TMessagesClass);
     procedure TWPPConnect1Get_sendListMessage(const Mensagem: TMessagesClass);
     procedure TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);
+    procedure TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
   private
     { Private declarations }
 
@@ -498,14 +498,22 @@ begin
   lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect(Sender).MyNumber;
 end;
 
-procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject;
-  Base64: string);
+procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
 var
   LInput: TMemoryStream;
   LOutput: TMemoryStream;
   AStr: TStringList;
   lThread: TThread;
+  wlo_Celular, wlo_Base64: string;
 begin
+  //Necessário Recompilar o Projeto
+
+  wlo_Base64 := ProfilePicThumb.Base64; // imagem
+  wlo_Celular := Copy(ProfilePicThumb.id,1,  pos('@', ProfilePicThumb.id) -1); // nr telefone
+
+  //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Celular);
+  //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Base64);
+
   lThread := TThread.CreateAnonymousThread(
   procedure
   begin
@@ -513,7 +521,7 @@ begin
       LInput := TMemoryStream.Create;
       LOutput := TMemoryStream.Create;
       AStr  := TStringList.Create;
-      AStr.Add(Base64);
+      AStr.Add(wlo_Base64);
       AStr.SaveToStream(LInput);
       LInput.Position := 0;
       TNetEncoding.Base64.Decode( LInput, LOutput );
@@ -727,6 +735,10 @@ begin
 
           frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
             AChat.contact.profilePicThumb;
+
+          if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
+            TWPPConnect1.getProfilePicThumb(AChat.id);
+            //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
 
           TWPPConnect1.ReadMessages(AChat.id);
 

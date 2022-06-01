@@ -13,7 +13,8 @@ uses
   uFrDemo in 'uFrDemo.pas' {frDemo},
   uFraGrupos in 'uFraGrupos.pas' {frameGrupos: TFrame},
   uFraMEnsagensRecebidas in 'uFraMEnsagensRecebidas.pas' {frameMensagensRecebidas: TFrame},
-  uFraMensagensEnviadas in 'uFraMensagensEnviadas.pas' {frameMensagensEnviadas: TFrame};
+  uFraMensagensEnviadas in 'uFraMensagensEnviadas.pas' {frameMensagensEnviadas: TFrame},
+  u_Retorno_SendFileMensagem in 'u_Retorno_SendFileMensagem.pas';
 
 {$R *.res}
 

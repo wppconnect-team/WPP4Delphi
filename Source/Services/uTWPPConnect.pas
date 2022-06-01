@@ -38,7 +38,11 @@ type
 
   TOnGetCheckIsConnected    = Procedure(Sender : TObject; Connected: Boolean) of object;
   TOnGetCheckIsValidNumber  = Procedure(Sender : TObject; Number: String;  IsValid: Boolean) of object;
-  TOnGetProfilePicThumb     = Procedure(Sender : TObject; Base64: String) of object;
+
+  //TOnGetProfilePicThumb     = Procedure(Sender : TObject; Base64: String) of object;
+  //Alterado Marcelo 01/06/2022
+  TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
+
   TGetUnReadMessages        = procedure(Const Chats: TChatList) of object;
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
@@ -1408,8 +1412,9 @@ begin
        Exit;
 
 
-    FOnGetProfilePicThumb(Self,
-                          TResponseGetProfilePicThumb(PReturnClass).Base64);
+   //FOnGetProfilePicThumb(Self, TResponseGetProfilePicThumb(PReturnClass).Base64);
+    //MARCELO 01/06/2022
+    FOnGetProfilePicThumb(Self,TResponseGetProfilePicThumb(PReturnClass));
     exit;
   end;
 
