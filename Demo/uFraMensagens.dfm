@@ -81,8 +81,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Localiza'#231#227'o c/ Bot'#227'o'
-      ImageIndex = 11
-      Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
     end
@@ -94,8 +92,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar LinkPreview'
-      ImageIndex = 6
-      Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
     end
@@ -107,8 +103,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Imagem com Bot'#227'o'
-      ImageIndex = 5
-      Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
     end
@@ -120,8 +114,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Imagem'
-      ImageIndex = 5
-      Images = ImageList1
       TabOrder = 5
       OnClick = btnImagemClick
     end
@@ -133,8 +125,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar V'#237'deo com Bot'#227'o'
-      ImageIndex = 4
-      Images = ImageList1
       TabOrder = 4
       OnClick = btnVideoBotaoClick
     end
@@ -146,8 +136,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar V'#237'deo'
-      ImageIndex = 3
-      Images = ImageList1
       TabOrder = 3
       OnClick = btnVideoClick
     end
@@ -159,8 +147,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Lista/Menu'
-      ImageIndex = 2
-      Images = ImageList1
       TabOrder = 2
       OnClick = btnListaMenuClick
     end
@@ -172,8 +158,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Bot'#245'es Simples'
-      ImageIndex = 1
-      Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
     end
@@ -185,8 +169,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Texto Simples'
-      ImageIndex = 0
-      Images = ImageList1
       TabOrder = 0
       OnClick = btnTextoSimplesClick
     end
@@ -198,8 +180,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar '#193'udio'
-      ImageIndex = 7
-      Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
     end
@@ -211,8 +191,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Contato'
-      ImageIndex = 9
-      Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
     end
@@ -224,8 +202,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Sticker'
-      ImageIndex = 8
-      Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
     end
@@ -237,8 +213,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Localiza'#231#227'o'
-      ImageIndex = 10
-      Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
     end
@@ -260,8 +234,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Limpar Conversa'
-      ImageIndex = 15
-      Images = ImageList1
       TabOrder = 5
       OnClick = btnLimparConversaClick
     end
@@ -273,8 +245,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Arquivar Chat'
-      ImageIndex = 14
-      Images = ImageList1
       TabOrder = 3
       OnClick = btnArquivarClick
     end
@@ -286,8 +256,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Responder Mensagem'
-      ImageIndex = 13
-      Images = ImageList1
       TabOrder = 1
       OnClick = btnResponderClick
     end
@@ -299,8 +267,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Reagir Mensagem'
-      ImageIndex = 12
-      Images = ImageList1
       TabOrder = 0
       OnClick = btnReagirClick
     end
@@ -312,8 +278,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Verificar N'#250'mero'
-      ImageIndex = 16
-      Images = ImageList1
       TabOrder = 6
       OnClick = btnVerificarNumeroClick
     end
@@ -325,8 +289,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Verificar Status'
-      ImageIndex = 17
-      Images = ImageList1
       TabOrder = 7
       OnClick = btnStatusClick
     end
@@ -338,8 +300,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Detalhes do Telefone'
-      ImageIndex = 18
-      Images = ImageList1
       TabOrder = 8
       OnClick = btnDetalheClick
     end
@@ -351,8 +311,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Bloquear Contato'
-      ImageIndex = 20
-      Images = ImageList1
       TabOrder = 9
       OnClick = btnBloquearClick
     end
@@ -364,8 +322,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Desbloquear Contato'
-      ImageIndex = 21
-      Images = ImageList1
       TabOrder = 10
       OnClick = btnDesbloquearClick
     end
@@ -377,8 +333,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Fixar Chat'
-      ImageIndex = 22
-      Images = ImageList1
       TabOrder = 11
       OnClick = btnFixarChatClick
     end
@@ -390,8 +344,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Desfixar Chat'
-      ImageIndex = 23
-      Images = ImageList1
       TabOrder = 12
       OnClick = btnDesfixarChatClick
     end
@@ -403,8 +355,6 @@ object frameMensagem: TframeMensagem
       Height = 25
       Align = alTop
       Caption = 'Desarquivar Chat'
-      ImageIndex = 24
-      Images = ImageList1
       TabOrder = 4
       OnClick = BitBtn1Click
     end
@@ -416,8 +366,6 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Status da Mensagem'
-      ImageIndex = 25
-      Images = ImageList1
       TabOrder = 2
       OnClick = BitBtn2Click
     end
@@ -483,6 +431,7 @@ object frameMensagem: TframeMensagem
         StateImages = ImageList1
         TabOrder = 1
         ViewStyle = vsSmallIcon
+        OnDblClick = listaContatosDblClick
       end
     end
     object groupListaChats: TGroupBox
@@ -533,6 +482,7 @@ object frameMensagem: TframeMensagem
         StateImages = ImageList1
         TabOrder = 1
         ViewStyle = vsSmallIcon
+        OnDblClick = listaChatsDblClick
       end
     end
   end

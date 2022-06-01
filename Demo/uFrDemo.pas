@@ -15,7 +15,7 @@ uses
   uTWPPConnect.Emoticons, Clipbrd,
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
-  uFraMEnsagensRecebidas, uFraMensagensEnviadas;
+  uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32;
 
 type
   TfrDemo = class(TForm)
@@ -75,6 +75,9 @@ type
     procedure ctbtnCategories0Items3Click(Sender: TObject);
     procedure ctbtnCategories0Items4Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure TWPPConnect1Get_sendFileMessage(const Mensagem: TMessagesClass);
+    procedure TWPPConnect1Get_sendListMessage(const Mensagem: TMessagesClass);
+    procedure TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);
   private
     { Private declarations }
 
@@ -89,6 +92,7 @@ type
     procedure AddGroupContacts(ANumber: string);
     function VerificaPalavraChave(pMensagem, pSessao, pTelefone,
       pContato: String): Boolean;
+    function killtask(ExeFileName: string): Integer;
   end;
 
 var
@@ -97,7 +101,7 @@ var
 implementation
 
 uses
-  u_Messagem, System.JSON, System.AnsiStrings, System.DateUtils,
+  u_Messagem, u_Retorno_SendFileMensagem, System.JSON, System.AnsiStrings, System.DateUtils,
   System.NetEncoding;
 
 {$R *.dfm}
@@ -215,7 +219,11 @@ end;
 
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  TWPPConnect1.ShutDown;
+  if TWPPConnect1.IsConnected then
+    TWPPConnect1.ShutDown;
+
+  Sleep(500);
+  killtask('WPPConnectDemo.exe')
 end;
 
 procedure TfrDemo.FormShow(Sender: TObject);
@@ -242,6 +250,31 @@ procedure TfrDemo.frameMensagem1btnImagemClick(Sender: TObject);
 begin
   frameMensagem1.btnImagemClick(Sender);
 
+end;
+
+function TfrDemo.killtask(ExeFileName: string): Integer;
+const
+  PROCESS_TERMINATE = $0001;
+var
+  ContinueLoop: BOOL;
+  FSnapshotHandle: THandle;
+  FProcessEntry32: TProcessEntry32;
+begin
+  Result := 0;
+  FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
+  ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
+
+  while Integer(ContinueLoop) <> 0 do
+  begin
+    if ((UpperCase(ExtractFileName(FProcessEntry32.szExeFile))
+      = UpperCase(ExeFileName)) or (UpperCase(FProcessEntry32.szExeFile)
+      = UpperCase(ExeFileName))) then
+      Result := Integer(TerminateProcess(OpenProcess(PROCESS_TERMINATE, BOOL(0),
+        FProcessEntry32.th32ProcessID), 0));
+    ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
+  end;
+  CloseHandle(FSnapshotHandle);
 end;
 
 procedure TfrDemo.timerStatusTimer(Sender: TObject);
@@ -731,6 +764,111 @@ begin
         end;
       end;
     end;
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1Get_sendFileMessage(const Mensagem: TMessagesClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO : string;
+  AMensagem : TMessagesClass;
+  JMessagem : TRetorno_SendFileMensagemClass;
+var
+  lAJsonObj: TJSONValue;
+begin
+  //NOVO Necessário Recompilar o Projeto
+  try
+    wlo_Json := Mensagem.JsonString;
+    JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
+
+
+    if JMessagem.result.ack = 1 then
+      StatusMensagem := 'Enviada'
+    else
+    if JMessagem.result.ack = 2 then
+      StatusMensagem := 'Recebida'
+    else
+    if JMessagem.result.ack = 3 then
+      StatusMensagem := 'Visualizada';
+
+    S_NUMERO := copy(JMessagem.result.id, 8, pos('@', JMessagem.result.id) - 8);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Id Mensagem: ' + JMessagem.result.id);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + S_NUMERO);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
+    //ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+  except on E: Exception do
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1Get_sendListMessage(const Mensagem: TMessagesClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO : string;
+  AMensagem : TMessagesClass;
+  JMessagem : TRetorno_SendFileMensagemClass;
+var
+  lAJsonObj: TJSONValue;
+begin
+  //NOVO Necessário Recompilar o Projeto
+  try
+    wlo_Json := Mensagem.JsonString;
+    JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
+
+
+    if JMessagem.result.ack = 1 then
+      StatusMensagem := 'Enviada'
+    else
+    if JMessagem.result.ack = 2 then
+      StatusMensagem := 'Recebida'
+    else
+    if JMessagem.result.ack = 3 then
+      StatusMensagem := 'Visualizada';
+
+    S_NUMERO := copy(JMessagem.result.id, 8, pos('@', JMessagem.result.id) - 8);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Id Mensagem: ' + JMessagem.result.id);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + S_NUMERO);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
+    //ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+  except on E: Exception do
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO : string;
+  AMensagem : TMessagesClass;
+  JMessagem : TRetorno_SendFileMensagemClass;
+var
+  lAJsonObj: TJSONValue;
+begin
+  //NOVO Necessário Recompilar o Projeto
+  try
+    wlo_Json := Mensagem.JsonString;
+    JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
+
+
+    if JMessagem.result.ack = 1 then
+      StatusMensagem := 'Enviada'
+    else
+    if JMessagem.result.ack = 2 then
+      StatusMensagem := 'Recebida'
+    else
+    if JMessagem.result.ack = 3 then
+      StatusMensagem := 'Visualizada';
+
+    S_NUMERO := copy(JMessagem.result.id, 8, pos('@', JMessagem.result.id) - 8);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Id Mensagem: ' + JMessagem.result.id);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + S_NUMERO);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
+    //ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+  except on E: Exception do
   end;
 end;
 

@@ -80,6 +80,8 @@ type
     procedure btnDesfixarChatClick(Sender: TObject);
     procedure btnListarChatsClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
+    procedure listaChatsDblClick(Sender: TObject);
+    procedure listaContatosDblClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1006,6 +1008,18 @@ procedure TframeMensagem.edtURLDblClick(Sender: TObject);
 begin
   if edtURL.Text <> '' then
     ShellExecute(Self.Handle,'open', pchar(edtUrl.Text),'','',SW_SHOWNORMAL);
+end;
+
+procedure TframeMensagem.listaChatsDblClick(Sender: TObject);
+begin
+  ed_num.text := frDemo.TWPPConnect1.GetChat(listaChats.Selected.Index).id;
+end;
+
+procedure TframeMensagem.listaContatosDblClick(Sender: TObject);
+begin
+  ed_num.text := copy(listaContatos.Items[listaContatos.Selected.Index].SubItems
+    [1], 0, pos('@', listaContatos.Items[listaContatos.Selected.Index].SubItems
+    [1])) + 'c.us';
 end;
 
 end.

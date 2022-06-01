@@ -20,7 +20,7 @@ object frDemo: TfrDemo
   object SplitView1: TSplitView
     Left = 0
     Top = 113
-    Width = 286
+    Width = 200
     Height = 507
     BevelOuter = bvRaised
     Color = 2012675
@@ -30,7 +30,7 @@ object frDemo: TfrDemo
     object ctbtn: TCategoryButtons
       Left = 1
       Top = 1
-      Width = 284
+      Width = 198
       Height = 505
       Align = alClient
       BevelInner = bvNone
@@ -77,7 +77,6 @@ object frDemo: TfrDemo
       RegularButtonColor = clNone
       SelectedButtonColor = 8453888
       TabOrder = 0
-      ExplicitWidth = 288
     end
   end
   object pnltopo: TPanel
@@ -90,8 +89,6 @@ object frDemo: TfrDemo
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = -1
     object Image1: TImage
       Left = 0
       Top = 0
@@ -1584,9 +1581,9 @@ object frDemo: TfrDemo
     end
   end
   inline frameLogin1: TframeLogin
-    Left = 286
+    Left = 200
     Top = 113
-    Width = 922
+    Width = 1008
     Height = 507
     Align = alClient
     Font.Charset = ANSI_CHARSET
@@ -1618,9 +1615,9 @@ object frDemo: TfrDemo
     end
   end
   inline frameMensagem1: TframeMensagem
-    Left = 286
+    Left = 200
     Top = 113
-    Width = 922
+    Width = 1008
     Height = 507
     Align = alClient
     Font.Charset = ANSI_CHARSET
@@ -1674,9 +1671,9 @@ object frDemo: TfrDemo
     end
   end
   inline frameGrupos1: TframeGrupos
-    Left = 286
+    Left = 200
     Top = 113
-    Width = 922
+    Width = 1008
     Height = 507
     Align = alClient
     Font.Charset = ANSI_CHARSET
@@ -1704,45 +1701,45 @@ object frDemo: TfrDemo
       end
     end
     inherited pnlGruposParticipantes: TPanel
-      Width = 392
+      Width = 478
       Height = 501
       ExplicitWidth = 478
       ExplicitHeight = 501
       inherited GroupBox1: TGroupBox
-        Width = 386
+        Width = 472
         Height = 495
         ExplicitWidth = 472
         ExplicitHeight = 495
         inherited gbAdmin: TGroupBox
-          Width = 376
+          Width = 462
           ExplicitWidth = 462
           inherited listaAdministradores: TListView
-            Width = 366
+            Width = 452
             ExplicitWidth = 452
           end
         end
         inherited gbParticipantes: TGroupBox
-          Width = 376
+          Width = 462
           Height = 336
           ExplicitWidth = 462
           ExplicitHeight = 336
           inherited lblIdParticipante: TLabel
-            Width = 366
+            Width = 452
           end
           inherited listaParticipantes: TListView
-            Width = 332
+            Width = 418
             Height = 243
             ExplicitWidth = 418
             ExplicitHeight = 243
           end
           inherited pnlParticipantesBotoes: TPanel
-            Left = 340
+            Left = 426
             Height = 249
             ExplicitLeft = 426
             ExplicitHeight = 249
           end
           inherited pnltopopartici: TPanel
-            Width = 366
+            Width = 452
             ExplicitWidth = 452
           end
         end
@@ -1750,45 +1747,50 @@ object frDemo: TfrDemo
     end
   end
   inline frameMensagensEnviadas1: TframeMensagensEnviadas
-    Left = 286
+    Left = 200
     Top = 113
-    Width = 922
+    Width = 1008
     Height = 507
     Align = alClient
     TabOrder = 6
     Visible = False
     ExplicitLeft = 200
-    ExplicitTop = 187
+    ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 433
+    ExplicitHeight = 507
     inherited memo_unReadMessageEnv: TMemo
-      Width = 922
+      Width = 1008
       Height = 507
       WordWrap = False
-      ExplicitLeft = 5
-      ExplicitTop = 1
+      ExplicitLeft = 0
       ExplicitWidth = 1008
-      ExplicitHeight = 433
+      ExplicitHeight = 507
     end
   end
   inline frameMensagensRecebidas1: TframeMensagensRecebidas
-    Left = 286
+    Left = 200
     Top = 113
-    Width = 922
+    Width = 1008
     Height = 507
     Align = alClient
     TabOrder = 7
     Visible = False
-    ExplicitLeft = 352
-    ExplicitTop = 168
+    ExplicitLeft = 200
+    ExplicitTop = 113
+    ExplicitWidth = 1008
+    ExplicitHeight = 507
     inherited memo_unReadMessage: TMemo
-      Width = 922
+      Width = 1008
       Height = 418
+      ExplicitWidth = 1008
+      ExplicitHeight = 418
     end
     inherited Panel1: TPanel
-      Width = 922
+      Width = 1008
+      ExplicitWidth = 1008
       inherited Image2: TImage
-        Left = 817
+        Left = 903
+        ExplicitLeft = 817
       end
       inherited ed_profilePicThumbURL: TEdit
         Left = 39
@@ -1797,12 +1799,13 @@ object frDemo: TfrDemo
         Height = 23
         ExplicitLeft = 39
         ExplicitTop = 59
-        ExplicitWidth = 845
+        ExplicitWidth = 759
         ExplicitHeight = 23
       end
       inherited Button1: TButton
         Left = 482
         OnClick = nil
+        ExplicitLeft = 482
       end
     end
   end
@@ -4213,6 +4216,9 @@ object frDemo: TfrDemo
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetMessageById = TWPPConnect1GetMessageById
+    OnGet_sendFileMessage = TWPPConnect1Get_sendFileMessage
+    OnGet_sendTextMessage = TWPPConnect1Get_sendTextMessage
+    OnGet_sendListMessage = TWPPConnect1Get_sendListMessage
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
