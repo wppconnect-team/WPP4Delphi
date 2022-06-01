@@ -195,6 +195,11 @@ type
     //Adicionado por Daniel 25/05/2022
     procedure BloquearContato(vContato: string);
     procedure DesbloquearContato(vContato: string);
+    procedure ArquivarChat(vContato: string);
+    procedure DesarquivarChat(vContato:String);
+    procedure FixarChat(vContato:String);
+    procedure DesfixarChat(vContato:String);
+
     procedure CheckDelivered;
     procedure SendContact(vNumDest, vNum:string; vNameContact: string = '');
     procedure SendBase64(vBase64, vNum, vFileName, vText:string);
@@ -255,6 +260,18 @@ uses
 procedure TFrmConsole.App_EventMinimize(Sender: TObject);
 begin
   Hide;
+end;
+
+procedure TFrmConsole.ArquivarChat(vContato: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_ArchiveChat;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.BloquearContato(vContato: string);
@@ -718,6 +735,18 @@ begin
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vID)), False);
 end;
 
+procedure TFrmConsole.DesarquivarChat(vContato: String);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_UnarchiveChat;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.DesbloquearContato(vContato: string);
 var
   Ljs: string;
@@ -726,6 +755,18 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_unBlockContact ;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.DesfixarChat(vContato: String);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_UnPinChat;
   FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
   ExecuteJS(LJS, true);
 end;
@@ -1683,6 +1724,18 @@ begin
   LJS := FrmConsole_JS_VAR_CreateGroup;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_NAME#',         Trim(vGroupName));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(PParticipantNumber));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.FixarChat(vContato: String);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_PinChat;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
   ExecuteJS(LJS, true);
 end;
 

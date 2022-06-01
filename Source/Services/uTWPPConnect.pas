@@ -188,6 +188,10 @@ type
 
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
+    procedure ArquivarChat(PIDContato:String);
+    procedure DesarquivarChat(PIDContato:String);
+    procedure FixarChat(PIDContato:String);
+    procedure DesfixarChat(PIDContato:String);
 
     procedure GroupJoinViaLink(PLinkGroup: string);
     procedure GroupRemoveInviteLink(PIDGroup: string);
@@ -291,6 +295,45 @@ procedure TWPPConnect.GetBatteryStatus();
 begin
   if Assigned(FrmConsole) then
      FrmConsole.GetBatteryLevel;
+end;
+
+procedure TWPPConnect.ArquivarChat(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ArquivarChat(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 function TWPPConnect.Auth(PRaise: Boolean): Boolean;
@@ -570,6 +613,45 @@ begin
 
 end;
 
+procedure TWPPConnect.DesarquivarChat(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesarquivarChat(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.DesbloquearContato(PIDContato: String);
 var
   lThread : TThread;
@@ -602,6 +684,47 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.DesbloquearContato(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DesfixarChat(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesfixarChat(PIDContato);
           end;
         end);
 
@@ -2425,6 +2548,47 @@ begin
     //FreeAndNil(GlobalCEFApp);
     //if CallTerminateProcs then PostQuitMessage(0);
   end
+end;
+
+procedure TWPPConnect.FixarChat(PIDContato: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDContato) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDContato);
+    Exit;
+  end;
+
+  PIDContato := AjustNumber.FormatIn(PIDContato);
+  if pos('@', PIDContato) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
+    Exit;
+  end;
+
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.FixarChat(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 procedure TWPPConnect.FormQrCodeReloader;

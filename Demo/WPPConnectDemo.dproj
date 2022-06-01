@@ -7,7 +7,7 @@
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
-        <ProjectVersion>18.7</ProjectVersion>
+        <ProjectVersion>19.1</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -149,6 +149,35 @@
             <Form>frmPrincipal</Form>
         </DCCReference>
         <DCCReference Include="u_Messagem.pas"/>
+        <DCCReference Include="uFraLogin.pas">
+            <Form>frameLogin</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uFraMensagens.pas">
+            <Form>frameMensagem</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uFrDemo.pas">
+            <Form>frDemo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uFraGrupos.pas">
+            <Form>frameGrupos</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uFraMEnsagensRecebidas.pas">
+            <Form>frameMensagensRecebidas</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uFraMensagensEnviadas.pas">
+            <Form>frameMensagensEnviadas</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -170,62 +199,8 @@
                     <Source Name="MainSource">WPPConnectDemo.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerDBXPluginEnt260.bpl">DBExpress Enterprise Data Explorer Integration</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\TInjectCollection.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\TInjectCollection.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Comum.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Comum.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_OpenSSL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_OpenSSL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Diversos.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Diversos.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Serial.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Serial.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Convenio115.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Convenio115.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_LFD.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_LFD.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_EDI.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_EDI.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_PAF.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_PAF.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SEF2.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SEF2.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Sintegra.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Sintegra.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SPED.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SPED.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SPEDImportar.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SPEDImportar.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_DeSTDA.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_DeSTDA.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Ponto.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Ponto.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_LCDPR.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_LCDPR.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_TCP.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_TCP.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MTER.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MTER.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Integrador.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Integrador.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Boleto.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Boleto.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_PagFor.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_PagFor.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFCeECFVirtual.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFCeECFVirtual.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFeDanfeESCPOS.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFeDanfeESCPOS.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CTe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CTe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeX.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeX.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MDFe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MDFe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_GNRE.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_GNRE.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBre_Social.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBre_Social.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Reinf.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_Reinf.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SAT.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SAT.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATECFVirtual.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATECFVirtual.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATExtratoESCPOS.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATExtratoESCPOS.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATWS.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATWS.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BlocoX.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BlocoX.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BPe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BPe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BPeDabpeESCPOS.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BPeDabpeESCPOS.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ANe.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ANe.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CIOT.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CIOT.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ONE.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ONE.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NF3e.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NF3e.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NF3eDANF3eESCPOS.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NF3eDANF3eESCPOS.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_TEFD.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_TEFD.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFeDanfeRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFeDanfeRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeDanfseRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeDanfseRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeXDanfseRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_NFSeXDanfseRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CTeDacteRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_CTeDacteRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BoletoRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_BoletoRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MDFeDamdfeRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_MDFeDamdfeRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATExtratoRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_SATExtratoRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_GNREGuiaRL.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_GNREGuiaRL.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ADRCST.bpl">File C:\ACBr_Atualizado\Lib\Delphi\LibD26\Win32\DCLACBr_ADRCST.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
@@ -234,6 +209,12 @@
             </Platforms>
             <Deployment Version="3">
                 <DeployFile LocalName="C:\Executaveis\WPPConnectDemo\WPPConnectDemo.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>WPPConnectDemo.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Executaveis\WPPConnectDemo\BIN\WPPConnectDemo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>WPPConnectDemo.exe</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -262,9 +243,17 @@
                         <RemoteDir>classes</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>classes</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="AndroidFileProvider">
                     <Platform Name="Android">
+                        <RemoteDir>res\xml</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\xml</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -280,9 +269,23 @@
                         <RemoteDir>library\lib\armeabi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\armeabi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeArmeabiv7aFile">
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="AndroidLibnativeMipsFile">
                     <Platform Name="Android">
+                        <RemoteDir>library\lib\mips</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>library\lib\mips</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -292,9 +295,23 @@
                         <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\arm64-v8a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidServiceOutput_Android32">
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="AndroidSplashImageDef">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -304,9 +321,17 @@
                         <RemoteDir>res\values</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="AndroidSplashStylesV21">
                     <Platform Name="Android">
+                        <RemoteDir>res\values-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\values-v21</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -316,9 +341,17 @@
                         <RemoteDir>res\values</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_DefaultAppIcon">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -328,9 +361,17 @@
                         <RemoteDir>res\drawable-xxhdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_LauncherIcon36">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-ldpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-ldpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -340,9 +381,17 @@
                         <RemoteDir>res\drawable-mdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_LauncherIcon72">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-hdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -352,9 +401,17 @@
                         <RemoteDir>res\drawable-xhdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_NotificationIcon24">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-mdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -364,9 +421,17 @@
                         <RemoteDir>res\drawable-hdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_NotificationIcon48">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-xhdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -376,9 +441,17 @@
                         <RemoteDir>res\drawable-xxhdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_NotificationIcon96">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-xxxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-xxxhdpi</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -388,9 +461,17 @@
                         <RemoteDir>res\drawable-small</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-small</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_SplashImage470">
                     <Platform Name="Android">
+                        <RemoteDir>res\drawable-normal</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\drawable-normal</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -400,15 +481,27 @@
                         <RemoteDir>res\drawable-large</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-large</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_SplashImage960">
                     <Platform Name="Android">
                         <RemoteDir>res\drawable-xlarge</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-xlarge</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="Android_Strings">
                     <Platform Name="Android">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>res\values</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
@@ -500,6 +593,9 @@
                     <Platform Name="Android">
                         <Operation>0</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <Operation>0</Operation>
+                    </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>0</Operation>
                     </Platform>
@@ -519,6 +615,32 @@
                     </Platform>
                     <Platform Name="Win32">
                         <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iOS_AppStore1024">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_AppIcon152">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_AppIcon167">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="iPad_Launch1024">
@@ -653,6 +775,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="iPad_Launch2x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="iPad_Launch768">
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
@@ -672,6 +804,66 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_LaunchDark2x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Notification40">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Setting58">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_SpotLight80">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_AppIcon120">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_AppIcon180">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -774,6 +966,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="iPhone_Launch2x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="iPhone_Launch320">
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
@@ -782,6 +984,16 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch3x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -829,8 +1041,91 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="iPhone_LaunchDark2x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_LaunchDark3x">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Notification40">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Notification60">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Setting58">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Setting87">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Spotlight120">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Spotlight80">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectAndroidManifest">
                     <Platform Name="Android">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -871,6 +1166,16 @@
                     </Platform>
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSLaunchScreen">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen</RemoteDir>
+                        <Operation>64</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <RemoteDir>..\$(PROJECTNAME).launchscreen</RemoteDir>
+                        <Operation>64</Operation>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectiOSResource">
@@ -925,6 +1230,10 @@
                         <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\arm64-v8a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
                     </Platform>
@@ -947,6 +1256,12 @@
                     </Platform>
                     <Platform Name="Win32">
                         <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOutput_Android32">
+                    <Platform Name="Android64">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectUWPManifest">
@@ -986,6 +1301,7 @@
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
             </Deployment>
             <ModelSupport>False</ModelSupport>
         </BorlandProject>
