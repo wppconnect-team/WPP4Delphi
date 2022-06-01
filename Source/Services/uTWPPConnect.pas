@@ -54,6 +54,10 @@ type
   //TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
   TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
 
+  //Adicionado Por Marcelo 31/05/2022
+  TGet_sendFileMessage      = procedure(Const Mensagem: TMessagesClass) of object;
+  TGet_sendTextMessage      = procedure(Const Mensagem: TMessagesClass) of object;
+  TGet_sendListMessage      = procedure(Const Mensagem: TMessagesClass) of object;
 
   TWPPConnect = class(TComponent)
   private
@@ -127,6 +131,11 @@ type
 
     //Adicionado Por Marcelo 06/05/2022
     FOnGetMessageById           : TGetMessageById;
+
+    //Adicionado Por Marcelo 31/05/2022
+    FOnGet_sendFileMessage      : TGet_sendFileMessage;
+    FOnGet_sendTextMessage      : TGet_sendTextMessage;
+    FOnGet_sendListMessage      : TGet_sendListMessage;
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
@@ -245,6 +254,11 @@ type
 
     //Adicionado Por Marcelo 06/05/2022
     property OnGetMessageById            : TGetMessageById            read FOnGetMessageById               write FOnGetMessageById;
+
+    //Adicionado Por Marcelo 31/05/2022
+    property OnGet_sendFileMessage       : TGet_sendFileMessage       read FOnGet_sendFileMessage          write FOnGet_sendFileMessage;
+    property OnGet_sendTextMessage       : TGet_sendTextMessage       read FOnGet_sendTextMessage          write FOnGet_sendTextMessage;
+    property OnGet_sendListMessage       : TGet_sendListMessage       read FOnGet_sendListMessage          write FOnGet_sendListMessage;
 
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
@@ -1277,7 +1291,7 @@ begin
   end;
 
 
-  if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages, Th_GetMessageById]) then
+  if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages, Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage]) then
   Begin
     if not Assigned(PReturnClass) then
       raise Exception.Create(MSG_ExceptMisc + ' in Int_OnNotificationCenter' );
@@ -1302,6 +1316,31 @@ begin
          //OnGetMessageById(TMessagesClass(PReturnClass));
 
     end;
+
+    //Marcelo 31/05/2022
+    If PTypeHeader = Th_sendFileMessage Then
+    Begin
+      if Assigned(OnGet_sendFileMessage) then
+         OnGet_sendFileMessage(TMessagesClass(PReturnClass));
+
+    end;
+
+    //Marcelo 31/05/2022
+    If PTypeHeader = Th_sendTextMessage Then
+    Begin
+      if Assigned(OnGet_sendTextMessage) then
+         OnGet_sendTextMessage(TMessagesClass(PReturnClass));
+
+    end;
+
+    //Marcelo 31/05/2022
+    If PTypeHeader = Th_sendListMessage Then
+    Begin
+      if Assigned(OnGet_sendListMessage) then
+         OnGet_sendListMessage(TMessagesClass(PReturnClass));
+
+    end;
+
 
     Exit;
   end;

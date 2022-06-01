@@ -468,6 +468,10 @@ type
     FProfilePicThumbObj: TProfilePicThumbObjClass;
     FisContactSyncCompleted: Extended;
     FshortName: String;
+
+    //Marcelo 30/05/2022
+    FprivacyMode: String;
+    FverifiedLevel: Extended;
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -497,6 +501,11 @@ type
     //MARCELO 27/04/2022
     property isContactSyncCompleted:  Extended read FisContactSyncCompleted  write FisContactSyncCompleted;
     property shortName:       String          Read FshortName          Write FshortName;
+
+    //Marcelo 30/05/2022
+    property privacyMode:     String          Read FprivacyMode        Write FprivacyMode;
+    property verifiedLevel:   Extended        Read FverifiedLevel      Write FverifiedLevel;
+
   end;
 
   TLastReceivedKeyClass = class(TClassPadrao)
@@ -518,12 +527,18 @@ type
     FDisplayText   :string;
     FSubtype       :string;
     FSelectionId   :string;
+    //Adicionado por Marcelo 30/05/2022
+    Furl: String;
+    FphoneNumber: String;
 
   public
     property    ID          :string read FID          write FID;
     property    DisplayText :string read FDisplayText write FDisplayText;
     property    Subtype     :string read FSubtype     write FSubtype;
     property    SelectionId :string read FSelectionId write FSelectionId;
+    //Adicionado por Marcelo 30/05/2022
+    property url:          String   read Furl          write Furl;
+    property phoneNumber:  String   read FphoneNumber  write FphoneNumber;
   end;
 
   //Marcelo 01/05/2022
@@ -700,6 +715,12 @@ type
     FencFilehash: string;
     FlastPlaybackProgress: Extended;
 
+    //Marcelo 30/05/2022
+    FurlText: string;
+    FurlNumber: string;
+    Ffooter: string;
+    Ftitle: string;
+
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -788,6 +809,13 @@ type
     property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
     property encFilehash                 : string   read FencFilehash                  write FencFilehash;
     property lastPlaybackProgress        : Extended read FlastPlaybackProgress         write FlastPlaybackProgress;
+
+    //Marcelo 30/05/2022
+    property urlText                     : string   read FurlText                      write FurlText;
+    property urlNumber                   : string   read FurlNumber                    write FurlNumber;
+    property footer                      : string   read Ffooter                       write Ffooter;
+    property title                       : string   read Ftitle                        write Ftitle;
+
 
     //encFilehash
   end;
@@ -879,7 +907,10 @@ type
     FtcTokenSenderTimestamp: Extended;
     FendOfHistoryTransferType: Extended;
     FmsgUnsyncedButtonReplyMsgs: TArray<TmsgUnsyncedButtonReplyMsgsClass>;
-    //FtcToken: TtcTokenClass; //Não Implementada, não sei o que vem no JSON }
+
+    //MARCELO 30/05/2022
+    FpendingInitialLoading: Boolean;
+    FtcToken: TtcTokenClass; //Não Implementada, não sei o que vem no JSON }
 
   public
     constructor Create(pAJsonString: string);
@@ -920,7 +951,10 @@ type
     property endOfHistoryTransferType : Extended          read FendOfHistoryTransferType       write FendOfHistoryTransferType;
     property formattedTitle              : string         read FformattedTitle                 write FformattedTitle;
     property msgUnsyncedButtonReplyMsgs : TArray<TmsgUnsyncedButtonReplyMsgsClass> read FmsgUnsyncedButtonReplyMsgs write FmsgUnsyncedButtonReplyMsgs;
-    //property tcToken: TtcTokenClass                       read FtcToken                     write FtcToken;
+
+    //MARCELO 30/05/2022
+    property pendingInitialLoading      : Boolean         read FpendingInitialLoading          write FpendingInitialLoading;
+    property tcToken: TtcTokenClass                       read FtcToken                        write FtcToken;
   end;
 
 {##########################################################################################

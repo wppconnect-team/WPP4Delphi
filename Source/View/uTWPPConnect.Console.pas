@@ -1302,6 +1302,40 @@ begin
                             end;
                           end;
 
+    //Marcelo 31/05/2022
+    Th_sendFileMessage   : begin
+                            //LOutClass2 := TMessagesList.Create(LResultStr);
+                            LOutClass2 := TMessagesClass.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+    //Marcelo 31/05/2022
+    Th_sendTextMessage   : begin
+                            //LOutClass2 := TMessagesList.Create(LResultStr);
+                            LOutClass2 := TMessagesClass.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+    //Marcelo 31/05/2022
+    Th_sendListMessage   : begin
+                            //LOutClass2 := TMessagesList.Create(LResultStr);
+                            LOutClass2 := TMessagesClass.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+
     Th_getUnreadMessages: begin
                             {LOutClass := TChatList.Create(LResultStr);
                             try
