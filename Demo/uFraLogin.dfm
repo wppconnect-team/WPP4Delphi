@@ -1322,12 +1322,16 @@ object frameLogin: TframeLogin
       'QrCode Manual')
     TabOrder = 0
   end
-  object SpeedButton3: TBitBtn
+  object SpeedButton3: TButton
     Left = 159
     Top = 238
     Width = 185
     Height = 47
     Caption = 'Logout'
+    DisabledImageIndex = 1
+    HotImageIndex = 0
+    ImageIndex = 0
+    Images = ImageList1
     TabOrder = 1
     OnClick = SpeedButton3Click
   end

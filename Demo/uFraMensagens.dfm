@@ -73,7 +73,7 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
-    object btnLocalizacaoBotao: TBitBtn
+    object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
       Top = 452
@@ -81,10 +81,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Localiza'#231#227'o c/ Bot'#227'o'
+      ImageIndex = 11
+      Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
     end
-    object btnLink: TBitBtn
+    object btnLink: TButton
       AlignWithMargins = True
       Left = 5
       Top = 272
@@ -92,10 +94,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar LinkPreview'
+      ImageIndex = 6
+      Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
     end
-    object btnImagemBotao: TBitBtn
+    object btnImagemBotao: TButton
       AlignWithMargins = True
       Left = 5
       Top = 236
@@ -103,10 +107,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Imagem com Bot'#227'o'
+      ImageIndex = 5
+      Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
     end
-    object btnImagem: TBitBtn
+    object btnImagem: TButton
       AlignWithMargins = True
       Left = 5
       Top = 200
@@ -114,10 +120,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Imagem'
+      ImageIndex = 5
+      Images = ImageList1
       TabOrder = 5
       OnClick = btnImagemClick
     end
-    object btnVideoBotao: TBitBtn
+    object btnVideoBotao: TButton
       AlignWithMargins = True
       Left = 5
       Top = 164
@@ -125,10 +133,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar V'#237'deo com Bot'#227'o'
+      ImageIndex = 4
+      Images = ImageList1
       TabOrder = 4
       OnClick = btnVideoBotaoClick
     end
-    object btnVideo: TBitBtn
+    object btnVideo: TButton
       AlignWithMargins = True
       Left = 5
       Top = 128
@@ -136,10 +146,13 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar V'#237'deo'
+      HotImageIndex = 3
+      ImageIndex = 3
+      Images = ImageList1
       TabOrder = 3
       OnClick = btnVideoClick
     end
-    object btnListaMenu: TBitBtn
+    object btnListaMenu: TButton
       AlignWithMargins = True
       Left = 5
       Top = 92
@@ -147,10 +160,13 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Lista/Menu'
+      HotImageIndex = 2
+      ImageIndex = 2
+      Images = ImageList1
       TabOrder = 2
       OnClick = btnListaMenuClick
     end
-    object btnBotaoSimples: TBitBtn
+    object btnBotaoSimples: TButton
       AlignWithMargins = True
       Left = 5
       Top = 56
@@ -158,10 +174,13 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Bot'#245'es Simples'
+      HotImageIndex = 2
+      ImageIndex = 1
+      Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
     end
-    object btnTextoSimples: TBitBtn
+    object btnTextoSimples: TButton
       AlignWithMargins = True
       Left = 5
       Top = 20
@@ -169,10 +188,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Texto Simples'
+      ImageIndex = 0
+      Images = ImageList1
       TabOrder = 0
       OnClick = btnTextoSimplesClick
     end
-    object btnAudio: TBitBtn
+    object btnAudio: TButton
       AlignWithMargins = True
       Left = 5
       Top = 308
@@ -180,10 +201,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar '#193'udio'
+      ImageIndex = 7
+      Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
     end
-    object btnContato: TBitBtn
+    object btnContato: TButton
       AlignWithMargins = True
       Left = 5
       Top = 380
@@ -191,10 +214,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Contato'
+      ImageIndex = 9
+      Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
     end
-    object btnSticker: TBitBtn
+    object btnSticker: TButton
       AlignWithMargins = True
       Left = 5
       Top = 344
@@ -202,10 +227,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Sticker'
+      ImageIndex = 8
+      Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
     end
-    object btnLocalizacao: TBitBtn
+    object btnLocalizacao: TButton
       AlignWithMargins = True
       Left = 5
       Top = 416
@@ -213,6 +240,8 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Enviar Localiza'#231#227'o'
+      ImageIndex = 10
+      Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
     end
@@ -226,7 +255,7 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
-    object btnLimparConversa: TBitBtn
+    object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
       Top = 195
@@ -234,10 +263,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Limpar Conversa'
+      ImageIndex = 15
+      Images = ImageList1
       TabOrder = 5
       OnClick = btnLimparConversaClick
     end
-    object btnArquivar: TBitBtn
+    object btnArquivar: TButton
       AlignWithMargins = True
       Left = 5
       Top = 128
@@ -245,10 +276,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Arquivar Chat'
+      ImageIndex = 14
+      Images = ImageList1
       TabOrder = 3
       OnClick = btnArquivarClick
     end
-    object btnResponder: TBitBtn
+    object btnResponder: TButton
       AlignWithMargins = True
       Left = 5
       Top = 56
@@ -256,10 +289,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Responder Mensagem'
+      ImageIndex = 14
+      Images = ImageList1
       TabOrder = 1
       OnClick = btnResponderClick
     end
-    object btnReagir: TBitBtn
+    object btnReagir: TButton
       AlignWithMargins = True
       Left = 5
       Top = 20
@@ -267,10 +302,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Reagir Mensagem'
+      ImageIndex = 12
+      Images = ImageList1
       TabOrder = 0
       OnClick = btnReagirClick
     end
-    object btnVerificarNumero: TBitBtn
+    object btnVerificarNumero: TButton
       AlignWithMargins = True
       Left = 5
       Top = 231
@@ -278,10 +315,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Verificar N'#250'mero'
+      ImageIndex = 16
+      Images = ImageList1
       TabOrder = 6
       OnClick = btnVerificarNumeroClick
     end
-    object btnStatus: TBitBtn
+    object btnStatus: TButton
       AlignWithMargins = True
       Left = 5
       Top = 267
@@ -289,10 +328,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Verificar Status'
+      ImageIndex = 18
+      Images = ImageList1
       TabOrder = 7
       OnClick = btnStatusClick
     end
-    object btnDetalhe: TBitBtn
+    object btnDetalhe: TButton
       AlignWithMargins = True
       Left = 5
       Top = 303
@@ -300,10 +341,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Detalhes do Telefone'
+      ImageIndex = 25
+      Images = ImageList1
       TabOrder = 8
       OnClick = btnDetalheClick
     end
-    object btnBloquear: TBitBtn
+    object btnBloquear: TButton
       AlignWithMargins = True
       Left = 5
       Top = 339
@@ -311,10 +354,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Bloquear Contato'
+      ImageIndex = 20
+      Images = ImageList1
       TabOrder = 9
       OnClick = btnBloquearClick
     end
-    object btnDesbloquear: TBitBtn
+    object btnDesbloquear: TButton
       AlignWithMargins = True
       Left = 5
       Top = 375
@@ -322,10 +367,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Desbloquear Contato'
+      ImageIndex = 21
+      Images = ImageList1
       TabOrder = 10
       OnClick = btnDesbloquearClick
     end
-    object btnFixarChat: TBitBtn
+    object btnFixarChat: TButton
       AlignWithMargins = True
       Left = 5
       Top = 411
@@ -333,10 +380,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Fixar Chat'
+      ImageIndex = 22
+      Images = ImageList1
       TabOrder = 11
       OnClick = btnFixarChatClick
     end
-    object btnDesfixarChat: TBitBtn
+    object btnDesfixarChat: TButton
       AlignWithMargins = True
       Left = 5
       Top = 447
@@ -344,10 +393,12 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Desfixar Chat'
+      ImageIndex = 23
+      Images = ImageList1
       TabOrder = 12
       OnClick = btnDesfixarChatClick
     end
-    object BitBtn1: TBitBtn
+    object BitBtn1: TButton
       AlignWithMargins = True
       Left = 5
       Top = 164
@@ -355,10 +406,12 @@ object frameMensagem: TframeMensagem
       Height = 25
       Align = alTop
       Caption = 'Desarquivar Chat'
+      ImageIndex = 17
+      Images = ImageList1
       TabOrder = 4
       OnClick = BitBtn1Click
     end
-    object BitBtn2: TBitBtn
+    object BitBtn2: TButton
       AlignWithMargins = True
       Left = 5
       Top = 92
@@ -366,6 +419,8 @@ object frameMensagem: TframeMensagem
       Height = 30
       Align = alTop
       Caption = 'Status da Mensagem'
+      ImageIndex = 13
+      Images = ImageList1
       TabOrder = 2
       OnClick = BitBtn2Click
     end

@@ -19,7 +19,7 @@ type
     rgTipoLogin: TRadioGroup;
     imgQrCode: TImage;
     whatsOn: TImage;
-    SpeedButton3: TBitBtn;
+    SpeedButton3: TButton;
     ImageList1: TImageList;
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
