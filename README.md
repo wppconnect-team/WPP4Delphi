@@ -19,41 +19,41 @@ boss install github.com/wppconnect-team/WPP4Delphi
 ```delphi
 // under construction
 ```
-Envio de Mensagens
-  Texto Simples
-  Botões Simples
-  Lista/Menu
-  Enviar Video
-  Enviar Video com Botão
-  Enviar Imagem
-  Enviar Imagem com Botão
-  Enviar LinkPreview
-  Enviar Áudio
-  Enviar Sticker
-  Enviar Contato
-  Enviar Localização
-  Enviar Localização c/ Botão
+Envio de Mensagens</br>
+  Texto Simples</br>
+  Botões Simples</br>
+  Lista/Menu</br>
+  Enviar Video</br>
+  Enviar Video com Botão</br>
+  Enviar Imagem</br>
+  Enviar Imagem com Botão</br>
+  Enviar LinkPreview</br>
+  Enviar Áudio</br>
+  Enviar Sticker</br>
+  Enviar Contato</br>
+  Enviar Localização</br>
+  Enviar Localização c/ Botão</br></br>
 
-Opções de Chat
-  Reagir Mensagem
-  Responder Mensagem
-  Status da Mensagem
-  Arquivar Chat
-  Desarquivar Chat
-  Limpar Conversa
-  Verificar Número
-  Verificar Status
-  Detalhes do Telefone
-  Blouear Contato
-  Fixar Chat
-  Desfixar Chat
+Opções de Chat</br>
+  Reagir Mensagem</br>
+  Responder Mensagem</br>
+  Status da Mensagem</br>
+  Arquivar Chat</br>
+  Desarquivar Chat</br>
+  Limpar Conversa</br>
+  Verificar Número</br>
+  Verificar Status</br>
+  Detalhes do Telefone</br>
+  Blouear Contato</br>
+  Fixar Chat</br>
+  Desfixar Chat</br></br>
 
-Funções Diversas
-  Listar Contatos
-  Listar Chat
+Funções Diversas</br>
+  Listar Contatos</br>
+  Listar Chat</br></br>
 
-Captura de Mensagens e Arquivos 
-Captura de Imagem do Contato
+Captura de Mensagens e Arquivos</br> 
+Captura de Imagem do Contato</br>
 
 ## ⚡️ Quickstart Lazarus
 ```delphi
