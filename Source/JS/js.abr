@@ -12548,7 +12548,7 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)
     }
 };
 
-window.WAPI.sendFileMessage2Ex = async function(chatid, content, options,xSeuID)  {
+window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID)  {
     const result = await WPP.chat.sendFileMessage(chatid, content, options);
 
     if (result) {
@@ -12570,7 +12570,7 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options,xSeuID)
     }
 };
 
-window.WAPI.sendListMessage2Ex = async function(chatid, options) {
+window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
     const result = await WPP.chat.sendListMessage(chatid, options);
 
     if (result) {
