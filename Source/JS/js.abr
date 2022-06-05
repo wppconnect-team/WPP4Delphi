@@ -12421,3 +12421,70 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
 
     }
 };
+
+
+window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)  {
+    const result = await WPP.chat.sendTextMessage(chatid, content, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("sendTextMessageEx", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log(err);
+
+    }
+};
+
+window.WAPI.sendFileMessage2Ex = async function(chatid, content, options,xSeuID)  {
+    const result = await WPP.chat.sendFileMessage(chatid, content, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("sendFileMessageEx", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log(err);
+
+    }
+};
+
+window.WAPI.sendListMessage2Ex = async function(chatid, options) {
+    const result = await WPP.chat.sendListMessage(chatid, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               JsonMessage: JSON.stringify(result)
+             }
+	
+            SetConsoleMessage("sendListMessage", JSON.stringify(result));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log(err);
+
+    }
+};
