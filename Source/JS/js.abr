@@ -12474,6 +12474,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
+//Customização Marcelo Retorno das Mensagens
+window.WAPI.getMessageById2 = async function(UniqueID) {
+  const result = await WPP.chat.getMessageById(UniqueID);
+
+  if (result) {     
+    try {            	       
+		 SetConsoleMessage("getMessageById", JSON.stringify(result));
+		 
+    } catch (err) { 
+		console.log(err); 
+	  };      
+	  
+   }  
+};
+
 window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
     const result = await WPP.chat.sendTextMessage(chatid, content, options);
 
