@@ -78,6 +78,9 @@ type
     procedure TWPPConnect1Get_sendListMessage(const Mensagem: TMessagesClass);
     procedure TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);
     procedure TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
+    procedure TWPPConnect1Get_sendTextMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure TWPPConnect1Get_sendFileMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure TWPPConnect1Get_sendListMessageEx(const RespMensagem: TResponsesendTextMessage);
   private
     { Private declarations }
 
@@ -472,22 +475,17 @@ begin
     else if JMessagem.Result.ack = 3 then
       StatusMensagem := 'Visualizada';
 
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('A Mensagem Foi "' + StatusMensagem + '"');
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('Telefone: ' + JMessagem.Result.&to);
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('Id Mensagem: ' + JMessagem.Result.id._serialized);
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('Mensagem: ' + JMessagem.Result.body);
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('Enviada: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.t)));
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-      ('Recebida: ' + DateTimeToStr
-      (UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp)));
-
     ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Telefone: ' + JMessagem.Result.&to);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Id Mensagem: ' + JMessagem.Result.id._serialized);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Mensagem: ' + JMessagem.Result.body);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.t)));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp)));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
   except
     on E: Exception do
   end;
@@ -747,7 +745,7 @@ begin
         end
         else
         begin
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+          {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
           frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
             (PChar('UniqueID: ' + AMessage.id));
@@ -771,7 +769,7 @@ begin
           end;
 
           if selectedButtonId = '' then
-            selectedButtonId := AMessage.selectedId;
+            selectedButtonId := AMessage.selectedId;}
 
         end;
       end;
@@ -814,6 +812,28 @@ begin
   end;
 end;
 
+procedure TfrDemo.TWPPConnect1Get_sendFileMessageEx(const RespMensagem: TResponsesendTextMessage);
+var
+  StatusMensagem : string;
+begin
+  //Adicionado Novo Retorno pegando o SEUID que foi passado no Envio
+  if RespMensagem.Ack = 1 then
+    StatusMensagem := 'Enviada'
+  else
+  if RespMensagem.Ack = 2 then
+    StatusMensagem := 'Recebida'
+  else
+  if RespMensagem.Ack = 3 then
+    StatusMensagem := 'Visualizada';
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
+
+end;
+
 procedure TfrDemo.TWPPConnect1Get_sendListMessage(const Mensagem: TMessagesClass);
 var
   StatusMensagem, wlo_Json, S_NUMERO : string;
@@ -849,6 +869,29 @@ begin
   end;
 end;
 
+procedure TfrDemo.TWPPConnect1Get_sendListMessageEx(const RespMensagem: TResponsesendTextMessage);
+var
+  StatusMensagem : string;
+begin
+  //Adicionado Novo Retorno pegando o SEUID que foi passado no Envio
+  if RespMensagem.Ack = 1 then
+    StatusMensagem := 'Enviada'
+  else
+  if RespMensagem.Ack = 2 then
+    StatusMensagem := 'Recebida'
+  else
+  if RespMensagem.Ack = 3 then
+    StatusMensagem := 'Visualizada';
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
+end;
+
 procedure TfrDemo.TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);
 var
   StatusMensagem, wlo_Json, S_NUMERO : string;
@@ -882,6 +925,28 @@ begin
     //ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
   except on E: Exception do
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Get_sendTextMessageEx(const RespMensagem: TResponsesendTextMessage);
+var
+  StatusMensagem : string;
+begin
+  //Adicionado Novo Retorno pegando o SEUID que foi passado no Envio
+  if RespMensagem.Ack = 1 then
+    StatusMensagem := 'Enviada'
+  else
+  if RespMensagem.Ack = 2 then
+    StatusMensagem := 'Recebida'
+  else
+  if RespMensagem.Ack = 3 then
+    StatusMensagem := 'Visualizada';
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
+
 end;
 
 procedure TfrDemo.TWPPConnect1NewGetNumber(const vCheckNumber

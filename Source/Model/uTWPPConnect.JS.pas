@@ -74,7 +74,7 @@ type
     property   AutoUpdateTimeOut  : Integer   Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
     property   OnUpdateJS    : TNotifyEvent   Read FOnUpdateJS           Write FOnUpdateJS;
     property   Ready         : Boolean        read FReady;
-    property   JSURL         : String         read FJSURL;
+    property   JSURL         : String         read FJSURL                write FJSURL;
     property   JSScript      : TstringList    read FJSScript             Write SeTWPPConnectScript;
   end;
 
@@ -149,7 +149,8 @@ begin
   FJSURL                     := TWPPConnectJS_JSUrlPadrao;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
-  UpdateNow;
+  //UpdateNow; Temis 03-06-2022
+  //UpdateNow;
 end;
 
 procedure TWPPConnectJS.DelFileTemp;
@@ -288,7 +289,9 @@ begin
     LHttp.Request.ContentEncoding := 'raw';
 
     LHttp.TimeOut     := AutoUpdateTimeOut;
-    if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
+    //Temis 03-06-2022
+    if LHttp.GetUrl(JSURL) = true Then
+    //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
     Begin
       LRet.LoadFromStream(LHttp.ReturnUrl);
       if not ValidaJs(LRet) Then

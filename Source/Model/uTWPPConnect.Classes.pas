@@ -971,6 +971,27 @@ type
 {##########################################################################################
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
+
+//temis 03-06-2022
+TResponsesendTextMessage  = class(TClassPadrao)
+private
+  fSeuID : String;
+  fID : String;
+  fTelefone : String;
+  fAck      : Extended;
+  fJsonMessage: String;
+  fMessageClass : TMessagesClass;
+
+Public
+  Property SeuID : String read FSeuID ;
+  Property Telefone : String read FTelefone;
+  Property Ack      : Extended read FAck;
+  Property ID    : String read FID;
+//    Property Mensagem : TMessagesClass   Read fMessageClass;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;       override;
+end;
+
 TRetornoAllContacts = class(TClassPadraoList<TContactClass>)
 Public
   constructor Create(pAJsonString: string);
@@ -1612,8 +1633,9 @@ begin
     FTImeOutIndy.Enabled     := True;
     try
       //Get(Purl, FReturnUrl);
-
-      DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+      //temis  03-06-2022
+      DownLoadInternetFile(Purl, 'js.abr');
+      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
       //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'wppconnect-wa.js');
 
 
@@ -1827,5 +1849,28 @@ begin
   //FResult := (Copy (FResult, Pos ('@c.us_', FResult) + 2, Length (FResult)));
 end;
 
+{ TResponssendTextMessage }
+
+//temis  03-06-2022
+constructor TResponsesendTextMessage.Create(pAJsonString: string);
+var
+  v : String;
+begin
+
+  v := copy(pAJsonString, 11, length(pAJsonString) - 11);
+  inherited Create(v);
+  fMessageClass := TMessagesClass.Create(FJsonMessage);
+  //true_1234434@us
+  FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
+  FAck      := FMessageClass.ack;
+  FID    := FMessageClass.id;
+  fMessageClass.free;
+end;
+
+destructor TResponsesendTextMessage.Destroy;
+begin
+
+  inherited;
+end;
 
 End.

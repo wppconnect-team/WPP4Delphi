@@ -126,8 +126,11 @@ Const
   FrmConsole_JS_VAR_markIsRead          = 'WPP.chat.markIsRead("<#MSG_PHONE#>");';
   FrmConsole_JS_VAR_markIsRecording     = 'WPP.chat.markIsRecording("<#MSG_PHONE#>", 5000);';
   FrmConsole_JS_VAR_markIsUnread        = 'WPP.chat.markIsUnread("<#MSG_PHONE#>");';
+
   //FrmConsole_JS_VAR_getMessageById      = 'WPP.chat.getMessageById(["<#MSGKEY#>"]);';
   FrmConsole_JS_VAR_getMessageById      = 'window.WAPI.getMessageById2("<#MSGKEY#>");';
+
+  FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
 
 
   //Adicionado Por Marcelo 26/04/2022
@@ -138,12 +141,10 @@ Const
   //Alterado Por Marcelo 10/05/2022     //Alterado Por Marcelo 31/05/2022
   FrmConsole_JS_VAR_SendTextMessage     = 'window.WAPI.sendTextMessage2("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>});';
 
-  FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
-
-
   //Adicionado Por Marcelo 30/04/2022     //Alterado Por Marcelo 31/05/2022
-  FrmConsole_JS_VAR_sendListMessage     = 'window.WAPI.sendListMessage2("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
   FrmConsole_JS_VAR_sendFileMessage     = 'window.WAPI.sendFileMessage2("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
+  FrmConsole_JS_VAR_sendListMessage     = 'window.WAPI.sendListMessage2("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
+
 
   FrmConsole_JS_VAR_sendLocationMessage = 'WPP.chat.sendLocationMessage("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} );';
 
@@ -163,6 +164,12 @@ Const
   FrmConsole_JS_VAR_UnPinChat           = 'WPP.chat.unpin("<#CTT_NAME#>");';
   //Marcelo 18/05/2022
   FrmConsole_JS_VAR_sendRawMessage      = 'WPP.chat.sendRawMessage("<#MSG_PHONE#>","<#MSG_RAW#>",{<#MSG_OPTIONS#>} );';
+
+
+  //TEMIS 03-06-2022 Obtendo Retorno do Envio com SeuID
+  FrmConsole_JS_VAR_SendTextMessageEx   = 'window.WAPI.sendTextMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>");';
+  FrmConsole_JS_VAR_sendFileMessageEx   = 'window.WAPI.sendFileMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
+  FrmConsole_JS_VAR_sendListMessageEx   = 'window.WAPI.sendListMessage2Ex("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
 
 resourcestring
   MSG_ConfigCEF_ExceptNotFoundJS       = '';
@@ -298,7 +305,8 @@ type
                    // Novos Eventos de Retorno by Marcelo
                    Th_GetStatusMessage=38, Th_GetGroupInviteLink=39, Th_GetMe=40, Th_NewCheckIsValidNumber=41
                    , Th_GetCheckIsBeta=42, Th_getMessageById=43 //Marcelo 06/05/2022
-                   , Th_sendFileMessage=44, Th_SendTextMessage=45, Th_sendListMessage=46); //Marcelo 31/05/2022
+                   , Th_SendFileMessage=44, Th_SendTextMessage=45, Th_SendListMessage=46 //Marcelo 31/05/2022
+                   , Th_SendTextMessageEx=47, Th_SendFileMessageEx=48, Th_SendListMessageEx=49);   //Temis 03-06-2022
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
     Function   FrmConsole_JS_AlterVar(var PScript:String;  PNomeVar: String;  Const PValor:String):String;
     function   StrToTypeHeader(PText: string): TTypeHeader;
@@ -405,7 +413,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 46; //Marcelo 31/05/2022
+const LmaxCount = 49; //Temis 03-06-2022
 var
   I: Integer;
   LNome: String;

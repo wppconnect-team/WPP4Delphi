@@ -206,8 +206,12 @@ begin
     PathUserDataPath        := FIniFIle.ReadString('Path Defines', 'Data User', '');
     PathLogFile             := FIniFIle.ReadString('Path Defines', 'Log File',  '');
     LogConsole              := FIniFIle.ReadString('Path Defines', 'Log Console',  '');
+
     if LogConsole = '' then
-       LogConsole            := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName))+'LogTWppConnect\';
+       LogConsole := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName)) + 'LogTWppConnect\';
+
+    if PathLogFile = '' then
+       PathLogFile := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName)) + 'LogTWppConnect\';
   End;
   Self.FrameworkDirPath   := '';
   Self.ResourcesDirPath   := '';

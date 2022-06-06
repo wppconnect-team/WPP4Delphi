@@ -203,7 +203,8 @@ begin
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
 
       //Audio
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options_Audio, '123');
 
       //Botões IMAGEM
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
@@ -269,7 +270,9 @@ begin
 
     S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
 
-    frDemo.TWPPConnect1.SendButtons(ed_num.Text, S_RETORNO, options, '');
+    //frDemo.TWPPConnect1.SendButtons(ed_num.Text, S_RETORNO, options, '');
+    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, S_RETORNO, options, '');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, '123');
 
   finally
     ed_num.SelectAll;
@@ -432,7 +435,8 @@ begin
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
 
       //Botões IMAGEM
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
       //Botões VIDEO
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
@@ -473,7 +477,8 @@ begin
       content := mem_message.Text;
 
       //Botões IMAGEM
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, '', '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, '', '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, '', '123');
 
 
     FINALLY
@@ -514,7 +519,8 @@ begin
       'title: "WPPConnect", ' +
       'description: "WPPConnect/WA-JS" }';
 
-    frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
+    //frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.text, edtUrl.text, options, '123');
 
   finally
     ed_num.SelectAll;
@@ -588,8 +594,9 @@ begin
       '}] ';
 
 
-    //TWPPConnect.SendListMenu(ed_num.text, titleText, subtitleText, description, ButtonText, menu, '');
-    frDemo.TWPPConnect1.SendListMessage(ed_num.text, ButtonText, description, menu, '');
+
+    //frDemo.TWPPConnect1.SendListMessage(ed_num.text, ButtonText, description, menu, '');
+    frDemo.TWPPConnect1.SendListMessageEx(ed_num.text, ButtonText, description, menu, '123');
 
   finally
     ed_num.SelectAll;
@@ -701,7 +708,8 @@ begin
     if InputQuery('Informe Sua Resposta.', 'Resposta: ', content) then
     begin
       option := 'quotedMsg: "' + IdMensagem+ '"';
-      frDemo.TWPPConnect1.SendTextMessage(ed_num.text, content, option);
+      //frDemo.TWPPConnect1.SendTextMessage(ed_num.text, content, option);
+      frDemo.TWPPConnect1.SendTextMessageEx(ed_num.text, content, option, '123');
     end;
   end;
 
@@ -789,7 +797,8 @@ begin
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
 
       //Figurinha Stickers
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options_Figurinha, '123');
     FINALLY
       freeAndNil(LBase64);
     END;
@@ -823,7 +832,8 @@ begin
 
     options := '';
 
-    frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options);
+    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -903,7 +913,8 @@ begin
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
 
       //Botões VIDEO
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
       //Figurinha Stickers
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
@@ -981,7 +992,8 @@ begin
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
 
       //Botões VIDEO
-      frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
       //Figurinha Stickers
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');

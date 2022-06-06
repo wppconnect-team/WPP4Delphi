@@ -1639,7 +1639,7 @@ object frDemo: TfrDemo
     inherited gbAcoesBasicas: TGroupBox
       Height = 501
       ExplicitHeight = 501
-      inherited btnImagem: TBitBtn
+      inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
       end
     end
@@ -1805,8 +1805,10 @@ object frDemo: TfrDemo
       end
       inherited Button1: TButton
         Left = 482
+        Width = 127
         OnClick = nil
         ExplicitLeft = 482
+        ExplicitWidth = 127
       end
     end
   end
@@ -4203,6 +4205,9 @@ object frDemo: TfrDemo
   end
   object TWPPConnect1: TWPPConnect
     InjectJS.AutoUpdateTimeOut = 10
+    InjectJS.JSURL = 
+      'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
+      'n/Source/JS/js.abr'
     Config.AutoStart = True
     Config.AutoDelay = 1000
     AjustNumber.LengthPhone = 8
@@ -4220,6 +4225,9 @@ object frDemo: TfrDemo
     OnGet_sendFileMessage = TWPPConnect1Get_sendFileMessage
     OnGet_sendTextMessage = TWPPConnect1Get_sendTextMessage
     OnGet_sendListMessage = TWPPConnect1Get_sendListMessage
+    OnGet_sendTextMessageEx = TWPPConnect1Get_sendTextMessageEx
+    OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
+    OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
@@ -4231,8 +4239,8 @@ object frDemo: TfrDemo
     OnGetInviteGroup = TWPPConnect1GetInviteGroup
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
-    Left = 368
-    Top = 72
+    Left = 392
+    Top = 272
   end
   object timerStatus: TTimer
     Enabled = False
