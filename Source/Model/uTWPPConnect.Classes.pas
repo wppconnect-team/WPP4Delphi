@@ -1155,7 +1155,7 @@ Begin
     if Assigned(GlobalCEFApp) then
     Begin
       //Garante um arquivo novo e limpo a cada hora
-      LName := GlobalCEFApp.LogConsole+ 'ConsoleMessage'+FormatDateTime('yymmdd_HH', now) +'.log';
+      LName := GlobalCEFApp.LogConsole + 'ConsoleMessage' + FormatDateTime('yymmdd_HH', now) +'.log';
 
       if (not GlobalCEFApp.LogConsoleActive) or (GlobalCEFApp.LogConsole = '') Then
          Exit;
