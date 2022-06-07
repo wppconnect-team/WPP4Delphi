@@ -38,13 +38,13 @@ boss install github.com/wppconnect-team/WPP4Delphi
 ## Instalação 
 
 Dependências: 
-[`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> 
-[`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> 
+- [`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> <br>
+- [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> <br> 
 
 Atualmente utilizando o CEF Versão: 101.0.4951.67 - Binários: 101.0.18
 Download: 
-[`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a>
-[`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> 
+- [`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a> <br>
+- [`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> <br>
 
 Tutorial de instalação em vídeo: 
 [`Youtube`]  
