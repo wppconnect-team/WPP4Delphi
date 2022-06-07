@@ -1,4 +1,6 @@
-# WPPConnect/WPP4Delphi
+# WPPConnect/WPP4Delphi 📞
+
+![WPPConnect Banner](./img/wppconnect-banner.jpeg)
 
 > WPPConnect/WPP4Delphi is an open-source project with the aim of exporting functions from WhatsApp Web for Delphi/Lazarus, which can be used to support the creation of any interaction.
 
@@ -17,43 +19,60 @@ boss install github.com/wppconnect-team/WPP4Delphi
 
 ## ⚡️ Quickstart Delphi
 ```delphi
-// under construction
+
 ```
-Envio de Mensagens</br>
-  Texto Simples</br>
-  Botões Simples</br>
-  Lista/Menu</br>
-  Enviar Video</br>
-  Enviar Video com Botão</br>
-  Enviar Imagem</br>
-  Enviar Imagem com Botão</br>
-  Enviar LinkPreview</br>
-  Enviar Áudio</br>
-  Enviar Sticker</br>
-  Enviar Contato</br>
-  Enviar Localização</br>
-  Enviar Localização c/ Botão</br></br>
+## Funções
+|                                                                            |     |
+| -------------------------------------------------------------------------- | --- |
+| Geração automática de QRCode                                               | ✔  |
+| Envio de mensagens **texto, imagens, videos, áudios e docs**               | ✔  |
+| Envio de mensagens **lista, botões, links**                                | ✔  |
+| Busca de **contatos, chats, grupos, membros de grupos, lista de bloqueio** | ✔  |
+| Envio de Contatos                                                          | ✔  |
+| Envio de stickers                                                          | ✔  |
+| Sessões Múltiplas                                                          | ✔  |
+| Responder Mensagens                                                        | ✔  |
+| Receber mensagens                                                          | ✔  |
+| Receber mensagens e obter retorno com o id                                 | ✔  |
+| Enviar _localização_                                                       | ✔  |
+| **e muito mais**                                                           | ✔  |
 
-Opções de Chat</br>
-  Reagir Mensagem</br>
-  Responder Mensagem</br>
-  Status da Mensagem</br>
-  Arquivar Chat</br>
-  Desarquivar Chat</br>
-  Limpar Conversa</br>
-  Verificar Número</br>
-  Verificar Status</br>
-  Detalhes do Telefone</br>
-  Blouear Contato</br>
-  Fixar Chat</br>
-  Desfixar Chat</br></br>
+## Instalação 
 
-Funções Diversas</br>
-  Listar Contatos</br>
-  Listar Chat</br></br>
+Dependências: 
+- [`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> <br>
+- [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> <br> 
 
-Captura de Mensagens e Arquivos</br> 
-Captura de Imagem do Contato</br>
+Atualmente utilizando o CEF Versão: 101.0.4951.67 - Binários: 101.0.18
+Download: 
+- [`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a> <br>
+- [`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> <br>
+
+Tutorial de instalação em vídeo: 
+[`Youtube`]  
+  
+
+Instalação: 
+  - Extraia para uma pasta os arquivos do CEF4Delphi 
+  - Extraia para uma pasta os binários do CEF 
+  - No Delphi adicione em Tools > Options > Library Path a pasta sources do CEF4Delphi "...\CEF4Delphi\source"
+  - Abra o arquivo "...CEF4Delphi\packages\CEF4Delphi.dpk" no Delphi e então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
+  - Após instalar, feche o projeto. 
+  - Adicione em Tools > Options > Library Path as pastas source do WPP4Delphi "...WPP4Delphi\Source\Model", "...WPP4Delphi\Source\Services", "...WPP4Delphi\Source\View", "...WPP4Delphi\Packages\Compilados"
+  - Dentro da pasta Packages\Compilados, existem subpastas D23, D24, D25, D26 e D27, adicione no library path a pasta correta conforme a sua versão do delphi 
+    D27: Delphi 10.4 Sydney
+	D26: Delphi 10.3 Rio 
+	D25: Delphi 10.2 Tokyo 
+	D24: Delphi 10.1 Berlin 
+	D23: Delphi 10 Seattle
+  - Abra o arquivo "...WPP4Delphi\Packages\TWPP4DelphiCollection.dpk"
+  - Então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
+  - Abra o DEMO que está junto dos fontes do WPP4Delphi. 
+  - Compile o projeto DEMO uma única vez e será criada a Pasta: C:\Executáveis\WPPConnectDemo 
+  - Cole dentro dessa pasta o arquivo ConfTWPPConnect.ini que está em "...WPP4Delphi\Demo\BIN"
+  - Cole dentro da pasta: "C:\Executáveis\WPPConnectDemo" os binários do CEF que estão disponíveis: <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> 
+  - Extraia todos eles e copie para junto do executável do DEMO ou da sua aplicação. 
+  
 
 ## ⚡️ Quickstart Lazarus
 ```delphi
