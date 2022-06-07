@@ -38,13 +38,13 @@ boss install github.com/wppconnect-team/WPP4Delphi
 ## Instalação 
 
 Dependências: 
-[`WPPConnect/wa-js`] https://github.com/wppconnect-team/wa-js
-[`CEF4Delphi`] https://github.com/salvadordf/CEF4Delphi
+[`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> 
+[`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> 
 
 Atualmente utilizando o CEF Versão: 101.0.4951.67 - Binários: 101.0.18
 Download: 
-[`CEF4Delphi`] https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing
-[`CEF Binários`] https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing
+[`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a>
+[`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> 
 
 Tutorial de instalação em vídeo: 
 [`Youtube`]  
@@ -68,7 +68,7 @@ Instalação:
   - Abra o DEMO que está junto dos fontes do WPP4Delphi. 
   - Compile o projeto DEMO uma única vez e será criada a Pasta: C:\Executáveis\WPPConnectDemo 
   - Cole dentro dessa pasta o arquivo ConfTWPPConnect.ini que está em "...WPP4Delphi\Demo\BIN"
-  - Cole dentro da pasta: "C:\Executáveis\WPPConnectDemo" os binários do CEF que estão disponíveis: [`CEF Binários`] https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing
+  - Cole dentro da pasta: "C:\Executáveis\WPPConnectDemo" os binários do CEF que estão disponíveis: <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> 
   - Extraia todos eles e copie para junto do executável do DEMO ou da sua aplicação. 
   
 
