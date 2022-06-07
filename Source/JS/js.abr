@@ -1231,7 +1231,8 @@ function isChatMessage(message) {
 }
 
 window.WAPI.getUnreadMessages = function(includeMe, includeNotifications, use_unread_count, done) {
-    const chats = window.Store.Chat.models;
+    //const chats = window.Store.Chat.models;
+    const chats = window.Store.Chat.getModelsArray();
     let output = [];
 
     for (let chat in chats) {
@@ -2332,7 +2333,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.5.0
+//WPPCONNECT v2.5.1
 
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
@@ -2855,7 +2856,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r + n > e.length) throw new RangeError("Index out of range")
                 }
 
-                function L(e, t, r, n, o) {
+                function A(e, t, r, n, o) {
                     W(t, n, o, e, r, 7);
                     let i = Number(t & BigInt(4294967295));
                     e[r++] = i, i >>= 8, e[r++] = i, i >>= 8, e[r++] = i, i >>= 8, e[r++] = i;
@@ -2863,7 +2864,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return e[r++] = s, s >>= 8, e[r++] = s, s >>= 8, e[r++] = s, s >>= 8, e[r++] = s, r
                 }
 
-                function A(e, t, r, n, o) {
+                function L(e, t, r, n, o) {
                     W(t, n, o, e, r, 7);
                     let i = Number(t & BigInt(4294967295));
                     e[r + 7] = i, i >>= 8, e[r + 6] = i, i >>= 8, e[r + 5] = i, i >>= 8, e[r + 4] = i;
@@ -3000,9 +3001,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeUint32BE = u.prototype.writeUInt32BE = function(e, t, r) {
                     return e = +e, t >>>= 0, r || B(this, e, t, 4, 4294967295, 0), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
                 }, u.prototype.writeBigUInt64LE = Z((function(e, t = 0) {
-                    return L(this, e, t, BigInt(0), BigInt("0xffffffffffffffff"))
-                })), u.prototype.writeBigUInt64BE = Z((function(e, t = 0) {
                     return A(this, e, t, BigInt(0), BigInt("0xffffffffffffffff"))
+                })), u.prototype.writeBigUInt64BE = Z((function(e, t = 0) {
+                    return L(this, e, t, BigInt(0), BigInt("0xffffffffffffffff"))
                 })), u.prototype.writeIntLE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, !n) {
                         const n = Math.pow(2, 8 * r - 1);
@@ -3034,9 +3035,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeInt32BE = function(e, t, r) {
                     return e = +e, t >>>= 0, r || B(this, e, t, 4, 2147483647, -2147483648), e < 0 && (e = 4294967295 + e + 1), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
                 }, u.prototype.writeBigInt64LE = Z((function(e, t = 0) {
-                    return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
-                })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
                     return A(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
+                })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
+                    return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeFloatLE = function(e, t, r) {
                     return F(this, e, t, !0, r)
                 }, u.prototype.writeFloatBE = function(e, t, r) {
@@ -6556,9 +6557,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             n = !1,
                             s = !1;
                         const c = e.isSentByMe;
-                        e.type === i.MSG_TYPE.REVOKED && a ? (t = i.SendMsgResult.ERROR_UNKNOWN, n = !0) : a ? (o.Cmd.sendRevokeMsgs(u, [e], {
-                            clearMedia: r
-                        }), u.promises.sendRevokeMsgs && await u.promises.sendRevokeMsgs, n = e.isRevokedByMe) : (o.Cmd.sendDeleteMsgs(u, [e], r), u.promises.sendDeleteMsgs && await u.promises.sendDeleteMsgs, s = Boolean(u.msgs.get(e.id))), d.push({
+                        if (e.type === i.MSG_TYPE.REVOKED && a) t = i.SendMsgResult.ERROR_UNKNOWN, n = !0;
+                        else if (a) {
+                            if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, [e], {
+                                    clearMedia: r
+                                }), u.promises.sendRevokeMsgs) {
+                                const e = await u.promises.sendRevokeMsgs;
+                                Array.isArray(e) && (t = e[0])
+                            }
+                            n = e.isRevokedByMe
+                        } else {
+                            if (o.Cmd.sendDeleteMsgs(u, [e], r), u.promises.sendDeleteMsgs) {
+                                const e = await u.promises.sendDeleteMsgs;
+                                Array.isArray(e) && (t = e[0])
+                            }
+                            s = Boolean(u.msgs.get(e.id))
+                        }
+                        d.push({
                             id: e.id.toString(),
                             sendMsgResult: t,
                             isRevoked: n,
@@ -6941,18 +6956,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return B.sendReactionToMessage
                     }
                 });
-                var L = r(6627);
+                var A = r(6627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return L.sendTextMessage
+                        return A.sendTextMessage
                     }
                 });
-                var A = r(6017);
+                var L = r(6017);
                 Object.defineProperty(t, "sendVCardContactMessage", {
                     enumerable: !0,
                     get: function() {
-                        return A.sendVCardContactMessage
+                        return L.sendVCardContactMessage
                     }
                 });
                 var R = r(7709);
@@ -9577,7 +9592,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.5.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.5.1", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12471,6 +12486,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(3607);
     return __webpack_exports__
 })()));
+
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
