@@ -683,7 +683,7 @@ begin
       'createChat: true, ' +
       'title: "Cristo Rendentor",  ' +
       'footer: "Pacote de Viagem",  ' +
-      'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ"W';
+      'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ"';
 
     frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
 
