@@ -455,7 +455,7 @@ end;
 
 procedure TframeMensagem.btnImagemClick(Sender: TObject);
 var
-  content, description, buttontext, menu, menu2, menu3 : string;
+  content, options, caption : string;
   LBase64 : TStringList;
 begin
 
@@ -476,9 +476,17 @@ begin
 
       content := mem_message.Text;
 
+      caption := mem_message.Text;
+
+
+      options :=
+        ' type: "image", ' +
+        ' caption: "' + caption + '",  ' +
+        ' isViewOnce: false  '; //Temporaria Somente 1 Visualização
+
       //Botões IMAGEM
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, '', '');
-      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, '', '123');
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
 
     FINALLY
@@ -672,6 +680,9 @@ begin
       'lat: -22.95201, ' +
       'lng: -43.2102601, ' +
       'name: "Cristo Rendentor", ' +
+      'createChat: true, ' +
+      'title: "Cristo Rendentor",  ' +
+      'footer: "Pacote de Viagem",  ' +
       'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ"W';
 
     frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
