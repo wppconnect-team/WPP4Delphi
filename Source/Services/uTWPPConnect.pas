@@ -218,11 +218,14 @@ type
     procedure GroupDemoteParticipant(PIDGroup, PNumber: string);
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
+    procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions: string);
 
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
     procedure ArquivarChat(PIDContato:String);
     procedure DesarquivarChat(PIDContato:String);
+    procedure ArquivarTodosOsChats;
+    procedure DeletarTodosOsChats;
     procedure FixarChat(PIDContato:String);
     procedure DesfixarChat(PIDContato:String);
 
@@ -370,6 +373,32 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.ArquivarChat(PIDContato);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.ArquivarTodosOsChats;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ArquivarTodosOsChats();
           end;
         end);
 
@@ -641,6 +670,34 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.CreateGroup(PGroupName, PParticipantNumber);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DeletarTodosOsChats;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarTodosOsChats();
           end;
         end);
 
@@ -923,6 +980,51 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.GroupAddParticipant(PIDGroup, PNumber);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription,
+  PPoolOptions: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    Exit;
+  end;
+
+  if Trim(PDescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
+    Exit;
+  end;
+
+   if Trim(PPoolOptions) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PPoolOptions);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupPoolCreate(PIDGroup,PDescription, PPoolOptions);
           end;
         end);
 

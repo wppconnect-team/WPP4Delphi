@@ -12594,3 +12594,53 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
 
     }
 };
+
+async function arquivarChat(chatid) { 
+    return(WPP.chat.archive(chatid))
+};
+
+async function archiveAllChats() {
+    const ChatListOptions = {};
+
+    ChatListOptions.onlyUsers = true;
+    ChatListOptions.canArchive = true;
+
+    const chat = await WPP.chat.list(ChatListOptions.onlyUsers);
+
+        try {
+            for (var i = 0; i < chat.length; i++) {
+                if ((chat[i].archive == false) || (chat[i].archive == undefined)) {       
+                   if (chat[i].hasUnread == false) {              
+                       await arquivarChat(chat[i].id._serialized).then(x => console.log(x))                
+                   }
+                }        
+            }
+        } catch (e) {
+            console.log('Erro:'.concat(e));
+        }
+    
+};
+
+async function apagarChat(chatid) { 
+    return(WPP.chat.delete(chatid))
+};
+
+async function deleteAllChats() {
+    const ChatListOptions = {};
+
+    ChatListOptions.onlyUsers = true;
+
+    const chat = await WPP.chat.list(ChatListOptions.onlyUsers);
+
+        try {
+            for (var i = 0; i < chat.length; i++) {                 
+                   if (chat[i].hasUnread == false) {              
+                       await apagarChat(chat[i].id._serialized).then(x => console.log(x))                
+                   }
+                       
+            }
+        } catch (e) {
+            console.log('Erro:'.concat(e));
+        }    
+};
+

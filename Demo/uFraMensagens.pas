@@ -68,6 +68,8 @@ type
     btnDesfixarChat: TButton;
     BitBtn1: TButton;
     BitBtn2: TButton;
+    btnArquivarTodosChats: TButton;
+    btnDeletarTodosChats: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -99,6 +101,8 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure listaChatsDblClick(Sender: TObject);
     procedure listaContatosDblClick(Sender: TObject);
+    procedure btnArquivarTodosChatsClick(Sender: TObject);
+    procedure btnDeletarTodosChatsClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -158,6 +162,13 @@ begin
    if not frDemo.TWPPConnect1.Auth then
       Exit;
   frDemo.TWPPConnect1.ArquivarChat(ed_num.text);
+end;
+
+procedure TframeMensagem.btnArquivarTodosChatsClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+      Exit;
+   frDemo.TWPPConnect1.ArquivarTodosOsChats;
 end;
 
 procedure TframeMensagem.btnAudioClick(Sender: TObject);
@@ -323,6 +334,13 @@ begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
+end;
+
+procedure TframeMensagem.btnDeletarTodosChatsClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+      Exit;
+   frDemo.TWPPConnect1.DeletarTodosOsChats;
 end;
 
 procedure TframeMensagem.btnDesbloquearClick(Sender: TObject);
