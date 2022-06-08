@@ -2301,7 +2301,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.5.1
+//WPPCONNECT v2.6.0
 
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
@@ -6679,7 +6679,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const a = (0, n.assertGetChat)(e);
                     let u = t.count || 20;
                     const c = "after" === t.direction ? "after" : "before",
-                        l = t.id || (null === (r = a.lastReceivedKey) || void 0 === r ? void 0 : r.toString()); - 1 === u && (0, o.isMultiDevice)() && (u = 1 / 0), !t.id && l && u--;
+                        l = t.id || (null === (r = a.lastReceivedKey) || void 0 === r ? void 0 : r.toString());
+                    if (t.onlyUnread) {
+                        if (!a.hasUnread) return [];
+                        const e = a.unreadCount < 0 ? 2 : a.unreadCount;
+                        u = u < 0 ? e : Math.min(u, e)
+                    } - 1 === u && (0, o.isMultiDevice)() && (u = 1 / 0), !t.id && l && u--;
                     const d = l ? i.MsgKey.fromString(l) : {
                         remote: a.id
                     };
@@ -9560,7 +9565,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.5.1", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.6.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12454,7 +12459,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(3607);
     return __webpack_exports__
 })()));
-
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
