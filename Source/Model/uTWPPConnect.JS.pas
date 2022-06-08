@@ -3,14 +3,22 @@
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################
-    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
-    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
-
+    Owner.....: Mike W. Lustosa            - mikelustosa@gmail.com   - +55 81 9.9630-2385
+    Developer.: Joathan Theiller           - jtheiller@hotmail.com   -
+                Robson André de Morais     - robinhodemorais@gmail.com
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Marcelo;
+       Mike W. Lustosa;
 
+####################################################################################################################
+                                  Evolução do Código
+####################################################################################################################
+  Autor........: Marcelo Oliveira
+  Email........: marcelo.broz@hotmail.com
+  Data.........: 07/06/2022
+  Identificador: @Marcelo
+  Modificação..: Ajustado para Trabalhar com o WPPConnect
 ####################################################################################################################
 }
 
@@ -150,7 +158,7 @@ begin
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
   //UpdateNow; Temis 03-06-2022
-  //UpdateNow;
+  UpdateNow;
 end;
 
 procedure TWPPConnectJS.DelFileTemp;
@@ -290,8 +298,8 @@ begin
 
     LHttp.TimeOut     := AutoUpdateTimeOut;
     //Temis 03-06-2022
-    if LHttp.GetUrl(JSURL) = true Then
-    //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
+    //if LHttp.GetUrl(JSURL) = true Then
+    if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
     Begin
       LRet.LoadFromStream(LHttp.ReturnUrl);
       if not ValidaJs(LRet) Then

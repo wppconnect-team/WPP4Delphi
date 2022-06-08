@@ -3,14 +3,20 @@
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################
-    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
-    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
-            
+
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Marcelo;
+       Mike W. Lustosa;
      
+####################################################################################################################
+                                  Evolução do Código
+####################################################################################################################
+  Autor........: Marcelo Oliveira
+  Email........: marcelo.broz@hotmail.com
+  Data.........: 07/06/2022
+  Identificador: @Marcelo
+  Modificação..: Ajustado para Trabalhar com o WPPConnect
 ####################################################################################################################
 }
 
@@ -594,11 +600,12 @@ begin
 
   //temis 03-06-2022
   //coloquei pra carregar na thread, antes carregava direto, faltava carregar as propriedades setadas no TWPPConnect
-  TThread.CreateAnonymousThread(
+  {TThread.CreateAnonymousThread(
   procedure begin
     Sleep(100);
     FInjectJS.UpdateNow;
   end).Start;
+  }
 
 end;
 
@@ -2770,8 +2777,8 @@ begin
     LAbel1.AlignWithMargins           := true;
     LForm.Visible                     := True;
 
-    //temis 03-06-2022
-    //Application.MainForm.Visible    := False;
+    //temis 03-06-2022 Application.MainForm.Visible    := False;
+    Application.MainForm.Visible    := False;
     LForm.Show;
 
     Disconnect;
