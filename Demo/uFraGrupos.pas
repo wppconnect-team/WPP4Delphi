@@ -29,21 +29,22 @@ type
     gbGrupoLink: TGroupBox;
     edtLinkConvite: TLabeledEdit;
     btnEntrarLink: TBitBtn;
-    btnPromover: TBitBtn;
-    btnDespromover: TBitBtn;
-    BitBtn5: TBitBtn;
-    BitBtn6: TBitBtn;
-    btnGerarLinkConvite: TBitBtn;
-    btnCancelaLink: TBitBtn;
     pnlParticipantesBotoes: TPanel;
-    btnRemovePartici: TBitBtn;
     lbl_idParticipant: TLabel;
     lbl_idGroup: TLabel;
     pnltopopartici: TPanel;
     edtNovoParticipante: TLabeledEdit;
-    btnAddPArtici: TBitBtn;
     lblIdParticipante: TLabel;
     SpeedButton1: TSpeedButton;
+    btnCriarVotacao: TButton;
+    btnPromover: TButton;
+    btnDespromover: TButton;
+    btnSairGrupo: TButton;
+    btnDeletarGrupo: TButton;
+    btnGerarLinkConvite: TButton;
+    btnCancelaLink: TButton;
+    btnRemovePartici: TButton;
+    btnAddPArtici: TButton;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -53,12 +54,13 @@ type
     procedure btnRemoveParticiClick(Sender: TObject);
     procedure btnPromoverClick(Sender: TObject);
     procedure btnDespromoverClick(Sender: TObject);
-    procedure BitBtn5Click(Sender: TObject);
-    procedure BitBtn6Click(Sender: TObject);
+    procedure btnSairGrupoClick(Sender: TObject);
+    procedure btnDeletarGrupoClick(Sender: TObject);
     procedure btnGerarLinkConviteClick(Sender: TObject);
     procedure btnCancelaLinkClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure listaAdministradoresClick(Sender: TObject);
+    procedure btnCriarVotacaoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -71,7 +73,7 @@ implementation
 
 uses uFrDemo;
 
-procedure TframeGrupos.BitBtn5Click(Sender: TObject);
+procedure TframeGrupos.btnSairGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -79,7 +81,7 @@ begin
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
 end;
 
-procedure TframeGrupos.BitBtn6Click(Sender: TObject);
+procedure TframeGrupos.btnDeletarGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -160,6 +162,31 @@ begin
      Exit;
 
   frDemo.TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
+end;
+
+procedure TframeGrupos.btnCriarVotacaoClick(Sender: TObject);
+var
+  LDescricao: String;
+  LOpcoes: String;
+begin
+  if not frDemo.TWPPConnect1.Auth then
+     Exit;
+
+  LDescricao:= InputBox('Informe a descrição da votação','Descrição','Votação WPPConnect');
+
+  if LDescricao = '' then
+    exit;
+
+  if lbl_idGroup.Caption = '' then
+  begin
+    ShowMessage('Selecione um grupo para enviar');
+    abort;
+  end;
+
+  Lopcoes:= '[''OPÇÃO 1'',''OPÇÃO 2'', ''OPÇÃO 3'']';
+
+  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption,LDescricao,Lopcoes);
+
 end;
 
 procedure TframeGrupos.listaAdministradoresClick(Sender: TObject);

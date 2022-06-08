@@ -202,6 +202,8 @@ type
     procedure DesbloquearContato(vContato: string);
     procedure ArquivarChat(vContato: string);
     procedure DesarquivarChat(vContato:String);
+    procedure ArquivarTodosOsChats;
+    procedure DeletarTodosOsChats;
     procedure FixarChat(vContato:String);
     procedure DesfixarChat(vContato:String);
 
@@ -222,6 +224,7 @@ type
     procedure GroupLeave(vIDGroup: string);
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
+    procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions: string);
 
     procedure getGroupInviteLink(vIDGroup: string);
     procedure revokeGroupInviteLink(vIDGroup: string);
@@ -277,6 +280,18 @@ begin
   LJS   := FrmConsole_JS_VAR_ArchiveChat;
   FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.ArquivarTodosOsChats;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_ArchiveAllChats;
+  ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.BloquearContato(vContato: string);
@@ -628,6 +643,21 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.GroupPoolCreate(vIDGroup, vDescription,
+  vPoolOptions: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_CreatePoolMessage;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
+  FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',        Trim(vPoolOptions));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.GroupPromoteParticipant(vIDGroup, vNumber: string);
 var
   Ljs: string;
@@ -730,6 +760,17 @@ var
 begin
   LJS := FrmConsole_JS_VAR_ReadMessages;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#' , Trim(vID)), False);
+end;
+
+procedure TFrmConsole.DeletarTodosOsChats;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_DeleteAllChats;
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.DeleteMessages(vID: string);

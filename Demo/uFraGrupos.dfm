@@ -52,6 +52,8 @@ object frameGrupos: TframeGrupos
       Top = 262
       Width = 23
       Height = 22
+      ImageIndex = 11
+      Images = ImageList1
       Flat = True
       OnClick = SpeedButton1Click
     end
@@ -183,7 +185,20 @@ object frameGrupos: TframeGrupos
       Align = alClient
       Caption = 'A'#231#245'es para Grupos'
       TabOrder = 2
-      object btnPromover: TBitBtn
+      object btnCriarVotacao: TButton
+        AlignWithMargins = True
+        Left = 5
+        Top = 236
+        Width = 249
+        Height = 30
+        Align = alTop
+        Caption = 'Criar Vota'#231#227'o'
+        ImageIndex = 10
+        Images = ImageList1
+        TabOrder = 6
+        OnClick = btnCriarVotacaoClick
+      end
+      object btnPromover: TButton
         AlignWithMargins = True
         Left = 5
         Top = 20
@@ -191,10 +206,13 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Promover ADM'
+        ImageIndex = 0
+        Images = ImageList1
         TabOrder = 0
         OnClick = btnPromoverClick
+        ExplicitLeft = -2
       end
-      object btnDespromover: TBitBtn
+      object btnDespromover: TButton
         AlignWithMargins = True
         Left = 5
         Top = 56
@@ -202,10 +220,13 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Despromover ADM'
+        ImageIndex = 5
+        Images = ImageList1
         TabOrder = 1
         OnClick = btnDespromoverClick
+        ExplicitLeft = -2
       end
-      object BitBtn5: TBitBtn
+      object btnSairGrupo: TButton
         AlignWithMargins = True
         Left = 5
         Top = 92
@@ -213,10 +234,14 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Sair do Grupo'
+        ImageIndex = 6
+        Images = ImageList1
         TabOrder = 2
-        OnClick = BitBtn5Click
+        OnClick = btnSairGrupoClick
+        ExplicitLeft = 7
+        ExplicitTop = 84
       end
-      object BitBtn6: TBitBtn
+      object btnDeletarGrupo: TButton
         AlignWithMargins = True
         Left = 5
         Top = 128
@@ -224,10 +249,13 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Deletar Grupo'
+        ImageIndex = 7
+        Images = ImageList1
         TabOrder = 3
-        OnClick = BitBtn6Click
+        OnClick = btnDeletarGrupoClick
+        ExplicitLeft = 12
       end
-      object btnGerarLinkConvite: TBitBtn
+      object btnGerarLinkConvite: TButton
         AlignWithMargins = True
         Left = 5
         Top = 164
@@ -235,10 +263,13 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Gerar Link de Convite'
+        ImageIndex = 8
+        Images = ImageList1
         TabOrder = 4
         OnClick = btnGerarLinkConviteClick
+        ExplicitLeft = 3
       end
-      object btnCancelaLink: TBitBtn
+      object btnCancelaLink: TButton
         AlignWithMargins = True
         Left = 5
         Top = 200
@@ -246,8 +277,11 @@ object frameGrupos: TframeGrupos
         Height = 30
         Align = alTop
         Caption = 'Cancelar Link de Convite'
+        ImageIndex = 9
+        Images = ImageList1
         TabOrder = 5
         OnClick = btnCancelaLinkClick
+        ExplicitLeft = -2
       end
     end
   end
@@ -308,9 +342,10 @@ object frameGrupos: TframeGrupos
           AlignWithMargins = True
           Left = 5
           Top = 67
-          Width = 3
+          Width = 378
           Height = 15
           Align = alTop
+          ExplicitWidth = 3
         end
         object listaParticipantes: TListView
           AlignWithMargins = True
@@ -335,18 +370,23 @@ object frameGrupos: TframeGrupos
           Width = 34
           Height = 325
           Align = alRight
-          TabOrder = 1
-          object btnRemovePartici: TBitBtn
+          TabOrder = 2
+          object btnRemovePartici: TButton
             Left = 1
             Top = 1
             Width = 32
             Height = 32
-            Hint = 'Remover Participante'
+            Hint = 'Remove o participante selecionado'
             Align = alTop
+            ImageIndex = 5
+            Images = ImageList1
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
             OnClick = btnRemoveParticiClick
+            ExplicitLeft = -41
+            ExplicitTop = 32
+            ExplicitWidth = 75
           end
         end
         object pnltopopartici: TPanel
@@ -357,7 +397,7 @@ object frameGrupos: TframeGrupos
           Height = 41
           Align = alTop
           BevelOuter = bvNone
-          TabOrder = 2
+          TabOrder = 3
           object edtNovoParticipante: TLabeledEdit
             Left = 4
             Top = 16
@@ -368,18 +408,18 @@ object frameGrupos: TframeGrupos
             EditLabel.Caption = 'N'#250'mero participante'
             TabOrder = 0
           end
-          object btnAddPArtici: TBitBtn
-            Left = 345
-            Top = 8
-            Width = 32
-            Height = 32
-            Hint = 'Adicionar Participante'
-            Align = alCustom
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 1
-            OnClick = btnAddPArticiClick
-          end
+        end
+        object btnAddPArtici: TButton
+          Left = 353
+          Top = 28
+          Width = 32
+          Height = 32
+          Hint = 'Adicionar Participante'
+          ImageIndex = 2
+          Images = ImageList1
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
         end
       end
     end
