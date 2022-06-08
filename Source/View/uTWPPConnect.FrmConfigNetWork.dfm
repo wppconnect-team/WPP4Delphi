@@ -191,7 +191,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 2
-      ExplicitWidth = 186
     end
     object ProxyPortEdt: TEdit
       Left = 351
@@ -211,7 +210,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 4
-      ExplicitWidth = 292
     end
     object ProxyPasswordEdt: TEdit
       Left = 108
@@ -221,7 +219,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Anchors = [akLeft, akTop, akRight]
       PasswordChar = '*'
       TabOrder = 5
-      ExplicitWidth = 292
     end
     object ProxyScriptURLEdt: TEdit
       Left = 15
@@ -264,7 +261,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       MinValue = 7
       TabOrder = 8
       Value = 32
-      ExplicitTop = 243
     end
   end
   object GroupBox2: TGroupBox
@@ -278,8 +274,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
     Align = alTop
     Caption = ' Custom header '
     TabOrder = 1
-    ExplicitTop = 265
-    ExplicitWidth = 411
     DesignSize = (
       430
       84)
@@ -318,7 +312,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      ExplicitWidth = 266
     end
     object HeaderValueEdt: TEdit
       Left = 134
@@ -327,7 +320,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
-      ExplicitWidth = 266
     end
   end
   object Panel1: TPanel
@@ -340,8 +332,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
     Padding.Left = 30
     Padding.Right = 30
     TabOrder = 2
-    ExplicitTop = 416
-    ExplicitWidth = 411
     object BntOk: TButton
       Left = 30
       Top = 0
@@ -361,7 +351,6 @@ object FrmConfigNetWork: TFrmConfigNetWork
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 261
     end
   end
 end

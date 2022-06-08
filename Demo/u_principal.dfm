@@ -36,6 +36,10 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Autentica'#231#227'o / Authentication'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Pnl_Config: TPanel
         AlignWithMargins = True
         Left = 375
@@ -3632,6 +3636,10 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet4: TTabSheet
       Caption = 'Logs Recebimento'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         1088
         649)
@@ -3696,6 +3704,10 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet5: TTabSheet
       Caption = 'Logs Envio'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object memo_unReadMessageEnv: TMemo
         Left = 8
         Top = 17
@@ -3716,6 +3728,10 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet2: TTabSheet
       Caption = 'A'#231#245'es em grupo /  Group actions'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         AlignWithMargins = True
         Left = 3
@@ -4741,6 +4757,9 @@ object frmPrincipal: TfrmPrincipal
   end
   object TWPPConnect1: TWPPConnect
     InjectJS.AutoUpdateTimeOut = 20
+    InjectJS.JSURL = 
+      'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
+      'n/Source/JS/js.abr'
     Config.AutoDelay = 30
     Config.ReceiveAttachmentAuto = False
     Config.Zoom = 0
@@ -4762,7 +4781,6 @@ object frmPrincipal: TfrmPrincipal
     OnIsConnected = TWPPConnect1IsConnected
     OnLowBattery = TWPPConnect1LowBattery
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
-    OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
     OnDisconnected = TWPPConnect1Disconnected
     OnDisconnectedBrute = TWPPConnect1DisconnectedBrute
