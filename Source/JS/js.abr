@@ -1201,7 +1201,7 @@ window.WAPI.sendSeen = function(id, done) {
 //Alterado em 20/02/2020 Creditos: by Lucas
 //Apos receber uma mensagem, e nao responder, essa funcao funciona de forma isolada
 window.WAPI.sendSeen = function(id, done) {
-    var chat = window.WAPI.getChat(id);
+    let chat = window.WAPI.getChat(id);
     if (chat !== undefined) {
         if (done !== undefined) {
             Store.SendSeen(Store.Chat.models[0], false).then(function() {
