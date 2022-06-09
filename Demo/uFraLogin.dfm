@@ -11,9 +11,6 @@ object frameLogin: TframeLogin
   Font.Style = []
   ParentFont = False
   TabOrder = 0
-  DesignSize = (
-    683
-    349)
   object SpeedButton1: TSpeedButton
     Left = 3
     Top = 5
@@ -610,7 +607,6 @@ object frameLogin: TframeLogin
     Top = 118
     Width = 98
     Height = 35
-    Anchors = [akTop, akRight]
     Caption = 'Offline'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGrayText
@@ -625,7 +621,6 @@ object frameLogin: TframeLogin
     Width = 103
     Height = 104
     Cursor = crArrow
-    Anchors = [akTop, akRight]
     Center = True
     ParentShowHint = False
     Picture.Data = {
@@ -911,7 +906,6 @@ object frameLogin: TframeLogin
     Width = 103
     Height = 104
     Cursor = crHandPoint
-    Anchors = [akTop, akRight]
     Center = True
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000000650000

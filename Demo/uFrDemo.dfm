@@ -1580,7 +1580,7 @@ object frDemo: TfrDemo
         end>
     end
   end
-  inline frameLogin1: TframeLogin
+  inline frameMensagem1: TframeMensagem
     Left = 200
     Top = 113
     Width = 1008
@@ -1598,40 +1598,6 @@ object frDemo: TfrDemo
     ExplicitTop = 113
     ExplicitWidth = 1008
     ExplicitHeight = 507
-    inherited SpeedButton1: TSpeedButton
-      OnClick = frameLogin1SpeedButton1Click
-    end
-    inherited lblStatus: TLabel
-      Left = 217
-      ExplicitLeft = 27
-    end
-    inherited whatsOff: TImage
-      Left = 217
-      ExplicitLeft = 27
-    end
-    inherited whatsOn: TImage
-      Left = 217
-      ExplicitLeft = 27
-    end
-  end
-  inline frameMensagem1: TframeMensagem
-    Left = 200
-    Top = 113
-    Width = 1008
-    Height = 507
-    Align = alClient
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Roboto'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-    Visible = False
-    ExplicitLeft = 200
-    ExplicitTop = 113
-    ExplicitWidth = 1008
-    ExplicitHeight = 507
     inherited GroupBox1: TGroupBox
       Height = 501
       ExplicitHeight = 501
@@ -1641,6 +1607,10 @@ object frDemo: TfrDemo
       ExplicitHeight = 501
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
+      end
+      inherited Button1: TButton
+        ExplicitLeft = 5
+        ExplicitTop = 488
       end
     end
     inherited GroupBox2: TGroupBox
@@ -1682,7 +1652,7 @@ object frDemo: TfrDemo
     Font.Name = 'Roboto'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 4
     Visible = False
     ExplicitLeft = 200
     ExplicitTop = 113
@@ -1752,7 +1722,7 @@ object frDemo: TfrDemo
     Width = 1008
     Height = 507
     Align = alClient
-    TabOrder = 6
+    TabOrder = 5
     Visible = False
     ExplicitLeft = 200
     ExplicitTop = 113
@@ -1772,7 +1742,7 @@ object frDemo: TfrDemo
     Width = 1008
     Height = 507
     Align = alClient
-    TabOrder = 7
+    TabOrder = 6
     Visible = False
     ExplicitLeft = 200
     ExplicitTop = 113
@@ -1809,6 +1779,45 @@ object frDemo: TfrDemo
         ExplicitLeft = 482
         ExplicitWidth = 127
       end
+    end
+  end
+  inline frameLogin1: TframeLogin
+    Left = 200
+    Top = 113
+    Width = 1008
+    Height = 507
+    Align = alClient
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Roboto'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 7
+    Visible = False
+    ExplicitLeft = 200
+    ExplicitTop = 113
+    ExplicitWidth = 1008
+    ExplicitHeight = 507
+    DesignSize = (
+      1008
+      507)
+    inherited lblStatus: TLabel
+      Left = 14
+      Anchors = [akLeft, akTop, akRight]
+      ExplicitLeft = 14
+    end
+    inherited whatsOff: TImage
+      Left = 5
+      Width = 118
+      ExplicitLeft = 5
+      ExplicitWidth = 118
+    end
+    inherited whatsOn: TImage
+      Left = 5
+      Width = 118
+      ExplicitLeft = 5
+      ExplicitWidth = 118
     end
   end
   object ImageList1: TImageList
