@@ -251,6 +251,10 @@ begin
   frameLogin1.Visible := True;
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
   timerStatus.Enabled := True;
+
+  //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
+  killtask('Gbpsv.exe');
+  killtask('core.exe');
 end;
 
 procedure TfrDemo.frameLogin1SpeedButton1Click(Sender: TObject);

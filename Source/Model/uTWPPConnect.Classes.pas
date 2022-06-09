@@ -46,7 +46,6 @@ uses Generics.Collections, Rest.Json, uTWPPConnect.FrmQRCode, Vcl.Graphics, Syst
   {$ENDIF}
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, Vcl.Imaging.jpeg,
   IdSSLOpenSSL, UrlMon;
-
 type
 
   TQrCodeRet   = (TQR_Http, TQR_Img, TQR_Data);
@@ -1653,8 +1652,8 @@ begin
     try
       //Get(Purl, FReturnUrl);
       //temis  03-06-2022
-      DownLoadInternetFile(Purl, 'js.abr');
-      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+      //DownLoadInternetFile(Purl, 'js.abr');
+      DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
       //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'wppconnect-wa.js');
 
 

@@ -1646,14 +1646,6 @@ object frDemo: TfrDemo
     inherited GroupBox2: TGroupBox
       Height = 501
       ExplicitHeight = 501
-      inherited btnArquivarTodosChats: TButton
-        ExplicitLeft = 5
-      end
-      inherited btnDeletarTodosChats: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 519
-        ExplicitWidth = 221
-      end
     end
     inherited GroupBox3: TGroupBox
       Height = 501
@@ -1706,25 +1698,6 @@ object frDemo: TfrDemo
       inherited gbacoes: TGroupBox
         Height = 247
         ExplicitHeight = 247
-        inherited btnPromover: TButton
-          ExplicitLeft = 5
-        end
-        inherited btnDespromover: TButton
-          ExplicitLeft = 5
-        end
-        inherited btnSairGrupo: TButton
-          ExplicitLeft = 5
-          ExplicitTop = 92
-        end
-        inherited btnDeletarGrupo: TButton
-          ExplicitLeft = 5
-        end
-        inherited btnGerarLinkConvite: TButton
-          ExplicitLeft = 5
-        end
-        inherited btnCancelaLink: TButton
-          ExplicitLeft = 5
-        end
       end
     end
     inherited pnlGruposParticipantes: TPanel
@@ -1764,11 +1737,6 @@ object frDemo: TfrDemo
             Height = 249
             ExplicitLeft = 426
             ExplicitHeight = 249
-            inherited btnRemovePartici: TButton
-              ExplicitLeft = 1
-              ExplicitTop = 1
-              ExplicitWidth = 32
-            end
           end
           inherited pnltopopartici: TPanel
             Width = 452
@@ -1794,7 +1762,6 @@ object frDemo: TfrDemo
       Width = 1008
       Height = 507
       WordWrap = False
-      ExplicitLeft = 0
       ExplicitWidth = 1008
       ExplicitHeight = 507
     end

@@ -2045,7 +2045,7 @@ procedure TFrmConsole.FormShow(Sender: TObject);
 begin
   Lbl_Caption.Caption      := 'WPPConnect '; //Text_FrmConsole_Caption;
   Lbl_Caption.Caption       := Lbl_Caption.Caption + ' CEF lib ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.LibCefVersion + ' Chrome ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.ChromeVersion; //+ ' TWPPConnect V. ' + TWPPConnectVersion;
-  Lbl_Versao.Caption       := 'V. 2.4.1' + ''; //TWPPConnectVersion;
+  Lbl_Versao.Caption       := 'V. 2.6.0' + ''; //TWPPConnectVersion;
 end;
 
 procedure TFrmConsole.Form_Normal;
