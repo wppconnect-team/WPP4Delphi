@@ -413,11 +413,40 @@ Begin
   LExt   := LowerCase(Copy(ExtractFileExt(PFileName),2,50));
 
   //Marcelo 31/05/2022
-  if LExt = 'mp3' then
+  if (LExt = 'mp3') then
     begin
       result := 'data:audio/mpeg;base64,';
       exit;
     end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'ogg') then
+    begin
+      result := 'data:audio/ogg;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'mp4') then
+    begin
+      result := 'data:video/mp4;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'avi') then
+    begin
+      result := 'data:video/avi;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'mpeg') then
+    begin
+      result := 'data:video/mpeg;base64,';
+      exit;
+    end;
+
 
   Result := 'data:application/';
   try

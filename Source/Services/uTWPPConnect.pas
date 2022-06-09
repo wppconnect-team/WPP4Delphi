@@ -193,7 +193,10 @@ type
     procedure SendLocationMessage(phoneNumber, options: string; etapa: string = '');
 
     //temis 03-06-2022
-    procedure SendFileMessageEx(phoneNumber, content, options: string;  xSeuID: string = '');
+    //procedure SendFileMessageEx(phoneNumber, content, options: string;  xSeuID: string = '');
+    //temis 08-06-2022
+    procedure SendFileMessageEx(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String; pIsSticker : boolean);overload;
+    procedure SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
     procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
 
@@ -2008,7 +2011,158 @@ begin
 
 end;
 
-procedure TWPPConnect.SendFileMessageEx(phoneNumber, content, options, xSeuID: string);
+//Temis 08-06-2022
+procedure TWPPConnect.SendFileMessageEx(phoneNumber, PFileName, xSeuID, pMessage : String; pIsSticker : boolean);
+var
+  lThread : TThread;
+  LStream     : TMemoryStream;
+  LBase64File : TBase64Encoding;
+  LExtension  : String;
+  LBase64     : String;
+  options     : String;
+  function IsImage : Boolean;
+  var
+    I : integer;
+    LTmp : String;
+  begin
+    result := false;
+    for I := 0 to 10 do
+    begin
+      Ltmp := LowerCase(Copy(GetEnumName(TypeInfo(TSendFile_Image), ord(TSendFile_Image(i))), 3, 50));
+      if pos(LExtension, Ltmp) > 0 Then
+      Begin
+        Result := true;
+      end
+    end;
+
+  end;
+begin
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  LExtension   := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  If not FileExists(Trim(PFileName)) then
+  begin
+    Int_OnErroInterno(Self, 'SendFileMessaEx: ' + Format(MSG_ExceptPath, [phoneNumber]), phoneNumber);
+    Exit;
+  end;
+
+  LStream     := TMemoryStream.Create;
+  LBase64File := TBase64Encoding.Create;
+  try
+    try
+      LStream.LoadFromFile(PFileName);
+      if LStream.Size = 0 then
+      Begin
+        Int_OnErroInterno(Self, 'SendFileMessageEx: ' + Format(MSG_WarningErrorFile, [phoneNumber]), phoneNumber);
+        Exit;
+      end;
+
+      LStream.Position := 0;
+      LBase64      := LBase64File.EncodeBytesToString(LStream.Memory, LStream.Size);
+      LBase64      := StrExtFile_Base64Type(PFileName) + LBase64;
+    except
+      Int_OnErroInterno(Self, 'SendFileMessageEx: ' + MSG_ExceptMisc, phoneNumber);
+    end;
+  finally
+    FreeAndNil(LStream);
+    FreeAndNil(LBase64File);
+  end;
+
+  options :=
+    'createChat: true, ';
+
+
+  if (LExtension = 'mp3') then
+    begin
+      options := options +
+        'type: "audio", ' +
+        'isPtt: true';
+    end
+
+  else if (LExtension = 'mpeg') or (LExtension = 'avi') or (LExtension = 'mpg') or (LExtension = 'mp4') then
+    begin
+      options := options +
+        'type: "video" ' ;
+    end
+
+  else if IsImage then
+    begin
+      if pIsSticker then
+        begin
+          options := options +
+             '  type: "sticker" ';
+        end
+      else
+        begin
+          options := options +
+             '  type: "image", ' +
+             '  caption: "'+PMessage+'"  ';
+        end;
+    end
+  Else
+    begin
+      options := options +
+         '  type: "document", '+
+         '  caption: "'+PMessage+'",  '+
+         '  filename: "'+ExtractFileName(PFileName)+'", '+
+         '  mimetype: "application/'+LExtension+'"';
+    end;
+
+  SendFileMessageEx( phoneNumber, lBase64, options, xSeuID);
+
+end;
+
+//temis 08-06-2022
+procedure TWPPConnect.SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');
+var
+  lThread : TThread;
+
+begin
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendFileMessageEx(phoneNumber, pBase64, options, xSeuID);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+//Alterado 08/06/2022
+{procedure TWPPConnect.SendFileMessageEx(phoneNumber, content, options, xSeuID: string);
 var
   lThread : TThread;
 begin
@@ -2049,7 +2203,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 
-end;
+end;}
 
 procedure TWPPConnect.SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
 var

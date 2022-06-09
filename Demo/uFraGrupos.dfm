@@ -52,8 +52,6 @@ object frameGrupos: TframeGrupos
       Top = 262
       Width = 23
       Height = 22
-      ImageIndex = 11
-      Images = ImageList1
       Flat = True
       OnClick = SpeedButton1Click
     end
@@ -342,10 +340,9 @@ object frameGrupos: TframeGrupos
           AlignWithMargins = True
           Left = 5
           Top = 67
-          Width = 378
+          Width = 3
           Height = 15
           Align = alTop
-          ExplicitWidth = 3
         end
         object listaParticipantes: TListView
           AlignWithMargins = True

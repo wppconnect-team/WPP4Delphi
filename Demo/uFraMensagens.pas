@@ -70,6 +70,8 @@ type
     BitBtn2: TButton;
     btnArquivarTodosChats: TButton;
     btnDeletarTodosChats: TButton;
+    OpenDialog1: TOpenDialog;
+    Button1: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -103,6 +105,7 @@ type
     procedure listaContatosDblClick(Sender: TObject);
     procedure btnArquivarTodosChatsClick(Sender: TObject);
     procedure btnDeletarTodosChatsClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1046,6 +1049,48 @@ begin
     FINALLY
       freeAndNil(LBase64);
     END;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeMensagem.Button1Click(Sender: TObject);
+var
+  caption : string;
+  caminhoArquivo : string;
+  isFigurinha : Boolean;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+
+    caption := mem_message.Text;
+
+    caminhoArquivo := '';
+
+    OpenDialog1.Execute();
+
+    if FileExists(OpenDialog1.FileName) then
+      caminhoArquivo := OpenDialog1.FileName
+    else
+      Exit;
+
+    isFigurinha := False;
+
+    //Arquivo Selecionado da Pasta
+    frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, caminhoArquivo, '123', caption, isFigurinha);
+
+
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
