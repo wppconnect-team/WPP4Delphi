@@ -2821,6 +2821,15 @@ begin
     Fstatus := Server_Connected;
     if Assigned(FrmConsole) then
        FrmConsole.FormQrCode.FTimerGetQrCode.Enabled := False;
+     if Self.FormQrCodeType = Ft_Desktop then
+     begin
+       if FrmConsole.FormQrCode.Showing then
+       begin
+         FrmConsole.FormQrCode.PodeFechar:= True;
+         frmConsole.FormQrCode.Close;
+       end;
+
+     end;
 
      if Assigned(FOnConnected) then
          FOnConnected(Self);
@@ -2925,7 +2934,7 @@ end;
 
 function TWPPConnect.TestConnect: Boolean;
 begin
-  Result := (Fstatus = Inject_Initialized);
+  Result := (Fstatus in [Inject_Initialized]);
 end;
 
 function TWPPConnect.GetAppShowing: Boolean;

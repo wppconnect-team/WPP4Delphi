@@ -47,13 +47,13 @@ type
     pnlrodape: TPanel;
     StatusBar1: TStatusBar;
     btnAbrirZap: TBitBtn;
-    frameLogin1: TframeLogin;
     Label3: TLabel;
     frameMensagem1: TframeMensagem;
     timerStatus: TTimer;
     frameGrupos1: TframeGrupos;
     frameMensagensEnviadas1: TframeMensagensEnviadas;
     frameMensagensRecebidas1: TframeMensagensRecebidas;
+    frameLogin1: TframeLogin;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -606,7 +606,7 @@ begin
     Server_Disconnecting:
       Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Server_Connected:
-      Label3.Caption := '';
+      Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Server_Connecting:
       Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Inject_Initializing:

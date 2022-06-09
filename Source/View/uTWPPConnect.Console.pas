@@ -412,7 +412,8 @@ begin
 
       lNovoStatus    := False;
       SendNotificationCenterDirect(Th_Initializing);
-    End;
+    End else if TWPPConnect(FOwner).Config.AutoStart then
+      lNovoStatus:= true;
   finally
     FTimerConnect.Enabled := lNovoStatus;
   end;
@@ -1797,6 +1798,8 @@ begin
     Form_Normal;
     If Assigned(OnNotificationCenter) then
        SendNotificationCenterDirect(Th_Connected);
+    if (TWPPConnect(FOwner).Config.AutoStart) and (not FTimerConnect.Enabled) then
+      FTimerConnect.Enabled:= True;
   end;
   if (LPaginaId <= 3) and (FFormType = Ft_Http) then
     SetZoom(-2);
