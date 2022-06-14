@@ -71,7 +71,8 @@ type
     btnArquivarTodosChats: TButton;
     btnDeletarTodosChats: TButton;
     OpenDialog1: TOpenDialog;
-    Button1: TButton;
+    btnArquivo: TButton;
+    btnStatusTexto: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -105,7 +106,8 @@ type
     procedure listaContatosDblClick(Sender: TObject);
     procedure btnArquivarTodosChatsClick(Sender: TObject);
     procedure btnDeletarTodosChatsClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnArquivoClick(Sender: TObject);
+    procedure btnStatusTextoClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -232,6 +234,11 @@ begin
 
       //Imagem com Temporaria Somente 1 Visualização
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+      frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+      frDemo.TWPPConnect1.markmarkIsRecording(ed_num.Text, '5000'); //Gravando Audio 5 Segundos
+      Sleep(5000);
 
       //Audio
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
@@ -778,6 +785,27 @@ begin
   end;
 end;
 
+procedure TframeMensagem.btnStatusTextoClick(Sender: TObject);
+var
+  options, content : string;
+begin
+  try
+    if not frDemo.TWPPConnect1.Auth then
+       Exit;
+
+    content := 'TESTE STATUS';
+    options := 'backgroundColor: "#0275d8", font: 0';
+    //options := 'backgroundColor: "#0275d8", font: 2';
+    //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
+
+    frDemo.TWPPConnect1.sendTextStatus(content, options);
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
 procedure TframeMensagem.btnStickerClick(Sender: TObject);
 var
   content, options, options_Figurinha, options_Imagem, options_Audio,
@@ -880,6 +908,11 @@ begin
        Exit;
 
     options := '';
+
+    //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+    frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //Sleep(5000);
 
     //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
@@ -1055,7 +1088,7 @@ begin
   end;
 end;
 
-procedure TframeMensagem.Button1Click(Sender: TObject);
+procedure TframeMensagem.btnArquivoClick(Sender: TObject);
 var
   caption : string;
   caminhoArquivo : string;

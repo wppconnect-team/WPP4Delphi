@@ -1608,10 +1608,6 @@ object frDemo: TfrDemo
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
       end
-      inherited Button1: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 488
-      end
     end
     inherited GroupBox2: TGroupBox
       Height = 501
@@ -1732,6 +1728,7 @@ object frDemo: TfrDemo
       Width = 1008
       Height = 507
       WordWrap = False
+      ExplicitLeft = 0
       ExplicitWidth = 1008
       ExplicitHeight = 507
     end

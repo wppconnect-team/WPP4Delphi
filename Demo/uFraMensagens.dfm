@@ -179,6 +179,7 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
+      ExplicitLeft = 3
     end
     object btnTextoSimples: TButton
       AlignWithMargins = True
@@ -245,7 +246,7 @@ object frameMensagem: TframeMensagem
       TabOrder = 11
       OnClick = btnLocalizacaoClick
     end
-    object Button1: TButton
+    object btnArquivo: TButton
       AlignWithMargins = True
       Left = 5
       Top = 488
@@ -256,9 +257,22 @@ object frameMensagem: TframeMensagem
       ImageIndex = 6
       Images = ImageList1
       TabOrder = 13
-      OnClick = Button1Click
+      OnClick = btnArquivoClick
       ExplicitLeft = 3
-      ExplicitTop = 524
+    end
+    object btnStatusTexto: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 524
+      Width = 221
+      Height = 30
+      Align = alTop
+      Caption = 'Enviar Texto Status'
+      ImageIndex = 19
+      Images = ImageList1
+      TabOrder = 14
+      OnClick = btnStatusTextoClick
+      ExplicitLeft = 7
     end
   end
   object GroupBox2: TGroupBox
