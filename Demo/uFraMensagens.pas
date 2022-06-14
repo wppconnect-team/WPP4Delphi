@@ -793,7 +793,9 @@ begin
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
-    content := 'TESTE STATUS';
+    content := mem_message.Text;
+    if Trim(content) = '' then
+      content := 'TESTE STATUS';
     options := 'backgroundColor: "#0275d8", font: 0';
     //options := 'backgroundColor: "#0275d8", font: 2';
     //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html

@@ -2179,6 +2179,7 @@ begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
+  Content := CaractersWeb(Content);
   LJS   := FrmConsole_JS_VAR_sendTextStatus;
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
