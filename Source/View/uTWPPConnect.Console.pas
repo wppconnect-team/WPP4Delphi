@@ -197,6 +197,10 @@ type
     //Adicionado Por Marcelo 10/05/2022
     procedure SendReactionMessage(UniqueID, Reaction: string; etapa: string = '');
 
+    //Adicionado Por Marcelo 15/06/2022
+    procedure rejectCall(phoneNumber: string);
+
+    //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
     //Adicionado Por Marcelo 01/03/2022
@@ -861,6 +865,19 @@ procedure TFrmConsole.ReadMessagesAndDelete(vID: string);
 begin
   ReadMessages  (Trim(vID));
   DeleteMessages(Trim(vID));
+end;
+
+procedure TFrmConsole.rejectCall(phoneNumber: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_rejectCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.ReleaseConnection;

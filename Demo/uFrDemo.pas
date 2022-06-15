@@ -113,6 +113,7 @@ type
     function VerificaPalavraChave(pMensagem, pSessao, pTelefone,
       pContato: String): Boolean;
     function killtask(ExeFileName: string): Integer;
+    function CaractersWeb(vText: string): string;
   end;
 
 var
@@ -190,6 +191,17 @@ begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
   FrmConsole.StartQrCode(Ft_Http, True);
+end;
+
+function TfrDemo.CaractersWeb(vText: string): string;
+begin
+  vText  := StringReplace(vText, sLineBreak,'\n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
+  vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A       ,'<br>'   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
+  Result := vText;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items0Click(Sender: TObject);

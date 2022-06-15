@@ -200,6 +200,9 @@ Const
   //Marcelo 14/06/2022
   FrmConsole_JS_VAR_sendTextStatus   = 'WPP.status.sendTextStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
 
+  //Marcelo 15/06/2022
+  FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_PHONE#>");';
+
 resourcestring
   MSG_ConfigCEF_ExceptNotFoundJS       = '';
   MSG_ConfigCEF_ExceptNotFoundPATH     = '';

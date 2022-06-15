@@ -519,9 +519,9 @@ begin
     TRY
       LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
 
-      content := mem_message.Text;
+      content := frDemo.CaractersWeb(mem_message.Text);
 
-      caption := mem_message.Text;
+      caption := frDemo.CaractersWeb(mem_message.Text);
 
 
       options :=
@@ -1029,61 +1029,21 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
     LBase64 := TStringList.Create;
-    TRY
+
+    try
       LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
 
       content := mem_message.Text;
 
-      options_Audio :=
-        'type: "audio", ' +
-        'isPtt: true'; // false for common audio
+      options := 'createChat: true, type: "video", caption: "My Video"  ';
 
-      options :=
-        'createChat: true, ' +
-        'useTemplateButtons: true, ' +
-        'title: "Novidades",  ' +
-        'footer: "Video com Botão",  ' +
-        'buttons: [ ' +
-        '  { ' +
-        '    url: "https://wppconnect-team.github.io/", ' +
-        '    text: "Acesse Nosso Site" ' +
-        '  }, ' +
-        '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
-        ']  ';
-
-      options_Figurinha := 'type: "sticker"';
-
-      options_Imagem :=
-         '  type: "image", ' +
-         '  caption: "My image",  ' +
-         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
-
-      //Imagem com Temporaria Somente 1 Visualização
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
-
-      //Audio
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
-
-      //Botões IMAGEM
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
-
-      //Botões VIDEO
+      //VIDEO
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
-      //Figurinha Stickers
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
-    FINALLY
+    finally
       freeAndNil(LBase64);
-    END;
+    end;
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -1108,8 +1068,7 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
 
-
-    caption := mem_message.Text;
+    caption := frDemo.CaractersWeb(mem_message.Text);
 
     caminhoArquivo := '';
 

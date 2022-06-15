@@ -94,7 +94,7 @@ type
     FDestroyTmr             : Ttimer;
     FFormQrCodeType         : TFormQrCodeType;
     FMyNumber               : string;
-    FserialCorporate        : string;
+
     FIsDelivered            : string;
     FGetBatteryLevel        : Integer;
     FGetIsConnected         : Boolean;
@@ -120,7 +120,7 @@ type
     procedure SetInjectConfig(const Value: TWPPConnectConfig);
     procedure SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
     procedure SetInjectJS(const Value: TWPPConnectJS);
-    procedure SetSerialCorporate(const Value: TWPPConnectJS);
+
     procedure OnDestroyConsole(Sender : TObject);
 
   protected
@@ -213,6 +213,8 @@ type
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
 
+    procedure rejectCall(phoneNumber: string);
+
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
@@ -286,7 +288,7 @@ type
     Property InjectJS                    : TWPPConnectJS                  read FInjectJS                       Write SetInjectJS;
     property Config                      : TWPPConnectConfig              read FInjectConfig                   Write SetInjectConfig;
     property AjustNumber                 : TWPPConnectAdjusteNumber       read FAdjustNumber                   Write SetdjustNumber;
-    property serialCorporate             : string                     read FserialCorporate                write FserialCorporate;
+
     property FormQrCodeType              : TFormQrCodeType            read FFormQrCodeType                 Write SetQrCodeStyle                      Default Ft_Desktop;
     property LanguageInject              : TLanguageInject            read FLanguageInject                 Write SetLanguageInject                   Default TL_Portugues_BR;
     property OnGetAllContactList         : TOnAllContacts             read FOnGetAllContactList            write FOnGetAllContactList;
@@ -1263,11 +1265,6 @@ begin
 
 end;
 
-procedure TWPPConnect.SetSerialCorporate(const Value: TWPPConnectJS);
-begin
-  FInjectJS.Assign(Value);
-end;
-
 procedure TWPPConnect.SetStatus(vStatus: String);
 begin
    If Application.Terminated Then
@@ -1890,6 +1887,43 @@ begin
     if assigned(FrmConsole) then
        FrmConsole.ReadMessages(vID);
   end;
+end;
+
+procedure TWPPConnect.rejectCall(phoneNumber: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.rejectCall(phoneNumber);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+
 end;
 
 procedure TWPPConnect.send(PNumberPhone, PMessage: string; PEtapa: string = '');
