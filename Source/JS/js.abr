@@ -2301,7 +2301,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.7.0
+//WPPCONNECT v2.7.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -9622,7 +9622,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.version = void 0;
                 const a = s(r(5005)),
                     u = r(5267);
-                t.version = "2.7.0";
+                t.version = "2.7.1";
                 let c = 0;
                 const l = {
                     v: "2",
@@ -9664,7 +9664,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
                 u.internalEv.on("webpack.injected", (() => {
                     var e;
-                    l["up.wa-js"] = t.version, l["up.whatsapp"] = (null === (e = window.Debug) || void 0 === e ? void 0 : e.VERSION) || "-", d("page_view", {
+                    l["up.wa_js"] = t.version, l["up.whatsapp"] = (null === (e = window.Debug) || void 0 === e ? void 0 : e.VERSION) || "-", d("page_view", {
                         authenticated: a.isAuthenticated()
                     })
                 })), u.internalEv.on("conn.authenticated", (() => {
@@ -9851,7 +9851,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.7.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.7.1", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
