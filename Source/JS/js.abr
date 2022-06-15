@@ -2301,8 +2301,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.6.0
-
+//WPPCONNECT v2.7.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2849,7 +2848,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function U(e, t, r, n, i) {
+                function D(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3011,9 +3010,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
                 }, u.prototype.writeDoubleLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
+                    return D(this, e, t, !0, r)
                 }, u.prototype.writeDoubleBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
+                    return D(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3046,10 +3045,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return this
                 };
-                const D = {};
+                const U = {};
 
                 function N(e, t, r) {
-                    D[e] = class extends r {
+                    U[e] = class extends r {
                         constructor() {
                             super(), Object.defineProperty(this, "message", {
                                 value: t.apply(this, arguments),
@@ -3086,20 +3085,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (e > r || e < t) {
                         const n = "bigint" == typeof t ? "n" : "";
                         let o;
-                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new D.ERR_OUT_OF_RANGE("value", o, e)
+                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new U.ERR_OUT_OF_RANGE("value", o, e)
                     }! function(e, t, r) {
                         z(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || $(t, e.length - (r + 1))
                     }(n, o, i)
                 }
 
                 function z(e, t) {
-                    if ("number" != typeof e) throw new D.ERR_INVALID_ARG_TYPE(t, "number", e)
+                    if ("number" != typeof e) throw new U.ERR_INVALID_ARG_TYPE(t, "number", e)
                 }
 
                 function $(e, t, r) {
-                    if (Math.floor(e) !== e) throw z(e, r), new D.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
-                    if (t < 0) throw new D.ERR_BUFFER_OUT_OF_BOUNDS;
-                    throw new D.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
+                    if (Math.floor(e) !== e) throw z(e, r), new U.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
+                    if (t < 0) throw new U.ERR_BUFFER_OUT_OF_BOUNDS;
+                    throw new U.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
                 }
                 N("ERR_BUFFER_OUT_OF_BOUNDS", (function(e) {
                     return e ? `${e} is outside of buffer bounds` : "Attempt to access memory outside buffer bounds"
@@ -4093,11 +4092,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                     if (n("ID3")) {
                         await e.ignore(6);
-                        const t = await e.readToken(uint32SyncSafeToken);
-                        return e.position + t > e.fileInfo.size ? {
+                        const o = await e.readToken(uint32SyncSafeToken);
+                        return e.position + o > e.fileInfo.size ? {
                             ext: "mp3",
                             mime: "audio/mpeg"
-                        } : (await e.ignore(t), fromTokenizer(e))
+                        } : (await e.ignore(o), fromTokenizer(e))
                     }
                     if (n("MP+")) return {
                         ext: "mpc",
@@ -4147,17 +4146,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 await e.readBuffer(t, {
                                     length: 30
                                 });
-                                const r = {
+                                const i = {
                                     compressedSize: t.readUInt32LE(18),
                                     uncompressedSize: t.readUInt32LE(22),
                                     filenameLength: t.readUInt16LE(26),
                                     extraFieldLength: t.readUInt16LE(28)
                                 };
-                                if (r.filename = await e.readToken(new Token.StringType(r.filenameLength, "utf-8")), await e.ignore(r.extraFieldLength), "META-INF/mozilla.rsa" === r.filename) return {
+                                if (i.filename = await e.readToken(new Token.StringType(i.filenameLength, "utf-8")), await e.ignore(i.extraFieldLength), "META-INF/mozilla.rsa" === i.filename) return {
                                     ext: "xpi",
                                     mime: "application/x-xpinstall"
                                 };
-                                if (r.filename.endsWith(".rels") || r.filename.endsWith(".xml")) switch (r.filename.split("/")[0]) {
+                                if (i.filename.endsWith(".rels") || i.filename.endsWith(".xml")) switch (i.filename.split("/")[0]) {
                                     case "_rels":
                                     default:
                                         break;
@@ -4174,15 +4173,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             ext: "xlsx", mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                         }
                                 }
-                                if (r.filename.startsWith("xl/")) return {
+                                if (i.filename.startsWith("xl/")) return {
                                     ext: "xlsx",
                                     mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                 };
-                                if (r.filename.startsWith("3D/") && r.filename.endsWith(".model")) return {
+                                if (i.filename.startsWith("3D/") && i.filename.endsWith(".model")) return {
                                     ext: "3mf",
                                     mime: "model/3mf"
                                 };
-                                if ("mimetype" === r.filename && r.compressedSize === r.uncompressedSize) switch (await e.readToken(new Token.StringType(r.compressedSize, "utf-8"))) {
+                                if ("mimetype" === i.filename && i.compressedSize === i.uncompressedSize) switch (await e.readToken(new Token.StringType(i.compressedSize, "utf-8"))) {
                                     case "application/epub+zip":
                                         return {
                                             ext: "epub", mime: "application/epub+zip"
@@ -4200,15 +4199,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             ext: "odp", mime: "application/vnd.oasis.opendocument.presentation"
                                         }
                                 }
-                                if (0 === r.compressedSize) {
-                                    let r = -1;
-                                    for (; r < 0 && e.position < e.fileInfo.size;) await e.peekBuffer(t, {
+                                if (0 === i.compressedSize) {
+                                    let s = -1;
+                                    for (; s < 0 && e.position < e.fileInfo.size;) await e.peekBuffer(t, {
                                         mayBeLess: !0
-                                    }), r = t.indexOf("504B0304", 0, "hex"), await e.ignore(r >= 0 ? r : t.length)
-                                } else await e.ignore(r.compressedSize)
+                                    }), s = t.indexOf("504B0304", 0, "hex"), await e.ignore(s >= 0 ? s : t.length)
+                                } else await e.ignore(i.compressedSize)
                             }
-                        } catch (e) {
-                            if (!(e instanceof strtok3.EndOfStreamError)) throw e
+                        } catch (a) {
+                            if (!(a instanceof strtok3.EndOfStreamError)) throw a
                         }
                         return {
                             ext: "zip",
@@ -4217,23 +4216,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     if (n("OggS")) {
                         await e.ignore(28);
-                        const t = Buffer.alloc(8);
-                        return await e.readBuffer(t), _check(t, [79, 112, 117, 115, 72, 101, 97, 100]) ? {
+                        const u = Buffer.alloc(8);
+                        return await e.readBuffer(u), _check(u, [79, 112, 117, 115, 72, 101, 97, 100]) ? {
                             ext: "opus",
                             mime: "audio/opus"
-                        } : _check(t, [128, 116, 104, 101, 111, 114, 97]) ? {
+                        } : _check(u, [128, 116, 104, 101, 111, 114, 97]) ? {
                             ext: "ogv",
                             mime: "video/ogg"
-                        } : _check(t, [1, 118, 105, 100, 101, 111, 0]) ? {
+                        } : _check(u, [1, 118, 105, 100, 101, 111, 0]) ? {
                             ext: "ogm",
                             mime: "video/ogg"
-                        } : _check(t, [127, 70, 76, 65, 67]) ? {
+                        } : _check(u, [127, 70, 76, 65, 67]) ? {
                             ext: "oga",
                             mime: "audio/ogg"
-                        } : _check(t, [83, 112, 101, 101, 120, 32, 32]) ? {
+                        } : _check(u, [83, 112, 101, 101, 120, 32, 32]) ? {
                             ext: "spx",
                             mime: "audio/ogg"
-                        } : _check(t, [1, 118, 111, 114, 98, 105, 115]) ? {
+                        } : _check(u, [1, 118, 111, 114, 98, 105, 115]) ? {
                             ext: "ogg",
                             mime: "audio/ogg"
                         } : {
@@ -4248,8 +4247,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (n("ftyp", {
                             offset: 4
                         }) && 0 != (96 & t[8])) {
-                        const e = t.toString("binary", 8, 12).replace("\0", " ").trim();
-                        switch (e) {
+                        const c = t.toString("binary", 8, 12).replace("\0", " ").trim();
+                        switch (c) {
                             case "avif":
                                 return {
                                     ext: "avif", mime: "image/avif"
@@ -4315,7 +4314,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     ext: "cr3", mime: "image/x-canon-cr3"
                                 };
                             default:
-                                return e.startsWith("3g") ? e.startsWith("3g2") ? {
+                                return c.startsWith("3g") ? c.startsWith("3g2") ? {
                                     ext: "3g2",
                                     mime: "video/3gpp2"
                                 } : {
@@ -4373,11 +4372,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                     if (n("%PDF")) {
                         await e.ignore(1350);
-                        const t = 10485760,
-                            r = Buffer.alloc(Math.min(t, e.fileInfo.size));
-                        return await e.readBuffer(r, {
+                        const l = 10485760,
+                            d = Buffer.alloc(Math.min(l, e.fileInfo.size));
+                        return await e.readBuffer(d, {
                             mayBeLess: !0
-                        }), r.includes(Buffer.from("AIPrivateData")) ? {
+                        }), d.includes(Buffer.from("AIPrivateData")) ? {
                             ext: "ai",
                             mime: "application/postscript"
                         } : {
@@ -4432,7 +4431,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "audio/ape"
                     };
                     if (r([26, 69, 223, 163])) {
-                        async function t() {
+                        async function f() {
                             const t = await e.peekNumber(Token.UINT8);
                             let r = 128,
                                 n = 0;
@@ -4440,25 +4439,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             const o = Buffer.alloc(n + 1);
                             return await e.readBuffer(o), o
                         }
-                        async function r() {
-                            const e = await t(),
-                                r = await t();
-                            r[0] ^= 128 >> r.length - 1;
-                            const n = Math.min(6, r.length);
+                        async function p() {
+                            const e = await f(),
+                                t = await f();
+                            t[0] ^= 128 >> t.length - 1;
+                            const r = Math.min(6, t.length);
                             return {
                                 id: e.readUIntBE(0, e.length),
-                                len: r.readUIntBE(r.length - n, n)
+                                len: t.readUIntBE(t.length - r, r)
                             }
                         }
-                        async function n(t, n) {
-                            for (; n > 0;) {
-                                const t = await r();
+                        async function m(t, r) {
+                            for (; r > 0;) {
+                                const t = await p();
                                 if (17026 === t.id) return e.readToken(new Token.StringType(t.len, "utf-8"));
-                                await e.ignore(t.len), --n
+                                await e.ignore(t.len), --r
                             }
                         }
-                        const o = await r();
-                        switch (await n(0, o.len)) {
+                        const h = await p();
+                        switch (await m(0, h.len)) {
                             case "webm":
                                 return {
                                     ext: "webm", mime: "video/webm"
@@ -4619,7 +4618,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "application/x-unix-archive"
                     };
                     if (r([137, 80, 78, 71, 13, 10, 26, 10])) {
-                        async function t() {
+                        async function g() {
                             return {
                                 length: await e.readToken(Token.INT32_BE),
                                 type: await e.readToken(new Token.StringType(4, "binary"))
@@ -4627,9 +4626,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         await e.ignore(8);
                         do {
-                            const r = await t();
-                            if (r.length < 0) return;
-                            switch (r.type) {
+                            const y = await g();
+                            if (y.length < 0) return;
+                            switch (y.type) {
                                 case "IDAT":
                                     return {
                                         ext: "png", mime: "image/png"
@@ -4639,7 +4638,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         ext: "apng", mime: "image/apng"
                                     };
                                 default:
-                                    await e.ignore(r.length + 4)
+                                    await e.ignore(y.length + 4)
                             }
                         } while (e.position + 8 < e.fileInfo.size);
                         return {
@@ -4680,7 +4679,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "image/x-panasonic-rw2"
                     };
                     if (r([48, 38, 178, 117, 142, 102, 207, 17, 166, 217])) {
-                        async function t() {
+                        async function b() {
                             const t = Buffer.alloc(16);
                             return await e.readBuffer(t), {
                                 id: t,
@@ -4688,21 +4687,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         }
                         for (await e.ignore(30); e.position + 24 < e.fileInfo.size;) {
-                            const r = await t();
-                            let n = r.size - 24;
-                            if (_check(r.id, [145, 7, 220, 183, 183, 169, 207, 17, 142, 230, 0, 192, 12, 32, 83, 101])) {
-                                const t = Buffer.alloc(16);
-                                if (n -= await e.readBuffer(t), _check(t, [64, 158, 105, 248, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
+                            const v = await b();
+                            let _ = v.size - 24;
+                            if (_check(v.id, [145, 7, 220, 183, 183, 169, 207, 17, 142, 230, 0, 192, 12, 32, 83, 101])) {
+                                const M = Buffer.alloc(16);
+                                if (_ -= await e.readBuffer(M), _check(M, [64, 158, 105, 248, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
                                     ext: "asf",
                                     mime: "audio/x-ms-asf"
                                 };
-                                if (_check(t, [192, 239, 25, 188, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
+                                if (_check(M, [192, 239, 25, 188, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
                                     ext: "asf",
                                     mime: "video/x-ms-asf"
                                 };
                                 break
                             }
-                            await e.ignore(n)
+                            await e.ignore(_)
                         }
                         return {
                             ext: "asf",
@@ -4799,14 +4798,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "audio/x-voc"
                     };
                     if (r([4, 0, 0, 0]) && t.length >= 16) {
-                        const e = t.readUInt32LE(12);
-                        if (e > 12 && t.length >= e + 16) try {
-                            const r = t.slice(16, e + 16).toString();
-                            if (JSON.parse(r).files) return {
+                        const w = t.readUInt32LE(12);
+                        if (w > 12 && t.length >= w + 16) try {
+                            const P = t.slice(16, w + 16).toString();
+                            if (JSON.parse(P).files) return {
                                 ext: "asar",
                                 mime: "application/x-asar"
                             }
-                        } catch (e) {}
+                        } catch (O) {}
                     }
                     if (r([6, 14, 43, 52, 2, 5, 1, 1, 13, 1, 2, 1, 1, 2])) return {
                         ext: "mxf",
@@ -5107,6 +5106,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }, r
                 }
             },
+            8985: (e, t) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.Deferred = void 0, t.Deferred = class {
+                    constructor() {
+                        this.resolve = () => null, this.reject = () => null, this.promise = new Promise(((e, t) => {
+                            this.reject = t, this.resolve = e
+                        }))
+                    }
+                }
+            },
             7279: (e, t) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -5119,29 +5130,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
                 t.EndOfStreamError = r
             },
-            5167: (e, t, r) => {
+            6654: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.StreamReader = t.EndOfStreamError = void 0;
-                const n = r(7279);
-                var o = r(7279);
+                const n = r(7279),
+                    o = r(8985);
+                var i = r(7279);
                 Object.defineProperty(t, "EndOfStreamError", {
                     enumerable: !0,
                     get: function() {
-                        return o.EndOfStreamError
+                        return i.EndOfStreamError
                     }
-                });
-                class i {
-                    constructor() {
-                        this.resolve = () => null, this.reject = () => null, this.promise = new Promise(((e, t) => {
-                            this.reject = t, this.resolve = e
-                        }))
-                    }
-                }
-                t.StreamReader = class {
+                }), t.StreamReader = class {
                     constructor(e) {
-                        if (this.s = e, this.request = null, this.endOfStream = !1, this.peekQueue = [], !e.read || !e.once) throw new Error("Expected an instance of stream.Readable");
+                        if (this.s = e, this.deferred = null, this.endOfStream = !1, this.peekQueue = [], !e.read || !e.once) throw new Error("Expected an instance of stream.Readable");
                         this.s.once("end", (() => this.reject(new n.EndOfStreamError))), this.s.once("error", (e => this.reject(e))), this.s.once("close", (() => this.reject(new Error("Stream closed"))))
                     }
                     async peek(e, t, r) {
@@ -5161,35 +5165,56 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         for (; o > 0 && !this.endOfStream;) {
                             const r = Math.min(o, 1048576),
-                                n = await this._read(e, t + i, r);
+                                n = await this.readFromStream(e, t + i, r);
                             if (i += n, n < r) break;
                             o -= n
                         }
                         return i
                     }
-                    async _read(e, t, r) {
-                        if (this.request) throw new Error("Concurrent read operation?");
+                    async readFromStream(e, t, r) {
                         const n = this.s.read(r);
-                        return n ? (e.set(n, t), n.length) : (this.request = {
-                            buffer: e,
-                            offset: t,
-                            length: r,
-                            deferred: new i
-                        }, this.s.once("readable", (() => {
-                            this.tryRead()
-                        })), this.request.deferred.promise)
+                        if (n) return e.set(n, t), n.length; {
+                            const n = {
+                                buffer: e,
+                                offset: t,
+                                length: r,
+                                deferred: new o.Deferred
+                            };
+                            return this.deferred = n.deferred, this.s.once("readable", (() => {
+                                this.readDeferred(n)
+                            })), n.deferred.promise
+                        }
                     }
-                    tryRead() {
-                        if (!this.request) throw new Error("this.request should be defined");
-                        const e = this.s.read(this.request.length);
-                        e ? (this.request.buffer.set(e, this.request.offset), this.request.deferred.resolve(e.length), this.request = null) : this.s.once("readable", (() => {
-                            this.tryRead()
+                    readDeferred(e) {
+                        const t = this.s.read(e.length);
+                        t ? (e.buffer.set(t, e.offset), e.deferred.resolve(t.length), this.deferred = null) : this.s.once("readable", (() => {
+                            this.readDeferred(e)
                         }))
                     }
                     reject(e) {
-                        this.endOfStream = !0, this.request && (this.request.deferred.reject(e), this.request = null)
+                        this.endOfStream = !0, this.deferred && (this.deferred.reject(e), this.deferred = null)
                     }
                 }
+            },
+            5167: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.StreamReader = t.EndOfStreamError = void 0;
+                var n = r(7279);
+                Object.defineProperty(t, "EndOfStreamError", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.EndOfStreamError
+                    }
+                });
+                var o = r(6654);
+                Object.defineProperty(t, "StreamReader", {
+                    enumerable: !0,
+                    get: function() {
+                        return o.StreamReader
+                    }
+                })
             },
             842: (e, t, r) => {
                 "use strict";
@@ -5658,7 +5683,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         this.len = e
                     }
                     get(e, t) {
-                        return e.slice(t, t + this.len)
+                        return n.from(e.subarray(t, t + this.len))
                     }
                 }, t.StringType = class {
                     constructor(e, t) {
@@ -6011,6 +6036,178 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), r(7557), o(r(2820), t)
+            },
+            4493: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), r(9673)
+            },
+            9673: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const s = r(5267),
+                    a = i(r(7046)),
+                    u = r(1092),
+                    c = r(9428);
+                a.onInjected((() => (u.CallStore.on("add", (e => {
+                    e.isGroup && s.internalEv.emit("call.incoming_call", {
+                        id: e.id,
+                        isGroup: e.isGroup,
+                        isVideo: e.isVideo,
+                        offerTime: e.offerTime,
+                        sender: u.WidFactory.toChatWid(e.peerJid),
+                        peerJid: e.peerJid
+                    })
+                })), void u.CallStore.on("change:_state change:state", (e => {
+                    e.getState() === c.CALL_STATES.INCOMING_RING && s.internalEv.emit("call.incoming_call", {
+                        id: e.id,
+                        isGroup: e.isGroup,
+                        isVideo: e.isVideo,
+                        offerTime: e.offerTime,
+                        sender: u.WidFactory.toChatWid(e.peerJid),
+                        peerJid: e.peerJid
+                    })
+                })))))
+            },
+            3403: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.rejectCall = void 0;
+                var n = r(5658);
+                Object.defineProperty(t, "rejectCall", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.rejectCall
+                    }
+                })
+            },
+            5658: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.rejectCall = void 0;
+                const n = r(8910),
+                    o = r(1092),
+                    i = r(9428),
+                    s = r(1489);
+                t.rejectCall = async function(e) {
+                    let t;
+                    if (t = e ? o.CallStore.get(e) : o.CallStore.findFirst((e => e.getState() === i.CALL_STATES.INCOMING_RING || e.isGroup)), !t) throw new n.WPPError("call_not_found", `Call ${e||"<empty>"} not found`, {
+                        callId: e
+                    });
+                    if ("INCOMING_RING" !== t.getState() && !t.isGroup) throw new n.WPPError("call_is_not_incoming_ring", `Call ${e||"<empty>"} is not incoming ring`, {
+                        callId: e,
+                        state: t.getState()
+                    });
+                    return await (0, s.sendCallSignalingMsg)({
+                        common: {
+                            peer_jid: t.peerJid.toString()
+                        },
+                        payload: ["reject", {
+                            "call-id": t.id,
+                            "call-creator": t.peerJid.toString({
+                                legacy: !0
+                            }),
+                            count: "0"
+                        }, null]
+                    }), !0
+                }
+            },
+            9596: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__exportStar || function(e, t) {
+                        for (var r in e) "default" === r || Object.prototype.hasOwnProperty.call(t, r) || n(t, e, r)
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), r(4493), o(r(3403), t)
+            },
+            6235: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getMyCatalog = void 0;
+                const n = r(1092);
+                t.getMyCatalog = async function() {
+                    return n.CatalogStore.get(n.UserPrefs.getMeUser())
+                }
+            },
+            347: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getMyCatalog = void 0;
+                var n = r(6235);
+                Object.defineProperty(t, "getMyCatalog", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.getMyCatalog
+                    }
+                })
+            },
+            9363: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__exportStar || function(e, t) {
+                        for (var r in e) "default" === r || Object.prototype.hasOwnProperty.call(t, r) || n(t, e, r)
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), o(r(347), t)
             },
             443: (e, t) => {
                 "use strict";
@@ -9391,6 +9588,95 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), o(r(4336), t)
             },
+            6252: function(e, t, r) {
+                "use strict";
+                var n, o = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    i = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    s = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && o(t, e, r);
+                        return i(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.version = void 0;
+                const a = s(r(5005)),
+                    u = r(5267);
+                t.version = "2.7.1";
+                let c = 0;
+                const l = {
+                    v: "2",
+                    tid: "G-MTQ4KY110F",
+                    sr: screen.width + "x" + screen.height,
+                    ul: (navigator.language || "").toLowerCase(),
+                    cid: function() {
+                        const e = localStorage.getItem("cid") || Math.floor(1e8 + 9e8 * Math.random()) + "." + Math.floor(Date.now() / 1e3);
+                        return localStorage.setItem("cid", e), e
+                    }(),
+                    dl: location.href,
+                    dr: document.referrer,
+                    dt: (null === (n = document.querySelector("title")) || void 0 === n ? void 0 : n.innerText) || "WhatsApp",
+                    sid: String(Math.floor(Date.now() / 1e3)),
+                    seg: "1",
+                    sct: "1",
+                    _s: "1"
+                };
+
+                function d(e, t) {
+                    const r = Object.assign(Object.assign({}, l), {
+                        en: e,
+                        _s: String(c++)
+                    });
+                    for (const e in t) {
+                        const n = t[e];
+                        switch (typeof n) {
+                            case "boolean":
+                            case "string":
+                                r[`ep.${e}`] = String(n);
+                                break;
+                            case "number":
+                                r[`epn.${e}`] = String(n)
+                        }
+                    }! function(e) {
+                        const t = new URLSearchParams(e);
+                        navigator.sendBeacon(`https://www.google-analytics.com/g/collect?${t.toString()}`)
+                    }(r)
+                }
+                u.internalEv.on("webpack.injected", (() => {
+                    var e;
+                    l["up.wa_js"] = t.version, l["up.whatsapp"] = (null === (e = window.Debug) || void 0 === e ? void 0 : e.VERSION) || "-", d("page_view", {
+                        authenticated: a.isAuthenticated()
+                    })
+                })), u.internalEv.on("conn.authenticated", (() => {
+                    d("login", {
+                        method: a.isMultiDevice() ? "multidevice" : "legacy"
+                    })
+                })), u.internalEv.on("conn.logout", (() => {
+                    d("logout", {
+                        method: a.isMultiDevice() ? "multidevice" : "legacy"
+                    })
+                }))
+            },
             3607: function(e, t, r) {
                 "use strict";
                 var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
@@ -9422,7 +9708,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.license = t.supportedWhatsappWeb = t.version = t.waitFor = t.stopListeningTo = t.setMaxListeners = t.removeListener = t.removeAllListeners = t.prependOnceListener = t.prependMany = t.prependListener = t.prependAny = t.once = t.onAny = t.on = t.offAny = t.off = t.many = t.listenersAny = t.listeners = t.listenerCount = t.listenTo = t.hasListeners = t.getMaxListeners = t.eventNames = t.emitAsync = t.emit = t.whatsapp = t.util = t.status = t.profile = t.labels = t.group = t.ev = t.contact = t.conn = t.chat = t.blocklist = t.config = t.isReady = t.isInjected = t.webpack = void 0, r(8913), r(3905);
+                }), t.license = t.supportedWhatsappWeb = t.version = t.waitFor = t.stopListeningTo = t.setMaxListeners = t.removeListener = t.removeAllListeners = t.prependOnceListener = t.prependMany = t.prependListener = t.prependAny = t.once = t.onAny = t.on = t.offAny = t.off = t.many = t.listenersAny = t.listeners = t.listenerCount = t.listenTo = t.hasListeners = t.getMaxListeners = t.eventNames = t.emitAsync = t.emit = t.whatsapp = t.util = t.status = t.profile = t.labels = t.group = t.ev = t.contact = t.conn = t.chat = t.catalog = t.call = t.blocklist = t.config = t.isReady = t.isInjected = t.webpack = void 0, r(8913), r(3905), r(6252);
                 const s = i(r(7046));
                 t.webpack = s;
                 var a = r(7046);
@@ -9443,7 +9729,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return u.config
                     }
-                }), t.blocklist = i(r(5140)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(3606)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
+                }), t.blocklist = i(r(5140)), t.call = i(r(9596)), t.catalog = i(r(9363)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(3606)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
                 var c = r(5267);
                 Object.defineProperty(t, "emit", {
                     enumerable: !0,
@@ -9565,7 +9851,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.6.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.7.1", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -10506,7 +10792,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const n = r(8785);
                 r(2651), (0, n.exportModule)(t, {
                     BaseCollection: "BaseCollection"
-                }, (e => e.CACHE_POLICY || e.BaseCollection))
+                }, (e => e.BaseCollection))
             },
             8793: (e, t, r) => {
                 "use strict";
@@ -10959,6 +11245,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     ACK_STRING: ["ACK_STRING", "default.ACK_STRING"]
                 }, (e => e.ACK || e.default.ACK))
             },
+            3929: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    CALL_STATES: "CALL_STATES"
+                }, (e => e.CALL_STATES))
+            },
             8547: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -11029,7 +11323,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(6668), t), o(r(8547), t), o(r(5911), t), o(r(2213), t), o(r(7376), t), o(r(4150), t)
+                }), o(r(6668), t), o(r(3929), t), o(r(8547), t), o(r(5911), t), o(r(2213), t), o(r(7376), t), o(r(4150), t)
             },
             8785: function(e, t, r) {
                 "use strict";
@@ -11080,16 +11374,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             get() {
                                 let e, t;
                                 const i = a.searchId(r);
-                                if (!i) throw `Module ${n} not found with ${r.toString()}`;
+                                if (!i) return void console.error(`Module ${n} was not found with ${r.toString()}`);
                                 const s = a.webpackRequire(i);
                                 if (Array.isArray(o)) {
                                     for (const r of o)
                                         if (e = () => r.split(".").reduce(((e, t) => null == e ? void 0 : e[t]), s), e()) {
                                             t = r;
                                             break
-                                        } if (!e()) throw `Property ${o} not found in module ${n}`
+                                        } if (!e()) return void console.error(`Property ${o.join(" or ")} was not found for ${n} in module ${i}`)
                                 } else if ("string" == typeof o) {
-                                    if (e = () => o.split(".").reduce(((e, t) => null == e ? void 0 : e[t]), s), !e()) throw `Property ${o} not found in module ${n}`;
+                                    if (e = () => o.split(".").reduce(((e, t) => null == e ? void 0 : e[t]), s), !e()) return void console.error(`Property ${o} was not found for ${n} in module ${i}`);
                                     t = o
                                 } else e = () => s;
                                 if (e) {
@@ -11118,15 +11412,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return n.includes((null === (i = null === (o = e.default) || void 0 === o ? void 0 : o.prototype) || void 0 === i ? void 0 : i.proxyName) || (null === (a = null === (s = e[t]) || void 0 === s ? void 0 : s.prototype) || void 0 === a ? void 0 : a.proxyName) || (null === (c = null === (u = e[r]) || void 0 === u ? void 0 : u.prototype) || void 0 === c ? void 0 : c.proxyName))
                     }))
                 }, t.wrapModuleFunction = function(e, r) {
-                    if ("function" != typeof e) throw new TypeError("func is not a function");
+                    if ("function" != typeof e) return void console.error("func is not a function");
                     const n = t._moduleIdMap.get(e);
-                    if (!n) throw new TypeError("func is not an exported function");
+                    if (!n) return void console.error("func is not an exported function");
                     const o = a.webpackRequire(n),
                         i = c.get(e);
-                    if (!i) throw new TypeError("function path not found");
+                    if (!i) return void console.error("function path was not found");
                     const l = i.split("."),
                         d = l.pop();
-                    if (!d) throw new TypeError(`function not found in the module ${n}`);
+                    if (!d) return void console.error(`function was not found in the module ${n}`);
                     const f = l.reduce(((e, t) => null == e ? void 0 : e[t]), o);
                     f[d] = (0, s.wrapFunction)(e.bind(f), r), u.set(f[d], n), c.set(f[d], i)
                 }
@@ -11294,12 +11588,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 const n = r(8785);
                 (0, n.exportModule)(t, {
-                    handleStatusSimpleAck: "handleStatusSimpleAck"
-                }, (e => e.handleStatusSimpleAck)), (0, n.exportModule)(t, {
-                    handleChatSimpleAck: "handleChatSimpleAck"
-                }, (e => e.handleChatSimpleAck)), (0, n.exportModule)(t, {
-                    handleGroupSimpleAck: "handleGroupSimpleAck"
-                }, (e => e.handleGroupSimpleAck))
+                    handleStatusSimpleAck: ["handleStatusSimpleReceipt", "handleStatusSimpleAck"],
+                    handleStatusSimpleReceipt: ["handleStatusSimpleReceipt", "handleStatusSimpleAck"]
+                }, (e => e.handleStatusSimpleReceipt || e.handleStatusSimpleAck)), (0, n.exportModule)(t, {
+                    handleChatSimpleAck: ["handleChatSimpleReceipt", "handleChatSimpleAck"],
+                    handleChatSimpleReceipt: ["handleChatSimpleReceipt", "handleChatSimpleAck"]
+                }, (e => e.handleChatSimpleReceipt || e.handleChatSimpleAck)), (0, n.exportModule)(t, {
+                    handleGroupSimpleAck: ["handleGroupSimpleReceipt", "handleGroupSimpleAck"],
+                    handleGroupSimpleReceipt: ["handleGroupSimpleReceipt", "handleGroupSimpleAck"]
+                }, (e => e.handleGroupSimpleReceipt || e.handleGroupSimpleAck))
             },
             1489: function(e, t, r) {
                 "use strict";
@@ -12426,7 +12723,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         [e]: ["default", r]
                     }, (e => (e.default || e[r]) instanceof s[r]))
                 }(0, a.exportModule)(t, {
-                    RecentStickerStore: ["default", "RecentStickerCollectionMd"]
+                    RecentStickerStore: ["default", "RecentStickerCollectionMd", "RecentStickerCollection"]
                 }, (e => e.RecentStickerCollection)), (0, a.exportModule)(t, {
                     StarredMsgStore: ["default", "AllStarredMsgsCollection"]
                 }, (e => e.StarredMsgCollection)), (0, a.exportModule)(t, {
@@ -12459,6 +12756,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(3607);
     return __webpack_exports__
 })()));
+
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
