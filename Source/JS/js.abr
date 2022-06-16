@@ -12942,9 +12942,5 @@ async function deleteAllChats() {
         }    
 };
 
-//Evento Recebendo Ligação
-WPP.on("call.incoming_call", (call) => {
-  Let chamada = call;
-  SetConsoleMessage("IncomingiCall", Json.stringfy(call);
-});
+
 
