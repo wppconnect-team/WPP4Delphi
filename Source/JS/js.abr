@@ -12942,3 +12942,11 @@ async function deleteAllChats() {
         }    
 };
 
+//Evento Recebendo Ligação
+WPP.on("call.incoming_call", (call) => {	
+    result = call;
+    if (call !== undefined) 	 
+        console.log('{"name":"IncomingiCall",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
+	    //SetConsoleMessage("IncomingiCall", Json.stringfy(call);
+	    
+});
