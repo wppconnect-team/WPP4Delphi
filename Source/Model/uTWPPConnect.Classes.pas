@@ -1045,7 +1045,7 @@ TRetornoAllGroups = class(TClassPadrao)
   private
     FNumbers: TStringList;
   public
-    property    Numbers: TStringList   read FNumbers;
+    property    Numbers: TStringList   read FNumbers write FNumbers;
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
 end;
@@ -1190,7 +1190,7 @@ end;
 //Marcelo 18/06/2022
 constructor TIncomingiCall.Create(pAJsonString: string);
 var
- vJson : string;
+  vJson : string;
   lAJsonObj: TJSONValue;
   lAJsonObj2: TJSONValue;
   lAJsonObj3: TJSONValue;
@@ -1198,26 +1198,17 @@ var
 begin
   vJson := pAJsonString;
   lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-  //if lAJsonObj.TryGetValue('result', myarr) and (myarr.Count > 0) then
-  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-    //if lAJsonObj2.TryGetValue('result', vJson) then
-    //if myarr.Items[0].TryGetValue('result', vJson) then
-    begin
-      vJson := lAJsonObj2.ToJSON;
-      lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
-      if lAJsonObj.TryGetValue('result', lAJsonObj3) then
-      begin
-        vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
-        //if myarr.Items[0].TryGetValue('result', vJson) then
-        inherited Create(vJson);
-      end;
-    end;
-  //vJson := lAJsonObj.ToJSON;
-  //myarr := lAJsonObj.GetValue('result') AS TJSONArray;
-  //lAJsonObj := myarr.Items[0] as TJSONObject;
-  //vJson := lAJsonObj.ToJSON;
-  //vJson := copy(pAJsonString, 11, length(pAJsonString) - 11);
 
+  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+  begin
+    vJson := lAJsonObj2.ToJSON;
+    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+    if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+    begin
+      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+      inherited Create(vJson);
+    end;
+  end;
 
 end;
 
@@ -1827,6 +1818,10 @@ end;
 { TRetornoAllGroups }
 
 constructor TRetornoAllGroups.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
 begin
   inherited Create(pAJsonString);
   FNumbers      := TStringList.create;
@@ -1836,6 +1831,25 @@ begin
   FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+
+  if Trim(FNumbers.Text) = '' then
+  begin
+    vJson := pAJsonString;
+    lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+    begin
+      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+      inherited Create(vJson);
+      FNumbers      := TStringList.create;
+      FNumbers.Text := vJson;
+      //Quebrar linhas de acordo com cada valor separado por virgula
+      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    end;
+  end;
 end;
 
 destructor TRetornoAllGroups.Destroy;
