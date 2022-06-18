@@ -201,7 +201,7 @@ Const
   FrmConsole_JS_VAR_sendTextStatus   = 'WPP.status.sendTextStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
 
   //Marcelo 15/06/2022
-  FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_PHONE#>");';
+  FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_ID#>");';
 
 resourcestring
   MSG_ConfigCEF_ExceptNotFoundJS       = '';
@@ -338,7 +338,8 @@ type
                    Th_GetStatusMessage=38, Th_GetGroupInviteLink=39, Th_GetMe=40, Th_NewCheckIsValidNumber=41
                    , Th_GetCheckIsBeta=42, Th_getMessageById=43 //Marcelo 06/05/2022
                    , Th_SendFileMessage=44, Th_SendTextMessage=45, Th_SendListMessage=46 //Marcelo 31/05/2022
-                   , Th_SendTextMessageEx=47, Th_SendFileMessageEx=48, Th_SendListMessageEx=49);   //Temis 03-06-2022
+                   , Th_SendTextMessageEx=47, Th_SendFileMessageEx=48, Th_SendListMessageEx=49   //Temis 03-06-2022
+                   , Th_IncomingiCall=50); //Marcelo 16-06-2022
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
     Function   FrmConsole_JS_AlterVar(var PScript:String;  PNomeVar: String;  Const PValor:String):String;
     function   StrToTypeHeader(PText: string): TTypeHeader;
@@ -474,7 +475,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 49; //Temis 03-06-2022
+const LmaxCount = 50; //Marcelo 16-06-2022
 var
   I: Integer;
   LNome: String;

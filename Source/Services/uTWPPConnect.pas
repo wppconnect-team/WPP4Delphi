@@ -84,6 +84,9 @@ type
   TGet_sendFileMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
   TGet_sendListMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
 
+  //Adicionado por Marcelo 17/06/2022
+  TGetIncomingiCall        = procedure(Const IncomingiCall: TIncomingiCall) of object;
+
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -167,6 +170,9 @@ type
     FOnGet_sendFileMessageEx    : TGet_sendFileMessageEx;
     FOnGet_sendListMessageEx    : TGet_sendListMessageEx;
 
+    //Adicionado Por Marcelo 17/06/2022
+    FOnGetIncomingiCall    : TGetIncomingiCall;
+
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
     procedure Loaded; override;
@@ -213,7 +219,7 @@ type
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
 
-    procedure rejectCall(phoneNumber: string);
+    procedure rejectCall(id: string);
 
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
@@ -316,6 +322,9 @@ type
     property OnGet_sendTextMessageEx     : TGet_sendTextMessageEx     read FOnGet_sendTextMessageEx        write FOnGet_sendTextMessageEx;
     property OnGet_sendFileMessageEx     : TGet_sendFileMessageEx     read FOnGet_sendFileMessageEx        write FOnGet_sendFileMessageEx;
     property OnGet_sendListMessageEx     : TGet_sendListMessageEx     read FOnGet_sendListMessageEx        write FOnGet_sendListMessageEx;
+
+    //Adicionado Por Marcelo 17/06/2022
+    property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
 
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
@@ -1611,7 +1620,8 @@ begin
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022
-  Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx]) then //temis 03-06-2022
+  Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
+  Th_IncomingiCall]) then //Adicionado por Marcelo 17/06/2022
   Begin
     if not Assigned(PReturnClass) then
       raise Exception.Create(MSG_ExceptMisc + ' in Int_OnNotificationCenter' );
@@ -1619,20 +1629,20 @@ begin
     If PTypeHeader = Th_GetAllChats Then
     Begin
       if Assigned(OnGetChatList) then
-         OnGetChatList(TChatList(PReturnClass));
+        OnGetChatList(TChatList(PReturnClass));
     end;
 
     If PTypeHeader = Th_getUnreadMessages Then
     Begin
       if Assigned(OnGetUnReadMessages) then
-         OnGetUnReadMessages(TChatList(PReturnClass));
+        OnGetUnReadMessages(TChatList(PReturnClass));
 
     end;
 
     If PTypeHeader = Th_GetMessageById Then
     Begin
       if Assigned(OnGetMessageById) then
-         OnGetMessageById(TMessagesList(PReturnClass));
+        OnGetMessageById(TMessagesList(PReturnClass));
          //OnGetMessageById(TMessagesClass(PReturnClass));
 
     end;
@@ -1641,7 +1651,7 @@ begin
     If PTypeHeader = Th_sendFileMessage Then
     Begin
       if Assigned(OnGet_sendFileMessage) then
-         OnGet_sendFileMessage(TMessagesClass(PReturnClass));
+        OnGet_sendFileMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1649,7 +1659,7 @@ begin
     If PTypeHeader = Th_sendTextMessage Then
     Begin
       if Assigned(OnGet_sendTextMessage) then
-         OnGet_sendTextMessage(TMessagesClass(PReturnClass));
+        OnGet_sendTextMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1657,7 +1667,7 @@ begin
     If PTypeHeader = Th_sendListMessage Then
     Begin
       if Assigned(OnGet_sendListMessage) then
-         OnGet_sendListMessage(TMessagesClass(PReturnClass));
+        OnGet_sendListMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1665,21 +1675,28 @@ begin
     if PTypeHeader = Th_sendTextMessageEx then
     Begin
       if Assigned(OnGet_sendTextMessageEx) then
-         OnGet_sendTextMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendTextMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Temis 03-06-2022
     if PTypeHeader = Th_sendFileMessageEx then
     Begin
       if Assigned(OnGet_sendFileMessageEx) then
-         OnGet_sendFileMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendFileMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Temis 03-06-2022
     if PTypeHeader = Th_sendListMessageEx then
     Begin
       if Assigned(OnGet_sendListMessageEx) then
-         OnGet_sendListMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendListMessageEx(TResponsesendTextMessage(PReturnClass));
+    end;
+
+    //Marcelo 17/06/2022
+    If PTypeHeader = Th_IncomingiCall Then
+    Begin
+      if Assigned(OnGetIncomingiCall) then
+        OnGetIncomingiCall(TIncomingiCall(PReturnClass));
     end;
 
     Exit;
@@ -1889,7 +1906,7 @@ begin
   end;
 end;
 
-procedure TWPPConnect.rejectCall(phoneNumber: string);
+procedure TWPPConnect.rejectCall(id: string);
 var
   lThread : TThread;
 begin
@@ -1898,13 +1915,6 @@ begin
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
-
-  phoneNumber := AjustNumber.FormatIn(phoneNumber);
-  if pos('@', phoneNumber) = 0 then
-  Begin
-    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
-    Exit;
-  end;
 
   lThread := TThread.CreateAnonymousThread(procedure
       begin
@@ -1915,7 +1925,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.rejectCall(phoneNumber);
+            FrmConsole.rejectCall(id);
           end;
         end);
 

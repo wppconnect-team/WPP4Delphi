@@ -198,7 +198,7 @@ type
     procedure SendReactionMessage(UniqueID, Reaction: string; etapa: string = '');
 
     //Adicionado Por Marcelo 15/06/2022
-    procedure rejectCall(phoneNumber: string);
+    procedure rejectCall(id: string);
 
     //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
@@ -867,7 +867,7 @@ begin
   DeleteMessages(Trim(vID));
 end;
 
-procedure TFrmConsole.rejectCall(phoneNumber: string);
+procedure TFrmConsole.rejectCall(id: string);
 var
   Ljs: string;
 begin
@@ -875,7 +875,7 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_rejectCall;
-  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',    Trim(id));
 
   ExecuteJS(LJS, true);
 end;
@@ -1555,6 +1555,17 @@ begin
                             end;
                           end;
 
+    //Marcelo 16/06/2022
+    Th_IncomingiCall : begin
+                            //LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                            //LOutClass2 := TIncomingiCall.Create(LResultStr);
+                            LOutClass2 := TIncomingiCall.Create(PResponse.JsonString);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
 
     Th_getUnreadMessages: begin
                             {LOutClass := TChatList.Create(LResultStr);

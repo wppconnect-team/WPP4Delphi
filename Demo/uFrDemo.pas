@@ -98,6 +98,7 @@ type
     procedure TWPPConnect1Get_sendTextMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendFileMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendListMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
   private
     { Private declarations }
 
@@ -442,6 +443,21 @@ begin
     ShowMessage('Whatsapp Valid -' + Number)
   else
     ShowMessage('Whatsapp Invalid');
+end;
+
+procedure TfrDemo.TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
+begin
+  ShowMessage('Recebendo Ligação: ' + IncomingiCall.sender);
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Recebendo Ligação: ' + IncomingiCall.sender;
+  Application.ProcessMessages;
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebendo Ligação: sender: ' + IncomingiCall.sender + ' peerJid: ' + IncomingiCall.peerJid + ' isGroup: ' + IncomingiCall.isGroup.ToString() + ' isVideo: ' + IncomingiCall.isVideo.ToString()+ ' offerTime: ' + DateTimeToStr(UnixToDateTime(IncomingiCall.offerTime)) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  SleepNoFreeze(2000);
+  TWPPConnect1.rejectCall(IncomingiCall.id);
+  TWPPConnect1.SendTextMessageEx(IncomingiCall.sender,'Este Número Não Recebe Ligações!','','Ligação');
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team';
+  Application.ProcessMessages;
 end;
 
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);

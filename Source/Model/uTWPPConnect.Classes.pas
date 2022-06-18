@@ -990,6 +990,27 @@ type
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
 
+//Marcelo 18/06/2022
+TIncomingiCall = class(TClassPadrao)
+private
+  FId: String;
+  FIsGroup: Boolean;
+  FIsVideo: Boolean;
+  FOfferTime: Int64;
+  FPeerJid: String;
+  FSender: String;
+public
+  property id:           String     read FId          write FId;
+  property isGroup:      Boolean    read FIsGroup     write FIsGroup;
+  property isVideo:      Boolean    read FIsVideo     write FIsVideo;
+  property offerTime:    Int64      read FOfferTime   write FOfferTime;
+  property peerJid:      String     read FPeerJid     write FPeerJid;
+  property sender:       String     read FSender      write FSender;
+  constructor Create(pAJsonString: string);
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TIncomingiCall;
+end;
+
 //temis 03-06-2022
 TResponsesendTextMessage  = class(TClassPadrao)
 private
@@ -1159,6 +1180,52 @@ uses
 
 var
   FUltimoQrCode: String;
+
+//Marcelo 18/06/2022
+function TIncomingiCall.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+//Marcelo 18/06/2022
+constructor TIncomingiCall.Create(pAJsonString: string);
+var
+ vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  myarr: TJSONArray;
+begin
+  vJson := pAJsonString;
+  lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+  //if lAJsonObj.TryGetValue('result', myarr) and (myarr.Count > 0) then
+  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+    //if lAJsonObj2.TryGetValue('result', vJson) then
+    //if myarr.Items[0].TryGetValue('result', vJson) then
+    begin
+      vJson := lAJsonObj2.ToJSON;
+      lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+      if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+      begin
+        vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+        //if myarr.Items[0].TryGetValue('result', vJson) then
+        inherited Create(vJson);
+      end;
+    end;
+  //vJson := lAJsonObj.ToJSON;
+  //myarr := lAJsonObj.GetValue('result') AS TJSONArray;
+  //lAJsonObj := myarr.Items[0] as TJSONObject;
+  //vJson := lAJsonObj.ToJSON;
+  //vJson := copy(pAJsonString, 11, length(pAJsonString) - 11);
+
+
+end;
+
+//Marcelo 18/06/2022
+class function TIncomingiCall.FromJsonString(AJsonString: string): TIncomingiCall;
+begin
+  result := TJson.JsonToObject<TIncomingiCall>(AJsonString)
+end;
 
 Procedure ClearLastQrcodeCtr;
 Begin
@@ -1882,7 +1949,7 @@ begin
   FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
   FAck      := FMessageClass.ack;
   FID    := FMessageClass.id;
-  fMessageClass.free;
+  FMessageClass.Free;
 end;
 
 destructor TResponsesendTextMessage.Destroy;

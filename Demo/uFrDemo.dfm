@@ -4260,6 +4260,7 @@ object frDemo: TfrDemo
     OnGet_sendTextMessageEx = TWPPConnect1Get_sendTextMessageEx
     OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
+    OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
