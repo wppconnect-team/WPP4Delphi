@@ -656,6 +656,33 @@ type
 
   end;
 
+  //Marcelo 18/06/2022
+  TSingleSelectReplyClass = class(TClassPadrao)
+  private
+    //F$$unknownFieldCount: Extended;
+    FSelectedRowId: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property selectedRowId: String read FSelectedRowId write FSelectedRowId;
+  end;
+
+  //Marcelo 18/06/2022
+  TlistResponseClass = class(TClassPadrao)
+  private
+    //F$$unknownFieldCount: Extended;
+    FDescription: String;
+    FListType: Extended;
+    FSingleSelectReply: TSingleSelectReplyClass;
+    FTitle: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property description: String                        read FDescription       write FDescription;
+    property listType: Extended                         read FListType          write FListType;
+    property singleSelectReply: TSingleSelectReplyClass read FSingleSelectReply write FSingleSelectReply;
+    property title: String                              read FTitle             write FTitle;
+  end;
+
+
   TMessagesClass = class(TClassPadrao)
   private
     FId              : String;
@@ -749,6 +776,7 @@ type
     FurlNumber: string;
     Ffooter: string;
     Ftitle: string;
+    FlistResponse: TlistResponseClass;
 
   public
     constructor Create(pAJsonString: string);
@@ -845,9 +873,13 @@ type
     property footer                      : string   read Ffooter                       write Ffooter;
     property title                       : string   read Ftitle                        write Ftitle;
 
+    //Marcelo 18/06/2022
+    property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
+
 
     //encFilehash
   end;
+
 
   //Marcelo 27/04/2022
   TtcTokenClass = class(TClassPadrao)

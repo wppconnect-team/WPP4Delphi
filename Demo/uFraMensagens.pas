@@ -614,18 +614,18 @@ begin
       '[' +
       '{ title: "Na Hora", rows: [{ rowId: "idDinheiro", title: "\💵 Dinheiro", description: "Receber no local." }]},' +
       '{ title: "On-line", rows: [{ rowId: "idFormas", title: "\💱 Pix", description: "Chave: 123456789"},' +
-        '{ title: "1 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "2 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "3 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "4 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "5 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "6 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "7 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "8 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "9 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "10 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
-        '{ title: "11 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
-        '{ title: "12 Cartao Credito", description: "Pode parcelar em ate 12x"}' +
+        '{ rowId: "idCartao1", title: "1 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao2", title: "2 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao3", title: "3 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao4", title: "4 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao5", title: "5 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao6", title: "6 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao7", title: "7 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao8", title: "8 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao9", title: "9 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao10", title: "10 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ rowId: "idCartao11", title: "11 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ rowId: "idCartao12", title: "12 Cartao Credito", description: "Pode parcelar em ate 12x"}' +
       ']' +
       '}]';
 

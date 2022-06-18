@@ -707,7 +707,7 @@ procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
   for AChat in Chats.Result do
@@ -770,7 +770,20 @@ begin
           selectedButtonId := AMessage.selectedButtonId;
 
           try
-            quotedMsg_caption := AMessage.quotedMsg.Caption;
+            if Assigned(AMessage.ListResponse.singleSelectReply) then
+            begin
+              selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+              if selectedRowId <> '' then
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+            end;
+          except on E: Exception do
+          end;
+
+
+
+          try
+            if Assigned(AMessage.quotedMsg) then
+              quotedMsg_caption := AMessage.quotedMsg.Caption;
             // Mensagem Original do Click do Botão
           except
             on E: Exception do
@@ -779,6 +792,10 @@ begin
 
           if selectedButtonId = '' then
             selectedButtonId := AMessage.selectedId;
+
+          if selectedButtonId <> '' then
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
 
           frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
             AChat.contact.profilePicThumb;
