@@ -1664,6 +1664,25 @@ object frDemo: TfrDemo
       inherited gbacoes: TGroupBox
         Height = 247
         ExplicitHeight = 247
+        inherited btnPromover: TButton
+          ExplicitLeft = 5
+        end
+        inherited btnDespromover: TButton
+          ExplicitLeft = 5
+        end
+        inherited btnSairGrupo: TButton
+          ExplicitLeft = 5
+          ExplicitTop = 92
+        end
+        inherited btnDeletarGrupo: TButton
+          ExplicitLeft = 5
+        end
+        inherited btnGerarLinkConvite: TButton
+          ExplicitLeft = 5
+        end
+        inherited btnCancelaLink: TButton
+          ExplicitLeft = 5
+        end
       end
     end
     inherited pnlGruposParticipantes: TPanel
@@ -1703,6 +1722,11 @@ object frDemo: TfrDemo
             Height = 249
             ExplicitLeft = 426
             ExplicitHeight = 249
+            inherited btnRemovePartici: TButton
+              ExplicitLeft = 1
+              ExplicitTop = 1
+              ExplicitWidth = 32
+            end
           end
           inherited pnltopopartici: TPanel
             Width = 452
@@ -4217,7 +4241,8 @@ object frDemo: TfrDemo
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
     Config.AutoStart = True
-    Config.AutoDelay = 1000
+    Config.AutoDelay = 0
+    Config.SecondsMonitor = 7
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
