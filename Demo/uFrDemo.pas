@@ -10,7 +10,7 @@
   an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 
-                              WPPCONNECT - Componente de comunicaÁ„o (N„o Oficial)
+                              WPPCONNECT - Componente de comunica√ß√£o (N√£o Oficial)
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################}
@@ -102,6 +102,8 @@ type
     procedure ctbtnCategories0Items5Click(Sender: TObject);
     procedure TWPPConnect1Get_ProductCatalog(Sender: TObject;
       const ProductCatalog: TProductsList);
+    procedure TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
+
   private
     { Private declarations }
 
@@ -117,6 +119,7 @@ type
     function VerificaPalavraChave(pMensagem, pSessao, pTelefone,
       pContato: String): Boolean;
     function killtask(ExeFileName: string): Integer;
+    function CaractersWeb(vText: string): string;
   end;
 
 var
@@ -194,6 +197,17 @@ begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
   FrmConsole.StartQrCode(Ft_Http, True);
+end;
+
+function TfrDemo.CaractersWeb(vText: string): string;
+begin
+  vText  := StringReplace(vText, sLineBreak,'\n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
+  vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A       ,'<br>'   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
+  Result := vText;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items0Click(Sender: TObject);
@@ -353,17 +367,17 @@ end;
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
 begin
   timerStatus.Enabled := False;
-  lblMeuNumero.Caption := 'Meu n˙mero: ' + TWPPConnect1.MyNumber;
+  lblMeuNumero.Caption := 'Meu n√∫mero: ' + TWPPConnect1.MyNumber;
 end;
 
 procedure TfrDemo.TWPPConnect1Disconnected(Sender: TObject);
 begin
-  ShowMessage('Conex„o foi finalizada');
+  ShowMessage('Conex√£o foi finalizada');
 end;
 
 procedure TfrDemo.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
-  ShowMessage('Conex„o foi finalizada pelo celular');
+  ShowMessage('Conex√£o foi finalizada pelo celular');
 end;
 
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -451,6 +465,21 @@ begin
     ShowMessage('Whatsapp Invalid');
 end;
 
+procedure TfrDemo.TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
+begin
+  ShowMessage('Recebendo Liga√ß√£o: ' + IncomingiCall.sender);
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Recebendo Liga√ß√£o: ' + IncomingiCall.sender;
+  Application.ProcessMessages;
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebendo Liga√ß√£o: sender: ' + IncomingiCall.sender + ' peerJid: ' + IncomingiCall.peerJid + ' isGroup: ' + IncomingiCall.isGroup.ToString() + ' isVideo: ' + IncomingiCall.isVideo.ToString()+ ' offerTime: ' + DateTimeToStr(UnixToDateTime(IncomingiCall.offerTime)) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  SleepNoFreeze(2000);
+  TWPPConnect1.rejectCall(IncomingiCall.id);
+  TWPPConnect1.SendTextMessageEx(IncomingiCall.sender,'Este N√∫mero N√£o Recebe Liga√ß√µes!','','Liga√ß√£o');
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team';
+  Application.ProcessMessages;
+end;
+
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
   Clipboard.AsText := Invite;
@@ -533,7 +562,7 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
-  lblMeuNumero.Caption := 'Meu n˙mero: ' + TWPPConnect(Sender).MyNumber;
+  lblMeuNumero.Caption := 'Meu n√∫mero: ' + TWPPConnect(Sender).MyNumber;
 end;
 
 procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
@@ -544,7 +573,7 @@ var
   lThread: TThread;
   wlo_Celular, wlo_Base64: string;
 begin
-  //Necess·rio Recompilar o Projeto
+  //Necess√°rio Recompilar o Projeto
 
   wlo_Base64 := ProfilePicThumb.Base64; // imagem
   wlo_Celular := Copy(ProfilePicThumb.id,1,  pos('@', ProfilePicThumb.id) -1); // nr telefone
@@ -617,7 +646,7 @@ begin
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu n˙mero: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'Meu n√∫mero: ' + TWPPConnect1.MyNumber;
   end;
 
   Label3.Visible := False;
@@ -698,17 +727,17 @@ procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
   for AChat in Chats.Result do
   begin
     for AMessage in AChat.Messages do
     begin
-      if not AChat.isGroup then // N„o exibe mensages de grupos
+      if not AChat.isGroup then // N√£o exibe mensages de grupos
       begin
 
-        if not AMessage.Sender.isMe then // N„o exibe mensages enviadas por mim
+        if not AMessage.Sender.isMe then // N√£o exibe mensages enviadas por mim
         begin
           // memo_unReadMessage.Clear;
           FChatID := AChat.id;
@@ -761,8 +790,21 @@ begin
           selectedButtonId := AMessage.selectedButtonId;
 
           try
-            quotedMsg_caption := AMessage.quotedMsg.Caption;
-            // Mensagem Original do Click do Bot„o
+            if Assigned(AMessage.ListResponse.singleSelectReply) then
+            begin
+              selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+              if selectedRowId <> '' then
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+            end;
+          except on E: Exception do
+          end;
+
+
+
+          try
+            if Assigned(AMessage.quotedMsg) then
+              quotedMsg_caption := AMessage.quotedMsg.Caption;
+            // Mensagem Original do Click do Bot√£o
           except
             on E: Exception do
               quotedMsg_caption := '';
@@ -770,6 +812,10 @@ begin
 
           if selectedButtonId = '' then
             selectedButtonId := AMessage.selectedId;
+
+          if selectedButtonId <> '' then
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
 
           frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
             AChat.contact.profilePicThumb;
@@ -802,7 +848,7 @@ begin
 
           try
             quotedMsg_caption := AMessage.quotedMsg.Caption;
-            // Mensagem Original do Click do Bot„o
+            // Mensagem Original do Click do Bot√£o
           except
             on E: Exception do
               quotedMsg_caption := '';
@@ -829,8 +875,8 @@ var
   LProduct: jsonDataObjects.TJsonObject;
 begin
   //Aqui vai receber uma lista com todos produtos do catalogo
-  //as imagens dos produtos s„o tratadas diferentes
-  //Eu usei RTTI para preencher o dataset cdsCatalogo, mas n„o È obrigatorio.
+  //as imagens dos produtos s√£o tratadas diferentes
+  //Eu usei RTTI para preencher o dataset cdsCatalogo, mas n√£o √© obrigatorio.
 
   frameCatalogo1.cdsCatalogo.EmptyDataSet;
   c := TRttiContext.Create;
@@ -904,7 +950,7 @@ var
 var
   lAJsonObj: TJSONValue;
 begin
-  //NOVO Necess·rio Recompilar o Projeto
+  //NOVO Necess√°rio Recompilar o Projeto
   try
     wlo_Json := Mensagem.JsonString;
     JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
@@ -961,7 +1007,7 @@ var
 var
   lAJsonObj: TJSONValue;
 begin
-  //NOVO Necess·rio Recompilar o Projeto
+  //NOVO Necess√°rio Recompilar o Projeto
   try
     wlo_Json := Mensagem.JsonString;
     JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
@@ -1019,7 +1065,7 @@ var
 var
   lAJsonObj: TJSONValue;
 begin
-  //NOVO Necess·rio Recompilar o Projeto
+  //NOVO Necess√°rio Recompilar o Projeto
   try
     wlo_Json := Mensagem.JsonString;
     JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
@@ -1072,10 +1118,10 @@ procedure TfrDemo.TWPPConnect1NewGetNumber(const vCheckNumber
   : TReturnCheckNumber);
 begin
   if vCheckNumber.valid then
-    ShowMessage(vCheckNumber.id + ' È um numero V·lido')
+    ShowMessage(vCheckNumber.id + ' √© um numero V√°lido')
 
   else
-    ShowMessage(vCheckNumber.id + ' È um numero INV¡LIDO');
+    ShowMessage(vCheckNumber.id + ' √© um numero INV√ÅLIDO');
 
 end;
 

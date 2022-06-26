@@ -656,6 +656,33 @@ type
 
   end;
 
+  //Marcelo 18/06/2022
+  TSingleSelectReplyClass = class(TClassPadrao)
+  private
+    //F$$unknownFieldCount: Extended;
+    FSelectedRowId: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property selectedRowId: String read FSelectedRowId write FSelectedRowId;
+  end;
+
+  //Marcelo 18/06/2022
+  TlistResponseClass = class(TClassPadrao)
+  private
+    //F$$unknownFieldCount: Extended;
+    FDescription: String;
+    FListType: Extended;
+    FSingleSelectReply: TSingleSelectReplyClass;
+    FTitle: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property description: String                        read FDescription       write FDescription;
+    property listType: Extended                         read FListType          write FListType;
+    property singleSelectReply: TSingleSelectReplyClass read FSingleSelectReply write FSingleSelectReply;
+    property title: String                              read FTitle             write FTitle;
+  end;
+
+
   TMessagesClass = class(TClassPadrao)
   private
     FId              : String;
@@ -749,6 +776,7 @@ type
     FurlNumber: string;
     Ffooter: string;
     Ftitle: string;
+    FlistResponse: TlistResponseClass;
 
   public
     constructor Create(pAJsonString: string);
@@ -845,9 +873,13 @@ type
     property footer                      : string   read Ffooter                       write Ffooter;
     property title                       : string   read Ftitle                        write Ftitle;
 
+    //Marcelo 18/06/2022
+    property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
+
 
     //encFilehash
   end;
+
 
   //Marcelo 27/04/2022
   TtcTokenClass = class(TClassPadrao)
@@ -1004,6 +1036,27 @@ type
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
 
+//Marcelo 18/06/2022
+TIncomingiCall = class(TClassPadrao)
+private
+  FId: String;
+  FIsGroup: Boolean;
+  FIsVideo: Boolean;
+  FOfferTime: Int64;
+  FPeerJid: String;
+  FSender: String;
+public
+  property id:           String     read FId          write FId;
+  property isGroup:      Boolean    read FIsGroup     write FIsGroup;
+  property isVideo:      Boolean    read FIsVideo     write FIsVideo;
+  property offerTime:    Int64      read FOfferTime   write FOfferTime;
+  property peerJid:      String     read FPeerJid     write FPeerJid;
+  property sender:       String     read FSender      write FSender;
+  constructor Create(pAJsonString: string);
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TIncomingiCall;
+end;
+
 //temis 03-06-2022
 TResponsesendTextMessage  = class(TClassPadrao)
 private
@@ -1038,7 +1091,7 @@ TRetornoAllGroups = class(TClassPadrao)
   private
     FNumbers: TStringList;
   public
-    property    Numbers: TStringList   read FNumbers;
+    property    Numbers: TStringList   read FNumbers write FNumbers;
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
 end;
@@ -1225,6 +1278,43 @@ uses
 
 var
   FUltimoQrCode: String;
+
+//Marcelo 18/06/2022
+function TIncomingiCall.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+//Marcelo 18/06/2022
+constructor TIncomingiCall.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  myarr: TJSONArray;
+begin
+  vJson := pAJsonString;
+  lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+  begin
+    vJson := lAJsonObj2.ToJSON;
+    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+    if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+    begin
+      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+      inherited Create(vJson);
+    end;
+  end;
+
+end;
+
+//Marcelo 18/06/2022
+class function TIncomingiCall.FromJsonString(AJsonString: string): TIncomingiCall;
+begin
+  result := TJson.JsonToObject<TIncomingiCall>(AJsonString)
+end;
 
 Procedure ClearLastQrcodeCtr;
 Begin
@@ -1826,6 +1916,10 @@ end;
 { TRetornoAllGroups }
 
 constructor TRetornoAllGroups.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
 begin
   inherited Create(pAJsonString);
   FNumbers      := TStringList.create;
@@ -1835,6 +1929,25 @@ begin
   FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+
+  if Trim(FNumbers.Text) = '' then
+  begin
+    vJson := pAJsonString;
+    lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+    begin
+      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+      inherited Create(vJson);
+      FNumbers      := TStringList.create;
+      FNumbers.Text := vJson;
+      //Quebrar linhas de acordo com cada valor separado por virgula
+      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    end;
+  end;
 end;
 
 destructor TRetornoAllGroups.Destroy;
@@ -1948,7 +2061,7 @@ begin
   FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
   FAck      := FMessageClass.ack;
   FID    := FMessageClass.id;
-  fMessageClass.free;
+  FMessageClass.Free;
 end;
 
 destructor TResponsesendTextMessage.Destroy;

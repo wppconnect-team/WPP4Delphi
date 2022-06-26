@@ -71,7 +71,8 @@ type
     btnArquivarTodosChats: TButton;
     btnDeletarTodosChats: TButton;
     OpenDialog1: TOpenDialog;
-    Button1: TButton;
+    btnArquivo: TButton;
+    btnStatusTexto: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -105,7 +106,8 @@ type
     procedure listaContatosDblClick(Sender: TObject);
     procedure btnArquivarTodosChatsClick(Sender: TObject);
     procedure btnDeletarTodosChatsClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnArquivoClick(Sender: TObject);
+    procedure btnStatusTextoClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -232,6 +234,11 @@ begin
 
       //Imagem com Temporaria Somente 1 Visualização
       //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
+
+      //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+      frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+      frDemo.TWPPConnect1.markmarkIsRecording(ed_num.Text, '5000'); //Gravando Audio 5 Segundos
+      Sleep(5000);
 
       //Audio
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
@@ -512,9 +519,9 @@ begin
     TRY
       LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
 
-      content := mem_message.Text;
+      content := frDemo.CaractersWeb(mem_message.Text);
 
-      caption := mem_message.Text;
+      caption := frDemo.CaractersWeb(mem_message.Text);
 
 
       options :=
@@ -607,18 +614,18 @@ begin
       '[' +
       '{ title: "Na Hora", rows: [{ rowId: "idDinheiro", title: "\💵 Dinheiro", description: "Receber no local." }]},' +
       '{ title: "On-line", rows: [{ rowId: "idFormas", title: "\💱 Pix", description: "Chave: 123456789"},' +
-        '{ title: "1 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "2 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "3 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "4 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "5 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "6 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "7 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "8 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "9 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
-        '{ title: "10 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
-        '{ title: "11 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
-        '{ title: "12 Cartao Credito", description: "Pode parcelar em ate 12x"}' +
+        '{ rowId: "idCartao1", title: "1 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao2", title: "2 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao3", title: "3 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao4", title: "4 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao5", title: "5 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao6", title: "6 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao7", title: "7 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao8", title: "8 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao9", title: "9 Cartao Credito", description: "Pode parcelar em ate 12x" },' +
+        '{ rowId: "idCartao10", title: "10 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ rowId: "idCartao11", title: "11 Cartao Credito", description: "Pode parcelar em ate 12x"},' +
+        '{ rowId: "idCartao12", title: "12 Cartao Credito", description: "Pode parcelar em ate 12x"}' +
       ']' +
       '}]';
 
@@ -778,6 +785,29 @@ begin
   end;
 end;
 
+procedure TframeMensagem.btnStatusTextoClick(Sender: TObject);
+var
+  options, content : string;
+begin
+  try
+    if not frDemo.TWPPConnect1.Auth then
+       Exit;
+
+    content := mem_message.Text;
+    if Trim(content) = '' then
+      content := 'TESTE STATUS';
+    options := 'backgroundColor: "#0275d8", font: 0';
+    //options := 'backgroundColor: "#0275d8", font: 2';
+    //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
+
+    frDemo.TWPPConnect1.sendTextStatus(content, options);
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
 procedure TframeMensagem.btnStickerClick(Sender: TObject);
 var
   content, options, options_Figurinha, options_Imagem, options_Audio,
@@ -880,6 +910,11 @@ begin
        Exit;
 
     options := '';
+
+    //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+    frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //Sleep(5000);
 
     //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
@@ -994,68 +1029,28 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
     LBase64 := TStringList.Create;
-    TRY
+
+    try
       LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
 
       content := mem_message.Text;
 
-      options_Audio :=
-        'type: "audio", ' +
-        'isPtt: true'; // false for common audio
+      options := 'createChat: true, type: "video", caption: "My Video"  ';
 
-      options :=
-        'createChat: true, ' +
-        'useTemplateButtons: true, ' +
-        'title: "Novidades",  ' +
-        'footer: "Video com Botão",  ' +
-        'buttons: [ ' +
-        '  { ' +
-        '    url: "https://wppconnect-team.github.io/", ' +
-        '    text: "Acesse Nosso Site" ' +
-        '  }, ' +
-        '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
-        ']  ';
-
-      options_Figurinha := 'type: "sticker"';
-
-      options_Imagem :=
-         '  type: "image", ' +
-         '  caption: "My image",  ' +
-         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
-
-      //Imagem com Temporaria Somente 1 Visualização
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
-
-      //Audio
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
-
-      //Botões IMAGEM
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
-
-      //Botões VIDEO
+      //VIDEO
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
-      //Figurinha Stickers
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
-    FINALLY
+    finally
       freeAndNil(LBase64);
-    END;
+    end;
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
 end;
 
-procedure TframeMensagem.Button1Click(Sender: TObject);
+procedure TframeMensagem.btnArquivoClick(Sender: TObject);
 var
   caption : string;
   caminhoArquivo : string;
@@ -1073,8 +1068,7 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
 
-
-    caption := mem_message.Text;
+    caption := frDemo.CaractersWeb(mem_message.Text);
 
     caminhoArquivo := '';
 

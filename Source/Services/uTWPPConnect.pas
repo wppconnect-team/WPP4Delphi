@@ -85,6 +85,9 @@ type
   TGet_sendListMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
   TGet_ProductCatalog      = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
 
+  //Adicionado por Marcelo 17/06/2022
+  TGetIncomingiCall        = procedure(Const IncomingiCall: TIncomingiCall) of object;
+
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -95,7 +98,7 @@ type
     FDestroyTmr             : Ttimer;
     FFormQrCodeType         : TFormQrCodeType;
     FMyNumber               : string;
-    FserialCorporate        : string;
+
     FIsDelivered            : string;
     FGetBatteryLevel        : Integer;
     FGetIsConnected         : Boolean;
@@ -121,7 +124,7 @@ type
     procedure SetInjectConfig(const Value: TWPPConnectConfig);
     procedure SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
     procedure SetInjectJS(const Value: TWPPConnectJS);
-    procedure SetSerialCorporate(const Value: TWPPConnectJS);
+
     procedure OnDestroyConsole(Sender : TObject);
 
   protected
@@ -171,6 +174,8 @@ type
     //Daniel 13/06/2022
     FOnGet_ProductCatalog       : TGet_ProductCatalog;
 
+    //Adicionado Por Marcelo 17/06/2022
+    FOnGetIncomingiCall    : TGetIncomingiCall;
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
     procedure Loaded; override;
@@ -213,6 +218,13 @@ type
     //Adicionado Por Marcelo 18/05/2022
     procedure SendRawMessage(phoneNumber, rawMessage, options: string; etapa: string = '');
     procedure markIsComposing(phoneNumber, duration: string; etapa: string = '');
+
+    //Adicionado Por Marcelo 13/06/2022
+    procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
+    procedure setKeepAlive(Ativo: string);
+    procedure sendTextStatus(Content, Options: string);
+
+    procedure rejectCall(id: string);
 
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
@@ -287,7 +299,7 @@ type
     Property InjectJS                    : TWPPConnectJS                  read FInjectJS                       Write SetInjectJS;
     property Config                      : TWPPConnectConfig              read FInjectConfig                   Write SetInjectConfig;
     property AjustNumber                 : TWPPConnectAdjusteNumber       read FAdjustNumber                   Write SetdjustNumber;
-    property serialCorporate             : string                     read FserialCorporate                write FserialCorporate;
+
     property FormQrCodeType              : TFormQrCodeType            read FFormQrCodeType                 Write SetQrCodeStyle                      Default Ft_Desktop;
     property LanguageInject              : TLanguageInject            read FLanguageInject                 Write SetLanguageInject                   Default TL_Portugues_BR;
     property OnGetAllContactList         : TOnAllContacts             read FOnGetAllContactList            write FOnGetAllContactList;
@@ -318,6 +330,10 @@ type
 
     //Daniel - 13/06/2022
     property OnGet_ProductCatalog        : TGet_ProductCatalog        read FOnGet_ProductCatalog           write FOnGet_ProductCatalog;
+
+    //Adicionado Por Marcelo 17/06/2022
+    property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
+
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
 
@@ -1272,11 +1288,6 @@ begin
 
 end;
 
-procedure TWPPConnect.SetSerialCorporate(const Value: TWPPConnectJS);
-begin
-  FInjectJS.Assign(Value);
-end;
-
 procedure TWPPConnect.SetStatus(vStatus: String);
 begin
    If Application.Terminated Then
@@ -1516,18 +1527,55 @@ begin
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsComposing(phoneNumber, duration);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.markmarkIsRecording(phoneNumber, duration, etapa: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  if Trim(duration) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
            sleep(random(Config.AutoDelay));
 
         TThread.Synchronize(nil, procedure
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.markIsComposing(phoneNumber, duration);
-            if etapa <> '' then
-            begin
-              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
-            end;
+            FrmConsole.markmarkIsRecording(phoneNumber, duration);
           end;
         end);
 
@@ -1586,7 +1634,8 @@ begin
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022
-  Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx]) then //temis 03-06-2022
+  Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
+  Th_IncomingiCall]) then //Adicionado por Marcelo 17/06/2022
   Begin
     if not Assigned(PReturnClass) then
       raise Exception.Create(MSG_ExceptMisc + ' in Int_OnNotificationCenter' );
@@ -1594,20 +1643,20 @@ begin
     If PTypeHeader = Th_GetAllChats Then
     Begin
       if Assigned(OnGetChatList) then
-         OnGetChatList(TChatList(PReturnClass));
+        OnGetChatList(TChatList(PReturnClass));
     end;
 
     If PTypeHeader = Th_getUnreadMessages Then
     Begin
       if Assigned(OnGetUnReadMessages) then
-         OnGetUnReadMessages(TChatList(PReturnClass));
+        OnGetUnReadMessages(TChatList(PReturnClass));
 
     end;
 
     If PTypeHeader = Th_GetMessageById Then
     Begin
       if Assigned(OnGetMessageById) then
-         OnGetMessageById(TMessagesList(PReturnClass));
+        OnGetMessageById(TMessagesList(PReturnClass));
          //OnGetMessageById(TMessagesClass(PReturnClass));
 
     end;
@@ -1616,7 +1665,7 @@ begin
     If PTypeHeader = Th_sendFileMessage Then
     Begin
       if Assigned(OnGet_sendFileMessage) then
-         OnGet_sendFileMessage(TMessagesClass(PReturnClass));
+        OnGet_sendFileMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1624,7 +1673,7 @@ begin
     If PTypeHeader = Th_sendTextMessage Then
     Begin
       if Assigned(OnGet_sendTextMessage) then
-         OnGet_sendTextMessage(TMessagesClass(PReturnClass));
+        OnGet_sendTextMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1632,7 +1681,7 @@ begin
     If PTypeHeader = Th_sendListMessage Then
     Begin
       if Assigned(OnGet_sendListMessage) then
-         OnGet_sendListMessage(TMessagesClass(PReturnClass));
+        OnGet_sendListMessage(TMessagesClass(PReturnClass));
 
     end;
 
@@ -1640,21 +1689,28 @@ begin
     if PTypeHeader = Th_sendTextMessageEx then
     Begin
       if Assigned(OnGet_sendTextMessageEx) then
-         OnGet_sendTextMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendTextMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Temis 03-06-2022
     if PTypeHeader = Th_sendFileMessageEx then
     Begin
       if Assigned(OnGet_sendFileMessageEx) then
-         OnGet_sendFileMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendFileMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Temis 03-06-2022
     if PTypeHeader = Th_sendListMessageEx then
     Begin
       if Assigned(OnGet_sendListMessageEx) then
-         OnGet_sendListMessageEx(TResponsesendTextMessage(PReturnClass));
+        OnGet_sendListMessageEx(TResponsesendTextMessage(PReturnClass));
+    end;
+
+    //Marcelo 17/06/2022
+    If PTypeHeader = Th_IncomingiCall Then
+    Begin
+      if Assigned(OnGetIncomingiCall) then
+        OnGetIncomingiCall(TIncomingiCall(PReturnClass));
     end;
     Exit;
   end;
@@ -1867,6 +1923,36 @@ begin
     if assigned(FrmConsole) then
        FrmConsole.ReadMessages(vID);
   end;
+end;
+
+procedure TWPPConnect.rejectCall(id: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.rejectCall(id);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+
 end;
 
 procedure TWPPConnect.send(PNumberPhone, PMessage: string; PEtapa: string = '');
@@ -2693,6 +2779,35 @@ begin
 
 end;
 
+procedure TWPPConnect.sendTextStatus(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendTextStatus(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.sendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);
 Var
   lThread : TThread;
@@ -2883,6 +2998,35 @@ end;
 procedure TWPPConnect.SetInjectJS(const Value: TWPPConnectJS);
 begin
   FInjectJS.Assign(Value);
+end;
+
+procedure TWPPConnect.setKeepAlive(Ativo: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.setKeepAlive(Ativo);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
 end;
 
 procedure TWPPConnect.SetLanguageInject(const Value: TLanguageInject);
