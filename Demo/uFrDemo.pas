@@ -21,18 +21,18 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,
+  System.Classes, Vcl.Graphics,Rtti, strUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls,
   // ############ ATENCAO AQUI ####################
   // units adicionais obrigatorias
   uTWPPConnect.ConfigCEF, uTWPPConnect, uTWPPConnect.Constant, uTWPPConnect.JS,
-  uWPPConnectDecryptFile,
+  uWPPConnectDecryptFile, JsonDataObjects,
   uTWPPConnect.Console, uTWPPConnect.Diversos, uTWPPConnect.AdjustNumber,
   uTWPPConnect.Config, uTWPPConnect.Classes,
   uTWPPConnect.Emoticons, Clipbrd,
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
-  uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32;
+  uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo;
 
 type
   TfrDemo = class(TForm)
@@ -54,6 +54,7 @@ type
     frameMensagensEnviadas1: TframeMensagensEnviadas;
     frameMensagensRecebidas1: TframeMensagensRecebidas;
     frameLogin1: TframeLogin;
+    frameCatalogo1: TframeCatalogo;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -98,6 +99,9 @@ type
     procedure TWPPConnect1Get_sendTextMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendFileMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendListMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure ctbtnCategories0Items5Click(Sender: TObject);
+    procedure TWPPConnect1Get_ProductCatalog(Sender: TObject;
+      const ProductCatalog: TProductsList);
   private
     { Private declarations }
 
@@ -122,7 +126,7 @@ implementation
 
 uses
   u_Messagem, u_Retorno_SendFileMensagem, System.JSON, System.AnsiStrings, System.DateUtils,
-  System.NetEncoding;
+  System.NetEncoding, System.Generics.Collections;
 
 {$R *.dfm}
 
@@ -199,6 +203,7 @@ begin
   frameGrupos1.Visible := False;
   frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items1Click(Sender: TObject);
@@ -208,6 +213,7 @@ begin
   frameMensagem1.Visible := True;
    frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items2Click(Sender: TObject);
@@ -217,6 +223,7 @@ begin
   frameGrupos1.Visible := True;
    frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items3Click(Sender: TObject);
@@ -226,6 +233,7 @@ begin
   frameGrupos1.Visible := False;
   frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= True;
+  frameCatalogo1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items4Click(Sender: TObject);
@@ -235,6 +243,17 @@ begin
   frameGrupos1.Visible := False;
   frameMensagensRecebidas1.Visible:= True;
   frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
+end;
+
+procedure TfrDemo.ctbtnCategories0Items5Click(Sender: TObject);
+begin
+  frameLogin1.Visible := False;
+  frameMensagem1.Visible := False;
+  frameGrupos1.Visible := False;
+  frameMensagensRecebidas1.Visible:= False;
+  frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= True;
 end;
 
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -796,6 +815,85 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Get_ProductCatalog(Sender: TObject;
+  const ProductCatalog: TProductsList);
+var
+  i, j, m: integer;
+  LProduto: TProductList;
+  c : TRttiContext;
+  t : TRttiType;
+  p : TRttiProperty;
+  LJsonCatalog: jsonDataObjects.TJsonObject;
+  LProduct: jsonDataObjects.TJsonObject;
+begin
+  //Aqui vai receber uma lista com todos produtos do catalogo
+  //as imagens dos produtos são tratadas diferentes
+  //Eu usei RTTI para preencher o dataset cdsCatalogo, mas não é obrigatorio.
+
+  frameCatalogo1.cdsCatalogo.EmptyDataSet;
+  c := TRttiContext.Create;
+  for LProduto in ProductCatalog.result do
+  begin
+    frameCatalogo1.cdsCatalogo.Append;
+    try
+      t := c.GetType(LProduto.ClassType);
+      for i := 0 to frameCatalogo1.cdsCatalogo.FieldCount-1 do
+      begin
+        if (uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) = 'ADDITIONALIMAGECDNURL') then
+        begin
+          if LProduto.imageCount>0  then
+          begin
+            try
+              LJsonCatalog := TJsonBaseObject.Parse(ProductCatalog.JsonString) as jsonDataObjects.TJsonObject;
+
+              for j := 0 to LJsonCatalog.A['result'].Count-1 do
+              begin
+                LProduct:= JsonDataObjects.TJsonObject(LJsonCatalog.A['result'].Items[j].ObjectValue);
+                if LProduct.S['id'] = LProduto.id then
+                begin
+                  for m := 0 to LProduct.A['additionalImageCdnUrl'].Count-1 do
+                  begin
+                    frameCatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= frameCatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString+LProduct.A['additionalImageCdnUrl'].Items[m].Value+';';
+                    frameCatalogo1.cdsCatalogoadditionalImageHashes.AsString:= framecatalogo1.cdsCatalogoadditionalImageHashes.AsString+LProduct.A['additionalImageHashes'].Items[m].Value+';';
+                  end;
+                end;
+              end;
+            finally
+              LJsonCatalog.Free;
+            end;
+          end;
+
+        end else
+        begin
+          for p in t.GetProperties do
+          begin
+            if uppercase(p.Name) = uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) then
+            begin
+              case p.PropertyType.TypeKind of
+                tkInteger: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsInteger:= p.GetValue(LProduto).AsInteger;
+                tkString,tkUString: begin
+                  if  (p.Name = 'priceAmount1000') or (p.name = 'salePriceAmount1000') then
+                    frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsCurrency:= ifthen(p.GetValue(LProduto).AsString <> '',p.GetValue(LProduto).AsString,'0').ToDouble/1000
+                  else
+                    frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsString:= p.GetValue(LProduto).AsString;
+                end;
+                tkEnumeration: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsBoolean:= p.GetValue(LProduto).AsBoolean;
+              end;
+            end;
+          end;
+        end;
+      end;
+    finally
+      c.Free;
+    end;
+    frameCatalogo1.cdsCatalogo.Post;
+
+  end;
+
+  LProduto := nil;
+  frameCatalogo1.BaixarImagens;
 end;
 
 procedure TfrDemo.TWPPConnect1Get_sendFileMessage(const Mensagem: TMessagesClass);

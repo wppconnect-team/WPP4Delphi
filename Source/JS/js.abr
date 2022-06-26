@@ -12621,6 +12621,24 @@ async function archiveAllChats() {
     
 };
 
+window.WAPI.ProductCatalog = async function() {
+    const myCatalog = await WPP.catalog.getMyCatalog();
+
+    if (myCatalog.productCollection.length > 0) {
+        try {
+            SetConsoleMessage("ProductCatalog", JSON.stringify(myCatalog.productCollection));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log(err);
+
+    }
+};
+
+
 async function apagarChat(chatid) { 
     return(WPP.chat.delete(chatid))
 };

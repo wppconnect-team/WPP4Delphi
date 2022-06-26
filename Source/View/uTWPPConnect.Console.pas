@@ -120,6 +120,7 @@ type
     FFormType               : TFormQrCodeType;
     FHeaderAtual            : TTypeHeader;
     FMessagesList           : TMessagesList;
+    FProductList            : TProductsList;
     FChatList               : TChatList;
     FChatList2              : TChatList;
     FMonitorLowBattry       : Boolean;
@@ -159,6 +160,7 @@ type
     Property  ChatList        : TChatList                 Read FChatList;
     //Property  ChatList       : TChatList2                Read FChatList2;
     Property  MessagesList    : TMessagesList             Read FMessagesList;
+    property  ProductList     : TProductsList             Read FProductList;
     property  OnErrorInternal : TOnErroInternal           Read FOnErrorInternal           Write FOnErrorInternal;
     Property  MonitorLowBattry     : Boolean              Read FMonitorLowBattry          Write FMonitorLowBattry;
     Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
@@ -206,6 +208,8 @@ type
     procedure DeletarTodosOsChats;
     procedure FixarChat(vContato:String);
     procedure DesfixarChat(vContato:String);
+    //Daniel - 13/06/2022
+    procedure GetProductCatalog;
 
     procedure CheckDelivered;
     procedure SendContact(vNumDest, vNum:string; vNameContact: string = '');
@@ -565,6 +569,11 @@ end;
 procedure TFrmConsole.GetMyNumber;
 begin
   ExecuteJS(FrmConsole_JS_GetMyNumber, False);
+end;
+
+procedure TFrmConsole.GetProductCatalog;
+begin
+  ExecuteJS(FrmConsole_JS_VAR_GetProductCatalog, False);
 end;
 
 procedure TFrmConsole.GetProfilePicThumbURL(AProfilePicThumbURL: string);
@@ -1545,8 +1554,6 @@ begin
                               FreeAndNil(LOutClass2);
                             end;
                           end;
-
-
     Th_getUnreadMessages: begin
                             {LOutClass := TChatList.Create(LResultStr);
                             try
@@ -1708,6 +1715,13 @@ begin
                                 FreeAndNil(LOutClass);
                               end;
                             end;
+    Th_ProductCatalog       : begin
+                                if Assigned(FProductList) then
+                                   FProductList.Free;
+
+                                FProductList := TProductsList.Create(LResultStr);
+                                SendNotificationCenterDirect(PResponse.TypeHeader, FProductList);
+                              end;
    end;
 end;
 
@@ -1741,9 +1755,7 @@ begin
   LogAdd(message, 'CONSOLE');
 
   if message <> 'Uncaught (in promise) TypeError: output.update is not a function' then
-
-
-  AResponse := TResponseConsoleMessage.Create( message );
+    AResponse := TResponseConsoleMessage.Create( message );
   try
     if AResponse = nil then
        Exit;
