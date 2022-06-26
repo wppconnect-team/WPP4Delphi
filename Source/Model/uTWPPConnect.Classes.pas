@@ -921,6 +921,20 @@ type
 
   end;
 
+  TadditionalImageCdnUrlClass = class(TClassPadrao)
+    private
+    FimageURL: string;
+    public
+      property imageURL: string read FimageURL write FimageURL;
+  end;
+
+  TadditionalImageHashesClass = class(TClassPadrao)
+    private
+    Fimagehash: string;
+    public
+      property imagehash: string read Fimagehash write Fimagehash;
+  end;
+
   //Marcelo 27/04/2022
   TmsgUnsyncedButtonReplyMsgsClass = class(TClassPadrao)
   private
@@ -1196,6 +1210,58 @@ public
   property isContactSyncCompleted:  Extended read FisContactSyncCompleted  write FisContactSyncCompleted;
 end;
 
+
+
+TProductList = class(TClassPadrao)
+private
+    fretailerId: string;
+    fisHidden: boolean;
+    fcanAppeal: boolean;
+    fsalePriceAmount: string;
+    FID: string;
+    fimageHash: string;
+    findex: integer;
+    fsalePriceStartDate: TDateTime;
+    fdescription: string;
+    fimageCount: integer;
+    fcatalogWid: string;
+    fpriceAmount1000: string;
+    fsalePriceAmount1000: string;
+    furl: string;
+    ft: string;
+    fsalePriceEndDate: TDateTime;
+    fimageCdnUrl: string;
+    freviewStatus: string;
+    fcurrency: string;
+    favailability: string;
+  public
+  property id: string read FID;
+  property isHidden: boolean read fisHidden;
+  property catalogWid: string read fcatalogWid;
+  property url:string read furl;
+  property name: string read fname;
+  property description: string read fdescription;
+  property availability:string read favailability;
+  property reviewStatus: string read freviewStatus;
+  property canAppeal:boolean read fcanAppeal;
+  property currency:string read fcurrency;
+  property priceAmount1000:string read fpriceAmount1000;
+  property salePriceAmount1000: string read fsalePriceAmount1000;
+  property salePriceStartDate: TDateTime read fsalePriceStartDate;
+  property salePriceEndDate: TDateTime read fsalePriceEndDate;
+  property retailerId: string read fretailerId;
+  property imageCount: integer read fimageCount;
+  property index: integer read findex;
+  property imageCdnUrl:string read fimageCdnUrl;
+  property imageHash:string read fimageHash;
+  property t:string read ft;
+  constructor Create(pAJsonString: string);
+  destructor Destroy; override;
+end;
+
+TProductsList = class(TClassPadraoList<TProductList>)
+  constructor Create(pAJsonString: string);
+end;
 
 Procedure LogAdd(Pvalor:WideString; PCab:String = '');
 Procedure SalvaLog(Pvalor:WideString; PCab:String = '');
@@ -2004,4 +2070,25 @@ begin
   inherited;
 end;
 
-End.
+{ TProductList }
+
+constructor TProductList.Create(pAJsonString: string);
+begin
+  inherited Create(pAJsonString);
+end;
+
+destructor TProductList.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TProductsList }
+
+constructor TProductsList.Create(pAJsonString: string);
+begin
+  inherited Create(pAJsonString);
+end;
+
+
+end.

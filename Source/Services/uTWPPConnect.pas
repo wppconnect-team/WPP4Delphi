@@ -83,6 +83,7 @@ type
   TGet_sendTextMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
   TGet_sendFileMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
   TGet_sendListMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+  TGet_ProductCatalog      = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
 
   //Adicionado por Marcelo 17/06/2022
   TGetIncomingiCall        = procedure(Const IncomingiCall: TIncomingiCall) of object;
@@ -170,9 +171,11 @@ type
     FOnGet_sendFileMessageEx    : TGet_sendFileMessageEx;
     FOnGet_sendListMessageEx    : TGet_sendListMessageEx;
 
+    //Daniel 13/06/2022
+    FOnGet_ProductCatalog       : TGet_ProductCatalog;
+
     //Adicionado Por Marcelo 17/06/2022
     FOnGetIncomingiCall    : TGetIncomingiCall;
-
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
     procedure Loaded; override;
@@ -206,6 +209,8 @@ type
     procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
 
+    //Daniel - 13/06/2022
+    procedure GetProductCatalog;
     //Adicionado Por Marcelo 10/05/2022
     procedure SendTextMessage(phoneNumber, content, options: string; etapa: string = '');
     procedure SendReactionMessage(UniqueID, Reaction: string; etapa: string = '');
@@ -322,6 +327,9 @@ type
     property OnGet_sendTextMessageEx     : TGet_sendTextMessageEx     read FOnGet_sendTextMessageEx        write FOnGet_sendTextMessageEx;
     property OnGet_sendFileMessageEx     : TGet_sendFileMessageEx     read FOnGet_sendFileMessageEx        write FOnGet_sendFileMessageEx;
     property OnGet_sendListMessageEx     : TGet_sendListMessageEx     read FOnGet_sendListMessageEx        write FOnGet_sendListMessageEx;
+
+    //Daniel - 13/06/2022
+    property OnGet_ProductCatalog        : TGet_ProductCatalog        read FOnGet_ProductCatalog           write FOnGet_ProductCatalog;
 
     //Adicionado Por Marcelo 17/06/2022
     property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
@@ -945,6 +953,12 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 
+end;
+
+procedure TWPPConnect.GetProductCatalog;
+begin
+  if Assigned(FrmConsole) then
+    FrmConsole.GetProductCatalog;
 end;
 
 procedure TWPPConnect.getProfilePicThumb(AProfilePicThumbURL: string);
@@ -1698,7 +1712,6 @@ begin
       if Assigned(OnGetIncomingiCall) then
         OnGetIncomingiCall(TIncomingiCall(PReturnClass));
     end;
-
     Exit;
   end;
 
@@ -1870,6 +1883,12 @@ begin
     Exit;
   end;
 
+  if PTypeHeader = Th_ProductCatalog then
+  begin
+    if Assigned(FOnGet_ProductCatalog) then
+      FOnGet_ProductCatalog(Self, TProductsList(PReturnClass));
+
+  end;
 
   if PTypeHeader in [Th_Connecting, Th_Disconnecting, Th_ConnectingNoPhone, Th_getQrCodeForm, Th_getQrCodeForm, TH_Destroy, Th_Destroying]  then
   begin

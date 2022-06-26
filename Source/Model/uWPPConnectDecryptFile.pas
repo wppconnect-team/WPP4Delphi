@@ -32,7 +32,7 @@ type
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function download(clientUrl, mediaKey, tipo, id: string) :string;
+    function download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
   end;
 
 implementation
@@ -95,7 +95,7 @@ begin
   result := copy(gID.ToString, 2, length(gID.ToString)  - 2);
 end;
 
-function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id: string): string;
+function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
 var
   form, imagem, diretorio, arq:string;
 begin
@@ -110,14 +110,26 @@ begin
   imagem  :=  diretorio + arq;
   Sleep(1);
 
-  if DownLoadInternetFile(clientUrl, imagem + '.enc') then
-    if FileExists(imagem  + '.enc') then
-    begin
-      form  :=  format('--in %s.enc --out %s.%s --key %s',  [imagem,  imagem, tipo, mediakey]);
-      shell(form);
-      Sleep(10);
-      Result:= imagem + '.' + tipo;
+  if ADescriptografar then
+  begin
+    if DownLoadInternetFile(clientUrl, imagem + '.enc') then
+    begin     
+      if FileExists(imagem  + '.enc') then
+      begin
+        form  :=  format('--in %s.enc --out %s.%s --key %s',  [imagem,  imagem, tipo, mediakey]);
+        shell(form);
+        Sleep(10);
+        Result:= imagem + '.' + tipo;
+      end;
     end;
+  end else
+  begin
+    if DownLoadInternetFile(clientUrl, imagem + '.' + tipo) then
+    begin
+      if FileExists(imagem + '.' + tipo) then  
+        result:= imagem  + '.' + tipo;      
+    end;
+  end;
 end;
 
 function TWPPConnectDecryptFile.shell(program_path: string): string;
