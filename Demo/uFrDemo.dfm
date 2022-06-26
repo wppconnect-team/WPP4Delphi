@@ -95,8 +95,6 @@ object frDemo: TfrDemo
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 8
     object Image1: TImage
       Left = 0
       Top = 0
