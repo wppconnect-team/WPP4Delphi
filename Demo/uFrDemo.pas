@@ -103,6 +103,7 @@ type
     procedure TWPPConnect1Get_ProductCatalog(Sender: TObject;
       const ProductCatalog: TProductsList);
     procedure TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
+    procedure frameCatalogo1Button1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -288,6 +289,12 @@ begin
   //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
   killtask('Gbpsv.exe');
   killtask('core.exe');
+end;
+
+procedure TfrDemo.frameCatalogo1Button1Click(Sender: TObject);
+begin
+  frameCatalogo1.Button1Click(Sender);
+
 end;
 
 procedure TfrDemo.frameLogin1SpeedButton1Click(Sender: TObject);
@@ -892,14 +899,14 @@ begin
           if uppercase(p.Name) = uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) then
           begin
             case p.PropertyType.TypeKind of
-              tkInteger: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsInteger:= p.GetValue(LProduto).AsInteger;
+              tkInteger: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsInteger := p.GetValue(LProduto).AsInteger;
               tkString, tkUString: begin
                 if  (p.Name = 'priceAmount1000') or (p.name = 'salePriceAmount1000') then
-                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsCurrency:= ifthen(p.GetValue(LProduto).AsString <> '',p.GetValue(LProduto).AsString,'0').ToDouble/1000
+                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsCurrency := ifthen(p.GetValue(LProduto).AsString <> '',p.GetValue(LProduto).AsString,'0').ToDouble/1000
                 else
-                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsString:= p.GetValue(LProduto).AsString;
+                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsString := p.GetValue(LProduto).AsString;
               end;
-              tkEnumeration: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsBoolean:= p.GetValue(LProduto).AsBoolean;
+              tkEnumeration: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsBoolean := p.GetValue(LProduto).AsBoolean;
               tkDynArray: begin
                 if (LProduto.imageCount > 1) and (uppercase(p.Name) = 'ADDITIONALIMAGECDNURL') then
                 begin
@@ -907,14 +914,14 @@ begin
                   begin
                     if framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString = '' then
                     begin
-                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= LProduto.additionalImageCdnUrl[m];
-                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString:= LProduto.additionalImageHashes[m];
+                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString := LProduto.additionalImageCdnUrl[m];
+                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString := LProduto.additionalImageHashes[m];
                     end
                     else
                     begin
-                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString +';'+
+                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString := framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString +';'+
                                                                                   LProduto.additionalImageCdnUrl[m];
-                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString:= framecatalogo1.cdsCatalogoadditionalImageHashes.AsString+';'+
+                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString := framecatalogo1.cdsCatalogoadditionalImageHashes.AsString+';'+
                                                                                  LProduto.additionalImageHashes[m];
 
                     end;

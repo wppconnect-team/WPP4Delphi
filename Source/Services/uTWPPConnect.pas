@@ -2690,7 +2690,7 @@ var
   lThread : TThread;
 begin
   //Adicionado Por Marcelo 10/05/2022
-  if Application.Terminated Then
+  if Application.Terminated then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;

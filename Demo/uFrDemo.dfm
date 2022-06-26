@@ -1876,6 +1876,7 @@ object frDemo: TfrDemo
       end
       inherited Button1: TButton
         Width = 353
+        OnClick = frameCatalogo1Button1Click
         ExplicitWidth = 353
       end
     end
@@ -4329,8 +4330,8 @@ object frDemo: TfrDemo
     OnGetInviteGroup = TWPPConnect1GetInviteGroup
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
-    Left = 392
-    Top = 272
+    Left = 368
+    Top = 480
   end
   object timerStatus: TTimer
     Enabled = False

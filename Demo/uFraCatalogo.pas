@@ -8,7 +8,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
   Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.DBCtrls,
-  Vcl.DBCGrids;
+  Vcl.DBCGrids, Vcl.Imaging.pngimage;
 
 type
   TframeCatalogo = class(TFrame)
@@ -48,6 +48,7 @@ type
     cdsCatalogoimageHash: TStringField;
     cdsCatalogot: TStringField;
     cdsCatalogoimagemProduto: TBlobField;
+    Image1: TImage;
     procedure Button1Click(Sender: TObject);
     procedure cdsCatalogoAfterScroll(DataSet: TDataSet);
   private
