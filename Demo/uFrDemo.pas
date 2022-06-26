@@ -1,4 +1,4 @@
-{####################################################################################################################
+﻿{####################################################################################################################
   License
   Copyright 2022 WPPConnect Team https://wppconnect-team.github.io/
 
@@ -887,49 +887,45 @@ begin
       t := c.GetType(LProduto.ClassType);
       for i := 0 to frameCatalogo1.cdsCatalogo.FieldCount-1 do
       begin
-        if (uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) = 'ADDITIONALIMAGECDNURL') then
+        for p in t.GetProperties do
         begin
-          if LProduto.imageCount>0  then
+          if uppercase(p.Name) = uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) then
           begin
-            try
-              LJsonCatalog := TJsonBaseObject.Parse(ProductCatalog.JsonString) as jsonDataObjects.TJsonObject;
-
-              for j := 0 to LJsonCatalog.A['result'].Count-1 do
-              begin
-                LProduct:= JsonDataObjects.TJsonObject(LJsonCatalog.A['result'].Items[j].ObjectValue);
-                if LProduct.S['id'] = LProduto.id then
-                begin
-                  for m := 0 to LProduct.A['additionalImageCdnUrl'].Count-1 do
-                  begin
-                    frameCatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= frameCatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString+LProduct.A['additionalImageCdnUrl'].Items[m].Value+';';
-                    frameCatalogo1.cdsCatalogoadditionalImageHashes.AsString:= framecatalogo1.cdsCatalogoadditionalImageHashes.AsString+LProduct.A['additionalImageHashes'].Items[m].Value+';';
-                  end;
-                end;
+            case p.PropertyType.TypeKind of
+              tkInteger: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsInteger:= p.GetValue(LProduto).AsInteger;
+              tkString, tkUString: begin
+                if  (p.Name = 'priceAmount1000') or (p.name = 'salePriceAmount1000') then
+                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsCurrency:= ifthen(p.GetValue(LProduto).AsString <> '',p.GetValue(LProduto).AsString,'0').ToDouble/1000
+                else
+                  frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsString:= p.GetValue(LProduto).AsString;
               end;
-            finally
-              LJsonCatalog.Free;
-            end;
-          end;
+              tkEnumeration: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsBoolean:= p.GetValue(LProduto).AsBoolean;
+              tkDynArray: begin
+                if (LProduto.imageCount > 1) and (uppercase(p.Name) = 'ADDITIONALIMAGECDNURL') then
+                begin
+                  for m := 0 to High(LProduto.additionalImageCdnUrl) do
+                  begin
+                    if framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString = '' then
+                    begin
+                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= LProduto.additionalImageCdnUrl[m];
+                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString:= LProduto.additionalImageHashes[m];
+                    end
+                    else
+                    begin
+                      framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString:= framecatalogo1.cdsCatalogoadditionalImageCdnUrl.AsString +';'+
+                                                                                  LProduto.additionalImageCdnUrl[m];
+                      framecatalogo1.cdsCatalogoadditionalImageHashes.AsString:= framecatalogo1.cdsCatalogoadditionalImageHashes.AsString+';'+
+                                                                                 LProduto.additionalImageHashes[m];
 
-        end else
-        begin
-          for p in t.GetProperties do
-          begin
-            if uppercase(p.Name) = uppercase(frameCatalogo1.cdsCatalogo.Fields[i].FieldName) then
-            begin
-              case p.PropertyType.TypeKind of
-                tkInteger: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsInteger:= p.GetValue(LProduto).AsInteger;
-                tkString,tkUString: begin
-                  if  (p.Name = 'priceAmount1000') or (p.name = 'salePriceAmount1000') then
-                    frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsCurrency:= ifthen(p.GetValue(LProduto).AsString <> '',p.GetValue(LProduto).AsString,'0').ToDouble/1000
-                  else
-                    frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsString:= p.GetValue(LProduto).AsString;
-                end;
-                tkEnumeration: frameCatalogo1.cdsCatalogo.FieldByName(p.Name).AsBoolean:= p.GetValue(LProduto).AsBoolean;
+                    end;
+                  end;
+
+                end
               end;
             end;
           end;
         end;
+
       end;
     finally
       c.Free;

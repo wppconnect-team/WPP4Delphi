@@ -1214,53 +1214,53 @@ end;
 
 TProductList = class(TClassPadrao)
 private
-    fretailerId: string;
-    fisHidden: boolean;
-    fcanAppeal: boolean;
-    fsalePriceAmount: string;
-    FID: string;
-    fimageHash: string;
-    findex: integer;
-    fsalePriceStartDate: TDateTime;
-    fdescription: string;
-    fimageCount: integer;
-    fcatalogWid: string;
-    fpriceAmount1000: string;
-    fsalePriceAmount1000: string;
-    furl: string;
-    ft: string;
-    fsalePriceEndDate: TDateTime;
-    fimageCdnUrl: string;
-    freviewStatus: string;
-    fcurrency: string;
-    favailability: string;
-  public
-  property id: string read FID;
-  property isHidden: boolean read fisHidden;
-  property catalogWid: string read fcatalogWid;
-  property url:string read furl;
-  property name: string read fname;
-  property description: string read fdescription;
-  property availability:string read favailability;
-  property reviewStatus: string read freviewStatus;
-  property canAppeal:boolean read fcanAppeal;
-  property currency:string read fcurrency;
-  property priceAmount1000:string read fpriceAmount1000;
-  property salePriceAmount1000: string read fsalePriceAmount1000;
-  property salePriceStartDate: TDateTime read fsalePriceStartDate;
-  property salePriceEndDate: TDateTime read fsalePriceEndDate;
-  property retailerId: string read fretailerId;
-  property imageCount: integer read fimageCount;
-  property index: integer read findex;
-  property imageCdnUrl:string read fimageCdnUrl;
-  property imageHash:string read fimageHash;
-  property t:string read ft;
+  FAdditionalImageCdnUrl: TArray<String>;
+  FAdditionalImageHashes: TArray<String>;
+  FAvailability: String;
+  FCanAppeal: Boolean;
+  FCatalogWid: String;
+  FDescription: String;
+  FId: String;
+  FImageCdnUrl: String;
+  FImageCount: Extended;
+  FImageHash: String;
+  FIsHidden: Boolean;
+  FName: String;
+  FRetailerId: String;
+  FReviewStatus: String;
+  FT: Extended;
+  FUrl: String;
+public
+  property additionalImageCdnUrl: TArray<String> read FAdditionalImageCdnUrl write FAdditionalImageCdnUrl;
+  property additionalImageHashes: TArray<String> read FAdditionalImageHashes write FAdditionalImageHashes;
+  property availability: String read FAvailability write FAvailability;
+  property canAppeal: Boolean read FCanAppeal write FCanAppeal;
+  property catalogWid: String read FCatalogWid write FCatalogWid;
+  property description: String read FDescription write FDescription;
+  property id: String read FId write FId;
+  property imageCdnUrl: String read FImageCdnUrl write FImageCdnUrl;
+  property imageCount: Extended read FImageCount write FImageCount;
+  property imageHash: String read FImageHash write FImageHash;
+  property isHidden: Boolean read FIsHidden write FIsHidden;
+  property name: String read FName write FName;
+  property retailerId: String read FRetailerId write FRetailerId;
+  property reviewStatus: String read FReviewStatus write FReviewStatus;
+  property t: Extended read FT write FT;
+  property url: String read FUrl write FUrl;
   constructor Create(pAJsonString: string);
-  destructor Destroy; override;
+  class function FromJsonString(AJsonString: string): TProductList;
+  function ToJsonString: string;
 end;
 
 TProductsList = class(TClassPadraoList<TProductList>)
+ private
+  FResult: TArray<TProductList>;
+public
+  property result: TArray<TProductList> read FResult write FResult;
+  destructor Destroy; override;
   constructor Create(pAJsonString: string);
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TProductsList;
 end;
 
 Procedure LogAdd(Pvalor:WideString; PCab:String = '');
@@ -2077,10 +2077,15 @@ begin
   inherited Create(pAJsonString);
 end;
 
-destructor TProductList.Destroy;
-begin
 
-  inherited;
+class function TProductList.FromJsonString(AJsonString: string): TProductList;
+begin
+  result := TJson.JsonToObject<TProductList>(AJsonString)
+end;
+
+function TProductList.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 { TProductsList }
@@ -2090,5 +2095,24 @@ begin
   inherited Create(pAJsonString);
 end;
 
+
+destructor TProductsList.Destroy;
+var
+  LresultItem: TProductList;
+begin
+ for LresultItem in FResult do
+   LresultItem.free;
+  inherited;
+end;
+
+class function TProductsList.FromJsonString(AJsonString: string): TProductsList;
+begin
+  result := TJson.JsonToObject<TProductsList>(AJsonString);
+end;
+
+function TProductsList.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
 
 end.

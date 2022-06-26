@@ -90,7 +90,7 @@ begin
 
       end;
 
-      if (cdsCatalogoimageCount.AsInteger > 1) and
+      if (cdsCatalogoimageCount.AsInteger > 0) and
         (cdsCatalogoadditionalImageCdnUrl.AsString <> '') then
       begin
         try
