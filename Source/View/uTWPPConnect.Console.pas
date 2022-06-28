@@ -243,11 +243,15 @@ type
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions: string);
+    procedure SetGroupPicture(vIDGroup, vBase64:string);
+    procedure GroupMsgAdminOnly(vIDGroup: string);
+    procedure GroupMsgAll(vIDGroup: string);
 
     procedure getGroupInviteLink(vIDGroup: string);
     procedure revokeGroupInviteLink(vIDGroup: string);
     procedure setNewName(newName: string);
     procedure setNewStatus(newStatus: string);
+    procedure SetProfilePicture(ABase64: String);
     procedure getStatus(vTelefone: string);
     procedure CleanChat(vTelefone: string);
     procedure fGetMe;
@@ -663,6 +667,30 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_groupLeave;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMsgAdminOnly(vIDGroup: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupMsgAdminOnly;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMsgAll(vIDGroup: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupMsgAll;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   ExecuteJS(LJS, true);
 end;
@@ -1231,6 +1259,26 @@ begin
 
   if (GlobalCEFApp = nil) or (TWPPConnect(FOwner).InjectJS.Ready = false) then
      raise Exception.Create(MSG_ExceptGlobalCef);
+end;
+
+procedure TFrmConsole.SetProfilePicture(ABase64: String);
+var
+  Ljs,LLine, vBase64 : string;
+  i: integer;
+  LBase64: TStringList;
+begin
+  LBase64:= TStringList.Create;
+  TRY
+    LBase64.Text := ABase64;
+    for i := 0 to LBase64.Count -1  do
+       LLine := LLine + LBase64[i];
+    vBase64 := LLine;
+    LJS   := FrmConsole_JS_VAR_setProfilePicture;
+    FrmConsole_JS_AlterVar(LJS, '#BASE_64#', Trim(vBase64));
+    ExecuteJS(LJS, true);
+  FINALLY
+    LBase64.Free;
+  END;
 end;
 
 procedure TFrmConsole.SetZoom(Pvalue: Integer);
@@ -2303,6 +2351,27 @@ begin
 
   FINALLY
     freeAndNil(LBase64);
+  END;
+end;
+
+procedure TFrmConsole.SetGroupPicture(vIDGroup, vBase64: string);
+var
+  Ljs, LLine: string;
+  LBase64: TStringList;
+  i:integer;
+begin
+  LJS   := FrmConsole_JS_VAR_SetGroupPicture;
+ LBase64         := TStringList.Create;
+  TRY
+    LBase64.Text := vBase64;
+    for i := 0 to LBase64.Count -1  do
+       LLine := LLine + LBase64[i];
+    vBase64 := LLine;
+    FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+    FrmConsole_JS_AlterVar(LJS, '#BASE_64#', Trim(vBase64));
+    ExecuteJS(LJS, False);
+  FINALLY
+    LBase64.Free;
   END;
 end;
 
