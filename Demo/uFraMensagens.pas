@@ -73,6 +73,8 @@ type
     OpenDialog1: TOpenDialog;
     btnArquivo: TButton;
     btnStatusTexto: TButton;
+    btnStatusImagem: TButton;
+    btnVideoStatus: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -108,6 +110,8 @@ type
     procedure btnDeletarTodosChatsClick(Sender: TObject);
     procedure btnArquivoClick(Sender: TObject);
     procedure btnStatusTextoClick(Sender: TObject);
+    procedure btnStatusImagemClick(Sender: TObject);
+    procedure btnVideoStatusClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -785,6 +789,39 @@ begin
   end;
 end;
 
+procedure TframeMensagem.btnStatusImagemClick(Sender: TObject);
+var
+  options, content : string;
+  LBase64 : TStringList;
+begin
+  try
+    if not frDemo.TWPPConnect1.Auth then
+       Exit;
+
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      options := '';
+
+      {content := mem_message.Text;
+      if Trim(content) = '' then
+        content := 'TESTE STATUS';
+      options := 'backgroundColor: "#0275d8", font: 0'; }
+
+      //options := 'backgroundColor: "#0275d8", font: 2';
+      //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
+
+      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options);
+
+    finally
+      freeAndNil(LBase64);
+    end;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
 procedure TframeMensagem.btnStatusTextoClick(Sender: TObject);
 var
   options, content : string;
@@ -1040,6 +1077,39 @@ begin
       //VIDEO
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
+
+    finally
+      freeAndNil(LBase64);
+    end;
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeMensagem.btnVideoStatusClick(Sender: TObject);
+var
+  options, content : string;
+  LBase64 : TStringList;
+begin
+  try
+    if not frDemo.TWPPConnect1.Auth then
+       Exit;
+
+    LBase64 := TStringList.Create;
+    TRY
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+      options := '';
+
+      {content := mem_message.Text;
+      if Trim(content) = '' then
+        content := 'TESTE STATUS';
+      options := 'backgroundColor: "#0275d8", font: 0'; }
+
+      //options := 'backgroundColor: "#0275d8", font: 2';
+      //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
+
+      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options);
 
     finally
       freeAndNil(LBase64);

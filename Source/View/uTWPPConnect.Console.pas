@@ -196,6 +196,11 @@ type
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
 
+    //MARCELO 28/06/2022
+    procedure sendImageStatus(Content, Options: string);
+    procedure sendVideoStatus(Content, Options: string);
+    procedure sendRawStatus(Content, Options: string);
+
     //Adicionado Por Marcelo 10/05/2022
     procedure SendReactionMessage(UniqueID, Reaction: string; etapa: string = '');
 
@@ -413,7 +418,7 @@ begin
   try
     If TWPPConnect(FOwner).Status = Server_Connected then
     Begin
-      ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
       SleepNoFreeze(40);
 
       If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
@@ -1075,6 +1080,34 @@ begin
   END;
 end;
 
+procedure TFrmConsole.sendImageStatus(Content, Options: string);
+var
+  Ljs: string;
+  LLine: string;
+  LBase64: TStringList;
+  i : integer;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LLine := '';
+  LBase64 := TStringList.Create;
+  TRY
+    LBase64.Text := content;
+    for i := 0 to LBase64.Count -1  do
+      LLine := LLine + LBase64[i];
+    content := LLine;
+
+    LJS   := FrmConsole_JS_VAR_sendImageStatus;
+    FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+
+    ExecuteJS(LJS, true);
+  FINALLY
+    freeAndNil(LBase64);
+  END;
+end;
+
 procedure TFrmConsole.SendLinkPreview(vNum, vLinkPreview, vText: string);
 var
   Ljs: string;
@@ -1233,6 +1266,21 @@ begin
   LJS   := FrmConsole_JS_VAR_sendRawMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_RAW#',      Trim(rawMessage));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.sendRawStatus(Content, Options: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  Content := CaractersWeb(Content);
+  LJS   := FrmConsole_JS_VAR_sendRawStatus;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
 
   ExecuteJS(LJS, true);
@@ -2229,9 +2277,39 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.sendVideoStatus(Content, Options: string);
+var
+  Ljs: string;
+  LLine: string;
+  LBase64: TStringList;
+  i : integer;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LLine := '';
+  LBase64 := TStringList.Create;
+  TRY
+    LBase64.Text := content;
+    for i := 0 to LBase64.Count -1  do
+      LLine := LLine + LBase64[i];
+    content := LLine;
+
+    LJS   := FrmConsole_JS_VAR_sendVideoStatus;
+    FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+
+    ExecuteJS(LJS, true);
+
+  FINALLY
+    freeAndNil(LBase64);
+  END;
+end;
+
 procedure TFrmConsole.setKeepAlive(Ativo: string);
 var
   Ljs: string;
+
 begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
@@ -2240,6 +2318,7 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#ATIVO#',    Trim(Ativo));
 
   ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.setNewName(newName : string);

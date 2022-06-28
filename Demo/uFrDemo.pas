@@ -806,8 +806,6 @@ begin
           except on E: Exception do
           end;
 
-
-
           try
             if Assigned(AMessage.quotedMsg) then
               quotedMsg_caption := AMessage.quotedMsg.Caption;

@@ -2,7 +2,7 @@ object frameMensagem: TframeMensagem
   Left = 0
   Top = 0
   Width = 968
-  Height = 563
+  Height = 653
   Align = alClient
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -16,9 +16,10 @@ object frameMensagem: TframeMensagem
     Left = 3
     Top = 3
     Width = 241
-    Height = 557
+    Height = 647
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 557
     object Label1: TLabel
       Left = 11
       Top = 59
@@ -69,10 +70,11 @@ object frameMensagem: TframeMensagem
     Left = 250
     Top = 3
     Width = 231
-    Height = 557
+    Height = 647
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
+    ExplicitHeight = 557
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
@@ -271,16 +273,46 @@ object frameMensagem: TframeMensagem
       TabOrder = 14
       OnClick = btnStatusTextoClick
     end
+    object btnStatusImagem: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 560
+      Width = 221
+      Height = 30
+      Align = alTop
+      Caption = 'Enviar Imagem Status'
+      ImageIndex = 5
+      Images = ImageList1
+      TabOrder = 15
+      OnClick = btnStatusImagemClick
+      ExplicitLeft = 3
+    end
+    object btnVideoStatus: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 596
+      Width = 221
+      Height = 30
+      Align = alTop
+      Caption = 'Enviar Video Status'
+      ImageIndex = 3
+      Images = ImageList1
+      TabOrder = 16
+      OnClick = btnVideoStatusClick
+      ExplicitLeft = 0
+      ExplicitTop = 567
+    end
   end
   object GroupBox2: TGroupBox
     AlignWithMargins = True
     Left = 487
     Top = 3
     Width = 231
-    Height = 557
+    Height = 647
     Align = alLeft
     Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
+    ExplicitHeight = 557
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
@@ -480,10 +512,11 @@ object frameMensagem: TframeMensagem
     Left = 724
     Top = 3
     Width = 231
-    Height = 557
+    Height = 647
     Align = alLeft
     Caption = 'Fun'#231#245'es Diversas'
     TabOrder = 3
+    ExplicitHeight = 557
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
@@ -543,7 +576,7 @@ object frameMensagem: TframeMensagem
       Left = 2
       Top = 252
       Width = 227
-      Height = 303
+      Height = 393
       Align = alClient
       Caption = 'Listar Chats'
       Font.Charset = DEFAULT_CHARSET
@@ -553,6 +586,7 @@ object frameMensagem: TframeMensagem
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      ExplicitHeight = 303
       object btnListarChats: TButton
         AlignWithMargins = True
         Left = 5
@@ -577,7 +611,7 @@ object frameMensagem: TframeMensagem
         Left = 5
         Top = 49
         Width = 217
-        Height = 249
+        Height = 339
         Align = alClient
         Columns = <>
         LargeImages = ImageList1
@@ -588,6 +622,7 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaChatsDblClick
+        ExplicitHeight = 249
       end
     end
   end

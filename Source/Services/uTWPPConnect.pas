@@ -224,6 +224,11 @@ type
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
 
+    //MARCELO 28/06/2022
+    procedure sendImageStatus(Content, Options: string);
+    procedure sendVideoStatus(Content, Options: string);
+    procedure sendRawStatus(Content, Options: string);
+
     procedure rejectCall(id: string);
 
     //Adicionado Por Marcelo 03/05/2022
@@ -2266,6 +2271,35 @@ begin
 
 end;
 
+procedure TWPPConnect.sendImageStatus(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 28/06/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendImageStatus(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 //Alterado 08/06/2022
 {procedure TWPPConnect.SendFileMessageEx(phoneNumber, content, options, xSeuID: string);
 var
@@ -2643,6 +2677,35 @@ begin
 
 end;
 
+procedure TWPPConnect.sendRawStatus(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 28/06/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendRawStatus(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.SendReactionMessage(UniqueID, Reaction, etapa: string);
 var
   lThread : TThread;
@@ -2799,6 +2862,35 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.sendTextStatus(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.sendVideoStatus(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 28/06/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVideoStatus(Content, Options);
           end;
         end);
 
