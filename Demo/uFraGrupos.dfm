@@ -10,413 +10,427 @@ object frameGrupos: TframeGrupos
   Font.Style = []
   ParentFont = False
   TabOrder = 0
-  object pnlEsquerda: TPanel
-    AlignWithMargins = True
-    Left = 3
-    Top = 3
-    Width = 249
-    Height = 577
-    Align = alLeft
-    BevelOuter = bvNone
+  object ScrollBox1: TScrollBox
+    Left = 0
+    Top = 0
+    Width = 934
+    Height = 583
+    Align = alClient
     TabOrder = 0
-    object lbl_idParticipant: TLabel
-      Left = 3
-      Top = 284
-      Width = 3
-      Height = 15
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clPurple
-      Font.Height = -13
-      Font.Name = 'Roboto Bk'
-      Font.Style = []
-      ParentFont = False
+    object gbGrupos: TGroupBox
+      AlignWithMargins = True
+      Left = 258
+      Top = 3
+      Width = 263
+      Height = 573
+      Align = alLeft
+      Caption = 'Grupos'
+      TabOrder = 0
+      object listaGrupos: TListView
+        AlignWithMargins = True
+        Left = 5
+        Top = 59
+        Width = 253
+        Height = 134
+        Align = alTop
+        Columns = <>
+        LargeImages = ImageList1
+        ReadOnly = True
+        RowSelect = True
+        SmallImages = ImageList1
+        StateImages = ImageList1
+        TabOrder = 0
+        ViewStyle = vsSmallIcon
+        OnClick = listaGruposClick
+      end
+      object pnlTopoGrupos: TPanel
+        AlignWithMargins = True
+        Left = 5
+        Top = 20
+        Width = 253
+        Height = 33
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object btnListarGrupos: TBitBtn
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 247
+          Height = 30
+          Align = alTop
+          Caption = 'Listar Grupos'
+          TabOrder = 0
+          OnClick = btnListarGruposClick
+        end
+      end
+      object gbacoes: TGroupBox
+        Left = 2
+        Top = 196
+        Width = 259
+        Height = 375
+        Align = alClient
+        Caption = 'A'#231#245'es para Grupos'
+        TabOrder = 2
+        object btnCriarVotacao: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 236
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Criar Vota'#231#227'o'
+          ImageIndex = 10
+          Images = ImageList1
+          TabOrder = 6
+          OnClick = btnCriarVotacaoClick
+        end
+        object btnPromover: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 20
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Promover ADM'
+          ImageIndex = 0
+          Images = ImageList1
+          TabOrder = 0
+          OnClick = btnPromoverClick
+        end
+        object btnDespromover: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 56
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Despromover ADM'
+          ImageIndex = 5
+          Images = ImageList1
+          TabOrder = 1
+          OnClick = btnDespromoverClick
+        end
+        object btnSairGrupo: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 92
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Sair do Grupo'
+          ImageIndex = 6
+          Images = ImageList1
+          TabOrder = 2
+          OnClick = btnSairGrupoClick
+        end
+        object btnDeletarGrupo: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 128
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Deletar Grupo'
+          ImageIndex = 7
+          Images = ImageList1
+          TabOrder = 3
+          OnClick = btnDeletarGrupoClick
+        end
+        object btnGerarLinkConvite: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 164
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Gerar Link de Convite'
+          ImageIndex = 8
+          Images = ImageList1
+          TabOrder = 4
+          OnClick = btnGerarLinkConviteClick
+        end
+        object btnCancelaLink: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 200
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Cancelar Link de Convite'
+          ImageIndex = 9
+          Images = ImageList1
+          TabOrder = 5
+          OnClick = btnCancelaLinkClick
+        end
+        object btnMudarImagemGrupo: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 272
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Mudar Imagem do Grupo'
+          ImageIndex = 12
+          Images = ImageList1
+          TabOrder = 7
+          OnClick = btnMudarImagemGrupoClick
+        end
+      end
     end
-    object lbl_idGroup: TLabel
-      Left = 6
-      Top = 263
-      Width = 211
-      Height = 39
-      AutoSize = False
-      Color = clHighlight
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clBlue
-      Font.Height = -13
-      Font.Name = 'Roboto Bk'
-      Font.Style = []
-      ParentColor = False
-      ParentFont = False
-      WordWrap = True
-    end
-    object SpeedButton1: TSpeedButton
-      Left = 223
-      Top = 262
-      Width = 23
-      Height = 22
-      Flat = True
-      OnClick = SpeedButton1Click
-    end
-    object gbNovoGrupo: TGroupBox
+    object pnlEsquerda: TPanel
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 243
-      Height = 150
-      Align = alTop
-      Caption = 'Criar Novo Grupo'
-      TabOrder = 0
-      object edtNomeGrupo: TLabeledEdit
-        Left = 3
-        Top = 40
-        Width = 232
-        Height = 23
-        EditLabel.Width = 89
-        EditLabel.Height = 15
-        EditLabel.Caption = 'Nome do Grupo'
-        TabOrder = 0
-      end
-      object edtTelefoneNovoParticipante: TLabeledEdit
-        Left = 3
-        Top = 88
-        Width = 232
-        Height = 23
-        EditLabel.Width = 139
-        EditLabel.Height = 15
-        EditLabel.Caption = 'Telefone do Participante'
-        TabOrder = 1
-      end
-      object btnCriarGrupo: TBitBtn
-        AlignWithMargins = True
-        Left = 5
-        Top = 120
-        Width = 233
-        Height = 25
-        Align = alBottom
-        Caption = 'Criar Grupo'
-        TabOrder = 2
-        OnClick = btnCriarGrupoClick
-      end
-    end
-    object gbGrupoLink: TGroupBox
-      AlignWithMargins = True
-      Left = 3
-      Top = 159
-      Width = 243
-      Height = 98
-      Align = alTop
-      Caption = 'Entrar em grupo por Link'
-      TabOrder = 1
-      object edtLinkConvite: TLabeledEdit
-        Left = 3
-        Top = 40
-        Width = 232
-        Height = 23
-        EditLabel.Width = 87
-        EditLabel.Height = 15
-        EditLabel.Caption = 'Link do Convite'
-        TabOrder = 0
-      end
-      object btnEntrarLink: TBitBtn
-        AlignWithMargins = True
-        Left = 5
-        Top = 68
-        Width = 233
-        Height = 25
-        Align = alBottom
-        Caption = 'Entrar'
-        TabOrder = 1
-        OnClick = btnEntrarLinkClick
-      end
-    end
-  end
-  object gbGrupos: TGroupBox
-    AlignWithMargins = True
-    Left = 258
-    Top = 3
-    Width = 263
-    Height = 577
-    Align = alLeft
-    Caption = 'Grupos'
-    TabOrder = 1
-    object listaGrupos: TListView
-      AlignWithMargins = True
-      Left = 5
-      Top = 59
-      Width = 253
-      Height = 190
-      Align = alTop
-      Columns = <>
-      LargeImages = ImageList1
-      ReadOnly = True
-      RowSelect = True
-      SmallImages = ImageList1
-      StateImages = ImageList1
-      TabOrder = 0
-      ViewStyle = vsSmallIcon
-      OnClick = listaGruposClick
-    end
-    object pnlTopoGrupos: TPanel
-      AlignWithMargins = True
-      Left = 5
-      Top = 20
-      Width = 253
-      Height = 33
-      Align = alTop
+      Width = 249
+      Height = 573
+      Align = alLeft
       BevelOuter = bvNone
       TabOrder = 1
-      object btnListarGrupos: TBitBtn
+      object lbl_idParticipant: TLabel
+        Left = 3
+        Top = 284
+        Width = 3
+        Height = 15
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clPurple
+        Font.Height = -13
+        Font.Name = 'Roboto Bk'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl_idGroup: TLabel
+        Left = 6
+        Top = 263
+        Width = 211
+        Height = 39
+        AutoSize = False
+        Color = clHighlight
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -13
+        Font.Name = 'Roboto Bk'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 223
+        Top = 262
+        Width = 23
+        Height = 22
+        ImageIndex = 11
+        Images = ImageList1
+        Flat = True
+        OnClick = SpeedButton1Click
+      end
+      object gbNovoGrupo: TGroupBox
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 247
-        Height = 30
+        Width = 243
+        Height = 150
         Align = alTop
-        Caption = 'Listar Grupos'
+        Caption = 'Criar Novo Grupo'
         TabOrder = 0
-        OnClick = btnListarGruposClick
+        object edtNomeGrupo: TLabeledEdit
+          Left = 3
+          Top = 40
+          Width = 232
+          Height = 23
+          EditLabel.Width = 89
+          EditLabel.Height = 15
+          EditLabel.Caption = 'Nome do Grupo'
+          TabOrder = 0
+        end
+        object edtTelefoneNovoParticipante: TLabeledEdit
+          Left = 3
+          Top = 88
+          Width = 232
+          Height = 23
+          EditLabel.Width = 139
+          EditLabel.Height = 15
+          EditLabel.Caption = 'Telefone do Participante'
+          TabOrder = 1
+        end
+        object btnCriarGrupo: TBitBtn
+          AlignWithMargins = True
+          Left = 5
+          Top = 120
+          Width = 233
+          Height = 25
+          Align = alBottom
+          Caption = 'Criar Grupo'
+          TabOrder = 2
+          OnClick = btnCriarGrupoClick
+        end
       end
-    end
-    object gbacoes: TGroupBox
-      Left = 2
-      Top = 252
-      Width = 259
-      Height = 323
-      Align = alClient
-      Caption = 'A'#231#245'es para Grupos'
-      TabOrder = 2
-      object btnCriarVotacao: TButton
+      object gbGrupoLink: TGroupBox
         AlignWithMargins = True
-        Left = 5
-        Top = 236
-        Width = 249
-        Height = 30
+        Left = 3
+        Top = 159
+        Width = 243
+        Height = 98
         Align = alTop
-        Caption = 'Criar Vota'#231#227'o'
-        ImageIndex = 10
-        Images = ImageList1
-        TabOrder = 6
-        OnClick = btnCriarVotacaoClick
-      end
-      object btnPromover: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 20
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Promover ADM'
-        ImageIndex = 0
-        Images = ImageList1
-        TabOrder = 0
-        OnClick = btnPromoverClick
-        ExplicitLeft = -2
-      end
-      object btnDespromover: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 56
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Despromover ADM'
-        ImageIndex = 5
-        Images = ImageList1
+        Caption = 'Entrar em grupo por Link'
         TabOrder = 1
-        OnClick = btnDespromoverClick
-        ExplicitLeft = -2
-      end
-      object btnSairGrupo: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 92
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Sair do Grupo'
-        ImageIndex = 6
-        Images = ImageList1
-        TabOrder = 2
-        OnClick = btnSairGrupoClick
-        ExplicitLeft = 7
-        ExplicitTop = 84
-      end
-      object btnDeletarGrupo: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 128
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Deletar Grupo'
-        ImageIndex = 7
-        Images = ImageList1
-        TabOrder = 3
-        OnClick = btnDeletarGrupoClick
-        ExplicitLeft = 12
-      end
-      object btnGerarLinkConvite: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 164
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Gerar Link de Convite'
-        ImageIndex = 8
-        Images = ImageList1
-        TabOrder = 4
-        OnClick = btnGerarLinkConviteClick
-        ExplicitLeft = 3
-      end
-      object btnCancelaLink: TButton
-        AlignWithMargins = True
-        Left = 5
-        Top = 200
-        Width = 249
-        Height = 30
-        Align = alTop
-        Caption = 'Cancelar Link de Convite'
-        ImageIndex = 9
-        Images = ImageList1
-        TabOrder = 5
-        OnClick = btnCancelaLinkClick
-        ExplicitLeft = -2
+        object edtLinkConvite: TLabeledEdit
+          Left = 3
+          Top = 40
+          Width = 232
+          Height = 23
+          EditLabel.Width = 87
+          EditLabel.Height = 15
+          EditLabel.Caption = 'Link do Convite'
+          TabOrder = 0
+        end
+        object btnEntrarLink: TBitBtn
+          AlignWithMargins = True
+          Left = 5
+          Top = 68
+          Width = 233
+          Height = 25
+          Align = alBottom
+          Caption = 'Entrar'
+          TabOrder = 1
+          OnClick = btnEntrarLinkClick
+        end
       end
     end
-  end
-  object pnlGruposParticipantes: TPanel
-    AlignWithMargins = True
-    Left = 527
-    Top = 3
-    Width = 404
-    Height = 577
-    Align = alClient
-    BevelOuter = bvNone
-    TabOrder = 2
-    object GroupBox1: TGroupBox
+    object pnlGruposParticipantes: TPanel
       AlignWithMargins = True
-      Left = 3
+      Left = 527
       Top = 3
-      Width = 398
-      Height = 571
+      Width = 400
+      Height = 573
       Align = alClient
-      TabOrder = 0
-      object gbAdmin: TGroupBox
+      BevelOuter = bvNone
+      TabOrder = 2
+      object GroupBox1: TGroupBox
         AlignWithMargins = True
-        Left = 5
-        Top = 20
-        Width = 388
-        Height = 128
-        Align = alTop
-        Caption = 'Administradores'
+        Left = 3
+        Top = 3
+        Width = 394
+        Height = 567
+        Align = alClient
         TabOrder = 0
-        object listaAdministradores: TListView
+        object gbAdmin: TGroupBox
           AlignWithMargins = True
           Left = 5
           Top = 20
-          Width = 378
-          Height = 103
-          Align = alClient
-          Columns = <>
-          LargeImages = ImageList1
-          ReadOnly = True
-          RowSelect = True
-          SmallImages = ImageList1
-          StateImages = ImageList1
-          TabOrder = 0
-          ViewStyle = vsSmallIcon
-          OnClick = listaAdministradoresClick
-        end
-      end
-      object gbParticipantes: TGroupBox
-        AlignWithMargins = True
-        Left = 5
-        Top = 154
-        Width = 388
-        Height = 412
-        Align = alClient
-        Caption = 'Participantes'
-        TabOrder = 1
-        object lblIdParticipante: TLabel
-          AlignWithMargins = True
-          Left = 5
-          Top = 67
-          Width = 3
-          Height = 15
+          Width = 384
+          Height = 128
           Align = alTop
+          Caption = 'Administradores'
+          TabOrder = 0
+          object listaAdministradores: TListView
+            AlignWithMargins = True
+            Left = 5
+            Top = 20
+            Width = 374
+            Height = 103
+            Align = alClient
+            Columns = <>
+            LargeImages = ImageList1
+            ReadOnly = True
+            RowSelect = True
+            SmallImages = ImageList1
+            StateImages = ImageList1
+            TabOrder = 0
+            ViewStyle = vsSmallIcon
+            OnClick = listaAdministradoresClick
+          end
         end
-        object listaParticipantes: TListView
+        object gbParticipantes: TGroupBox
           AlignWithMargins = True
           Left = 5
-          Top = 88
-          Width = 344
-          Height = 319
+          Top = 154
+          Width = 384
+          Height = 408
           Align = alClient
-          Columns = <>
-          LargeImages = ImageList1
-          ReadOnly = True
-          RowSelect = True
-          SmallImages = ImageList1
-          StateImages = ImageList1
-          TabOrder = 0
-          ViewStyle = vsSmallIcon
-          OnClick = listaParticipantesClick
-        end
-        object pnlParticipantesBotoes: TPanel
-          Left = 352
-          Top = 85
-          Width = 34
-          Height = 325
-          Align = alRight
-          TabOrder = 2
-          object btnRemovePartici: TButton
-            Left = 1
-            Top = 1
+          Caption = 'Participantes'
+          TabOrder = 1
+          object lblIdParticipante: TLabel
+            AlignWithMargins = True
+            Left = 5
+            Top = 67
+            Width = 374
+            Height = 15
+            Align = alTop
+            ExplicitWidth = 3
+          end
+          object listaParticipantes: TListView
+            AlignWithMargins = True
+            Left = 5
+            Top = 88
+            Width = 340
+            Height = 315
+            Align = alClient
+            Columns = <>
+            LargeImages = ImageList1
+            ReadOnly = True
+            RowSelect = True
+            SmallImages = ImageList1
+            StateImages = ImageList1
+            TabOrder = 0
+            ViewStyle = vsSmallIcon
+            OnClick = listaParticipantesClick
+          end
+          object pnlParticipantesBotoes: TPanel
+            Left = 348
+            Top = 85
+            Width = 34
+            Height = 321
+            Align = alRight
+            TabOrder = 2
+            object btnRemovePartici: TButton
+              Left = 1
+              Top = 1
+              Width = 32
+              Height = 32
+              Hint = 'Remove o participante selecionado'
+              Align = alTop
+              ImageIndex = 5
+              Images = ImageList1
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 0
+              OnClick = btnRemoveParticiClick
+            end
+          end
+          object pnltopopartici: TPanel
+            AlignWithMargins = True
+            Left = 5
+            Top = 20
+            Width = 374
+            Height = 41
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 3
+            object edtNovoParticipante: TLabeledEdit
+              Left = 4
+              Top = 16
+              Width = 338
+              Height = 23
+              EditLabel.Width = 117
+              EditLabel.Height = 15
+              EditLabel.Caption = 'N'#250'mero participante'
+              TabOrder = 0
+            end
+          end
+          object btnAddPArtici: TButton
+            Left = 353
+            Top = 28
             Width = 32
             Height = 32
-            Hint = 'Remove o participante selecionado'
-            Align = alTop
-            ImageIndex = 5
+            Hint = 'Adicionar Participante'
+            ImageIndex = 2
             Images = ImageList1
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 0
-            OnClick = btnRemoveParticiClick
-            ExplicitLeft = -41
-            ExplicitTop = 32
-            ExplicitWidth = 75
+            TabOrder = 1
           end
-        end
-        object pnltopopartici: TPanel
-          AlignWithMargins = True
-          Left = 5
-          Top = 20
-          Width = 378
-          Height = 41
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 3
-          object edtNovoParticipante: TLabeledEdit
-            Left = 4
-            Top = 16
-            Width = 338
-            Height = 23
-            EditLabel.Width = 117
-            EditLabel.Height = 15
-            EditLabel.Caption = 'N'#250'mero participante'
-            TabOrder = 0
-          end
-        end
-        object btnAddPArtici: TButton
-          Left = 353
-          Top = 28
-          Width = 32
-          Height = 32
-          Hint = 'Adicionar Participante'
-          ImageIndex = 2
-          Images = ImageList1
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
         end
       end
     end
@@ -425,131 +439,131 @@ object frameGrupos: TframeGrupos
     Left = 288
     Top = 168
     Bitmap = {
-      494C01010C005800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D005800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFDF3EB00FDF3EB00FCF2
+      EA00F8EFE700F8EEE700F8EEE700F8EEE700F8EFE700FCF2EA00FDF3EB00FDF3
+      EB00FDF3EB00FDF3EB00FDF3EB00000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FEE5D100FAE2CE00FAE1CE00FAE1CE00FAE1CE00FAE2CE00FEE5D100FFE6
+      D200FFE6D200FFE6D200FFE6D200000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE0C400FFDA
+      B800FFDAB800FED9B700FAD6B500FAC9AB00FAC8A900FAD4B400FAD6B500FED9
+      B700FFDAB900FFE6D100FFE6D200000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFDAB900FFAB
+      5100FFAA5000FFAA5000FEA94F00FA914E00FA7D3900FAA65000FAA74F00FAA7
+      4F00FEBF7F00FFE6D200FFE6D200000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFC3
+      8500FFAA5000FFAA5000FFAA5000FEA85400FAA96200FAA74F00FAA74F00FAAB
+      5600FADCC300FEE5D100FFE6D200000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE2
+      C900FFAF5A00FFAA5000FFAA5000FFC48800FED1A500FAA74F00FAA74F00FAC8
+      9700FAE1CE00FAE2CE00FEE5D100000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FFCF9F00FFAA5000FFB05C00FFE3CA00FFE6D200FEB97000FAB26500FAE0
+      CC00FAE1CE00FAE1CE00FAE2CE00000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FFE6D100FFB76D00FFD0A300FFE6D200FFE6D200FFDCBD00FED7B300FAE0
+      CB00FAC4A300FADFCA00FAE1CE00F9F6F4000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FFE6D200FFDFC200FFE6D100FFE6D200FFE6D200FFE6D200FFE6D200FEA8
+      7700FA631500FAA37300FAE1CE00F8F5F3000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFC4
+      A100FE7A3600FAC09B00FAE1CE00F8F5F3000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFFE6D200FFE6D200FFE6
+      D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6D200FFE6
+      D200FFE6D200FEE5D100FAE2CE00F8F5F3000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FFFDF3EB00FDF3EB00FDF3
+      EB00FDF3EB00FDF3EB00FDF3EB00FDF3EB00FDF3EB00FDF3EB00FDF3EB00FDF3
+      EB00FDF3EB00FDF3EB00FCF2EA00000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -561,129 +575,129 @@ object frameGrupos: TframeGrupos
       0000DCDEF300999FE8006871E000545EE000565FE1006972E3009BA1ED00E2E3
       F800000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000969B
       E8004A56DB004F5ADB007E84E300989DE900989FEC007E84E8005059E1004D58
       DF009A9FED000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FFFDA6
+      000000000000000000000000000000000000000000000000000000000000FDA6
       A800FD959700FD959700FD959700FD959700FD959700FD9C9E00FDD7D8000000
-      00FF000000FF000000FF000000FF000000FF0000000000000000DFDDD900A59D
+      0000000000000000000000000000000000000000000000000000DFDDD900A59D
       9400A2999000AEA69E00D9D6D300000000000000000000000000000000000000
       00000000000000000000000000000000000000000000000000007A82E8004A55
       DE00969DE800000000000000000000000000000000000000000000000000979D
       EB004B56DF007A82E80000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FFFD878800FD73
+      0000000000000000000000000000000000000000000000000000FD878800FD73
       7600FD959700FD959700FD959700FD959700FD959700FD848500FD6668000000
-      00FF000000FF000000FF000000FF000000FF00000000D0CBC700AFA79F000000
+      00000000000000000000000000000000000000000000D0CBC700AFA79F000000
       00000000000000000000BFB9B300A09890009F968D00D2CEC900000000000000
       00000000000000000000000000000000000000000000989DEC004B56DF00BBBF
       F200000000000000000000000000000000000000000000000000000000000000
       0000BABFF2004B56DF009A9FED00000000000000000000000000000000000000
       0000545454005454540054545400545454005454540054545400545454005454
-      540000000000000000000000000000000000000000FF000000FFFD636500FDC5
-      C600000000FF000000FF000000FF000000FF000000FF000000FFFF636500FDCC
-      CC00000000FF000000FF000000FF000000FF000000009F958D0000000000A69D
+      5400000000000000000000000000000000000000000000000000FD636500FDC5
+      C600000000000000000000000000000000000000000000000000FF636500FDCC
+      CC0000000000000000000000000000000000000000009F958D0000000000A69D
       9400A49B9200A69F9600C9C4BF000000000000000000BCB7B000B6AFA9000000
       000000000000000000000000000000000000E0E1F8004B57DF00989EED000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000979DEB004D58DF00E2E3F800DCDCDC009898980098989800CDCD
       CD00141414000000000000000000000000000000000000000000000000001515
-      1500A5A5A5005B5B5B005B5B5B00BFBFBF00000000FF000000FFFF636500FDC9
-      CA00000000FFFDA7A800FD686900FF636500FF636500FF636500FF636500FF63
-      6500FD737600FDD1D200000000FF000000FF00000000A8A09600D8D4D100CAC3
+      1500A5A5A5005B5B5B005B5B5B00BFBFBF000000000000000000FF636500FDC9
+      CA0000000000FDA7A800FD686900FF636500FF636500FF636500FF636500FF63
+      6500FD737600FDD1D200000000000000000000000000A8A09600D8D4D100CAC3
       BF000000000000000000B7B1AA00A89E96009D948B0000000000A69F9600C7C2
       BD000000000000000000000000000000000099A0ED00505BE000000000000000
       000000000000B2B6F1007079E50000000000000000006F77E000AAAFEB000000
       000000000000000000005059E1009BA1ED00BCBCBC0000000000000000002323
       2300B4B4B400171717000000000000000000000000000000000017171700A7A7
-      A7000404040000000000000000008B8B8B00000000FF000000FFFF636500FDC9
+      A7000404040000000000000000008B8B8B000000000000000000FF636500FDC9
       CA00FDDADB00FF636500FDB5B700FDC9CA00FDC9CA00FDC9CA00FDC9CA00FDC9
-      CA00FD929400FD737600000000FF000000FF00000000A299900000000000988E
+      CA00FD929400FD737600000000000000000000000000A299900000000000988E
       8300BDB6AF00000000009E958B0000000000AFA7A000BBB6B000C5C0BA00BEB9
       B100A29990000000000000000000000000006972E4008086E900000000000000
       000000000000707AE5004C57E2006871E3006871E0004B56DE006D75E1000000
       000000000000000000007E86E8006972E3000000000078787800010101000000
       000028282800C9C9C9008B8B8B005E5E5E005E5E5E008C8C8C00A9A9A9000505
-      050000000000000000003A3A3A0000000000000000FF000000FFFF636500FDC9
-      CA00FDC9CA00FF636500000000FF000000FF000000FF000000FF000000FF0000
-      00FFFDC9CA00FF636500000000FF000000FF00000000C3BDB800BFB7B2000000
+      050000000000000000003A3A3A00000000000000000000000000FF636500FDC9
+      CA00FDC9CA00FF63650000000000000000000000000000000000000000000000
+      0000FDC9CA00FF636500000000000000000000000000C3BDB800BFB7B2000000
       0000E4E1DE00C8C3BD00B1A9A200D2CFCA009D928A00E4E2E100ACA49D000000
       0000D8D6D100A2988F000000000000000000565FE10099A0ED00000000000000
       000000000000000000006972E4004C57E2004B56E100646EDF00000000000000
       00000000000000000000989FEC005560E1000000000000000000DCDCDC00B0B0
       B000C9C9C9000000000000000000000000000000000000000000000000009F9F
-      9F007A7A7A00BFBFBF000000000000000000000000FF000000FFFF636500FDC9
-      CA00FDC9CA00FF636500000000FF000000FF000000FF000000FF000000FF0000
-      00FFFDC9CA00FF636500000000FF000000FF0000000000000000D0CBC700A097
+      9F007A7A7A00BFBFBF0000000000000000000000000000000000FF636500FDC9
+      CA00FDC9CA00FF63650000000000000000000000000000000000000000000000
+      0000FDC9CA00FF63650000000000000000000000000000000000D0CBC700A097
       8D00A8A09600D0CBC700A49B9100000000009D928800E2E0DD00A89F9900A199
       9000E2E0DD00D9D5D200AEA8A00000000000525EE0009CA1ED00000000000000
       000000000000000000006972E3004C57E2004C57E200666FE400000000000000
       00000000000000000000979DE900545EE000000000000000000000000000B8B8
       B8000000000000000000B2B2B2001A1A1A001B1B1B00B3B3B30000000000CDCD
-      CD0085858500000000000000000000000000000000FF000000FFFF636500FDC9
-      CA00FDC9CA00FF636500000000FF000000FF000000FF000000FF000000FF0000
-      00FFFDC9CA00FF636500000000FF000000FF0000000000000000000000000000
+      CD00858585000000000000000000000000000000000000000000FF636500FDC9
+      CA00FDC9CA00FF63650000000000000000000000000000000000000000000000
+      0000FDC9CA00FF63650000000000000000000000000000000000000000000000
       000000000000D0CCC700B0A8A000DBD8D500E2DFDE009D928900000000000000
       00009990870000000000A2999200000000006972E4008086E900000000000000
       0000000000007278E5004C57E2006771E5006972E4004C57E2006F78E5000000
       000000000000000000007E84E3006871E0000000000000000000484848000000
       00000F0F0F00000000001A1A1A0000000000000000001B1B1B00CBCBCB000000
-      000000000000151515000000000000000000000000FF000000FFFF636500FDC9
-      CA00FDC9CA00FF636500000000FF000000FF000000FFFDD7D700FD9C9D00FD95
-      9700FD848500FF636500000000FF000000FF0000000000000000000000000000
+      0000000000001515150000000000000000000000000000000000FF636500FDC9
+      CA00FDC9CA00FF636500000000000000000000000000FDD7D700FD9C9D00FD95
+      9700FD848500FF63650000000000000000000000000000000000000000000000
       0000000000000000000000000000A2999000DCD7D400E1DEDC00A1958C000000
       0000DAD6D300C1BCB600B9B3AC00E2E0DE00999FED00505CE000000000000000
       000000000000AEB3F0006E76E60000000000000000006E76E600ADB2F0000000
       000000000000000000004F5ADB00999FE80000000000000000000D0D0D000000
       000000000000B8B8B8001A1A1A0000000000000000001B1B1B00848484000000
-      000000000000000000000000000000000000000000FF000000FFFD717400FD92
-      9400FDA7A800FF636500000000FF000000FF000000FFFD646600FD848500FD7F
-      8000FF636500FD898B00000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000FD717400FD92
+      9400FDA7A800FF636500000000000000000000000000FD646600FD848500FD7F
+      8000FF636500FD898B0000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A49B9200D9D6D100E0DEDB009F95
       8D009D948A00000000009E958B0000000000DFE1F8004B57DF0099A0ED000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000969DE8004A56DB00DCDEF30000000000000000008C8C8C000D0D
       0D004848480000000000B1B1B100191919001A1A1A00B2B2B200000000001313
-      1300000000004F4F4F000000000000000000000000FF000000FFFDD0D000FD73
-      7300FF636500FF636500000000FF000000FFFDCCCC00FF636500FDDDDE00FD6C
-      6E00FD898900000000FF000000FF000000FF0000000000000000000000000000
+      1300000000004F4F4F0000000000000000000000000000000000FDD0D000FD73
+      7300FF636500FF6365000000000000000000FDCCCC00FF636500FDDDDE00FD6C
+      6E00FD8989000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000A9A29800C5C0BA000000
       000000000000B8B1AA00C0BCB5000000000000000000969CEC004B56DF00BCC0
       F200000000000000000000000000000000000000000000000000000000000000
       0000BBBFF2004A55DE00969BE800000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FFFDCCCC00FF636500000000FF000000FFFDC9CA00FF636500FD6C6E00FD89
-      8900000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000FDCCCC00FF6365000000000000000000FDC9CA00FF636500FD6C6E00FD89
+      8900000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000D0CCC700A69D
       9400A89E9600DCD7D400000000000000000000000000000000007A82E8004B56
       DF0099A0ED00000000000000000000000000000000000000000000000000989E
       ED004B56DF007A82E80000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FFFDEAEB00FD646600FD848500FD959700FD848500FF636500FD8989000000
-      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000FDEAEB00FD646600FD848500FD959700FD848500FF636500FD8989000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000969C
       EC004B57DF00505BE0007F88E900999FED00999FED007F88E900505BE0004B57
       DF00979DEB000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FF000000FFFDD5D600FD9C9D00FD959700FD959700FDA2A400000000FF0000
-      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000FDD5D600FD9C9D00FD959700FD959700FDA2A400000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000DFE1F800999FED006972E400545DE100545DE1006972E40099A0ED00E0E1
       F800000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-      00FF000000FF000000FF000000FF000000FF0000000000000000DBD6D6008662
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000DBD6D6008662
       5A008F492D009A522A00A0592D00A35E2D00A5612E00A0592D009B522A008F45
       2600713C2B007769680000000000000000000000000000000000000000000000
       00000000000000000000DBD9F200BFBDEE00BFBFEF00DDDDF600000000000000
@@ -941,11 +955,11 @@ object frameGrupos: TframeGrupos
       000000000000EFEBE400C6B79C00CDC2AB00CDC2AB00C6B79C00EFEBE4000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000040000000400000000100010000000000000200000000000000000000
-      000000000000000000000000FFFFFF0000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000FFFFF00FFFFFFFFFFFFFE007FFFFE01F
+      000000000000000000000000FFFFFF00FFFF000000000000FFFF000000000000
+      8001000000000000800100000000000080010000000000008001000000000000
+      8001000000000000800100000000000080010000000000008000000000000000
+      8000000000000000800000000000000080000000000000008001000000000000
+      FFFF000000000000FFFF000000000000FFFFF00FFFFFFFFFFFFFE007FFFFE01F
       C1FFC7E3FFFFC01F9C3F8FF1F00FCFCFA19F1FF80000C8038C4F399C0000C003
       A507381C8001C3F390133C3CC7E3C3F3C1013C3CEC27C3F3F835381CC403C383
       FE10399CC003C383FF051FF8C423C307FF998FF1FFFFF30FFFC3C7E3FFFFF01F
@@ -959,5 +973,14 @@ object frameGrupos: TframeGrupos
       C00340078001C003C0037FFFC003C003C0037FFFE0078001C1030000F00F8001
       FF03FFFFF81FF99FFF03FFFFFFFFF81F00000000000000000000000000000000
       000000000000}
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Filter = 
+      'All (*.gif;*.png;*.jpg;*.jpeg;*.bmp;*.ico;*.emf;*.wmf;*.tif;*.ti' +
+      'ff)|*.gif;*.png;*.jpg;*.jpeg;*.bmp;|Portable Network Graphics (*' +
+      '.png)|*.png|JPEG Image File (*.jpg)|*.jpg|JPEG Image File (*.jpe' +
+      'g)|*.jpeg|Bitmaps (*.bmp)|*.bmp'
+    Left = 434
+    Top = 235
   end
 end

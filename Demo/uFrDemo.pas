@@ -32,7 +32,8 @@ uses
   uTWPPConnect.Emoticons, Clipbrd,
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
-  uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo;
+  uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
+  uFraOutros;
 
 type
   TfrDemo = class(TForm)
@@ -50,11 +51,12 @@ type
     Label3: TLabel;
     frameMensagem1: TframeMensagem;
     timerStatus: TTimer;
-    frameGrupos1: TframeGrupos;
     frameMensagensEnviadas1: TframeMensagensEnviadas;
     frameMensagensRecebidas1: TframeMensagensRecebidas;
     frameLogin1: TframeLogin;
     frameCatalogo1: TframeCatalogo;
+    frameOutros1: TframeOutros;
+    frameGrupos1: TframeGrupos;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -104,6 +106,7 @@ type
       const ProductCatalog: TProductsList);
     procedure TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
     procedure frameCatalogo1Button1Click(Sender: TObject);
+    procedure ctbtnCategories0Items6Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -219,6 +222,7 @@ begin
   frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items1Click(Sender: TObject);
@@ -229,6 +233,7 @@ begin
    frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items2Click(Sender: TObject);
@@ -239,6 +244,7 @@ begin
    frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items3Click(Sender: TObject);
@@ -249,6 +255,7 @@ begin
   frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= True;
   frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items4Click(Sender: TObject);
@@ -259,6 +266,7 @@ begin
   frameMensagensRecebidas1.Visible:= True;
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
 end;
 
 procedure TfrDemo.ctbtnCategories0Items5Click(Sender: TObject);
@@ -269,6 +277,19 @@ begin
   frameMensagensRecebidas1.Visible:= False;
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= True;
+  frameOutros1.Visible:= False;
+end;
+
+procedure TfrDemo.ctbtnCategories0Items6Click(Sender: TObject);
+begin
+  frameLogin1.Visible := False;
+  frameMensagem1.Visible := False;
+  frameGrupos1.Visible := False;
+  frameMensagensRecebidas1.Visible:= False;
+  frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
+  frameOutros1.VIsible:= True;
+
 end;
 
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);

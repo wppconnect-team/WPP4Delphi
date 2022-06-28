@@ -256,6 +256,7 @@ type
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
     procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions: string);
+    procedure SetGroupPicture(PIDGroup, PFileName: string);
 
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
@@ -269,6 +270,7 @@ type
     procedure GroupJoinViaLink(PLinkGroup: string);
     procedure GroupRemoveInviteLink(PIDGroup: string);
     procedure SetProfileName(vName : String);
+    procedure SetProfilePicture(vFileName: string);
     procedure SetStatus(vStatus: String);
     procedure GetStatusContact(PNumber: String);
     procedure GetGroupInviteLink(PIDGroup : string);
@@ -1291,6 +1293,51 @@ begin
 
   FrmConsole.setNewName(vName);
 
+end;
+
+procedure TWPPConnect.SetProfilePicture(vFileName: string);
+var
+  LStream     : TMemoryStream;
+  LBase64File : TBase64Encoding;
+  LExtension  : String;
+  LBase64     : String;
+begin
+ If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  LExtension   := LowerCase(Copy(ExtractFileExt(vFileName),2,5));
+
+  If not FileExists(Trim(vFileName)) then
+  begin
+    Int_OnErroInterno(Self, 'SetProfilePicture: ' + Format(MSG_ExceptPath, ['']), vFileName);
+    Exit;
+  end;
+
+  LStream     := TMemoryStream.Create;
+  LBase64File := TBase64Encoding.Create;
+  try
+    try
+      LStream.LoadFromFile(vFileName);
+      if LStream.Size = 0 then
+      Begin
+        Int_OnErroInterno(Self, 'SetProfilePicture: ' + Format(MSG_WarningErrorFile, [vFileName]), vFileName);
+        Exit;
+      end;
+
+      LStream.Position := 0;
+      LBase64      := LBase64File.EncodeBytesToString(LStream.Memory, LStream.Size);
+      LBase64      := StrExtFile_Base64Type(vFileName) + LBase64;
+    except
+      Int_OnErroInterno(Self, 'SetProfilePicture: ' + MSG_ExceptMisc, vFileName);
+    end;
+  finally
+    FreeAndNil(LStream);
+    FreeAndNil(LBase64File);
+  end;
+
+  frmConsole.SetProfilePicture(LBase64);
 end;
 
 procedure TWPPConnect.SetStatus(vStatus: String);
@@ -3080,6 +3127,55 @@ end;
 procedure TWPPConnect.SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
 begin
   FAdjustNumber.Assign(Value);
+end;
+
+procedure TWPPConnect.SetGroupPicture(PIDGroup, PFileName: string);
+var
+  LStream     : TMemoryStream;
+  LBase64File : TBase64Encoding;
+  LExtension  : String;
+  LBase64     : String;
+begin
+ If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  LExtension   := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    Exit;
+  end;
+  If not FileExists(Trim(PFileName)) then
+  begin
+    Int_OnErroInterno(Self, 'SetGroupPicture: ' + Format(MSG_ExceptPath, [PIDGroup]), PFileName);
+    Exit;
+  end;
+
+  LStream     := TMemoryStream.Create;
+  LBase64File := TBase64Encoding.Create;
+  try
+    try
+      LStream.LoadFromFile(PFileName);
+      if LStream.Size = 0 then
+      Begin
+        Int_OnErroInterno(Self, 'SetGroupPicture: ' + Format(MSG_WarningErrorFile, [PFileName]), PIDGroup);
+        Exit;
+      end;
+
+      LStream.Position := 0;
+      LBase64      := LBase64File.EncodeBytesToString(LStream.Memory, LStream.Size);
+      LBase64      := StrExtFile_Base64Type(PFileName) + LBase64;
+    except
+      Int_OnErroInterno(Self, 'SetGroupPicture: ' + MSG_ExceptMisc, PIDGroup);
+    end;
+  finally
+    FreeAndNil(LStream);
+    FreeAndNil(LBase64File);
+  end;
+
+  frmConsole.SetGroupPicture(PIDGroup,LBase64);
 end;
 
 procedure TWPPConnect.SetInjectConfig(const Value: TWPPConnectConfig);

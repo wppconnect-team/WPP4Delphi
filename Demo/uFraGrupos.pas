@@ -22,7 +22,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.ExtCtrls, Vcl.ComCtrls, System.ImageList, Vcl.ImgList, clipbrd;
+  Vcl.ExtCtrls, Vcl.ComCtrls, System.ImageList, Vcl.ImgList, clipbrd,
+  Vcl.ExtDlgs;
 
 type
   TframeGrupos = class(TFrame)
@@ -62,6 +63,9 @@ type
     btnCancelaLink: TButton;
     btnRemovePartici: TButton;
     btnAddPArtici: TButton;
+    btnMudarImagemGrupo: TButton;
+    OpenPictureDialog1: TOpenPictureDialog;
+    ScrollBox1: TScrollBox;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -78,6 +82,7 @@ type
     procedure SpeedButton1Click(Sender: TObject);
     procedure listaAdministradoresClick(Sender: TObject);
     procedure btnCriarVotacaoClick(Sender: TObject);
+    procedure btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -96,6 +101,29 @@ begin
      Exit;
 
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
+end;
+
+procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
+var
+  LNomeArquivo: String;
+begin
+  if not frDemo.TWPPConnect1.Auth then
+     Exit;
+  if lbl_idGroup.Caption = ''  then
+  begin
+    ShowMEssage('Selecione na lista o grupo que será atualizado!');
+    abort;
+  end;
+
+  if OpenPictureDialog1.Execute then
+    LNomeARquivo:= OpenPictureDialog1.FileName;
+  if LNomeArquivo = '' then
+  begin
+    ShowMEssage('Selecione a imagem');
+    abort;
+  end;
+
+  frDemo.TWPPConnect1.SetGroupPicture(lbl_idGroup.Caption, LNomeArquivo);
 end;
 
 procedure TframeGrupos.btnDeletarGrupoClick(Sender: TObject);
