@@ -244,6 +244,8 @@ type
     procedure GroupJoinViaLink(vLinkGroup: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions: string);
     procedure SetGroupPicture(vIDGroup, vBase64:string);
+    procedure GroupMsgAdminOnly(vIDGroup: string);
+    procedure GroupMsgAll(vIDGroup: string);
 
     procedure getGroupInviteLink(vIDGroup: string);
     procedure revokeGroupInviteLink(vIDGroup: string);
@@ -665,6 +667,30 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_groupLeave;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMsgAdminOnly(vIDGroup: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupMsgAdminOnly;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMsgAll(vIDGroup: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupMsgAll;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   ExecuteJS(LJS, true);
 end;

@@ -66,6 +66,8 @@ type
     btnMudarImagemGrupo: TButton;
     OpenPictureDialog1: TOpenPictureDialog;
     ScrollBox1: TScrollBox;
+    btnAdminOnly: TButton;
+    btnMsgAll: TButton;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -83,6 +85,8 @@ type
     procedure listaAdministradoresClick(Sender: TObject);
     procedure btnCriarVotacaoClick(Sender: TObject);
     procedure btnMudarImagemGrupoClick(Sender: TObject);
+    procedure btnAdminOnlyClick(Sender: TObject);
+    procedure btnMsgAllClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -101,6 +105,22 @@ begin
      Exit;
 
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
+end;
+
+procedure TframeGrupos.btnMsgAllClick(Sender: TObject);
+begin
+   if not frDemo.TWPPConnect1.Auth then
+
+     Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+
+  frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
@@ -140,6 +160,22 @@ begin
      Exit;
 
   frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtTelefoneNovoParticipante.text);
+end;
+
+procedure TframeGrupos.btnAdminOnlyClick(Sender: TObject);
+begin
+   if not frDemo.TWPPConnect1.Auth then
+
+     Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+
+  frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnCancelaLinkClick(Sender: TObject);

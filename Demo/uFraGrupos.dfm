@@ -31,7 +31,7 @@ object frameGrupos: TframeGrupos
         Left = 5
         Top = 59
         Width = 253
-        Height = 134
+        Height = 110
         Align = alTop
         Columns = <>
         LargeImages = ImageList1
@@ -66,9 +66,9 @@ object frameGrupos: TframeGrupos
       end
       object gbacoes: TGroupBox
         Left = 2
-        Top = 196
+        Top = 172
         Width = 259
-        Height = 375
+        Height = 399
         Align = alClient
         Caption = 'A'#231#245'es para Grupos'
         TabOrder = 2
@@ -175,6 +175,28 @@ object frameGrupos: TframeGrupos
           Images = ImageList1
           TabOrder = 7
           OnClick = btnMudarImagemGrupoClick
+        end
+        object btnAdminOnly: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 308
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Mensagem Somente Administradores'
+          TabOrder = 8
+          OnClick = btnAdminOnlyClick
+        end
+        object btnMsgAll: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 344
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Mensagem Todos'
+          TabOrder = 9
+          OnClick = btnMsgAllClick
         end
       end
     end
@@ -437,7 +459,7 @@ object frameGrupos: TframeGrupos
   end
   object ImageList1: TImageList
     Left = 288
-    Top = 168
+    Top = 152
     Bitmap = {
       494C01010D005800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
