@@ -19,7 +19,6 @@ object frameMensagem: TframeMensagem
     Height = 647
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 557
     object Label1: TLabel
       Left = 11
       Top = 59
@@ -74,7 +73,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
-    ExplicitHeight = 557
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
@@ -285,7 +283,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = btnStatusImagemClick
-      ExplicitLeft = 3
     end
     object btnVideoStatus: TButton
       AlignWithMargins = True
@@ -299,8 +296,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
-      ExplicitLeft = 0
-      ExplicitTop = 567
     end
   end
   object GroupBox2: TGroupBox
@@ -312,7 +307,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
-    ExplicitHeight = 557
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
@@ -516,7 +510,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Fun'#231#245'es Diversas'
     TabOrder = 3
-    ExplicitHeight = 557
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
@@ -586,7 +579,6 @@ object frameMensagem: TframeMensagem
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitHeight = 303
       object btnListarChats: TButton
         AlignWithMargins = True
         Left = 5
@@ -622,7 +614,6 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaChatsDblClick
-        ExplicitHeight = 249
       end
     end
   end

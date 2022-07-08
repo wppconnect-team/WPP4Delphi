@@ -966,7 +966,7 @@ begin
  if not frDemo.TWPPConnect1.Auth then
    Exit;
 
-  frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
+  //frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');  frDemo.TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);
 end;
 
 procedure TframeMensagem.btnVideoBotaoClick(Sender: TObject);

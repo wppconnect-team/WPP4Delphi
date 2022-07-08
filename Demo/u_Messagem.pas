@@ -10,7 +10,7 @@
   an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 
-                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                              WPPCONNECT - Componente de comunição (Não Oficial)
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################}
@@ -39,6 +39,46 @@ public
   class function FromJsonString(AJsonString: string): TIdClass;
 end;
 
+TButtonsClass = class
+private
+  FDisplayText: String;
+  FId: String;
+  FSubtype: String;
+  FUrl: String;
+public
+  property displayText: String read FDisplayText write FDisplayText;
+  property id: String read FId write FId;
+  property subtype: String read FSubtype write FSubtype;
+  property url: String read FUrl write FUrl;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TButtonsClass;
+end;
+
+TUrlButtonClass = class
+private
+  FDisplayText: String;
+  FUrl: String;
+public
+  property displayText: String read FDisplayText write FDisplayText;
+  property url: String read FUrl write FUrl;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TUrlButtonClass;
+end;
+
+THydratedButtonsClass = class
+private
+  FIndex: Extended;
+  FUrlButton: TUrlButtonClass;
+public
+  property index: Extended read FIndex write FIndex;
+  property urlButton: TUrlButtonClass read FUrlButton write FUrlButton;
+  constructor Create;
+  destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): THydratedButtonsClass;
+end;
+
+
 TResultClass = class
 private
   FAck: Extended;
@@ -64,6 +104,9 @@ private
   FT: int64;
   FTo: String;
   FType: String;
+  Flabels: TArray<String>; //New 01/07/2022
+  FHydratedButtons: TArray<THydratedButtonsClass>; //New 06/07/2022
+  FButtons: TArray<TButtonsClass>; //New 06/07/2022
 public
   property ack: Extended read FAck write FAck;
   property body: String read FBody write FBody;
@@ -88,6 +131,11 @@ public
   property t: int64 read FT write FT;
   property &to: String read FTo write FTo;
   property &type: String read FType write FType;
+  //New 01/07/2022
+  property labels: TArray<String> read Flabels write Flabels;
+  //New 06/07/2022
+  property hydratedButtons: TArray<THydratedButtonsClass> read FHydratedButtons write FHydratedButtons;
+  property buttons: TArray<TButtonsClass> read FButtons write FButtons;
   constructor Create;
   destructor Destroy; override;
   function ToJsonString: string;
@@ -166,6 +214,19 @@ end;
 class function TMessagemStatusClass.FromJsonString(AJsonString: string): TMessagemStatusClass;
 begin
   result := TJson.JsonToObject<TMessagemStatusClass>(AJsonString)
+end;
+
+{ THydratedButtonsClass }
+
+constructor THydratedButtonsClass.Create;
+begin
+
+end;
+
+destructor THydratedButtonsClass.Destroy;
+begin
+
+  inherited;
 end;
 
 end.
