@@ -1770,7 +1770,8 @@ begin
   with IOHandler as TIdSSLIOHandlerSocketOpenSSL do
   begin
     SSLOptions.method := sslvTLSv1_1;
-    SSLOptions.SSLVersions := [sslvTLSv1_1];
+    //SSLOptions.SSLVersions := [sslvTLSv1_1];
+    SSLOptions.SSLVersions := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
     SSLOptions.Mode := sslmUnassigned;
   end;
 
