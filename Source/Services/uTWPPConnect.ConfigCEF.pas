@@ -280,7 +280,9 @@ begin
   if Self.status = asInitialized then
      raise Exception.Create(MSG_ConfigCEF_ExceptNotFoundPATH);
   if not DirectoryExists(LDir) then
-    raise Exception.Create(Format(MSG_ExceptPath, [LDir]));
+    //raise Exception.Create(Format(MSG_ExceptPath, [LDir]));
+    //Aurino 11/07/2022
+    deletefile(pwidechar(ExtractFilePath(Application.ExeName) + NomeArquivoIni)) ;
   Result := true;
 end;
 
