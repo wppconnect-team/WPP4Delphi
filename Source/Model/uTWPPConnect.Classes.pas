@@ -1810,7 +1810,11 @@ begin
       //Get(Purl, FReturnUrl);
       //temis  03-06-2022
       //DownLoadInternetFile(Purl, 'js.abr');
-      DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+
+      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+      //Aurino 11/07/2022
+      Get(Purl, FReturnUrl);
+
       //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'wppconnect-wa.js');
 
 
