@@ -818,12 +818,13 @@ begin
           selectedButtonId := AMessage.selectedButtonId;
 
           try
-            if Assigned(AMessage.ListResponse.singleSelectReply) then
-            begin
-              selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
-              if selectedRowId <> '' then
-                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
-            end;
+            if Assigned(AMessage.ListResponse) then
+              if Assigned(AMessage.ListResponse.singleSelectReply) then
+              begin
+                selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+                if selectedRowId <> '' then
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+              end;
           except on E: Exception do
           end;
 
