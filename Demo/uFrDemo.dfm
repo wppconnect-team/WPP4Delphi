@@ -1619,13 +1619,6 @@ object frDemo: TfrDemo
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
       end
-      inherited btnStatusImagem: TButton
-        ExplicitLeft = 5
-      end
-      inherited btnVideoStatus: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 596
-      end
     end
     inherited GroupBox2: TGroupBox
       Height = 501
@@ -1849,66 +1842,68 @@ object frDemo: TfrDemo
     ParentFont = False
     TabOrder = 9
     Visible = False
-    ExplicitLeft = 274
-    ExplicitTop = 62
+    ExplicitLeft = 200
+    ExplicitTop = 113
+    ExplicitWidth = 1008
+    ExplicitHeight = 507
     inherited ScrollBox1: TScrollBox
       Width = 1008
       Height = 507
+      ExplicitWidth = 1008
+      ExplicitHeight = 507
       inherited gbGrupos: TGroupBox
         Height = 497
-        ExplicitHeight = 573
+        ExplicitHeight = 497
         inherited gbacoes: TGroupBox
-          Height = 299
-          ExplicitTop = 196
-          ExplicitHeight = 375
+          Height = 323
+          ExplicitHeight = 323
         end
       end
       inherited pnlEsquerda: TPanel
         Height = 497
-        ExplicitHeight = 573
+        ExplicitHeight = 497
       end
       inherited pnlGruposParticipantes: TPanel
         Width = 474
         Height = 497
-        ExplicitLeft = 527
-        ExplicitWidth = 400
-        ExplicitHeight = 573
+        ExplicitWidth = 474
+        ExplicitHeight = 497
         inherited GroupBox1: TGroupBox
           Width = 468
           Height = 491
-          ExplicitWidth = 394
-          ExplicitHeight = 567
+          ExplicitWidth = 468
+          ExplicitHeight = 491
           inherited gbAdmin: TGroupBox
             Width = 458
-            ExplicitWidth = 384
+            ExplicitWidth = 458
             inherited listaAdministradores: TListView
               Width = 448
-              ExplicitWidth = 374
+              ExplicitWidth = 448
             end
           end
           inherited gbParticipantes: TGroupBox
             Width = 458
             Height = 332
-            ExplicitWidth = 384
-            ExplicitHeight = 408
+            ExplicitWidth = 458
+            ExplicitHeight = 332
             inherited lblIdParticipante: TLabel
               Width = 448
             end
             inherited listaParticipantes: TListView
               Width = 414
               Height = 239
-              ExplicitWidth = 340
-              ExplicitHeight = 315
+              ExplicitWidth = 414
+              ExplicitHeight = 239
             end
             inherited pnlParticipantesBotoes: TPanel
               Left = 422
               Height = 245
-              ExplicitLeft = 348
-              ExplicitHeight = 321
+              ExplicitLeft = 422
+              ExplicitHeight = 245
             end
             inherited pnltopopartici: TPanel
               Width = 448
-              ExplicitWidth = 374
+              ExplicitWidth = 448
             end
           end
         end
@@ -5501,7 +5496,8 @@ object frDemo: TfrDemo
       'n/Source/JS/js.abr'
     Config.AutoStart = True
     Config.AutoDelay = 0
-    Config.SecondsMonitor = 7
+    Config.SecondsMonitor = 8
+    Config.SecondsMonitorWppCrash = 30
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
@@ -5521,6 +5517,7 @@ object frDemo: TfrDemo
     OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
+    OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
@@ -5533,8 +5530,8 @@ object frDemo: TfrDemo
     OnGetInviteGroup = TWPPConnect1GetInviteGroup
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
-    Left = 368
-    Top = 480
+    Left = 352
+    Top = 144
   end
   object timerStatus: TTimer
     Enabled = False

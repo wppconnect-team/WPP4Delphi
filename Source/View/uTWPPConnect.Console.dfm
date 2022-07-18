@@ -37,8 +37,8 @@ object FrmConsole: TFrmConsole
     object Lbl_Caption: TLabel
       Left = 1
       Top = 1
-      Width = 785
-      Height = 18
+      Width = 106
+      Height = 13
       Align = alClient
       Alignment = taCenter
       Caption = 'Mega Online Software'
@@ -49,8 +49,6 @@ object FrmConsole: TFrmConsole
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
-      ExplicitWidth = 106
-      ExplicitHeight = 13
     end
     object lbl_Versao: TLabel
       AlignWithMargins = True
@@ -464,6 +462,7 @@ object FrmConsole: TFrmConsole
     end
   end
   object Chromium1: TChromium
+    OnLoadEnd = Chromium1LoadEnd
     OnBeforeContextMenu = Chromium1BeforeContextMenu
     OnTitleChange = Chromium1TitleChange
     OnConsoleMessage = Chromium1ConsoleMessage

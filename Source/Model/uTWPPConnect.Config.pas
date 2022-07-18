@@ -41,7 +41,7 @@ unit uTWPPConnect.Config;
 interface
 
 uses
-  System.Classes, uTWPPConnect.Classes, uTWPPConnect.Diversos;
+  System.Classes, uTWPPConnect.Classes, uTWPPConnect.Diversos, uTWPPConnect.Constant;
 
 {$M+}{$TYPEINFO ON}
 Type
@@ -62,12 +62,14 @@ Type
 
     FReceiveAttachmentAuto: Boolean;
     FZoom: SmallInt;
+    FSecondsMonitorWppCrash: integer;
     procedure SetSecondsMonitor(const Value: integer);
     procedure SetLowBattery(const Value: SmallInt);
     procedure SetControlSendTimeSec(const Value: SmallInt);
     procedure SetReceiveAttachmentPath(const Value: String);
     procedure SetReceiveAttachmentAuto(const Value: Boolean);
     procedure SetZoom(const Value: SmallInt);
+    procedure SetSecondsMonitorWppCrash(const Value: integer);
   public
      constructor Create(AOwner: TComponent);
      Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
@@ -85,6 +87,7 @@ Type
 
     property LowBatteryIs  : SmallInt         read FLowBattery            write SetLowBattery              default 30;
     property SecondsMonitor: integer          read FSecondsMonitor        write SetSecondsMonitor          default 3;
+    property SecondsMonitorWppCrash: integer  read FSecondsMonitorWppCrash write SetSecondsMonitorWppCrash default 0;
     property SyncContacts  : Boolean          read FSyncContacts          write FSyncContacts              default true;
     property ShowRandom    : Boolean          read FShowRandom            write FShowRandom                default true;
   end;
@@ -92,7 +95,7 @@ Type
 implementation
 
 uses
-  System.SysUtils, uTWPPConnect.Constant, Vcl.Forms, uTWPPConnect.ExePath,
+  System.SysUtils, Vcl.Forms, uTWPPConnect.ExePath,
   uTWPPConnect.ConfigCEF, uTWPPConnect;
 
 { TWPPConnectConfig }
@@ -169,6 +172,13 @@ begin
   //Não permitir que fique zero ou negativo.
   if Value < 0.1 then
      FSecondsMonitor := 3;
+end;
+
+procedure TWPPConnectConfig.SetSecondsMonitorWppCrash(const Value: integer);
+begin
+  if Value > 40 then
+    raise exception.Create('O máximo é 40 segundos.');
+  FSecondsMonitorWppCrash := Value;
 end;
 
 procedure TWPPConnectConfig.SetZoom(const Value: SmallInt);

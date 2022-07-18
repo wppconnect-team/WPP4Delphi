@@ -120,6 +120,7 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Erro ao conectar (TimeOut)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Destruindo e fechando TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect finalizado');
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Reiniciando Chromium');
   SetResourceString(@MSG_WarningNothingtoSend             , 'Não existe nenhum conteúdo a ser enviado na mensagem');
 
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Tipo de objeto não é compatível');

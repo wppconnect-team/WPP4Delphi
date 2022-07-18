@@ -88,6 +88,8 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
     procedure Img_BrasilClick(Sender: TObject);
+    procedure Chromium1LoadEnd(Sender: TObject; const browser: ICefBrowser;
+      const frame: ICefFrame; httpStatusCode: Integer);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -121,6 +123,7 @@ type
     FHeaderAtual            : TTypeHeader;
     FMessagesList           : TMessagesList;
     FProductList            : TProductsList;
+    FWppCrashClass          : TWppCrashClass;
     FChatList               : TChatList;
     FChatList2              : TChatList;
     FMonitorLowBattry       : Boolean;
@@ -135,7 +138,6 @@ type
     Function  GetAutoBatteryLeveL: Boolean;
     Procedure ISLoggedin;
     procedure ExecuteJS(PScript: string; PDirect:  Boolean = false; Purl:String = 'about:blank'; pStartline: integer=0);
-    procedure ExecuteJSDir(PScript: string; Purl:String = 'about:blank'; pStartline: integer=0);
 
     procedure QRCodeForm_Start;
     procedure QRCodeWeb_Start;
@@ -149,6 +151,8 @@ type
 
      public
     { Public declarations }
+    procedure ExecuteJSDir(PScript: string; Purl:String = 'about:blank'; pStartline: integer=0);
+    procedure RebootChromium;
     Function  ConfigureNetWork:Boolean;
     Procedure SetZoom(Pvalue: Integer);
     Property  Conectado: Boolean    Read FConectado;
@@ -273,6 +277,7 @@ type
     procedure ReadMessagesAndDelete(vID: string);
 
     procedure StartMonitor(Seconds: Integer);
+    procedure StartMonitorWPPCrash(Seconds: Integer);
     procedure StopMonitor;
   end;
 
@@ -430,6 +435,7 @@ begin
 
       //Auto monitorar mensagens não lidas
       StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
       SleepNoFreeze(40);
 
       lNovoStatus    := False;
@@ -753,6 +759,26 @@ begin
   ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#TEMPO#' , Seconds.ToString));
 end;
 
+procedure TFrmConsole.StartMonitorWPPCrash(Seconds: Integer);
+var
+  LJS: String;
+begin
+  if Seconds = 0 then
+    exit;
+  LJS := FrmConsole_JS_VAR_StartMonitorWPPCrash;
+  ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#TEMPO#' , Seconds.ToString));
+
+  if TWPPConnect(FOwner).Config.SecondsMonitorWppCrash > 0 then
+  begin
+    TWPPConnect(FOwner).FTimerCheckWPPCrash:= TTimer.Create(Self);
+    TWPPConnect(FOwner).FTimerCheckWPPCrash.Interval:= 40000;
+    TWPPConnect(FOwner).FTimerCheckWPPCrash.OnTimer:= TWPPConnect(FOwner).OnTimerWPPCrash;
+    TWPPConnect(FOwner).FTImerCheckWPPCrash.Enabled:= False;
+  end;
+
+  TWPPConnect(FOwner).FTimerCheckWPPCrash.enabled:= True;
+end;
+
 procedure TFrmConsole.StartQrCode(PQrCodeType: TFormQrCodeType; PViewForm: Boolean);
 begin
   FFormType := PQrCodeType;
@@ -907,6 +933,12 @@ procedure TFrmConsole.ReadMessagesAndDelete(vID: string);
 begin
   ReadMessages  (Trim(vID));
   DeleteMessages(Trim(vID));
+end;
+
+procedure TFrmConsole.RebootChromium;
+begin
+  TWppConnect(FOwner).SetNewStatus(Server_Rebooting);
+  FrmConsole.Chromium1.LoadURL(FrmConsole_JS_URL);
 end;
 
 procedure TFrmConsole.rejectCall(id: string);
@@ -1840,6 +1872,13 @@ begin
                                 FProductList := TProductsList.Create(LResultStr);
                                 SendNotificationCenterDirect(PResponse.TypeHeader, FProductList);
                               end;
+    Th_WPPCrashMonitor     : begin
+                               if Assigned(FWppCrashClass) then
+                                   FWppCrashClass.Free;
+
+                                FWppCrashClass := TWppCrashClass.Create(LResultStr);
+                                SendNotificationCenterDirect(PResponse.TypeHeader, FWppCrashClass);
+                             end;
    end;
 end;
 
@@ -1908,6 +1947,22 @@ begin
         LogAdd(e.Message, 'ERROR DOWNLOAD ' + downloadItem.FullPath);
   end;
   }
+end;
+
+procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
+  const browser: ICefBrowser; const frame: ICefFrame; httpStatusCode: Integer);
+begin
+  if TWPPConnect(FOwner).Status = Server_Rebooting then
+  begin
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    SleepNoFreeze(40);
+
+      //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
+  end;
 end;
 
 procedure TFrmConsole.Chromium1OpenUrlFromTab(Sender: TObject;

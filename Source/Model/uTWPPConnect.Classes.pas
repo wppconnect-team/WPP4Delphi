@@ -1212,56 +1212,75 @@ end;
 
 
 
-TProductList = class(TClassPadrao)
-private
-  FAdditionalImageCdnUrl: TArray<String>;
-  FAdditionalImageHashes: TArray<String>;
-  FAvailability: String;
-  FCanAppeal: Boolean;
-  FCatalogWid: String;
-  FDescription: String;
-  FId: String;
-  FImageCdnUrl: String;
-  FImageCount: Extended;
-  FImageHash: String;
-  FIsHidden: Boolean;
-  FName: String;
-  FRetailerId: String;
-  FReviewStatus: String;
-  FT: Extended;
-  FUrl: String;
-public
-  property additionalImageCdnUrl: TArray<String> read FAdditionalImageCdnUrl write FAdditionalImageCdnUrl;
-  property additionalImageHashes: TArray<String> read FAdditionalImageHashes write FAdditionalImageHashes;
-  property availability: String read FAvailability write FAvailability;
-  property canAppeal: Boolean read FCanAppeal write FCanAppeal;
-  property catalogWid: String read FCatalogWid write FCatalogWid;
-  property description: String read FDescription write FDescription;
-  property id: String read FId write FId;
-  property imageCdnUrl: String read FImageCdnUrl write FImageCdnUrl;
-  property imageCount: Extended read FImageCount write FImageCount;
-  property imageHash: String read FImageHash write FImageHash;
-  property isHidden: Boolean read FIsHidden write FIsHidden;
-  property name: String read FName write FName;
-  property retailerId: String read FRetailerId write FRetailerId;
-  property reviewStatus: String read FReviewStatus write FReviewStatus;
-  property t: Extended read FT write FT;
-  property url: String read FUrl write FUrl;
-  constructor Create(pAJsonString: string);
-  class function FromJsonString(AJsonString: string): TProductList;
-  function ToJsonString: string;
-end;
+  TProductList = class(TClassPadrao)
+  private
+    FAdditionalImageCdnUrl: TArray<String>;
+    FAdditionalImageHashes: TArray<String>;
+    FAvailability: String;
+    FCanAppeal: Boolean;
+    FCatalogWid: String;
+    FDescription: String;
+    FId: String;
+    FImageCdnUrl: String;
+    FImageCount: Extended;
+    FImageHash: String;
+    FIsHidden: Boolean;
+    FName: String;
+    FRetailerId: String;
+    FReviewStatus: String;
+    FT: Extended;
+    FUrl: String;
+  public
+    property additionalImageCdnUrl: TArray<String> read FAdditionalImageCdnUrl write FAdditionalImageCdnUrl;
+    property additionalImageHashes: TArray<String> read FAdditionalImageHashes write FAdditionalImageHashes;
+    property availability: String read FAvailability write FAvailability;
+    property canAppeal: Boolean read FCanAppeal write FCanAppeal;
+    property catalogWid: String read FCatalogWid write FCatalogWid;
+    property description: String read FDescription write FDescription;
+    property id: String read FId write FId;
+    property imageCdnUrl: String read FImageCdnUrl write FImageCdnUrl;
+    property imageCount: Extended read FImageCount write FImageCount;
+    property imageHash: String read FImageHash write FImageHash;
+    property isHidden: Boolean read FIsHidden write FIsHidden;
+    property name: String read FName write FName;
+    property retailerId: String read FRetailerId write FRetailerId;
+    property reviewStatus: String read FReviewStatus write FReviewStatus;
+    property t: Extended read FT write FT;
+    property url: String read FUrl write FUrl;
+    constructor Create(pAJsonString: string);
+    class function FromJsonString(AJsonString: string): TProductList;
+    function ToJsonString: string;
+  end;
 
-TProductsList = class(TClassPadraoList<TProductList>)
+  TProductsList = class(TClassPadraoList<TProductList>)
+   private
+    FResult: TArray<TProductList>;
+  public
+    property result: TArray<TProductList> read FResult write FResult;
+    destructor Destroy; override;
+    constructor Create(pAJsonString: string);
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TProductsList;
+  end;
+
+  TWppCrash = class(TClassPadrao)
+  private
+    FAuthenticated: Boolean;
+    FMainLoaded: Boolean;
+  public
+    property Authenticated: Boolean read FAuthenticated write FAuthenticated;
+    property MainLoaded: Boolean read FMainLoaded write FMainLoaded;
+  end;
+
+
+ TWppCrashClass = class(TClassPadrao)
  private
-  FResult: TArray<TProductList>;
-public
-  property result: TArray<TProductList> read FResult write FResult;
-  destructor Destroy; override;
+  FResult: TWppCrash;
+ public
   constructor Create(pAJsonString: string);
-  function ToJsonString: string;
-  class function FromJsonString(AJsonString: string): TProductsList;
-end;
+  destructor Destroy;override;
+  property result: TWppCrash read FResult write FResult;
+ end;
 
 Procedure LogAdd(Pvalor:WideString; PCab:String = '');
 Procedure SalvaLog(Pvalor:WideString; PCab:String = '');
@@ -2120,4 +2139,21 @@ begin
   result := TJson.ObjectToJsonString(self);
 end;
 
+
+
+{ TWppCrashClass }
+
+constructor TWppCrashClass.Create(pAJsonString: string);
+begin
+  inherited create(pAJsonString);
+end;
+
+destructor TWppCrashClass.Destroy;
+begin
+  FResult.Free;
+  inherited;
+end;
+
 end.
+
+
