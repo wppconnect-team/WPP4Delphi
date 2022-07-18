@@ -3421,6 +3421,25 @@ begin
   end;
 end;
 
+procedure TWPPConnect.OnTimerWPPCrash(Sender: TObject);
+begin
+  try
+    FTimerCheckWPPCrash.Enabled:= False;
+    if SecondsBetween(Now, Self.FCrashMonitorLastUpdate) > 40 then
+    begin
+      LogAdd('frmConsole parou de funcionar','WPPCrash');
+      if Assigned(FOnWPPMonitorCrash) then
+      begin
+        LogAdd('Acionado evento OnWPPMonitorCrash','WPPCrash');
+        Self.SetNewStatus(Server_Disconnected);
+        FOnWPPMonitorCrash(Sender, Nil, True);
+      end;
+    end;
+  finally
+    FTimerCheckWPPCrash.Enabled:= True;
+  end;
+end;
+
 procedure TWPPConnect.SetAppShowing(const Value: Boolean);
 var
   lForm: Tform;
@@ -3462,25 +3481,6 @@ begin
     if Assigned  (FrmConsole) then
        FrmConsole := Nil;
   except
-  end;
-end;
-
-procedure TWPPConnect.OnTimerWPPCrash(Sender: TObject);
-begin
-  try
-    FTimerCheckWPPCrash.Enabled:= False;
-    if SecondsBetween(Now, Self.FCrashMonitorLastUpdate) > 40 then
-    begin
-      LogAdd('frmConsole parou de funcionar','WPPCrash');
-      if Assigned(FOnWPPMonitorCrash) then
-      begin
-        LogAdd('Acionado evento OnWPPMonitorCrash','WPPCrash');
-        Self.SetNewStatus(Server_Disconnected);
-        FOnWPPMonitorCrash(Sender, Nil, True);
-      end;
-    end;
-  finally
-    FTimerCheckWPPCrash.Enabled:= True;
   end;
 end;
 
