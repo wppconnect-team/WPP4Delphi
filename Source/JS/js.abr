@@ -13723,17 +13723,17 @@ window.WAPI.CheckNumberExists = async function(chatid) {
     const result = await WPP.contact.queryExists(chatid);
 
     if (result) {
-        try {
-            SetConsoleMessage("CheckNumberExists", JSON.stringify(result.wid));
-
+        try {            
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : result.wid,  valid : true}));
+			
         } catch (err) {
             //console.log(err);
-			SetConsoleMessage("CheckNumberExists", JSON.stringify("Inválido"));
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
         };
 
     } else {
         //console.log(err);
-		SetConsoleMessage("CheckNumberExists", JSON.stringify("Inválido"));
+	SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
 
     }
 };
