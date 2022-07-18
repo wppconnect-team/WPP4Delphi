@@ -242,7 +242,7 @@ resourcestring
   MSG_ExceptNotAssignedOnGetQrCode     = '';
   Text_FrmClose_Caption                = '';
   Text_FrmClose_Label                  = '';
-  Text_FrmClose_WarningClose           = '';
+  Text_FrmClose_WarningClose           = 'Fechar a aplicação?';
   Text_FrmQRCode_CaptionStart          = '';
   Text_FrmQRCode_CaptionSucess         = '';
   Text_FrmQRCode_OnCLose               = '';

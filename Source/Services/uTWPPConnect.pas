@@ -3420,6 +3420,29 @@ begin
   end;
 end;
 
+function MensagemDlgBR(txtMsg:String):boolean; //alteração em 17/07/2022📍
+{http://www.planetadelphi.com.br/dica/4365/funcao-para-traduzir-mbyes,-mbno-do-messagedlg}
+var Mensagem:TForm;
+begin
+  {Cria a janela de mensagem}
+  Mensagem:=createmessagedialog(txtMsg,MtConfirmation,[MbYes,MbNo]);
+  {Trazur o titulo da mensagem}
+  Mensagem.Caption:='Confirmação';
+  {Traduz os botões da caixa de mensagem}
+  (Mensagem.FindComponent('Yes') as TButton).Caption:='Sim';
+  (Mensagem.FindComponent('Yes') as TButton).Cursor := crHandPoint;
+  (Mensagem.FindComponent('No') as TButton).Caption:='Não';
+  (Mensagem.FindComponent('No') as TButton).Cursor := crHandPoint;
+  {Exibr a caixa de mensagem}
+  Mensagem.ShowModal;
+  {Verifica aqul botão foi pressionado}
+  If Mensagem.ModalResult=MrYes then
+  result:=true;{Botão Sim}
+  If Mensagem.ModalResult=MrNo then
+  result:=false;
+  {Botão Não}
+end;
+
 procedure TWPPConnect.ShutDown(PWarning:Boolean);
 Var
   LForm  : Tform;
@@ -3429,7 +3452,8 @@ Var
 begin
   if PWarning then
   Begin
-    if MessageDlg(Text_FrmClose_WarningClose, mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+    //if MessageDlg(Text_FrmClose_WarningClose, mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
+    if not MensagemDlgBR (Text_FrmClose_WarningClose) then //alteração em 17/07/2022📍
        Abort;
   end;
 
@@ -3470,6 +3494,7 @@ begin
     LAbel1.Caption                    := Text_FrmClose_Label;
     LAbel1.AlignWithMargins           := true;
     LForm.Visible                     := True;
+    SleepNoFreeze(2000);               //alteração em 17/07/2022
 
     //temis 03-06-2022 Application.MainForm.Visible    := False;
     Application.MainForm.Visible    := False;
@@ -3477,9 +3502,19 @@ begin
 
     Disconnect;
     LForm.close;
+
+
+    try {morte forcada}  //alteração em 17/07/2022📍
+      WinExec(PAnsiChar('TaskKill -f -im '+Application.ExeName+'.exe'), SW_HIDE);
+      Application.Terminate;
+    finally
+      WinExec(PAnsiChar('TaskKill -f -im '+Application.ExeName+'.exe'), SW_HIDE);
+      Application.Terminate;
+    end;
+
   finally
     FreeAndNil(LForm);
-    //FreeAndNil(GlobalCEFApp);
+    FreeAndNil(GlobalCEFApp); {descomentado} //alteração em 17/07/2022
     //if CallTerminateProcs then PostQuitMessage(0);
   end
 end;
