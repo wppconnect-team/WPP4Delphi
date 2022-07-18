@@ -39,7 +39,8 @@ uses
   uTWPPConnect.Classes, uTWPPConnect.constant, uTWPPConnect.Emoticons, uTWPPConnect.Config,
   uTWPPConnect.JS, uTWPPConnect.Console,
   uTWPPConnect.languages,
-  uTWPPConnect.AdjustNumber, UBase64,
+  uTWPPConnect.AdjustNumber,
+  //UBase64,
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
