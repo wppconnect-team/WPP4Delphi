@@ -13737,3 +13737,22 @@ window.WAPI.CheckNumberExists = async function(chatid) {
 
     }
 };
+
+function startMonitorWPPCrash(intervalSeconds = 0) {
+	
+    if (intervalSeconds >= 1) {
+        intervalMonitor = window.setInterval(monitorWPPCrash, intervalSeconds * 1000);
+    }
+}
+
+function monitorWPPCrash() {
+    let vIsMainLoaded = WPP.conn.isMainLoaded();
+    let vIsAuthenticated = WPP.conn.isAuthenticated();
+    var obj = new Object();
+    obj.MainLoaded = vIsMainLoaded;
+    obj.Authenticated = vIsAuthenticated;
+   
+    SetConsoleMessage("WPPCrashMonitor", JSON.stringify(obj));
+   
+}
+
