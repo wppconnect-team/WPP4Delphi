@@ -260,6 +260,7 @@ type
     procedure CleanChat(vTelefone: string);
     procedure fGetMe;
     procedure NewCheckIsValidNumber(vNumber:String);
+    procedure CheckNumberExists(vNumber:String);
 
     procedure GetAllChats;
     procedure GetUnreadMessages;
@@ -1467,6 +1468,19 @@ begin
   ExecuteJS(LJS, False);
 end;
 
+procedure TFrmConsole.CheckNumberExists(vNumber: String);
+var
+  Ljs: string;
+begin
+  //Marcelo 18/07/2022
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   :=  FrmConsole_JS_VAR_CheckNumberExists;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vNumber));
+  ExecuteJS(LJS, False);
+end;
+
 procedure TFrmConsole.NewCheckIsValidNumber(vNumber:String);
 var
   Ljs: string;
@@ -1865,6 +1879,17 @@ begin
                                 FreeAndNil(LOutClass);
                               end;
                             end;
+    Th_CheckNumberExists : begin
+                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TReturnCheckNumberExists.Create(LResultStr);
+                              try
+                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                              finally
+                                FreeAndNil(LOutClass);
+                              end;
+                            end;
+
     Th_ProductCatalog       : begin
                                 if Assigned(FProductList) then
                                    FProductList.Free;

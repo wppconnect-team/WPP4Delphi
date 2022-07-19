@@ -109,6 +109,7 @@ type
     procedure ctbtnCategories0Items6Click(Sender: TObject);
     procedure TWPPConnect1WPPMonitorCrash(Sender: TObject;
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
+    procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
 
   private
     { Private declarations }
@@ -394,6 +395,16 @@ begin
     Server_Rebooting:
       Label3.Caption := TWppConnect(Sender).StatusToStr;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
+begin
+  //Marcelo 18/07/2022
+  if vCheckNumberExists.valid then
+    ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
+  else
+    ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
+
 end;
 
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
@@ -822,12 +833,13 @@ begin
           selectedButtonId := AMessage.selectedButtonId;
 
           try
-            if Assigned(AMessage.ListResponse.singleSelectReply) then
-            begin
-              selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
-              if selectedRowId <> '' then
-                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
-            end;
+            if Assigned(AMessage.ListResponse) then
+              if Assigned(AMessage.ListResponse.singleSelectReply) then
+              begin
+                selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+                if selectedRowId <> '' then
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+              end;
           except on E: Exception do
           end;
 

@@ -5530,6 +5530,7 @@ object frDemo: TfrDemo
     OnGetInviteGroup = TWPPConnect1GetInviteGroup
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
+    OnCheckNumberExists = TWPPConnect1CheckNumberExists
     Left = 352
     Top = 144
   end

@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.8.0
+//WPPCONNECT v2.8.2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -3321,19 +3321,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return e > 0 && e < 1 / 0
                         },
                         l = Array.prototype.slice;
+                    var d = /^image\/.+$/;
 
-                    function d(e) {
-                        return Array.from ? Array.from(e) : l.call(e)
+                    function f(e) {
+                        return d.test(e)
                     }
-                    var f = /^image\/.+$/;
+                    var p = String.fromCharCode;
+                    var m = u.btoa;
 
-                    function p(e) {
-                        return f.test(e)
-                    }
-                    var m = String.fromCharCode;
-                    var h = u.btoa;
-
-                    function g(e) {
+                    function h(e) {
                         var t, r = new DataView(e);
                         try {
                             var n, o, i;
@@ -3349,7 +3345,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 var u = o + 10;
                                 if ("Exif" === function(e, t, r) {
                                         var n, o = "";
-                                        for (r += t, n = t; n < r; n += 1) o += m(e.getUint8(n));
+                                        for (r += t, n = t; n < r; n += 1) o += p(e.getUint8(n));
                                         return o
                                     }(r, o + 4, 4)) {
                                     var c = r.getUint16(u);
@@ -3360,8 +3356,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 }
                             }
                             if (i) {
-                                var d, f, p = r.getUint16(i, n);
-                                for (f = 0; f < p; f += 1)
+                                var d, f, m = r.getUint16(i, n);
+                                for (f = 0; f < m; f += 1)
                                     if (d = i + 12 * f + 2, 274 === r.getUint16(d, n)) {
                                         d += 8, t = r.getUint16(d, n), r.setUint16(d, 1, n);
                                         break
@@ -3372,14 +3368,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         return t
                     }
-                    var y = /\.\d*(?:0|9){12}\d*$/;
+                    var g = /\.\d*(?:0|9){12}\d*$/;
 
-                    function b(e) {
+                    function y(e) {
                         var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1e11;
-                        return y.test(e) ? Math.round(e * t) / t : e
+                        return g.test(e) ? Math.round(e * t) / t : e
                     }
 
-                    function v(e) {
+                    function b(e) {
                         var t = e.aspectRatio,
                             r = e.height,
                             n = e.width,
@@ -3395,21 +3391,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             height: r
                         }
                     }
-                    var _ = u.ArrayBuffer,
-                        M = u.FileReader,
-                        w = u.URL || u.webkitURL,
-                        P = /\.\w+$/,
-                        O = u.Compressor;
+                    var v = u.ArrayBuffer,
+                        _ = u.FileReader,
+                        M = u.URL || u.webkitURL,
+                        w = /\.\w+$/,
+                        P = u.Compressor;
                     return function() {
                         function e(r, n) {
                             (function(e, t) {
                                 if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
                             })(this, e), this.file = r, this.image = new Image, this.options = t(t({}, a), n), this.aborted = !1, this.result = null, this.init()
                         }
-                        return n = e, l = [{
+                        return n = e, d = [{
                             key: "noConflict",
                             value: function() {
-                                return window.Compressor = O, e
+                                return window.Compressor = P, e
                             }
                         }, {
                             key: "setDefaults",
@@ -3419,30 +3415,29 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }], (i = [{
                             key: "init",
                             value: function() {
-                                var e = this,
-                                    t = this.file,
-                                    r = this.options;
-                                if (function(e) {
-                                        return "undefined" != typeof Blob && (e instanceof Blob || "[object Blob]" === Object.prototype.toString.call(e))
-                                    }(t)) {
-                                    var n = t.type;
-                                    if (p(n))
-                                        if (w && M)
-                                            if (_ || (r.checkOrientation = !1), w && !r.checkOrientation) this.load({
-                                                url: w.createObjectURL(t)
+                                var e, t = this,
+                                    r = this.file,
+                                    n = this.options;
+                                if (e = r, "undefined" != typeof Blob && (e instanceof Blob || "[object Blob]" === Object.prototype.toString.call(e))) {
+                                    var i = r.type;
+                                    if (f(i))
+                                        if (M && _)
+                                            if (v || (n.checkOrientation = !1), M && !n.checkOrientation) this.load({
+                                                url: M.createObjectURL(r)
                                             });
                                             else {
-                                                var i = new M,
-                                                    s = r.checkOrientation && "image/jpeg" === n;
-                                                this.reader = i, i.onload = function(r) {
-                                                    var i = r.target.result,
-                                                        a = {};
-                                                    if (s) {
-                                                        var u = g(i);
-                                                        u > 1 || !w ? (a.url = function(e, t) {
-                                                            for (var r = [], n = new Uint8Array(e); n.length > 0;) r.push(m.apply(null, d(n.subarray(0, 8192)))), n = n.subarray(8192);
-                                                            return "data:".concat(t, ";base64,").concat(h(r.join("")))
-                                                        }(i, n), u > 1 && o(a, function(e) {
+                                                var s = new _,
+                                                    a = n.checkOrientation && "image/jpeg" === i;
+                                                this.reader = s, s.onload = function(e) {
+                                                    var n = e.target.result,
+                                                        s = {};
+                                                    if (a) {
+                                                        var u = h(n);
+                                                        u > 1 || !M ? (s.url = function(e, t) {
+                                                            for (var r = [], n = new Uint8Array(e); n.length > 0;) r.push(p.apply(null, (o = n.subarray(0, 8192), Array.from ? Array.from(o) : l.call(o)))), n = n.subarray(8192);
+                                                            var o;
+                                                            return "data:".concat(t, ";base64,").concat(m(r.join("")))
+                                                        }(n, i), u > 1 && o(s, function(e) {
                                                             var t = 0,
                                                                 r = 1,
                                                                 n = 1;
@@ -3473,16 +3468,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                                                 scaleX: r,
                                                                 scaleY: n
                                                             }
-                                                        }(u))) : a.url = w.createObjectURL(t)
-                                                    } else a.url = i;
-                                                    e.load(a)
-                                                }, i.onabort = function() {
-                                                    e.fail(new Error("Aborted to read the image with FileReader."))
-                                                }, i.onerror = function() {
-                                                    e.fail(new Error("Failed to read the image with FileReader."))
-                                                }, i.onloadend = function() {
-                                                    e.reader = null
-                                                }, s ? i.readAsArrayBuffer(t) : i.readAsDataURL(t)
+                                                        }(u))) : s.url = M.createObjectURL(r)
+                                                    } else s.url = n;
+                                                    t.load(s)
+                                                }, s.onabort = function() {
+                                                    t.fail(new Error("Aborted to read the image with FileReader."))
+                                                }, s.onerror = function() {
+                                                    t.fail(new Error("Failed to read the image with FileReader."))
+                                                }, s.onloadend = function() {
+                                                    t.reader = null
+                                                }, a ? s.readAsArrayBuffer(r) : s.readAsDataURL(r)
                                             }
                                     else this.fail(new Error("The current browser does not support image compression."));
                                     else this.fail(new Error("The first argument must be an image File or Blob object."))
@@ -3517,11 +3512,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     u = void 0 === a ? 1 : a,
                                     l = e.scaleY,
                                     d = void 0 === l ? 1 : l,
-                                    f = this.file,
+                                    p = this.file,
                                     m = this.image,
                                     h = this.options,
                                     g = document.createElement("canvas"),
-                                    y = g.getContext("2d"),
+                                    v = g.getContext("2d"),
                                     _ = Math.abs(i) % 180 == 90,
                                     M = ("contain" === h.resize || "cover" === h.resize) && c(h.width) && c(h.height),
                                     w = Math.max(h.maxWidth, 0) || 1 / 0,
@@ -3540,26 +3535,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     C = k[0], S = k[1]
                                 }
                                 M && (x = C / S);
-                                var T = v({
+                                var T = b({
                                     aspectRatio: x,
                                     width: w,
                                     height: P
                                 }, "contain");
                                 w = T.width, P = T.height;
-                                var B = v({
+                                var B = b({
                                     aspectRatio: x,
                                     width: O,
                                     height: j
                                 }, "cover");
                                 if (O = B.width, j = B.height, M) {
-                                    var A = v({
+                                    var A = b({
                                         aspectRatio: x,
                                         width: C,
                                         height: S
                                     }, h.resize);
                                     C = A.width, S = A.height
                                 } else {
-                                    var L = v({
+                                    var L = b({
                                             aspectRatio: x,
                                             width: C,
                                             height: S
@@ -3569,13 +3564,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     var U = L.height;
                                     S = void 0 === U ? n : U
                                 }
-                                var F = -(C = Math.floor(b(Math.min(Math.max(C, O), w)))) / 2,
-                                    D = -(S = Math.floor(b(Math.min(Math.max(S, j), P)))) / 2,
+                                var F = -(C = Math.floor(y(Math.min(Math.max(C, O), w)))) / 2,
+                                    D = -(S = Math.floor(y(Math.min(Math.max(S, j), P)))) / 2,
                                     N = C,
                                     G = S,
                                     W = [];
                                 if (M) {
-                                    var z, $, q, K, V = v({
+                                    var z, $, q, K, V = b({
                                         aspectRatio: x,
                                         width: r,
                                         height: n
@@ -3589,9 +3584,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     var Y = [S, C];
                                     C = Y[0], S = Y[1]
                                 }
-                                g.width = C, g.height = S, p(h.mimeType) || (h.mimeType = f.type);
+                                g.width = C, g.height = S, f(h.mimeType) || (h.mimeType = p.type);
                                 var H = "transparent";
-                                if (f.size > h.convertSize && h.convertTypes.indexOf(h.mimeType) >= 0 && (h.mimeType = "image/jpeg"), "image/jpeg" === h.mimeType && (H = "#fff"), y.fillStyle = H, y.fillRect(0, 0, C, S), h.beforeDraw && h.beforeDraw.call(this, y, g), !this.aborted && (y.save(), y.translate(C / 2, S / 2), y.rotate(i * Math.PI / 180), y.scale(u, d), y.drawImage.apply(y, [m].concat(W)), y.restore(), h.drew && h.drew.call(this, y, g), !this.aborted)) {
+                                if (p.size > h.convertSize && h.convertTypes.indexOf(h.mimeType) >= 0 && (h.mimeType = "image/jpeg"), "image/jpeg" === h.mimeType && (H = "#fff"), v.fillStyle = H, v.fillRect(0, 0, C, S), h.beforeDraw && h.beforeDraw.call(this, v, g), !this.aborted && (v.save(), v.translate(C / 2, S / 2), v.rotate(i * Math.PI / 180), v.scale(u, d), v.drawImage.apply(v, [m].concat(W)), v.restore(), h.drew && h.drew.call(this, v, g), !this.aborted)) {
                                     var Q = function(e) {
                                         t.aborted || t.done({
                                             naturalWidth: r,
@@ -3605,23 +3600,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }, {
                             key: "done",
                             value: function(e) {
-                                var t = e.naturalWidth,
-                                    r = e.naturalHeight,
-                                    n = e.result,
-                                    o = this.file,
-                                    i = this.image,
-                                    s = this.options;
-                                if (w && !s.checkOrientation && w.revokeObjectURL(i.src), n)
-                                    if (s.strict && n.size > o.size && s.mimeType === o.type && !(s.width > t || s.height > r || s.minWidth > t || s.minHeight > r || s.maxWidth < t || s.maxHeight < r)) n = o;
+                                var t, r, n = e.naturalWidth,
+                                    o = e.naturalHeight,
+                                    i = e.result,
+                                    s = this.file,
+                                    a = this.image,
+                                    u = this.options;
+                                if (M && !u.checkOrientation && M.revokeObjectURL(a.src), i)
+                                    if (u.strict && i.size > s.size && u.mimeType === s.type && !(u.width > n || u.height > o || u.minWidth > n || u.minHeight > o || u.maxWidth < n || u.maxHeight < o)) i = s;
                                     else {
-                                        var a = new Date;
-                                        n.lastModified = a.getTime(), n.lastModifiedDate = a, n.name = o.name, n.name && n.type !== o.type && (n.name = n.name.replace(P, function(e) {
-                                            var t = p(e) ? e.substr(6) : "";
-                                            return "jpeg" === t && (t = "jpg"), ".".concat(t)
-                                        }(n.type)))
+                                        var c = new Date;
+                                        i.lastModified = c.getTime(), i.lastModifiedDate = c, i.name = s.name, i.name && i.type !== s.type && (i.name = i.name.replace(w, (t = i.type, "jpeg" === (r = f(t) ? t.substr(6) : "") && (r = "jpg"), ".".concat(r))))
                                     }
-                                else n = o;
-                                this.result = n, s.success && s.success.call(this, n)
+                                else i = s;
+                                this.result = i, u.success && u.success.call(this, i)
                             }
                         }, {
                             key: "fail",
@@ -3635,8 +3627,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             value: function() {
                                 this.aborted || (this.aborted = !0, this.reader ? this.reader.abort() : this.image.complete ? this.fail(new Error("The compression process has been aborted.")) : (this.image.onload = null, this.image.onabort()))
                             }
-                        }]) && r(n.prototype, i), l && r(n, l), e;
-                        var n, i, l
+                        }]) && r(n.prototype, i), d && r(n, d), e;
+                        var n, i, d
                     }()
                 }()
             },
@@ -3803,7 +3795,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
 
                     function g(e, t) {
-                        for (var r = {}, n = e.length, i = t ? value.length : 0, s = 0; s < n; s++) r[e[s]] = s < i ? t[s] : o;
+                        for (var r = {}, n = e.length, i = t ? t.length : 0, s = 0; s < n; s++) r[e[s]] = s < i ? t[s] : o;
                         return r
                     }
 
@@ -6710,71 +6702,49 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(1092),
                     c = r(8785),
                     l = r(1489);
-
-                function d(e) {
-                    let t = e.id;
-                    Array.isArray(t) || (t = [t]);
-                    let r = e.to,
-                        n = e.participant;
-                    e.broadcast && (r = e.broadcast, n = e.to);
-                    const o = t.map((t => new u.MsgKey({
-                        from: e.from,
-                        to: r,
-                        id: t,
-                        selfDir: "out"
-                    })));
-                    s.internalEv.emit("chat.msg_ack_change", {
-                        ack: e.ack,
-                        chat: r,
-                        sender: n,
-                        ids: o
-                    })
-                }
                 a.onInjected((() => function() {
-                    u.MsgStore.on("change:ack", (e => {
-                        1 === e.ack && s.internalEv.emit("chat.msg_ack_change", {
-                            ack: e.ack,
-                            chat: e.to,
-                            ids: [e.id]
-                        })
-                    }));
-                    const e = a.search((e => e.default.toString().includes("Msg:out of order ack")));
-                    if (e) {
-                        const t = e.default;
-                        e.default = async ([r]) => ("ack" !== r.cmd && "acks" !== r.cmd || d(r), t.call(e, [r]))
-                    }
-                    const t = a.search((e => e.default.toString().includes("ack") && e.default.toString().includes("acks") && e.default.toString().includes("default.updateInfo")));
-                    if (t) {
-                        const r = t.default;
-                        t.default = async ([t]) => ("ack" !== t.cmd && "acks" !== t.cmd || d(t), r.call(e, [t]))
-                    }
-
-                    function r(e) {
+                    function e(e) {
                         if (e.ack < 2 || "sender" === e.ackString) return;
                         const t = e.from,
                             r = e.participant || void 0,
-                            n = e.recipient || e.from,
-                            o = n.equals(u.UserPrefs.getMeUser()),
-                            i = e.externalIds.map((e => new u.MsgKey({
-                                id: e,
-                                remote: n,
-                                fromMe: o
-                            })));
+                            n = e.from,
+                            o = !e.recipient || u.UserPrefs.getMeUser().equals(e.recipient);
+                        if (!o) return;
+                        const i = e.externalIds.map((e => new u.MsgKey({
+                            id: e,
+                            remote: n,
+                            fromMe: o
+                        })));
                         s.internalEv.emit("chat.msg_ack_change", {
                             ack: e.ack,
                             chat: t,
                             sender: r,
                             ids: i
                         })
-                    }(0, c.wrapModuleFunction)(l.handleChatSimpleAck, ((e, ...t) => {
-                        const [n] = t;
-                        return r(n), e(...t)
-                    })), (0, c.wrapModuleFunction)(l.handleGroupSimpleAck, ((e, ...t) => {
-                        const [n] = t;
-                        return r(n), e(...t)
-                    })), (0, c.wrapModuleFunction)(l.handleStatusSimpleAck, ((e, ...t) => {
-                        const [n] = t;
-                        return r(n), e(...t)
+                    }
+                    u.MsgStore.on("change:ack", (e => {
+                        1 === e.ack && queueMicrotask((() => {
+                            s.internalEv.emit("chat.msg_ack_change", {
+                                ack: e.ack,
+                                chat: e.to,
+                                ids: [e.id]
+                            })
+                        }))
+                    })), (0, c.wrapModuleFunction)(l.handleChatSimpleReceipt, ((t, ...r) => {
+                        const [n] = r;
+                        return queueMicrotask((() => {
+                            e(n)
+                        })), t(...r)
+                    })), (0, c.wrapModuleFunction)(l.handleGroupSimpleReceipt, ((t, ...r) => {
+                        const [n] = r;
+                        return queueMicrotask((() => {
+                            e(n)
+                        })), t(...r)
+                    })), (0, c.wrapModuleFunction)(l.handleStatusSimpleReceipt, ((t, ...r) => {
+                        const [n] = r;
+                        return queueMicrotask((() => {
+                            e(n)
+                        })), t(...r)
                     }))
                 }()))
             },
@@ -6816,20 +6786,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     c = r(1092);
                 u.onInjected((() => function() {
                     c.MsgStore.on("add", (e => {
-                        e.isNewMsg && e.isLive && (a.internalEv.emit("chat.live_location_start", {
-                            id: e.sender,
-                            msgId: e.id,
-                            chat: e.chat.id,
-                            lat: e.lat,
-                            lng: e.lng,
-                            accuracy: e.accuracy,
-                            speed: e.speed,
-                            degrees: e.degrees,
-                            shareDuration: e.shareDuration
-                        }), c.LiveLocationStore.update(e.chat.id).then((e => {
-                            e.startViewingMap()
-                        })).catch((() => null)))
-                    })), c.ChatStore.once("collection_has_synced", (() => {
+                        e.isNewMsg && e.isLive && queueMicrotask((() => {
+                            a.internalEv.emit("chat.live_location_start", {
+                                id: e.sender,
+                                msgId: e.id,
+                                chat: e.chat.id,
+                                lat: e.lat,
+                                lng: e.lng,
+                                accuracy: e.accuracy,
+                                speed: e.speed,
+                                degrees: e.degrees,
+                                shareDuration: e.shareDuration
+                            }), c.LiveLocationStore.update(e.chat.id).then((e => {
+                                e.startViewingMap()
+                            })).catch((() => null))
+                        }))
+                    })), a.internalEv.once("conn.main_ready", (() => {
                         c.ChatStore.getModelsArray().slice(0, s.config.liveLocationLimit).forEach((e => {
                             c.LiveLocationStore.update(e.id).then((e => {
                                 e.startViewingMap()
@@ -6895,71 +6867,50 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(1092);
                 a.onInjected((() => {
                     u.MsgStore.on("add", (e => {
-                        e.isNewMsg && s.internalEv.emit("chat.new_message", e)
+                        e.isNewMsg && queueMicrotask((() => {
+                            "ciphertext" === e.type && e.once("change:type", (() => {
+                                queueMicrotask((() => {
+                                    s.internalEv.emit("chat.new_message", e)
+                                }))
+                            })), s.internalEv.emit("chat.new_message", e)
+                        }))
                     }))
                 }))
             },
-            7207: function(e, t, r) {
+            7207: (e, t, r) => {
                 "use strict";
-                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
-                        void 0 === n && (n = r);
-                        var o = Object.getOwnPropertyDescriptor(t, r);
-                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
-                            enumerable: !0,
-                            get: function() {
-                                return t[r]
-                            }
-                        }), Object.defineProperty(e, n, o)
-                    } : function(e, t, r, n) {
-                        void 0 === n && (n = r), e[n] = t[r]
-                    }),
-                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
-                        Object.defineProperty(e, "default", {
-                            enumerable: !0,
-                            value: t
-                        })
-                    } : function(e, t) {
-                        e.default = t
-                    }),
-                    i = this && this.__importStar || function(e) {
-                        if (e && e.__esModule) return e;
-                        var t = {};
-                        if (null != e)
-                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
-                        return o(t, e), t
-                    };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                const s = r(5267),
-                    a = i(r(7046)),
-                    u = r(1092);
-                a.onInjected((() => {
-                    u.PresenceStore.on("change:chatstate.type", (e => {
+                const n = r(5267),
+                    o = r(1092);
+                n.internalEv.on("conn.main_ready", (async () => {
+                    const e = o.ChatStore.map((e => e.presence.subscribe()));
+                    await Promise.all(e), o.PresenceStore.on("change:chatstate.type", (e => {
                         var t;
-                        const r = u.PresenceStore.getModelsArray().find((t => t.chatstate === e));
-                        if (!r || !r.hasData || !(null === (t = r.chatstate) || void 0 === t ? void 0 : t.type)) return;
-                        const n = u.ContactStore.get(r.id),
-                            o = {
-                                id: r.id,
-                                isOnline: r.isOnline,
-                                isGroup: r.isGroup,
-                                isUser: r.isUser,
-                                shortName: n ? n.formattedShortName : "",
-                                state: r.chatstate.type,
-                                t: Date.now()
-                            };
-                        r.isUser && (o.isContact = !r.chatstate.deny), r.isGroup && (o.participants = r.chatstates.getModelsArray().filter((e => !!e.type)).map((e => {
-                            const t = u.ContactStore.get(e.id);
-                            return {
-                                id: e.id.toString(),
-                                state: e.type,
-                                shortName: t ? t.formattedShortName : ""
-                            }
-                        }))), s.internalEv.emit("chat.presence_change", o)
+                        const r = o.PresenceStore.getModelsArray().find((t => t.chatstate === e));
+                        r && r.hasData && (null === (t = r.chatstate) || void 0 === t ? void 0 : t.type) && queueMicrotask((() => {
+                            var e, t;
+                            const i = o.ContactStore.get(r.id),
+                                s = {
+                                    id: r.id,
+                                    isOnline: r.isOnline,
+                                    isGroup: r.isGroup,
+                                    isUser: r.isUser,
+                                    shortName: i ? i.formattedShortName : "",
+                                    state: null === (e = r.chatstate) || void 0 === e ? void 0 : e.type,
+                                    t: Date.now()
+                                };
+                            r.isUser && (s.isContact = !(null === (t = r.chatstate) || void 0 === t ? void 0 : t.deny)), r.isGroup && (s.participants = r.chatstates.getModelsArray().filter((e => !!e.type)).map((e => {
+                                const t = o.ContactStore.get(e.id);
+                                return {
+                                    id: e.id.toString(),
+                                    state: e.type,
+                                    shortName: t ? t.formattedShortName : ""
+                                }
+                            }))), n.internalEv.emit("chat.presence_change", s)
+                        }))
                     }))
-                })), s.internalEv.on("conn.main_ready", (() => {
-                    u.ChatStore.forEach((e => e.presence.subscribe()))
                 }))
             },
             8307: function(e, t, r) {
@@ -7693,7 +7644,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     o = r(1489);
                 t.markIsUnread = async function(e) {
                     const t = (0, n.assertGetChat)(e);
-                    return await (0, o.markUnread)(t, !1), {
+                    return await (0, o.markUnread)(t, !0), {
                         wid: t.id
                     }
                 }
@@ -10246,7 +10197,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.8.0";
+                s(r(3115), t), t.waVersion = "2.8.2";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -10457,7 +10408,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.8.0", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.8.2", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -10971,48 +10922,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), t.sendRawStatus = void 0;
                 const s = i(r(8381)),
-                    a = r(5267),
-                    u = i(r(7046)),
-                    c = r(1092),
-                    l = r(8785),
-                    d = r(1489),
-                    f = r(9881);
+                    a = i(r(7046)),
+                    u = r(1092),
+                    c = r(8785),
+                    l = r(1489),
+                    d = r(9881);
                 t.sendRawStatus = async function(e, t = {}) {
-                    t = Object.assign(Object.assign({}, f.defaultSendStatusOptions), t), e.ctwaContext = e.ctwaContext || {};
+                    t = Object.assign(Object.assign({}, d.defaultSendStatusOptions), t), e.ctwaContext = e.ctwaContext || {};
                     const r = await s.sendRawMessage("status@broadcast", e, Object.assign(Object.assign({}, t), {
                         createChat: !0
                     }));
                     return r.sendMsgResult.then((() => {
-                        c.ChatStore.resyncMessages()
+                        u.ChatStore.resyncMessages()
                     })), r
                 };
-                let p = !1;
-                async function m() {
-                    const e = c.ContactStore.getModelsArray().filter((e => e.isMyContact && !e.isContactBlocked)).map((e => e.id));
-                    e.push(c.UserPrefs.getMaybeMeUser());
-                    const t = e.map((e => new c.ParticipantModel({
-                            id: e,
-                            isAdmin: !1,
-                            isSuperAdmin: !1
-                        }))),
-                        r = c.WidFactory.createWid("status@broadcast");
-                    await (0, d.updateParticipants)({
-                        group: r,
-                        participants: t,
-                        version: Date.now(),
-                        isOffline: !1
-                    }), p || (p = !0, (0, d.markForgetSenderKey)(r, e))
-                }
-                u.onInjected((() => {
-                    let e = null;
-                    c.ContactStore.on("add remove", (() => {
-                        clearTimeout(e), e = setTimeout(m, 1e3)
-                    })), a.internalEv.on("conn.main_ready", (() => {
-                        clearTimeout(e), e = setTimeout(m, 2e3)
-                    })), (0, l.wrapModuleFunction)(d.createMsgProtobuf, ((e, ...t) => {
+                let f = !1;
+                a.onInjected((() => {
+                    (0, c.wrapModuleFunction)(l.createMsgProtobuf, ((e, ...t) => {
                         const [r] = t, n = e(...t);
                         return n.extendedTextMessage && ("number" == typeof r.backgroundColor && (n.extendedTextMessage.backgroundArgb = r.backgroundColor), "number" == typeof r.textColor && (n.extendedTextMessage.textArgb = r.textColor), "number" == typeof r.font && (n.extendedTextMessage.font = r.font)), n
-                    })), (0, l.wrapModuleFunction)(d.encryptAndSendMsg, (async (e, ...t) => {
+                    })), (0, c.wrapModuleFunction)(l.encryptAndSendMsg, (async (e, ...t) => {
                         var r;
                         const [n] = t;
                         try {
@@ -11020,11 +10949,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         } catch (e) {
                             if (!(null === (r = n.to) || void 0 === r ? void 0 : r.isStatusV3()) || "[messaging] unsupported remote jid type" !== e.message) throw e;
                             let t;
-                            n.asMms && (t = n.isUnsentPhoneMsg() ? {
+                            await async function() {
+                                const e = u.ContactStore.getModelsArray().filter((e => e.isMyContact && !e.isContactBlocked)).map((e => e.id));
+                                e.push(u.UserPrefs.getMaybeMeUser());
+                                const t = e.map((e => new u.ParticipantModel({
+                                        id: e,
+                                        isAdmin: !1,
+                                        isSuperAdmin: !1
+                                    }))),
+                                    r = u.WidFactory.createWid("status@broadcast");
+                                await (0, l.updateParticipants)({
+                                    group: r,
+                                    participants: t,
+                                    version: Date.now(),
+                                    isOffline: !1
+                                }), f || (f = !0, await (0, l.markForgetSenderKey)(r, e))
+                            }(), n.asMms && (t = n.isUnsentPhoneMsg() ? {
                                 type: n.type
                             } : n.avParams());
-                            const o = (0, d.createMsgProtobuf)(n, t || {});
-                            return await (0, d.encryptAndSendGroupMsg)(n, o)
+                            const o = (0, l.createMsgProtobuf)(n, t || {});
+                            return await (0, l.encryptAndSendGroupMsg)(n, o)
                         }
                     }))
                 }))
@@ -13773,3 +13717,23 @@ WPP.on("call.incoming_call", (call) => {
 	    //SetConsoleMessage("IncomingiCall", Json.stringfy(call);
 	    
 });
+
+//Checar se Número Existe e caso Tenha Digito Nove Retorna com o Número acrescido do Digito 9 
+window.WAPI.CheckNumberExists = async function(chatid) {
+    const result = await WPP.contact.queryExists(chatid);
+
+    if (result) {
+        try {            
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : result.wid,  valid : true}));
+			
+        } catch (err) {
+            //console.log(err);
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
+        };
+
+    } else {
+        //console.log(err);
+	SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
+
+    }
+};

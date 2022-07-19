@@ -40,8 +40,12 @@ unit uTWPPConnect.JS;
 interface
 
 uses
-  System.Classes, uTWPPConnect.Classes, System.MaskUtils, Data.DB, uCSV.Import,
-  Vcl.ExtCtrls, IdHTTP, uTWPPConnect.Diversos;
+  System.Classes, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
+  Vcl.ExtCtrls, IdHTTP, uTWPPConnect.Diversos,
+
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
 
 {$M+}{$TYPEINFO ON}
 {$I cef.inc}
@@ -59,7 +63,6 @@ type
     end;
 
 
-
   TWPPConnectJS  = class(TPersistent)
   private
     FAutoUpdate     : Boolean;
@@ -72,13 +75,19 @@ type
     FAutoUpdateTimeOut   : Integer;
     FOnErrorInternal     : TOnErroInternal;
     Owner: TComponent;
-
+  {$REGION 'uCSV.Import'}
+    FStringList: TStringList;
+    FRegistros       : TFDMemTable;
+    FSeparador : Char;
+  {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
     procedure  SeTWPPConnectScript(const Value: TstringList);
     function   PegarLocalJS_Designer: String;
     function   PegarLocalJS_Web: String;
     Function   AtualizarInternamente(PForma: TFormaUpdate):Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
+
+
   protected
 //    procedure Loaded; override;
   public
@@ -88,6 +97,21 @@ type
     destructor  Destroy; override;
     Function    UpdateNow:Boolean;
     Procedure   DelFileTemp;
+
+
+  {$REGION 'uCSV.Import'}
+      Const  TamPdr = 100;
+
+        Procedure ZerarTudo;
+        Function  CriarCampos: Boolean;
+        Function  CriarValor(PLinha:WideString): Boolean;
+        Function  ProcessarCriacaoCSV:Boolean;
+        Function  ImportarCSV_viaArquivo  (PArquivo:String):Boolean;
+        Function  ImportarCSV_viaTexto    (PConteudo:WideString):Boolean;
+        Property  Registros:  TFDMemTable Read FRegistros;
+        Property  Separador : Char        Read FSeparador               Write FSeparador;
+  {$ENDREGION}
+
  published
     property   AutoUpdate         : Boolean   read FAutoUpdate           write FAutoUpdate          default True;
     property   AutoUpdateTimeOut  : Integer   Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
@@ -104,9 +128,30 @@ uses uTWPPConnect.Constant, System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
      IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
      Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs;
 
-
 { TWPPConnectAutoUpdate }
 
+{$REGION 'TWPPConnectJS'}
+
+
+destructor TWPPConnectJS.Destroy;
+begin
+  DelFileTemp;
+  FreeAndNil(FInjectJSDefine);
+  FreeAndNil(FJSScript);
+  inherited;
+end;
+
+constructor TWPPConnectJS.Create(POwner: TComponent);
+begin
+  Owner                      := POwner;
+  FAutoUpdateTimeOut         := 10;
+  FJSScript                  := TstringList.create;
+  FAutoUpdate                := True;
+  FJSURL                     := TWPPConnectJS_JSUrlPadrao;
+  FInjectJSDefine            := TWPPConnectJSDefine.Create;
+  FReady                     := False;
+  UpdateNow;   //UpdateNow; Temis 03-06-2022
+end;
 function TWPPConnectJS.AtualizarInternamente(PForma: TFormaUpdate): Boolean;
 var
   Ltmp: String;
@@ -159,30 +204,9 @@ begin
   end;
 end;
 
-constructor TWPPConnectJS.Create(POwner: TComponent);
-begin
-  Owner                      := POwner;
-  FAutoUpdateTimeOut         := 10;
-  FJSScript                  := TstringList.create;
-  FAutoUpdate                := True;
-  FJSURL                     := TWPPConnectJS_JSUrlPadrao;
-  FInjectJSDefine            := TWPPConnectJSDefine.Create;
-  FReady                     := False;
-  //UpdateNow; Temis 03-06-2022
-  UpdateNow;
-end;
-
 procedure TWPPConnectJS.DelFileTemp;
 begin
   DeleteFile(PwideChar(IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp'));
-end;
-
-destructor TWPPConnectJS.Destroy;
-begin
-  DelFileTemp;
-  FreeAndNil(FInjectJSDefine);
-  FreeAndNil(FJSScript);
-  inherited;
 end;
 
 procedure TWPPConnectJS.SeTWPPConnectScript(const Value: TstringList);
@@ -194,7 +218,6 @@ begin
   End;
   FJSScript := Value;
 end;
-
 
 function TWPPConnectJS.UpdateNow: Boolean;
 begin
@@ -290,7 +313,6 @@ begin
   end;
 end;
 
-
 function TWPPConnectJS.PegarLocalJS_Web: String;
 var
   LHttp        : TUrlIndy;
@@ -334,29 +356,162 @@ function TWPPConnectJS.ReadCSV(const PLineCab, PLineValues: String): Boolean;
 var
   lCab,
   LIte: String;
-  LCsv : TCSVImport;
+
 begin
   Result := False;
-  LCsv   := TCSVImport.Create;
-  try
+  FSeparador := ';';
+  ZerarTudo;
     lCab := Copy(PLineCab,    3, 5000);
     LIte := Copy(PLineValues, 3, 5000);
     try
-      LCsv.ImportarCSV_viaTexto(lCab + slinebreak + LIte);
-      if LCsv.Registros.RecordCount > 0 Then
+      ImportarCSV_viaTexto(lCab + slinebreak + LIte);
+      if Registros.RecordCount > 0 Then
       begin
-        InjectJSDefine.FVersion_JS         := LCsv.Registros.FieldByName('Version_JS').AsString;
-        //InjectJSDefine.FVersion_TWPPConnectMin := LCsv.Registros.FieldByName('Version_TWPPConnectMin').AsString;
-        InjectJSDefine.FVersion_TWPPConnectMin := LCsv.Registros.FieldByName('Version_TInjectMin').AsString;
-        InjectJSDefine.FVersion_CEF4Min    := LCsv.Registros.FieldByName('Version_CEF4Min').AsString;
+        InjectJSDefine.FVersion_JS              := Registros.FieldByName('Version_JS').AsString;
+        InjectJSDefine.FVersion_TWPPConnectMin  := Registros.FieldByName('Version_TInjectMin').AsString;
+        InjectJSDefine.FVersion_CEF4Min         := Registros.FieldByName('Version_CEF4Min').AsString;
         Result := true;
       end;
     Except
     end;
+end;
+{$ENDREGION}
+
+{$REGION 'TCSVImport'}
+{ TCSVImport }
+
+
+function TWPPConnectJS.CriarCampos: Boolean;
+Var
+  Lok    : Integer;
+  Linha0 : PwideChar;
+  LCampo : String;
+  LRetorno: TStringList;
+  I: Integer;
+begin
+  Result := False;
+  LRetorno := TStringList.Create;
+  FRegistros.FieldOptions.AutoCreateMode := acCombineComputed;
+  try
+    Linha0 := PwideChar(FStringList.Strings[0]);
+    Lok    := ExtractStrings([FSeparador],[' '], Linha0, LRetorno);
+    try
+      if Lok > 0 then
+      Begin
+        for I := 0 to LRetorno.Count -1 do
+        Begin
+          LCampo := LRetorno.Strings[i];
+          FRegistros.FieldDefs.Add(LCampo,     ftString,      TamPdr, False);
+        End;
+        FRegistros.CreateDataSet;
+        Result := True;
+      End;
+    Except
+      Result := False;
+    end;
   finally
-    FreeAndNil(LCsv);
+    FreeAndNil(LRetorno);
   end;
 end;
+
+function TWPPConnectJS.CriarValor(PLinha: WideString): Boolean;
+Var
+  Lok    : Integer;
+  Linha  : PwideChar;
+  LConteudoCampo: WideString;
+  LRetorno: TStringList;
+  I: Integer;
+begin
+  Result := False;
+  LRetorno := TStringList.Create;
+  try
+    while ( Pos((FSeparador + FSeparador), String(Plinha))> 0) do
+    Begin
+      PLinha  := StringReplace(PLinha, (FSeparador + FSeparador), (FSeparador + ' ' + FSeparador), [rfReplaceAll, rfIgnoreCase]);
+    End;
+
+    Linha   := PwideChar(PLinha);
+    Lok     := ExtractStrings([FSeparador],[], Linha, LRetorno);
+    try
+      if Lok > 0 then
+      Begin
+        FRegistros.Append;
+        for I := 0 to LRetorno.Count -1 do
+        Begin
+          LConteudoCampo:= Trim(LRetorno.Strings[i]);
+          if i <= FRegistros.Fields.Count -1 then
+             FRegistros.Fields[i].AsString := LConteudoCampo;
+        End;
+        FRegistros.post;
+        Result := True;
+      End;
+    Except
+     on E : Exception do
+     Begin
+       LConteudoCampo := e.Message;
+       if FRegistros.State = dsInsert then
+           FRegistros.Cancel;
+        Result := False;
+     End;
+    end;
+  finally
+    FreeAndNil(LRetorno);
+  end;
+
+end;
+
+
+
+function TWPPConnectJS.ImportarCSV_viaArquivo(PArquivo: String): Boolean;
+begin
+  ZerarTudo;
+  Result := False;
+  if not FileExists(PArquivo) then
+    Exit;
+
+  FStringList.LoadFromFile(PArquivo);
+  Result := ProcessarCriacaoCSV;
+end;
+
+function TWPPConnectJS.ImportarCSV_viaTexto(PConteudo: WideString): Boolean;
+begin
+  ZerarTudo;
+  FStringList.Text := PConteudo;
+  Result           := ProcessarCriacaoCSV;
+end;
+
+function TWPPConnectJS.ProcessarCriacaoCSV: Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  if FStringList.Count < 1 then
+     Exit;
+
+  if not CriarCampos then
+     Exit;
+
+  for I := 1 to FStringList.Count - 1 do
+  Begin
+    if not CriarValor(FStringList.Strings[i]) then
+    Begin
+      ZerarTudo;
+      Exit;
+    End;
+  End;
+  Result := True;
+end;
+
+procedure TWPPConnectJS.ZerarTudo;
+begin
+  FreeAndNil(FStringList);
+  FreeAndNil(FRegistros);
+
+  FStringList      := TStringList.Create;
+  FRegistros       := TFDMemTable.Create(nil);
+end;
+
+{$ENDREGION}
 
 
 end.
