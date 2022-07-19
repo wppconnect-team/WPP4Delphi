@@ -5496,7 +5496,8 @@ object frDemo: TfrDemo
       'n/Source/JS/js.abr'
     Config.AutoStart = True
     Config.AutoDelay = 0
-    Config.SecondsMonitor = 7
+    Config.SecondsMonitor = 8
+    Config.SecondsMonitorWppCrash = 30
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
@@ -5516,6 +5517,7 @@ object frDemo: TfrDemo
     OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
+    OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
@@ -5529,8 +5531,8 @@ object frDemo: TfrDemo
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
-    Left = 368
-    Top = 480
+    Left = 352
+    Top = 144
   end
   object timerStatus: TTimer
     Enabled = False

@@ -81,7 +81,8 @@ Const
   FrmConsole_JS_monitorQRCode           = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
   FrmConsole_JS_StopMonitor             = 'stopMonitor();';
   FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
-  FrmConsole_JS_VAR_StartMonitor        = 'startMonitor(intervalSeconds=<#TEMPO#>)';
+  FrmConsole_JS_VAR_StartMonitor         = 'startMonitor(intervalSeconds=<#TEMPO#>)';
+  FrmConsole_JS_VAR_StartMonitorWPPCrash = 'startMonitorWPPCrash(intervalSeconds=<#TEMPO#>)';
 
   //Marcelo 21/06/2022
   //FrmConsole_JS_VAR_ReadMessages        = 'window.WAPI.sendSeen("<#MSG_PHONE#>")';
@@ -279,6 +280,7 @@ resourcestring
   Text_Status_Serv_TimeOut             = '';
   Text_Status_Serv_Destroying          = '';
   Text_Status_Serv_Destroy             = '';
+  Text_Status_Serv_Rebooting           = '';
   MSG_WarningNothingtoSend             = '';
   MSG_WarningErrorFile                 = '';
   MSG_Except_Data_TypeObj              = '';
@@ -328,6 +330,7 @@ resourcestring
 //  Text_FrmQRCode_OnCLose                 = '';
 
 type
+
     TLanguageInject       = (TL_Portugues_BR=0,  TL_English=1, TL_Espanol=2, TL_Farsi=3);
     TConnectionDBType     = (TCon_None=0, TCon_Memory=1,  TCon_FireDAC=2, TCon_DBExpress=3, TCon_ADO=4);
 
@@ -338,7 +341,7 @@ type
                              Server_Disconnected,           Server_Disconnecting,
                              Server_Connected,              Server_ConnectedDown,
                              Server_Connecting,             Server_ConnectingNoPhone,
-                             Server_ConnectingReaderCode,   Server_TimeOut
+                             Server_ConnectingReaderCode,   Server_TimeOut, Server_Rebooting
                             );
 
     TTypeHeader = (Th_None = 0,
@@ -365,7 +368,8 @@ type
                    , Th_SendTextMessageEx=47, Th_SendFileMessageEx=48, Th_SendListMessageEx=49   //Temis 03-06-2022
                    , Th_IncomingiCall=50    //Marcelo 16-06-2022
                    , Th_ProductCatalog=51   //Daniel 26/06/2022
-                   , Th_CheckNumberExists=52 //Marcelo 18/07/2022
+                   , Th_WPPCrashMonitor=52  //Daniel 18/07/2022
+                   , Th_CheckNumberExists=53 //Marcelo 18/07/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -503,7 +507,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 52; //Marcelo 18/07/2022
+const LmaxCount = 53; //Marcelo 18/07/2022
 var
   I: Integer;
   LNome: String;
