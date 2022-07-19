@@ -1272,7 +1272,7 @@ end;
     class function FromJsonString(AJsonString: string): TProductsList;
   end;
 
-  TWppCrash = class(TClassPadrao)
+  TWppCrash = class(TClassPadrao) //Daniel 18/07/2022
   private
     FAuthenticated: Boolean;
     FMainLoaded: Boolean;

@@ -2,7 +2,7 @@ object frameMensagem: TframeMensagem
   Left = 0
   Top = 0
   Width = 968
-  Height = 653
+  Height = 681
   Align = alClient
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -16,9 +16,10 @@ object frameMensagem: TframeMensagem
     Left = 3
     Top = 3
     Width = 241
-    Height = 647
+    Height = 675
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 647
     object Label1: TLabel
       Left = 11
       Top = 59
@@ -63,16 +64,71 @@ object frameMensagem: TframeMensagem
       Text = 'https://wppconnect-team.github.io/'
       OnDblClick = edtURLDblClick
     end
+    object PageControl1: TPageControl
+      Left = 2
+      Top = 452
+      Width = 237
+      Height = 221
+      Cursor = crHandPoint
+      ActivePage = tsImage
+      Align = alBottom
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 3
+      ExplicitHeight = 193
+      object tsImage: TTabSheet
+        Caption = 'Image Preview'
+        ExplicitHeight = 163
+        object Image1: TImage
+          Left = 0
+          Top = 15
+          Width = 229
+          Height = 176
+          Align = alClient
+          Center = True
+          Proportional = True
+          ExplicitLeft = 56
+          ExplicitTop = 48
+          ExplicitWidth = 105
+          ExplicitHeight = 105
+        end
+        object lblCaminhoImagem: TLabel
+          Left = 0
+          Top = 0
+          Width = 229
+          Height = 15
+          Align = alTop
+          Caption = 'lblCaminhoImagem'
+          ExplicitWidth = 110
+        end
+      end
+      object tsBase64: TTabSheet
+        Caption = 'Base64'
+        ImageIndex = 1
+        ExplicitHeight = 163
+        object Memo1: TMemo
+          Left = 0
+          Top = 0
+          Width = 229
+          Height = 191
+          Align = alClient
+          BorderStyle = bsNone
+          Color = clInfoBk
+          TabOrder = 0
+          ExplicitHeight = 163
+        end
+      end
+    end
   end
   object gbAcoesBasicas: TGroupBox
     AlignWithMargins = True
     Left = 250
     Top = 3
     Width = 231
-    Height = 647
+    Height = 675
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
+    ExplicitHeight = 647
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
@@ -303,10 +359,11 @@ object frameMensagem: TframeMensagem
     Left = 487
     Top = 3
     Width = 231
-    Height = 647
+    Height = 675
     Align = alLeft
     Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
+    ExplicitHeight = 647
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
@@ -506,10 +563,11 @@ object frameMensagem: TframeMensagem
     Left = 724
     Top = 3
     Width = 231
-    Height = 647
+    Height = 675
     Align = alLeft
     Caption = 'Fun'#231#245'es Diversas'
     TabOrder = 3
+    ExplicitHeight = 647
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
@@ -569,7 +627,7 @@ object frameMensagem: TframeMensagem
       Left = 2
       Top = 252
       Width = 227
-      Height = 393
+      Height = 421
       Align = alClient
       Caption = 'Listar Chats'
       Font.Charset = DEFAULT_CHARSET
@@ -579,6 +637,7 @@ object frameMensagem: TframeMensagem
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      ExplicitHeight = 393
       object btnListarChats: TButton
         AlignWithMargins = True
         Left = 5
@@ -603,7 +662,7 @@ object frameMensagem: TframeMensagem
         Left = 5
         Top = 49
         Width = 217
-        Height = 339
+        Height = 367
         Align = alClient
         Columns = <>
         LargeImages = ImageList1
@@ -614,6 +673,7 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaChatsDblClick
+        ExplicitHeight = 339
       end
     end
   end

@@ -22,7 +22,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls;
+  Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls,
+  EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo;
 
 type
   TframeMensagem = class(TFrame)
@@ -75,6 +76,12 @@ type
     btnStatusTexto: TButton;
     btnStatusImagem: TButton;
     btnVideoStatus: TButton;
+    PageControl1: TPageControl;
+    tsImage: TTabSheet;
+    Image1: TImage;
+    tsBase64: TTabSheet;
+    Memo1: TMemo;
+    lblCaminhoImagem: TLabel;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -115,9 +122,19 @@ type
   private
     { Private declarations }
      FStatus: Boolean;
+    function StrExtFile_Base64Type(PFileName: String): String;
   public
     { Public declarations }
+    function EncodeString(const Input: string): string;
+    function DecodeString(const Input: string): string;
+    procedure Base64ToImage (str64 : string ; ImageExibicao : TImage);
+    function ImageToBase64 (ImageExibicao : TImage) : String   ;
+    function FileToBase64 (const AInFileName, AOutFileName: string) : string  ;
   end;
+
+  type
+    TExt_Image       = (Tsf_Jpg=0, Tsf_Jpeg=1, Tsf_Tif=2, Tsf_Ico=3, Tsf_Bmp=4, Tsf_Png=5, Tsf_Raw=6);
+
 
 implementation
 
@@ -125,6 +142,28 @@ uses
   Winapi.ShellAPI, uFrDemo, uTWPPConnect.Emoticons;
 
 {$R *.dfm}
+
+procedure TframeMensagem.Base64ToImage(str64: string; ImageExibicao: TImage);
+var
+  LInput: TMemoryStream;
+  LOutput: TMemoryStream;
+  ImageJPG: TJPEGImage;  //uses Vcl.Imaging.jpeg
+begin
+  lInput := TStringStream.Create(str64, TEncoding.ASCII);
+  lOutput := TMemoryStream.Create;
+  try
+    lInput.Position := 0;
+    TNetEncoding.Base64.Decode(lInput, lOutput);
+    lOutput.Position := 0;
+    ImageExibicao.Picture.LoadFromStream(lOutput);
+    ImageExibicao.Repaint;
+    ImageExibicao.Refresh;
+  finally
+    lInput.Free;
+    lOutput.Free;
+  end;
+
+end;
 
 procedure TframeMensagem.BitBtn1Click(Sender: TObject);
 begin
@@ -200,44 +239,26 @@ begin
 
     LBase64 := TStringList.Create;
     TRY
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Audio.txt');
+      //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Audio.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\Base64Audio.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Audio.txt')
+      else
+      begin
+        {inicio - capturando arquivo mp3 e convertendo em base 64}
+        OpenDialog1.Execute;
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := FileToBase64( OpenDialog1.FileName, 'audio' ) ;  //FileToBase64
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando arquivo mp3 e convertendo em base 64}
+      end;
 
       content := mem_message.Text;
 
       options_Audio :=
         'type: "audio", ' +
         'isPtt: true'; // false for common audio
-
-      options :=
-        'createChat: true, ' +
-        'useTemplateButtons: true, ' +
-        'title: "Novidades",  ' +
-        'footer: "Imagem com Botão",  ' +
-        'buttons: [ ' +
-        '  { ' +
-        '    url: "https://wppconnect-team.github.io/", ' +
-        '    text: "Acesse Nosso Site" ' +
-        '  }, ' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
-        ']  ';
-
-      options_Figurinha := 'type: "sticker"';
-
-      options_Imagem :=
-         '  type: "image", ' +
-         '  caption: "My image",  ' +
-         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
-
-      //Imagem com Temporaria Somente 1 Visualização
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
 
       //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
       frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
@@ -248,14 +269,6 @@ begin
       //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options_Audio, '123');
 
-      //Botões IMAGEM
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
-
-      //Botões VIDEO
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
-
-      //Figurinha Stickers
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
     FINALLY
       freeAndNil(LBase64);
     END;
@@ -441,7 +454,20 @@ begin
 
     LBase64 := TStringList.Create;
     TRY
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt')
+      else
+      begin
+        {inicio - capturando imagem e convertendo em base 64}
+        OpenDialog1.Execute;
+        Image1.Picture.LoadFromFile(OpenDialog1.FileName);
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := ImageToBase64( Image1 ) ;
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando imagem e convertendo em base 64}
+      end;
 
       content := mem_message.Text;
 
@@ -521,7 +547,21 @@ begin
 
     LBase64 := TStringList.Create;
     TRY
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt')
+      else
+      begin
+        {inicio - capturando imagem e convertendo em base 64}
+        OpenDialog1.Execute;
+        Image1.Picture.LoadFromFile(OpenDialog1.FileName);
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := ImageToBase64( Image1 ) ;
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text;  //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando imagem e convertendo em base 64}
+      end;
 
       content := frDemo.CaractersWeb(mem_message.Text);
 
@@ -864,7 +904,20 @@ begin
       Exit;
     LBase64 := TStringList.Create;
     TRY
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt')
+      else
+      begin
+        {inicio - capturando imagem e convertendo em base 64}
+        OpenDialog1.Execute;
+        Image1.Picture.LoadFromFile(OpenDialog1.FileName);
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := ImageToBase64( Image1 ) ;
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando imagem e convertendo em base 64}
+      end;
 
       content := mem_message.Text;
 
@@ -1188,5 +1241,150 @@ begin
     [1], 0, pos('@', listaContatos.Items[listaContatos.Selected.Index].SubItems
     [1])) + 'c.us';
 end;
+
+{$REGION 'CONVERSAO BASE64'}
+function TframeMensagem.DecodeString(const Input: string): string;
+var
+  InStr, OutStr: TStringStream;
+begin
+  InStr := TStringStream.Create(Input);
+  try
+    OutStr := TStringStream.Create('', TEncoding.UTF8);
+    try
+      DecodeStream(InStr, OutStr);
+      Result := OutStr.DataString;
+    finally
+      OutStr.Free;
+    end;
+  finally
+    InStr.Free;
+  end;
+end;
+
+function TframeMensagem.EncodeString(const Input: string): string;
+var
+  InStr, OutStr: TStringStream;
+begin
+  InStr := TStringStream.Create(Input, TEncoding.UTF8);
+  try
+    OutStr := TStringStream.Create('');
+    try
+      EncodeStream(InStr, OutStr);
+      Result := OutStr.DataString;
+    finally
+      OutStr.Free;
+    end;
+  finally
+    InStr.Free;
+  end;
+end;
+
+function TframeMensagem.FileToBase64(const AInFileName, AOutFileName: string): string;
+var
+  inStream: TStream;
+  outStream: TStream;
+begin
+  inStream := TFileStream.Create(AInFileName, fmOpenRead);
+  try
+    outStream := TFileStream.Create(AOutFileName, fmCreate);
+    try
+      inStream.Position := 0;
+      TNetEncoding.Base64.Encode(inStream, outStream);
+      outStream.Position := 0;
+      Memo1.Lines.LoadFromStream(outStream)  ;
+      result := Memo1.text;
+    finally
+      outStream.Free;
+    end;
+  finally
+    inStream.Free;
+  end;
+end;
+
+function TframeMensagem.ImageToBase64(ImageExibicao: TImage): String;
+var
+  LInput : TMemoryStream;
+  LOutput: TMemoryStream;
+  Imagetxt : TStringList;
+begin
+  try
+    LInput := TMemoryStream.Create;
+    LOutput := TMemoryStream.Create;
+    Imagetxt := TStringList.Create;
+
+    ImageExibicao.Picture.SaveToStream(LInput);
+    LInput.Position := 0;
+    TNetEncoding.Base64.Encode( LInput, LOutput );
+    LOutput.Position := 0;
+    Memo1.Lines.LoadFromStream(LOutput)  ;
+    result := Memo1.text;
+  finally
+    LInput.Free;
+    LOutput.Free;
+    Imagetxt.Free;
+  end;
+end;
+
+function TframeMensagem.StrExtFile_Base64Type(PFileName: String): String;
+var
+  I: Integer;
+  LExt: String;
+  Ltmp: String;
+begin
+  LExt   := LowerCase(Copy(ExtractFileExt(PFileName),2,50));
+
+  //Marcelo 31/05/2022
+  if (LExt = 'mp3') then
+    begin
+      result := 'data:audio/mpeg;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'ogg') then
+    begin
+      result := 'data:audio/ogg;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'mp4') then
+    begin
+      result := 'data:video/mp4;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'avi') then
+    begin
+      result := 'data:video/avi;base64,';
+      exit;
+    end;
+
+  //Marcelo 08/06/2022
+  if (LExt = 'mpeg') then
+    begin
+      result := 'data:video/mpeg;base64,';
+      exit;
+    end;
+
+
+  Result := 'data:application/';
+  try
+    for I := 0 to 10 do
+    begin
+      Ltmp := LowerCase(Copy(GetEnumName(TypeInfo(TExt_Image), ord(TExt_Image(i))), 3, 50));
+      if pos(LExt, Ltmp) > 0 Then
+      Begin
+        Result := 'data:image/';
+        Exit;
+      end
+    end;
+  finally
+     Result := Result + LExt + ';base64,' ;
+  end;
+end;
+
+{$ENDREGION}
 
 end.

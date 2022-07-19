@@ -176,8 +176,8 @@ end;
 
 procedure TWPPConnectConfig.SetSecondsMonitorWppCrash(const Value: integer);
 begin
-  if Value > 40 then
-    raise exception.Create('O máximo é 40 segundos.');
+  if Value > 120 then
+    raise exception.Create('O máximo é 120 segundos.');
   FSecondsMonitorWppCrash := Value;
 end;
 
