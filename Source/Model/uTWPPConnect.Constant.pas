@@ -209,6 +209,9 @@ Const
   FrmConsole_JS_VAR_sendFileMessageEx   = 'window.WAPI.sendFileMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
   FrmConsole_JS_VAR_sendListMessageEx   = 'window.WAPI.sendListMessage2Ex("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
 
+  //Marcelo 18/07/2022
+  FrmConsole_JS_VAR_CheckNumberExists   = 'window.WAPI.CheckNumberExists("<#MSG_PHONE#>");';
+
   //Daniel - 26/06/2022
   FrmConsole_JS_VAR_GetProductCatalog   = 'window.WAPI.ProductCatalog();';
 
@@ -360,8 +363,10 @@ type
                    , Th_GetCheckIsBeta=42, Th_getMessageById=43 //Marcelo 06/05/2022
                    , Th_SendFileMessage=44, Th_SendTextMessage=45, Th_SendListMessage=46 //Marcelo 31/05/2022
                    , Th_SendTextMessageEx=47, Th_SendFileMessageEx=48, Th_SendListMessageEx=49   //Temis 03-06-2022
-                   , Th_IncomingiCall=50  //Marcelo 16-06-2022
-                   , Th_ProductCatalog=51); //Daniel 26/06/2022
+                   , Th_IncomingiCall=50    //Marcelo 16-06-2022
+                   , Th_ProductCatalog=51   //Daniel 26/06/2022
+                   , Th_CheckNumberExists=52 //Marcelo 18/07/2022
+                   );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
     Function   FrmConsole_JS_AlterVar(var PScript:String;  PNomeVar: String;  Const PValor:String):String;
@@ -498,7 +503,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 51; //Daniel 26-06-2022
+const LmaxCount = 52; //Marcelo 18/07/2022
 var
   I: Integer;
   LNome: String;

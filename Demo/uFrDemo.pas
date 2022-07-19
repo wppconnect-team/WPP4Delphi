@@ -107,6 +107,7 @@ type
     procedure TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
     procedure frameCatalogo1Button1Click(Sender: TObject);
     procedure ctbtnCategories0Items6Click(Sender: TObject);
+    procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
 
   private
     { Private declarations }
@@ -390,6 +391,16 @@ begin
     Inject_Destroy:
       Label3.Caption := TWPPConnect(Sender).StatusToStr;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
+begin
+  //Marcelo 18/07/2022
+  if vCheckNumberExists.valid then
+    ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
+  else
+    ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
+
 end;
 
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);

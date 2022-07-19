@@ -389,40 +389,49 @@ type
 
  TPhoneClass = class(TClassPadrao)
  private
-    Fdevice_manufacturer: String;
-    Fdevice_model: String;
-    Fos_build_number: String;
-    Fos_version: String;
-    Fmnc: String;
-    Fmcc: String;
-    Fwa_version: String;
+   Fdevice_manufacturer: String;
+   Fdevice_model: String;
+   Fos_build_number: String;
+   Fos_version: String;
+   Fmnc: String;
+   Fmcc: String;
+   Fwa_version: String;
  public
-  property device_manufacturer : String read Fdevice_manufacturer write Fdevice_manufacturer;
-  property device_model        : String read Fdevice_model write Fdevice_model;
-  property mcc                 : String read Fmcc write Fmcc;
-  property mnc                 : String read Fmnc write Fmnc;
-  property os_build_number     : String read Fos_build_number write Fos_build_number;
-  property os_version          : String read Fos_version write Fos_version;
-  property wa_version          : String read Fwa_version write Fwa_version;
+   property device_manufacturer : String read Fdevice_manufacturer write Fdevice_manufacturer;
+   property device_model        : String read Fdevice_model write Fdevice_model;
+   property mcc                 : String read Fmcc write Fmcc;
+   property mnc                 : String read Fmnc write Fmnc;
+   property os_build_number     : String read Fos_build_number write Fos_build_number;
+   property os_version          : String read Fos_version write Fos_version;
+   property wa_version          : String read Fwa_version write Fwa_version;
  end;
 
-  TResponseStatusMessage = class(TClassPadrao)
-  private
+ TResponseStatusMessage = class(TClassPadrao)
+ private
    Fid : String;
    FStatus : String;
-   public
-    property id : String read Fid write Fid;
-    property status : String read FStatus write FStatus;
-  end;
+ public
+   property id : String read Fid write Fid;
+   property status : String read FStatus write FStatus;
+ end;
 
-  TReturnCheckNumber = class(TClassPadrao)
-  private
+ TReturnCheckNumber = class(TClassPadrao)
+ private
    Fid : String;
    Fvalid : boolean;
-   public
-    property id : String read Fid write Fid;
-    property valid : boolean  read Fvalid write Fvalid;
-  end;
+ public
+   property id : String read Fid write Fid;
+   property valid : boolean  read Fvalid write Fvalid;
+ end;
+
+ TReturnCheckNumberExists = class(TClassPadrao) //Marcelo 18/07/2022
+ private
+   Fid : String;
+   Fvalid : boolean;
+ public
+   property id : String read Fid write Fid;
+   property valid : boolean  read Fvalid write Fvalid;
+ end;
 
 
  TGetMeClass = class(TClassPadrao)

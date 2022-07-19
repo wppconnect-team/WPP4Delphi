@@ -71,6 +71,7 @@ type
   TOnGetInviteGroup         = procedure(Const Invite : String) of object;
   TOnGetMe                  = procedure(Const vMe : TGetMeClass) of object;
   TOnNewCheckNumber         = procedure(Const vCheckNumber : TReturnCheckNumber) of object;
+  TOnCheckNumberExists      = procedure(Const vCheckNumberExists : TReturnCheckNumberExists) of object;
 
   //Adicionado Por Marcelo 06/05/2022
   //TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
@@ -159,6 +160,9 @@ type
     FOnGetMe                    : TOnGetMe;
     FOnNewCheckNumber           : TOnNewCheckNumber;
 
+    //Marcelo 18/07/2022
+    FOnCheckNumberExists        : TOnCheckNumberExists;
+
     //Adicionado Por Marcelo 06/05/2022
     FOnGetMessageById           : TGetMessageById;
 
@@ -245,6 +249,8 @@ type
     procedure GetBatteryStatus;
     procedure CheckIsValidNumber(PNumberPhone: string);
     procedure NewCheckIsValidNumber(PNumberPhone : string);
+    procedure CheckNumberExists(PNumberPhone : string);
+
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta;
     procedure CheckIsConnected;
@@ -365,6 +371,7 @@ type
     property OnGetInviteGroup            : TOnGetInviteGroup          read FOnGetInviteGroup               write FOnGetInviteGroup;
     property OnGetMe                     : TOnGetMe                   read FOnGetMe                        write FOnGetMe;
     property OnNewGetNumber              : TOnNewCheckNumber          read FOnNewCheckNumber               write FOnNewCheckNumber;
+    property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
   end;
 
 procedure Register;
@@ -567,6 +574,40 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.CheckIsValidNumber(PNumberPhone);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.CheckNumberExists(PNumberPhone: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 18/07/2022
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if pos('@', PNumberPhone) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CheckNumberExists(PNumberPhone);
           end;
         end);
 
@@ -1933,6 +1974,12 @@ begin
   begin
     if Assigned(FOnNewCheckNumber) then
        FOnNewCheckNumber(TReturnCheckNumber(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_CheckNumberExists  then
+  begin
+    if Assigned(FOnCheckNumberExists) then
+       FOnCheckNumberExists(TReturnCheckNumberExists(PReturnClass));
   end;
 
 
