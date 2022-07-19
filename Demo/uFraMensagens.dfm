@@ -19,7 +19,6 @@ object frameMensagem: TframeMensagem
     Height = 675
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 647
     object Label1: TLabel
       Left = 11
       Top = 59
@@ -74,10 +73,8 @@ object frameMensagem: TframeMensagem
       Align = alBottom
       Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 3
-      ExplicitHeight = 193
       object tsImage: TTabSheet
         Caption = 'Image Preview'
-        ExplicitHeight = 163
         object Image1: TImage
           Left = 0
           Top = 15
@@ -97,14 +94,12 @@ object frameMensagem: TframeMensagem
           Width = 229
           Height = 15
           Align = alTop
-          Caption = 'lblCaminhoImagem'
-          ExplicitWidth = 110
+          ExplicitWidth = 3
         end
       end
       object tsBase64: TTabSheet
         Caption = 'Base64'
         ImageIndex = 1
-        ExplicitHeight = 163
         object Memo1: TMemo
           Left = 0
           Top = 0
@@ -114,7 +109,6 @@ object frameMensagem: TframeMensagem
           BorderStyle = bsNone
           Color = clInfoBk
           TabOrder = 0
-          ExplicitHeight = 163
         end
       end
     end
@@ -128,7 +122,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
-    ExplicitHeight = 647
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
@@ -363,7 +356,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
-    ExplicitHeight = 647
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
@@ -567,7 +559,6 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Fun'#231#245'es Diversas'
     TabOrder = 3
-    ExplicitHeight = 647
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
@@ -637,7 +628,6 @@ object frameMensagem: TframeMensagem
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitHeight = 393
       object btnListarChats: TButton
         AlignWithMargins = True
         Left = 5
@@ -673,7 +663,6 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaChatsDblClick
-        ExplicitHeight = 339
       end
     end
   end

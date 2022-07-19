@@ -1615,25 +1615,6 @@ object frDemo: TfrDemo
       inherited PageControl1: TPageControl
         Top = 278
         ExplicitTop = 278
-        ExplicitHeight = 221
-        inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
-          inherited Memo1: TMemo
-            ExplicitHeight = 191
-          end
-        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox

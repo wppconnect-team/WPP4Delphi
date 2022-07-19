@@ -1041,7 +1041,21 @@ begin
       Exit;
     LBase64 := TStringList.Create;
     TRY
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+      //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+
+      if FileExists('C:\Executaveis\WPPConnectDemo\base64Videos2.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt')
+      else
+      begin
+        {inicio - capturando arquivo mp3 e convertendo em base 64}
+        OpenDialog1.Execute;
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := FileToBase64( OpenDialog1.FileName, 'video' ) ;  //FileToBase64
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando arquivo mp3 e convertendo em base 64}
+      end;
 
       content := mem_message.Text;
 
@@ -1121,7 +1135,21 @@ begin
     LBase64 := TStringList.Create;
 
     try
-      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+      //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt');
+
+      if FileExists('C:\Executaveis\WPPConnectDemo\base64Videos2.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt')
+      else
+      begin
+        {inicio - capturando arquivo mp3 e convertendo em base 64}
+        OpenDialog1.Execute;
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := FileToBase64( OpenDialog1.FileName, 'video' ) ;  //FileToBase64
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando arquivo mp3 e convertendo em base 64}
+      end;
 
       content := mem_message.Text;
 
