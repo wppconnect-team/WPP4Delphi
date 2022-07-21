@@ -297,8 +297,8 @@ end;
 
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if TWPPConnect1.IsConnected then
-    TWPPConnect1.ShutDown;
+  //if TWPPConnect1.IsConnected then
+  TWPPConnect1.ShutDown;
 
   Sleep(500);
   killtask('WPPConnectDemo.exe')
