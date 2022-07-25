@@ -770,7 +770,7 @@ procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
   for AChat in Chats.Result do
@@ -850,6 +850,15 @@ begin
           except
             on E: Exception do
               quotedMsg_caption := '';
+          end;
+
+          //Marcelo 25/07/2022 Unique ID Mensagem Origem
+          try
+            if Assigned(AMessage.quotedMsgObj) then
+              IdMensagemOrigem := AMessage.quotedMsgObj.id ;
+          except
+            on E: Exception do
+              IdMensagemOrigem := '';
           end;
 
           if selectedButtonId = '' then

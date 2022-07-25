@@ -316,8 +316,8 @@ begin
       'createChat: true,' +
       'buttons:' +
       '['+
-        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
+        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
       ']' +
@@ -481,11 +481,11 @@ begin
         'title: "Novidades",  ' +
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
-        '  { ' +
+        (*'  { ' +
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
-        '  }, ' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  }, ' +  *)
+        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +

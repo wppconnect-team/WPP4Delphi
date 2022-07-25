@@ -691,6 +691,67 @@ type
     property title: String                              read FTitle             write FTitle;
   end;
 
+  //Marcelo 06/07/2022
+  TQuotedMsgObjClass = class
+  private
+    Ftype: String;
+    FAuthor: String;
+    FBody: String;
+    FCaption: String;
+    FChatId: String;
+    FFooter: String;
+    FFrom: String;
+    FFromMe: Boolean;
+    FHasReaction: Boolean;
+    FHydratedButtons: TArray<THydratedButtonsClass>;
+    FId: String;
+    FIsDynamicReplyButtonsMsg: Boolean;
+    FIsForwarded: Boolean;
+    FIsFromTemplate: Boolean;
+    FIsMdHistoryMsg: Boolean;
+    FIsVcardOverMmsDocument: Boolean;
+    FLabels: TArray<String>;
+    FLastPlaybackProgress: Extended;
+    FMentionedJidList: TArray<String>;
+    FPollOptions: TArray<String>;
+    FProductHeaderImageRejected: Boolean;
+    FPttForwardedFeaturesEnabled: Boolean;
+    FSelf: String;
+    FSender: TSenderClass;
+    FStar: Boolean;
+    FTo: String;
+  public
+    property &type: String read Ftype write Ftype;
+    property author: String read FAuthor write FAuthor;
+    property body: String read FBody write FBody;
+    property caption: String read FCaption write FCaption;
+    property chatId: String read FChatId write FChatId;
+    property footer: String read FFooter write FFooter;
+    property from: String read FFrom write FFrom;
+    property fromMe: Boolean read FFromMe write FFromMe;
+    property hasReaction: Boolean read FHasReaction write FHasReaction;
+    property hydratedButtons: TArray<THydratedButtonsClass> read FHydratedButtons write FHydratedButtons;
+    property id: String read FId write FId;
+    property isDynamicReplyButtonsMsg: Boolean read FIsDynamicReplyButtonsMsg write FIsDynamicReplyButtonsMsg;
+    property isForwarded: Boolean read FIsForwarded write FIsForwarded;
+    property isFromTemplate: Boolean read FIsFromTemplate write FIsFromTemplate;
+    property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
+    property isVcardOverMmsDocument: Boolean read FIsVcardOverMmsDocument write FIsVcardOverMmsDocument;
+    property labels: TArray<String> read FLabels write FLabels;
+    property lastPlaybackProgress: Extended read FLastPlaybackProgress write FLastPlaybackProgress;
+    property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
+    property pollOptions: TArray<String> read FPollOptions write FPollOptions;
+    property productHeaderImageRejected: Boolean read FProductHeaderImageRejected write FProductHeaderImageRejected;
+    property pttForwardedFeaturesEnabled: Boolean read FPttForwardedFeaturesEnabled write FPttForwardedFeaturesEnabled;
+    property self: String read FSelf write FSelf;
+    property sender: TSenderClass read FSender write FSender;
+    property star: Boolean read FStar write FStar;
+    property &to: String read FTo write FTo;
+    {constructor Create;
+    destructor Destroy; override;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TQuotedMsgObjClass;}
+  end;
 
   TMessagesClass = class(TClassPadrao)
   private
@@ -838,7 +899,8 @@ type
     property mediaKey   : String              read FmediaKey           Write FmediaKey;
     property mediaKeyTimestamp  : Extended    read FmediaKeyTimestamp  Write FmediaKeyTimestamp;
     property pageCount     : Extended         read FpageCount          Write FpageCount;
-    property quotedMsgObj  : String           read FquotedMsgObj       Write FquotedMsgObj;
+    //property quotedMsgObj  : String           read FquotedMsgObj       Write FquotedMsgObj;
+    property quotedMsgObj :TQuotedMsgObjClass read FquotedMsgObj       Write FquotedMsgObj;
     property sender     : TSenderClass        read FSender             write FSender;
     property star       : Boolean             read FStar               write FStar;
     property t          : Extended            read FT                  write FT;

@@ -1615,6 +1615,21 @@ object frDemo: TfrDemo
       inherited PageControl1: TPageControl
         Top = 278
         ExplicitTop = 278
+        inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
+        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
@@ -1622,6 +1637,9 @@ object frDemo: TfrDemo
       ExplicitHeight = 501
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
+      end
+      inherited btnBotaoSimples: TButton
+        ExplicitLeft = 5
       end
     end
     inherited GroupBox2: TGroupBox
