@@ -807,7 +807,7 @@ type
     FIsPSA           : Boolean;
     FChat            : TChatClass;
     FChatId          : String;
-    FquotedMsgObj    : String; //CriarClasse
+    FquotedMsgObj    : TQuotedMsgObjClass; //CriarClasse
     FMediaData       : TMediaDataClass;
     FprofilePicThumb : string;
     //Marcelo 29/01/2022
@@ -1124,6 +1124,7 @@ public
   property peerJid:      String     read FPeerJid     write FPeerJid;
   property sender:       String     read FSender      write FSender;
   constructor Create(pAJsonString: string);
+  destructor  Destroy;
   function ToJsonString: string;
   class function FromJsonString(AJsonString: string): TIncomingiCall;
 end;
@@ -1401,6 +1402,11 @@ begin
 end;
 
 //Marcelo 18/06/2022
+destructor TIncomingiCall.Destroy;
+begin
+  inherited;
+end;
+
 class function TIncomingiCall.FromJsonString(AJsonString: string): TIncomingiCall;
 begin
   result := TJson.JsonToObject<TIncomingiCall>(AJsonString)
