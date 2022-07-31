@@ -261,6 +261,7 @@ type
     procedure fGetMe;
     procedure NewCheckIsValidNumber(vNumber:String);
     procedure CheckNumberExists(vNumber:String);
+    procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
 
     procedure GetAllChats;
     procedure GetUnreadMessages;
@@ -1882,13 +1883,23 @@ begin
     Th_CheckNumberExists : begin
                               LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                               LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
-                             LOutClass := TReturnCheckNumberExists.Create(LResultStr);
+                              LOutClass := TReturnCheckNumberExists.Create(LResultStr);
                               try
                                 SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                               finally
                                 FreeAndNil(LOutClass);
                               end;
                             end;
+    Th_getLastSeen : begin
+                             //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TReturngetLastSeen.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
 
     Th_ProductCatalog       : begin
                                 if Assigned(FProductList) then
@@ -2376,6 +2387,19 @@ begin
   LJS   := FrmConsole_JS_VAR_getGroupInviteLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.getLastSeen(vNumber: String);
+var
+  Ljs: string;
+begin
+  //Marcelo 31/07/2022
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   :=  FrmConsole_JS_VAR_getLastSeen;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vNumber));
+  ExecuteJS(LJS, False);
 end;
 
 procedure TFrmConsole.getMessageById(UniqueIDs, etapa: string);

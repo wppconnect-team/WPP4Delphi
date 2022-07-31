@@ -73,6 +73,8 @@ type
   TOnNewCheckNumber         = procedure(Const vCheckNumber : TReturnCheckNumber) of object;
   TOnCheckNumberExists      = procedure(Const vCheckNumberExists : TReturnCheckNumberExists) of object;
 
+  TOngetLastSeen      = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
+
   //Adicionado Por Marcelo 06/05/2022
   //TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
   TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
@@ -163,11 +165,13 @@ type
     FOnGetMe                    : TOnGetMe;
     FOnNewCheckNumber           : TOnNewCheckNumber;
 
-    //Marcelo 18/07/2022
-    FOnCheckNumberExists        : TOnCheckNumberExists;
 
-    //Adicionado Por Marcelo 06/05/2022
-    FOnGetMessageById           : TGetMessageById;
+    FOnCheckNumberExists        : TOnCheckNumberExists; //Marcelo 18/07/2022
+
+    FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
+
+
+    FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
 
     //Adicionado Por Marcelo 31/05/2022
     FOnGet_sendFileMessage      : TGet_sendFileMessage;
@@ -254,6 +258,7 @@ type
     procedure CheckIsValidNumber(PNumberPhone: string);
     procedure NewCheckIsValidNumber(PNumberPhone : string);
     procedure CheckNumberExists(PNumberPhone : string);
+    procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta;
@@ -381,6 +386,7 @@ type
     property OnGetMe                     : TOnGetMe                   read FOnGetMe                        write FOnGetMe;
     property OnNewGetNumber              : TOnNewCheckNumber          read FOnNewCheckNumber               write FOnNewCheckNumber;
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
+    property OngetLastSeen               : TOngetLastSeen             read FOngetLastSeen                  write FOngetLastSeen;
   end;
 
 procedure Register;
@@ -1536,6 +1542,39 @@ begin
   FrmConsole.getGroupInviteLink(PIDGroup);
 end;
 
+procedure TWPPConnect.getLastSeen(vNumber: String);
+var
+  lThread : TThread;
+begin
+  //Marcelo 31/07/2022
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  vNumber := AjustNumber.FormatIn(vNumber);
+  if pos('@', vNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getLastSeen(vNumber);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.GroupRemoveInviteLink(PIDGroup: string);
 var
   lThread : TThread;
@@ -2009,6 +2048,12 @@ begin
   begin
     if Assigned(FOnCheckNumberExists) then
        FOnCheckNumberExists(TReturnCheckNumberExists(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_getLastSeen  then
+  begin
+    if Assigned(FOngetLastSeen) then
+       FOngetLastSeen(TReturngetLastSeen(PReturnClass));
   end;
 
 

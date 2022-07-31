@@ -5552,6 +5552,7 @@ object frDemo: TfrDemo
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
+    OngetLastSeen = TWPPConnect1getLastSeen
     Left = 352
     Top = 144
   end

@@ -228,7 +228,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
-      ExplicitLeft = 7
     end
     object btnTextoSimples: TButton
       AlignWithMargins = True
@@ -549,6 +548,21 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 14
       OnClick = btnDeletarTodosChatsClick
+    end
+    object Button1: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 555
+      Width = 221
+      Height = 30
+      Align = alTop
+      Caption = 'Visto por '#218'ltimo'
+      ImageIndex = 18
+      Images = ImageList1
+      TabOrder = 15
+      OnClick = Button1Click
+      ExplicitLeft = 17
+      ExplicitTop = 579
     end
   end
   object GroupBox3: TGroupBox

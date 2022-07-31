@@ -82,6 +82,7 @@ type
     tsBase64: TTabSheet;
     Memo1: TMemo;
     lblCaminhoImagem: TLabel;
+    Button1: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -119,6 +120,7 @@ type
     procedure btnStatusTextoClick(Sender: TObject);
     procedure btnStatusImagemClick(Sender: TObject);
     procedure btnVideoStatusClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1199,6 +1201,21 @@ begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
+end;
+
+procedure TframeMensagem.Button1Click(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  if Trim(ed_num.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    ed_num.SetFocus;
+    Exit;
+  end;
+
+  frDemo.TWPPConnect1.getLastSeen(ed_num.Text);
 end;
 
 procedure TframeMensagem.btnArquivoClick(Sender: TObject);

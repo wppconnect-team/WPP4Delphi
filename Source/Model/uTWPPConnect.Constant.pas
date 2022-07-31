@@ -228,6 +228,9 @@ Const
   //Marcelo 15/06/2022
   FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_ID#>");';
 
+  //Marcelo 31/07/2022
+  FrmConsole_JS_VAR_getLastSeen       = 'window.WAPI.getLastSeen("<#MSG_PHONE#>");';
+
 resourcestring
   MSG_ConfigCEF_ExceptNotFoundJS       = '';
   MSG_ConfigCEF_ExceptNotFoundPATH     = '';
@@ -370,6 +373,7 @@ type
                    , Th_ProductCatalog=51   //Daniel 26/06/2022
                    , Th_WPPCrashMonitor=52  //Daniel 18/07/2022
                    , Th_CheckNumberExists=53 //Marcelo 18/07/2022
+                   , Th_getLastSeen=54 //Marcelo 31/07/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -507,7 +511,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 53; //Marcelo 18/07/2022
+const LmaxCount = 54; //Marcelo 31/07/2022
 var
   I: Integer;
   LNome: String;

@@ -110,6 +110,7 @@ type
     procedure TWPPConnect1WPPMonitorCrash(Sender: TObject;
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
+    procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
 
   private
     { Private declarations }
@@ -510,7 +511,6 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
 begin
-  ShowMessage('Recebendo Ligação: ' + IncomingiCall.sender);
   Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Recebendo Ligação: ' + IncomingiCall.sender;
   Application.ProcessMessages;
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
@@ -518,6 +518,7 @@ begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
   SleepNoFreeze(2000);
   TWPPConnect1.rejectCall(IncomingiCall.id);
+  ShowMessage('Recebendo Ligação: ' + IncomingiCall.sender);
   TWPPConnect1.SendTextMessageEx(IncomingiCall.sender,'Este Número Não Recebe Ligações!','','Ligação');
   Caption := 'WPP4Delphi - Powered by WPPConnect Team';
   Application.ProcessMessages;
@@ -527,6 +528,11 @@ procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
   Clipboard.AsText := Invite;
   ShowMessage('Link do grupo copiado: ' + Invite);
+end;
+
+procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
+begin
+  ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
 end;
 
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);

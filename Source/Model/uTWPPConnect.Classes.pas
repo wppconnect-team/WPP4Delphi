@@ -433,6 +433,14 @@ type
    property valid : boolean  read Fvalid write Fvalid;
  end;
 
+ TReturngetLastSeen = class(TClassPadrao) //Marcelo 31/07/2022
+ private
+   Fid : String;
+   Fresult: Int64;
+ public
+   property id : String read Fid write Fid;
+   property result : Int64 read Fresult write Fresult;
+ end;
 
  TGetMeClass = class(TClassPadrao)
    private
