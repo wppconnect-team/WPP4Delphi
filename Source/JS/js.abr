@@ -13960,3 +13960,20 @@ function monitorWPPCrash() {
    
 }
 
+//Marcelo Última Visualização no WhatsApp
+window.WAPI.getLastSeen = async function(chatid) {
+    const result = await WPP.chat.getLastSeen(chatid);
+
+    if (result) {
+        try {
+            SetConsoleMessage("getLastSeen", JSON.stringify(result));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log(err);
+
+    }
+};
