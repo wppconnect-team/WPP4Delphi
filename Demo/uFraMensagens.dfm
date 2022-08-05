@@ -565,6 +565,22 @@ object frameMensagem: TframeMensagem
       ExplicitTop = 579
     end
   end
+  object btnValidarListarNumeros: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 516
+      Width = 221
+      Height = 25
+      Cursor = crHandPoint
+      Align = alTop
+      Caption = 'Validar Lista de N'#250'meros'
+      ImageIndex = 16
+      Images = ImageList1
+      TabOrder = 16
+      OnClick = btnValidarListarNumerosClick
+      ExplicitTop = 591
+    end
+  end
   object GroupBox3: TGroupBox
     AlignWithMargins = True
     Left = 724
