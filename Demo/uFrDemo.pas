@@ -399,13 +399,29 @@ begin
 end;
 
 procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
+var
+vStatus : Boolean;
 begin
-  //Marcelo 18/07/2022
-  if vCheckNumberExists.valid then
-    ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
-  else
-    ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
 
+    //Aurino 05/08/2022
+    if r_CheckNumber then  //validaçao por lita
+    begin
+      if v_ValidNumberSleep then
+      begin
+        vStatus       := vCheckNumberExists.valid; {capturando retorno}
+        v_ValidNumber := vStatus  ;
+        v_Checado     := true;
+      end;
+    end;
+
+    if not r_CheckNumber then //validação individual //Aurino 05/08/2022
+    begin
+      //Marcelo 18/07/2022
+      if vCheckNumberExists.valid then
+        ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
+      else
+        ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
+    end;
 end;
 
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
