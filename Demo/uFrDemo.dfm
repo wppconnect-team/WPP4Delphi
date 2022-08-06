@@ -2,7 +2,7 @@ object frDemo: TfrDemo
   Left = 0
   Top = 0
   Caption = 'WPP4Delphi - Powered by WPPConnect Team'
-  ClientHeight = 645
+  ClientHeight = 733
   ClientWidth = 1208
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -21,17 +21,18 @@ object frDemo: TfrDemo
     Left = 0
     Top = 113
     Width = 200
-    Height = 507
+    Height = 595
     BevelOuter = bvRaised
     Color = 2012675
     OpenedWidth = 200
     Placement = svpLeft
     TabOrder = 0
+    ExplicitHeight = 507
     object ctbtn: TCategoryButtons
       Left = 1
       Top = 1
       Width = 198
-      Height = 505
+      Height = 593
       Margins.Right = 650
       Align = alClient
       BevelInner = bvNone
@@ -88,6 +89,7 @@ object frDemo: TfrDemo
       RegularButtonColor = clNone
       SelectedButtonColor = 8453888
       TabOrder = 0
+      ExplicitHeight = 505
     end
   end
   object pnltopo: TPanel
@@ -1566,7 +1568,7 @@ object frDemo: TfrDemo
   end
   object pnlrodape: TPanel
     Left = 0
-    Top = 620
+    Top = 708
     Width = 1208
     Height = 25
     Align = alBottom
@@ -1574,6 +1576,7 @@ object frDemo: TfrDemo
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 2
+    ExplicitTop = 620
     object StatusBar1: TStatusBar
       AlignWithMargins = True
       Left = 3
@@ -1595,7 +1598,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -1610,44 +1613,36 @@ object frDemo: TfrDemo
     ExplicitWidth = 1008
     ExplicitHeight = 507
     inherited GroupBox1: TGroupBox
-      Height = 501
+      Height = 589
       ExplicitHeight = 501
       inherited PageControl1: TPageControl
         Top = 278
+        Height = 309
         ExplicitTop = 278
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
+          ExplicitHeight = 279
+          inherited Image1: TImage
+            Height = 264
           end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
-      Height = 501
+      Height = 589
       ExplicitHeight = 501
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
       end
-      inherited btnBotaoSimples: TButton
-        ExplicitLeft = 5
-      end
     end
     inherited GroupBox2: TGroupBox
-      Height = 501
+      Height = 589
       ExplicitHeight = 501
+      inherited Button1: TButton
+        ExplicitTop = 519
+      end
     end
     inherited GroupBox3: TGroupBox
-      Height = 501
+      Height = 589
       ExplicitHeight = 501
       inherited groupListaContatos: TGroupBox
         Height = 227
@@ -1659,11 +1654,11 @@ object frDemo: TfrDemo
       end
       inherited groupListaChats: TGroupBox
         Top = 250
-        Height = 249
+        Height = 337
         ExplicitTop = 250
         ExplicitHeight = 249
         inherited listaChats: TListView
-          Height = 195
+          Height = 283
           ExplicitHeight = 195
         end
       end
@@ -1673,7 +1668,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     TabOrder = 4
     Visible = False
@@ -1683,7 +1678,7 @@ object frDemo: TfrDemo
     ExplicitHeight = 507
     inherited memo_unReadMessageEnv: TMemo
       Width = 1008
-      Height = 507
+      Height = 595
       WordWrap = False
       ExplicitLeft = 0
       ExplicitWidth = 1008
@@ -1694,7 +1689,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     TabOrder = 5
     Visible = False
@@ -1704,7 +1699,7 @@ object frDemo: TfrDemo
     ExplicitHeight = 507
     inherited memo_unReadMessage: TMemo
       Width = 1008
-      Height = 418
+      Height = 506
       ExplicitTop = 89
       ExplicitWidth = 1008
       ExplicitHeight = 418
@@ -1739,7 +1734,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -1755,7 +1750,7 @@ object frDemo: TfrDemo
     ExplicitHeight = 507
     DesignSize = (
       1008
-      507)
+      595)
     inherited lblStatus: TLabel
       Left = 14
       Anchors = [akLeft, akTop, akRight]
@@ -1781,7 +1776,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -1809,19 +1804,19 @@ object frDemo: TfrDemo
     end
     inherited gbOpcoesCatalogo: TGroupBox
       Left = 738
-      Height = 346
+      Height = 434
       ExplicitLeft = 738
       ExplicitHeight = 346
     end
     inherited GroupBox1: TGroupBox
-      Height = 346
+      Height = 434
       ExplicitHeight = 346
       inherited DBCtrlGrid1: TDBCtrlGrid
-        Height = 327
-        PanelHeight = 163
+        Height = 415
+        PanelHeight = 207
         ExplicitHeight = 327
         inherited DBImage1: TDBImage
-          Height = 163
+          Height = 207
           ExplicitHeight = 163
         end
       end
@@ -1831,7 +1826,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -1846,7 +1841,7 @@ object frDemo: TfrDemo
     ExplicitWidth = 1008
     ExplicitHeight = 507
     inherited GroupBox1: TGroupBox
-      Height = 507
+      Height = 595
       ExplicitHeight = 507
     end
   end
@@ -1854,7 +1849,7 @@ object frDemo: TfrDemo
     Left = 200
     Top = 113
     Width = 1008
-    Height = 507
+    Height = 595
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -1870,29 +1865,32 @@ object frDemo: TfrDemo
     ExplicitHeight = 507
     inherited ScrollBox1: TScrollBox
       Width = 1008
-      Height = 507
+      Height = 595
       ExplicitWidth = 1008
       ExplicitHeight = 507
       inherited gbGrupos: TGroupBox
-        Height = 497
+        Height = 585
         ExplicitHeight = 497
         inherited gbacoes: TGroupBox
-          Height = 323
+          Height = 411
           ExplicitHeight = 323
+          inherited btnMudarImagemGrupo: TButton
+            OnClick = frameGrupos1btnMudarImagemGrupoClick
+          end
         end
       end
       inherited pnlEsquerda: TPanel
-        Height = 497
+        Height = 585
         ExplicitHeight = 497
       end
       inherited pnlGruposParticipantes: TPanel
         Width = 474
-        Height = 497
+        Height = 585
         ExplicitWidth = 474
         ExplicitHeight = 497
         inherited GroupBox1: TGroupBox
           Width = 468
-          Height = 491
+          Height = 579
           ExplicitWidth = 468
           ExplicitHeight = 491
           inherited gbAdmin: TGroupBox
@@ -1905,7 +1903,7 @@ object frDemo: TfrDemo
           end
           inherited gbParticipantes: TGroupBox
             Width = 458
-            Height = 332
+            Height = 420
             ExplicitWidth = 458
             ExplicitHeight = 332
             inherited lblIdParticipante: TLabel
@@ -1913,13 +1911,13 @@ object frDemo: TfrDemo
             end
             inherited listaParticipantes: TListView
               Width = 414
-              Height = 239
+              Height = 327
               ExplicitWidth = 414
               ExplicitHeight = 239
             end
             inherited pnlParticipantesBotoes: TPanel
               Left = 422
-              Height = 245
+              Height = 333
               ExplicitLeft = 422
               ExplicitHeight = 245
             end
@@ -5552,9 +5550,8 @@ object frDemo: TfrDemo
     OnGetMe = TWPPConnect1GetMe
     OnNewGetNumber = TWPPConnect1NewGetNumber
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
-    OngetLastSeen = TWPPConnect1getLastSeen
-    Left = 352
-    Top = 144
+    Left = 304
+    Top = 376
   end
   object timerStatus: TTimer
     Enabled = False

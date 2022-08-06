@@ -111,9 +111,11 @@ type
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
+    procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
     { Private declarations }
+
 
      FStatus: Boolean;
   public
@@ -128,6 +130,15 @@ type
       pContato: String): Boolean;
     function killtask(ExeFileName: string): Integer;
     function CaractersWeb(vText: string): string;
+
+
+   var   {validando numeros em listagem}
+     r_CheckNumber : boolean;  {verifica se rotina está ativa}
+     v_ValidNumber : Boolean;  {verifica se numero é valido}
+     v_ValidNumberSleep  : boolean;
+     v_Checado : boolean ;
+
+
   end;
 
 var
