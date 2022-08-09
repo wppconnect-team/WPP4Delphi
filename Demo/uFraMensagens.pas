@@ -9,7 +9,6 @@
   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
   an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
-
                               WPPCONNECT - Componente de comunicação (Não Oficial)
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
@@ -22,7 +21,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls,
+  Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls, uTWPPConnect.Constant ,
   EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo;
 
 type
@@ -83,6 +82,7 @@ type
     Memo1: TMemo;
     lblCaminhoImagem: TLabel;
     Button1: TButton;
+    btnValidarListarNumeros: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -121,6 +121,7 @@ type
     procedure btnStatusImagemClick(Sender: TObject);
     procedure btnVideoStatusClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure btnValidarListarNumerosClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -409,14 +410,16 @@ end;
 procedure TframeMensagem.btnDetalheClick(Sender: TObject);
 begin
 
-  try
+  try
+
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
     frDemo.TWPPConnect1.GetMe();
   finally
 
-  end;
+  end;
+
 end;
 
 procedure TframeMensagem.btnFixarChatClick(Sender: TObject);
@@ -595,7 +598,8 @@ begin
  if not frDemo.TWPPConnect1.Auth then
 
      Exit;
-
+
+
   frDemo.TWPPConnect1.CleanALLChat(ed_num.Text);
 end;
 
@@ -1017,12 +1021,66 @@ begin
   end;
 end;
 
+procedure TframeMensagem.btnValidarListarNumerosClick(Sender: TObject);
+var
+OpenFileTXT : TOpenDialog;
+memocontact : Tmemo;
+memoCoctacValid : tmemo;
+a : integer;
+begin
+  OpenFileTXT := TOpenDialog.Create(self);
+  memocontact := TMemo.Create(self);
+  memocontact.parent := self;
+  memocontact.Visible := false;
+
+  memoCoctacValid := TMemo.Create(self);
+  memoCoctacValid.parent := self;
+  memoCoctacValid.Visible := false;
+  memoCoctacValid.Lines.Add('NUMEROS VALIDOS');
+
+  try
+    OpenFileTXT.Filter := '*.txt|*.txt'; {carregando numero de um arquivo txt}
+    if OpenFileTXT.Execute then
+    begin
+      memocontact.Clear;
+      memocontact.Lines.LoadFromFile(OpenFileTXT.FileName) ;
+    end;
+
+    {validando listagem do memo}
+    frDemo.r_CheckNumber  := true; {ativando rotina by list}
+    for a := 0 to pred(memocontact.Lines.Count)do
+    begin
+     repeat
+       if frDemo.v_ValidNumberSleep = false then {validando modo espera}
+       begin
+         frDemo.v_ValidNumberSleep  := true;
+         frDemo.TWPPConnect1.CheckNumberExists( memocontact.Lines[a] );
+         SleepNoFreeze(1500);
+       end;
+     until (frDemo.v_Checado = true);
+     frDemo.v_ValidNumberSleep  := false;  {saindo do modo espera}
+     if frDemo.v_ValidNumber then {testando resultado}
+     memoCoctacValid.Lines.Add( memocontact.Lines[a]);
+    end;
+
+  finally
+   memoCoctacValid.Lines.SaveToFile('C:\Executaveis\WPPConnectDemo\temp\wpp4delphi_numberchecklist_'+FormatDateTime('ddmmyyyy hhnnss', now) +'.txt');
+   OpenFileTXT.Free;
+   memocontact.free;
+   memoCoctacValid.free;
+  end;
+end;
+
 procedure TframeMensagem.btnVerificarNumeroClick(Sender: TObject);
 begin
  if not frDemo.TWPPConnect1.Auth then
    Exit;
 
-  //frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');  //frDemo.TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);  //Marcelo 18/07/2022  frDemo.TWPPConnect1.CheckNumberExists(ed_num.Text);
+  //frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
+  //frDemo.TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);
+  //Marcelo 18/07/2022
+  frDemo.TWPPConnect1.CheckNumberExists(ed_num.Text);
+
 end;
 
 procedure TframeMensagem.btnVideoBotaoClick(Sender: TObject);

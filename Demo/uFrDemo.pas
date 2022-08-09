@@ -111,9 +111,11 @@ type
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
+    procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
     { Private declarations }
+
 
      FStatus: Boolean;
   public
@@ -128,6 +130,15 @@ type
       pContato: String): Boolean;
     function killtask(ExeFileName: string): Integer;
     function CaractersWeb(vText: string): string;
+
+
+   var   {validando numeros em listagem}
+     r_CheckNumber : boolean;  {verifica se rotina está ativa}
+     v_ValidNumber : Boolean;  {verifica se numero é valido}
+     v_ValidNumberSleep  : boolean;
+     v_Checado : boolean ;
+
+
   end;
 
 var
@@ -399,13 +410,29 @@ begin
 end;
 
 procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
+var
+vStatus : Boolean;
 begin
-  //Marcelo 18/07/2022
-  if vCheckNumberExists.valid then
-    ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
-  else
-    ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
 
+    //Aurino 05/08/2022
+    if r_CheckNumber then  //validaçao por lita
+    begin
+      if v_ValidNumberSleep then
+      begin
+        vStatus       := vCheckNumberExists.valid; {capturando retorno}
+        v_ValidNumber := vStatus  ;
+        v_Checado     := true;
+      end;
+    end;
+
+    if not r_CheckNumber then //validação individual //Aurino 05/08/2022
+    begin
+      //Marcelo 18/07/2022
+      if vCheckNumberExists.valid then
+        ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
+      else
+        ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
+    end;
 end;
 
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
