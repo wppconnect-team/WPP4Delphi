@@ -314,7 +314,7 @@ begin
 
 
     options :=
-      'useTemplateButtons: true,' +
+      'useTemplateButtons: undefined,' +
       'createChat: true,' +
       'buttons:' +
       '['+
@@ -479,7 +479,7 @@ begin
 
       options :=
         'createChat: true, ' +
-        'useTemplateButtons: true, ' +
+        'useTemplateButtons: undefined, ' + //Crash iOS True
         'title: "Novidades",  ' +
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
@@ -488,6 +488,7 @@ begin
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +  *)
         //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
@@ -724,7 +725,7 @@ begin
       'name: "Cristo Rendentor", ' +
       'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ", ' +
       'url: "https://santuariocristoredentor.com.br/", ' +
-      'useTemplateButtons: true, ' +
+      'useTemplateButtons: undefined, ' +
       'createChat: true, ' +
       'title: "Cristo Rendentor",  ' +
       'footer: "Pacote de Viagem",  ' +
@@ -929,7 +930,7 @@ begin
 
       options :=
         'createChat: true, ' +
-        'useTemplateButtons: true, ' +
+        'useTemplateButtons: undefined, ' +
         'title: "Novidades",  ' +
         'footer: "Imagem com Botão",  ' +
         'buttons: [ ' +
@@ -1067,15 +1068,19 @@ begin
 
       options :=
         'createChat: true, ' +
-        'useTemplateButtons: true, ' +
+        'useTemplateButtons: undefined, ' +
         'title: "Novidades",  ' +
         'footer: "Video com Botão",  ' +
         'buttons: [ ' +
+
+        (*
         '  { ' +
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
+        *)
+
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
