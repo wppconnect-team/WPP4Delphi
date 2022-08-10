@@ -375,9 +375,10 @@ object frameGrupos: TframeGrupos
             AlignWithMargins = True
             Left = 5
             Top = 67
-            Width = 3
+            Width = 374
             Height = 15
             Align = alTop
+            ExplicitWidth = 3
           end
           object listaParticipantes: TListView
             AlignWithMargins = True

@@ -111,7 +111,7 @@ type
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
-    procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
+    //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -878,7 +878,10 @@ begin
 
           try
             if Assigned(AMessage.quotedMsg) then
+            begin
               quotedMsg_caption := AMessage.quotedMsg.Caption;
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+            end;
             // Mensagem Original do Click do Botão
           except
             on E: Exception do
@@ -888,7 +891,10 @@ begin
           //Marcelo 25/07/2022 Unique ID Mensagem Origem
           try
             if Assigned(AMessage.quotedMsgObj) then
+            begin
               IdMensagemOrigem := AMessage.quotedMsgObj.id ;
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+            end;
           except
             on E: Exception do
               IdMensagemOrigem := '';

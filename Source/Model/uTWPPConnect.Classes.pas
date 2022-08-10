@@ -631,6 +631,72 @@ type
     property    callButton       : TArray<TcallButtonClass>       read FcallButton       write FcallButton;
   end;
 
+  //Marcelo 09/08/2022
+  TButtonTextClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FDisplayText: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property displayText: String read FDisplayText write FDisplayText;
+  end;
+
+  //Marcelo 09/08/2022
+  TDynamicReplyButtonsClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FButtonId: String;
+    FButtonText: TButtonTextClass;
+    FType: Extended;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property buttonId: String read FButtonId write FButtonId;
+    property buttonText: TButtonTextClass read FButtonText write FButtonText;
+    property &type: Extended read FType write FType;
+  end;
+
+  //Marcelo 09/08/2022
+  TRowsClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FDescription: String;
+    FRowId: String;
+    FTitle: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property description: String read FDescription write FDescription;
+    property rowId: String read FRowId write FRowId;
+    property title: String read FTitle write FTitle;
+  end;
+
+  //Marcelo 09/08/2022
+  TSectionsClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FRows: TArray<TRowsClass>;
+    FTitle: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property rows: TArray<TRowsClass> read FRows write FRows;
+    property title: String read FTitle write FTitle;
+  end;
+
+  //Marcelo 09/08/2022
+  TListClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FButtonText: String;
+    FDescription: String;
+    FListType: Extended;
+    FSections: TArray<TSectionsClass>;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property buttonText: String read FButtonText write FButtonText;
+    property description: String read FDescription write FDescription;
+    property listType: Extended read FListType write FListType;
+    property sections: TArray<TSectionsClass> read FSections write FSections;
+  end;
+
   //Marcelo 27/04/2022
   TquotedMsgClass = class(TClassPadrao)
   private
@@ -640,13 +706,24 @@ type
     Fbody            : string;
     Fcaption         : string;
     Ffooter          : string;
+    //Marcelo 09/08/2022
+    FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
+    FisDynamicReplyButtonsMsg: boolean;
+    FheaderType: integer;
+    FList: TListClass;
   public
-    property    &type           : string   read Ftype            write Ftype;
-    property    isFromTemplate  : Boolean  read FisFromTemplate  write FisFromTemplate;
+    property    &type           : string     read Ftype            write Ftype;
+    property    isFromTemplate  : Boolean    read FisFromTemplate  write FisFromTemplate;
     property    hydratedButtons : TArray<ThydratedButtonsClass> read FhydratedButtons write FhydratedButtons;
-    property    body            : string   read Fbody            write Fbody;
-    property    caption         : string   read Fcaption         write Fcaption;
-    property    footer          : string   read Ffooter          write Ffooter;
+    property    body            : string     read Fbody            write Fbody;
+    property    caption         : string     read Fcaption         write Fcaption;
+    property    footer          : string     read Ffooter          write Ffooter;
+
+    //Marcelo 09/08/2022
+    property    dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
+    property    isDynamicReplyButtonsMsg : boolean  read FisDynamicReplyButtonsMsg write FisDynamicReplyButtonsMsg;
+    property    headerType      : integer    read FheaderType      write FheaderType;
+    property    list            : TListClass read FList            write FList;
   end;
 
   //Marcelo 27/04/2022
@@ -728,6 +805,10 @@ type
     FSender: TSenderClass;
     FStar: Boolean;
     FTo: String;
+    //Marcelo 09/08/2022
+    FheaderType: Integer;
+    FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
+    FList: TListClass;
   public
     property &type: String read Ftype write Ftype;
     property author: String read FAuthor write FAuthor;
@@ -755,10 +836,10 @@ type
     property sender: TSenderClass read FSender write FSender;
     property star: Boolean read FStar write FStar;
     property &to: String read FTo write FTo;
-    {constructor Create;
-    destructor Destroy; override;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TQuotedMsgObjClass;}
+    //Marcelo 09/08/2022
+    property headerType : Integer    read FheaderType write FheaderType;
+    property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
+    property list       : TListClass read FList       write FList;
   end;
 
   TMessagesClass = class(TClassPadrao)

@@ -27,7 +27,6 @@ object frDemo: TfrDemo
     OpenedWidth = 200
     Placement = svpLeft
     TabOrder = 0
-    ExplicitHeight = 507
     object ctbtn: TCategoryButtons
       Left = 1
       Top = 1
@@ -89,7 +88,6 @@ object frDemo: TfrDemo
       RegularButtonColor = clNone
       SelectedButtonColor = 8453888
       TabOrder = 0
-      ExplicitHeight = 505
     end
   end
   object pnltopo: TPanel
@@ -1576,7 +1574,6 @@ object frDemo: TfrDemo
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 620
     object StatusBar1: TStatusBar
       AlignWithMargins = True
       Left = 3
@@ -1611,39 +1608,38 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited GroupBox1: TGroupBox
       Height = 589
-      ExplicitHeight = 501
+      ExplicitHeight = 589
       inherited PageControl1: TPageControl
         Top = 278
         Height = 309
         ExplicitTop = 278
+        ExplicitHeight = 309
         inherited tsImage: TTabSheet
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
+            ExplicitHeight = 264
           end
         end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
       Height = 589
-      ExplicitHeight = 501
+      ExplicitHeight = 589
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
       end
     end
     inherited GroupBox2: TGroupBox
       Height = 589
-      ExplicitHeight = 501
-      inherited Button1: TButton
-        ExplicitTop = 519
-      end
+      ExplicitHeight = 589
     end
     inherited GroupBox3: TGroupBox
       Height = 589
-      ExplicitHeight = 501
+      ExplicitHeight = 589
       inherited groupListaContatos: TGroupBox
         Height = 227
         ExplicitHeight = 227
@@ -1656,10 +1652,10 @@ object frDemo: TfrDemo
         Top = 250
         Height = 337
         ExplicitTop = 250
-        ExplicitHeight = 249
+        ExplicitHeight = 337
         inherited listaChats: TListView
           Height = 283
-          ExplicitHeight = 195
+          ExplicitHeight = 283
         end
       end
     end
@@ -1675,14 +1671,14 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited memo_unReadMessageEnv: TMemo
       Width = 1008
       Height = 595
       WordWrap = False
       ExplicitLeft = 0
       ExplicitWidth = 1008
-      ExplicitHeight = 507
+      ExplicitHeight = 595
     end
   end
   inline frameMensagensRecebidas1: TframeMensagensRecebidas
@@ -1696,13 +1692,13 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited memo_unReadMessage: TMemo
       Width = 1008
       Height = 506
       ExplicitTop = 89
       ExplicitWidth = 1008
-      ExplicitHeight = 418
+      ExplicitHeight = 506
     end
     inherited Panel1: TPanel
       Width = 1008
@@ -1747,7 +1743,7 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     DesignSize = (
       1008
       595)
@@ -1789,7 +1785,7 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited pnlGridCatalogo: TPanel
       Width = 1008
       ExplicitWidth = 1008
@@ -1806,18 +1802,18 @@ object frDemo: TfrDemo
       Left = 738
       Height = 434
       ExplicitLeft = 738
-      ExplicitHeight = 346
+      ExplicitHeight = 434
     end
     inherited GroupBox1: TGroupBox
       Height = 434
-      ExplicitHeight = 346
+      ExplicitHeight = 434
       inherited DBCtrlGrid1: TDBCtrlGrid
         Height = 415
         PanelHeight = 207
-        ExplicitHeight = 327
+        ExplicitHeight = 415
         inherited DBImage1: TDBImage
           Height = 207
-          ExplicitHeight = 163
+          ExplicitHeight = 207
         end
       end
     end
@@ -1839,10 +1835,10 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited GroupBox1: TGroupBox
       Height = 595
-      ExplicitHeight = 507
+      ExplicitHeight = 595
     end
   end
   inline frameGrupos1: TframeGrupos
@@ -1862,37 +1858,34 @@ object frDemo: TfrDemo
     ExplicitLeft = 200
     ExplicitTop = 113
     ExplicitWidth = 1008
-    ExplicitHeight = 507
+    ExplicitHeight = 595
     inherited ScrollBox1: TScrollBox
       Width = 1008
       Height = 595
       ExplicitWidth = 1008
-      ExplicitHeight = 507
+      ExplicitHeight = 595
       inherited gbGrupos: TGroupBox
         Height = 585
-        ExplicitHeight = 497
+        ExplicitHeight = 585
         inherited gbacoes: TGroupBox
           Height = 411
-          ExplicitHeight = 323
-          inherited btnMudarImagemGrupo: TButton
-            OnClick = frameGrupos1btnMudarImagemGrupoClick
-          end
+          ExplicitHeight = 411
         end
       end
       inherited pnlEsquerda: TPanel
         Height = 585
-        ExplicitHeight = 497
+        ExplicitHeight = 585
       end
       inherited pnlGruposParticipantes: TPanel
         Width = 474
         Height = 585
         ExplicitWidth = 474
-        ExplicitHeight = 497
+        ExplicitHeight = 585
         inherited GroupBox1: TGroupBox
           Width = 468
           Height = 579
           ExplicitWidth = 468
-          ExplicitHeight = 491
+          ExplicitHeight = 579
           inherited gbAdmin: TGroupBox
             Width = 458
             ExplicitWidth = 458
@@ -1905,7 +1898,7 @@ object frDemo: TfrDemo
             Width = 458
             Height = 420
             ExplicitWidth = 458
-            ExplicitHeight = 332
+            ExplicitHeight = 420
             inherited lblIdParticipante: TLabel
               Width = 448
             end
@@ -1913,13 +1906,13 @@ object frDemo: TfrDemo
               Width = 414
               Height = 327
               ExplicitWidth = 414
-              ExplicitHeight = 239
+              ExplicitHeight = 327
             end
             inherited pnlParticipantesBotoes: TPanel
               Left = 422
               Height = 333
               ExplicitLeft = 422
-              ExplicitHeight = 245
+              ExplicitHeight = 333
             end
             inherited pnltopopartici: TPanel
               Width = 448
