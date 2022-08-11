@@ -880,6 +880,10 @@ begin
             if Assigned(AMessage.quotedMsg) then
             begin
               quotedMsg_caption := AMessage.quotedMsg.Caption;
+              if Trim(quotedMsg_caption) = '' then
+                if Assigned(AMessage.quotedMsg.list) then
+                  quotedMsg_caption := AMessage.quotedMsg.list.description;
+
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
             end;
             // Mensagem Original do Click do Botão
