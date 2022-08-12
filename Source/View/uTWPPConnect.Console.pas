@@ -838,6 +838,9 @@ procedure TFrmConsole.ReadMessages(vID: string);
 var
   LJS: String;
 begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
   LJS := FrmConsole_JS_VAR_ReadMessages;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#' , Trim(vID)), False);
 end;
@@ -1041,8 +1044,9 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   titleText := CaractersWeb(titleText);
+  buttons := CaractersQuebraLinha(buttons);
 
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendButtons;
+  LJS   := FrmConsole_JS_VAR_SendButtons;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_TITLE#',       Trim(titleText));
   FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONS#',     Trim(buttons));
@@ -1122,6 +1126,8 @@ begin
     content := LLine;
 
     //SalvaLog(content, 'CONSOLE');
+
+    options := CaractersQuebraLinha(options);
 
     //LJS   := FrmConsole_JS_VAR_markIsComposing + FrmConsole_JS_VAR_sendFileMessage;
     //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendFileMessage;
@@ -1242,6 +1248,8 @@ begin
 
   description := CaractersWeb(description);
   buttonText := CaractersWeb(buttonText);
+
+  sections := CaractersQuebraLinha(sections);
 
   LJS   := FrmConsole_JS_VAR_sendListMessageEx;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
@@ -1395,8 +1403,9 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   content := CaractersWeb(content);
+  options := CaractersQuebraLinha(options);
 
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendTextMessage;
+  LJS   := FrmConsole_JS_VAR_SendTextMessage;
   //LJS   := FrmConsole_JS_VAR_SendTextMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
@@ -1413,6 +1422,8 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   content := CaractersWeb(content);
+  options := CaractersQuebraLinha(options);
+
   LJS   := FrmConsole_JS_VAR_SendTextMessageEx;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));

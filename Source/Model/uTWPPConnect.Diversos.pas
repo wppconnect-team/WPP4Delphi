@@ -43,6 +43,7 @@ uses
 
 function PrettyJSON(JsonString: String):String;
 function CaractersWeb(vText: string): string;
+function CaractersQuebraLinha(vText: string): string;
 function Convert_StrToBase64(vFile: string): string;
 function Convert_StrToBase64Stream(Var vMemo: TMemoryStream): string;
 
@@ -186,15 +187,26 @@ End;
 
 function CaractersWeb(vText: string): string;
 begin
-  vText  := StringReplace(vText, sLineBreak,'\n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
-  vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
+  //vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
   vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
-  vText  := StringReplace(vText, #$A       ,'<br>'   , [rfReplaceAll] );
-  vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A       ,' \n'   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A#$A    ,' \n'   , [rfReplaceAll] );
   Result := vText;
 end;
 
+function CaractersQuebraLinha(vText: string): string;
+begin
+  vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
+  vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
+  //vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A       ,' \n'   , [rfReplaceAll] );
+  vText  := StringReplace(vText, #$A#$A    ,' \n'   , [rfReplaceAll] );
+  Result := vText;
+end;
 
 
 

@@ -3047,6 +3047,7 @@ begin
   //temis 03-06-2022
   if Application.Terminated Then
     Exit;
+
   if not Assigned(FrmConsole) then
     Exit;
 
@@ -3074,12 +3075,11 @@ begin
           begin
             FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID);
-{            if etapa <> '' then
-            begin
-              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
-            end;}
+
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+
           end;
-        end);
+       end);
 
       end);
   lThread.FreeOnTerminate := true;
