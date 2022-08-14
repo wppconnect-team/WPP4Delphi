@@ -14727,3 +14727,20 @@ window.WAPI.getLastSeen = async function(chatid) {
 
     }
 };
+
+window.WAPI.getMessages = async function(chatid, options) {
+    const result = await WPP.chat.getMessages(chatid, options);
+
+    if (result) {
+        try {
+            SetConsoleMessage("getMessages", JSON.stringify(result));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO');
+
+    }
+};
