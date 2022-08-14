@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.10.1
+//WPPCONNECT v2.11.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2370,7 +2370,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 function c(e, t, r) {
                     if ("string" == typeof e) return function(e, t) {
                         if ("string" == typeof t && "" !== t || (t = "utf8"), !u.isEncoding(t)) throw new TypeError("Unknown encoding: " + t);
-                        const r = 0 | h(e, t);
+                        const r = 0 | g(e, t);
                         let n = a(r);
                         const o = n.write(e, t);
                         return o !== r && (n = n.slice(0, o)), n
@@ -2429,7 +2429,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return 0 | e
                 }
 
-                function h(e, t) {
+                function g(e, t) {
                     if (u.isBuffer(e)) return e.length;
                     if (ArrayBuffer.isView(e) || Q(e, ArrayBuffer)) return e.byteLength;
                     if ("string" != typeof e) throw new TypeError('The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof e);
@@ -2444,7 +2444,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return r;
                         case "utf8":
                         case "utf-8":
-                            return K(e).length;
+                            return V(e).length;
                         case "ucs2":
                         case "ucs-2":
                         case "utf16le":
@@ -2453,14 +2453,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "hex":
                             return r >>> 1;
                         case "base64":
-                            return V(e).length;
+                            return K(e).length;
                         default:
-                            if (o) return n ? -1 : K(e).length;
+                            if (o) return n ? -1 : V(e).length;
                             t = ("" + t).toLowerCase(), o = !0
                     }
                 }
 
-                function g(e, t, r) {
+                function h(e, t, r) {
                     let n = !1;
                     if ((void 0 === t || t < 0) && (t = 0), t > this.length) return "";
                     if ((void 0 === r || r > this.length) && (r = this.length), r <= 0) return "";
@@ -2553,10 +2553,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function M(e, t, r, n) {
-                    return H(K(t, e.length - r), e, r, n)
+                    return H(V(t, e.length - r), e, r, n)
                 }
 
-                function w(e, t, r, n) {
+                function P(e, t, r, n) {
                     return H(function(e) {
                         const t = [];
                         for (let r = 0; r < e.length; ++r) t.push(255 & e.charCodeAt(r));
@@ -2564,8 +2564,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }(t), e, r, n)
                 }
 
-                function P(e, t, r, n) {
-                    return H(V(t), e, r, n)
+                function w(e, t, r, n) {
+                    return H(K(t), e, r, n)
                 }
 
                 function O(e, t, r, n) {
@@ -2695,7 +2695,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         o += t.length
                     }
                     return n
-                }, u.byteLength = h, u.prototype._isBuffer = !0, u.prototype.swap16 = function() {
+                }, u.byteLength = g, u.prototype._isBuffer = !0, u.prototype.swap16 = function() {
                     const e = this.length;
                     if (e % 2 != 0) throw new RangeError("Buffer size must be a multiple of 16-bits");
                     for (let t = 0; t < e; t += 2) y(this, t, t + 1);
@@ -2712,7 +2712,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return this
                 }, u.prototype.toString = function() {
                     const e = this.length;
-                    return 0 === e ? "" : 0 === arguments.length ? x(this, 0, e) : g.apply(this, arguments)
+                    return 0 === e ? "" : 0 === arguments.length ? x(this, 0, e) : h.apply(this, arguments)
                 }, u.prototype.toLocaleString = u.prototype.toString, u.prototype.equals = function(e) {
                     if (!u.isBuffer(e)) throw new TypeError("Argument must be a Buffer");
                     return this === e || 0 === u.compare(this, e)
@@ -2763,9 +2763,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "ascii":
                         case "latin1":
                         case "binary":
-                            return w(this, e, t, r);
-                        case "base64":
                             return P(this, e, t, r);
+                        case "base64":
+                            return w(this, e, t, r);
                         case "ucs2":
                         case "ucs-2":
                         case "utf16le":
@@ -2844,11 +2844,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r < 0) throw new RangeError("Index out of range")
                 }
 
-                function U(e, t, r, n, i) {
+                function F(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function F(e, t, r, n, i) {
+                function U(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3006,13 +3006,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
                     return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeFloatLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
-                }, u.prototype.writeFloatBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
-                }, u.prototype.writeDoubleLE = function(e, t, r) {
                     return F(this, e, t, !0, r)
-                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
+                }, u.prototype.writeDoubleLE = function(e, t, r) {
+                    return U(this, e, t, !0, r)
+                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                    return U(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3111,7 +3111,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), RangeError);
                 const q = /[^+/0-9A-Za-z-_]/g;
 
-                function K(e, t) {
+                function V(e, t) {
                     let r;
                     t = t || 1 / 0;
                     const n = e.length;
@@ -3155,7 +3155,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return i
                 }
 
-                function V(e) {
+                function K(e) {
                     return n.toByteArray(function(e) {
                         if ((e = (e = e.split("=")[0]).trim().replace(q, "")).length < 2) return "";
                         for (; e.length % 4 != 0;) e += "=";
@@ -3327,7 +3327,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     var p = String.fromCharCode;
                     var m = u.btoa;
 
-                    function h(e) {
+                    function g(e) {
                         var t, r = new DataView(e);
                         try {
                             var n, o, i;
@@ -3366,11 +3366,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         return t
                     }
-                    var g = /\.\d*(?:0|9){12}\d*$/;
+                    var h = /\.\d*(?:0|9){12}\d*$/;
 
                     function y(e) {
                         var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1e11;
-                        return g.test(e) ? Math.round(e * t) / t : e
+                        return h.test(e) ? Math.round(e * t) / t : e
                     }
 
                     function b(e) {
@@ -3392,8 +3392,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     var v = u.ArrayBuffer,
                         _ = u.FileReader,
                         M = u.URL || u.webkitURL,
-                        w = /\.\w+$/,
-                        P = u.Compressor;
+                        P = /\.\w+$/,
+                        w = u.Compressor;
                     return function() {
                         function e(r, n) {
                             (function(e, t) {
@@ -3403,7 +3403,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return n = e, d = [{
                             key: "noConflict",
                             value: function() {
-                                return window.Compressor = P, e
+                                return window.Compressor = w, e
                             }
                         }, {
                             key: "setDefaults",
@@ -3430,7 +3430,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                                     var n = e.target.result,
                                                         s = {};
                                                     if (a) {
-                                                        var u = h(n);
+                                                        var u = g(n);
                                                         u > 1 || !M ? (s.url = function(e, t) {
                                                             for (var r = [], n = new Uint8Array(e); n.length > 0;) r.push(p.apply(null, (o = n.subarray(0, 8192), Array.from ? Array.from(o) : l.call(o)))), n = n.subarray(8192);
                                                             var o;
@@ -3512,21 +3512,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     d = void 0 === l ? 1 : l,
                                     p = this.file,
                                     m = this.image,
-                                    h = this.options,
-                                    g = document.createElement("canvas"),
-                                    v = g.getContext("2d"),
+                                    g = this.options,
+                                    h = document.createElement("canvas"),
+                                    v = h.getContext("2d"),
                                     _ = Math.abs(i) % 180 == 90,
-                                    M = ("contain" === h.resize || "cover" === h.resize) && c(h.width) && c(h.height),
-                                    w = Math.max(h.maxWidth, 0) || 1 / 0,
-                                    P = Math.max(h.maxHeight, 0) || 1 / 0,
-                                    O = Math.max(h.minWidth, 0) || 0,
-                                    j = Math.max(h.minHeight, 0) || 0,
+                                    M = ("contain" === g.resize || "cover" === g.resize) && c(g.width) && c(g.height),
+                                    P = Math.max(g.maxWidth, 0) || 1 / 0,
+                                    w = Math.max(g.maxHeight, 0) || 1 / 0,
+                                    O = Math.max(g.minWidth, 0) || 0,
+                                    j = Math.max(g.minHeight, 0) || 0,
                                     x = r / n,
-                                    C = h.width,
-                                    S = h.height;
+                                    C = g.width,
+                                    S = g.height;
                                 if (_) {
-                                    var I = [P, w];
-                                    w = I[0], P = I[1];
+                                    var I = [w, P];
+                                    P = I[0], w = I[1];
                                     var E = [j, O];
                                     O = E[0], j = E[1];
                                     var k = [S, C];
@@ -3535,10 +3535,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 M && (x = C / S);
                                 var T = b({
                                     aspectRatio: x,
-                                    width: w,
-                                    height: P
+                                    width: P,
+                                    height: w
                                 }, "contain");
-                                w = T.width, P = T.height;
+                                P = T.width, w = T.height;
                                 var B = b({
                                     aspectRatio: x,
                                     width: O,
@@ -3549,7 +3549,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         aspectRatio: x,
                                         width: C,
                                         height: S
-                                    }, h.resize);
+                                    }, g.resize);
                                     C = A.width, S = A.height
                                 } else {
                                     var L = b({
@@ -3559,32 +3559,32 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         }),
                                         R = L.width;
                                     C = void 0 === R ? r : R;
-                                    var U = L.height;
-                                    S = void 0 === U ? n : U
+                                    var F = L.height;
+                                    S = void 0 === F ? n : F
                                 }
-                                var F = -(C = Math.floor(y(Math.min(Math.max(C, O), w)))) / 2,
-                                    D = -(S = Math.floor(y(Math.min(Math.max(S, j), P)))) / 2,
+                                var U = -(C = Math.floor(y(Math.min(Math.max(C, O), P)))) / 2,
+                                    D = -(S = Math.floor(y(Math.min(Math.max(S, j), w)))) / 2,
                                     G = C,
                                     N = S,
                                     W = [];
                                 if (M) {
-                                    var z, $, q, K, V = b({
+                                    var z, $, q, V, K = b({
                                         aspectRatio: x,
                                         width: r,
                                         height: n
                                     }, {
                                         contain: "cover",
                                         cover: "contain"
-                                    } [h.resize]);
-                                    q = V.width, K = V.height, z = (r - q) / 2, $ = (n - K) / 2, W.push(z, $, q, K)
+                                    } [g.resize]);
+                                    q = K.width, V = K.height, z = (r - q) / 2, $ = (n - V) / 2, W.push(z, $, q, V)
                                 }
-                                if (W.push(F, D, G, N), _) {
+                                if (W.push(U, D, G, N), _) {
                                     var H = [S, C];
                                     C = H[0], S = H[1]
                                 }
-                                g.width = C, g.height = S, f(h.mimeType) || (h.mimeType = p.type);
+                                h.width = C, h.height = S, f(g.mimeType) || (g.mimeType = p.type);
                                 var Q = "transparent";
-                                if (p.size > h.convertSize && h.convertTypes.indexOf(h.mimeType) >= 0 && (h.mimeType = "image/jpeg"), "image/jpeg" === h.mimeType && (Q = "#fff"), v.fillStyle = Q, v.fillRect(0, 0, C, S), h.beforeDraw && h.beforeDraw.call(this, v, g), !this.aborted && (v.save(), v.translate(C / 2, S / 2), v.rotate(i * Math.PI / 180), v.scale(u, d), v.drawImage.apply(v, [m].concat(W)), v.restore(), h.drew && h.drew.call(this, v, g), !this.aborted)) {
+                                if (p.size > g.convertSize && g.convertTypes.indexOf(g.mimeType) >= 0 && (g.mimeType = "image/jpeg"), "image/jpeg" === g.mimeType && (Q = "#fff"), v.fillStyle = Q, v.fillRect(0, 0, C, S), g.beforeDraw && g.beforeDraw.call(this, v, h), !this.aborted && (v.save(), v.translate(C / 2, S / 2), v.rotate(i * Math.PI / 180), v.scale(u, d), v.drawImage.apply(v, [m].concat(W)), v.restore(), g.drew && g.drew.call(this, v, h), !this.aborted)) {
                                     var Y = function(e) {
                                         t.aborted || t.done({
                                             naturalWidth: r,
@@ -3592,7 +3592,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             result: e
                                         })
                                     };
-                                    g.toBlob ? g.toBlob(Y, h.mimeType, h.quality) : Y(s(g.toDataURL(h.mimeType, h.quality)))
+                                    h.toBlob ? h.toBlob(Y, g.mimeType, g.quality) : Y(s(h.toDataURL(g.mimeType, g.quality)))
                                 }
                             }
                         }, {
@@ -3608,7 +3608,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     if (u.strict && i.size > s.size && u.mimeType === s.type && !(u.width > n || u.height > o || u.minWidth > n || u.minHeight > o || u.maxWidth < n || u.maxHeight < o)) i = s;
                                     else {
                                         var c = new Date;
-                                        i.lastModified = c.getTime(), i.lastModifiedDate = c, i.name = s.name, i.name && i.type !== s.type && (i.name = i.name.replace(w, (t = i.type, "jpeg" === (r = f(t) ? t.substr(6) : "") && (r = "jpg"), ".".concat(r))))
+                                        i.lastModified = c.getTime(), i.lastModifiedDate = c, i.name = s.name, i.name && i.type !== s.type && (i.name = i.name.replace(P, (t = i.type, "jpeg" === (r = f(t) ? t.substr(6) : "") && (r = "jpg"), ".".concat(r))))
                                     }
                                 else i = s;
                                 this.result = i, u.success && u.success.call(this, i)
@@ -3775,7 +3775,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             n.name = "MaxListenersExceededWarning", n.emitter = this, n.count = e, process.emitWarning(n)
                         } else console.error(r), console.trace && console.trace()
                     }
-                    var h = function(e, t, r) {
+                    var g = function(e, t, r) {
                         var n = arguments.length;
                         switch (n) {
                             case 0:
@@ -3792,7 +3792,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                     };
 
-                    function g(e, t) {
+                    function h(e, t) {
                         for (var r = {}, n = e.length, i = t ? t.length : 0, s = 0; s < n; s++) r[e[s]] = s < i ? t[s] : o;
                         return r
                     }
@@ -3853,7 +3853,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 i = this._emitter,
                                 s = this._listeners,
                                 a = function() {
-                                    var n = h.apply(null, arguments),
+                                    var n = g.apply(null, arguments),
                                         s = {
                                             data: n,
                                             name: t,
@@ -3894,9 +3894,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                     });
                     var M = _(["function"]),
-                        w = _(["object", "function"]);
+                        P = _(["object", "function"]);
 
-                    function P(e, t, r) {
+                    function w(e, t, r) {
                         var n, o, i, s = 0,
                             a = new e((function(u, c, l) {
                                 function d() {
@@ -3961,9 +3961,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 } else t = [t], o = 1
                             } else "object" === i ? o = t.length : (t = [t], o = 1)
                         }
-                        var p, m, h, g, y, b, v, _ = null,
+                        var p, m, g, h, y, b, v, _ = null,
                             M = t[n],
-                            w = t[n + 1];
+                            P = t[n + 1];
                         if (n === o) r._listeners && ("function" == typeof r._listeners ? (e && e.push(r._listeners), _ = [r]) : (e && e.push.apply(e, r._listeners), _ = [r]));
                         else {
                             if ("*" === M) {
@@ -3971,17 +3971,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 return _
                             }
                             if ("**" === M) {
-                                for ((y = n + 1 === o || n + 2 === o && "*" === w) && r._listeners && (_ = j(e, t, r, o, o)), a = (b = d(r)).length; a-- > 0;) "_listeners" !== (p = b[a]) && ("*" === p || "**" === p ? (r[p]._listeners && !y && (v = j(e, t, r[p], o, o)) && (_ ? _.push.apply(_, v) : _ = v), v = j(e, t, r[p], n, o)) : v = j(e, t, r[p], p === w ? n + 2 : n, o), v && (_ ? _.push.apply(_, v) : _ = v));
+                                for ((y = n + 1 === o || n + 2 === o && "*" === P) && r._listeners && (_ = j(e, t, r, o, o)), a = (b = d(r)).length; a-- > 0;) "_listeners" !== (p = b[a]) && ("*" === p || "**" === p ? (r[p]._listeners && !y && (v = j(e, t, r[p], o, o)) && (_ ? _.push.apply(_, v) : _ = v), v = j(e, t, r[p], n, o)) : v = j(e, t, r[p], p === P ? n + 2 : n, o), v && (_ ? _.push.apply(_, v) : _ = v));
                                 return _
                             }
                             r[M] && (_ = j(e, t, r[M], n + 1, o))
                         }
-                        if ((m = r["*"]) && j(e, t, m, n + 1, o), h = r["**"])
+                        if ((m = r["*"]) && j(e, t, m, n + 1, o), g = r["**"])
                             if (n < o)
-                                for (h._listeners && j(e, t, h, o, o), a = (b = d(h)).length; a-- > 0;) "_listeners" !== (p = b[a]) && (p === w ? j(e, t, h[p], n + 2, o) : p === M ? j(e, t, h[p], n + 1, o) : ((g = {})[p] = h[p], j(e, t, {
-                                    "**": g
+                                for (g._listeners && j(e, t, g, o, o), a = (b = d(g)).length; a-- > 0;) "_listeners" !== (p = b[a]) && (p === P ? j(e, t, g[p], n + 2, o) : p === M ? j(e, t, g[p], n + 1, o) : ((h = {})[p] = g[p], j(e, t, {
+                                    "**": h
                                 }, n + 1, o)));
-                            else h._listeners ? j(e, t, h, o, o) : h["*"] && h["*"]._listeners && j(e, t, h["*"], o, o);
+                            else g._listeners ? j(e, t, g, o, o) : g["*"] && g["*"]._listeners && j(e, t, g["*"], o, o);
                         return _
                     }
 
@@ -4075,8 +4075,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }, {
                             on: M,
                             off: M,
-                            reducers: w
-                        }), s(t) ? i(g(t)) : i("string" == typeof t ? g(t.split(/\s+/)) : t), this
+                            reducers: P
+                        }), s(t) ? i(h(t)) : i("string" == typeof t ? h(t.split(/\s+/)) : t), this
                     }, k.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
                         if (!r) return !1;
@@ -4338,7 +4338,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             timeout: t
                         } : "function" === n && (t = {
                             filter: t
-                        }), P((t = b(t, {
+                        }), w((t = b(t, {
                             timeout: 0,
                             filter: o,
                             handleError: !1,
@@ -4353,8 +4353,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 if (!i || i.apply(r, arguments))
                                     if (r.off(e, s), t.handleError) {
                                         var a = arguments[0];
-                                        a ? o(a) : n(h.apply(null, arguments).slice(1))
-                                    } else n(h.apply(null, arguments))
+                                        a ? o(a) : n(g.apply(null, arguments).slice(1))
+                                    } else n(g.apply(null, arguments))
                             }
                             i((function() {
                                 r.off(e, s)
@@ -4378,7 +4378,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         },
                         once: {
                             value: function(e, t, r) {
-                                return P((r = b(r, {
+                                return w((r = b(r, {
                                     Promise,
                                     timeout: 0,
                                     overload: !1
@@ -4387,14 +4387,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 })).Promise, (function(r, n, o) {
                                     var i;
                                     if ("function" == typeof e.addEventListener) return i = function() {
-                                        r(h.apply(null, arguments))
+                                        r(g.apply(null, arguments))
                                     }, o((function() {
                                         e.removeEventListener(t, i)
                                     })), void e.addEventListener(t, i, {
                                         once: !0
                                     });
                                     var s, a = function() {
-                                        s && e.removeListener("error", s), r(h.apply(null, arguments))
+                                        s && e.removeListener("error", s), r(g.apply(null, arguments))
                                     };
                                     "error" !== t && (s = function(r) {
                                         e.removeListener(t, a), n(r)
@@ -4892,8 +4892,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 await e.ignore(t.len), --r
                             }
                         }
-                        const h = await p();
-                        switch (await m(0, h.len)) {
+                        const g = await p();
+                        switch (await m(0, g.len)) {
                             case "webm":
                                 return {
                                     ext: "webm", mime: "video/webm"
@@ -5054,7 +5054,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "application/x-unix-archive"
                     };
                     if (r([137, 80, 78, 71, 13, 10, 26, 10])) {
-                        async function g() {
+                        async function h() {
                             return {
                                 length: await e.readToken(Token.INT32_BE),
                                 type: await e.readToken(new Token.StringType(4, "binary"))
@@ -5062,7 +5062,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         await e.ignore(8);
                         do {
-                            const y = await g();
+                            const y = await h();
                             if (y.length < 0) return;
                             switch (y.type) {
                                 case "IDAT":
@@ -5234,10 +5234,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "audio/x-voc"
                     };
                     if (r([4, 0, 0, 0]) && t.length >= 16) {
-                        const w = t.readUInt32LE(12);
-                        if (w > 12 && t.length >= w + 16) try {
-                            const P = t.slice(16, w + 16).toString();
-                            if (JSON.parse(P).files) return {
+                        const P = t.readUInt32LE(12);
+                        if (P > 12 && t.length >= P + 16) try {
+                            const w = t.slice(16, P + 16).toString();
+                            if (JSON.parse(w).files) return {
                                 ext: "asar",
                                 mime: "application/x-asar"
                             }
@@ -5444,10 +5444,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         f = 23 === o ? Math.pow(2, -24) - Math.pow(2, -77) : 0,
                         p = n ? 0 : i - 1,
                         m = n ? 1 : -1,
-                        h = t < 0 || 0 === t && 1 / t < 0 ? 1 : 0;
+                        g = t < 0 || 0 === t && 1 / t < 0 ? 1 : 0;
                     for (t = Math.abs(t), isNaN(t) || t === 1 / 0 ? (a = isNaN(t) ? 1 : 0, s = l) : (s = Math.floor(Math.log(t) / Math.LN2), t * (u = Math.pow(2, -s)) < 1 && (s--, u *= 2), (t += s + d >= 1 ? f / u : f * Math.pow(2, 1 - d)) * u >= 2 && (s++, u /= 2), s + d >= l ? (a = 0, s = l) : s + d >= 1 ? (a = (t * u - 1) * Math.pow(2, o), s += d) : (a = t * Math.pow(2, d - 1) * Math.pow(2, o), s = 0)); o >= 8; e[r + p] = 255 & a, p += m, a /= 256, o -= 8);
                     for (s = s << o | a, c += o; c > 0; e[r + p] = 255 & s, p += m, s /= 256, c -= 8);
-                    e[r + p - m] |= 128 * h
+                    e[r + p - m] |= 128 * g
                 }
             },
             7824: e => {
@@ -6217,6 +6217,27 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (!o.Conn.isSMB) throw new i
                 }
             },
+            4857: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.assertGetProduct = t.InvalidProduct = void 0;
+                const n = r(8910),
+                    o = r(1092);
+                class i extends n.WPPError {
+                    constructor(e) {
+                        super("product_not_found", `Product not found for ${e}`), this.id = e
+                    }
+                }
+                t.InvalidProduct = i, t.assertGetProduct = async function(e) {
+                    const t = (await o.CatalogStore.findProduct({
+                        catalogWid: o.UserPrefs.getMaybeMeUser(),
+                        productId: e
+                    }))[0].msgProductCollection._index[e];
+                    if (!t) throw new i(e);
+                    return t
+                }
+            },
             4434: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -6253,7 +6274,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(9903), t), o(r(7676), t), o(r(4578), t), o(r(4434), t)
+                }), o(r(9903), t), o(r(7676), t), o(r(4578), t), o(r(4857), t), o(r(4434), t)
             },
             7557: (e, t, r) => {
                 "use strict";
@@ -6601,6 +6622,155 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), r(4493), o(r(3403), t)
             },
+            1250: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.addProductImage = void 0;
+                const n = r(3327),
+                    o = r(8910),
+                    i = r(1092),
+                    s = r(1489);
+                t.addProductImage = async function(e, t) {
+                    const r = await (0, o.convertToFile)(t),
+                        a = await i.OpaqueData.createFromData(r, r.type),
+                        u = await (0, s.calculateFilehashFromBlob)(r),
+                        c = await (0, s.uploadProductImage)(a, u),
+                        l = await (0, n.assertGetProduct)(e);
+                    return l.additionalImageCdnUrl.push(c), (0, s.editProduct)(l)
+                }
+            },
+            5634: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.changeProductImage = void 0;
+                const n = r(3327),
+                    o = r(8910),
+                    i = r(1092),
+                    s = r(1489);
+                t.changeProductImage = async function(e, t) {
+                    const r = await (0, o.convertToFile)(t),
+                        a = await i.OpaqueData.createFromData(r, r.type),
+                        u = await (0, s.calculateFilehashFromBlob)(r),
+                        c = await (0, s.uploadProductImage)(a, u),
+                        l = await (0, n.assertGetProduct)(e);
+                    return l.imageCdnUrl = c, (0, s.editProduct)(l)
+                }
+            },
+            2159: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.createCollection = void 0;
+                const n = r(1092),
+                    o = r(1489);
+                t.createCollection = async function(e, t) {
+                    const {
+                        sessionId: r
+                    } = new n.ProductCatalogSession(!0);
+                    return await (0, o.createCollection)(e, t, `${r}`)
+                }
+            },
+            8549: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.createProduct = void 0;
+                const n = r(8910),
+                    o = r(1092),
+                    i = r(1489);
+                t.createProduct = async function(e) {
+                    const t = await (0, n.convertToFile)(e.image),
+                        r = await o.OpaqueData.createFromData(t, t.type),
+                        s = await (0, i.calculateFilehashFromBlob)(t),
+                        a = await (0, i.uploadProductImage)(r, s),
+                        u = new o.ProductModel;
+                    return u.name = e.name.toString(), u.catalogWid = o.UserPrefs.getMeUser(), u.imageCdnUrl = a, u.productImageCollection = new o.ProductImageModel({
+                        mediaUrl: a
+                    }), e.description && (u.description = e.description), e.price && (u.priceAmount1000 = 1e4 * e.price, u.currency = e.currency || "BRL"), e.isHidden && (u.isHidden = e.isHidden), e.url && (u.url = e.url), e.retailerId && (u.retailerId = e.retailerId), await (0, i.addProduct)(u, 100, 100)
+                }
+            },
+            9774: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.deleteCollection = void 0;
+                const n = r(1092),
+                    o = r(1489);
+                t.deleteCollection = async function(e) {
+                    const {
+                        sessionId: t
+                    } = new n.ProductCatalogSession(!0);
+                    return await (0, o.deleteCollection)(e, `${t}`), "Collection deleted sucessful"
+                }
+            },
+            579: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.delProducts = void 0;
+                const n = r(1489);
+                t.delProducts = async function(e) {
+                    let t = 200;
+                    try {
+                        Array.isArray(e) ? await (0, n.deleteProducts)(e) : await (0, n.deleteProducts)([e])
+                    } catch (e) {
+                        t = 500
+                    }
+                    return {
+                        productsIds: e,
+                        status: t
+                    }
+                }
+            },
+            2168: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.editCollection = void 0;
+                const n = r(1092),
+                    o = r(1489);
+                t.editCollection = async function(e, t) {
+                    const {
+                        sessionId: r
+                    } = new n.ProductCatalogSession(!0);
+                    return await (0, o.editCollection)(e, t.name, !1, t.productsToAdd || [], t.productsToRemove || [], `${r}`)
+                }
+            },
+            1676: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.editProduct = void 0;
+                const n = r(3327),
+                    o = r(1489);
+                t.editProduct = async function(e, t) {
+                    const r = await (0, n.assertGetProduct)(e);
+                    return r.name = t.name, r.description = t.description, r.priceAmount1000 = t.price, r.isHidden = t.isHidden, r.url = t.url, r.retailerId = t.retailerId, await (0, o.editProduct)(r)
+                }
+            },
+            4552: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getCollections = void 0;
+                const n = r(8910),
+                    o = r(1489);
+                t.getCollections = async function(e, t, r) {
+                    const {
+                        collections: i
+                    } = await (0, o.queryCollectionsIQ)({
+                        afterCursor: "",
+                        catalogWid: (0, n.createWid)(e),
+                        height: 100,
+                        width: 100,
+                        limit: t || 10,
+                        productsCount: r || 10
+                    });
+                    return i
+                }
+            },
             6235: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -6611,18 +6781,181 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return n.CatalogStore.get(n.UserPrefs.getMeUser())
                 }
             },
+            2434: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getProductById = void 0;
+                const n = r(8910),
+                    o = r(1489);
+                t.getProductById = async function(e, t) {
+                    const r = (0, n.createWid)(e),
+                        {
+                            data: i
+                        } = await (0, o.queryProduct)(r, t);
+                    return i
+                }
+            },
+            265: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getProducts = void 0;
+                const n = r(8910),
+                    o = r(1489);
+                t.getProducts = async function(e, t) {
+                    const {
+                        data: r
+                    } = await (0, o.queryCatalog)((0, n.createWid)(e), void 0, t || 10, 100, 100);
+                    return r
+                }
+            },
             347: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.getMyCatalog = void 0;
-                var n = r(6235);
+                }), t.updateCartEnabled = t.setProductVisibility = t.removeProductImage = t.getProducts = t.getProductById = t.getMyCatalog = t.getCollections = t.editProduct = t.editCollection = t.delProducts = t.deleteCollection = t.createProduct = t.createCollection = t.changeProductImage = t.addProductImage = void 0;
+                var n = r(1250);
+                Object.defineProperty(t, "addProductImage", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.addProductImage
+                    }
+                });
+                var o = r(5634);
+                Object.defineProperty(t, "changeProductImage", {
+                    enumerable: !0,
+                    get: function() {
+                        return o.changeProductImage
+                    }
+                });
+                var i = r(2159);
+                Object.defineProperty(t, "createCollection", {
+                    enumerable: !0,
+                    get: function() {
+                        return i.createCollection
+                    }
+                });
+                var s = r(8549);
+                Object.defineProperty(t, "createProduct", {
+                    enumerable: !0,
+                    get: function() {
+                        return s.createProduct
+                    }
+                });
+                var a = r(9774);
+                Object.defineProperty(t, "deleteCollection", {
+                    enumerable: !0,
+                    get: function() {
+                        return a.deleteCollection
+                    }
+                });
+                var u = r(579);
+                Object.defineProperty(t, "delProducts", {
+                    enumerable: !0,
+                    get: function() {
+                        return u.delProducts
+                    }
+                });
+                var c = r(2168);
+                Object.defineProperty(t, "editCollection", {
+                    enumerable: !0,
+                    get: function() {
+                        return c.editCollection
+                    }
+                });
+                var l = r(1676);
+                Object.defineProperty(t, "editProduct", {
+                    enumerable: !0,
+                    get: function() {
+                        return l.editProduct
+                    }
+                });
+                var d = r(4552);
+                Object.defineProperty(t, "getCollections", {
+                    enumerable: !0,
+                    get: function() {
+                        return d.getCollections
+                    }
+                });
+                var f = r(6235);
                 Object.defineProperty(t, "getMyCatalog", {
                     enumerable: !0,
                     get: function() {
-                        return n.getMyCatalog
+                        return f.getMyCatalog
+                    }
+                });
+                var p = r(2434);
+                Object.defineProperty(t, "getProductById", {
+                    enumerable: !0,
+                    get: function() {
+                        return p.getProductById
+                    }
+                });
+                var m = r(265);
+                Object.defineProperty(t, "getProducts", {
+                    enumerable: !0,
+                    get: function() {
+                        return m.getProducts
+                    }
+                });
+                var g = r(716);
+                Object.defineProperty(t, "removeProductImage", {
+                    enumerable: !0,
+                    get: function() {
+                        return g.removeProductImage
+                    }
+                });
+                var h = r(5290);
+                Object.defineProperty(t, "setProductVisibility", {
+                    enumerable: !0,
+                    get: function() {
+                        return h.setProductVisibility
+                    }
+                });
+                var y = r(7278);
+                Object.defineProperty(t, "updateCartEnabled", {
+                    enumerable: !0,
+                    get: function() {
+                        return y.updateCartEnabled
                     }
                 })
+            },
+            716: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.removeProductImage = void 0;
+                const n = r(3327),
+                    o = r(1489);
+                t.removeProductImage = async function(e, t) {
+                    const r = await (0, n.assertGetProduct)(e);
+                    return r.additionalImageCdnUrl.splice(t, 1), (0, o.editProduct)(r)
+                }
+            },
+            5290: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.setProductVisibility = void 0;
+                const n = r(3327),
+                    o = r(1489);
+                t.setProductVisibility = async function(e, t) {
+                    return await (0, o.productVisibilitySet)([{
+                        isHidden: t,
+                        productId: e
+                    }]), await (0, n.assertGetProduct)(e)
+                }
+            },
+            7278: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.updateCartEnabled = void 0;
+                const n = r(1489);
+                t.updateCartEnabled = async function(e) {
+                    return await (0, n.updateCartEnabled)(e)
+                }
             },
             9363: function(e, t, r) {
                 "use strict";
@@ -7045,6 +7378,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return s(e, !1)
                 }
             },
+            1929: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.canMarkPlayed = void 0;
+                const n = r(1092),
+                    o = r(1489),
+                    i = r(8491);
+                t.canMarkPlayed = async function(e) {
+                    e instanceof n.MsgModel || "string" == typeof e || "function" != typeof e.toString || (e = e.toString());
+                    const t = e instanceof n.MsgModel ? e : await (0, i.getMessageById)(e.toString());
+                    return (0, o.canMarkPlayed)(t)
+                }
+            },
             1314: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -7294,7 +7641,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         remote: a.id
                     };
                     d.count = u, d.direction = c;
-                    const f = await (0, s.msgFindQuery)(c, d);
+                    let f = [];
+                    if ("all" === t.media) {
+                        const {
+                            messages: e
+                        } = await (0, s.msgFindQuery)("media", d);
+                        f = e
+                    } else if ("image" === t.media) {
+                        const {
+                            messages: e
+                        } = await (0, s.msgFindQuery)("media", d);
+                        for (const t of e) "image" === t.type && f.push(t)
+                    } else void 0 !== t.media ? (d.media = t.media, f = await (0, s.msgFindQuery)("media", d)) : f = await (0, s.msgFindQuery)(c, d);
                     if (!t.id && l) {
                         const e = i.MsgStore.get(l);
                         e && f.push(e.attributes)
@@ -7302,11 +7660,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return f
                 }
             },
+            8376: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getPlatformFromMessage = void 0;
+                const n = r(1092);
+                t.getPlatformFromMessage = function(e) {
+                    e instanceof n.MsgModel || "string" == typeof e || "function" != typeof e.toString || (e = e.toString()), e instanceof n.MsgModel && (e = e.id);
+                    const t = n.MsgKey.fromString(e.toString());
+                    return t.id.length > 21 ? "android" : t.id.startsWith("3A") ? "iphone" : t.id.startsWith("3EB0") ? "web" : "unknown"
+                }
+            },
             758: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getMessages = t.getMessageById = t.getLastSeen = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canMute = t.unarchive = t.archive = void 0;
+                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markPlayed = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getPlatformFromMessage = t.getMessages = t.getMessageById = t.getLastSeen = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canMute = t.canMarkPlayed = t.unarchive = t.archive = void 0;
                 var n = r(1200);
                 Object.defineProperty(t, "archive", {
                     enumerable: !0,
@@ -7319,254 +7689,275 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return n.unarchive
                     }
                 });
-                var o = r(1314);
+                var o = r(1929);
+                Object.defineProperty(t, "canMarkPlayed", {
+                    enumerable: !0,
+                    get: function() {
+                        return o.canMarkPlayed
+                    }
+                });
+                var i = r(1314);
                 Object.defineProperty(t, "canMute", {
                     enumerable: !0,
                     get: function() {
-                        return o.canMute
+                        return i.canMute
                     }
                 });
-                var i = r(6534);
+                var s = r(6534);
                 Object.defineProperty(t, "clear", {
                     enumerable: !0,
                     get: function() {
-                        return i.clear
+                        return s.clear
                     }
                 });
-                var s = r(7814);
+                var a = r(7814);
                 Object.defineProperty(t, "delete", {
                     enumerable: !0,
                     get: function() {
-                        return s.delete
+                        return a.delete
                     }
                 });
-                var a = r(8826);
+                var u = r(8826);
                 Object.defineProperty(t, "deleteMessage", {
                     enumerable: !0,
                     get: function() {
-                        return a.deleteMessage
+                        return u.deleteMessage
                     }
                 });
-                var u = r(3438);
+                var c = r(3438);
                 Object.defineProperty(t, "downloadMedia", {
                     enumerable: !0,
                     get: function() {
-                        return u.downloadMedia
+                        return c.downloadMedia
                     }
                 });
-                var c = r(7242);
+                var l = r(7242);
                 Object.defineProperty(t, "find", {
                     enumerable: !0,
                     get: function() {
-                        return c.find
+                        return l.find
                     }
                 });
-                var l = r(89);
+                var d = r(89);
                 Object.defineProperty(t, "generateMessageID", {
                     enumerable: !0,
                     get: function() {
-                        return l.generateMessageID
+                        return d.generateMessageID
                     }
                 });
-                var d = r(8309);
+                var f = r(8309);
                 Object.defineProperty(t, "get", {
                     enumerable: !0,
                     get: function() {
-                        return d.get
+                        return f.get
                     }
                 });
-                var f = r(8328);
+                var p = r(8328);
                 Object.defineProperty(t, "getLastSeen", {
                     enumerable: !0,
                     get: function() {
-                        return f.getLastSeen
+                        return p.getLastSeen
                     }
                 });
-                var p = r(8491);
+                var m = r(8491);
                 Object.defineProperty(t, "getMessageById", {
                     enumerable: !0,
                     get: function() {
-                        return p.getMessageById
+                        return m.getMessageById
                     }
                 });
-                var m = r(3311);
+                var g = r(3311);
                 Object.defineProperty(t, "getMessages", {
                     enumerable: !0,
                     get: function() {
-                        return m.getMessages
+                        return g.getMessages
                     }
                 });
-                var h = r(7548);
+                var h = r(8376);
+                Object.defineProperty(t, "getPlatformFromMessage", {
+                    enumerable: !0,
+                    get: function() {
+                        return h.getPlatformFromMessage
+                    }
+                });
+                var y = r(7548);
                 Object.defineProperty(t, "list", {
                     enumerable: !0,
                     get: function() {
-                        return h.list
+                        return y.list
                     }
                 });
-                var g = r(3089);
+                var b = r(3089);
                 Object.defineProperty(t, "markIsComposing", {
                     enumerable: !0,
                     get: function() {
-                        return g.markIsComposing
+                        return b.markIsComposing
                     }
                 });
-                var y = r(8292);
+                var v = r(8292);
                 Object.defineProperty(t, "markIsPaused", {
                     enumerable: !0,
                     get: function() {
-                        return y.markIsPaused
+                        return v.markIsPaused
                     }
                 });
-                var b = r(9256);
+                var _ = r(9256);
                 Object.defineProperty(t, "markIsRead", {
                     enumerable: !0,
                     get: function() {
-                        return b.markIsRead
+                        return _.markIsRead
                     }
                 });
-                var v = r(2818);
+                var M = r(2818);
                 Object.defineProperty(t, "markIsRecording", {
                     enumerable: !0,
                     get: function() {
-                        return v.markIsRecording
+                        return M.markIsRecording
                     }
                 });
-                var _ = r(5433);
+                var P = r(5433);
                 Object.defineProperty(t, "markIsUnread", {
                     enumerable: !0,
                     get: function() {
-                        return _.markIsUnread
+                        return P.markIsUnread
                     }
                 });
-                var M = r(6915);
+                var w = r(404);
+                Object.defineProperty(t, "markPlayed", {
+                    enumerable: !0,
+                    get: function() {
+                        return w.markPlayed
+                    }
+                });
+                var O = r(6915);
                 Object.defineProperty(t, "mute", {
                     enumerable: !0,
                     get: function() {
-                        return M.mute
+                        return O.mute
                     }
                 });
-                var w = r(9558);
+                var j = r(9558);
                 Object.defineProperty(t, "openChatAt", {
                     enumerable: !0,
                     get: function() {
-                        return w.openChatAt
+                        return j.openChatAt
                     }
                 });
-                var P = r(4310);
+                var x = r(4310);
                 Object.defineProperty(t, "openChatBottom", {
                     enumerable: !0,
                     get: function() {
-                        return P.openChatBottom
+                        return x.openChatBottom
                     }
                 });
-                var O = r(444);
+                var C = r(444);
                 Object.defineProperty(t, "openChatFromUnread", {
                     enumerable: !0,
                     get: function() {
-                        return O.openChatFromUnread
+                        return C.openChatFromUnread
                     }
                 });
-                var j = r(3177);
+                var S = r(3177);
                 Object.defineProperty(t, "pin", {
                     enumerable: !0,
                     get: function() {
-                        return j.pin
+                        return S.pin
                     }
                 }), Object.defineProperty(t, "unpin", {
                     enumerable: !0,
                     get: function() {
-                        return j.unpin
+                        return S.unpin
                     }
                 });
-                var x = r(8471);
+                var I = r(8471);
                 Object.defineProperty(t, "prepareLinkPreview", {
                     enumerable: !0,
                     get: function() {
-                        return x.prepareLinkPreview
+                        return I.prepareLinkPreview
                     }
                 });
-                var C = r(9872);
+                var E = r(9872);
                 Object.defineProperty(t, "prepareMessageButtons", {
                     enumerable: !0,
                     get: function() {
-                        return C.prepareMessageButtons
+                        return E.prepareMessageButtons
                     }
                 });
-                var S = r(8384);
+                var k = r(8384);
                 Object.defineProperty(t, "prepareRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return S.prepareRawMessage
+                        return k.prepareRawMessage
                     }
                 });
-                var I = r(9017);
+                var T = r(9017);
                 Object.defineProperty(t, "sendCreatePollMessage", {
                     enumerable: !0,
                     get: function() {
-                        return I.sendCreatePollMessage
+                        return T.sendCreatePollMessage
                     }
                 });
-                var E = r(18);
+                var B = r(18);
                 Object.defineProperty(t, "sendFileMessage", {
                     enumerable: !0,
                     get: function() {
-                        return E.sendFileMessage
+                        return B.sendFileMessage
                     }
                 });
-                var k = r(8851);
+                var A = r(8851);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return k.sendListMessage
+                        return A.sendListMessage
                     }
                 });
-                var T = r(2814);
+                var L = r(2814);
                 Object.defineProperty(t, "sendLocationMessage", {
                     enumerable: !0,
                     get: function() {
-                        return T.sendLocationMessage
+                        return L.sendLocationMessage
                     }
                 });
-                var B = r(682);
+                var R = r(682);
                 Object.defineProperty(t, "sendRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return B.sendRawMessage
+                        return R.sendRawMessage
                     }
                 });
-                var A = r(3065);
+                var F = r(3065);
                 Object.defineProperty(t, "sendReactionToMessage", {
                     enumerable: !0,
                     get: function() {
-                        return A.sendReactionToMessage
+                        return F.sendReactionToMessage
                     }
                 });
-                var L = r(6627);
+                var U = r(6627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return L.sendTextMessage
+                        return U.sendTextMessage
                     }
                 });
-                var R = r(6017);
+                var D = r(6017);
                 Object.defineProperty(t, "sendVCardContactMessage", {
                     enumerable: !0,
                     get: function() {
-                        return R.sendVCardContactMessage
+                        return D.sendVCardContactMessage
                     }
                 });
-                var U = r(7709);
+                var G = r(7709);
                 Object.defineProperty(t, "starMessage", {
                     enumerable: !0,
                     get: function() {
-                        return U.starMessage
+                        return G.starMessage
                     }
                 });
-                var F = r(8205);
+                var N = r(8205);
                 Object.defineProperty(t, "unmute", {
                     enumerable: !0,
                     get: function() {
-                        return F.unmute
+                        return N.unmute
                     }
                 })
             },
@@ -7665,6 +8056,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return await (0, o.markUnread)(t, !0), {
                         wid: t.id
                     }
+                }
+            },
+            404: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.markPlayed = void 0;
+                const n = r(1092),
+                    o = r(1489),
+                    i = r(8491);
+                t.markPlayed = async function(e) {
+                    e instanceof n.MsgModel || "string" == typeof e || "function" != typeof e.toString || (e = e.toString());
+                    const t = e instanceof n.MsgModel ? e : await (0, i.getMessageById)(e.toString());
+                    return await (0, o.markPlayed)(t), await (0, i.getMessageById)(e.toString())
                 }
             },
             6915: (e, t, r) => {
@@ -8005,6 +8410,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(8381),
                     c = r(758);
                 t.prepareRawMessage = async function(e, t, r = {}) {
+                    var l;
                     if (r = Object.assign(Object.assign({}, u.defaultSendMessageOptions), r), t = Object.assign({
                             t: s.Clock.globalUnixTime(),
                             from: s.UserPrefs.getMaybeMeUser(),
@@ -8049,7 +8455,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, c.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
                             quotedMsg: r.quotedMsg
                         });
-                        if (!r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
+                        if (!(null === (l = r.quotedMsg) || void 0 === l ? void 0 : l.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
                             quotedMsg: r.quotedMsg
                         });
                         t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e))
@@ -8124,11 +8530,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     f = r(1092),
                     p = r(8785),
                     m = r(1489),
-                    h = r(8381),
-                    g = r(758),
+                    g = r(8381),
+                    h = r(758),
                     y = (0, a.default)("WA-JS:message");
                 t.sendFileMessage = async function(e, t, r) {
-                    const n = (r = Object.assign(Object.assign(Object.assign({}, h.defaultSendMessageOptions), {
+                    const n = (r = Object.assign(Object.assign(Object.assign({}, g.defaultSendMessageOptions), {
                             type: "auto-detect"
                         }), r)).createChat ? await (0, u.assertFindChat)(e) : (0, u.assertGetChat)(e),
                         o = await (0, l.convertToFile)(t, r.mimetype, r.filename),
@@ -8138,12 +8544,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     let c;
                     "audio" === r.type ? a.isPtt = r.isPtt : "image" === r.type ? c = r.isViewOnce : "video" === r.type ? a.asGif = r.isGif : "document" === r.type ? a.asDocument = !0 : "sticker" === r.type && (a.asSticker = !0);
                     const d = f.MediaPrep.prepRawMedia(s, a);
-                    let p = await (0, g.prepareRawMessage)(n, {
+                    let p = await (0, h.prepareRawMessage)(n, {
                         caption: r.caption || i,
                         filename: i,
                         footer: r.footer
                     }, r);
-                    p = (0, g.prepareMessageButtons)(p, r), r.markIsRead && (y("marking chat is read before send file"), await (0, g.markIsRead)(n.id).catch((() => null))), await d.waitForPrep(), y(`sending message (${r.type}) with id ${p.id}`);
+                    p = (0, h.prepareMessageButtons)(p, r), r.markIsRead && (y("marking chat is read before send file"), await (0, h.markIsRead)(n.id).catch((() => null))), await d.waitForPrep(), y(`sending message (${r.type}) with id ${p.id}`);
                     const m = d.sendToChat(n, {
                             caption: r.caption,
                             footer: r.footer,
@@ -9068,11 +9474,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return m.setKeepAlive
                     }
                 });
-                var h = r(2421);
+                var g = r(2421);
                 Object.defineProperty(t, "setMultiDevice", {
                     enumerable: !0,
                     get: function() {
-                        return h.setMultiDevice
+                        return g.setMultiDevice
                     }
                 })
             },
@@ -9229,6 +9635,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 })
             },
+            8747: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getBusinessProfile = void 0;
+                const n = r(3327),
+                    o = r(1092);
+                t.getBusinessProfile = async function(e) {
+                    const t = (0, n.assertWid)(e);
+                    return await o.BusinessProfileStore.fetchBizProfile(t)
+                }
+            },
             2102: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -9259,33 +9677,40 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.queryExists = t.list = t.getStatus = t.getProfilePictureUrl = void 0;
-                var n = r(2102);
+                }), t.queryExists = t.list = t.getStatus = t.getProfilePictureUrl = t.getBusinessProfile = void 0;
+                var n = r(8747);
+                Object.defineProperty(t, "getBusinessProfile", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.getBusinessProfile
+                    }
+                });
+                var o = r(2102);
                 Object.defineProperty(t, "getProfilePictureUrl", {
                     enumerable: !0,
                     get: function() {
-                        return n.getProfilePictureUrl
+                        return o.getProfilePictureUrl
                     }
                 });
-                var o = r(7321);
+                var i = r(7321);
                 Object.defineProperty(t, "getStatus", {
                     enumerable: !0,
                     get: function() {
-                        return o.getStatus
+                        return i.getStatus
                     }
                 });
-                var i = r(3402);
+                var s = r(3402);
                 Object.defineProperty(t, "list", {
                     enumerable: !0,
                     get: function() {
-                        return i.list
+                        return s.list
                     }
                 });
-                var s = r(1621);
+                var a = r(1621);
                 Object.defineProperty(t, "queryExists", {
                     enumerable: !0,
                     get: function() {
-                        return s.queryExists
+                        return a.queryExists
                     }
                 })
             },
@@ -9977,18 +10402,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return m.getParticipants
                     }
                 });
-                var h = r(3376);
+                var g = r(3376);
                 Object.defineProperty(t, "iAmAdmin", {
                     enumerable: !0,
                     get: function() {
-                        return h.iAmAdmin
+                        return g.iAmAdmin
                     }
                 });
-                var g = r(4282);
+                var h = r(4282);
                 Object.defineProperty(t, "iAmMember", {
                     enumerable: !0,
                     get: function() {
-                        return g.iAmMember
+                        return h.iAmMember
                     }
                 });
                 var y = r(446);
@@ -10026,18 +10451,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return M.promoteParticipants
                     }
                 });
-                var w = r(1277);
+                var P = r(1277);
                 Object.defineProperty(t, "removeParticipants", {
                     enumerable: !0,
                     get: function() {
-                        return w.removeParticipants
+                        return P.removeParticipants
                     }
                 });
-                var P = r(270);
+                var w = r(270);
                 Object.defineProperty(t, "revokeInviteCode", {
                     enumerable: !0,
                     get: function() {
-                        return P.revokeInviteCode
+                        return w.revokeInviteCode
                     }
                 });
                 var O = r(8087);
@@ -10459,7 +10884,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.10.1";
+                s(r(3115), t), t.waVersion = "2.11.0";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -10678,7 +11103,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.10.1", t.supportedWhatsappWeb = ">=2.2210.6-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.11.0", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -10774,6 +11199,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     })))
                 }
             },
+            4589: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getLabelById = void 0;
+                const n = r(3327),
+                    o = r(8910),
+                    i = r(1092);
+                t.getLabelById = async function(e) {
+                    const t = i.LabelStore.get(e);
+                    if (!t) throw new o.WPPError("canot_get_label_error", "Can't get label by id");
+                    return {
+                        id: t.id,
+                        name: t.name,
+                        color: (0, n.assertColor)(t.hexColor),
+                        count: t.count || 0,
+                        hexColor: t.hexColor
+                    }
+                }
+            },
             4991: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -10808,7 +11253,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.getNewLabelColor = t.getLabelColorPalette = t.getAllLabels = t.deleteLabel = t.deleteAllLabels = t.colorIsInLabelPalette = t.addOrRemoveLabels = t.addNewLabel = void 0;
+                }), t.getNewLabelColor = t.getLabelColorPalette = t.getLabelById = t.getAllLabels = t.deleteLabel = t.deleteAllLabels = t.colorIsInLabelPalette = t.addOrRemoveLabels = t.addNewLabel = void 0;
                 var n = r(9203);
                 Object.defineProperty(t, "addNewLabel", {
                     enumerable: !0,
@@ -10851,18 +11296,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return u.getAllLabels
                     }
                 });
-                var c = r(4991);
+                var c = r(4589);
+                Object.defineProperty(t, "getLabelById", {
+                    enumerable: !0,
+                    get: function() {
+                        return c.getLabelById
+                    }
+                });
+                var l = r(4991);
                 Object.defineProperty(t, "getLabelColorPalette", {
                     enumerable: !0,
                     get: function() {
-                        return c.getLabelColorPalette
+                        return l.getLabelColorPalette
                     }
                 });
-                var l = r(9887);
+                var d = r(9887);
                 Object.defineProperty(t, "getNewLabelColor", {
                     enumerable: !0,
                     get: function() {
-                        return l.getNewLabelColor
+                        return d.getNewLabelColor
                     }
                 })
             },
@@ -10893,6 +11345,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 })
             },
+            8067: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.editBusinessProfile = void 0;
+                const n = r(1092),
+                    o = r(1489);
+                t.editBusinessProfile = async function(e) {
+                    if (n.Conn.isSMB) return await (0, o.editBusinessProfile)(e), await n.BusinessProfileStore.fetchBizProfile(n.UserPrefs.getMaybeMeUser())
+                }
+            },
             9016: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -10907,33 +11370,40 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.setMyStatus = t.setMyProfilePicture = t.isBusiness = t.getMyStatus = void 0;
-                var n = r(9016);
+                }), t.setMyStatus = t.setMyProfilePicture = t.isBusiness = t.getMyStatus = t.editBusinessProfile = void 0;
+                var n = r(8067);
+                Object.defineProperty(t, "editBusinessProfile", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.editBusinessProfile
+                    }
+                });
+                var o = r(9016);
                 Object.defineProperty(t, "getMyStatus", {
                     enumerable: !0,
                     get: function() {
-                        return n.getMyStatus
+                        return o.getMyStatus
                     }
                 });
-                var o = r(9899);
+                var i = r(9899);
                 Object.defineProperty(t, "isBusiness", {
                     enumerable: !0,
                     get: function() {
-                        return o.isBusiness
+                        return i.isBusiness
                     }
                 });
-                var i = r(6089);
+                var s = r(6089);
                 Object.defineProperty(t, "setMyProfilePicture", {
                     enumerable: !0,
                     get: function() {
-                        return i.setMyProfilePicture
+                        return s.setMyProfilePicture
                     }
                 });
-                var s = r(5031);
+                var a = r(5031);
                 Object.defineProperty(t, "setMyStatus", {
                     enumerable: !0,
                     get: function() {
-                        return s.setMyStatus
+                        return a.setMyStatus
                     }
                 })
             },
@@ -11118,7 +11588,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.sendVideoStatus = t.sendTextStatus = t.sendRawStatus = t.sendImageStatus = t.getMyStatus = t.get = void 0;
+                }), t.sendVideoStatus = t.sendTextStatus = t.sendReadStatus = t.sendRawStatus = t.sendImageStatus = t.getMyStatus = t.get = void 0;
                 var n = r(438);
                 Object.defineProperty(t, "get", {
                     enumerable: !0,
@@ -11147,18 +11617,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return s.sendRawStatus
                     }
                 });
-                var a = r(6309);
+                var a = r(4097);
+                Object.defineProperty(t, "sendReadStatus", {
+                    enumerable: !0,
+                    get: function() {
+                        return a.sendReadStatus
+                    }
+                });
+                var u = r(6309);
                 Object.defineProperty(t, "sendTextStatus", {
                     enumerable: !0,
                     get: function() {
-                        return a.sendTextStatus
+                        return u.sendTextStatus
                     }
                 });
-                var u = r(112);
+                var c = r(112);
                 Object.defineProperty(t, "sendVideoStatus", {
                     enumerable: !0,
                     get: function() {
-                        return u.sendVideoStatus
+                        return c.sendVideoStatus
                     }
                 })
             },
@@ -11297,6 +11774,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                     }))
                 }))
+            },
+            4097: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.sendReadStatus = void 0;
+                const n = r(3327),
+                    o = r(1092);
+                t.sendReadStatus = async function(e, t) {
+                    var r;
+                    const i = (0, n.assertWid)(e),
+                        s = o.StatusV3Store.get(i),
+                        a = null == s ? void 0 : s.msgs.get(t);
+                    await (null == s ? void 0 : s.sendReadStatus(a, null == a ? void 0 : a.mediaKeyTimestamp));
+                    const u = o.StatusV3Store.get(i);
+                    return (null === (r = null == u ? void 0 : u.msgs.get(t)) || void 0 === r ? void 0 : r.serialize()) || []
+                }
             },
             6309: (e, t, r) => {
                 "use strict";
@@ -11632,25 +12126,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             key: s.Base64.encodeB64(p),
                             timestamp: s.Clock.globalUnixTime()
                         }),
-                        h = new AbortController,
-                        g = await (0, a.uploadThumbnail)({
+                        g = new AbortController,
+                        h = await (0, a.uploadThumbnail)({
                             thumbnail: c,
                             mediaType: "thumbnail-link",
                             mediaKeyInfo: m,
                             uploadOrigin: 1,
                             forwardedFromWeb: !1,
-                            signal: h.signal,
+                            signal: g.signal,
                             timeout: 3e3,
                             isViewOnce: !1
                         }),
-                        y = g.mediaEntry;
+                        y = h.mediaEntry;
                     return {
                         thumbnail: o,
                         thumbnailHQ: i,
                         mediaKey: y.mediaKey,
                         mediaKeyTimestamp: y.mediaKeyTimestamp,
                         thumbnailDirectPath: y.directPath,
-                        thumbnailSha256: g.filehash,
+                        thumbnailSha256: h.filehash,
                         thumbnailEncSha256: y.encFilehash,
                         thumbnailWidth: n.width,
                         thumbnailHeight: n.height
@@ -12486,6 +12980,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     unblockContact: "unblockContact"
                 }, (e => e.blockContact && e.unblockContact))
             },
+            1896: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    calculateFilehashFromBlob: "calculateFilehashFromBlob"
+                }, (e => e.calculateFilehashFromBlob))
+            },
+            7047: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    createCollection: "createCollection",
+                    deleteCollection: "deleteCollection",
+                    editCollection: "editCollection",
+                    queryCollectionsIQ: "queryCollectionsIQ"
+                }, (e => e.createCollection))
+            },
             1435: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -12501,6 +13014,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(8785).exportModule)(t, {
                     createOrUpdateReactions: "createOrUpdateReactions"
                 }, (e => e.createOrUpdateReactions))
+            },
+            5222: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    editBusinessProfile: "editBusinessProfile"
+                }, (e => e.editBusinessProfile))
             },
             9839: (e, t, r) => {
                 "use strict";
@@ -12670,7 +13191,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1435), t), o(r(3925), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -12703,7 +13224,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     markUnread: "markUnread",
                     sendSeen: "sendSeen"
                 }, (e => e.markUnread && e.sendSeen)), (0, n.exportModule)(t, {
-                    markPlayed: "markPlayed"
+                    markPlayed: "markPlayed",
+                    canMarkPlayed: "canMarkPlayed"
                 }, (e => e.markPlayed))
             },
             7212: (e, t, r) => {
@@ -12722,6 +13244,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     msgFindQuery: "msgFindQuery"
                 }, (e => e.msgFindQuery && e.msgFindByIds))
             },
+            5627: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    productVisibilitySet: "productVisibilitySet"
+                }, (e => e.productVisibilitySet))
+            },
             1486: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -12730,7 +13260,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     addProduct: "addProduct",
                     editProduct: "editProduct",
                     deleteProducts: "deleteProducts",
-                    sendProductToChat: "sendProductToChat"
+                    sendProductToChat: "sendProductToChat",
+                    queryCatalog: "queryCatalog",
+                    queryProduct: "queryProduct",
+                    queryProductList: "queryProductList"
                 }, (e => e.sendProductToChat))
             },
             5244: (e, t, r) => {
@@ -12909,6 +13442,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(8785).exportModule)(t, {
                     typeAttributeFromProtobuf: "typeAttributeFromProtobuf"
                 }, (e => e.typeAttributeFromProtobuf))
+            },
+            8183: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    updateCartEnabled: "updateCartEnabled"
+                }, (e => e.updateCartEnabled))
             },
             967: (e, t, r) => {
                 "use strict";
@@ -13185,6 +13726,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     OpaqueData: "default"
                 }, (e => e.default.createFromData))
             },
+            3194: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    ProductCatalogSession: "ProductCatalogSession"
+                }, (e => e.ProductCatalogSession))
+            },
             8971: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -13261,7 +13810,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(5847), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
+                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(5847), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
             },
             8329: (e, t, r) => {
                 "use strict";
@@ -13912,7 +14461,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 })()));
 
 
-
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
 //Customização Marcelo Retorno das Mensagens
@@ -14176,6 +14724,23 @@ window.WAPI.getLastSeen = async function(chatid) {
 
     } else {
         console.log(err);
+
+    }
+};
+
+window.WAPI.getMessages = async function(chatid, options) {
+    const result = await WPP.chat.getMessages(chatid, options);
+
+    if (result) {
+        try {
+            SetConsoleMessage("getMessages", JSON.stringify(result));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO');
 
     }
 };
