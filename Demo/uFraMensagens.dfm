@@ -134,7 +134,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
-      ExplicitTop = 452
     end
     object btnLink: TButton
       AlignWithMargins = True
@@ -148,7 +147,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
-      ExplicitTop = 272
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
@@ -162,7 +160,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
-      ExplicitTop = 236
     end
     object btnImagem: TButton
       AlignWithMargins = True
@@ -176,7 +173,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 5
       OnClick = btnImagemClick
-      ExplicitTop = 200
     end
     object btnVideoBotao: TButton
       AlignWithMargins = True
@@ -190,7 +186,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 4
       OnClick = btnVideoBotaoClick
-      ExplicitTop = 164
     end
     object btnVideo: TButton
       AlignWithMargins = True
@@ -205,7 +200,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 3
       OnClick = btnVideoClick
-      ExplicitTop = 128
     end
     object btnListaMenu: TButton
       AlignWithMargins = True
@@ -260,7 +254,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
-      ExplicitTop = 308
     end
     object btnContato: TButton
       AlignWithMargins = True
@@ -274,7 +267,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
-      ExplicitTop = 380
     end
     object btnSticker: TButton
       AlignWithMargins = True
@@ -288,7 +280,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
-      ExplicitTop = 344
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
@@ -302,7 +293,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
-      ExplicitTop = 416
     end
     object btnArquivo: TButton
       AlignWithMargins = True
@@ -316,7 +306,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
-      ExplicitTop = 488
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
@@ -330,7 +319,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 14
       OnClick = btnStatusTextoClick
-      ExplicitTop = 524
     end
     object btnStatusImagem: TButton
       AlignWithMargins = True
@@ -344,7 +332,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = btnStatusImagemClick
-      ExplicitTop = 560
     end
     object btnVideoStatus: TButton
       AlignWithMargins = True
@@ -358,7 +345,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
-      ExplicitTop = 596
     end
   end
   object GroupBox2: TGroupBox
@@ -382,7 +368,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 5
       OnClick = btnLimparConversaClick
-      ExplicitTop = 195
     end
     object btnArquivar: TButton
       AlignWithMargins = True
@@ -396,7 +381,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 3
       OnClick = btnArquivarClick
-      ExplicitTop = 128
     end
     object btnResponder: TButton
       AlignWithMargins = True
@@ -410,7 +394,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 1
       OnClick = btnResponderClick
-      ExplicitTop = 56
     end
     object btnReagir: TButton
       AlignWithMargins = True
@@ -437,7 +420,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnVerificarNumeroClick
-      ExplicitTop = 231
     end
     object btnStatus: TButton
       AlignWithMargins = True
@@ -451,7 +433,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnStatusClick
-      ExplicitTop = 267
     end
     object btnDetalhe: TButton
       AlignWithMargins = True
@@ -465,7 +446,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnDetalheClick
-      ExplicitTop = 303
     end
     object btnBloquear: TButton
       AlignWithMargins = True
@@ -479,7 +459,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnBloquearClick
-      ExplicitTop = 339
     end
     object btnDesbloquear: TButton
       AlignWithMargins = True
@@ -493,7 +472,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnDesbloquearClick
-      ExplicitTop = 375
     end
     object btnFixarChat: TButton
       AlignWithMargins = True
@@ -507,7 +485,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnFixarChatClick
-      ExplicitTop = 411
     end
     object btnDesfixarChat: TButton
       AlignWithMargins = True
@@ -521,7 +498,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnDesfixarChatClick
-      ExplicitTop = 447
     end
     object BitBtn1: TButton
       AlignWithMargins = True
@@ -535,7 +511,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 4
       OnClick = BitBtn1Click
-      ExplicitTop = 164
     end
     object BitBtn2: TButton
       AlignWithMargins = True
@@ -549,7 +524,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 2
       OnClick = BitBtn2Click
-      ExplicitTop = 92
     end
     object btnArquivarTodosChats: TButton
       AlignWithMargins = True
@@ -562,7 +536,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivarTodosChatsClick
-      ExplicitTop = 483
     end
     object btnDeletarTodosChats: TButton
       AlignWithMargins = True
@@ -575,7 +548,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 14
       OnClick = btnDeletarTodosChatsClick
-      ExplicitTop = 519
     end
     object Button1: TButton
       AlignWithMargins = True
@@ -589,7 +561,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = Button1Click
-      ExplicitTop = 555
     end
     object btnValidarListarNumeros: TButton
       AlignWithMargins = True
@@ -604,7 +575,22 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnValidarListarNumerosClick
+    end
+    object btnGetMessage: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 547
+      Width = 221
+      Height = 25
+      Cursor = crHandPoint
+      Align = alTop
+      Caption = 'Get Message'
+      ImageIndex = 16
+      Images = ImageList1
+      TabOrder = 17
+      OnClick = btnGetMessageClick
       ExplicitLeft = 7
+      ExplicitTop = 572
     end
   end
   object GroupBox3: TGroupBox
@@ -669,7 +655,6 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaContatosDblClick
-        ExplicitLeft = 7
       end
     end
     object groupListaChats: TGroupBox

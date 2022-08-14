@@ -111,6 +111,7 @@ type
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
+    procedure TWPPConnect1GetMessages(const Chats: TChatList);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -633,6 +634,164 @@ begin
 
   except
     on E: Exception do
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1GetMessages(const Chats: TChatList);
+var
+  AChat: TChatClass;
+  AMessage: TMessagesClass;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem: string;
+  WPPConnectDecrypt: TWPPConnectDecryptFile;
+begin
+  for AChat in Chats.Result do
+  begin
+    for AMessage in AChat.Messages do
+    begin
+      if not AChat.isGroup then // Não exibe mensages de grupos
+      begin
+
+        if not AMessage.Sender.isMe then // Não exibe mensages enviadas por mim
+        begin
+          // memo_unReadMessage.Clear;
+          FChatID := AChat.id;
+          telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
+          contato := AMessage.Sender.pushname;
+
+          // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+          case AnsiIndexStr(UpperCase(AMessage.&type),
+            ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
+            0:
+              begin
+                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                  AMessage.mediaKey, 'mp3', AChat.id);
+              end;
+            1:
+              begin
+                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                  AMessage.mediaKey, 'jpg', AChat.id);
+              end;
+            2:
+              begin
+                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                  AMessage.mediaKey, 'mp4', AChat.id);
+              end;
+            3:
+              begin
+                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                  AMessage.mediaKey, 'mp3', AChat.id);
+              end;
+            4:
+              begin
+                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                  AMessage.mediaKey, 'pdf', AChat.id);
+              end;
+          end;
+          SleepNoFreeze(100);
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('UniqueID: ' + AMessage.id));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('Tipo mensagem: ' + AMessage.&type));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('Chat Id: ' + AChat.id));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (StringReplace(AMessage.body, #$A, #13#10,
+            [rfReplaceAll, rfIgnoreCase]));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('ACK: ' + FloatToStr(AMessage.ack)));
+          selectedButtonId := AMessage.selectedButtonId;
+
+          try
+            if Assigned(AMessage.ListResponse) then
+              if Assigned(AMessage.ListResponse.singleSelectReply) then
+              begin
+                selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+                if selectedRowId <> '' then
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+              end;
+          except on E: Exception do
+          end;
+
+          try
+            if Assigned(AMessage.quotedMsg) then
+            begin
+              quotedMsg_caption := AMessage.quotedMsg.Caption;
+              if Trim(quotedMsg_caption) = '' then
+                if Assigned(AMessage.quotedMsg.list) then
+                  quotedMsg_caption := AMessage.quotedMsg.list.description;
+
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+            end;
+            // Mensagem Original do Click do Botão
+          except
+            on E: Exception do
+              quotedMsg_caption := '';
+          end;
+
+          //Marcelo 25/07/2022 Unique ID Mensagem Origem
+          try
+            if Assigned(AMessage.quotedMsgObj) then
+            begin
+              IdMensagemOrigem := AMessage.quotedMsgObj.id ;
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+            end;
+          except
+            on E: Exception do
+              IdMensagemOrigem := '';
+          end;
+
+          if selectedButtonId = '' then
+            selectedButtonId := AMessage.selectedId;
+
+          if selectedButtonId <> '' then
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
+
+          frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
+            AChat.contact.profilePicThumb;
+
+          if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
+            TWPPConnect1.getProfilePicThumb(AChat.id);
+            //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
+
+          TWPPConnect1.ReadMessages(AChat.id);
+
+          // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
+          // VerificaPalavraChave(AMessage.body, '', telefone, contato);
+        end
+        else
+        begin
+          {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (PChar('UniqueID: ' + AMessage.id));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (PChar('Tipo mensagem: ' + AMessage.&type));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (PChar('Chat Id: ' + AChat.id));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (StringReplace(AMessage.body, #$A, #13#10,
+            [rfReplaceAll, rfIgnoreCase]));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
+            (PChar('ACK: ' + FloatToStr(AMessage.ack)));
+          selectedButtonId := AMessage.selectedButtonId;
+
+          try
+            quotedMsg_caption := AMessage.quotedMsg.Caption;
+            // Mensagem Original do Click do Botão
+          except
+            on E: Exception do
+              quotedMsg_caption := '';
+          end;
+
+          if selectedButtonId = '' then
+            selectedButtonId := AMessage.selectedId;}
+
+        end;
+      end;
+    end;
   end;
 end;
 

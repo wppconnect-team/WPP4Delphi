@@ -62,6 +62,7 @@ type
   TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
 
   TGetUnReadMessages        = procedure(Const Chats: TChatList) of object;
+  TGetMessages              = procedure(Const Chats: TChatList) of object; //14/08/2022
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
   TOnAllGroups              = procedure(Const AllGroups: TRetornoAllGroups) of object;
@@ -137,6 +138,7 @@ type
   protected
     { Protected declarations }
     FOnGetUnReadMessages        : TGetUnReadMessages;
+    FOnGetMessages              : TGetMessages; //14/08/2022
     FOnGetAllGroupContacts      : TOnAllGroupContacts;
     FOnGetAllContactList        : TOnAllContacts;
     FOnGetAllGroupList          : TOnAllGroups;
@@ -259,6 +261,7 @@ type
     procedure NewCheckIsValidNumber(PNumberPhone : string);
     procedure CheckNumberExists(PNumberPhone : string);
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
+    procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta;
@@ -340,6 +343,7 @@ type
     property OnGetQrCode                 : TOnGetQrCode               read FOnGetQrCode                    write FOnGetQrCode;
     property OnGetChatList               : TGetUnReadMessages         read FOnGetChatList                  write FOnGetChatList;
     property OnGetUnReadMessages         : TGetUnReadMessages         read FOnGetUnReadMessages            write FOnGetUnReadMessages;
+    property OnGetMessages               : TGetMessages               read FOnGetMessages                  write FOnGetMessages; //14/08/2022
     property OnGetAllGroupContacts       : TOnAllGroupContacts        read FOnGetAllGroupContacts          write FOnGetAllGroupContacts;
     property OnGetStatus                 : TNotifyEvent               read FOnGetStatus                    write FOnGetStatus;
     property OnGetBatteryLevel           : TNotifyEvent               read FOnGetBatteryLevel              write FOnGetBatteryLevel;
@@ -1004,6 +1008,41 @@ end;
 function TWPPConnect.GetContact(Pindex: Integer): TContactClass;
 begin
   Result := Nil;
+end;
+
+procedure TWPPConnect.getMessage(vNumber, vOptions: String);
+var
+  lThread : TThread;
+begin
+  //Marcelo 14/08/2022
+  if Application.Terminated then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  vNumber := AjustNumber.FormatIn(vNumber);
+
+  if Trim(vNumber) <> '' then
+    if pos('@', vNumber) = 0 then
+    Begin
+      Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
+      Exit;
+    end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getMessage(vNumber, vOptions);
+          end;
+        end);
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 procedure TWPPConnect.getMessageById(UniqueIDs, etapa: string);
@@ -1857,6 +1896,14 @@ begin
     //MARCELO 01/06/2022
     FOnGetProfilePicThumb(Self,TResponseGetProfilePicThumb(PReturnClass));
     exit;
+  end;
+
+
+  //Marcelo 14/08/2022
+  if PTypeHeader = Th_getMessages then
+  Begin
+    if Assigned(OnGetMessages) then
+      OnGetMessages(TChatList(PReturnClass));
   end;
 
 

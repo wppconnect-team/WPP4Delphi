@@ -1624,6 +1624,12 @@ object frDemo: TfrDemo
             ExplicitHeight = 264
           end
         end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
+        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
@@ -5519,6 +5525,7 @@ object frDemo: TfrDemo
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
     OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
+    OnGetMessages = TWPPConnect1GetMessages
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetMessageById = TWPPConnect1GetMessageById

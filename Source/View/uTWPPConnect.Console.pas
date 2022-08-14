@@ -262,6 +262,7 @@ type
     procedure NewCheckIsValidNumber(vNumber:String);
     procedure CheckNumberExists(vNumber:String);
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
+    procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
 
     procedure GetAllChats;
     procedure GetUnreadMessages;
@@ -1730,6 +1731,18 @@ begin
                             end;
                           end;
 
+    Th_getMessages: begin
+                      LOutClass2 := TChatList.Create(LResultStr);
+                      try
+                        SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                      finally
+                        FreeAndNil(LOutClass2);
+                      end;
+
+                      FgettingChats := False;
+                    end;
+
+
     Th_getUnreadMessages: begin
                             {LOutClass := TChatList.Create(LResultStr);
                             try
@@ -2411,6 +2424,22 @@ begin
   LJS   :=  FrmConsole_JS_VAR_getLastSeen;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vNumber));
   ExecuteJS(LJS, False);
+end;
+
+procedure TFrmConsole.getMessage(vNumber, vOptions: String);
+var
+  Ljs: string;
+begin
+  //Marcelo 14/08/2022
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  //vOptions := CaractersWeb(vOptions);
+  LJS := FrmConsole_JS_VAR_getMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',  Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
+
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.getMessageById(UniqueIDs, etapa: string);

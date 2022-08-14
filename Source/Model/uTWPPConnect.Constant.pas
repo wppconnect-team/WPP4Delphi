@@ -165,6 +165,8 @@ Const
   //FrmConsole_JS_VAR_getMessageById      = 'WPP.chat.getMessageById(["<#MSGKEY#>"]);';
   FrmConsole_JS_VAR_getMessageById      = 'window.WAPI.getMessageById2("<#MSGKEY#>");';
 
+  FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
+
   FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
 
 
@@ -374,6 +376,7 @@ type
                    , Th_WPPCrashMonitor=52  //Daniel 18/07/2022
                    , Th_CheckNumberExists=53 //Marcelo 18/07/2022
                    , Th_getLastSeen=54 //Marcelo 31/07/2022
+                   , Th_getMessages=55 //Marcelo 14/08/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -511,7 +514,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 54; //Marcelo 31/07/2022
+const LmaxCount = 55; //Marcelo 14/08/2022
 var
   I: Integer;
   LNome: String;

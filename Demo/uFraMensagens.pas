@@ -83,6 +83,7 @@ type
     lblCaminhoImagem: TLabel;
     Button1: TButton;
     btnValidarListarNumeros: TButton;
+    btnGetMessage: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -122,6 +123,7 @@ type
     procedure btnVideoStatusClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnValidarListarNumerosClick(Sender: TObject);
+    procedure btnGetMessageClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -219,6 +221,7 @@ procedure TframeMensagem.btnArquivarTodosChatsClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
       Exit;
+
    frDemo.TWPPConnect1.ArquivarTodosOsChats;
 end;
 
@@ -323,13 +326,11 @@ begin
         //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
-      ']' +
-      ',footer: "Escolha uma Opção"';
+      ']' ;
+      //',footer: "Escolha uma Opção"';
 
     S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
 
-    //frDemo.TWPPConnect1.SendButtons(ed_num.Text, S_RETORNO, options, '');
-    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, S_RETORNO, options, '');
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, '123');
 
   finally
@@ -437,6 +438,29 @@ begin
    if not frDemo.TWPPConnect1.Auth then
       Exit;
   frDemo.TWPPConnect1.FixarChat(ed_num.text);
+end;
+
+procedure TframeMensagem.btnGetMessageClick(Sender: TObject);
+var
+  options : string;
+begin
+  if ed_Num.Text = '' then
+  begin
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Contato para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+  end;
+
+   if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+  options := '';
+
+  frDemo.TWPPConnect1.getMessage(ed_num.text, options);
+
 end;
 
 procedure TframeMensagem.btnImagemBotaoClick(Sender: TObject);
