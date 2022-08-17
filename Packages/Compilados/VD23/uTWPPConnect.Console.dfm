@@ -1,7 +1,7 @@
 object FrmConsole: TFrmConsole
   Left = 0
   Top = 0
-  Caption = 'Servidor WhatsApp Mega Online Software'
+  Caption = 'WPPConnect Team - WPP4Delphi - Whatsweb'
   ClientHeight = 519
   ClientWidth = 885
   Color = clBtnFace

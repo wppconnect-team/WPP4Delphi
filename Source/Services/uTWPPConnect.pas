@@ -62,7 +62,7 @@ type
   TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
 
   TGetUnReadMessages        = procedure(Const Chats: TChatList) of object;
-  TGetMessages              = procedure(Const Chats: TChatList) of object; //14/08/2022
+  TGetMessages              = procedure(Const Chats: TChatList3) of object; //14/08/2022
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
   TOnAllGroups              = procedure(Const AllGroups: TRetornoAllGroups) of object;
@@ -839,9 +839,19 @@ var
   lThread : TThread;
 begin
   if Application.Terminated Then
-     Exit;
+    Exit;
+
   if not Assigned(FrmConsole) then
-     Exit;
+    Exit;
+
+  //Msrcelo 16/08/2022
+  PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if (pos('@', PNumberPhone) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;
+
 
   if Assigned(FrmConsole) then
   begin
@@ -1903,7 +1913,7 @@ begin
   if PTypeHeader = Th_getMessages then
   Begin
     if Assigned(OnGetMessages) then
-      OnGetMessages(TChatList(PReturnClass));
+      OnGetMessages(TChatList3(PReturnClass));
   end;
 
 
@@ -3300,7 +3310,9 @@ begin
     Exit;
   end;
 
-  if Trim(PNumber) = '' then
+  PNumber := AjustNumber.FormatIn(PNumber);
+
+  if (pos('@', PNumber) = 0) then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PNumberPhone);
     Exit;

@@ -111,7 +111,7 @@ type
       const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
-    procedure TWPPConnect1GetMessages(const Chats: TChatList);
+    procedure TWPPConnect1GetMessages(const Chats: TChatList3);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -637,9 +637,9 @@ begin
   end;
 end;
 
-procedure TfrDemo.TWPPConnect1GetMessages(const Chats: TChatList);
+procedure TfrDemo.TWPPConnect1GetMessages(const Chats: TChatList3);
 var
-  AChat: TChatClass;
+  AChat: TChat3Class;
   AMessage: TMessagesClass;
   contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
@@ -654,12 +654,13 @@ begin
         if not AMessage.Sender.isMe then // Não exibe mensages enviadas por mim
         begin
           // memo_unReadMessage.Clear;
-          FChatID := AChat.id;
-          telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
+          //FChatID := AChat.id.id;
+          //telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
           contato := AMessage.Sender.pushname;
+          telefone := AMessage.Sender.id;
 
           // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-          case AnsiIndexStr(UpperCase(AMessage.&type),
+          {case AnsiIndexStr(UpperCase(AMessage.&type),
             ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
             0:
               begin
@@ -686,7 +687,8 @@ begin
                 WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
                   AMessage.mediaKey, 'pdf', AChat.id);
               end;
-          end;
+          end;}
+
           SleepNoFreeze(100);
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
@@ -694,8 +696,8 @@ begin
             (PChar('UniqueID: ' + AMessage.id));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('Tipo mensagem: ' + AMessage.&type));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('Chat Id: ' + AChat.id));
+          //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+           // (PChar('Chat Id: ' + AChat.id));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (StringReplace(AMessage.body, #$A, #13#10,
             [rfReplaceAll, rfIgnoreCase]));
@@ -752,11 +754,11 @@ begin
           frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
             AChat.contact.profilePicThumb;
 
-          if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
-            TWPPConnect1.getProfilePicThumb(AChat.id);
+         // if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
+           // TWPPConnect1.getProfilePicThumb(AChat.id);
             //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
 
-          TWPPConnect1.ReadMessages(AChat.id);
+          //TWPPConnect1.ReadMessages(AChat.id);
 
           // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
           // VerificaPalavraChave(AMessage.body, '', telefone, contato);

@@ -1599,8 +1599,8 @@ begin
   LResultStr := PResponse.Result;
   if (LResultStr = FrmConsole_JS_RetornoVazio) Then
   Begin
-     LogAdd(PResponse.JsonString, 'CONSOLE');
-     Exit;
+    LogAdd(PResponse.JsonString, 'CONSOLE');
+    Exit;
   End;
 
 
@@ -1732,7 +1732,7 @@ begin
                           end;
 
     Th_getMessages: begin
-                      LOutClass2 := TChatList.Create(LResultStr);
+                      LOutClass2 := TChatList3.Create(LResultStr);
                       try
                         SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                       finally

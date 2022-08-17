@@ -52,6 +52,7 @@ type
   TQrCodeRets  = set of TQrCodeRet;
   TChatClass   = class;   //forward
   TSenderClass = class;   //forward
+  TChat3Class   = class;   //forward
   TTypeNumber  = (TypUndefined=0, TypContact=1, TypGroup=2, TypList=3);
   TFormaUpdate = (Tup_Local=0, Tup_Web=1);
 
@@ -655,6 +656,17 @@ type
     property &type: Extended read FType write FType;
   end;
 
+  TReplyButtonsClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FId: String;
+    FDisplayText: string;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property Id: String read FId write FId;
+    property DisplayText: string read FDisplayText write FDisplayText;
+  end;
+
   //Marcelo 09/08/2022
   TRowsClass = class
   private
@@ -1049,6 +1061,15 @@ type
 
   end;
 
+  TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
+  private
+    //Necessário Implementar, no meus testes está sempre vazio este ARRAY
+  public
+
+  end;
+
+
+
   //Marcelo 27/04/2022
   TunreadMentionsOfMeClass = class(TClassPadrao)
   private
@@ -1109,6 +1130,7 @@ type
   TChatClass = class(TClassPadraoList<TMessagesClass>)
   private
     FId             : String;
+    //FId             : TArray<TidClass>; default;
     FPendingMsgs    : Boolean;
     FLastReceivedKey: TLastReceivedKeyClass;
     FT              : Extended;
@@ -1147,6 +1169,25 @@ type
     FpendingInitialLoading: Boolean;
     FtcToken: TtcTokenClass; //Não Implementada, não sei o que vem no JSON }
 
+    FmsgRowOpaqueData: TmsgRowOpaqueDataClass; //Não Implementada, não sei o que vem no JSON }
+    FListClass: TArray<TListClass>;
+    FpollOptions: TpollOptionsClass;
+    FmessageRangeIndex: String;
+    FhydratedButtonsClass: TArray<ThydratedButtonsClass>;
+    FvcardWAids: TArray<String>;
+    FreplyButtonsClass: TArray<TreplyButtonsClass>;
+    FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
+    FLabels: TArray<String>;
+    FmsgChunk: TArray<String>;
+    FMentionedJidList: TArray<String>;
+    F_headerLinks: TArray<String>;
+    FsenderObj: TArray<String>;
+    F_footerLinks: TArray<String>;
+    F_links: TArray<String>;
+    F_phoneNumbers: TArray<String>;
+    F_headerPhoneNumbers: TArray<String>;
+    F_footerPhoneNumbers: TArray<String>;
+
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -1156,6 +1197,7 @@ type
     property archive        : Boolean                     read FArchive               write FArchive;
     property contact        : TContactClass               Read FContact               write FContact;
     property id             : String                      read FId                    write FId;
+    //property id             : TArray<TidClass>            read Fid                    write Fid; default;
     property isGroup        : Boolean                     read FIsGroup               write FIsGroup;
     property isReadOnly     : Boolean                     read FIsReadOnly            write FIsReadOnly;
     property kind           : String                      read FKind                  Write FKind;
@@ -1190,7 +1232,158 @@ type
     //MARCELO 30/05/2022
     property pendingInitialLoading      : Boolean         read FpendingInitialLoading          write FpendingInitialLoading;
     property tcToken: TtcTokenClass                       read FtcToken                        write FtcToken;
+
+
+    //Marcelo 14/08/2022
+    property msgRowOpaqueData : TmsgRowOpaqueDataClass    read FmsgRowOpaqueData               write FmsgRowOpaqueData;
+    property List             : TArray<TListClass>        read FListClass                      write FListClass;
+    property pollOptions      : TpollOptionsClass         read FpollOptions                    write FpollOptions;
+    property messageRangeIndex: String                    Read FmessageRangeIndex              Write FmessageRangeIndex;
+    property hydratedButtons  : TArray<ThydratedButtonsClass>     read FhydratedButtonsClass           write FhydratedButtonsClass;
+    property vcardWAids       : TArray<String>            read FvcardWAids                     write FvcardWAids;
+    property replyButtons     : TArray<TreplyButtonsClass> read FreplyButtonsClass              write FreplyButtonsClass;
+    property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
+    property labels:          TArray<String>  read FLabels             write FLabels;
+    property msgChunk:          TArray<String>  read FmsgChunk             write FmsgChunk;
+    property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
+    property senderObj: TArray<String> read FsenderObj write FsenderObj;
+    property _links: TArray<String> read F_links write F_links;
+    property _headerLinks: TArray<String> read F_headerLinks write F_headerLinks;
+    property _footerLinks: TArray<String> read F_footerLinks write F_footerLinks;
+    property _phoneNumbers: TArray<String> read F_phoneNumbers write F_phoneNumbers;
+    property _headerPhoneNumbers: TArray<String> read F_headerPhoneNumbers write F_headerPhoneNumbers;
+    property _footerPhoneNumbers: TArray<String> read F_footerPhoneNumbers write F_footerPhoneNumbers;
   end;
+
+
+  TChat3Class = class(TClassPadraoList<TMessagesClass>)
+  private
+    //FId             : String;
+    FId             : TArray<TidClass>;
+    FPendingMsgs    : Boolean;
+    FLastReceivedKey: TLastReceivedKeyClass;
+    FT              : Extended;
+    FUnreadCount    : Extended;
+    FArchive        : Boolean;
+    FIsReadOnly     : Boolean;
+    FModifyTag      : Extended;
+    FMuteExpiration : Extended;
+    FNotSpam        : Boolean;
+    FPin            : Extended;
+    Fmsgs           : String;
+    FKind           : String;
+    FKindTypeNumber : TTypeNumber;
+    FIsGroup        : Boolean;
+    FContact        : TContactClass;
+    FGroupMetadata  : TGroupMetadataClass;
+    FPresence       : TPresenceClass;
+    FMessages       : tArray<TMessagesClass>;
+    FIsAnnounceGrpRestrict: Boolean;
+    FformattedTitle: string;
+
+    //Marcelo 27/04/2022
+    FunreadMentionsOfMe: TArray<TunreadMentionsOfMeClass>;
+    FunreadMentionCount: Extended;
+    FhasUnreadMention: Boolean;
+    FarchiveAtMentionViewedInDrawer: Boolean;
+    FhasChatBeenOpened: Boolean;
+    FephemeralDuration: Extended;
+    FdisappearingModeInitiator: String;
+    FtcTokenTimestamp: Extended;
+    FtcTokenSenderTimestamp: Extended;
+    FendOfHistoryTransferType: Extended;
+    FmsgUnsyncedButtonReplyMsgs: TArray<TmsgUnsyncedButtonReplyMsgsClass>;
+
+    //MARCELO 30/05/2022
+    FpendingInitialLoading: Boolean;
+    FtcToken: TtcTokenClass; //Não Implementada, não sei o que vem no JSON }
+
+    FmsgRowOpaqueData: TmsgRowOpaqueDataClass; //Não Implementada, não sei o que vem no JSON }
+    FListClass: TArray<TListClass>;
+    FpollOptions: TpollOptionsClass;
+    FmessageRangeIndex: String;
+    FhydratedButtonsClass: TArray<ThydratedButtonsClass>;
+    FvcardWAids: TArray<String>;
+    FreplyButtonsClass: TArray<TreplyButtonsClass>;
+    FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
+    FLabels: TArray<String>;
+    FmsgChunk: TArray<String>;
+    FMentionedJidList: TArray<String>;
+    F_headerLinks: TArray<String>;
+    FsenderObj: TArray<String>;
+    F_footerLinks: TArray<String>;
+    F_links: TArray<String>;
+    F_phoneNumbers: TArray<String>;
+    F_headerPhoneNumbers: TArray<String>;
+    F_footerPhoneNumbers: TArray<String>;
+
+  public
+    constructor Create(pAJsonString: string);
+    destructor Destroy; override;
+
+    property isAnnounceGrpRestrict: Boolean               read FIsAnnounceGrpRestrict write FIsAnnounceGrpRestrict;
+    property groupMetadata  : TGroupMetadataClass         read FGroupMetadata         write FGroupMetadata;
+    property archive        : Boolean                     read FArchive               write FArchive;
+    property contact        : TContactClass               Read FContact               write FContact;
+    //property id             : String                      read FId                    write FId;
+    property id             : TArray<TidClass>            read Fid                    write Fid;
+    property isGroup        : Boolean                     read FIsGroup               write FIsGroup;
+    property isReadOnly     : Boolean                     read FIsReadOnly            write FIsReadOnly;
+    property kind           : String                      read FKind                  Write FKind;
+    property KindTypeNumber : TTypeNumber                 read FKindTypeNumber;
+
+    property lastReceivedKey: TLastReceivedKeyClass       read FLastReceivedKey       write FLastReceivedKey;
+    property messages       : TArray<TMessagesClass>      read FMessages              write FMessages;
+    property modifyTag      : Extended                    read FModifyTag             write FModifyTag;
+    property muteExpiration : Extended                    read FMuteExpiration        write FMuteExpiration;
+    property notSpam        : Boolean                     read FNotSpam               write FNotSpam;
+    property pendingMsgs    : Boolean                     read FPendingMsgs           write FPendingMsgs;
+    property msgs           : String                      Read Fmsgs                  Write Fmsgs ;
+    property pin            : Extended                    read FPin                   write FPin;
+    property presence       : TPresenceClass              read FPresence              write FPresence;
+    property t              : Extended                    read FT                     write FT;
+    property unreadCount    : Extended                    read FUnreadCount           write FUnreadCount;
+
+    //Marcelo 27/04/2022
+    property unreadMentionsOfMe  : TArray<TunreadMentionsOfMeClass> read FunreadMentionsOfMe   write FunreadMentionsOfMe;
+    property unreadMentionCount  : Extended               read FunreadMentionCount             write FunreadMentionCount;
+    property hasUnreadMention    : Boolean                read FhasUnreadMention               write FhasUnreadMention;
+    property archiveAtMentionViewedInDrawer : Boolean     read FarchiveAtMentionViewedInDrawer write FarchiveAtMentionViewedInDrawer;
+    property hasChatBeenOpened   : Boolean                read FhasChatBeenOpened              write FhasChatBeenOpened;
+    property ephemeralDuration   : Extended               read FephemeralDuration              write FephemeralDuration;
+    property disappearingModeInitiator : String           Read FdisappearingModeInitiator      Write FdisappearingModeInitiator ;
+    property tcTokenTimestamp    : Extended               read FtcTokenTimestamp               write FtcTokenTimestamp;
+    property tcTokenSenderTimestamp : Extended            read FtcTokenSenderTimestamp         write FtcTokenSenderTimestamp;
+    property endOfHistoryTransferType : Extended          read FendOfHistoryTransferType       write FendOfHistoryTransferType;
+    property formattedTitle              : string         read FformattedTitle                 write FformattedTitle;
+    property msgUnsyncedButtonReplyMsgs : TArray<TmsgUnsyncedButtonReplyMsgsClass> read FmsgUnsyncedButtonReplyMsgs write FmsgUnsyncedButtonReplyMsgs;
+
+    //MARCELO 30/05/2022
+    property pendingInitialLoading      : Boolean         read FpendingInitialLoading          write FpendingInitialLoading;
+    property tcToken: TtcTokenClass                       read FtcToken                        write FtcToken;
+
+
+    //Marcelo 14/08/2022
+    property msgRowOpaqueData : TmsgRowOpaqueDataClass    read FmsgRowOpaqueData               write FmsgRowOpaqueData;
+    property List             : TArray<TListClass>        read FListClass                      write FListClass;
+    property pollOptions      : TpollOptionsClass         read FpollOptions                    write FpollOptions;
+    property messageRangeIndex: String                    Read FmessageRangeIndex              Write FmessageRangeIndex;
+    property hydratedButtons  : TArray<ThydratedButtonsClass>     read FhydratedButtonsClass           write FhydratedButtonsClass;
+    property vcardWAids       : TArray<String>            read FvcardWAids                     write FvcardWAids;
+    property replyButtons     : TArray<TreplyButtonsClass> read FreplyButtonsClass              write FreplyButtonsClass;
+    property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
+    property labels:          TArray<String>  read FLabels             write FLabels;
+    property msgChunk:          TArray<String>  read FmsgChunk             write FmsgChunk;
+    property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
+    property senderObj: TArray<String> read FsenderObj write FsenderObj;
+    property _links: TArray<String> read F_links write F_links;
+    property _headerLinks: TArray<String> read F_headerLinks write F_headerLinks;
+    property _footerLinks: TArray<String> read F_footerLinks write F_footerLinks;
+    property _phoneNumbers: TArray<String> read F_phoneNumbers write F_phoneNumbers;
+    property _headerPhoneNumbers: TArray<String> read F_headerPhoneNumbers write F_headerPhoneNumbers;
+    property _footerPhoneNumbers: TArray<String> read F_footerPhoneNumbers write F_footerPhoneNumbers;
+  end;
+
 
 {##########################################################################################
                                 RETORNOS AO CONSOLE
@@ -1283,6 +1476,8 @@ end;
 TChatList2 = class(TClassPadraoList<TChatClass>)
 end;
 
+TChatList3 = class(TClassPadraoList<TChat3Class>)
+end;
 
 TRetornoAllGroupContacts = class(TClassPadraoList<TChatClass>)
 end;
@@ -2317,6 +2512,32 @@ end;
 destructor TWppCrashClass.Destroy;
 begin
   FResult.Free;
+  inherited;
+end;
+
+{ TChat3Class }
+
+constructor TChat3Class.Create(pAJsonString: string);
+begin
+  //FLastReceivedKey := TLastReceivedKeyClass.Create(JsonString);
+  FContact         := TContactClass.Create        (JsonString);
+  //FGroupMetadata   := TGroupMetadataClass.Create  (JsonString);
+  FKindTypeNumber  := TypUndefined;
+  inherited Create(pAJsonString);
+  if LowerCase(FKind) =  LowerCase('chat') then
+     FKindTypeNumber := TypContact else
+     if LowerCase(FKind) =  LowerCase('group') then
+        FKindTypeNumber := TypGroup else
+        FKindTypeNumber := TypList;
+end;
+
+destructor TChat3Class.Destroy;
+begin
+  ClearArray(FMessages);
+  FreeAndNil(FPresence);
+  FreeAndNil(FLastReceivedKey);//.free;
+  FreeAndNil(FContact);//.free;
+  FreeAndNil(FGroupMetadata);//.free;
   inherited;
 end;
 
