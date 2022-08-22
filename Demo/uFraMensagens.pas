@@ -318,12 +318,13 @@ begin
 
 
     options :=
-      'useTemplateButtons: undefined,' +
+      //'useTemplateButtons: undefined,' +
+      'useTemplateButtons: true,' +
       'createChat: true,' +
       'buttons:' +
       '['+
-        //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
-        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
       ']' ;
@@ -506,15 +507,18 @@ begin
 
       options :=
         'createChat: true, ' +
-        'useTemplateButtons: undefined, ' + //Crash iOS True
-        'title: "Novidades",  ' +
-        'footer: "Imagem com Botão",  ' +
+        ///'useTemplateButtons: undefined, ' +
+        'useTemplateButtons: true, ' + //Crash iOS True
+        //'title: "Novidades",  ' +
+        //'footer: "Imagem com Botão",  ' +
+        'caption: "My image", ' +
+        'type: "image", ' +
         'buttons: [ ' +
-        (*'  { ' +
+       (* '  { ' +
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
-        '  }, ' +  *)
-        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '  }, ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +     *)
 
         '  { ' +
         '    id: "001",  ' +
@@ -1150,9 +1154,11 @@ begin
 
       options :=
         'createChat: true, ' +
-        'useTemplateButtons: undefined, ' +
-        'title: "Novidades",  ' +
-        'footer: "Video com Botão",  ' +
+        //'useTemplateButtons: undefined, ' +
+        'useTemplateButtons: true, ' +
+        //'title: "Novidades",  ' +
+        //'footer: "Video com Botão",  ' +
+        'caption: "Video com Botão", ' +
         'buttons: [ ' +
 
         (*

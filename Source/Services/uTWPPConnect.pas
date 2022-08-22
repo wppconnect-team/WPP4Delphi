@@ -1071,8 +1071,8 @@ begin
         if Config.AutoDelay > 0 then
            sleep(random(Config.AutoDelay));
 
-        TThread.Synchronize(nil, procedure
-        begin
+        //TThread.Synchronize(nil, procedure
+        ///begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
@@ -1082,7 +1082,7 @@ begin
               //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
             end;
           end;
-        end);
+        //end);
 
       end);
   lThread.FreeOnTerminate := true;
@@ -2213,8 +2213,18 @@ procedure TWPPConnect.ReadMessages(vID: string);
 begin
   If Application.Terminated Then
      Exit;
+
   if not Assigned(FrmConsole) then
      Exit;
+
+  //Marcelo 17/08/2022
+  vID := AjustNumber.FormatIn(vID);
+  if pos('@', vID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vID);
+    Exit;
+  end;
+
 
   if Config.AutoDelete Then
   begin

@@ -589,8 +589,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = btnGetMessageClick
-      ExplicitLeft = 7
-      ExplicitTop = 572
     end
   end
   object GroupBox3: TGroupBox
