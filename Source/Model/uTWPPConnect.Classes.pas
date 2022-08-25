@@ -952,6 +952,7 @@ type
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
+    class function FromJsonString(AJsonString: string): TMessagesClass;
 
     property ack        : Extended            read FAck                write FAck;
     property body       : String              read FBody               write FBody;
@@ -1429,6 +1430,8 @@ Public
 //    Property Mensagem : TMessagesClass   Read fMessageClass;
   constructor Create(pAJsonString: string);
   destructor  Destroy;       override;
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TResponsesendTextMessage;
 end;
 
 TRetornoAllContacts = class(TClassPadraoList<TContactClass>)
@@ -1955,6 +1958,11 @@ begin
   inherited;
 end;
 
+class function TMessagesClass.FromJsonString(AJsonString: string): TMessagesClass;
+begin
+  result := TJson.JsonToObject<TMessagesClass>(AJsonString);
+end;
+
 { TQrCodeClass }
 constructor TQrCodeClass.Create(pAJsonString: string; PJsonOption: TJsonOptions; PTagRequired: TQrCodeRets);
 var
@@ -2455,6 +2463,16 @@ begin
   inherited;
 end;
 
+class function TResponsesendTextMessage.FromJsonString(AJsonString: string): TResponsesendTextMessage;
+begin
+  result := TJson.JsonToObject<TResponsesendTextMessage>(AJsonString);
+end;
+
+function TResponsesendTextMessage.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
 { TProductList }
 
 constructor TProductList.Create(pAJsonString: string);
@@ -2465,7 +2483,7 @@ end;
 
 class function TProductList.FromJsonString(AJsonString: string): TProductList;
 begin
-  result := TJson.JsonToObject<TProductList>(AJsonString)
+  result := TJson.JsonToObject<TProductList>(AJsonString);
 end;
 
 function TProductList.ToJsonString: string;

@@ -195,6 +195,8 @@ type
     procedure sendRawMessage(phoneNumber, rawMessage, options: string; etapa: string = '');
     procedure markIsComposing(phoneNumber, duration: string; etapa: string = '');
 
+    procedure markIsUnread(phoneNumber: string);
+
     //Adicionado Por Marcelo 13/06/2022
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
@@ -1644,13 +1646,14 @@ begin
 
     //Marcelo 06/05/2022
     Th_getMessageById   : begin
-                            if Assigned(FMessagesList) then
-                               FMessagesList.Free;
+                            //if Assigned(FMessagesList) then
+                               //FMessagesList.Free;
 
-                            FMessagesList := TMessagesList.Create(LResultStr);
+                            //FMessagesList := TMessagesList.Create(LResultStr);
                             //LOutClass2 := TMessagesClass.Create(LResultStr);
+                            LOutClass2 := TMessagesClass.Create(LResultStr);
                             try
-                              SendNotificationCenterDirect(PResponse.TypeHeader, FMessagesList);
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
                               //FreeAndNil(LOutClass2);
                             end;
@@ -2607,6 +2610,18 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#',      duration);
 
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markIsUnread(phoneNumber: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markIsUnread;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   ExecuteJS(LJS, true);
 end;
 

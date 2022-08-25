@@ -77,8 +77,8 @@ type
   TOngetLastSeen      = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
 
   //Adicionado Por Marcelo 06/05/2022
-  //TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
-  TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
+  TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
+  //TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
 
   //Adicionado Por Marcelo 31/05/2022
   TGet_sendFileMessage      = procedure(Const Mensagem: TMessagesClass) of object;
@@ -238,6 +238,8 @@ type
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
+
+    procedure markIsUnread(phoneNumber: string);
 
     //MARCELO 28/06/2022
     procedure sendImageStatus(Content, Options: string);
@@ -1071,8 +1073,8 @@ begin
         if Config.AutoDelay > 0 then
            sleep(random(Config.AutoDelay));
 
-        //TThread.Synchronize(nil, procedure
-        ///begin
+        TThread.Synchronize(nil, procedure
+        begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
@@ -1082,7 +1084,7 @@ begin
               //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
             end;
           end;
-        //end);
+        end);
 
       end);
   lThread.FreeOnTerminate := true;
@@ -1820,6 +1822,43 @@ begin
 
 end;
 
+procedure TWPPConnect.markIsUnread(phoneNumber: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsUnread(phoneNumber);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.markmarkIsRecording(phoneNumber, duration, etapa: string);
 var
   lThread : TThread;
@@ -1941,8 +1980,8 @@ begin
     If PTypeHeader = Th_GetMessageById Then
     Begin
       if Assigned(OnGetMessageById) then
-        OnGetMessageById(TMessagesList(PReturnClass));
-         //OnGetMessageById(TMessagesClass(PReturnClass));
+        //OnGetMessageById(TMessagesList(PReturnClass));
+         OnGetMessageById(TMessagesClass(PReturnClass));
 
     end;
 
