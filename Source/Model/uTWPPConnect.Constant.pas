@@ -167,6 +167,8 @@ Const
 
   FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
 
+  FrmConsole_JS_VAR_getPlatformFromMessage = 'WPP.chat.getPlatformFromMessage("<#MSG_UNIQUE_ID#>");';
+
   FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
 
 

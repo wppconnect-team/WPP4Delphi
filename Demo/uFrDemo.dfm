@@ -1618,16 +1618,10 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
       end
@@ -1642,10 +1636,6 @@ object frDemo: TfrDemo
     inherited GroupBox2: TGroupBox
       Height = 589
       ExplicitHeight = 589
-      inherited btnGetMessage: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 547
-      end
     end
     inherited GroupBox3: TGroupBox
       Height = 589

@@ -1100,7 +1100,7 @@ begin
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
 
-    SalvaLog(LJS + #13#10, 'CONSOLE');
+    //SalvaLog(LJS + #13#10, 'CONSOLE');
 
     ExecuteJS(LJS, true);
 
@@ -1140,7 +1140,7 @@ begin
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
     FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
 
-    SalvaLog(LJS + #13#10, 'CONSOLE');
+    //SalvaLog(LJS + #13#10, 'CONSOLE');
 
     //FrmConsole_JS_AlterVar(LJS, '#DELAY#',  '5000');
     ExecuteJS(LJS, true);
