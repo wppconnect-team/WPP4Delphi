@@ -78,7 +78,6 @@ type
       const PError, PInfoAdc: string);
     procedure TWPPConnect1GetCheckIsValidNumber(Sender: TObject; Number: string;
       IsValid: Boolean);
-    procedure TWPPConnect1GetMessageById(const Mensagem: TMessagesList);
     procedure ctbtnCategories0Items2Click(Sender: TObject);
     procedure TWPPConnect1GetAllGroupList(const AllGroups: TRetornoAllGroups);
     procedure TWPPConnect1GetAllGroupContacts(const Contacts
@@ -112,6 +111,7 @@ type
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
     procedure TWPPConnect1GetMessages(const Chats: TChatList3);
+    procedure TWPPConnect1GetMessageById(const Mensagem: TMessagesClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -600,7 +600,7 @@ begin
   end;
 end;
 
-procedure TfrDemo.TWPPConnect1GetMessageById(const Mensagem: TMessagesList);
+procedure TfrDemo.TWPPConnect1GetMessageById(const Mensagem: TMessagesClass);
 var
   StatusMensagem, wlo_Json: string;
   AMensagem: TMessagesClass;
@@ -830,9 +830,11 @@ begin
       TNetEncoding.Base64.Decode( LInput, LOutput );
       LOutput.Position := 0;
       {$IFDEF VER330}
-        frameMensagensRecebidas1.Image2.Picture.LoadFromStream(LOutput);
+        if loutput.size > 0 then
+          frameMensagensRecebidas1.Image2.Picture.LoadFromStream(LOutput);
       {$ELSE}
-        frameMensagensRecebidas1.Image2.Picture.Bitmap.LoadFromStream(LOutput);
+        if loutput.size > 0 then
+          frameMensagensRecebidas1.Image2.Picture.Bitmap.LoadFromStream(LOutput);
       {$ENDIF}
     finally
       LInput.Free;
