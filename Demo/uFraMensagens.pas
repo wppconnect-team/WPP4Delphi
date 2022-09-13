@@ -318,13 +318,13 @@ begin
 
 
     options :=
-      //'useTemplateButtons: undefined,' +
-      'useTemplateButtons: true,' +
+      'useTemplateButtons: undefined,' + //Is Working Android and iOS
+      //'useTemplateButtons: true,' +  //Crash iOS
       'createChat: true,' +
       'buttons:' +
       '['+
-        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
+        //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' + //Crash iOS
+        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' + //Crash iOS
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
       ']' ;

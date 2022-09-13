@@ -432,6 +432,10 @@ begin
   try
     If TWPPConnect(FOwner).Status = Server_Connected then
     Begin
+      //Marcelo 12/08/2022
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
       ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
       SleepNoFreeze(40);
 
@@ -1249,16 +1253,16 @@ begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
-  description := CaractersWeb(description);
-  buttonText := CaractersWeb(buttonText);
-
+  //description := CaractersWeb(description);
+  //buttonText := CaractersWeb(buttonText);
+  //sections := CaractersWeb(sections);
   sections := CaractersQuebraLinha(sections);
 
   LJS   := FrmConsole_JS_VAR_sendListMessageEx;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
-  FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
-  FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
-  FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        Trim(sections));
+  //FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
+  //FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        sections);
   ExecuteJS(LJS, true);
 end;
 
@@ -1735,7 +1739,8 @@ begin
                           end;
 
     Th_getMessages: begin
-                      LOutClass2 := TChatList3.Create(LResultStr);
+                      //LOutClass2 := TRootClass.Create(LResultStr); //03/09/2022
+                      LOutClass2 := TRootClass.Create(PResponse.JsonString); //03/09/2022
                       try
                         SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                       finally
@@ -2017,8 +2022,15 @@ procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
 begin
   if TWPPConnect(FOwner).Status = Server_Rebooting then
   begin
+    //Marcelo 12/08/2022
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(40);
+    SleepNoFreeze(500);
+
+    If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
       //Auto monitorar mensagens não lidas
     StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);

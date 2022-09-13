@@ -2855,9 +2855,9 @@ begin
     Exit;
   end;
 
-  if Trim(buttonText) = '' then
+  if Trim(sections) = '' then
   begin
-    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, sections);
     Exit;
   end;
 

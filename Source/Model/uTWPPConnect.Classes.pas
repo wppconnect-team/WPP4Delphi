@@ -1386,6 +1386,70 @@ type
   end;
 
 
+  TResultClass = class //MARCELO 03/09/2022
+  private
+    FAck: Extended;
+    FBody: String;
+    FBroadcast: Boolean;
+    FFrom: String;
+    FId: TIdClass;
+    FIsMdHistoryMsg: Boolean;
+    FMessageRangeIndex: String;
+    FMsgRowOpaqueData: TMsgRowOpaqueDataClass;
+    //FPollOptions: TArray<String>;
+    FRequiresDirectConnection: Boolean;
+    FRowId: Extended;
+    FStar: Boolean;
+    FT: Extended;
+    FTo: String;
+    FType: String;
+    FpollOptions: TpollOptionsClass;
+  public
+    property ack: Extended read FAck write FAck;
+    property body: String read FBody write FBody;
+    property broadcast: Boolean read FBroadcast write FBroadcast;
+    property from: String read FFrom write FFrom;
+    property id: TIdClass read FId write FId;
+    property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
+    property messageRangeIndex: String read FMessageRangeIndex write FMessageRangeIndex;
+    property msgRowOpaqueData: TMsgRowOpaqueDataClass read FMsgRowOpaqueData write FMsgRowOpaqueData;
+    //property pollOptions: TArray<String> read FPollOptions write FPollOptions;
+    property pollOptions                 : TpollOptionsClass  read FpollOptions        write FpollOptions; //NOT IMPLEMENT
+    property requiresDirectConnection: Boolean read FRequiresDirectConnection write FRequiresDirectConnection;
+    property rowId: Extended read FRowId write FRowId;
+    property star: Boolean read FStar write FStar;
+    property t: Extended read FT write FT;
+    property &to: String read FTo write FTo;
+    property &type: String read FType write FType;
+    constructor Create;
+    destructor Destroy; override;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TResultClass;
+  end;
+
+
+  TJsonSringResult = class
+    private
+      FjsonResult: String;
+    public
+      property jsonResult: String read FjsonResult write FjsonResult;
+      constructor Create;
+  end;
+
+  //TRootClass = class(TJsonSringResult) //MARCELO 03/09/2022
+  TRootClass = class(TClassPadrao) //MARCELO 03/09/2022
+  private
+    FResult: TArray<TResultClass>;
+  public
+    property result: TArray<TResultClass> read FResult write FResult;
+    constructor Create(pAJsonString: string);
+    //
+    //constructor Create(pAJsonString: string; PJsonOption: TJsonOptions = JsonOptionClassPadrao);
+    destructor Destroy; override;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TRootClass;
+  end;
+
 {##########################################################################################
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
@@ -1920,13 +1984,39 @@ begin
 end;
 
 
-{TRetornoAllContacts}
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+Tdestructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+RetornoAllContacts}
 constructor TRetornoAllContacts.Create(pAJsonString: string);
 begin
  inherited Create(pAJsonString);
 end;
 
-{TSenderClass}
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+Tdestructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+SenderClass}
 constructor TSenderClass.Create(pAJsonString: string);
 begin
   //Deprecated
@@ -1941,7 +2031,14 @@ begin
   inherited;
 end;
 
-{TMessagesClass}
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+TMessagesClass}
 constructor TMessagesClass.Create(pAJsonString: string);
 begin
   FSender    := TSenderClass.Create   (JsonString);
@@ -1963,7 +2060,14 @@ begin
   result := TJson.JsonToObject<TMessagesClass>(AJsonString);
 end;
 
-{ TQrCodeClass }
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+ TQrCodeClass }
 constructor TQrCodeClass.Create(pAJsonString: string; PJsonOption: TJsonOptions; PTagRequired: TQrCodeRets);
 var
   lCode : String;
@@ -2012,7 +2116,20 @@ begin
   inherited;
 end;
 
-{ TClassPadrao }
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+ destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+TClassPadrao }
 constructor TClassPadrao.Create(pAJsonString: string; PJsonOption: TJsonOptions);
 var
   lAJsonObj: TJSONValue;
@@ -2065,7 +2182,30 @@ begin
   result := TJson.ObjectToJsonString(self);
 end;
 
-{ TClassPadraoList<T> }
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+ destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+Tclass function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+Cfunction TResultClass.ToJsonString: string;
+begin
+
+end;
+
+lassPadraoList<T> }
 procedure TClassPadraoList<T>.ClearArray(PArray: TArray<T>);
 var
   I: Integer;
@@ -2097,7 +2237,30 @@ begin
   inherited;
 end;
 
-{ TPresenceClass }
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+ destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+Tclass function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+Pfunction TResultClass.ToJsonString: string;
+begin
+
+end;
+
+resenceClass }
 constructor TPresenceClass.Create;
 begin
   inherited Create(pAJsonString);
@@ -2110,7 +2273,30 @@ begin
   inherited;
 end;
 
-{ TResponseMyNumber }
+{ TResultClass }
+
+{constructor TResultClass.Create;
+begin
+
+end;
+
+ destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+Tclass function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+Rfunction TResultClass.ToJsonString: string;
+begin
+
+end;
+
+esponseMyNumber }
 constructor TResponseMyNumber.Create(pAJsonString: string);
 begin
   inherited Create(pAJsonString);
@@ -2124,7 +2310,25 @@ begin
   inherited;
 end;
 
-{ TUrlIndy }
+{ TResultClass }
+
+{destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+ class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+Tfunction TResultClass.ToJsonString: string;
+begin
+
+end;
+
+UrlIndy }
 
 constructor TUrlIndy.Create;
 begin
@@ -2236,7 +2440,25 @@ begin
 end;
 
 
-{ TMediaDataClass }
+{ TResultClass }
+
+{destructor TResultClass.Destroy;
+begin
+
+  inherited;
+end;
+
+ class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+Tfunction TResultClass.ToJsonString: string;
+begin
+
+end;
+
+MediaDataClass }
 
 constructor TMediaDataClass.Create(pAJsonString: string);
 begin
@@ -2249,7 +2471,19 @@ begin
   inherited;
 end;
 
-{ TMediaDataBlobClass }
+{ TResultClass }
+
+{class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+ function TResultClass.ToJsonString: string;
+begin
+
+end;
+
+TMediaDataBlobClass }
 
 constructor TMediaDataBlobClass.Create(pAJsonString: string);
 begin
@@ -2263,7 +2497,19 @@ begin
 end;
 
 
-{ TResponseIsConnected }
+{ TResultClass }
+
+{class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+ function TResultClass.ToJsonString: string;
+begin
+
+end;
+
+TResponseIsConnected }
 
 constructor TResponseIsConnected.Create(pAJsonString: string);
 begin
@@ -2271,7 +2517,19 @@ begin
   //FResult := FResult;//Copy(FResult, 0 , Pos('@', FResult)-1);
 end;
 
-{ TResponseIsBeta }
+{ TResultClass }
+
+{class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+ function TResultClass.ToJsonString: string;
+begin
+
+end;
+
+TResponseIsBeta }
 
 constructor TResponseIsBeta.Create(pAJsonString: string);
 begin
@@ -2306,7 +2564,19 @@ begin
   inherited;
 end;
 
-{ TRetornoAllGroups }
+{ TResultClass }
+
+{class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+
+end;
+
+ function TResultClass.ToJsonString: string;
+begin
+
+end;
+
+TRetornoAllGroups }
 
 constructor TRetornoAllGroups.Create(pAJsonString: string);
 var
@@ -2392,7 +2662,33 @@ begin
   result := TJson.ObjectToJsonString(self);
 end;
 
-{ TRetornoAllGroupAdmins }
+{TResultClass}
+
+constructor TResultClass.Create;
+begin
+  inherited;
+  //FId := TIdClass.Create();
+  //FMsgRowOpaqueData := TMsgRowOpaqueDataClass.Create();
+end;
+
+destructor TResultClass.Destroy;
+begin
+  FId.free;
+  FMsgRowOpaqueData.free;
+  inherited;
+end;
+
+class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
+begin
+  result := TJson.JsonToObject<TResultClass>(AJsonString)
+end;
+
+function TResultClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+{TRetornoAllGroupAdmins }
 
 constructor TRetornoAllGroupAdmins.Create(pAJsonString: string);
 begin
@@ -2558,6 +2854,106 @@ begin
   FreeAndNil(FGroupMetadata);//.free;
   inherited;
 end;
+
+{ TRootClass }
+
+
+constructor TRootClass.Create(pAJsonString: string);
+var
+  vJson, v : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  myarr: TJSONArray;
+begin
+
+  //SalvaLog(v, 'CONSOLE');
+  //lAJsonObj := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(v),0);
+  //lAJsonObj := TJSONObject.ParseJSONValue(v) as TJSONObject;
+  //v := lAJsonObj.ToJSON;
+
+
+  v := copy(pAJsonString, 33, length(pAJsonString) - 11);
+  v := copy(v, 1, length(v) - 2);
+
+
+  v := stringreplace(v, '\"', '"', [rfReplaceAll, rfIgnoreCase]);
+
+  //SalvaLog(v, 'CONSOLE');
+
+
+  inherited Create(v);
+
+ // FResult
+
+  //vJson := pAJsonString;
+  //lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+  //inherited Create(vJson);
+
+  //getMessages
+
+  //if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+  //begin
+    //vJson := lAJsonObj2.ToJSON;
+    //lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+    //vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+    //inherited Create(vJson);
+    //(vJson);
+
+    {if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+    begin
+      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+      inherited Create(vJson);
+    end;}
+  //end;
+
+
+(*var
+  lAJsonObj: TJSONValue;
+begin
+  lAJsonObj := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(pAJsonString),0); { TODO : mudei de ASCII para UTF8 aqui }
+  try
+    if not Assigned(lAJsonObj) then
+       Exit;
+   inherited Create(pAJsonString);
+  finally
+    FreeAndNil(lAJsonObj);
+  end;
+ *)
+  //TRootClass.FromJsonString(pAJsonString)
+  //wlo_Json := Mensagem.JsonString;
+  //JMessagem := TRootClass.FromJsonString(pAJsonString);
+  //Create(pAJsonString);
+  //Create;
+  //inherited Create(pAJsonString);
+  //FResult := TResultClass.Create();
+  //FResult := TResultClass.Create();
+end;
+
+destructor TRootClass.Destroy;
+begin
+  //ClearArray(FResult);
+  //FreeAndNil(FPresence);
+  //inherited;
+end;
+
+class function TRootClass.FromJsonString(AJsonString: string): TRootClass;
+begin
+  result := TJson.JsonToObject<TRootClass>(AJsonString)
+end;
+
+function TRootClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+{ TJsonSringResult }
+
+constructor TJsonSringResult.Create;
+begin
+  //
+end;
+
 
 end.
 

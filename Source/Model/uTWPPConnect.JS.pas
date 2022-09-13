@@ -74,11 +74,13 @@ type
     FInjectJSDefine : TWPPConnectJSDefine;
     FAutoUpdateTimeOut   : Integer;
     FOnErrorInternal     : TOnErroInternal;
+    FSecondsWaitInject: Integer;
     Owner: TComponent;
   {$REGION 'uCSV.Import'}
     FStringList: TStringList;
     FRegistros       : TFDMemTable;
     FSeparador : Char;
+
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
     procedure  SeTWPPConnectScript(const Value: TstringList);
@@ -113,12 +115,13 @@ type
   {$ENDREGION}
 
  published
-    property   AutoUpdate         : Boolean   read FAutoUpdate           write FAutoUpdate          default True;
-    property   AutoUpdateTimeOut  : Integer   Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
-    property   OnUpdateJS    : TNotifyEvent   Read FOnUpdateJS           Write FOnUpdateJS;
-    property   Ready         : Boolean        read FReady;
-    property   JSURL         : String         read FJSURL                write FJSURL;
-    property   JSScript      : TstringList    read FJSScript             Write SeTWPPConnectScript;
+    property   AutoUpdate         : Boolean        read FAutoUpdate           write FAutoUpdate          default True;
+    property   AutoUpdateTimeOut  : Integer        Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
+    property   OnUpdateJS         : TNotifyEvent   Read FOnUpdateJS           Write FOnUpdateJS;
+    property   Ready              : Boolean        read FReady;
+    property   JSURL              : String         read FJSURL                write FJSURL;
+    property   JSScript           : TstringList    read FJSScript             Write SeTWPPConnectScript;
+    property   SecondsWaitInject  : Integer        read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
   end;
 
 
@@ -150,6 +153,7 @@ begin
   FJSURL                     := TWPPConnectJS_JSUrlPadrao;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
+  FSecondsWaitInject         := 6;
   UpdateNow;   //UpdateNow; Temis 03-06-2022
 end;
 function TWPPConnectJS.AtualizarInternamente(PForma: TFormaUpdate): Boolean;
