@@ -2067,6 +2067,8 @@ begin
 
     if Assigned(fOnGetStatus ) then
        fOnGetStatus(Self);
+
+    FrmConsole.GetMyNumber;
   end;
 
 
@@ -3848,11 +3850,19 @@ begin
 
   if Status in [Server_Disconnected, Inject_Destroy] then
   begin
+    SleepNoFreeze(1000);
+    if  ConsolePronto then
+    begin
+
+    end
+    else
     if not ConsolePronto then
     begin
       Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConsoleNaoPronto), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
       Exit;
     end;
+
+
     //Reseta o FORMULARIO
     if LState Then
        FormQrCodeReloader;

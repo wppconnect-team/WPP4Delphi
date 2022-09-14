@@ -270,7 +270,7 @@ resourcestring
   Text_FrmConsole_Caption              = 'WPP Connect';
   Text_FrmConsole_LblMsg               = '';
   MSG_WarningClassUnknown              = '';
-  MSG_Exceptlibeay32dll                = '';
+  MSG_Exceptlibeay32dll                = 'Erro HTTP GET (js.abr) Atualize as dlls "libeay32.dll" e "ssleay32.dll"';
   Text_Vcard_Comments1                 = '';
   Text_Vcard_Comments2                 = '';
   Text_Vcard_Comments3                 = '';

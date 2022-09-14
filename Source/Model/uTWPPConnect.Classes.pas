@@ -2415,7 +2415,7 @@ begin
       Begin
         if FShowException then
         Begin
-          if pos(AnsiUpperCase('Cold not load SSL'), AnsiUpperCase(e.Message)) > 0 then
+          if pos(AnsiUpperCase('COLD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
              Application.MessageBox(PWideChar(MSG_Exceptlibeay32dll), PWideChar(Application.Title), MB_ICONERROR + mb_ok) else
              Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr) ' + e.Message), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
         End;

@@ -520,11 +520,27 @@ end;
 procedure TfrDemo.TWPPConnect1GetChatList(const Chats: TChatList);
 var
   AChat: TChatClass;
+  NomeContato : string;
 begin
   frameMensagem1.listaChats.Clear;
   for AChat in Chats.Result do
-    AddChatList('(' + AChat.unreadCount.ToString + ') ' + AChat.name + ' - ' +
+  begin
+    if AChat.contact.pushname <> '' then
+      NomeContato := AChat.contact.pushname
+    else
+    if AChat.contact.Name <> '' then
+      NomeContato := AChat.contact.Name
+    else
+    if AChat.contact.formattedName <> '' then
+      NomeContato := AChat.contact.formattedName
+    else
+    if AChat.Name <> '' then
+      NomeContato := AChat.Name;
+
+    AddChatList('(' + AChat.unreadCount.ToString + ') ' + NomeContato + ' - ' +
       AChat.id);
+
+  end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetCheckIsValidNumber(Sender: TObject;

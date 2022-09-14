@@ -62,7 +62,6 @@ type
       property   Version_CEF4Min    : String   read FVersion_CEF4Min;
     end;
 
-
   TWPPConnectJS  = class(TPersistent)
   private
     FAutoUpdate     : Boolean;
@@ -80,7 +79,6 @@ type
     FStringList: TStringList;
     FRegistros       : TFDMemTable;
     FSeparador : Char;
-
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
     procedure  SeTWPPConnectScript(const Value: TstringList);
@@ -88,6 +86,7 @@ type
     function   PegarLocalJS_Web: String;
     Function   AtualizarInternamente(PForma: TFormaUpdate):Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
+    procedure SetSecondsWaitInject(const Value: integer);
 
 
   protected
@@ -97,7 +96,7 @@ type
     property    InjectJSDefine  : TWPPConnectJSDefine Read FInjectJSDefine;
     property    OnErrorInternal : TOnErroInternal Read FOnErrorInternal  Write FOnErrorInternal;
     destructor  Destroy; override;
-    Function    UpdateNow:Boolean;
+    Function    UpdateNow: Boolean;
     Procedure   DelFileTemp;
 
 
@@ -211,6 +210,14 @@ end;
 procedure TWPPConnectJS.DelFileTemp;
 begin
   DeleteFile(PwideChar(IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp'));
+end;
+
+procedure TWPPConnectJS.SetSecondsWaitInject(const Value: integer);
+begin
+  FSecondsWaitInject := Value;
+  //Não permitir que fique negativo.
+  if Value < 0 then
+     FSecondsWaitInject := 0;
 end;
 
 procedure TWPPConnectJS.SeTWPPConnectScript(const Value: TstringList);
