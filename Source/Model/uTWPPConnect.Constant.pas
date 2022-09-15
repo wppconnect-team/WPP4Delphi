@@ -205,6 +205,10 @@ Const
   FrmConsole_JS_VAR_UnPinChat           = 'WPP.chat.unpin("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#POOL_OPTIONS#>);';
 
+  //Marcelo 14/09/2022
+  FrmConsole_JS_VAR_DeleteChat          = 'WPP.chat.delete("<#MSG_PHONE#>");';
+
+
   //Marcelo 18/05/2022
   FrmConsole_JS_VAR_sendRawMessage      = 'WPP.chat.sendRawMessage("<#MSG_PHONE#>","<#MSG_RAW#>",{<#MSG_OPTIONS#>} );';
 

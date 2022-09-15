@@ -539,7 +539,6 @@ begin
 
     AddChatList('(' + AChat.unreadCount.ToString + ') ' + NomeContato + ' - ' +
       AChat.id);
-
   end;
 end;
 

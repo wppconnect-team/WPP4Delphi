@@ -281,6 +281,8 @@ type
     procedure DeleteMessages(vID: string);
     procedure ReadMessagesAndDelete(vID: string);
 
+    procedure DeleteChat(vID: string);
+
     procedure StartMonitor(Seconds: Integer);
     procedure StartMonitorWPPCrash(Seconds: Integer);
     procedure StopMonitor;
@@ -863,10 +865,24 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.DeleteChat(vID: string);
+var
+  LJS: String;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS := FrmConsole_JS_VAR_DeleteChat;
+  ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vID)), False);
+end;
+
 procedure TFrmConsole.DeleteMessages(vID: string);
 var
   LJS: String;
 begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
   LJS := FrmConsole_JS_VAR_DeleteMessages;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vID)), False);
 end;

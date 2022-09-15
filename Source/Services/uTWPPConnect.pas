@@ -251,6 +251,8 @@ type
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
+    procedure DeleteChat(PNumberPhone: string);
+
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
     procedure SendFile(PNumberPhone: String; Const PFileName: String; PMessage: string = '');
@@ -834,6 +836,31 @@ begin
 
   lThread.FreeOnTerminate := true;
   lThread.Start;
+end;
+
+procedure TWPPConnect.DeleteChat(PNumberPhone: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  //Msrcelo 16/08/2022
+  PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if (pos('@', PNumberPhone) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;
+
+  if Assigned(FrmConsole) then
+  begin
+    FrmConsole.DeleteChat(PNumberPhone);//Deleta o Chat da conversa
+  end;
+
 end;
 
 procedure TWPPConnect.deleteConversation(PNumberPhone: string);
@@ -3761,8 +3788,10 @@ begin
     LForm.Visible                     := True;
     SleepNoFreeze(2000);               //alteração em 17/07/2022
 
-    //temis 03-06-2022 Application.MainForm.Visible    := False;
-    Application.MainForm.Visible    := False;
+    //Marcelo 15/09/2022 Compatibilidade FMX
+    if Assigned(Application.MainForm) then
+      Application.MainForm.Visible    := False;
+
     LForm.Show;
 
     Disconnect;
@@ -3850,7 +3879,7 @@ begin
 
   if Status in [Server_Disconnected, Inject_Destroy] then
   begin
-    SleepNoFreeze(1000);
+    //SleepNoFreeze(1000);
     if  ConsolePronto then
     begin
 
