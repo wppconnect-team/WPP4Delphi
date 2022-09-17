@@ -14749,7 +14749,7 @@ window.WAPI.getMessages = async function(chatid, options) {
 //Evento Recebendo Nova Mensagem
 WPP.on("chat.new_message", (msg) => {
     //SetConsoleMessage("new_message", JSON.stringify({message: msg});	
-    console.log(msg);
+    //console.log(msg);
 	//result = msg;
     //if (msg !== undefined) 	 
 	    //SetConsoleMessage("new_message", JSON.stringify(msg);
@@ -14760,7 +14760,7 @@ WPP.on("chat.new_message", (msg) => {
 //Evento Recebendo Nova Reação
 WPP.on("chat.new_reaction", (msg) => {
 	//SetConsoleMessage("new_reaction", JSON.stringify({message: msg});
-    console.log(msg);	
+    //console.log(msg);	
     //result = msg;
     //if (msg !== undefined) 	 
 	    //SetConsoleMessage("new_reaction", JSON.stringify(msg);
@@ -14789,4 +14789,13 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     }
 };
 
+WPP.on('conn.main_ready', () => {
+    //console.log("isMainReady Carregou as Conversas Pronto para Uso");
+    SetConsoleMessage("isReady", JSON.stringify({isReady: true}));
+});
+
+WPP.on('conn.main_loaded', () => {
+    //console.log("isMainLoaded Auntenticado QrCode Carregando Conversas");
+    SetConsoleMessage("isLoaded", JSON.stringify({isLoaded: true}));
+});
 
