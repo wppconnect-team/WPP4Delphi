@@ -752,6 +752,7 @@ begin
       Exit;
 
     options :=
+      'createChat: true, ' +
       'lat: -22.95201, ' +
       'lng: -43.2102601, ' +
       'name: "Cristo Rendentor", ' +
@@ -777,7 +778,8 @@ begin
       '  }  ' +
       ']  ';
 
-    frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
+    //frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
+    frDemo.TWPPConnect1.SendLocationMessageEx(ed_num.text, options, '123');
 
   finally
     ed_num.SelectAll;
@@ -801,6 +803,7 @@ begin
       Exit;
 
     options :=
+      'createChat: true, ' +
       'lat: -22.95201, ' +
       'lng: -43.2102601, ' +
       'name: "Cristo Rendentor", ' +
@@ -809,7 +812,9 @@ begin
       'footer: "Pacote de Viagem",  ' +
       'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ"';
 
-    frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
+    //frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
+    //Marcelo 17/09/2022
+    frDemo.TWPPConnect1.SendLocationMessageEx(ed_num.text, options, '123');
 
   finally
     ed_num.SelectAll;

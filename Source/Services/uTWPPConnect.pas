@@ -77,21 +77,26 @@ type
   TOngetLastSeen      = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
 
   //Adicionado Por Marcelo 06/05/2022
-  TGetMessageById           = procedure(Const Mensagem: TMessagesClass) of object;
+  TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
   //TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
 
   //Adicionado Por Marcelo 31/05/2022
-  TGet_sendFileMessage      = procedure(Const Mensagem: TMessagesClass) of object;
-  TGet_sendTextMessage      = procedure(Const Mensagem: TMessagesClass) of object;
-  TGet_sendListMessage      = procedure(Const Mensagem: TMessagesClass) of object;
+  TGet_sendFileMessage       = procedure(Const Mensagem: TMessagesClass) of object;
+  TGet_sendTextMessage       = procedure(Const Mensagem: TMessagesClass) of object;
+  TGet_sendListMessage       = procedure(Const Mensagem: TMessagesClass) of object;
+
   //temis 03-06-2022
-  TGet_sendTextMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
-  TGet_sendFileMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
-  TGet_sendListMessageEx   = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
-  TGet_ProductCatalog      = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
-  TWPPMonitorCrash         = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
+  TGet_sendTextMessageEx     = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+  TGet_sendFileMessageEx     = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+  TGet_sendListMessageEx     = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+
+  //Marcelo 17/09/2022
+  TGet_sendLocationMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+
+  TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
+  TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
-  TGetIncomingiCall        = procedure(Const IncomingiCall: TIncomingiCall) of object;
+  TGetIncomingiCall          = procedure(Const IncomingiCall: TIncomingiCall) of object;
 
   TWPPConnect = class(TComponent)
   private
@@ -184,6 +189,7 @@ type
     FOnGet_sendTextMessageEx    : TGet_sendTextMessageEx;
     FOnGet_sendFileMessageEx    : TGet_sendFileMessageEx;
     FOnGet_sendListMessageEx    : TGet_sendListMessageEx;
+    FOnGet_sendLocationMessageEx : TGet_sendLocationMessageEx;  //Add Marcelo 17/09/2022
 
     //Daniel 13/06/2022
     FOnGet_ProductCatalog       : TGet_ProductCatalog;
@@ -223,6 +229,7 @@ type
     procedure SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
     procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
+    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
 
     //Daniel - 13/06/2022
     procedure GetProductCatalog;
@@ -365,6 +372,9 @@ type
     property OnGet_sendTextMessageEx     : TGet_sendTextMessageEx     read FOnGet_sendTextMessageEx        write FOnGet_sendTextMessageEx;
     property OnGet_sendFileMessageEx     : TGet_sendFileMessageEx     read FOnGet_sendFileMessageEx        write FOnGet_sendFileMessageEx;
     property OnGet_sendListMessageEx     : TGet_sendListMessageEx     read FOnGet_sendListMessageEx        write FOnGet_sendListMessageEx;
+
+    //Marcelo 17/09/2022
+    property OnGet_SendLocationMessageEx : TGet_sendLocationMessageEx read FOnGet_sendLocationMessageEx    write FOnGet_sendLocationMessageEx;
 
     //Daniel - 13/06/2022
     property OnGet_ProductCatalog        : TGet_ProductCatalog        read FOnGet_ProductCatalog           write FOnGet_ProductCatalog;
@@ -1986,6 +1996,7 @@ begin
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022
   Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
+  Th_sendLocationMessageEx, //Add Marcelo 17/09/2022
   Th_IncomingiCall]) then //Adicionado por Marcelo 17/06/2022
   Begin
     if not Assigned(PReturnClass) then
@@ -2055,6 +2066,13 @@ begin
     Begin
       if Assigned(OnGet_sendListMessageEx) then
         OnGet_sendListMessageEx(TResponsesendTextMessage(PReturnClass));
+    end;
+
+    //Marcelo 17/09/2022
+    if PTypeHeader = Th_SendLocationMessageEx then
+    Begin
+      if Assigned(OnGet_SendLocationMessageEx) then
+        OnGet_sendLocationMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Marcelo 17/06/2022
@@ -3003,6 +3021,47 @@ begin
             end;
           end;
         end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendLocationMessageEx(phoneNumber, options, xSeuID: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 17/09/2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID);
+
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+
+          end;
+       end);
 
       end);
   lThread.FreeOnTerminate := true;

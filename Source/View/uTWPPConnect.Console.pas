@@ -191,6 +191,10 @@ type
     procedure SendFileMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
 
+    //Adicionado Por Marcelo 17/09/2022
+    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
+
+
     //Adicionado Por Marcelo 18/05/2022
     procedure sendRawMessage(phoneNumber, rawMessage, options: string; etapa: string = '');
     procedure markIsComposing(phoneNumber, duration: string; etapa: string = '');
@@ -1279,6 +1283,8 @@ begin
   //FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
   //FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
   FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        sections);
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',       Trim(xSeuID));
+
   ExecuteJS(LJS, true);
 end;
 
@@ -1310,6 +1316,23 @@ begin
   LJS   := FrmConsole_JS_VAR_sendLocationMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID: string);
+var
+  Ljs: string;
+begin
+  //Adicionado Por Marcelo 17/09/2022
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  options := CaractersQuebraLinha(options);
+
+  LJS   := FrmConsole_JS_VAR_sendLocationMessageEx;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',   Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#', Trim(options));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',   Trim(xSeuID));
   ExecuteJS(LJS, true);
 end;
 
@@ -1741,6 +1764,18 @@ begin
                               FreeAndNil(LOutClass2);
                             end;
                           end;
+
+    //Marcelo 17/08/2022
+    Th_SendLocationMessageEx :
+                          begin
+                            LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
 
     //Marcelo 16/06/2022
     Th_IncomingiCall : begin

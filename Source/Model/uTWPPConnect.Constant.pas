@@ -216,7 +216,11 @@ Const
   //TEMIS 03-06-2022 Obtendo Retorno do Envio com SeuID
   FrmConsole_JS_VAR_SendTextMessageEx   = 'window.WAPI.sendTextMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>");';
   FrmConsole_JS_VAR_sendFileMessageEx   = 'window.WAPI.sendFileMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
-  FrmConsole_JS_VAR_sendListMessageEx   = 'window.WAPI.sendListMessage2Ex("<#MSG_PHONE#>",{<#MSG_MENU#>} );';
+  FrmConsole_JS_VAR_sendListMessageEx   = 'window.WAPI.sendListMessage2Ex("<#MSG_PHONE#>",{<#MSG_MENU#>},"<#MSG_SEUID#>" );';
+
+  //Marcelo 17/09/2022
+  FrmConsole_JS_VAR_sendLocationMessageEx   = 'window.WAPI.sendLocationMessage2Ex("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
+
 
   //Marcelo 18/07/2022
   FrmConsole_JS_VAR_CheckNumberExists   = 'window.WAPI.CheckNumberExists("<#MSG_PHONE#>");';
@@ -383,6 +387,7 @@ type
                    , Th_CheckNumberExists=53 //Marcelo 18/07/2022
                    , Th_getLastSeen=54 //Marcelo 31/07/2022
                    , Th_getMessages=55 //Marcelo 14/08/2022
+                   , Th_SendLocationMessageEx=56 //Marcelo 17/09/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -520,7 +525,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 55; //Marcelo 14/08/2022
+const LmaxCount = 56; //Marcelo 17/09/2022
 var
   I: Integer;
   LNome: String;

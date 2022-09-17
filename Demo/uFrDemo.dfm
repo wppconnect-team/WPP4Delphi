@@ -1618,11 +1618,23 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -5519,7 +5531,6 @@ object frDemo: TfrDemo
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
     OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
-    OnGetMessages = TWPPConnect1GetMessages
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetMessageById = TWPPConnect1GetMessageById
@@ -5529,6 +5540,7 @@ object frDemo: TfrDemo
     OnGet_sendTextMessageEx = TWPPConnect1Get_sendTextMessageEx
     OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
+    OnGet_SendLocationMessageEx = TWPPConnect1Get_SendLocationMessageEx
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall

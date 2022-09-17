@@ -87,8 +87,7 @@ type
     procedure TWPPConnect1GetInviteGroup(const Invite: string);
     procedure TWPPConnect1NewGetNumber(const vCheckNumber: TReturnCheckNumber);
     procedure TWPPConnect1GetUnReadMessages(const Chats: TChatList);
-    procedure TWPPConnect1GetStatusMessage(const Result
-      : TResponseStatusMessage);
+    procedure TWPPConnect1GetStatusMessage(const Result: TResponseStatusMessage);
     procedure btnAbrirZapClick(Sender: TObject);
     procedure ctbtnCategories0Items3Click(Sender: TObject);
     procedure ctbtnCategories0Items4Click(Sender: TObject);
@@ -100,6 +99,7 @@ type
     procedure TWPPConnect1Get_sendTextMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendFileMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1Get_sendListMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure TWPPConnect1Get_SendLocationMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure ctbtnCategories0Items5Click(Sender: TObject);
     procedure TWPPConnect1Get_ProductCatalog(Sender: TObject;
       const ProductCatalog: TProductsList);
@@ -1168,6 +1168,31 @@ begin
     StatusMensagem := 'Visualizada';
 
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
+end;
+
+procedure TfrDemo.TWPPConnect1Get_SendLocationMessageEx(const RespMensagem: TResponsesendTextMessage);
+var
+  StatusMensagem : string;
+begin
+  //Marcelo 17/09/2022
+  //Adicionado Novo Retorno pegando o SEUID que foi passado no Envio
+  if RespMensagem.Ack = 1 then
+    StatusMensagem := 'Enviada'
+  else
+  if RespMensagem.Ack = 2 then
+    StatusMensagem := 'Recebida'
+  else
+  if RespMensagem.Ack = 3 then
+    StatusMensagem := 'Visualizada';
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendLocationMessageEx');
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
