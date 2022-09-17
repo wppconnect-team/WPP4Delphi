@@ -14744,3 +14744,25 @@ window.WAPI.getMessages = async function(chatid, options) {
 
     }
 };
+
+
+//Evento Recebendo Nova Mensagem
+WPP.on("chat.new_message", (msg) => {
+    //SetConsoleMessage("new_message", JSON.stringify({message: msg});	
+    console.log(msg);
+	//result = msg;
+    //if (msg !== undefined) 	 
+	    //SetConsoleMessage("new_message", JSON.stringify(msg);
+	    //return msg;
+});
+
+
+//Evento Recebendo Nova Reação
+WPP.on("chat.new_reaction", (msg) => {
+	//SetConsoleMessage("new_reaction", JSON.stringify({message: msg});
+    console.log(msg);	
+    //result = msg;
+    //if (msg !== undefined) 	 
+	    //SetConsoleMessage("new_reaction", JSON.stringify(msg);
+	    //return msg;
+});
