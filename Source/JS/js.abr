@@ -14766,3 +14766,27 @@ WPP.on("chat.new_reaction", (msg) => {
 	    //SetConsoleMessage("new_reaction", JSON.stringify(msg);
 	    //return msg;
 });
+
+window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
+    const result = await WPP.chat.sendLocationMessage(chatid, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("sendLocationMessageEx", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO');
+
+    }
+};
+
+
