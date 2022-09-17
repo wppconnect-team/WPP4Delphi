@@ -1778,7 +1778,8 @@ begin
 
 
     //Marcelo 16/06/2022
-    Th_IncomingiCall : begin
+    Th_IncomingiCall :
+                       begin
                             //LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
                             //LOutClass2 := TIncomingiCall.Create(LResultStr);
                             LOutClass2 := TIncomingiCall.Create(PResponse.JsonString);
@@ -1787,7 +1788,32 @@ begin
                             finally
                               FreeAndNil(LOutClass2);
                             end;
-                          end;
+                       end;
+
+    //Marcelo 17/09/2022
+    Th_IsReady :
+                       begin
+                         //LOutClass2 := TIsReady.Create(LResultStr);
+                         LOutClass2 := TIsReady.Create(PResponse.JsonString);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
+    //Marcelo 17/09/2022
+    Th_IsLoaded :
+                       begin
+                         //LOutClass2 := TIsLoaded.Create(LResultStr);
+                         LOutClass2 := TIsLoaded.Create(PResponse.JsonString);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
 
     Th_getMessages: begin
                       //LOutClass2 := TRootClass.Create(LResultStr); //03/09/2022

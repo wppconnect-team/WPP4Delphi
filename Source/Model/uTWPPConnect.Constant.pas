@@ -388,6 +388,8 @@ type
                    , Th_getLastSeen=54 //Marcelo 31/07/2022
                    , Th_getMessages=55 //Marcelo 14/08/2022
                    , Th_SendLocationMessageEx=56 //Marcelo 17/09/2022
+                   , Th_IsReady=57 //Marcelo 17/09/2022
+                   , Th_IsLoaded=58 //Marcelo 17/09/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -525,7 +527,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 56; //Marcelo 17/09/2022
+const LmaxCount = 58; //Marcelo 17/09/2022
 var
   I: Integer;
   LNome: String;

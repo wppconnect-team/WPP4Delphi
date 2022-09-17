@@ -112,6 +112,8 @@ type
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
     procedure TWPPConnect1GetMessageById(const Mensagem: TMessagesClass);
     procedure TWPPConnect1GetMessages(const Chats: TRootClass);
+    procedure TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
+    procedure TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -572,6 +574,36 @@ begin
   ShowMessage('Link do grupo copiado: ' + Invite);
 end;
 
+procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
+begin
+//
+  frameLogin1.lblStatus.Caption := 'Carregando...';
+  Label3.Caption := 'Auntenticado Carregando Conversas Aguarde...';
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
+begin
+  Label3.Caption := 'Online Pronto para Uso';
+  frameLogin1.lblStatus.Caption := 'Online';
+  frameLogin1.lblStatus.Font.Color := $0000AE11;
+  frameLogin1.SpeedButton3.Enabled := True;
+  frameLogin1.whatsOn.Visible := True;
+  ctbtn.Enabled := True;
+
+  //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
+  StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
+  // whatsOn.Visible            := SpeedButton3.enabled;
+  // lblNumeroConectado.Visible := whatsOn.Visible;
+  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
+  if frameLogin1.whatsOn.Visible then
+  begin
+    ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
+    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+  end;
+
+end;
+
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
 begin
   ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
@@ -727,7 +759,7 @@ begin
   if not Assigned(Sender) Then
     Exit;
 
-  if (TWPPConnect(Sender).status = Inject_Initialized) then
+  {if (TWPPConnect(Sender).status = Inject_Initialized) then
   begin
     frameLogin1.lblStatus.Caption := 'Online';
     frameLogin1.lblStatus.Font.Color := $0000AE11;
@@ -741,7 +773,7 @@ begin
     frameLogin1.lblStatus.Caption := 'Offline';
     frameLogin1.lblStatus.Font.Color := $002894FF;
     frameLogin1.lblStatus.Font.Color := clGrayText;
-  end;
+  end;}
 
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;

@@ -74,7 +74,8 @@ type
   TOnNewCheckNumber         = procedure(Const vCheckNumber : TReturnCheckNumber) of object;
   TOnCheckNumberExists      = procedure(Const vCheckNumberExists : TReturnCheckNumberExists) of object;
 
-  TOngetLastSeen      = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
+  TOngetLastSeen            = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
+
 
   //Adicionado Por Marcelo 06/05/2022
   TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
@@ -97,6 +98,9 @@ type
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
   TGetIncomingiCall          = procedure(Const IncomingiCall: TIncomingiCall) of object;
+  TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
+  TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
+
 
   TWPPConnect = class(TComponent)
   private
@@ -196,6 +200,10 @@ type
 
     //Adicionado Por Marcelo 17/06/2022
     FOnGetIncomingiCall    : TGetIncomingiCall;
+
+    FOnGetIsReady: TGetIsReady; //Marcelo 17/09/2022
+    FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
+
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
     procedure Loaded; override;
@@ -381,6 +389,11 @@ type
     property OnWPPMonitorCrash           : TWPPMonitorCrash           read FOnWPPMonitorCrash              write FOnWPPMonitorCrash;
     //Adicionado Por Marcelo 17/06/2022
     property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
+
+    //Marcelo 17/09/2022
+    property OnGetIsReady                : TGetIsReady                read FOnGetIsReady                   write FOnGetIsReady;
+    property OnGetIsLoaded               : TGetIsLoaded               read FOnGetIsLoaded                  write FOnGetIsLoaded;
+
 
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
@@ -1992,6 +2005,18 @@ begin
       OnGetMessages(TChatList3(PReturnClass));
   end;
 
+  //Marcelo 17/09/2022
+  if PTypeHeader = Th_IsReady then
+  Begin
+    if Assigned(OnGetIsReady) then
+      OnGetIsReady( TIsReady(PReturnClass), True);
+  end;
+
+  if PTypeHeader = Th_IsLoaded then
+  Begin
+    if Assigned(OnGetIsLoaded) then
+      OnGetIsLoaded( TIsLoaded(PReturnClass), True);
+  end;
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022

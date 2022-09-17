@@ -605,12 +605,12 @@ object frameLogin: TframeLogin
   object lblStatus: TLabel
     Left = 3
     Top = 118
-    Width = 98
-    Height = 35
+    Width = 79
+    Height = 29
     Caption = 'Offline'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGrayText
-    Font.Height = -29
+    Font.Height = -24
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
@@ -892,7 +892,7 @@ object frameLogin: TframeLogin
     ShowHint = False
   end
   object imgQrCode: TImage
-    Left = 378
+    Left = 394
     Top = 35
     Width = 273
     Height = 260
@@ -1304,7 +1304,7 @@ object frameLogin: TframeLogin
     Visible = False
   end
   object rgTipoLogin: TRadioGroup
-    Left = 159
+    Left = 192
     Top = 47
     Width = 185
     Height = 185
@@ -1317,7 +1317,7 @@ object frameLogin: TframeLogin
     TabOrder = 0
   end
   object SpeedButton3: TButton
-    Left = 159
+    Left = 189
     Top = 238
     Width = 185
     Height = 47

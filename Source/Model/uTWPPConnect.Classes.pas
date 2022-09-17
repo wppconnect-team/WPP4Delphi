@@ -1454,6 +1454,26 @@ type
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
 
+TIsReady = class(TClassPadrao)
+private
+  FIsReady: Boolean;
+
+public
+  property IsReady:      Boolean    read FIsReady     write FIsReady;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
+TIsLoaded = class(TClassPadrao)
+private
+  FIsLoaded: Boolean;
+
+public
+  property IsLoaded:      Boolean    read FIsLoaded     write FIsLoaded;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
 //Marcelo 18/06/2022
 TIncomingiCall = class(TClassPadrao)
 private
@@ -2954,6 +2974,30 @@ begin
   //
 end;
 
+
+{ TIsReady }
+
+constructor TIsReady.Create(pAJsonString: string);
+begin
+  FIsReady := True;
+end;
+
+destructor TIsReady.Destroy;
+begin
+  inherited;
+end;
+
+{ TIsLoaded }
+
+constructor TIsLoaded.Create(pAJsonString: string);
+begin
+  FIsLoaded := True;
+end;
+
+destructor TIsLoaded.Destroy;
+begin
+  inherited;
+end;
 
 end.
 

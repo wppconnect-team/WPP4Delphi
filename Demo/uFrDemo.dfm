@@ -5544,6 +5544,8 @@ object frDemo: TfrDemo
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
+    OnGetIsReady = TWPPConnect1GetIsReady
+    OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
