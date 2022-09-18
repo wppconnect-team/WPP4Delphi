@@ -14867,7 +14867,12 @@ WPP.on('conn.main_ready', () => {
 });
 
 WPP.on('conn.main_loaded', () => {
-    //console.log("isMainLoaded Auntenticado QrCode Carregando Conversas");
+    //console.log("isMainLoaded Carregando Conversas");
     SetConsoleMessage("isLoaded", JSON.stringify({isLoaded: true}));
+});
+
+WPP.on('conn.authenticated', () => {
+    //console.log("isAuthenticated Auntenticado QrCode");
+    SetConsoleMessage("isAuthenticated", JSON.stringify({isAuthenticated: true}));
 });
 
