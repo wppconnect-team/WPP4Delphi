@@ -114,6 +114,7 @@ type
     procedure TWPPConnect1GetMessages(const Chats: TRootClass);
     procedure TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
     procedure TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
+    procedure TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -574,11 +575,17 @@ begin
   ShowMessage('Link do grupo copiado: ' + Invite);
 end;
 
+procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
+begin
+  frameLogin1.lblStatus.Caption := 'Auntenticado';
+  Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
+  Application.ProcessMessages;
+end;
+
 procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
 begin
-//
   frameLogin1.lblStatus.Caption := 'Carregando...';
-  Label3.Caption := 'Auntenticado Carregando Conversas Aguarde...';
+  Label3.Caption := 'Carregando Conversas Aguarde...';
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);

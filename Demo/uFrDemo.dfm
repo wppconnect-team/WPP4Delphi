@@ -5546,6 +5546,7 @@ object frDemo: TfrDemo
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
+    OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber

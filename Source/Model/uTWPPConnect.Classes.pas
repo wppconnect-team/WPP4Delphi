@@ -1474,6 +1474,17 @@ public
   destructor  Destroy;
 end;
 
+TIsAuthenticated = class(TClassPadrao)
+private
+  FIsAuthenticated: Boolean;
+
+public
+  property IsAuthenticated:      Boolean    read FIsAuthenticated     write FIsAuthenticated;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
+
 //Marcelo 18/06/2022
 TIncomingiCall = class(TClassPadrao)
 private
@@ -2995,6 +3006,18 @@ begin
 end;
 
 destructor TIsLoaded.Destroy;
+begin
+  inherited;
+end;
+
+{ TIsAuthenticated }
+
+constructor TIsAuthenticated.Create(pAJsonString: string);
+begin
+  FIsAuthenticated := True;
+end;
+
+destructor TIsAuthenticated.Destroy;
 begin
   inherited;
 end;

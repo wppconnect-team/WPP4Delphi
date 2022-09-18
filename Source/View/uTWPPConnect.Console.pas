@@ -1814,6 +1814,17 @@ begin
                          end;
                        end;
 
+    //Marcelo 18/09/2022
+    Th_IsAuthenticated :
+                       begin
+                         //LOutClass2 := TIsAuthenticated.Create(LResultStr);
+                         LOutClass2 := TIsAuthenticated.Create(PResponse.JsonString);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
 
     Th_getMessages: begin
                       //LOutClass2 := TRootClass.Create(LResultStr); //03/09/2022

@@ -390,6 +390,7 @@ type
                    , Th_SendLocationMessageEx=56 //Marcelo 17/09/2022
                    , Th_IsReady=57 //Marcelo 17/09/2022
                    , Th_IsLoaded=58 //Marcelo 17/09/2022
+                   , Th_IsAuthenticated=59 //Marcelo 18/09/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -527,7 +528,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 58; //Marcelo 17/09/2022
+const LmaxCount = 59; //Marcelo 17/09/2022
 var
   I: Integer;
   LNome: String;

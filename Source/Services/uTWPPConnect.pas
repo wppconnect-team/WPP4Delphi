@@ -100,7 +100,7 @@ type
   TGetIncomingiCall          = procedure(Const IncomingiCall: TIncomingiCall) of object;
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
-
+  TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
 
   TWPPConnect = class(TComponent)
   private
@@ -203,6 +203,7 @@ type
 
     FOnGetIsReady: TGetIsReady; //Marcelo 17/09/2022
     FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
+    FOnGetIsAuthenticated: TGetIsAuthenticated; //Marcelo 17/09/2022
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
@@ -394,6 +395,8 @@ type
     property OnGetIsReady                : TGetIsReady                read FOnGetIsReady                   write FOnGetIsReady;
     property OnGetIsLoaded               : TGetIsLoaded               read FOnGetIsLoaded                  write FOnGetIsLoaded;
 
+    //Marcelo 18/09/2022
+    property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
 
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
@@ -2016,6 +2019,12 @@ begin
   Begin
     if Assigned(OnGetIsLoaded) then
       OnGetIsLoaded( TIsLoaded(PReturnClass), True);
+  end;
+
+  if PTypeHeader = Th_IsAuthenticated then
+  Begin
+    if Assigned(OnGetIsAuthenticated) then
+      OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
   end;
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
