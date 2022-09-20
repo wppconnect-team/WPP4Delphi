@@ -14785,19 +14785,14 @@ function monitorWPPCrash() {
 //Marcelo Última Visualização no WhatsApp
 window.WAPI.getLastSeen = async function(chatid) {
     const result = await WPP.chat.getLastSeen(chatid);
-
-    if (result) {
+    
         try {
             SetConsoleMessage("getLastSeen", JSON.stringify(result));
 
         } catch (err) {
             console.log(err);
         };
-
-    } else {
-        console.log(err);
-
-    }
+    
 };
 
 window.WAPI.getMessages = async function(chatid, options) {
@@ -14861,9 +14856,9 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     }
 };
 
-WPP.on('conn.main_ready', () => {
-    //console.log("isMainReady Carregou as Conversas Pronto para Uso");
-    SetConsoleMessage("isReady", JSON.stringify({isReady: true}));
+WPP.on('conn.authenticated', () => {
+    //console.log("isAuthenticated Auntenticado QrCode");
+    SetConsoleMessage("isAuthenticated", JSON.stringify({isAuthenticated: true}));
 });
 
 WPP.on('conn.main_loaded', () => {
@@ -14871,8 +14866,25 @@ WPP.on('conn.main_loaded', () => {
     SetConsoleMessage("isLoaded", JSON.stringify({isLoaded: true}));
 });
 
-WPP.on('conn.authenticated', () => {
-    //console.log("isAuthenticated Auntenticado QrCode");
-    SetConsoleMessage("isAuthenticated", JSON.stringify({isAuthenticated: true}));
+WPP.on('conn.main_ready', () => {
+    //console.log("isMainReady Carregou as Conversas Pronto para Uso");
+    SetConsoleMessage("isReady", JSON.stringify({isReady: true}));
 });
+
+//android, iphone, web ou unknown
+window.WAPI.getPlatformFromMessage2 = async function(UniqueID, chatid) {
+    const result = await WPP.chat.getPlatformFromMessage(UniqueID);
+    
+    try {
+        SetConsoleMessage("getPlatformFromMessage", JSON.stringify({platform: result, IdMensagem: UniqueID, id: chatid}));
+
+    } catch (err) {
+        console.log(err);
+    };
+    
+};
+
+
+
+
 
