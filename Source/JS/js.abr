@@ -14861,9 +14861,9 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     }
 };
 
-WPP.on('conn.main_ready', () => {
-    //console.log("isMainReady Carregou as Conversas Pronto para Uso");
-    SetConsoleMessage("isReady", JSON.stringify({isReady: true}));
+WPP.on('conn.authenticated', () => {
+    //console.log("isAuthenticated Auntenticado QrCode");
+    //SetConsoleMessage("isAuthenticated", JSON.stringify({isAuthenticated: true}));
 });
 
 WPP.on('conn.main_loaded', () => {
@@ -14871,8 +14871,10 @@ WPP.on('conn.main_loaded', () => {
     SetConsoleMessage("isLoaded", JSON.stringify({isLoaded: true}));
 });
 
-WPP.on('conn.authenticated', () => {
-    //console.log("isAuthenticated Auntenticado QrCode");
-    SetConsoleMessage("isAuthenticated", JSON.stringify({isAuthenticated: true}));
+WPP.on('conn.main_ready', () => {
+    //console.log("isMainReady Carregou as Conversas Pronto para Uso");
+    SetConsoleMessage("isReady", JSON.stringify({isReady: true}));
 });
+
+
 
