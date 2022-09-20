@@ -167,7 +167,7 @@ Const
 
   FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
 
-  FrmConsole_JS_VAR_getPlatformFromMessage = 'WPP.chat.getPlatformFromMessage("<#MSG_UNIQUE_ID#>");';
+  FrmConsole_JS_VAR_getPlatformFromMessage = 'window.WAPI.getPlatformFromMessage2("<#MSG_UNIQUE_ID#>","<#MSG_PHONE#>");';
 
   FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
 
@@ -391,6 +391,7 @@ type
                    , Th_IsReady=57 //Marcelo 17/09/2022
                    , Th_IsLoaded=58 //Marcelo 17/09/2022
                    , Th_IsAuthenticated=59 //Marcelo 18/09/2022
+                   , Th_getPlatformFromMessage=60 //Marcelo 20/09/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -528,7 +529,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 59; //Marcelo 17/09/2022
+const LmaxCount = 60; //Marcelo 20/09/2022
 var
   I: Integer;
   LNome: String;

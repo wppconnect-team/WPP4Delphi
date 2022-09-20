@@ -74,8 +74,9 @@ type
   TOnNewCheckNumber         = procedure(Const vCheckNumber : TReturnCheckNumber) of object;
   TOnCheckNumberExists      = procedure(Const vCheckNumberExists : TReturnCheckNumberExists) of object;
 
-  TOngetLastSeen            = procedure(Const vgetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
+  TOnGetLastSeen            = procedure(Const vGetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
 
+  TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
   //Adicionado Por Marcelo 06/05/2022
   TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
@@ -180,6 +181,7 @@ type
     FOnCheckNumberExists        : TOnCheckNumberExists; //Marcelo 18/07/2022
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
+    FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
 
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
@@ -266,6 +268,9 @@ type
 
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
+
+    procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
+
 
     procedure DeleteChat(PNumberPhone: string);
 
@@ -420,7 +425,8 @@ type
     property OnGetMe                     : TOnGetMe                   read FOnGetMe                        write FOnGetMe;
     property OnNewGetNumber              : TOnNewCheckNumber          read FOnNewCheckNumber               write FOnNewCheckNumber;
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
-    property OngetLastSeen               : TOngetLastSeen             read FOngetLastSeen                  write FOngetLastSeen;
+    property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
+    property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
   end;
 
 procedure Register;
@@ -1136,6 +1142,37 @@ begin
             begin
               //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
             end;
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 01/03/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.getPlatformFromMessage(UniqueIDs);
           end;
         end);
 
@@ -2123,7 +2160,7 @@ begin
   Begin
     FStatus := Server_ConnectedDown;
     if Assigned(fOnGetStatus ) then
-       fOnGetStatus(Self);
+      fOnGetStatus(Self);
     Disconnect;
     exit;
   end;
@@ -2132,7 +2169,7 @@ begin
   if PTypeHeader in [Th_ForceDisconnect] then
   Begin
     if Assigned(FOnDisconnectedBrute) then
-       FOnDisconnectedBrute(Self);
+      FOnDisconnectedBrute(Self);
     Disconnect;
     exit;
   end;
@@ -2142,10 +2179,10 @@ begin
   Begin
     FStatus := Inject_Initialized;
     if Assigned(FOnAfterInitialize) then
-       FOnAfterInitialize(Self);
+      FOnAfterInitialize(Self);
 
     if Assigned(fOnGetStatus ) then
-       fOnGetStatus(Self);
+      fOnGetStatus(Self);
 
     FrmConsole.GetMyNumber;
   end;
@@ -2154,7 +2191,7 @@ begin
   if PTypeHeader = Th_Initializing then
   begin
     if not Assigned(FrmConsole) then
-       Exit;
+      Exit;
 
     FrmConsole.GetMyNumber;
     SleepNoFreeze(40);
@@ -2162,7 +2199,7 @@ begin
 
     FrmConsole.GetAllContacts(true);
     if Assigned(fOnGetStatus ) then
-       fOnGetStatus(Self);
+      fOnGetStatus(Self);
     Exit;
   end;
 
@@ -2182,7 +2219,7 @@ begin
   If PTypeHeader = Th_getAllGroupContacts Then
   Begin
     if Assigned(OnGetAllGroupContacts) then
-       OnGetAllGroupContacts(TClassAllGroupContacts(PReturnClass));
+      OnGetAllGroupContacts(TClassAllGroupContacts(PReturnClass));
   end;
 
 
@@ -2190,7 +2227,7 @@ begin
   Begin
     FMyNumber := FAdjustNumber.FormatOut(PValue);
     if Assigned(FOnGetMyNumber) then
-       FOnGetMyNumber(Self);
+      FOnGetMyNumber(Self);
   end;
 
 
@@ -2199,41 +2236,49 @@ begin
   Begin
     FIsDelivered := FAdjustNumber.FormatOut(PValue);
     if Assigned(FOnGetIsDelivered) then
-       FOnGetIsDelivered(Self);
+      FOnGetIsDelivered(Self);
   end;
 
 
   if PTypeHeader = Th_GetStatusMessage then
   Begin
    if Assigned(FOnGetStatusMessage) then
-       FOnGetStatusMessage(TResponseStatusMessage(PReturnClass));
+     FOnGetStatusMessage(TResponseStatusMessage(PReturnClass));
   end;
 
   if PTypeHeader = Th_GetMe  then
   begin
     if Assigned(FOnGetMe) then
-       FOnGetMe(TGetMeClass(PReturnClass));
+      FOnGetMe(TGetMeClass(PReturnClass));
   end;
 
   if PTypeHeader = Th_NewCheckIsValidNumber  then
   begin
     if Assigned(FOnNewCheckNumber) then
-       FOnNewCheckNumber(TReturnCheckNumber(PReturnClass));
+      FOnNewCheckNumber(TReturnCheckNumber(PReturnClass));
   end;
 
   if PTypeHeader = Th_CheckNumberExists  then
   begin
     if Assigned(FOnCheckNumberExists) then
-       FOnCheckNumberExists(TReturnCheckNumberExists(PReturnClass));
+      FOnCheckNumberExists(TReturnCheckNumberExists(PReturnClass));
   end;
 
   if PTypeHeader = Th_getLastSeen  then
   begin
     if Assigned(FOngetLastSeen) then
-       FOngetLastSeen(TReturngetLastSeen(PReturnClass));
+      FOngetLastSeen(TReturngetLastSeen(PReturnClass));
+  end;
+
+  //Marcelo 20/09/2022
+  if PTypeHeader = Th_GetPlatformFromMessage  then
+  begin
+    if Assigned(FOnGetPlatformFromMessage) then
+      FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
   end;
 
 
+  //deprecated
   if PTypeHeader = Th_GetBatteryLevel then
   Begin
     FGetBatteryLevel :=  StrToIntDef(PValue, -1);

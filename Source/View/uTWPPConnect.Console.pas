@@ -220,6 +220,8 @@ type
     //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
+    procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
+
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
 
@@ -608,6 +610,19 @@ end;
 procedure TFrmConsole.GetMyNumber;
 begin
   ExecuteJS(FrmConsole_JS_GetMyNumber, False);
+end;
+
+procedure TFrmConsole.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_getPlatformFromMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#', Trim(UniqueIDs));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(PNumberPhone));
+  ExecuteJS(LJS, false);
 end;
 
 procedure TFrmConsole.GetProductCatalog;
@@ -2010,10 +2025,23 @@ begin
                                 FreeAndNil(LOutClass);
                               end;
                             end;
-    Th_getLastSeen : begin
+    Th_getLastSeen :
+                     begin
                              //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                              //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
                              LOutClass := TReturngetLastSeen.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_getPlatformFromMessage :
+                     begin
+                             //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TPlatformFromMessage.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                              finally

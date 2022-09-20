@@ -57,6 +57,7 @@ type
     frameCatalogo1: TframeCatalogo;
     frameOutros1: TframeOutros;
     frameGrupos1: TframeGrupos;
+    BitBtn1: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -115,6 +116,8 @@ type
     procedure TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
     procedure TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
     procedure TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -213,6 +216,14 @@ begin
   Item.SubItems.Add(Item.Caption + 'SubItem 1');
   Item.SubItems.Add(Item.Caption + 'SubItem 2');
   Item.ImageIndex := 0;
+end;
+
+procedure TfrDemo.BitBtn1Click(Sender: TObject);
+begin
+  try
+    FrmConsole.RebootChromium;
+  except on E: Exception do
+  end;
 end;
 
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
@@ -579,7 +590,7 @@ procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticate
 begin
   frameLogin1.lblStatus.Caption := 'Auntenticado';
   Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
-  Application.ProcessMessages;
+  //Application.ProcessMessages;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
@@ -705,6 +716,37 @@ end;
 procedure TfrDemo.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
   lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect(Sender).MyNumber;
+
+  frameLogin1.lblStatus.Caption := 'Online';
+  frameLogin1.lblStatus.Font.Color := $0000AE11;
+  frameLogin1.SpeedButton3.Enabled := True;
+  frameLogin1.whatsOn.Visible := True;
+  ctbtn.Enabled := True;
+
+  //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
+  StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
+  // whatsOn.Visible            := SpeedButton3.enabled;
+  // lblNumeroConectado.Visible := whatsOn.Visible;
+  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
+  if frameLogin1.whatsOn.Visible then
+  begin
+    ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
+    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+  end;
+
+end;
+
+procedure TfrDemo.TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
+var
+  wlo_Celular : string;
+begin
+  wlo_Celular := Copy(PlatformFromMessage.id,1,  pos('@', PlatformFromMessage.id) -1); // nr telefone
+  ShowMessage('Plataforma: ' + AnsiUpperCase(PlatformFromMessage.platform) + ' Número WhatsApp: ' + wlo_Celular);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Plataforma: ' + AnsiUpperCase(PlatformFromMessage.platform));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + PlatformFromMessage.IdMensagem);
 end;
 
 procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);

@@ -584,7 +584,7 @@ object frameMensagem: TframeMensagem
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Get Message'
+      Caption = 'Get Plataforma'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 17

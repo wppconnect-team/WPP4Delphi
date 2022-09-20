@@ -443,7 +443,7 @@ end;
 
 procedure TframeMensagem.btnGetMessageClick(Sender: TObject);
 var
-  options : string;
+  IdMensagem : string;
 begin
   if ed_Num.Text = '' then
   begin
@@ -458,9 +458,12 @@ begin
    if not frDemo.TWPPConnect1.Auth then
       Exit;
 
-  options := '';
 
-  frDemo.TWPPConnect1.getMessage(ed_num.text, options);
+  if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+  begin
+
+    frDemo.TWPPConnect1.getPlatformFromMessage(IdMensagem, ed_Num.Text);
+  end;
 
 end;
 

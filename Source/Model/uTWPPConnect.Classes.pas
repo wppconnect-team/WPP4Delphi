@@ -1507,6 +1507,17 @@ public
   class function FromJsonString(AJsonString: string): TIncomingiCall;
 end;
 
+TPlatformFromMessage = class(TClassPadrao)
+  private
+    FId: String;
+    FIdMensagem: String;
+    Fplatform: String;
+  public
+    property id:           String     read FId          write FId;
+    property IdMensagem:   String     read FIdMensagem  write FIdMensagem;
+    property platform:     String     read Fplatform    write Fplatform;
+end;
+
 //temis 03-06-2022
 TResponsesendTextMessage  = class(TClassPadrao)
 private
@@ -3021,6 +3032,7 @@ destructor TIsAuthenticated.Destroy;
 begin
   inherited;
 end;
+
 
 end.
 
