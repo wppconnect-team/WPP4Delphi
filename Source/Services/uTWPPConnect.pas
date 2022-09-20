@@ -1161,6 +1161,13 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if (pos('@', PNumberPhone) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;
+
 
   lThread := TThread.CreateAnonymousThread(procedure
       begin
@@ -1172,7 +1179,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.getPlatformFromMessage(UniqueIDs);
+            FrmConsole.getPlatformFromMessage(UniqueIDs, PNumberPhone);
           end;
         end);
 
