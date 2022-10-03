@@ -517,11 +517,11 @@ begin
         'caption: "My image", ' +
         'type: "image", ' +
         'buttons: [ ' +
-       (* '  { ' +
+        '  { ' +
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +     *)
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
 
         '  { ' +
         '    id: "001",  ' +

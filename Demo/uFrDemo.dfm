@@ -5516,7 +5516,7 @@ object frDemo: TfrDemo
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
-    InjectJS.SecondsWaitInject = 2
+    InjectJS.SecondsWaitInject = 0
     Config.AutoStart = True
     Config.AutoDelay = 1000
     Config.SecondsMonitor = 5

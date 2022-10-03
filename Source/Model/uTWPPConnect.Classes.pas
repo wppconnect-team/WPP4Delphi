@@ -772,6 +772,16 @@ type
     property selectedRowId: String read FSelectedRowId write FSelectedRowId;
   end;
 
+  //Temis 03/10/2022
+  TCardClass = class(TClassPadrao)
+  private
+    FdisplayName: String;
+    Fvcard      : String;
+  public
+    property displayName: String read FDisplayName write FDisplayName;
+    property vCard: String read FVCard write FVCard;
+  end;
+
   //Marcelo 18/06/2022
   TlistResponseClass = class(TClassPadrao)
   private
@@ -893,8 +903,10 @@ type
     FBroadcast       : Boolean;
     FMentionedJidList: TArray<String>;
 
+    // Temis 03/10/2022
+    FvCardList       : TArray<TCardClass>;
 
-    FButtons          : TArray<TButtonsClass>;
+    FButtons         : TArray<TButtonsClass>;
 
     FIsForwarded     : Boolean;
     FLabels          : TArray<String>;
@@ -980,9 +992,9 @@ type
     property labels     : TArray<String>      read FLabels             write FLabels;
     property mediaData  : TMediaDataClass     read FMediaData          write FMediaData;
     property mentionedJidList: TArray<String> read FMentionedJidList   write FMentionedJidList;
-
-
-    property buttons: TArray<TButtonsClass>    read FButtons             write FButtons;
+    // Temis 03/10-2022
+    property CardList   : TArray<TCardClass>  read fVCardLIst          write FVCardList;
+    property buttons    : TArray<TButtonsClass>  read FButtons         write FButtons;
 
 
     property notifyName : String              read FNotifyName         write FNotifyName;

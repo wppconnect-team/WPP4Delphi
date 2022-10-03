@@ -818,15 +818,19 @@ begin
     SendNotificationCenterDirect(Th_ConnectingFt_HTTP);
     QRCodeWeb_Start;
     if PViewForm then
-       Show;
-  end Else
-  Begin
+    begin
+      Show;
+      BringToFront;
+    end;
+  end
+  else
+  begin
     SleepNoFreeze(30);
     if PQrCodeType = Ft_None then
     Begin
       If not Assigned(TWPPConnect(FOwner).OnGetQrCode) then
         raise Exception.Create(MSG_ExceptNotAssignedOnGetQrCode);
-    End;
+    end;
 
     SendNotificationCenterDirect(Th_ConnectingFt_Desktop);
     if not FrmQRCode.Showing then
@@ -2039,8 +2043,8 @@ begin
 
     Th_getPlatformFromMessage :
                      begin
-                             //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
-                             //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
                              LOutClass := TPlatformFromMessage.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
