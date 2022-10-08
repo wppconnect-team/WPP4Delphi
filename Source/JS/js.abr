@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.12.0
+//WPPCONNECT v2.13.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2467,7 +2467,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if ((r >>>= 0) <= (t >>>= 0)) return "";
                     for (e || (e = "utf8");;) switch (e) {
                         case "hex":
-                            return k(this, t, r);
+                            return E(this, t, r);
                         case "utf8":
                         case "utf-8":
                             return x(this, t, r);
@@ -2482,7 +2482,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "ucs-2":
                         case "utf16le":
                         case "utf-16le":
-                            return E(this, t, r);
+                            return k(this, t, r);
                         default:
                             if (n) throw new TypeError("Unknown encoding: " + e);
                             e = (e + "").toLowerCase(), n = !0
@@ -2797,7 +2797,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return n
                 }
 
-                function k(e, t, r) {
+                function E(e, t, r) {
                     const n = e.length;
                     (!t || t < 0) && (t = 0), (!r || r < 0 || r > n) && (r = n);
                     let o = "";
@@ -2805,7 +2805,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
 
-                function E(e, t, r) {
+                function k(e, t, r) {
                     const n = e.slice(t, r);
                     let o = "";
                     for (let e = 0; e < n.length - 1; e += 2) o += String.fromCharCode(n[e] + 256 * n[e + 1]);
@@ -2844,11 +2844,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r < 0) throw new RangeError("Index out of range")
                 }
 
-                function U(e, t, r, n, i) {
+                function F(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function F(e, t, r, n, i) {
+                function U(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3006,13 +3006,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
                     return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeFloatLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
-                }, u.prototype.writeFloatBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
-                }, u.prototype.writeDoubleLE = function(e, t, r) {
                     return F(this, e, t, !0, r)
-                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
+                }, u.prototype.writeDoubleLE = function(e, t, r) {
+                    return U(this, e, t, !0, r)
+                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                    return U(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3527,10 +3527,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 if (_) {
                                     var I = [w, P];
                                     P = I[0], w = I[1];
-                                    var k = [j, O];
-                                    O = k[0], j = k[1];
-                                    var E = [S, C];
-                                    C = E[0], S = E[1]
+                                    var E = [j, O];
+                                    O = E[0], j = E[1];
+                                    var k = [S, C];
+                                    C = k[0], S = k[1]
                                 }
                                 M && (x = C / S);
                                 var T = b({
@@ -3559,10 +3559,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         }),
                                         R = L.width;
                                     C = void 0 === R ? r : R;
-                                    var U = L.height;
-                                    S = void 0 === U ? n : U
+                                    var F = L.height;
+                                    S = void 0 === F ? n : F
                                 }
-                                var F = -(C = Math.floor(y(Math.min(Math.max(C, O), P)))) / 2,
+                                var U = -(C = Math.floor(y(Math.min(Math.max(C, O), P)))) / 2,
                                     D = -(S = Math.floor(y(Math.min(Math.max(S, j), w)))) / 2,
                                     G = C,
                                     N = S,
@@ -3578,7 +3578,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     } [g.resize]);
                                     q = K.width, V = K.height, z = (r - q) / 2, $ = (n - V) / 2, W.push(z, $, q, V)
                                 }
-                                if (W.push(F, D, G, N), _) {
+                                if (W.push(U, D, G, N), _) {
                                     var H = [S, C];
                                     C = H[0], S = H[1]
                                 }
@@ -4022,7 +4022,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         this.emitter = e, this.event = t, this.listener = r
                     }
 
-                    function k(e, t, r) {
+                    function E(e, t, r) {
                         if (!0 === r) i = !0;
                         else if (!1 === r) n = !0;
                         else {
@@ -4052,12 +4052,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return [t, u ? new I(this, e, t) : this]
                     }
 
-                    function E(e) {
+                    function k(e) {
                         this._events = {}, this._newListener = !1, this._removeListener = !1, this.verboseMemoryLeak = !1, p.call(this, e)
                     }
                     I.prototype.off = function() {
                         return this.emitter.off(this.event, this.listener), this
-                    }, E.EventEmitter2 = E, E.prototype.listenTo = function(e, t, r) {
+                    }, k.EventEmitter2 = k, k.prototype.listenTo = function(e, t, r) {
                         if ("object" != typeof e) throw TypeError("target musts be an object");
                         var n = this;
 
@@ -4077,7 +4077,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             off: M,
                             reducers: P
                         }), s(t) ? i(h(t)) : i("string" == typeof t ? h(t.split(/\s+/)) : t), this
-                    }, E.prototype.stopListeningTo = function(e, t) {
+                    }, k.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
                         if (!r) return !1;
                         var n, o = r.length,
@@ -4085,21 +4085,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (e && "object" != typeof e) throw TypeError("target should be an object");
                         for (; o-- > 0;) n = r[o], e && n._target !== e || (n.unsubscribe(t), i = !0);
                         return i
-                    }, E.prototype.delimiter = ".", E.prototype.setMaxListeners = function(e) {
+                    }, k.prototype.delimiter = ".", k.prototype.setMaxListeners = function(e) {
                         e !== o && (this._maxListeners = e, this._conf || (this._conf = {}), this._conf.maxListeners = e)
-                    }, E.prototype.getMaxListeners = function() {
+                    }, k.prototype.getMaxListeners = function() {
                         return this._maxListeners
-                    }, E.prototype.event = "", E.prototype.once = function(e, t, r) {
+                    }, k.prototype.event = "", k.prototype.once = function(e, t, r) {
                         return this._once(e, t, !1, r)
-                    }, E.prototype.prependOnceListener = function(e, t, r) {
+                    }, k.prototype.prependOnceListener = function(e, t, r) {
                         return this._once(e, t, !0, r)
-                    }, E.prototype._once = function(e, t, r, n) {
+                    }, k.prototype._once = function(e, t, r, n) {
                         return this._many(e, 1, t, r, n)
-                    }, E.prototype.many = function(e, t, r, n) {
+                    }, k.prototype.many = function(e, t, r, n) {
                         return this._many(e, t, r, !1, n)
-                    }, E.prototype.prependMany = function(e, t, r, n) {
+                    }, k.prototype.prependMany = function(e, t, r, n) {
                         return this._many(e, t, r, !0, n)
-                    }, E.prototype._many = function(e, t, r, n, o) {
+                    }, k.prototype._many = function(e, t, r, n, o) {
                         var i = this;
                         if ("function" != typeof r) throw new Error("many only accepts instances of Function");
 
@@ -4107,7 +4107,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return 0 == --t && i.off(e, s), r.apply(this, arguments)
                         }
                         return s._origin = r, this._on(e, s, n, o)
-                    }, E.prototype.emit = function() {
+                    }, k.prototype.emit = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, s = arguments[0],
@@ -4177,7 +4177,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         if (!this.ignoreErrors && !this._all && "error" === s) throw arguments[1] instanceof Error ? arguments[1] : new Error("Uncaught, unspecified 'error' event.");
                         return !!this._all
-                    }, E.prototype.emitAsync = function() {
+                    }, k.prototype.emitAsync = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, s = arguments[0],
@@ -4238,24 +4238,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         } else if (!this.ignoreErrors && !this._all && "error" === s) return arguments[1] instanceof Error ? Promise.reject(arguments[1]) : Promise.reject("Uncaught, unspecified 'error' event.");
                         return Promise.all(l)
-                    }, E.prototype.on = function(e, t, r) {
+                    }, k.prototype.on = function(e, t, r) {
                         return this._on(e, t, !1, r)
-                    }, E.prototype.prependListener = function(e, t, r) {
+                    }, k.prototype.prependListener = function(e, t, r) {
                         return this._on(e, t, !0, r)
-                    }, E.prototype.onAny = function(e) {
+                    }, k.prototype.onAny = function(e) {
                         return this._onAny(e, !1)
-                    }, E.prototype.prependAny = function(e) {
+                    }, k.prototype.prependAny = function(e) {
                         return this._onAny(e, !0)
-                    }, E.prototype.addListener = E.prototype.on, E.prototype._onAny = function(e, t) {
+                    }, k.prototype.addListener = k.prototype.on, k.prototype._onAny = function(e, t) {
                         if ("function" != typeof e) throw new Error("onAny only accepts instances of Function");
                         return this._all || (this._all = []), t ? this._all.unshift(e) : this._all.push(e), this
-                    }, E.prototype._on = function(e, t, r, n) {
+                    }, k.prototype._on = function(e, t, r, n) {
                         if ("function" == typeof e) return this._onAny(e, t), this;
                         if ("function" != typeof t) throw new Error("on only accepts instances of Function");
                         this._events || f.call(this);
                         var i, s = this;
-                        return n !== o && (t = (i = k.call(this, e, t, n))[0], s = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (x.call(this, e, t, r), s) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, m.call(this, this._events[e].length, e))) : this._events[e] = t, s)
-                    }, E.prototype.off = function(e, t) {
+                        return n !== o && (t = (i = E.call(this, e, t, n))[0], s = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (x.call(this, e, t, r), s) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, m.call(this, this._events[e].length, e))) : this._events[e] = t, s)
+                    }, k.prototype.off = function(e, t) {
                         if ("function" != typeof t) throw new Error("removeListener only takes instances of Function");
                         var r, n = [];
                         if (this.wildcard) {
@@ -4279,7 +4279,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }(r === t || r.listener && r.listener === t || r._origin && r._origin === t) && (this.wildcard ? delete a._listeners : delete this._events[e], this._removeListener && this.emit("removeListener", e, t))
                         }
                         return this.listenerTree && S(this.listenerTree), this
-                    }, E.prototype.offAny = function(e) {
+                    }, k.prototype.offAny = function(e) {
                         var t, r = 0,
                             n = 0;
                         if (e && this._all && this._all.length > 0) {
@@ -4291,7 +4291,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this._all = []
                         }
                         return this
-                    }, E.prototype.removeListener = E.prototype.off, E.prototype.removeAllListeners = function(e) {
+                    }, k.prototype.removeListener = k.prototype.off, k.prototype.removeAllListeners = function(e) {
                         if (e === o) return !this._events || f.call(this), this;
                         if (this.wildcard) {
                             var t, r = j.call(this, null, e, this.listenerTree, 0);
@@ -4300,7 +4300,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this.listenerTree && S(this.listenerTree)
                         } else this._events && (this._events[e] = null);
                         return this
-                    }, E.prototype.listeners = function(e) {
+                    }, k.prototype.listeners = function(e) {
                         var t, r, n, i, s, a = this._events;
                         if (e === o) {
                             if (this.wildcard) throw Error("event name required for wildcard emitter");
@@ -4315,12 +4315,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return j.call(this, u, c, s, 0), u
                         }
                         return a && (r = a[e]) ? "function" == typeof r ? [r] : r : []
-                    }, E.prototype.eventNames = function(e) {
+                    }, k.prototype.eventNames = function(e) {
                         var t = this._events;
                         return this.wildcard ? C.call(this, this.listenerTree, [], null, e) : t ? d(t) : []
-                    }, E.prototype.listenerCount = function(e) {
+                    }, k.prototype.listenerCount = function(e) {
                         return this.listeners(e).length
-                    }, E.prototype.hasListeners = function(e) {
+                    }, k.prototype.hasListeners = function(e) {
                         if (this.wildcard) {
                             var t = [],
                                 r = "string" == typeof e ? e.split(this.delimiter) : e.slice();
@@ -4329,9 +4329,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var n = this._events,
                             i = this._all;
                         return !!(i && i.length || n && (e === o ? d(n).length : n[e]))
-                    }, E.prototype.listenersAny = function() {
+                    }, k.prototype.listenersAny = function() {
                         return this._all ? this._all : []
-                    }, E.prototype.waitFor = function(e, t) {
+                    }, k.prototype.waitFor = function(e, t) {
                         var r = this,
                             n = typeof t;
                         return "number" === n ? t = {
@@ -4364,8 +4364,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             overload: t.overload
                         })
                     };
-                    var T = E.prototype;
-                    Object.defineProperties(E, {
+                    var T = k.prototype;
+                    Object.defineProperties(k, {
                         defaultMaxListeners: {
                             get: function() {
                                 return T._maxListeners
@@ -4421,7 +4421,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             configurable: !0
                         }
                     }), (n = function() {
-                        return E
+                        return k
                     }.call(t, r, t, e)) === o || (e.exports = n)
                 }()
             },
@@ -7114,7 +7114,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const s = r(2275),
                     a = r(5267),
                     u = i(r(7046)),
-                    c = r(1092);
+                    c = r(1092),
+                    l = r(1489);
                 u.onInjected((() => function() {
                     c.MsgStore.on("add", (e => {
                         e.isNewMsg && e.isLive && queueMicrotask((() => {
@@ -7147,7 +7148,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             seq: r.seq
                         }) : a.internalEv.emit("chat.live_location_update", {
                             id: r.jid,
-                            lastUpdated: c.Clock.globalUnixTime() - r.elapsed,
+                            lastUpdated: (0, l.unixTime)() - r.elapsed,
                             elapsed: r.elapsed,
                             lat: r.lat,
                             lng: r.lng,
@@ -7878,18 +7879,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return I.prepareLinkPreview
                     }
                 });
-                var k = r(9872);
+                var E = r(9872);
                 Object.defineProperty(t, "prepareMessageButtons", {
                     enumerable: !0,
                     get: function() {
-                        return k.prepareMessageButtons
+                        return E.prepareMessageButtons
                     }
                 });
-                var E = r(8384);
+                var k = r(8384);
                 Object.defineProperty(t, "prepareRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return E.prepareRawMessage
+                        return k.prepareRawMessage
                     }
                 });
                 var T = r(9017);
@@ -7927,18 +7928,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return R.sendRawMessage
                     }
                 });
-                var U = r(3065);
+                var F = r(3065);
                 Object.defineProperty(t, "sendReactionToMessage", {
                     enumerable: !0,
                     get: function() {
-                        return U.sendReactionToMessage
+                        return F.sendReactionToMessage
                     }
                 });
-                var F = r(6627);
+                var U = r(6627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return F.sendTextMessage
+                        return U.sendTextMessage
                     }
                 });
                 var D = r(6017);
@@ -8082,7 +8083,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.mute = void 0;
                 const n = r(3327),
                     o = r(8910),
-                    i = r(1092);
+                    i = r(1489);
                 t.mute = async function(e, t) {
                     const r = (0, n.assertWid)(e),
                         s = (0, n.assertGetChat)(r);
@@ -8092,9 +8093,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (!("duration" in t)) throw new o.WPPError("invalid_time_mute", "Invalid time for mute", {
                             time: t
                         });
-                        a = i.Clock.globalUnixTime() + t.duration
+                        a = (0, i.unixTime)() + t.duration
                     }
-                    if (a < i.Clock.globalUnixTime()) throw new o.WPPError("negative_time_mute", "Negative duration for mute", {
+                    if (a < (0, i.unixTime)()) throw new o.WPPError("negative_time_mute", "Negative duration for mute", {
                         time: t
                     });
                     return await s.mute.mute(a, !0), {
@@ -8410,12 +8411,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = r(8910),
                     s = r(1092),
                     a = r(9428),
-                    u = r(8381),
-                    c = r(758);
+                    u = r(1489),
+                    c = r(8381),
+                    l = r(758);
                 t.prepareRawMessage = async function(e, t, r = {}) {
-                    var l;
-                    if (r = Object.assign(Object.assign({}, u.defaultSendMessageOptions), r), t = Object.assign({
-                            t: s.Clock.globalUnixTime(),
+                    var d;
+                    if (r = Object.assign(Object.assign({}, c.defaultSendMessageOptions), r), t = Object.assign({
+                            t: (0, u.unixTime)(),
                             from: s.UserPrefs.getMaybeMeUser(),
                             to: e.id,
                             self: "out",
@@ -8431,7 +8433,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         });
                         t.id = r.messageId
                     }
-                    if (t.id || (t.id = (0, c.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
+                    if (t.id || (t.id = (0, l.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
                         mentionedList: r.mentionedList
                     });
                     if (r.detectMentioned && e.isGroup && (!r.mentionedList || !r.mentionedList.length)) {
@@ -8455,10 +8457,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         t.mentionedJidList = e
                     }
                     if (r.quotedMsg) {
-                        if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, c.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
+                        if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, l.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
                             quotedMsg: r.quotedMsg
                         });
-                        if (!(null === (l = r.quotedMsg) || void 0 === l ? void 0 : l.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
+                        if (!(null === (d = r.quotedMsg) || void 0 === d ? void 0 : d.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
                             quotedMsg: r.quotedMsg
                         });
                         t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e))
@@ -10947,7 +10949,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.12.0";
+                s(r(3115), t), t.waVersion = "2.13.0";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11174,7 +11176,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.12.0", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.13.0", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12195,7 +12197,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         p = new Uint8Array(32),
                         m = (window.crypto.getRandomValues(p), {
                             key: s.Base64.encodeB64(p),
-                            timestamp: s.Clock.globalUnixTime()
+                            timestamp: (0, a.unixTime)()
                         }),
                         g = new AbortController,
                         h = await (0, a.uploadThumbnail)({
@@ -12839,7 +12841,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     ACK: ["ACK", "default.ACK"],
                     EDIT_ATTR: ["EDIT_ATTR", "default.EDIT_ATTR"],
                     ACK_STRING: ["ACK_STRING", "default.ACK_STRING"]
-                }, (e => e.ACK || e.default.ACK))
+                }, (e => e.ACK && e.ACK_STRING || e.default.ACK && e.default.ACK_STRING))
             },
             3929: (e, t, r) => {
                 "use strict";
@@ -13262,7 +13264,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -13514,6 +13516,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     typeAttributeFromProtobuf: "typeAttributeFromProtobuf"
                 }, (e => e.typeAttributeFromProtobuf))
             },
+            808: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    unixTime: ["unixTime", "Clock.globalUnixTime"],
+                    unixTimeMs: ["unixTimeMs", "Clock.globalUnixTimeMilliseconds"]
+                }, (e => {
+                    var t;
+                    return e.unixTime || (null === (t = e.Clock) || void 0 === t ? void 0 : t.globalUnixTime)
+                }))
+            },
             8183: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -13648,18 +13662,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, "ChatPresence", (e => e.markComposing))
-            },
-            5847: (e, t, r) => {
-                "use strict";
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                }), (0, r(8785).exportModule)(t, {
-                    ClockClass: "Clock.constructor",
-                    Clock: "Clock"
-                }, (e => {
-                    var t;
-                    return null === (t = e.Clock) || void 0 === t ? void 0 : t.globalUnixTime
-                }))
             },
             6031: (e, t, r) => {
                 "use strict";
@@ -13881,7 +13883,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(5847), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
+                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
             },
             8329: (e, t, r) => {
                 "use strict";
