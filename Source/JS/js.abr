@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.12.0
+//WPPCONNECT v2.13.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -7114,7 +7114,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const s = r(2275),
                     a = r(5267),
                     u = i(r(7046)),
-                    c = r(1092);
+                    c = r(1092),
+                    l = r(1489);
                 u.onInjected((() => function() {
                     c.MsgStore.on("add", (e => {
                         e.isNewMsg && e.isLive && queueMicrotask((() => {
@@ -7147,7 +7148,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             seq: r.seq
                         }) : a.internalEv.emit("chat.live_location_update", {
                             id: r.jid,
-                            lastUpdated: c.Clock.globalUnixTime() - r.elapsed,
+                            lastUpdated: (0, l.unixTime)() - r.elapsed,
                             elapsed: r.elapsed,
                             lat: r.lat,
                             lng: r.lng,
@@ -8082,7 +8083,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.mute = void 0;
                 const n = r(3327),
                     o = r(8910),
-                    i = r(1092);
+                    i = r(1489);
                 t.mute = async function(e, t) {
                     const r = (0, n.assertWid)(e),
                         s = (0, n.assertGetChat)(r);
@@ -8092,9 +8093,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (!("duration" in t)) throw new o.WPPError("invalid_time_mute", "Invalid time for mute", {
                             time: t
                         });
-                        a = i.Clock.globalUnixTime() + t.duration
+                        a = (0, i.unixTime)() + t.duration
                     }
-                    if (a < i.Clock.globalUnixTime()) throw new o.WPPError("negative_time_mute", "Negative duration for mute", {
+                    if (a < (0, i.unixTime)()) throw new o.WPPError("negative_time_mute", "Negative duration for mute", {
                         time: t
                     });
                     return await s.mute.mute(a, !0), {
@@ -8410,12 +8411,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = r(8910),
                     s = r(1092),
                     a = r(9428),
-                    u = r(8381),
-                    c = r(758);
+                    u = r(1489),
+                    c = r(8381),
+                    l = r(758);
                 t.prepareRawMessage = async function(e, t, r = {}) {
-                    var l;
-                    if (r = Object.assign(Object.assign({}, u.defaultSendMessageOptions), r), t = Object.assign({
-                            t: s.Clock.globalUnixTime(),
+                    var d;
+                    if (r = Object.assign(Object.assign({}, c.defaultSendMessageOptions), r), t = Object.assign({
+                            t: (0, u.unixTime)(),
                             from: s.UserPrefs.getMaybeMeUser(),
                             to: e.id,
                             self: "out",
@@ -8431,7 +8433,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         });
                         t.id = r.messageId
                     }
-                    if (t.id || (t.id = (0, c.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
+                    if (t.id || (t.id = (0, l.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
                         mentionedList: r.mentionedList
                     });
                     if (r.detectMentioned && e.isGroup && (!r.mentionedList || !r.mentionedList.length)) {
@@ -8455,10 +8457,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         t.mentionedJidList = e
                     }
                     if (r.quotedMsg) {
-                        if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, c.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
+                        if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, l.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
                             quotedMsg: r.quotedMsg
                         });
-                        if (!(null === (l = r.quotedMsg) || void 0 === l ? void 0 : l.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
+                        if (!(null === (d = r.quotedMsg) || void 0 === d ? void 0 : d.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
                             quotedMsg: r.quotedMsg
                         });
                         t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e))
@@ -10947,7 +10949,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.12.0";
+                s(r(3115), t), t.waVersion = "2.13.1";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11174,7 +11176,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.12.0", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.13.1", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12195,7 +12197,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         p = new Uint8Array(32),
                         m = (window.crypto.getRandomValues(p), {
                             key: s.Base64.encodeB64(p),
-                            timestamp: s.Clock.globalUnixTime()
+                            timestamp: (0, a.unixTime)()
                         }),
                         g = new AbortController,
                         h = await (0, a.uploadThumbnail)({
@@ -12839,7 +12841,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     ACK: ["ACK", "default.ACK"],
                     EDIT_ATTR: ["EDIT_ATTR", "default.EDIT_ATTR"],
                     ACK_STRING: ["ACK_STRING", "default.ACK_STRING"]
-                }, (e => e.ACK || e.default.ACK))
+                }, (e => e.ACK && e.ACK_STRING || e.default.ACK && e.default.ACK_STRING))
             },
             3929: (e, t, r) => {
                 "use strict";
@@ -13262,7 +13264,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -13514,6 +13516,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     typeAttributeFromProtobuf: "typeAttributeFromProtobuf"
                 }, (e => e.typeAttributeFromProtobuf))
             },
+            808: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const n = r(8785);
+                let o = !1;
+                (0, n.exportModule)(t, {
+                    unixTime: ["unixTime", "Clock.globalUnixTime"],
+                    unixTimeMs: ["unixTimeMs", "Clock.globalUnixTimeMilliseconds"]
+                }, (e => {
+                    var t, r;
+                    return !!e.unixTime || (!o && (null === (t = e.Clock) || void 0 === t ? void 0 : t.globalUnixTime) && (o = !0, e.Clock.globalUnixTime = e.Clock.globalUnixTime.bind(e.Clock), e.Clock.globalUnixTimeMilliseconds = e.Clock.globalUnixTimeMilliseconds.bind(e.Clock)), null === (r = e.Clock) || void 0 === r ? void 0 : r.globalUnixTime)
+                }))
+            },
             8183: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -13648,18 +13665,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, "ChatPresence", (e => e.markComposing))
-            },
-            5847: (e, t, r) => {
-                "use strict";
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                }), (0, r(8785).exportModule)(t, {
-                    ClockClass: "Clock.constructor",
-                    Clock: "Clock"
-                }, (e => {
-                    var t;
-                    return null === (t = e.Clock) || void 0 === t ? void 0 : t.globalUnixTime
-                }))
             },
             6031: (e, t, r) => {
                 "use strict";
@@ -13881,7 +13886,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(5847), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
+                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
             },
             8329: (e, t, r) => {
                 "use strict";
