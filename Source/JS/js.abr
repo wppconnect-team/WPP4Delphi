@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.13.1
+//WPPCONNECT v2.13.2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -8485,7 +8485,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             localId: t
                         }))),
                         pollEncKey: self.crypto.getRandomValues(new Uint8Array(32)),
-                        pollSelectableOptionsCount: 0
+                        pollSelectableOptionsCount: i.selectableCount || 0,
+                        messageSecret: self.crypto.getRandomValues(new Uint8Array(32))
                     };
                     return await (0, o.sendRawMessage)(e, s, i)
                 }
@@ -10949,7 +10950,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.13.1";
+                s(r(3115), t), t.waVersion = "2.13.2";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11176,7 +11177,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.13.1", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.13.2", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
