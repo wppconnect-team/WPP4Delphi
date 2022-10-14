@@ -264,9 +264,10 @@ begin
     abort;
   end;
 
-  Lopcoes:= '[''OP플O 1'',''OP플O 2'', ''OP플O 3'']';
+  //Lopcoes:= '[''OP플O 1'',''OP플O 2'', ''OP플O 3'']';
+  Lopcoes:= '["Bolo","Cachorro Quente"]';
 
-  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption,LDescricao,Lopcoes);
+  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption, LDescricao,Lopcoes);
 
 end;
 
