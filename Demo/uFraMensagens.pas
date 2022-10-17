@@ -1042,7 +1042,7 @@ begin
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
-    options := '';
+    options := 'createChat: true';
 
     //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
     frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online

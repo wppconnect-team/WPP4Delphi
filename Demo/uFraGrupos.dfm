@@ -245,6 +245,13 @@ object frameGrupos: TframeGrupos
         Flat = True
         OnClick = SpeedButton1Click
       end
+      object Label1: TLabel
+        Left = 12
+        Top = 276
+        Width = 109
+        Height = 15
+        Caption = 'Array Choices Pool'
+      end
       object gbNovoGrupo: TGroupBox
         AlignWithMargins = True
         Left = 3
@@ -316,6 +323,14 @@ object frameGrupos: TframeGrupos
           TabOrder = 1
           OnClick = btnEntrarLinkClick
         end
+      end
+      object eChoicesPool: TEdit
+        Left = 12
+        Top = 296
+        Width = 226
+        Height = 23
+        TabOrder = 2
+        Text = '["OP'#199#195'O 1","OP'#199#195'O 2","OP'#199#195'O 3"]'
       end
     end
     object pnlGruposParticipantes: TPanel

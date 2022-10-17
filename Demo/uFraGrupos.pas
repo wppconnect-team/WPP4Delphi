@@ -68,6 +68,8 @@ type
     ScrollBox1: TScrollBox;
     btnAdminOnly: TButton;
     btnMsgAll: TButton;
+    eChoicesPool: TEdit;
+    Label1: TLabel;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -264,10 +266,13 @@ begin
     abort;
   end;
 
-  //Lopcoes:= '[''OP플O 1'',''OP플O 2'', ''OP플O 3'']';
-  Lopcoes:= '["Bolo","Cachorro Quente"]';
+  Lopcoes := '["OP플O 1","OP플O 2","OP플O 3"]';
+  //Lopcoes := '["Bolo","Cachorro Quente"]';
 
-  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption, LDescricao,Lopcoes);
+  if eChoicesPool.Text <> '' then
+    Lopcoes := eChoicesPool.Text;
+
+  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption, LDescricao, Lopcoes);
 
 end;
 

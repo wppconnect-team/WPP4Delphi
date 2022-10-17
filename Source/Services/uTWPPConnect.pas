@@ -1302,7 +1302,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupPoolCreate(PIDGroup,PDescription, PPoolOptions);
+            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions);
           end;
         end);
 
