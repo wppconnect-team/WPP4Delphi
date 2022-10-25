@@ -2303,7 +2303,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.13.3
+//WPPCONNECT v2.13.4
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -9601,14 +9601,42 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
             },
-            8552: (e, t, r) => {
+            8552: function(e, t, r) {
                 "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.isMultiDevice = void 0;
-                const n = r(1489);
+                const s = i(r(7046));
                 t.isMultiDevice = function() {
-                    return (0, n.isMDBackend)()
+                    const e = s.search((e => e.isMDBackend));
+                    return !(null == e ? void 0 : e.isMDBackend) || e.isMDBackend()
                 }
             },
             6115: (e, t, r) => {
@@ -9808,29 +9836,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), t.queryExists = void 0;
                 const n = r(3327),
-                    o = r(5005),
-                    i = r(1092),
-                    s = r(1489),
-                    a = new Map;
+                    o = r(1489),
+                    i = new Map;
                 t.queryExists = async function(e) {
                     const t = (0, n.assertWid)(e),
                         r = t.toString();
-                    if (a.has(r)) return a.get(r);
-                    let u = null;
-                    if (!(0, o.isMultiDevice)()) {
-                        const e = await i.Wap.queryExist(r);
-                        if (200 === e.status && (u = {
-                                wid: e.jid,
-                                biz: e.biz || !1
-                            }, u)) {
-                            const e = await i.Wap.queryDisappearingMode(t).catch((() => null));
-                            200 === (null == e ? void 0 : e.status) && (u.disappearingMode = {
-                                duration: e.duration,
-                                settingTimestamp: e.settingTimestamp
-                            })
-                        }
-                    }
-                    return u || (u = await (0, s.sendQueryExists)(t).catch((() => null))), a.set(r, u), u
+                    if (i.has(r)) return i.get(r);
+                    const s = await (0, o.sendQueryExists)(t).catch((() => null));
+                    return i.set(r, s), s
                 }
             },
             6380: function(e, t, r) {
@@ -10952,7 +10965,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.13.3";
+                s(r(3115), t), t.waVersion = "2.13.4";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11057,7 +11070,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return u.config
                     }
-                }), t.blocklist = i(r(5140)), t.call = i(r(9596)), t.catalog = i(r(9363)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(3606)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
+                }), t.blocklist = i(r(5140)), t.call = i(r(9596)), t.catalog = i(r(9363)), t.chat = i(r(8381)), t.conn = i(r(5005)), t.contact = i(r(6380)), t.ev = i(r(5267)), t.group = i(r(9474)), t.labels = i(r(130)), t.profile = i(r(6523)), t.status = i(r(9881)), t.util = i(r(8910)), t.whatsapp = i(r(1092));
                 var c = r(5267);
                 Object.defineProperty(t, "emit", {
                     enumerable: !0,
@@ -11179,7 +11192,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.13.3", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.13.4", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -11394,7 +11407,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                 })
             },
-            3606: function(e, t, r) {
+            130: function(e, t, r) {
                 "use strict";
                 var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
                         void 0 === n && (n = r);
@@ -13267,7 +13280,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(3295), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -13280,15 +13293,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     var t, r;
                     return (null === (t = e.Z) || void 0 === t ? void 0 : t.toString().includes("isRegistered")) && (null === (r = e.Z) || void 0 === r ? void 0 : r.toString().includes("getLoginTokens")) || e.isLoggedIn
                 }))
-            },
-            3295: (e, t, r) => {
-                "use strict";
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                }), (0, r(8785).exportModule)(t, {
-                    isMDBackend: "isMDBackend",
-                    isLegacyWebdBackend: "isLegacyWebdBackend"
-                }, (e => e.isMDBackend))
             },
             9472: (e, t, r) => {
                 "use strict";
@@ -13430,11 +13434,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    sendQueryExists: ["queryExists", "default"]
-                }, (e => {
-                    var t, r;
-                    return (null === (t = e.default) || void 0 === t ? void 0 : t.toString().includes("Should not reach queryExists MD")) || (null === (r = e.queryExists) || void 0 === r ? void 0 : r.toString().includes("Should not reach queryExists MD")) || e.queryExists && e.queryPhoneExists
-                }))
+                    sendQueryExists: ["queryExists"]
+                }, (e => e.queryExists && e.queryPhoneExists))
             },
             4526: (e, t, r) => {
                 "use strict";
@@ -13844,18 +13845,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), (0, r(8785).exportModule)(t, "VCard", (e => e.vcardFromContactModel))
             },
-            130: (e, t, r) => {
-                "use strict";
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                }), (0, r(8785).exportModule)(t, {
-                    WapClass: "instance.constructor",
-                    Wap: "instance"
-                }, (e => {
-                    var t;
-                    return null === (t = e.instance) || void 0 === t ? void 0 : t.queryExist
-                }))
-            },
             5624: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -13889,7 +13878,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(130), t), o(r(5624), t), o(r(8370), t)
+                }), o(r(2064), t), o(r(7562), t), o(r(8101), t), o(r(6031), t), o(r(7563), t), o(r(7169), t), o(r(1245), t), o(r(3729), t), o(r(584), t), o(r(4284), t), o(r(2414), t), o(r(952), t), o(r(5430), t), o(r(2049), t), o(r(9544), t), o(r(4203), t), o(r(8576), t), o(r(4918), t), o(r(736), t), o(r(3194), t), o(r(8971), t), o(r(2183), t), o(r(7582), t), o(r(1057), t), o(r(5624), t), o(r(8370), t)
             },
             8329: (e, t, r) => {
                 "use strict";
