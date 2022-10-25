@@ -345,6 +345,22 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
+      ExplicitLeft = 10
+    end
+    object Button2: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 547
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Apagar Mensagem'
+      ImageIndex = 15
+      Images = ImageList1
+      TabOrder = 17
+      OnClick = Button2Click
+      ExplicitLeft = 10
+      ExplicitTop = 524
     end
   end
   object GroupBox2: TGroupBox

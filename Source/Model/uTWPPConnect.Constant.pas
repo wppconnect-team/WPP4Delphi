@@ -165,6 +165,9 @@ Const
   //FrmConsole_JS_VAR_getMessageById      = 'WPP.chat.getMessageById(["<#MSGKEY#>"]);';
   FrmConsole_JS_VAR_getMessageById      = 'window.WAPI.getMessageById2("<#MSGKEY#>");';
 
+  //Marcelo 24/10/2022
+  FrmConsole_JS_VAR_deleteMessageById   = 'WPP.chat.deleteMessage("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true);';
+
   FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
 
   FrmConsole_JS_VAR_getPlatformFromMessage = 'window.WAPI.getPlatformFromMessage2("<#MSG_UNIQUE_ID#>","<#MSG_PHONE#>");';

@@ -221,6 +221,7 @@ type
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
+    procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
@@ -897,6 +898,19 @@ begin
 
   LJS := FrmConsole_JS_VAR_DeleteChat;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vID)), False);
+end;
+
+procedure TFrmConsole.deleteMessageById(PNumberPhone, UniqueIDs: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_deleteMessageById;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(PNumberPhone));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#', Trim(UniqueIDs));
+  ExecuteJS(LJS, false);
 end;
 
 procedure TFrmConsole.DeleteMessages(vID: string);

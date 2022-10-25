@@ -270,6 +270,7 @@ type
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
+    procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
 
 
     procedure DeleteChat(PNumberPhone: string);
@@ -918,6 +919,44 @@ begin
   begin
     FrmConsole.ReadMessagesAndDelete(PNumberPhone);//Deleta a conversa
   end;
+
+end;
+
+procedure TWPPConnect.deleteMessageById(PNumberPhone, UniqueIDs: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 01/03/2022
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if (pos('@', PNumberPhone) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.deleteMessageById(PNumberPhone, UniqueIDs);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 
 end;
 
