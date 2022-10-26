@@ -14880,7 +14880,22 @@ window.WAPI.getPlatformFromMessage2 = async function(UniqueID, chatid) {
     
 };
 
+window.WAPI.list = async function(options) {
+    const result = await WPP.chat.list(options);
 
+    if (result) {
+        try {
+            SetConsoleMessage("getList", JSON.stringify(result));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO');
+
+    }
+};
 
 
 
