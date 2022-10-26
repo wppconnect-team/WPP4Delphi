@@ -224,6 +224,9 @@ Const
   //Marcelo 17/09/2022
   FrmConsole_JS_VAR_sendLocationMessageEx   = 'window.WAPI.sendLocationMessage2Ex("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
 
+  //Marcelo 25/10/2022
+  FrmConsole_JS_VAR_getList   = 'window.WAPI.list({<#OPTIONS#>} );';
+
 
   //Marcelo 18/07/2022
   FrmConsole_JS_VAR_CheckNumberExists   = 'window.WAPI.CheckNumberExists("<#MSG_PHONE#>");';
@@ -395,6 +398,7 @@ type
                    , Th_IsLoaded=58 //Marcelo 17/09/2022
                    , Th_IsAuthenticated=59 //Marcelo 18/09/2022
                    , Th_getPlatformFromMessage=60 //Marcelo 20/09/2022
+                   , Th_getList=61 //Marcelo 25/10/2022
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -532,7 +536,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 60; //Marcelo 20/09/2022
+const LmaxCount = 61; //Marcelo 25/10/2022
 var
   I: Integer;
   LNome: String;

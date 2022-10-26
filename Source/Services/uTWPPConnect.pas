@@ -242,6 +242,8 @@ type
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
 
+    procedure getList(options: string); //Add Marcelo 25/10/2022
+
     //Daniel - 13/06/2022
     procedure GetProductCatalog;
     //Adicionado Por Marcelo 10/05/2022
@@ -1753,6 +1755,33 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.getLastSeen(vNumber);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.getList(options: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 25/10/2022
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getList(options);
           end;
         end);
 
