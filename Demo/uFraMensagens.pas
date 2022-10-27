@@ -1472,6 +1472,7 @@ begin
       result := Memo1.text;
     finally
       outStream.Free;
+      DeleteFile(ExtractFilePath(Application.ExeName) + AOutFileName );
     end;
   finally
     inStream.Free;
