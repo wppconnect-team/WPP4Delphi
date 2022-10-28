@@ -1087,7 +1087,8 @@ begin
        LLine := LLine + LBase64[i];
     vBase64 := LLine;
 
-    LJS := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendBase64;
+    //LJS := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendBase64;
+    LJS := FrmConsole_JS_VAR_SendBase64;
     FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(vNum));
     FrmConsole_JS_AlterVar(LJS, '#MSG_NOMEARQUIVO#', Trim(vFileName));
     FrmConsole_JS_AlterVar(LJS, '#MSG_CORPO#',       Trim(vText));
@@ -1154,8 +1155,8 @@ begin
 
     //SalvaLog(content, 'CONSOLE');
 
-
-    LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendFileMessage;
+    //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendFileMessage;
+    LJS   := FrmConsole_JS_VAR_sendFileMessage;
     FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
@@ -1248,8 +1249,8 @@ begin
 
   //MARCELO 09/05/2022
   //vText := CaractersWeb(vText);
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendLinkPreview;
-  //LJS := FrmConsole_JS_VAR_SendLinkPreview;
+  //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendLinkPreview;
+  LJS := FrmConsole_JS_VAR_SendLinkPreview;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',      Trim(vNum));
   FrmConsole_JS_AlterVar(LJS, '#MSG_LINK#',       Trim(vLinkPreview));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CORPO#',      Trim(vText));
@@ -1293,7 +1294,8 @@ begin
   description := CaractersWeb(description);
   buttonText := CaractersWeb(buttonText);
 
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendListMessage;
+  //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_sendListMessage;
+  LJS   := FrmConsole_JS_VAR_sendListMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
   FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
@@ -1332,7 +1334,8 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   vText := CaractersWeb(vText);
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendLocation;
+  //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendLocation;
+  LJS   := FrmConsole_JS_VAR_SendLocation;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(vNum));
   FrmConsole_JS_AlterVar(LJS, '#MSG_LAT#',       Trim(vLat));
   FrmConsole_JS_AlterVar(LJS, '#MSG_LNG#',       Trim(vLng));
@@ -1523,7 +1526,8 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   vText := CaractersWeb(vText);
-  LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendMsg;
+  //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendMsg;
+  LJS   := FrmConsole_JS_VAR_SendMsg;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(vNum));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CORPO#',       Trim(vText));
   ExecuteJS(LJS, true);

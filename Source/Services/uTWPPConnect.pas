@@ -78,6 +78,9 @@ type
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
+  TOnGetListChat = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
+
+
   //Adicionado Por Marcelo 06/05/2022
   TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
   //TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
@@ -182,7 +185,7 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
-
+    FOnGetListChat              : TOnGetListChat;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
 
@@ -223,7 +226,10 @@ type
     //Function    ConfigureNetwork: Boolean;
     procedure ReadMessages(vID: string);
     function  TestConnect:  Boolean;
-    procedure Send(PNumberPhone, PMessage: string; PEtapa: string = '');
+    procedure Send(PNumberPhone, PMessage: string; PEtapa: string = ''); deprecated;
+    procedure SendFile(PNumberPhone: String; Const PFileName: String; PMessage: string = '');  deprecated;
+    procedure SendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);    deprecated; //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
+
     procedure SendButtons(phoneNumber: string; titleText: string; buttons: string; footerText: string; etapa: string = '');
     //Adicionado Por Marcelo 01/03/2022
     procedure SendListMenu(phoneNumber, title, subtitle, description, buttonText, menu: string; etapa: string = '');
@@ -279,8 +285,7 @@ type
 
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
-    procedure SendFile(PNumberPhone: String; Const PFileName: String; PMessage: string = '');
-    procedure SendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);     deprecated; //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
+
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
     procedure Logout();
@@ -430,6 +435,8 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
+    property OnGetListChat               : TOnGetListChat             read FOnGetListChat                  write FOnGetListChat;
+
   end;
 
 procedure Register;
@@ -2352,6 +2359,12 @@ begin
       FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
   end;
 
+  if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
+  begin
+    if Assigned(FOngetListChat) then
+      FOngetListChat(TGetListClass(PReturnClass));
+  end;
+
 
   //deprecated
   if PTypeHeader = Th_GetBatteryLevel then
@@ -3400,6 +3413,7 @@ begin
     Exit;
 
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
   if pos('@', phoneNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
