@@ -44,7 +44,7 @@ uses
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
-  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils;
+  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, uTWPPConnect.ChatList;
 
 
 type
@@ -102,7 +102,7 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
-
+  TGetList                   = Procedure(Sender : TObject; ChatsList: TChatsList) of object;  //Daniel 26/10/2022
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -125,6 +125,7 @@ type
     FOnDisconnectedBrute    : TNotifyEvent;
     FCrashMonitorLastUpdate : TDateTime;
     FOnWPPMonitorCrash: TWPPMonitorCrash;
+    FOnGetListChat: TGetList;
 
     { Private  declarations }
     Function  ConsolePronto:Boolean;
@@ -406,6 +407,7 @@ type
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
 
+    property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
 
@@ -2137,6 +2139,12 @@ begin
   Begin
     if Assigned(OnGetIsAuthenticated) then
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
+  end;
+
+  if PTypeHeader = Th_getList then
+  begin
+    if Assigned(OnGetListChat) then
+      OnGetListChat(Self, TChatsList(PReturnClass));
   end;
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
