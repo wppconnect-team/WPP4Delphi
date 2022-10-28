@@ -77,7 +77,8 @@ Const
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
   FrmConsole_JS_checkDelivered          = 'window.WAPI.getDelivered();';
   FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
-  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
+  //FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
+  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelectorAll("button"); if (all[0]) { if (all.includes("recarregar")) { all[0].click() } } })}, 60000);';
   FrmConsole_JS_monitorQRCode           = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
   FrmConsole_JS_StopMonitor             = 'stopMonitor();';
   FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
@@ -96,7 +97,7 @@ Const
   FrmConsole_JS_VAR_isBeta              = 'window.WAPI.isBeta();';
 
   //deprecated
-  FrmConsole_JS_VAR_SendTyping          = 'Store.WapQuery.sendChatstateComposing("<#MSG_PHONE#>");'; //deprecated;
+  FrmConsole_JS_VAR_SendTyping          = ''; //deprecated;
   FrmConsole_JS_VAR_SendLocation        = 'window.WAPI.sendLocation("<#MSG_PHONE#>", "<#MSG_LAT#>", "<#MSG_LNG#>", "<#MSG_CORPO#>")';
   FrmConsole_JS_VAR_Logout              = 'localStorage.clear(); location.reload();';
   FrmConsole_JS_VAR_CheckIsValidNumber  = 'window.WAPI.isValidNumber("<#MSG_PHONE#>")'+
