@@ -2304,7 +2304,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.13.4
+//WPPCONNECT v2.14.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -7405,6 +7405,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return (0, n.assertGetChat)(t).mute.canMute()
                 }
             },
+            2519: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.canReply = void 0;
+                const n = r(1092),
+                    o = r(1489),
+                    i = r(8491);
+                t.canReply = async function(e) {
+                    e instanceof n.MsgModel || "string" == typeof e || "function" != typeof e.toString || (e = e.toString());
+                    const t = e instanceof n.MsgModel ? e : await (0, i.getMessageById)(e.toString());
+                    return (0, o.canReplyMsg)(t)
+                }
+            },
             6534: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -7682,7 +7696,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markPlayed = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getPlatformFromMessage = t.getMessages = t.getMessageById = t.getLastSeen = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canMute = t.canMarkPlayed = t.unarchive = t.archive = void 0;
+                }), t.unmute = t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markPlayed = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getPlatformFromMessage = t.getMessages = t.getMessageById = t.getLastSeen = t.get = t.generateMessageID = t.find = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canReply = t.canMute = t.canMarkPlayed = t.unarchive = t.archive = void 0;
                 var n = r(1200);
                 Object.defineProperty(t, "archive", {
                     enumerable: !0,
@@ -7709,261 +7723,268 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return i.canMute
                     }
                 });
-                var s = r(6534);
+                var s = r(2519);
+                Object.defineProperty(t, "canReply", {
+                    enumerable: !0,
+                    get: function() {
+                        return s.canReply
+                    }
+                });
+                var a = r(6534);
                 Object.defineProperty(t, "clear", {
                     enumerable: !0,
                     get: function() {
-                        return s.clear
+                        return a.clear
                     }
                 });
-                var a = r(7814);
+                var u = r(7814);
                 Object.defineProperty(t, "delete", {
                     enumerable: !0,
                     get: function() {
-                        return a.delete
+                        return u.delete
                     }
                 });
-                var u = r(8826);
+                var c = r(8826);
                 Object.defineProperty(t, "deleteMessage", {
                     enumerable: !0,
                     get: function() {
-                        return u.deleteMessage
+                        return c.deleteMessage
                     }
                 });
-                var c = r(3438);
+                var l = r(3438);
                 Object.defineProperty(t, "downloadMedia", {
                     enumerable: !0,
                     get: function() {
-                        return c.downloadMedia
+                        return l.downloadMedia
                     }
                 });
-                var l = r(7242);
+                var d = r(7242);
                 Object.defineProperty(t, "find", {
                     enumerable: !0,
                     get: function() {
-                        return l.find
+                        return d.find
                     }
                 });
-                var d = r(89);
+                var f = r(89);
                 Object.defineProperty(t, "generateMessageID", {
                     enumerable: !0,
                     get: function() {
-                        return d.generateMessageID
+                        return f.generateMessageID
                     }
                 });
-                var f = r(8309);
+                var p = r(8309);
                 Object.defineProperty(t, "get", {
                     enumerable: !0,
                     get: function() {
-                        return f.get
+                        return p.get
                     }
                 });
-                var p = r(8328);
+                var m = r(8328);
                 Object.defineProperty(t, "getLastSeen", {
                     enumerable: !0,
                     get: function() {
-                        return p.getLastSeen
+                        return m.getLastSeen
                     }
                 });
-                var m = r(8491);
+                var g = r(8491);
                 Object.defineProperty(t, "getMessageById", {
                     enumerable: !0,
                     get: function() {
-                        return m.getMessageById
+                        return g.getMessageById
                     }
                 });
-                var g = r(3311);
+                var h = r(3311);
                 Object.defineProperty(t, "getMessages", {
                     enumerable: !0,
                     get: function() {
-                        return g.getMessages
+                        return h.getMessages
                     }
                 });
-                var h = r(8376);
+                var y = r(8376);
                 Object.defineProperty(t, "getPlatformFromMessage", {
                     enumerable: !0,
                     get: function() {
-                        return h.getPlatformFromMessage
+                        return y.getPlatformFromMessage
                     }
                 });
-                var y = r(7548);
+                var b = r(7548);
                 Object.defineProperty(t, "list", {
                     enumerable: !0,
                     get: function() {
-                        return y.list
+                        return b.list
                     }
                 });
-                var b = r(3089);
+                var v = r(3089);
                 Object.defineProperty(t, "markIsComposing", {
                     enumerable: !0,
                     get: function() {
-                        return b.markIsComposing
+                        return v.markIsComposing
                     }
                 });
-                var v = r(8292);
+                var _ = r(8292);
                 Object.defineProperty(t, "markIsPaused", {
                     enumerable: !0,
                     get: function() {
-                        return v.markIsPaused
+                        return _.markIsPaused
                     }
                 });
-                var _ = r(9256);
+                var M = r(9256);
                 Object.defineProperty(t, "markIsRead", {
                     enumerable: !0,
                     get: function() {
-                        return _.markIsRead
+                        return M.markIsRead
                     }
                 });
-                var M = r(2818);
+                var P = r(2818);
                 Object.defineProperty(t, "markIsRecording", {
                     enumerable: !0,
                     get: function() {
-                        return M.markIsRecording
+                        return P.markIsRecording
                     }
                 });
-                var P = r(5433);
+                var w = r(5433);
                 Object.defineProperty(t, "markIsUnread", {
                     enumerable: !0,
                     get: function() {
-                        return P.markIsUnread
+                        return w.markIsUnread
                     }
                 });
-                var w = r(404);
+                var O = r(404);
                 Object.defineProperty(t, "markPlayed", {
                     enumerable: !0,
                     get: function() {
-                        return w.markPlayed
+                        return O.markPlayed
                     }
                 });
-                var O = r(6915);
+                var j = r(6915);
                 Object.defineProperty(t, "mute", {
                     enumerable: !0,
                     get: function() {
-                        return O.mute
+                        return j.mute
                     }
                 });
-                var j = r(9558);
+                var x = r(9558);
                 Object.defineProperty(t, "openChatAt", {
                     enumerable: !0,
                     get: function() {
-                        return j.openChatAt
+                        return x.openChatAt
                     }
                 });
-                var x = r(4310);
+                var C = r(4310);
                 Object.defineProperty(t, "openChatBottom", {
                     enumerable: !0,
                     get: function() {
-                        return x.openChatBottom
+                        return C.openChatBottom
                     }
                 });
-                var C = r(444);
+                var S = r(444);
                 Object.defineProperty(t, "openChatFromUnread", {
                     enumerable: !0,
                     get: function() {
-                        return C.openChatFromUnread
+                        return S.openChatFromUnread
                     }
                 });
-                var S = r(3177);
+                var I = r(3177);
                 Object.defineProperty(t, "pin", {
                     enumerable: !0,
                     get: function() {
-                        return S.pin
+                        return I.pin
                     }
                 }), Object.defineProperty(t, "unpin", {
                     enumerable: !0,
                     get: function() {
-                        return S.unpin
+                        return I.unpin
                     }
                 });
-                var I = r(8471);
+                var k = r(8471);
                 Object.defineProperty(t, "prepareLinkPreview", {
                     enumerable: !0,
                     get: function() {
-                        return I.prepareLinkPreview
+                        return k.prepareLinkPreview
                     }
                 });
-                var k = r(9872);
+                var E = r(9872);
                 Object.defineProperty(t, "prepareMessageButtons", {
                     enumerable: !0,
                     get: function() {
-                        return k.prepareMessageButtons
+                        return E.prepareMessageButtons
                     }
                 });
-                var E = r(8384);
+                var T = r(8384);
                 Object.defineProperty(t, "prepareRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return E.prepareRawMessage
+                        return T.prepareRawMessage
                     }
                 });
-                var T = r(9017);
+                var B = r(9017);
                 Object.defineProperty(t, "sendCreatePollMessage", {
                     enumerable: !0,
                     get: function() {
-                        return T.sendCreatePollMessage
+                        return B.sendCreatePollMessage
                     }
                 });
-                var B = r(18);
+                var A = r(18);
                 Object.defineProperty(t, "sendFileMessage", {
                     enumerable: !0,
                     get: function() {
-                        return B.sendFileMessage
+                        return A.sendFileMessage
                     }
                 });
-                var A = r(8851);
+                var L = r(8851);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return A.sendListMessage
+                        return L.sendListMessage
                     }
                 });
-                var L = r(2814);
+                var R = r(2814);
                 Object.defineProperty(t, "sendLocationMessage", {
                     enumerable: !0,
                     get: function() {
-                        return L.sendLocationMessage
+                        return R.sendLocationMessage
                     }
                 });
-                var R = r(682);
+                var U = r(682);
                 Object.defineProperty(t, "sendRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return R.sendRawMessage
+                        return U.sendRawMessage
                     }
                 });
-                var U = r(3065);
+                var F = r(3065);
                 Object.defineProperty(t, "sendReactionToMessage", {
                     enumerable: !0,
                     get: function() {
-                        return U.sendReactionToMessage
+                        return F.sendReactionToMessage
                     }
                 });
-                var F = r(6627);
+                var D = r(6627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return F.sendTextMessage
+                        return D.sendTextMessage
                     }
                 });
-                var D = r(6017);
+                var G = r(6017);
                 Object.defineProperty(t, "sendVCardContactMessage", {
                     enumerable: !0,
                     get: function() {
-                        return D.sendVCardContactMessage
+                        return G.sendVCardContactMessage
                     }
                 });
-                var G = r(7709);
+                var N = r(7709);
                 Object.defineProperty(t, "starMessage", {
                     enumerable: !0,
                     get: function() {
-                        return G.starMessage
+                        return N.starMessage
                     }
                 });
-                var N = r(8205);
+                var W = r(8205);
                 Object.defineProperty(t, "unmute", {
                     enumerable: !0,
                     get: function() {
-                        return N.unmute
+                        return W.unmute
                     }
                 })
             },
@@ -8463,7 +8484,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if ("string" == typeof r.quotedMsg && (r.quotedMsg = s.MsgKey.fromString(r.quotedMsg)), r.quotedMsg instanceof s.MsgKey && (r.quotedMsg = await (0, l.getMessageById)(r.quotedMsg)), !(r.quotedMsg instanceof s.MsgModel)) throw new i.WPPError("invalid_quoted_msg", "Invalid quotedMsg", {
                             quotedMsg: r.quotedMsg
                         });
-                        if (!(null === (d = r.quotedMsg) || void 0 === d ? void 0 : d.isStatusV3) && !r.quotedMsg.canReply()) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
+                        if (!(null === (d = r.quotedMsg) || void 0 === d ? void 0 : d.isStatusV3) && !(0, u.canReplyMsg)(r.quotedMsg)) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
                             quotedMsg: r.quotedMsg
                         });
                         t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e))
@@ -9426,7 +9447,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.setMultiDevice = t.setKeepAlive = t.refreshQR = t.markUnavailable = t.markAvailable = t.logout = t.isMultiDevice = t.isMainReady = t.isMainLoaded = t.isIdle = t.isAuthenticated = t.getPlatform = t.getMyUserId = t.getMyDeviceId = t.getAuthCode = void 0;
+                }), t.setMultiDevice = t.setKeepAlive = t.refreshQR = t.markUnavailable = t.markAvailable = t.logout = t.isRegistered = t.isMultiDevice = t.isMainReady = t.isMainLoaded = t.isIdle = t.isAuthenticated = t.getPlatform = t.getMyUserId = t.getMyDeviceId = t.getAuthCode = void 0;
                 var n = r(7834);
                 Object.defineProperty(t, "getAuthCode", {
                     enumerable: !0,
@@ -9490,44 +9511,51 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return d.isMultiDevice
                     }
                 });
-                var f = r(6115);
+                var f = r(5088);
+                Object.defineProperty(t, "isRegistered", {
+                    enumerable: !0,
+                    get: function() {
+                        return f.isRegistered
+                    }
+                });
+                var p = r(6115);
                 Object.defineProperty(t, "logout", {
                     enumerable: !0,
                     get: function() {
-                        return f.logout
+                        return p.logout
                     }
                 });
-                var p = r(6370);
+                var m = r(6370);
                 Object.defineProperty(t, "markAvailable", {
                     enumerable: !0,
                     get: function() {
-                        return p.markAvailable
+                        return m.markAvailable
                     }
                 }), Object.defineProperty(t, "markUnavailable", {
                     enumerable: !0,
                     get: function() {
-                        return p.markUnavailable
+                        return m.markUnavailable
                     }
                 });
-                var m = r(4735);
+                var g = r(4735);
                 Object.defineProperty(t, "refreshQR", {
                     enumerable: !0,
                     get: function() {
-                        return m.refreshQR
+                        return g.refreshQR
                     }
                 });
-                var g = r(1054);
+                var h = r(1054);
                 Object.defineProperty(t, "setKeepAlive", {
                     enumerable: !0,
                     get: function() {
-                        return g.setKeepAlive
+                        return h.setKeepAlive
                     }
                 });
-                var h = r(2421);
+                var y = r(2421);
                 Object.defineProperty(t, "setMultiDevice", {
                     enumerable: !0,
                     get: function() {
-                        return h.setMultiDevice
+                        return y.setMultiDevice
                     }
                 })
             },
@@ -9638,6 +9666,43 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 t.isMultiDevice = function() {
                     const e = s.search((e => e.isMDBackend));
                     return !(null == e ? void 0 : e.isMDBackend) || e.isMDBackend()
+                }
+            },
+            5088: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.isRegistered = void 0;
+                const s = i(r(1489));
+                t.isRegistered = function() {
+                    return s.isRegistered()
                 }
             },
             6115: (e, t, r) => {
@@ -10966,7 +11031,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.13.4";
+                s(r(3115), t), t.waVersion = "2.14.0";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11193,7 +11258,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.13.4", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.14.0", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12148,7 +12213,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(6405),
                     c = r(3111),
                     l = (0, o.default)("WA-JS:link-preview"),
-                    d = i.config.linkPreviewApiServers || ["https://linkpreview.ddns.info", "https://linkpreview.eletroinfo.site", "https://linkpreview.hps.net.br", "https://wajsapi.titanwhats.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
+                    d = i.config.linkPreviewApiServers || ["https://linkpreview.ddns.info", "https://linkpreview.hps.net.br", "https://wajsapi.titanwhats.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
                     f = 140;
                 ! function(e) {
                     for (let t = e.length - 1; t > 0; t--) {
@@ -12284,7 +12349,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.modules = t.search = t.searchId = t.isReactComponent = t.moduleSource = t.injectLoader = t.webpackRequire = t.onReady = t.onInjected = t.isReady = t.isInjected = void 0;
+                }), t.injectFallbackModule = t.loadModule = t.modules = t.search = t.searchId = t.isReactComponent = t.moduleSource = t.injectLoader = t.fallbackModules = t.webpackRequire = t.onReady = t.onInjected = t.isReady = t.isInjected = void 0;
                 const o = n(r(1227)),
                     i = r(5267),
                     s = (0, o.default)("WA-JS:webpack");
@@ -12292,7 +12357,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i.internalEv.on("webpack.injected", e)
                 }, t.onReady = function(e) {
                     i.internalEv.on("webpack.ready", e)
-                }, t.injectLoader = function() {
+                }, t.fallbackModules = {}, t.injectLoader = function() {
                     if (t.isInjected) return;
                     const e = "webpackChunkwhatsapp_web_client",
                         r = window,
@@ -12341,23 +12406,37 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         } catch (e) {
                             continue
                         }
+                    n = Object.keys(t.fallbackModules);
+                    for (const r of n) try {
+                        const n = t.fallbackModules[r];
+                        if (e(n, r)) return s(`Fallback Module found: ${r} - ${e.toString()}`), clearTimeout(o), r
+                    } catch (e) {
+                        continue
+                    }
                     return s(`Module not found: ${e.toString()}`), null
                 }
-                t.isReactComponent = l, t.searchId = d, t.search = function(e, r = !1) {
-                    const n = d(e, r);
-                    return n ? (0, t.webpackRequire)(n) : null
+
+                function f(e) {
+                    return /^\d+$/.test(e) ? (0, t.webpackRequire)(e) : t.fallbackModules[e]
+                }
+                t.isReactComponent = l, t.searchId = d, t.search = function(e, t = !1) {
+                    const r = d(e, t);
+                    return r ? f(r) : null
                 }, t.modules = function(e, r = !1) {
                     const n = {};
                     let o = Object.keys(t.webpackRequire.m);
                     r && (o = o.reverse());
-                    for (const r of o)
-                        if (!l(r)) try {
-                            const o = (0, t.webpackRequire)(r);
-                            e && !e(o, r) || (n[r] = o)
+                    for (const t of o)
+                        if (!l(t)) try {
+                            const r = f(t);
+                            e && !e(r, t) || (n[t] = r)
                         } catch (e) {
                             continue
                         }
                     return s(`${Object.keys(n).length} modules found with: ${null==e?void 0:e.toString()}`), n
+                }, t.loadModule = f, t.injectFallbackModule = function(e, r) {
+                    if (/^\d+$/.test(e += "")) throw new Error("Invalid fallback ID");
+                    t.fallbackModules[e] = r
                 }
             },
             1601: (e, t, r) => {
@@ -12994,7 +13073,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     const e = `Module ${n} was not found with ${r.toString()}`;
                                     return console.error(e), void(0, s.trackException)(e)
                                 }
-                                const a = u.webpackRequire(i);
+                                const a = u.loadModule(i);
                                 if (Array.isArray(o)) {
                                     for (const r of o)
                                         if (e = () => r.split(".").reduce(((e, t) => null == e ? void 0 : e[t]), a), e()) {
@@ -13040,7 +13119,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if ("function" != typeof e) return void console.error("func is not a function");
                     const n = t._moduleIdMap.get(e);
                     if (!n) return void console.error("func is not an exported function");
-                    const o = u.webpackRequire(n),
+                    const o = u.loadModule(n),
                         i = l.get(e);
                     if (!i) return void console.error("function path was not found");
                     const d = i.split("."),
@@ -13077,6 +13156,48 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(8785).exportModule)(t, {
                     calculateFilehashFromBlob: "calculateFilehashFromBlob"
                 }, (e => e.calculateFilehashFromBlob))
+            },
+            3679: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const s = i(r(7046));
+                (0, r(8785).exportModule)(t, {
+                    canReplyMsg: "canReplyMsg"
+                }, (e => e.canReplyMsg)), s.injectFallbackModule("canReplyMsg", {
+                    canReplyMsg: e => {
+                        var t;
+                        return (null === (t = e.canReply) || void 0 === t ? void 0 : t.call(e)) || !1
+                    }
+                })
             },
             7047: (e, t, r) => {
                 "use strict";
@@ -13281,7 +13402,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(3679), t), o(r(7047), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(4048), t), o(r(5115), t), o(r(5993), t), o(r(2922), t), o(r(4005), t), o(r(2129), t), o(r(213), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(2547), t), o(r(2907), t), o(r(7571), t), o(r(5863), t), o(r(5767), t), o(r(8879), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t)
             },
             2129: (e, t, r) => {
                 "use strict";
@@ -13294,6 +13415,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     var t, r;
                     return (null === (t = e.Z) || void 0 === t ? void 0 : t.toString().includes("isRegistered")) && (null === (r = e.Z) || void 0 === r ? void 0 : r.toString().includes("getLoginTokens")) || e.isLoggedIn
                 }))
+            },
+            213: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    isRegistered: ["isRegistered"]
+                }, (e => e.isRegistered))
             },
             9472: (e, t, r) => {
                 "use strict";
