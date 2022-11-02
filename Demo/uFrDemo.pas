@@ -33,7 +33,7 @@ uses
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
   uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
-  uFraOutros;
+  uFraOutros, uTWPPConnect.ChatList;
 
 type
   TfrDemo = class(TForm)
@@ -118,6 +118,7 @@ type
     procedure TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
     procedure BitBtn1Click(Sender: TObject);
     procedure TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
+    procedure TWPPConnect1GetListChat(Sender: TObject; ChatsList: TGetChatList);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -625,6 +626,25 @@ end;
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
 begin
   ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
+end;
+
+procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject;
+  ChatsList: TGetChatList);
+var
+  LChatClass: TChatListClass;
+  LMsgs: TMsgsClass;
+begin
+
+  for LChatClass in ChatsList.result do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LChatClass.id);
+    for LMsgs in LChatClass.msgs do
+    begin
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.from);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.body);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.isNewMsg.ToString(LMsgs.isNewMsg));
+    end;
+  end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);

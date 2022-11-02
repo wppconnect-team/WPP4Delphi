@@ -1623,6 +1623,15 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -5545,6 +5554,7 @@ object frDemo: TfrDemo
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
+    OnGetListChat = TWPPConnect1GetListChat
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber

@@ -304,7 +304,8 @@ implementation
 
 uses
   System.NetEncoding, Vcl.Dialogs, uTWPPConnect.ConfigCEF, uTWPPConnect, uCEFMiscFunctions,
-  Data.DB, uTWPPConnect.FrmConfigNetWork, Winapi.ShellAPI;
+  Data.DB, uTWPPConnect.FrmConfigNetWork, Winapi.ShellAPI,
+  uTWPPConnect.ChatList;
 
 {$R *.dfm}
 
@@ -1819,7 +1820,7 @@ begin
     //Marcelo 25/10/2022
     Th_getList :
                           begin
-                            LOutClass2 := TgetListClass.Create(LResultStr);
+                            LOutClass2 := TGetChatList.Create(LResultStr);
 
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
@@ -2116,6 +2117,14 @@ begin
     //LogAdd(message, 'CONSOLE GERAL');
 
  //testa se e um JSON de forma RAPIDA!
+
+
+  if (Pos(UpperCase(message),'WAPI IS NOT DEFINED') > 0) then
+  begin
+    //Injeta o JS.ABR de novo
+    ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  end;
+
   if (Copy(message, 0, 2) <> '{"') then
   Begin
     LogAdd(message, 'CONSOLE IGNORADO');
