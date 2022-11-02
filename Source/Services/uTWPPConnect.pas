@@ -102,7 +102,7 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
-  TGetList                   = Procedure(Sender : TObject; ChatsList: TChatsList) of object;  //Daniel 26/10/2022
+  TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -2144,7 +2144,7 @@ begin
   if PTypeHeader = Th_getList then
   begin
     if Assigned(OnGetListChat) then
-      OnGetListChat(Self, TChatsList(PReturnClass));
+      OnGetListChat(Self, TGetChatList(PReturnClass));
   end;
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,

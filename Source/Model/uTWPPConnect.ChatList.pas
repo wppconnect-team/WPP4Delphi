@@ -11,7 +11,8 @@ unit uTWPPConnect.ChatList;
 
 interface
 
-uses Generics.Collections, Rest.Json, uTWPPConnect.Classes;
+uses Generics.Collections, Rest.Json, uTWPPConnect.Classes,
+  uTWPPConnect.Constant;
 
 type
 
@@ -26,55 +27,56 @@ type
     property fromMe: Boolean read FFromMe write FFromMe;
     property id: String read FId write FId;
     property remote: String read FRemote write FRemote;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TIdClass;
   end;
 
   TMsgsClass = class(TClassPadrao)
   private
     FAck: Extended;
     FBody: String;
+    FBroadcast: Boolean;
+    FEphemeralOutOfSync: Boolean;
     FFrom: String;
     FHasReaction: Boolean;
     FId: TIdClass;
-    FInvis: Boolean;
     FIsAvatar: Boolean;
     FIsDynamicReplyButtonsMsg: Boolean;
     FIsForwarded: Boolean;
     FIsFromTemplate: Boolean;
     FIsMdHistoryMsg: Boolean;
+    FIsNewMsg: Boolean;
     FIsVcardOverMmsDocument: Boolean;
     FKicNotified: Boolean;
     FLabels: TArray<String>;
     FLastPlaybackProgress: Extended;
     FMentionedJidList: TArray<String>;
+    FNotifyName: String;
     FPollInvalidated: Boolean;
-    FPollOptions: TArray<String>;
     FProductHeaderImageRejected: Boolean;
     FPttForwardedFeaturesEnabled: Boolean;
+    FRecvFresh: Boolean;
     FRequiresDirectConnection: Boolean;
-    FRowId: Extended;
     FSelf: String;
     FStar: Boolean;
     FStickerSentTs: Extended;
     FT: Extended;
     FTo: String;
     FType: String;
-    FisNewMsg: Boolean;
   public
     property ack: Extended read FAck write FAck;
     property body: String read FBody write FBody;
+    property broadcast: Boolean read FBroadcast write FBroadcast;
+    property ephemeralOutOfSync: Boolean read FEphemeralOutOfSync
+      write FEphemeralOutOfSync;
     property from: String read FFrom write FFrom;
     property hasReaction: Boolean read FHasReaction write FHasReaction;
     property id: TIdClass read FId write FId;
-    property invis: Boolean read FInvis write FInvis;
     property isAvatar: Boolean read FIsAvatar write FIsAvatar;
     property isDynamicReplyButtonsMsg: Boolean read FIsDynamicReplyButtonsMsg
       write FIsDynamicReplyButtonsMsg;
     property isForwarded: Boolean read FIsForwarded write FIsForwarded;
     property isFromTemplate: Boolean read FIsFromTemplate write FIsFromTemplate;
     property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
-    property isNewMsg: Boolean read FisNewMsg write FisNewMsg;
+    property isNewMsg: Boolean read FIsNewMsg write FIsNewMsg;
     property isVcardOverMmsDocument: Boolean read FIsVcardOverMmsDocument
       write FIsVcardOverMmsDocument;
     property kicNotified: Boolean read FKicNotified write FKicNotified;
@@ -83,32 +85,30 @@ type
       write FLastPlaybackProgress;
     property mentionedJidList: TArray<String> read FMentionedJidList
       write FMentionedJidList;
+    property notifyName: String read FNotifyName write FNotifyName;
     property pollInvalidated: Boolean read FPollInvalidated
       write FPollInvalidated;
-    property pollOptions: TArray<String> read FPollOptions write FPollOptions;
     property productHeaderImageRejected: Boolean
       read FProductHeaderImageRejected write FProductHeaderImageRejected;
     property pttForwardedFeaturesEnabled: Boolean
       read FPttForwardedFeaturesEnabled write FPttForwardedFeaturesEnabled;
+    property recvFresh: Boolean read FRecvFresh write FRecvFresh;
     property requiresDirectConnection: Boolean read FRequiresDirectConnection
       write FRequiresDirectConnection;
-    property rowId: Extended read FRowId write FRowId;
     property self: String read FSelf write FSelf;
     property star: Boolean read FStar write FStar;
     property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
     property t: Extended read FT write FT;
-    property &to : String read FTo write FTo;
+    property &to: String read FTo write FTo;
     property &type: String read FType write FType;
+    constructor Create(pAJsonString: string);
     destructor Destroy; override;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TMsgsClass;
   end;
 
   TTcTokenClass = class(TClassPadrao)
   private
   public
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TTcTokenClass;
+
   end;
 
   TLastReceivedKeyClass = class(TClassPadrao)
@@ -122,8 +122,6 @@ type
     property fromMe: Boolean read FFromMe write FFromMe;
     property id: String read FId write FId;
     property remote: String read FRemote write FRemote;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TLastReceivedKeyClass;
   end;
 
   TChatListClass = class(TClassPadrao)
@@ -135,6 +133,7 @@ type
     FHasChatBeenOpened: Boolean;
     FHasUnreadMention: Boolean;
     FId: String;
+    FIsAutoMuted: Boolean;
     FIsReadOnly: Boolean;
     FLabels: TArray<String>;
     FLastReceivedKey: TLastReceivedKeyClass;
@@ -164,6 +163,7 @@ type
     property hasUnreadMention: Boolean read FHasUnreadMention
       write FHasUnreadMention;
     property id: String read FId write FId;
+    property isAutoMuted: Boolean read FIsAutoMuted write FIsAutoMuted;
     property isReadOnly: Boolean read FIsReadOnly write FIsReadOnly;
     property labels: TArray<String> read FLabels write FLabels;
     property lastReceivedKey: TLastReceivedKeyClass read FLastReceivedKey
@@ -184,48 +184,45 @@ type
       write FUnreadMentionCount;
     property unreadMentionsOfMe: TArray<String> read FUnreadMentionsOfMe
       write FUnreadMentionsOfMe;
+    constructor Create(pAJsonString: string);
     destructor Destroy; override;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TChatListClass;
   end;
 
-  TResultClass = class(TClassPadraoList<TItemClass>)
-  private
-    FChatList: TArray<TChatListClass>;
-  public
-    property ChatList: TArray<TChatListClass> read FChatList write FChatList;
-    destructor Destroy; override;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TResultClass;
-  end;
-
-  TChatsList = class(TClassPadraoList<TResultClass>)
+  TGetChatList = class(TClassPadraoList<TChatListClass>)
   private
     FName: String;
-    FResult: TResultClass;
+    FResult: TArray<TChatListClass>;
   public
     property name: String read FName write FName;
-    property result: TResultClass read FResult write FResult;
+    property result: TArray<TChatListClass> read FResult write FResult;
+    constructor Create(pAJsonString: string);
     destructor Destroy; override;
-    function ToJsonString: string;
-    class function FromJsonString(AJsonString: string): TChatsList;
   end;
 
 implementation
 
-{ TIdClass }
+{ TRootClass }
 
-function TIdClass.ToJsonString: string;
+{ TChatsList }
+
+constructor TGetChatList.Create(pAJsonString: string);
 begin
-  result := TJson.ObjectToJsonString(self);
+  inherited Create(pAJsonString);
 end;
 
-class function TIdClass.FromJsonString(AJsonString: string): TIdClass;
+destructor TGetChatList.Destroy;
 begin
-  result := TJson.JsonToObject<TIdClass>(AJsonString)
+
+  inherited;
 end;
 
 { TMsgsClass }
+
+constructor TMsgsClass.Create(pAJsonString: string);
+begin
+  inherited Create(pAJsonString);
+  FId := TIdClass.Create(pAJsonString);
+end;
 
 destructor TMsgsClass.Destroy;
 begin
@@ -233,49 +230,19 @@ begin
   inherited;
 end;
 
-function TMsgsClass.ToJsonString: string;
+{ TChatClass }
+
+constructor TChatListClass.Create(pAJsonString: string);
 begin
-  result := TJson.ObjectToJsonString(self);
+  inherited Create(pAJsonString);
+  FLastReceivedKey := TLastReceivedKeyClass.Create(pAJsonString);
+  FTcToken := TTcTokenClass.Create(pAJsonString);
 end;
-
-class function TMsgsClass.FromJsonString(AJsonString: string): TMsgsClass;
-begin
-  result := TJson.JsonToObject<TMsgsClass>(AJsonString)
-end;
-
-{ TTcTokenClass }
-
-function TTcTokenClass.ToJsonString: string;
-begin
-  result := TJson.ObjectToJsonString(self);
-end;
-
-class function TTcTokenClass.FromJsonString(AJsonString: string): TTcTokenClass;
-begin
-  result := TJson.JsonToObject<TTcTokenClass>(AJsonString)
-end;
-
-{ TLastReceivedKeyClass }
-
-function TLastReceivedKeyClass.ToJsonString: string;
-begin
-  result := TJson.ObjectToJsonString(self);
-end;
-
-class function TLastReceivedKeyClass.FromJsonString(AJsonString: string)
-  : TLastReceivedKeyClass;
-begin
-  result := TJson.JsonToObject<TLastReceivedKeyClass>(AJsonString)
-end;
-
-{ TChatListClass }
-
 
 destructor TChatListClass.Destroy;
 var
   LmsgsItem: TMsgsClass;
 begin
-
   for LmsgsItem in FMsgs do
     LmsgsItem.free;
 
@@ -284,57 +251,5 @@ begin
   inherited;
 end;
 
-function TChatListClass.ToJsonString: string;
-begin
-  result := TJson.ObjectToJsonString(self);
-end;
-
-class function TChatListClass.FromJsonString(AJsonString: string)
-  : TChatListClass;
-begin
-  result := TJson.JsonToObject<TChatListClass>(AJsonString)
-end;
-
-{ TResultClass }
-
-destructor TResultClass.Destroy;
-var
-  LchatListItem: TChatListClass;
-begin
-
-  for LchatListItem in FChatList do
-    LchatListItem.free;
-
-  inherited;
-end;
-
-function TResultClass.ToJsonString: string;
-begin
-  result := TJson.ObjectToJsonString(self);
-end;
-
-class function TResultClass.FromJsonString(AJsonString: string): TResultClass;
-begin
-  result := TJson.JsonToObject<TResultClass>(AJsonString)
-end;
-
-{ TRootClass }
-
-
-destructor TChatsList.Destroy;
-begin
-  FResult.free;
-  inherited;
-end;
-
-function TChatsList.ToJsonString: string;
-begin
-  result := TJson.ObjectToJsonString(self);
-end;
-
-class function TChatsList.FromJsonString(AJsonString: string): TChatsList;
-begin
-  result := TJson.JsonToObject<TChatsList>(AJsonString)
-end;
 
 end.
