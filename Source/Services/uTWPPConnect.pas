@@ -1,4 +1,4 @@
-﻿{####################################################################################################################
+{####################################################################################################################
   License
   Copyright 2022 WPPConnect Team https://wppconnect-team.github.io/
 
@@ -78,7 +78,7 @@ type
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
-  TOnGetListChat = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
+  TOnGetListChat            = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
 
 
   //Adicionado Por Marcelo 06/05/2022
@@ -128,7 +128,6 @@ type
     FOnDisconnectedBrute    : TNotifyEvent;
     FCrashMonitorLastUpdate : TDateTime;
     FOnWPPMonitorCrash: TWPPMonitorCrash;
-    FOnGetListChat: TGetList;
 
     { Private  declarations }
     Function  ConsolePronto:Boolean;
@@ -186,7 +185,7 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
-    FOnGetListChat              : TOnGetListChat;
+    FOnGetListChat              : TGetList;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
 
@@ -437,7 +436,6 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
-    property OnGetListChat               : TOnGetListChat             read FOnGetListChat                  write FOnGetListChat;
 
   end;
 
@@ -2370,7 +2368,7 @@ begin
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
   begin
     if Assigned(FOngetListChat) then
-      FOngetListChat(TGetListClass(PReturnClass));
+      FOngetListChat(Self, TGetChatList(PReturnClass));
   end;
 
 
