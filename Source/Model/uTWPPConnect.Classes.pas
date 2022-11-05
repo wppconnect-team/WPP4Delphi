@@ -1,4 +1,4 @@
-{####################################################################################################################
+﻿{####################################################################################################################
   License
   Copyright 2022 WPPConnect Team https://wppconnect-team.github.io/
 
@@ -174,9 +174,11 @@ type
   private
     fID : String;
     fBase64: String;
+    fimgURL: String;
   Public
     Property ID : String read FID write FID;
     Property Base64 : String   Read fBase64  Write fBase64;
+    Property imgURL : String   Read fimgURL  Write fimgURL;
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
   end;

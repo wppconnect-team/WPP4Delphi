@@ -775,15 +775,18 @@ var
   LOutput: TMemoryStream;
   AStr: TStringList;
   lThread: TThread;
-  wlo_Celular, wlo_Base64: string;
+  wlo_Celular, wlo_Base64, wlo_LinkFoto: string;
 begin
   //Necessário Recompilar o Projeto
 
   wlo_Base64 := ProfilePicThumb.Base64; // imagem
   wlo_Celular := Copy(ProfilePicThumb.id,1,  pos('@', ProfilePicThumb.id) -1); // nr telefone
+  wlo_LinkFoto := ProfilePicThumb.imgURL;
 
   //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Celular);
   //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Base64);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_LinkFoto);
 
   lThread := TThread.CreateAnonymousThread(
   procedure
