@@ -1132,7 +1132,7 @@ begin
             Extensao_Documento := 'jpg';//'webp';
 
           NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                          AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + '\Temp\');
+                          AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
 
           SleepNoFreeze(100);
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
