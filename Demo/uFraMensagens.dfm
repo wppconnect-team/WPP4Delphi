@@ -306,7 +306,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
-      ExplicitLeft = 7
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
