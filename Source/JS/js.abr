@@ -917,6 +917,7 @@ window.WAPI.teste = function (url) {
 	convertImgToBase64URL(lUrl, function(base64Img){
     Obj = {
         id: url,
+	imgUrl: lUrl,
         base64: base64Img
     }
 	SetConsoleMessage("GetProfilePicThumb", JSON.stringify(Obj));
