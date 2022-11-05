@@ -1,4 +1,4 @@
-{####################################################################################################################
+﻿{####################################################################################################################
   License
   Copyright 2022 WPPConnect Team https://wppconnect-team.github.io/
 
@@ -2701,11 +2701,19 @@ var
   LExtension  : String;
   LBase64     : String;
   options     : String;
+
   function IsImage : Boolean;
   var
     I : integer;
     LTmp : String;
   begin
+    // temis 11/10/22
+    if pIsSticker then
+      begin
+        result := true;
+        exit;
+      end;
+
     result := false;
     for I := 0 to 10 do
     begin
@@ -2717,6 +2725,7 @@ var
     end;
 
   end;
+
 begin
   if Application.Terminated Then
     Exit;

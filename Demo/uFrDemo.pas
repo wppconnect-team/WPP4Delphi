@@ -986,6 +986,9 @@ begin
           Extensao_Documento := ExtractFileExt(AMessage.filename);
           Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
 
+          if UpperCase(AMessage.&type) = 'STICKER' then  //Figurinha
+            Extensao_Documento := 'jpg';//'webp';
+
           NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
                           AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + '\Temp\');
 
