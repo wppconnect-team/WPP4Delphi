@@ -2707,7 +2707,7 @@ var
     I : integer;
     LTmp : String;
   begin
-    // temis 11/10/22
+    //Temis 11/10/22
     if pIsSticker then
       begin
         result := true;
