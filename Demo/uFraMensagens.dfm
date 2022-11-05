@@ -306,6 +306,7 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
+      ExplicitLeft = 7
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
@@ -345,7 +346,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
-      ExplicitLeft = 10
     end
     object Button2: TButton
       AlignWithMargins = True
@@ -359,8 +359,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = Button2Click
-      ExplicitLeft = 10
-      ExplicitTop = 524
     end
   end
   object GroupBox2: TGroupBox

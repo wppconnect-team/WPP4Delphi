@@ -25,14 +25,21 @@ uses System.Classes, Vcl.ExtCtrls, System.Generics.Collections,
 type
   TWPPConnectDecryptFile = class(TComponent)
   private
+    //FOndeSalvar: string;
+    //Fimagem: string;
     function DownLoadInternetFile(Source, Dest: string): Boolean;
     procedure DownloadFile(Source, Dest: string);
-    function shell(program_path:  string):  string;
+    function shell(program_path:  string; OndeSalvar, imagem : string):  string;
     function idUnique(id: string): string;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
+    //function download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
+    function download(clientUrl, mediaKey, tipo, id, onde: string; ADescriptografar: boolean=true) :string;
+
+    //property    OndeSalvar     : string     read FOndeSalvar         write FOndeSalvar;
+    //property    imagem         : string     read Fimagem         write Fimagem;
+
   end;
 
 implementation
@@ -45,11 +52,77 @@ uses
 constructor TWPPConnectDecryptFile.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  //FOndeSalvar  := '';
+  //FImagem   := '';
 end;
 
 destructor TWPPConnectDecryptFile.Destroy;
 begin
   inherited;
+end;
+
+function TWPPConnectDecryptFile.shell(program_path: string; OndeSalvar, imagem : string): string;
+var
+  s1: string;
+  DecriptBAT   : TextFile;
+begin
+  //OndeSalvar := ExtractFilePath(ParamStr(0));
+
+  s1 := '"' + ExtractFilePath(Application.ExeName)+'decryptFile.dll" ';
+ {$I-}
+    AssignFile(DecriptBAT, OndeSalvar + 'Decripta.bat');
+    Rewrite(DecriptBAT);
+    WriteLn(DecriptBAT, s1 + program_path);
+    WriteLn(DecriptBAT, 'del "' + imagem + '.enc"');
+    CloseFile(DecriptBAT);
+  {$I+}
+  Sleep(200);
+  Application.ProcessMessages;
+  ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + OndeSalvar + 'Decripta.bat"'), nil, SW_HIDE);
+end;
+
+function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id, onde: string; ADescriptografar: boolean=true) :string;
+var
+  form, diretorio, arq: string;
+  OndeSalvar, imagem : string;
+begin
+  Result      :=  '';
+  OndeSalvar  := onde;
+  diretorio   := onde;
+  //Sleep(1);
+
+  if not DirectoryExists(diretorio) then
+    CreateDir(diretorio);
+
+  arq     :=  idUnique(id);
+  imagem  :=  diretorio + arq;
+  Sleep(1);
+
+  if ADescriptografar then
+  begin
+    if DownLoadInternetFile(clientUrl, imagem + '.enc') then
+    begin
+      if FileExists(imagem  + '.enc') then
+      begin
+
+        if (tipo<>'mp3') and (tipo<>'mp4') and (tipo<>'jpeg') and (tipo<>'pdf') then
+          form  :=  format('--type "text" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey])
+        else
+          form  :=  format('--in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]);
+
+        shell(form, OndeSalvar, imagem);
+        Sleep(10);
+        Result := imagem + '.' + tipo;
+      end;
+    end;
+  end else
+  begin
+    if DownLoadInternetFile(clientUrl, imagem + '.' + tipo) then
+    begin
+      if FileExists(imagem + '.' + tipo) then
+        result:= imagem  + '.' + tipo;
+    end;
+  end;
 end;
 
 procedure TWPPConnectDecryptFile.DownloadFile(Source, Dest: String);
@@ -95,7 +168,7 @@ begin
   result := copy(gID.ToString, 2, length(gID.ToString)  - 2);
 end;
 
-function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
+{function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id: string;ADescriptografar: boolean=true) :string;
 var
   form, imagem, diretorio, arq:string;
 begin
@@ -113,7 +186,7 @@ begin
   if ADescriptografar then
   begin
     if DownLoadInternetFile(clientUrl, imagem + '.enc') then
-    begin     
+    begin
       if FileExists(imagem  + '.enc') then
       begin
         form  :=  format('--in %s.enc --out %s.%s --key %s',  [imagem,  imagem, tipo, mediakey]);
@@ -126,8 +199,8 @@ begin
   begin
     if DownLoadInternetFile(clientUrl, imagem + '.' + tipo) then
     begin
-      if FileExists(imagem + '.' + tipo) then  
-        result:= imagem  + '.' + tipo;      
+      if FileExists(imagem + '.' + tipo) then
+        result:= imagem  + '.' + tipo;
     end;
   end;
 end;
@@ -138,6 +211,6 @@ var
 begin
   s1 := ExtractFilePath(Application.ExeName)+'decryptFile.dll ';
   ShellExecute(0, nil, 'cmd.exe', PChar('/c '+ s1 + program_path ), PChar(s1 + program_path), SW_HIDE);
-end;
+end;   }
 
 end.

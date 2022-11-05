@@ -1757,7 +1757,7 @@ procedure TfrmPrincipal.TWPPConnect1GetUnReadMessages(Const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, NomeArq_Whats, Extensao_Documento, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
     for AChat in Chats.result do
@@ -1775,13 +1775,19 @@ begin
             contato   :=  AMessage.Sender.pushName;
 
             //Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-            case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
+            {case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
               0: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
               1: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'jpg', AChat.id); end;
               2: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp4', AChat.id); end;
               3: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'mp3', AChat.id); end;
               4: begin WPPConnectDecrypt.download(AMessage.deprecatedMms3Url, AMessage.mediaKey, 'pdf', AChat.id); end;
-            end;
+            end;}
+
+            Extensao_Documento := AMessage.filename;
+            Extensao_Documento := ExtractFileExt(Extensao_Documento);
+            NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                            AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + '\Arquivos Recebidos\');
+
             SleepNoFreeze(100);
             memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushName)));
             memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));

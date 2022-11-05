@@ -36,10 +36,6 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Autentica'#231#227'o / Authentication'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Pnl_Config: TPanel
         AlignWithMargins = True
         Left = 375
@@ -3728,10 +3724,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet2: TTabSheet
       Caption = 'A'#231#245'es em grupo /  Group actions'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         AlignWithMargins = True
         Left = 3
@@ -4777,7 +4769,6 @@ object frmPrincipal: TfrmPrincipal
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetBatteryLevel = TWPPConnect1GetBatteryLevel
-    OnGetMessageById = TWPPConnect1GetMessageById
     OnIsConnected = TWPPConnect1IsConnected
     OnLowBattery = TWPPConnect1LowBattery
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber

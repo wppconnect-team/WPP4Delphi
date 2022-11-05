@@ -933,7 +933,8 @@ procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
+    Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
   for AChat in Chats.Result do
@@ -951,7 +952,7 @@ begin
           contato := AMessage.Sender.pushname;
 
           // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-          case AnsiIndexStr(UpperCase(AMessage.&type),
+          {case AnsiIndexStr(UpperCase(AMessage.&type),
             ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
             0:
               begin
@@ -978,7 +979,16 @@ begin
                 WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
                   AMessage.mediaKey, 'pdf', AChat.id);
               end;
-          end;
+          end;}
+
+          //Novo 05/11/2022
+          Automato_Path := ExtractFilePath(ParamStr(0));
+          Extensao_Documento := ExtractFileExt(AMessage.filename);
+          Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+
+          NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                          AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + '\Temp\');
+
           SleepNoFreeze(100);
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
@@ -994,6 +1004,9 @@ begin
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('ACK: ' + FloatToStr(AMessage.ack)));
           selectedButtonId := AMessage.selectedButtonId;
+
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
 
           try
             if Assigned(AMessage.ListResponse) then
