@@ -1986,7 +1986,7 @@ window.WAPI.getGroupInviteLink = async function (chatId) {
 window.WAPI.getMe = function(){
    	
 	vMe = {...WAPI.quickClean({
-        ...Store.Contact.get(Store.Me.wid).attributes,
+        //...Store.Contact.get(Store.Me.wid).attributes,
         ...Store.Me.attributes
     }),
     me:Store.Me.me};
