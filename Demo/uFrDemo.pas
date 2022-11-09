@@ -1123,13 +1123,22 @@ begin
               end;
           end;}
 
+
+          case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+            0: Extensao_Documento := 'mp3';
+            1: Extensao_Documento := 'jpg';
+            2: Extensao_Documento := 'mp4';
+            3: Extensao_Documento := 'mp3';
+            4:
+            begin
+              Extensao_Documento := ExtractFileExt(AMessage.filename);
+              Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+            end;
+            5: Extensao_Documento := 'jpg'; //'webp';
+          end;
+
           //Novo 05/11/2022
           Automato_Path := ExtractFilePath(ParamStr(0));
-          Extensao_Documento := ExtractFileExt(AMessage.filename);
-          Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
-
-          if UpperCase(AMessage.&type) = 'STICKER' then  //Figurinha
-            Extensao_Documento := 'jpg';//'webp';
 
           NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
                           AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');

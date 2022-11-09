@@ -87,9 +87,25 @@ var
   OndeSalvar, imagem : string;
 begin
   Result      :=  '';
+
+  //Sleep(1);
+
+  //Marcelo 08/11/2022 opção de passar somente o tipo
+  case AnsiIndexStr(UpperCase(tipo), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+    0: tipo := 'mp3';
+    1: tipo := 'jpg';
+    2: tipo := 'mp4';
+    3: tipo := 'mp3';
+    4: tipo := 'pdf';
+    5: tipo := 'jpg';
+  end;
+
+  //Caso não informado onde salvar, criar o diretório "Temp"
+  if (Trim(onde) = '') then
+    onde := ExtractFilePath(ParamStr(0)) + 'Temp\';
+
   OndeSalvar  := onde;
   diretorio   := onde;
-  //Sleep(1);
 
   if not DirectoryExists(diretorio) then
     CreateDir(diretorio);
@@ -105,7 +121,7 @@ begin
       if FileExists(imagem  + '.enc') then
       begin
 
-        if (tipo<>'mp3') and (tipo<>'mp4') and (tipo<>'jpeg') and (tipo<>'pdf') then
+        if (tipo <> 'mp3') and (tipo <> 'mp4') and (tipo <> 'jpeg') and (tipo <> 'pdf') and (tipo <> 'jpg') then
           form  :=  format('--type "text" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey])
         else
           form  :=  format('--in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]);
