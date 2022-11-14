@@ -2305,7 +2305,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.15.1
+//WPPCONNECT v2.15.2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -8547,7 +8547,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (!(null === (d = r.quotedMsg) || void 0 === d ? void 0 : d.isStatusV3) && !(0, u.canReplyMsg)(r.quotedMsg)) throw new i.WPPError("quoted_msg_can_not_reply", "QuotedMsg can not reply", {
                             quotedMsg: r.quotedMsg
                         });
-                        t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e))
+                        t = Object.assign(Object.assign({}, t), r.quotedMsg.msgContextInfo(e.id))
                     }
                     return t
                 }
@@ -11090,7 +11090,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                a(r(3115), t), t.waVersion = "2.15.1";
+                a(r(3115), t), t.waVersion = "2.15.2";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11317,7 +11317,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.15.1", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "2.15.2", t.supportedWhatsappWeb = ">=2.2212.4-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -14796,7 +14796,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(3607);
     return __webpack_exports__
 })()));
-
 
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
