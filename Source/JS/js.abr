@@ -15013,6 +15013,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 })()));
 
 
+
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
 //Customização Marcelo Retorno das Mensagens
