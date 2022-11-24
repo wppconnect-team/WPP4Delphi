@@ -1820,7 +1820,7 @@ begin
     //Marcelo 25/10/2022
     Th_getList :
                           begin
-                            LOutClass2 := TGetChatList.Create(LResultStr);
+                            LOutClass2 := TGetChatList.Create(LResultStr.Replace(':[[{',':[{').Replace('}]]}','}]}'));
 
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
