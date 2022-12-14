@@ -22,7 +22,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,Rtti, strUtils,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls, Winapi.ShellAPI,
   // ############ ATENCAO AQUI ####################
   // units adicionais obrigatorias
   uTWPPConnect.ConfigCEF, uTWPPConnect, uTWPPConnect.Constant, uTWPPConnect.JS,
@@ -33,7 +33,7 @@ uses
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
   uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
-  uFraOutros;
+  uFraOutros, uTWPPConnect.ChatList;
 
 type
   TfrDemo = class(TForm)
@@ -58,6 +58,8 @@ type
     frameOutros1: TframeOutros;
     frameGrupos1: TframeGrupos;
     BitBtn1: TBitBtn;
+    TimerVerificaConexao: TTimer;
+    TimerCheckOnline: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -118,13 +120,20 @@ type
     procedure TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
     procedure BitBtn1Click(Sender: TObject);
     procedure TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
+    procedure TWPPConnect1GetListChat(Sender: TObject; ChatsList: TGetChatList);
+    procedure TimerVerificaConexaoTimer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure TimerCheckOnlineTimer(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
     { Private declarations }
 
 
-     FStatus: Boolean;
+    FStatus: Boolean;
+    whatsappsms, TentativaConexao: integer;
+    procedure VerificaWhatsApp;
+    procedure CriarArquivoBAT_ReiniciaAplicacao;
   public
     FChatID: string;
     { Public declarations }
@@ -140,7 +149,7 @@ type
 
 
    var   {validando numeros em listagem}
-     r_CheckNumber : boolean;  {verifica se rotina está ativa}
+     r_CheckNumber, r_CheckOnline : boolean;  {verifica se rotina está ativa}
      v_ValidNumber : Boolean;  {verifica se numero é valido}
      v_ValidNumberSleep  : boolean;
      v_Checado : boolean ;
@@ -221,7 +230,8 @@ end;
 procedure TfrDemo.BitBtn1Click(Sender: TObject);
 begin
   try
-    FrmConsole.RebootChromium;
+    TWPPConnect1.RebootWPP;
+    //FrmConsole.RebootChromium;
   except on E: Exception do
   end;
 end;
@@ -242,6 +252,39 @@ begin
   vText  := StringReplace(vText, #$A       ,'<br>'   , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
   Result := vText;
+end;
+
+procedure TfrDemo.CriarArquivoBAT_ReiniciaAplicacao;
+var
+  nomearq: string;
+  NomeAplicacao: string;
+  arq: TextFile;
+begin
+  try
+    NomeAplicacao := ExtractFileName(Application.ExeName);
+    NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+    nomearq := ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat';
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, 'taskkill /F /IM ' + NomeAplicacao + '.exe');
+      Writeln(arq, 'timeout /t 10 /nobreak'); //10 Segundos
+      //Writeln(arq, 'Copy ' + ExtractFilePath(Application.ExeName) + 'Temp\AtualizadorAutomatico.exe ' + ExtractFilePath(Application.ExeName) + 'AtualizadorAutomatico.exe');
+      Writeln(arq, 'start ' + ExtractFilePath(Application.ExeName) + NomeAplicacao + '.exe');
+
+      Flush(arq);
+    finally
+      CloseFile(arq);
+      //gravar_log('  Arquivo "Reinicia' + NomeAplicacao + '.bat", criado com sucesso! ');
+    end;
+  except
+  end;
+
 end;
 
 procedure TfrDemo.ctbtnCategories0Items0Click(Sender: TObject);
@@ -331,6 +374,13 @@ begin
   killtask('WPPConnectDemo.exe')
 end;
 
+procedure TfrDemo.FormCreate(Sender: TObject);
+begin
+  r_CheckOnline := False;
+  whatsappsms := 0;
+  TentativaConexao := 0;
+end;
+
 procedure TfrDemo.FormShow(Sender: TObject);
 begin
   frameLogin1.Visible := True;
@@ -392,6 +442,85 @@ begin
   CloseHandle(FSnapshotHandle);
 end;
 
+procedure TfrDemo.TimerVerificaConexaoTimer(Sender: TObject);
+begin
+  TimerVerificaConexao.Enabled := False;
+
+  if (TWPPConnect1.MyNumber = Null) or (TWPPConnect1.MyNumber = '')  then
+  begin
+
+  end
+  else
+  begin
+    whatsappsms := 0;
+    r_CheckOnline := True;
+
+    try TWPPConnect1.CheckNumberExists('17981388414'); except end;
+
+    inc(TentativaConexao);
+
+    SleepNoFreeze(2000);
+  end;
+
+  TimerVerificaConexao.Enabled := True;
+end;
+
+procedure TfrDemo.TimerCheckOnlineTimer(Sender: TObject);
+begin
+  TimerCheckOnline.Enabled := False;
+
+  VerificaWhatsApp;
+
+  TimerCheckOnline.Enabled := True;
+end;
+
+procedure TfrDemo.VerificaWhatsApp;
+var
+  caminho : string;
+  NomeAplicacao: string;
+Begin
+  NomeAplicacao := ExtractFileName(Application.ExeName);
+  NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+  try
+    if (TWPPConnect1.MyNumber = Null) or (TWPPConnect1.MyNumber = '')  then
+    Begin
+      Exit;
+    End
+    else
+    Begin
+      if whatsappsms = 0 then
+      Begin
+        frameLogin1.lblStatus.Caption := 'Offline';
+        frameLogin1.lblStatus.Font.Color := $002894FF;
+        frameLogin1.lblStatus.Font.Color := clGrayText;
+        frameLogin1.whatsOff.Visible := True;
+        frameLogin1.whatsOn.Visible := False;
+        frameLogin1.SpeedButton3.Enabled := False;
+
+        if TentativaConexao <= 2 then
+        begin
+          TWPPConnect1.RebootWPP;
+        end
+        else
+        begin //Reiniciar Aplicação
+          //Executar Arquivo BAT para Reiniciar Aplicação em Caso de Bug
+          if not (FileExists(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat')) then
+          begin
+            CriarArquivoBAT_ReiniciaAplicacao;
+            SleepNoFreeze(1000);
+          end;
+
+          //Forçar Reiniciar a Aplicação
+          ShellExecute(handle,'open',PChar(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat'), '','',SW_MINIMIZE);
+          Exit;
+        end;
+      End;
+    End;
+  except on E: Exception do
+  end;
+End;
+
 procedure TfrDemo.timerStatusTimer(Sender: TObject);
 begin
   case TWPPConnect(Sender).status of
@@ -429,6 +558,17 @@ var
   vStatus : Boolean;
 begin
   //Aurino 05/08/2022
+
+  whatsappsms := 1;
+  TentativaConexao := 0;
+
+  if r_CheckOnline then
+  begin
+    r_CheckOnline := False;
+    Application.ProcessMessages;
+    Exit;
+  end;
+
   if r_CheckNumber then  //validaçao por lita
   begin
     if v_ValidNumberSleep then
@@ -627,6 +767,25 @@ begin
   ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
 end;
 
+procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject;
+  ChatsList: TGetChatList);
+var
+  LChatClass: TChatListClass;
+  LMsgs: TMsgsClass;
+begin
+
+  for LChatClass in ChatsList.result do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LChatClass.id);
+    for LMsgs in LChatClass.msgs do
+    begin
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.from);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.body);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.isNewMsg.ToString(LMsgs.isNewMsg));
+    end;
+  end;
+end;
+
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);
 var
   aList: TStringList;
@@ -755,15 +914,18 @@ var
   LOutput: TMemoryStream;
   AStr: TStringList;
   lThread: TThread;
-  wlo_Celular, wlo_Base64: string;
+  wlo_Celular, wlo_Base64, wlo_LinkFoto: string;
 begin
   //Necessário Recompilar o Projeto
 
   wlo_Base64 := ProfilePicThumb.Base64; // imagem
   wlo_Celular := Copy(ProfilePicThumb.id,1,  pos('@', ProfilePicThumb.id) -1); // nr telefone
+  wlo_LinkFoto := ProfilePicThumb.imgURL;
 
   //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Celular);
   //frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_Base64);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add(wlo_LinkFoto);
 
   lThread := TThread.CreateAnonymousThread(
   procedure
@@ -913,7 +1075,8 @@ procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
   AMessage: TMessagesClass;
-  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem: string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
+    Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
 begin
   for AChat in Chats.Result do
@@ -931,7 +1094,7 @@ begin
           contato := AMessage.Sender.pushname;
 
           // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-          case AnsiIndexStr(UpperCase(AMessage.&type),
+          {case AnsiIndexStr(UpperCase(AMessage.&type),
             ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
             0:
               begin
@@ -958,7 +1121,28 @@ begin
                 WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
                   AMessage.mediaKey, 'pdf', AChat.id);
               end;
+          end;}
+
+
+          case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+            0: Extensao_Documento := 'mp3';
+            1: Extensao_Documento := 'jpg';
+            2: Extensao_Documento := 'mp4';
+            3: Extensao_Documento := 'mp3';
+            4:
+            begin
+              Extensao_Documento := ExtractFileExt(AMessage.filename);
+              Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+            end;
+            5: Extensao_Documento := 'jpg'; //'webp';
           end;
+
+          //Novo 05/11/2022
+          Automato_Path := ExtractFilePath(ParamStr(0));
+
+          NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                          AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
+
           SleepNoFreeze(100);
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
@@ -974,6 +1158,9 @@ begin
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
             (PChar('ACK: ' + FloatToStr(AMessage.ack)));
           selectedButtonId := AMessage.selectedButtonId;
+
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
+            (PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
 
           try
             if Assigned(AMessage.ListResponse) then

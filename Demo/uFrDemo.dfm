@@ -14,6 +14,7 @@ object frDemo: TfrDemo
   Position = poScreenCenter
   WindowState = wsMaximized
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 15
@@ -5516,7 +5517,7 @@ object frDemo: TfrDemo
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
-    InjectJS.SecondsWaitInject = 0
+    InjectJS.SecondsWaitInject = 4
     Config.AutoStart = True
     Config.AutoDelay = 1000
     Config.SecondsMonitor = 5
@@ -5559,14 +5560,26 @@ object frDemo: TfrDemo
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
     OnGetLastSeen = TWPPConnect1GetLastSeen
     OnGetPlatformFromMessage = TWPPConnect1GetPlatformFromMessage
-    Left = 304
-    Top = 376
+    Left = 288
+    Top = 472
   end
   object timerStatus: TTimer
     Enabled = False
     Interval = 500
     OnTimer = timerStatusTimer
-    Left = 264
-    Top = 128
+    Left = 440
+    Top = 32
+  end
+  object TimerVerificaConexao: TTimer
+    Interval = 40000
+    OnTimer = TimerVerificaConexaoTimer
+    Left = 528
+    Top = 32
+  end
+  object TimerCheckOnline: TTimer
+    Interval = 60000
+    OnTimer = TimerCheckOnlineTimer
+    Left = 632
+    Top = 32
   end
 end

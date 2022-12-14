@@ -81,7 +81,7 @@ begin
     begin
       LDiretorioImg := WPPConnectDecrypt.download
         (cdsCatalogoimageCdnUrl.AsString, cdsCatalogoimageHash.AsString, 'jpg',
-        cdsCatalogoid.AsString, false);
+        cdsCatalogoid.AsString, ExtractFilePath(ParamStr(0)) + '\Temp\', false);
       if LDiretorioImg <> '' then
       begin
         cdsImagens.Append;
@@ -113,7 +113,7 @@ begin
                 continue;
 
               LDiretorioImg := WPPConnectDecrypt.download(LListaImagens[i],
-                LListaHashes[i], 'jpg', cdsCatalogoid.AsString, false);
+                LListaHashes[i], 'jpg', cdsCatalogoid.AsString, ExtractFilePath(ParamStr(0)) + '\Temp\', false);
               if LDiretorioImg <> '' then
               begin
                 cdsImagens.Append;

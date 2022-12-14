@@ -102,12 +102,13 @@ var
   LInc:Integer;
 begin
   if FAllowOneDigit then
-     LInc := 1 else
-     LInc := 0;
+    LInc := 1 else
+    LInc := 0;
   Result := Pnum;
+
   try
     if not AutoAdjust then
-       Exit;
+      Exit;
 
     //Garante valores LIMPOS (sem mascaras, letras, etc) apenas NUMEROS
     Result := PNum;
@@ -125,16 +126,19 @@ begin
     //Testa se é um grupo ou Lista Transmissao
     if Length(LClearNum) <=  (LengthDDI + LengthDDD + LengthPhone + 1 + LInc) Then //14 then
     begin
-      if (Length(LClearNum) <= (LengthDDD + LengthPhone+ LInc)) or (Length(PNum) <= (LengthDDD + LengthPhone+ LInc)) then
+      if (Length(LClearNum) <= (LengthDDD + LengthPhone + LInc)) or (Length(PNum) <= (LengthDDD + LengthPhone + LInc)) then
       begin
-        if Copy(LClearNum, 0, LengthDDI) <> DDIDefault.ToString then
-           LClearNum := DDIDefault.ToString + LClearNum;
+        if (Copy(LClearNum, 0, LengthDDI) <> DDIDefault.ToString)
+        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 10)) //(55)8125-3929 Ajust com DDD 55
+        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 11)) //(55)98125-3929 Ajust com DDD 55
+        then
+          LClearNum := DDIDefault.ToString + LClearNum;
         Result := LClearNum +  CardContact;
       end;
     end;
   finally
     if Result = '' then
-       raise Exception.Create(MSG_ExceptPhoneNumberError);
+      raise Exception.Create(MSG_ExceptPhoneNumberError);
     SetPhone(Result);
   end;
 end;

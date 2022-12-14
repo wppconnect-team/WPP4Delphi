@@ -65,9 +65,11 @@ Const
   FrmConsole_Browser_Direto             = WM_APP + $101;
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
   TWPPConnectJS_JSUrlPadrao             = 'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/main/Source/JS/js.abr';
+  //TWPPConnectJS_JSUrlPadrao             = '';
   TWPPConnectJS_JSLinhasMInimas         = 1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2243.5';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -77,7 +79,8 @@ Const
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
   FrmConsole_JS_checkDelivered          = 'window.WAPI.getDelivered();';
   FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
-  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
+  //FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
+  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelectorAll("button"); if (all[0]) { if (all.includes("recarregar")) { all[0].click() } } })}, 60000);';
   FrmConsole_JS_monitorQRCode           = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
   FrmConsole_JS_StopMonitor             = 'stopMonitor();';
   FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
@@ -94,7 +97,9 @@ Const
   //FrmConsole_JS_VAR_SendContact         = 'window.WAPI.sendVCard("<#MSG_PHONE_DEST#>", "<#MSG_PHONE#>", "<#MSG_NAMECONTACT#>" )';
 
   FrmConsole_JS_VAR_isBeta              = 'window.WAPI.isBeta();';
-  FrmConsole_JS_VAR_SendTyping          = 'Store.WapQuery.sendChatstateComposing("<#MSG_PHONE#>");';
+
+  //deprecated
+  FrmConsole_JS_VAR_SendTyping          = ''; //deprecated;
   FrmConsole_JS_VAR_SendLocation        = 'window.WAPI.sendLocation("<#MSG_PHONE#>", "<#MSG_LAT#>", "<#MSG_LNG#>", "<#MSG_CORPO#>")';
   FrmConsole_JS_VAR_Logout              = 'localStorage.clear(); location.reload();';
   FrmConsole_JS_VAR_CheckIsValidNumber  = 'window.WAPI.isValidNumber("<#MSG_PHONE#>")'+
@@ -356,7 +361,7 @@ type
     TConnectionDBType     = (TCon_None=0, TCon_Memory=1,  TCon_FireDAC=2, TCon_DBExpress=3, TCon_ADO=4);
 
     TFormQrCodeType       = (Ft_Desktop=0,       Ft_Http=1,    Ft_None=2);  //Form ou RestDataWare
-    TSendFile_Image       = (Tsf_Jpg=0, Tsf_Jpeg=1, Tsf_Tif=2, Tsf_Ico=3, Tsf_Bmp=4, Tsf_Png=5, Tsf_Raw=6);
+    TSendFile_Image       = (Tsf_Jpg=0, Tsf_Jpeg=1, Tsf_Tif=2, Tsf_Ico=3, Tsf_Bmp=4, Tsf_Png=5, Tsf_Raw=6, Tsf_webP=7);
 
     TStatusType           = (Inject_Initialized,            Inject_Initializing,       Inject_Destroying,      Inject_Destroy,
                              Server_Disconnected,           Server_Disconnecting,

@@ -44,7 +44,7 @@ uses
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
-  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils;
+  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, uTWPPConnect.ChatList;
 
 
 type
@@ -78,6 +78,9 @@ type
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
+  TOnGetListChat            = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
+
+
   //Adicionado Por Marcelo 06/05/2022
   TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
   //TGetMessageById           = procedure(Const Mensagem: TMessagesList) of object;
@@ -102,7 +105,7 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
-
+  TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -182,7 +185,7 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
-
+    FOnGetListChat              : TGetList;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
 
@@ -223,7 +226,10 @@ type
     //Function    ConfigureNetwork: Boolean;
     procedure ReadMessages(vID: string);
     function  TestConnect:  Boolean;
-    procedure Send(PNumberPhone, PMessage: string; PEtapa: string = '');
+    procedure Send(PNumberPhone, PMessage: string; PEtapa: string = ''); deprecated;
+    procedure SendFile(PNumberPhone: String; Const PFileName: String; PMessage: string = '');  deprecated;
+    procedure SendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);    deprecated; //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
+
     procedure SendButtons(phoneNumber: string; titleText: string; buttons: string; footerText: string; etapa: string = '');
     //Adicionado Por Marcelo 01/03/2022
     procedure SendListMenu(phoneNumber, title, subtitle, description, buttonText, menu: string; etapa: string = '');
@@ -279,8 +285,7 @@ type
 
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
-    procedure SendFile(PNumberPhone: String; Const PFileName: String; PMessage: string = '');
-    procedure SendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);     deprecated; //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
+
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
     procedure Logout();
@@ -406,6 +411,7 @@ type
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
 
+    property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
 
@@ -430,6 +436,7 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
+
   end;
 
 procedure Register;
@@ -2139,6 +2146,12 @@ begin
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
   end;
 
+  if PTypeHeader = Th_getList then
+  begin
+    if Assigned(OnGetListChat) then
+      OnGetListChat(Self, TGetChatList(PReturnClass));
+  end;
+
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022
   Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
@@ -2350,6 +2363,12 @@ begin
   begin
     if Assigned(FOnGetPlatformFromMessage) then
       FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
+  begin
+    if Assigned(FOngetListChat) then
+      FOngetListChat(Self, TGetChatList(PReturnClass));
   end;
 
 
@@ -2682,11 +2701,19 @@ var
   LExtension  : String;
   LBase64     : String;
   options     : String;
+
   function IsImage : Boolean;
   var
     I : integer;
     LTmp : String;
   begin
+    //Temis 11/10/22
+    if pIsSticker then
+      begin
+        result := true;
+        exit;
+      end;
+
     result := false;
     for I := 0 to 10 do
     begin
@@ -2698,6 +2725,7 @@ var
     end;
 
   end;
+
 begin
   if Application.Terminated Then
     Exit;
@@ -3400,6 +3428,7 @@ begin
     Exit;
 
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
   if pos('@', phoneNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
