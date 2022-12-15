@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.2.0.0;1.0.0.9;78.3.0
+//1.3.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -15410,16 +15410,16 @@ window.WAPI.CheckNumberExists = async function(chatid) {
 
     if (result) {
         try {            
-			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : result.wid,  valid : true}));
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : result.wid,  valid : true}));
 			
         } catch (err) {
             //console.log(err);
-			SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid,  valid : false}));
         };
 
     } else {
         //console.log(err);
-	SetConsoleMessage("CheckNumberExists", JSON.stringify({id : chatid,  valid : false}));
+	SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid,  valid : false}));
 
     }
 };
