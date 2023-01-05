@@ -203,6 +203,7 @@ begin
   vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
   //vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
+  //vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A       ,' \n'   , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A#$A    ,' \n'   , [rfReplaceAll] );
   Result := vText;

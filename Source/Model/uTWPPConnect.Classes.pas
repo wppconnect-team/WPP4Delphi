@@ -382,9 +382,11 @@ type
  end;
  TReturnCheckNumberExists = class(TClassPadrao) //Marcelo 18/07/2022
  private
+   FNumberOriginal: String;
    Fid : String;
    Fvalid : boolean;
  public
+   property NumberOriginal  : String read FNumberOriginal  write FNumberOriginal; //Add Marcelo 14/12/2022
    property id : String read Fid write Fid;
    property valid : boolean  read Fvalid write Fvalid;
  end;
