@@ -764,7 +764,7 @@ end;
 
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
 begin
-  ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
+  ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.LastSeen, False)));
 end;
 
 procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject;

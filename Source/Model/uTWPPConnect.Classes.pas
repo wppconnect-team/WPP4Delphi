@@ -390,14 +390,16 @@ type
    property id : String read Fid write Fid;
    property valid : boolean  read Fvalid write Fvalid;
  end;
- TReturngetLastSeen = class(TClassPadrao) //Marcelo 31/07/2022
+
+ TReturngetLastSeen = class(TClassPadrao) //Marcelo 06/01/2023 Alterado
  private
    Fid : String;
-   Fresult: Int64;
+   FLastSeen: Int64;
  public
    property id : String read Fid write Fid;
-   property result : Int64 read Fresult write Fresult;
+   property LastSeen : Int64 read FLastSeen write FLastSeen;
  end;
+
  TGetMeClass = class(TClassPadrao)
    private
     Fbattery: integer;

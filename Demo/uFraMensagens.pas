@@ -1330,6 +1330,9 @@ begin
     Exit;
   end;
 
+  frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+  frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+
   frDemo.TWPPConnect1.getLastSeen(ed_num.Text);
 end;
 

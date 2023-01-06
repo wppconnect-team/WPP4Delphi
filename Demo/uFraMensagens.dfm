@@ -228,7 +228,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
-      ExplicitLeft = 3
     end
     object btnTextoSimples: TButton
       AlignWithMargins = True
