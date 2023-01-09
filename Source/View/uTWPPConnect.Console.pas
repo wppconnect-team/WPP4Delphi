@@ -1317,12 +1317,16 @@ begin
   //sections := CaractersWeb(sections);
   sections := CaractersQuebraLinha(sections);
 
+  //SalvaLog('sections: ' + sections);
+
   LJS   := FrmConsole_JS_VAR_sendListMessageEx;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   //FrmConsole_JS_AlterVar(LJS, '#MSG_BUTTONTEXT#',  Trim(buttonText));
   //FrmConsole_JS_AlterVar(LJS, '#MSG_DESCRIPTION#', Trim(description));
   FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        sections);
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',       Trim(xSeuID));
+
+  //SalvaLog(LJS + #13#10, 'CONSOLE');
 
   ExecuteJS(LJS, true);
 end;
@@ -1527,6 +1531,7 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   vText := CaractersWeb(vText);
+
   //LJS   := FrmConsole_JS_VAR_SendTyping + FrmConsole_JS_VAR_SendMsg;
   LJS   := FrmConsole_JS_VAR_SendMsg;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(vNum));
@@ -1820,8 +1825,8 @@ begin
     //Marcelo 25/10/2022
     Th_getList :
                           begin
-                            LOutClass2 := TGetChatList.Create(LResultStr);
-
+                            //LOutClass2 := TGetChatList.Create(LResultStr);
+                            LOutClass2 := TGetChatList.Create(PResponse.JsonString);
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
@@ -2066,12 +2071,14 @@ begin
                             end;
     Th_getLastSeen :
                      begin
-                             //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
-                             //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             //Marcelo 06/01/2023 Alterado
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
                              LOutClass := TReturngetLastSeen.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                              finally
+
                                FreeAndNil(LOutClass);
                              end;
                      end;
