@@ -2136,7 +2136,7 @@ begin
  //testa se e um JSON de forma RAPIDA!
 
 
-  if (Pos(UpperCase(message),'WAPI IS NOT DEFINED') > 0) then
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
     //Injeta o JS.ABR de novo
     ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
