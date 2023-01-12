@@ -722,8 +722,8 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
-  Clipboard.AsText := Invite;
-  ShowMessage('Link do grupo copiado: ' + Invite);
+  Clipboard.AsText := 'https://chat.whatsapp.com/' + Invite;
+  ShowMessage('Link do grupo copiado: ' + 'https://chat.whatsapp.com/' + Invite);
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);

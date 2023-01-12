@@ -69,7 +69,7 @@ Const
   TWPPConnectJS_JSLinhasMInimas         = 1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2247.5';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2301.5';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -148,9 +148,17 @@ Const
   FrmConsole_JS_VAR_getStatus               = 'window.WAPI.getStatus("<#PHONE#>");';
   FrmConsole_JS_VAR_ClearChat               = 'WPP.chat.clear("<#PHONE#>");';
   FrmConsole_JS_VAR_getMe                   = 'window.WAPI.getMe();';
-  FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");';
-  FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");';
+
+  //FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
+  FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getInviteCode2("<#GROUP_ID#>");';
+
+  //FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");'; deprecated
+  FrmConsole_JS_VAR_removeGroupInviteLink   = 'WPP.group.revokeInviteCode("<#GROUP_ID#>");';
+
+  FrmConsole_JS_VAR_SetGroupDescription     = 'WPP.group.setDescription("<#GROUP_ID#>","<#Description#>");';
+
   FrmConsole_JS_VAR_SetGroupPicture         = 'WPP.group.setIcon("<#GROUP_ID#>","<#BASE_64#>");';
+
   FrmConsole_JS_VAR_checkNumberStatus       = 'window.WAPI.checkNumberStatus("<#PHONE#>");';
   //Adicionado Por Marcelo 01/03/2022 deprecated
   FrmConsole_JS_VAR_SendListMenu        = 'window.WAPI.sendListMenu("<#MSG_PHONE#>","<#MSG_TITLE#>","<#MSG_SUBTITLE#>","<#MSG_DESCRIPTION#>","<#MSG_BUTTONTEXT#>",<#MSG_MENU#>);';

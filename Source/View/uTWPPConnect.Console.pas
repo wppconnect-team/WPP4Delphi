@@ -262,6 +262,7 @@ type
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
 
+    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure getGroupInviteLink(vIDGroup: string);
     procedure revokeGroupInviteLink(vIDGroup: string);
     procedure setNewName(newName: string);
@@ -2035,8 +2036,12 @@ begin
 
 
     Th_GetGroupInviteLink : begin
-                            if Assigned(TWPPConnect(FOwner).OnGetInviteGroup) then
-                              TWPPConnect(FOwner).OnGetInviteGroup(LResultStr);
+                              LResultStr := copy(LResultStr, 11, length(LResultStr));  //REMOVENDO RESULT
+                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); //REMOVENDO }
+                              LResultStr := copy(LResultStr, 12, length(LResultStr));  //REMOVENDO INVITE
+                              LResultStr := copy(LResultStr, 0, length(LResultStr)-2); //REMOVENDO "}
+                              if Assigned(TWPPConnect(FOwner).OnGetInviteGroup) then
+                                TWPPConnect(FOwner).OnGetInviteGroup(LResultStr);
                             end;
 
     Th_GetMe              : begin
@@ -2577,6 +2582,18 @@ var
 begin
   LJS   := FrmConsole_JS_VAR_listGroupContacts;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.SetGroupDescription(vIDGroup, vDescription : string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_SetGroupDescription;
+  vDescription := CaractersWeb(vDescription);
+
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#Description#', Trim(vDescription));
   ExecuteJS(LJS, true);
 end;
 

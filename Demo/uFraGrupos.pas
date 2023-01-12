@@ -70,6 +70,9 @@ type
     btnMsgAll: TButton;
     eChoicesPool: TEdit;
     Label1: TLabel;
+    btnDescricaoGrupo: TButton;
+    Memo1: TMemo;
+    Label2: TLabel;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -89,6 +92,7 @@ type
     procedure btnMudarImagemGrupoClick(Sender: TObject);
     procedure btnAdminOnlyClick(Sender: TObject);
     procedure btnMsgAllClick(Sender: TObject);
+    procedure btnDescricaoGrupoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -106,13 +110,18 @@ begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
 
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnMsgAllClick(Sender: TObject);
 begin
    if not frDemo.TWPPConnect1.Auth then
-
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -122,8 +131,7 @@ begin
   end;
 
 
-  frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);
-end;
+  frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);end;
 
 procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
 var
@@ -131,6 +139,7 @@ var
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
+
   if lbl_idGroup.Caption = ''  then
   begin
     ShowMEssage('Selecione na lista o grupo que será atualizado!');
@@ -151,7 +160,13 @@ end;
 procedure TframeGrupos.btnDeletarGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+    Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.groupDelete(lbl_idGroup.Caption);
 end;
@@ -161,13 +176,25 @@ begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
 
-  frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtTelefoneNovoParticipante.text);
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+  if edtNovoParticipante.text = '' then
+  begin
+    ShowMessage('Informe o Participante que deseja Incluir no Grupo');
+    edtNovoParticipante.SetFocus;
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtNovoParticipante.text);
 end;
 
 procedure TframeGrupos.btnAdminOnlyClick(Sender: TObject);
 begin
    if not frDemo.TWPPConnect1.Auth then
-
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -176,32 +203,76 @@ begin
     Abort;
   end;
 
-
-  frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);
-end;
+  frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);end;
 
 procedure TframeGrupos.btnCancelaLinkClick(Sender: TObject);
 begin
-    if not frDemo.TWPPConnect1.Auth then
-       Exit;
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
 
-    frDemo.TWPPConnect1.GroupRemoveInviteLink(lbl_idGroup.Caption);
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.GroupRemoveInviteLink(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnCriarGrupoClick(Sender: TObject);
 begin
  if not frDemo.TWPPConnect1.Auth then
-    Exit;
+   Exit;
+
+  if edtnomeGrupo.Text = '' then
+  begin
+    ShowMessage('Informe o Nome do Grupo');
+    edtnomeGrupo.SetFocus;
+    Abort;
+  end;
+
+  if edtTelefoneNovoParticipante.Text = '' then
+  begin
+    ShowMessage('Informe o Celular do Participante do Grupo');
+    edtTelefoneNovoParticipante.Text;
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.createGroup(edtnomeGrupo.Text, edtTelefoneNovoParticipante.Text);
   edtnomeGrupo.Clear;
   edtTelefoneNovoParticipante.Clear;
 end;
 
+procedure TframeGrupos.btnDescricaoGrupoClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+  if Trim(memo1.Text) = '' then
+  begin
+    ShowMessage('Informe a Descrição do Grupo');
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.SetGroupDescription(lbl_idGroup.Caption, memo1.Text);
+end;
+
 procedure TframeGrupos.btnDespromoverClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+    Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.GroupDemoteParticipant(lbl_idGroup.Caption, lblIdParticipante.caption);
 end;
@@ -209,16 +280,20 @@ end;
 procedure TframeGrupos.btnEntrarLinkClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+    Exit;
 
   frDemo.TWPPConnect1.groupJoinViaLink(edtLinkConvite.Text);
 end;
 
 procedure TframeGrupos.btnGerarLinkConviteClick(Sender: TObject);
 begin
+  if not frDemo.TWPPConnect1.Auth then    Exit;
 
-   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+  if lbl_idGroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);
 end;
@@ -234,7 +309,13 @@ end;
 procedure TframeGrupos.btnPromoverClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+    Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.groupPromoteParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
 end;
@@ -242,7 +323,13 @@ end;
 procedure TframeGrupos.btnRemoveParticiClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-     Exit;
+    Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
 
   frDemo.TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
 end;
@@ -296,6 +383,8 @@ begin
       Exit;
 
     frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
+
+    //frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
   end;
 end;
 
