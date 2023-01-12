@@ -583,7 +583,7 @@ begin
   begin
     //Marcelo 18/07/2022
     if vCheckNumberExists.valid then
-      ShowMessage(vCheckNumberExists.id + ' é um numero Válido')
+      ShowMessage('Número Testado: ' + vCheckNumberExists.NumberOriginal + #13#10#13#10 + 'Número Retornado: ' + vCheckNumberExists.id + ' é um numero Válido')
     else
       ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
   end;
@@ -722,8 +722,8 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
-  Clipboard.AsText := Invite;
-  ShowMessage('Link do grupo copiado: ' + Invite);
+  Clipboard.AsText := 'https://chat.whatsapp.com/' + Invite;
+  ShowMessage('Link do grupo copiado: ' + 'https://chat.whatsapp.com/' + Invite);
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
@@ -764,7 +764,7 @@ end;
 
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
 begin
-  ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.result)));
+  ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.LastSeen, False)));
 end;
 
 procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject;
@@ -1181,6 +1181,9 @@ begin
                 if Assigned(AMessage.quotedMsg.list) then
                   quotedMsg_caption := AMessage.quotedMsg.list.description;
 
+              if Trim(quotedMsg_caption) = '' then
+                quotedMsg_caption := AMessage.quotedMsg.Body;
+
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
             end;
             // Mensagem Original do Click do Botão
@@ -1249,6 +1252,27 @@ begin
             selectedButtonId := AMessage.selectedId;}
 
         end;
+      end
+      else
+      begin  //GRUPO
+        FChatID := AChat.id;
+        contato := AMessage.Sender.pushname;
+        telefone := AMessage.sender.id;
+        telefone := Copy(telefone, 3, Pos('@', telefone) - 3);
+
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('..::GRUPO::..'));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Id Grupo: ' + AChat.id));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Grupo: ' + Trim(AChat.formattedTitle)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  telefone: ' + Trim(telefone)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
+
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  UniqueID: ' + AMessage.id));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Tipo mensagem: ' + AMessage.&type));
+
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  ACK: ' + FloatToStr(AMessage.ack)));
+        selectedButtonId := AMessage.selectedButtonId;
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
       end;
     end;
   end;

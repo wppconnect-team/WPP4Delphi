@@ -1871,6 +1871,9 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
+          inherited btnDescricaoGrupo: TButton
+            ExplicitTop = 380
+          end
         end
       end
       inherited pnlEsquerda: TPanel

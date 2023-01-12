@@ -319,6 +319,11 @@ begin
       Exit;
 
 
+    //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+    frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //Sleep(5000);
+
     options :=
       'useTemplateButtons: undefined,' + //Is Working Android and iOS
       //'useTemplateButtons: true,' +  //Crash iOS
@@ -326,13 +331,19 @@ begin
       'buttons:' +
       '['+
         //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' + //Crash iOS
-        //'{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' + //Crash iOS
+        //'{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
+        //'{url: "https://apoia.se/wppconnect", text: "🌐️ APOIA.se"},' + //Crash iOS
+        //'{url: "https://www.whatsapp.com/otp/copy/text%20here", text: "Copy Chave Pix" }, ' +
+        //'{url: "https://www.whatsapp.com/otp/copy/8e3fda51-2c8f-4134-a154-24cd02e07890", text: "Copy Chave Pix" }, ' +  //8e3fda51-2c8f-4134-a154-24cd02e07890
+        //'{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' + //Crash iOS
+
         '{id: "idVISITASIM", text: "Sim"},' +
         '{id: "idVISITANAO", text: "Não"}' +
-      ']' ;
-      //',footer: "Escolha uma Opção"';
+      ']' +
+      ',footer: "Escolha uma Opção"';
 
     S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
+    //S_RETORNO := TWPPConnectEmoticons.robot + ' *Teste Botão com Função Copy* ' + '\n';
 
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, '123');
 
@@ -692,6 +703,7 @@ begin
     menu2 := '[{title:"sectionTitle",rows:[{title:"ListItem1",description:"desc"},{title:"ListItem2",description:"desc2"}]}]';
     //menu := ' ';
     menu :=
+      'createChat: true,' +
       'buttonText:"Formas de Pagamento",' +
       'description:"Como deseja pagar pelo servico",' +
       'sections:'+
@@ -1317,6 +1329,9 @@ begin
     ed_num.SetFocus;
     Exit;
   end;
+
+  frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+  frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
 
   frDemo.TWPPConnect1.getLastSeen(ed_num.Text);
 end;

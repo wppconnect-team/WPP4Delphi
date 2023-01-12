@@ -382,20 +382,24 @@ type
  end;
  TReturnCheckNumberExists = class(TClassPadrao) //Marcelo 18/07/2022
  private
+   FNumberOriginal: String;
    Fid : String;
    Fvalid : boolean;
  public
+   property NumberOriginal  : String read FNumberOriginal  write FNumberOriginal; //Add Marcelo 14/12/2022
    property id : String read Fid write Fid;
    property valid : boolean  read Fvalid write Fvalid;
  end;
- TReturngetLastSeen = class(TClassPadrao) //Marcelo 31/07/2022
+
+ TReturngetLastSeen = class(TClassPadrao) //Marcelo 06/01/2023 Alterado
  private
    Fid : String;
-   Fresult: Int64;
+   FLastSeen: Int64;
  public
    property id : String read Fid write Fid;
-   property result : Int64 read Fresult write Fresult;
+   property LastSeen : Int64 read FLastSeen write FLastSeen;
  end;
+
  TGetMeClass = class(TClassPadrao)
    private
     Fbattery: integer;
@@ -1678,7 +1682,7 @@ TRetornoAllGroupAdmins = class(TClassPadrao)
 private
   FNumbers: TStringList;
 public
-  property    Numbers: TStringList   read FNumbers;
+  property    Numbers: TStringList   read FNumbers write FNumbers;
   constructor Create(pAJsonString: string);
   destructor Destroy; override;
 end;
@@ -2638,6 +2642,7 @@ begin
   FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+
   if Trim(FNumbers.Text) = '' then
   begin
     vJson := pAJsonString;
@@ -2723,6 +2728,10 @@ end;
 
 {TRetornoAllGroupAdmins }
 constructor TRetornoAllGroupAdmins.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
 begin
   inherited Create(pAJsonString);
   FNumbers      := TStringList.create;
@@ -2731,9 +2740,30 @@ begin
   FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
   FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
-  FNumbers.Text := StringReplace(FNumbers.Text, '[' , '',    [rfReplaceAll]);
-  FNumbers.Text := StringReplace(FNumbers.Text, ']' , '',    [rfReplaceAll]);
-  FNumbers.Text := StringReplace(FNumbers.Text, '}' , '',    [rfReplaceAll]);
+  FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+  //FNumbers.Text := StringReplace(FNumbers.Text, '[' , '',    [rfReplaceAll]);
+  //FNumbers.Text := StringReplace(FNumbers.Text, ']' , '',    [rfReplaceAll]);
+  //FNumbers.Text := StringReplace(FNumbers.Text, '}' , '',    [rfReplaceAll]);
+
+  if Trim(FNumbers.Text) = '' then
+  begin
+    vJson := pAJsonString;
+    lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+    begin
+      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+      //inherited Create(vJson);
+      FNumbers      := TStringList.create;
+      FNumbers.Text := vJson;
+      //Quebrar linhas de acordo com cada valor separado por virgula
+      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    end;
+  end;
+
 end;
 destructor TRetornoAllGroupAdmins.Destroy;
 begin

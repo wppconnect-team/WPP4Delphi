@@ -321,6 +321,7 @@ type
     procedure FixarChat(PIDContato:String);
     procedure DesfixarChat(PIDContato:String);
 
+    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure GroupJoinViaLink(PLinkGroup: string);
     procedure GroupRemoveInviteLink(PIDGroup: string);
     procedure SetProfileName(vName : String);
@@ -3704,6 +3705,23 @@ end;
 procedure TWPPConnect.SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
 begin
   FAdjustNumber.Assign(Value);
+end;
+
+procedure TWPPConnect.SetGroupDescription(vIDGroup, vDescription: string);
+begin
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(vIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    Exit;
+  end;
+
+  FrmConsole.SetGroupDescription(vIDGroup, vDescription);
 end;
 
 procedure TWPPConnect.SetGroupPicture(PIDGroup, PFileName: string);
