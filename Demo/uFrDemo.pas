@@ -776,13 +776,13 @@ begin
 
   for LChatClass in ChatsList.result do
   begin
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LChatClass.id);
-    for LMsgs in LChatClass.msgs do
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LChatClass.id.id);
+    {for LMsgs in LChatClass.msgs do
     begin
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.from);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.body);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(LMsgs.isNewMsg.ToString(LMsgs.isNewMsg));
-    end;
+    end;}
   end;
 end;
 
