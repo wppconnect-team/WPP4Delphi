@@ -98,6 +98,9 @@ type
   //Marcelo 17/09/2022
   TGet_sendLocationMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
 
+  //Marcelo 16/01/2023
+  TGet_sendVCardContactMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
+
   TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
@@ -128,6 +131,7 @@ type
     FOnDisconnectedBrute    : TNotifyEvent;
     FCrashMonitorLastUpdate : TDateTime;
     FOnWPPMonitorCrash: TWPPMonitorCrash;
+
 
     { Private  declarations }
     Function  ConsolePronto:Boolean;
@@ -199,6 +203,9 @@ type
     FOnGet_sendFileMessageEx    : TGet_sendFileMessageEx;
     FOnGet_sendListMessageEx    : TGet_sendListMessageEx;
     FOnGet_sendLocationMessageEx : TGet_sendLocationMessageEx;  //Add Marcelo 17/09/2022
+
+    //Marcelo 16/01/2023
+    FOnGet_sendVCardContactMessageEx: TGet_sendVCardContactMessageEx;
 
     //Daniel 13/06/2022
     FOnGet_ProductCatalog       : TGet_ProductCatalog;
@@ -285,6 +292,8 @@ type
 
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 16/01/2023
+
 
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
@@ -321,6 +330,7 @@ type
     procedure FixarChat(PIDContato:String);
     procedure DesfixarChat(PIDContato:String);
 
+    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure GroupJoinViaLink(PLinkGroup: string);
     procedure GroupRemoveInviteLink(PIDGroup: string);
     procedure SetProfileName(vName : String);
@@ -397,6 +407,9 @@ type
 
     //Marcelo 17/09/2022
     property OnGet_SendLocationMessageEx : TGet_sendLocationMessageEx read FOnGet_sendLocationMessageEx    write FOnGet_sendLocationMessageEx;
+
+    //Marcelo 16/01/2023
+    property OnGet_sendVCardContactMessageEx : TGet_sendVCardContactMessageEx read FOnGet_sendVCardContactMessageEx    write FOnGet_sendVCardContactMessageEx;
 
     //Daniel - 13/06/2022
     property OnGet_ProductCatalog        : TGet_ProductCatalog        read FOnGet_ProductCatalog           write FOnGet_ProductCatalog;
@@ -2156,6 +2169,7 @@ begin
   Th_GetMessageById, Th_sendFileMessage, Th_sendTextMessage, Th_sendListMessage, //Adicionado por Marcelo 31/05/2022
   Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
   Th_sendLocationMessageEx, //Add Marcelo 17/09/2022
+  Th_sendVCardContactMessageEx, //Add Marcelo 16/01/2023
   Th_IncomingiCall]) then //Adicionado por Marcelo 17/06/2022
   Begin
     if not Assigned(PReturnClass) then
@@ -2232,6 +2246,13 @@ begin
     Begin
       if Assigned(OnGet_SendLocationMessageEx) then
         OnGet_sendLocationMessageEx(TResponsesendTextMessage(PReturnClass));
+    end;
+
+    //Marcelo 17/09/2022
+    if PTypeHeader = Th_sendVCardContactMessageEx then
+    Begin
+      if Assigned(OnGet_sendVCardContactMessageEx) then
+        OnGet_sendVCardContactMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
     //Marcelo 17/06/2022
@@ -3493,6 +3514,51 @@ begin
 
 end;
 
+procedure TWPPConnect.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  vNumDest := AjustNumber.FormatIn(vNumDest);
+
+  if (pos('@', vNumDest) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumDest);
+    Exit;
+  end;
+
+  vNum := AjustNumber.FormatIn(vNum);
+
+  if (pos('@', vNum) = 0) then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vNumDest);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.sendVideoStatus(Content, Options: string);
 var
   lThread : TThread;
@@ -3704,6 +3770,23 @@ end;
 procedure TWPPConnect.SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
 begin
   FAdjustNumber.Assign(Value);
+end;
+
+procedure TWPPConnect.SetGroupDescription(vIDGroup, vDescription: string);
+begin
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(vIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    Exit;
+  end;
+
+  FrmConsole.SetGroupDescription(vIDGroup, vDescription);
 end;
 
 procedure TWPPConnect.SetGroupPicture(PIDGroup, PFileName: string);

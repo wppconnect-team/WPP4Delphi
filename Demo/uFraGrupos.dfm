@@ -2,7 +2,7 @@ object frameGrupos: TframeGrupos
   Left = 0
   Top = 0
   Width = 934
-  Height = 583
+  Height = 600
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -14,18 +14,20 @@ object frameGrupos: TframeGrupos
     Left = 0
     Top = 0
     Width = 934
-    Height = 583
+    Height = 600
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 583
     object gbGrupos: TGroupBox
       AlignWithMargins = True
       Left = 258
       Top = 3
       Width = 263
-      Height = 573
+      Height = 590
       Align = alLeft
       Caption = 'Grupos'
       TabOrder = 0
+      ExplicitHeight = 573
       object listaGrupos: TListView
         AlignWithMargins = True
         Left = 5
@@ -68,10 +70,11 @@ object frameGrupos: TframeGrupos
         Left = 2
         Top = 172
         Width = 259
-        Height = 399
+        Height = 416
         Align = alClient
         Caption = 'A'#231#245'es para Grupos'
         TabOrder = 2
+        ExplicitHeight = 399
         object btnCriarVotacao: TButton
           AlignWithMargins = True
           Left = 5
@@ -197,6 +200,20 @@ object frameGrupos: TframeGrupos
           Caption = 'Mensagem Todos'
           TabOrder = 9
           OnClick = btnMsgAllClick
+          ExplicitLeft = 12
+          ExplicitTop = 340
+        end
+        object btnDescricaoGrupo: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 380
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Descri'#231#227'o do Grupo'
+          TabOrder = 10
+          OnClick = btnDescricaoGrupoClick
+          ExplicitTop = 344
         end
       end
     end
@@ -205,10 +222,11 @@ object frameGrupos: TframeGrupos
       Left = 3
       Top = 3
       Width = 249
-      Height = 573
+      Height = 590
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitHeight = 573
       object lbl_idParticipant: TLabel
         Left = 3
         Top = 284
@@ -251,6 +269,13 @@ object frameGrupos: TframeGrupos
         Width = 109
         Height = 15
         Caption = 'Array Choices Pool'
+      end
+      object Label2: TLabel
+        Left = 12
+        Top = 342
+        Width = 114
+        Height = 15
+        Caption = 'Descri'#231#227'o do Grupo'
       end
       object gbNovoGrupo: TGroupBox
         AlignWithMargins = True
@@ -332,24 +357,33 @@ object frameGrupos: TframeGrupos
         TabOrder = 2
         Text = '["OP'#199#195'O 1","OP'#199#195'O 2","OP'#199#195'O 3"]'
       end
+      object Memo1: TMemo
+        Left = 12
+        Top = 363
+        Width = 226
+        Height = 183
+        TabOrder = 3
+      end
     end
     object pnlGruposParticipantes: TPanel
       AlignWithMargins = True
       Left = 527
       Top = 3
       Width = 400
-      Height = 573
+      Height = 590
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitHeight = 573
       object GroupBox1: TGroupBox
         AlignWithMargins = True
         Left = 3
         Top = 3
         Width = 394
-        Height = 567
+        Height = 584
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 567
         object gbAdmin: TGroupBox
           AlignWithMargins = True
           Left = 5
@@ -382,10 +416,11 @@ object frameGrupos: TframeGrupos
           Left = 5
           Top = 154
           Width = 384
-          Height = 408
+          Height = 425
           Align = alClient
           Caption = 'Participantes'
           TabOrder = 1
+          ExplicitHeight = 408
           object lblIdParticipante: TLabel
             AlignWithMargins = True
             Left = 5
@@ -400,7 +435,7 @@ object frameGrupos: TframeGrupos
             Left = 5
             Top = 88
             Width = 340
-            Height = 315
+            Height = 332
             Align = alClient
             Columns = <>
             LargeImages = ImageList1
@@ -411,14 +446,16 @@ object frameGrupos: TframeGrupos
             TabOrder = 0
             ViewStyle = vsSmallIcon
             OnClick = listaParticipantesClick
+            ExplicitHeight = 315
           end
           object pnlParticipantesBotoes: TPanel
             Left = 348
             Top = 85
             Width = 34
-            Height = 321
+            Height = 338
             Align = alRight
             TabOrder = 2
+            ExplicitHeight = 321
             object btnRemovePartici: TButton
               Left = 1
               Top = 1
@@ -465,6 +502,7 @@ object frameGrupos: TframeGrupos
             ParentShowHint = False
             ShowHint = True
             TabOrder = 1
+            OnClick = btnAddPArticiClick
           end
         end
       end

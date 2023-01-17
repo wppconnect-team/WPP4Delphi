@@ -16,7 +16,31 @@ uses Generics.Collections, Rest.Json, uTWPPConnect.Classes,
 
 type
 
-  TIdClass = class(TClassPadrao)
+  TSenderObjClass = class(TClassPadrao)
+  private
+    FId: String;
+    FIsBusiness: Boolean;
+    FIsContactSyncCompleted: Extended;
+    FIsEnterprise: Boolean;
+    FLabels: TArray<String>;
+    FName: String;
+    FPushname: String;
+    FShortName: String;
+    FType: String;
+  public
+    property id: String read FId write FId;
+    property isBusiness: Boolean read FIsBusiness write FIsBusiness;
+    property isContactSyncCompleted: Extended read FIsContactSyncCompleted
+      write FIsContactSyncCompleted;
+    property isEnterprise: Boolean read FIsEnterprise write FIsEnterprise;
+    property labels: TArray<String> read FLabels write FLabels;
+    property name: String read FName write FName;
+    property pushname: String read FPushname write FPushname;
+    property shortName: String read FShortName write FShortName;
+    property &type: String read FType write FType;
+  end;
+
+  TIdClassMsgChunk = class(TClassPadrao)
   private
     F_serialized: String;
     FFromMe: Boolean;
@@ -29,7 +53,7 @@ type
     property remote: String read FRemote write FRemote;
   end;
 
-  TMsgsClass = class(TClassPadrao)
+  TMsgChunkClass = class(TClassPadrao)
   private
     FAck: Extended;
     FBody: String;
@@ -37,7 +61,7 @@ type
     FEphemeralOutOfSync: Boolean;
     FFrom: String;
     FHasReaction: Boolean;
-    FId: TIdClass;
+    FId: TIdClassMsgChunk;
     FIsAvatar: Boolean;
     FIsDynamicReplyButtonsMsg: Boolean;
     FIsForwarded: Boolean;
@@ -69,7 +93,7 @@ type
       write FEphemeralOutOfSync;
     property from: String read FFrom write FFrom;
     property hasReaction: Boolean read FHasReaction write FHasReaction;
-    property id: TIdClass read FId write FId;
+    property id: TIdClassMsgChunk read FId write FId;
     property isAvatar: Boolean read FIsAvatar write FIsAvatar;
     property isDynamicReplyButtonsMsg: Boolean read FIsDynamicReplyButtonsMsg
       write FIsDynamicReplyButtonsMsg;
@@ -98,20 +122,14 @@ type
     property self: String read FSelf write FSelf;
     property star: Boolean read FStar write FStar;
     property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
-    property t: Extended read FT write FT;
-    property &to: String read FTo write FTo;
+    property &t: Extended read FT write FT;
+    property &to : String read FTo write FTo;
     property &type: String read FType write FType;
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
   end;
 
-  TTcTokenClass = class(TClassPadrao)
-  private
-  public
-
-  end;
-
-  TLastReceivedKeyClass = class(TClassPadrao)
+  TIdClass = class(TClassPadrao)
   private
     F_serialized: String;
     FFromMe: Boolean;
@@ -126,64 +144,116 @@ type
 
   TChatListClass = class(TClassPadrao)
   private
-    FArchiveAtMentionViewedInDrawer: Boolean;
-    FDisappearingModeInitiator: String;
-    FEndOfHistoryTransferType: Extended;
-    FEphemeralDuration: Extended;
-    FHasChatBeenOpened: Boolean;
-    FHasUnreadMention: Boolean;
-    FId: String;
-    FIsAutoMuted: Boolean;
-    FIsReadOnly: Boolean;
+    F_footerLinks: TArray<String>;
+    F_footerPhoneNumbers: TArray<String>;
+    F_headerLinks: TArray<String>;
+    F_headerPhoneNumbers: TArray<String>;
+    F_links: TArray<String>;
+    F_phoneNumbers: TArray<String>;
+    FAck: Extended;
+    FBody: String;
+    FBroadcast: Boolean;
+    FEphemeralOutOfSync: Boolean;
+    FForwardedFromWeb: Boolean;
+    FFrom: String;
+    FHasReaction: Boolean;
+    FId: TIdClass;
+    FIsAvatar: Boolean;
+    FIsDynamicReplyButtonsMsg: Boolean;
+    FIsForwarded: Boolean;
+    FIsFromTemplate: Boolean;
+    FIsMdHistoryMsg: Boolean;
+    FIsNewMsg: Boolean;
+    FIsQuotedMsgAvailable: Boolean;
+    FIsVcardOverMmsDocument: Boolean;
+    FKicNotified: Boolean;
     FLabels: TArray<String>;
-    FLastReceivedKey: TLastReceivedKeyClass;
-    FMsgs: TArray<TMsgsClass>;
-    FMuteExpiration: Extended;
-    FNotSpam: Boolean;
-    FPendingInitialLoading: Boolean;
-    FPendingMsgs: Boolean;
+    FLastPlaybackProgress: Extended;
+    FLinksIndexParsed: Extended;
+    FLocal: Boolean;
+    FMentionedJidList: TArray<String>;
+    FMsgChunk: TArray<TMsgChunkClass>;
+    FNotifyName: String;
+    FPendingDeleteForMe: Boolean;
+    FPhoneNumbersIndexParsed: Extended;
+    FPollInvalidated: Boolean;
+    FProductHeaderImageRejected: Boolean;
+    FPttForwardedFeaturesEnabled: Boolean;
+    FRecvFresh: Boolean;
+    FRequiresDirectConnection: Boolean;
+    FSelf: String;
+    FSenderObj: TSenderObjClass;
+    FStale: Boolean;
+    FStar: Boolean;
+    FStickerSentTs: Extended;
     FT: Extended;
-    FTcToken: TTcTokenClass;
-    FTcTokenTimestamp: Extended;
-    FUnreadCount: Extended;
-    FUnreadMentionCount: Extended;
-    FUnreadMentionsOfMe: TArray<String>;
+    FTo: String;
+    FType: String;
   public
-    property archiveAtMentionViewedInDrawer: Boolean
-      read FArchiveAtMentionViewedInDrawer
-      write FArchiveAtMentionViewedInDrawer;
-    property disappearingModeInitiator: String read FDisappearingModeInitiator
-      write FDisappearingModeInitiator;
-    property endOfHistoryTransferType: Extended read FEndOfHistoryTransferType
-      write FEndOfHistoryTransferType;
-    property ephemeralDuration: Extended read FEphemeralDuration
-      write FEphemeralDuration;
-    property hasChatBeenOpened: Boolean read FHasChatBeenOpened
-      write FHasChatBeenOpened;
-    property hasUnreadMention: Boolean read FHasUnreadMention
-      write FHasUnreadMention;
-    property id: String read FId write FId;
-    property isAutoMuted: Boolean read FIsAutoMuted write FIsAutoMuted;
-    property isReadOnly: Boolean read FIsReadOnly write FIsReadOnly;
+    property _footerLinks: TArray<String> read F_footerLinks
+      write F_footerLinks;
+    property _footerPhoneNumbers: TArray<String> read F_footerPhoneNumbers
+      write F_footerPhoneNumbers;
+    property _headerLinks: TArray<String> read F_headerLinks
+      write F_headerLinks;
+    property _headerPhoneNumbers: TArray<String> read F_headerPhoneNumbers
+      write F_headerPhoneNumbers;
+    property _links: TArray<String> read F_links write F_links;
+    property _phoneNumbers: TArray<String> read F_phoneNumbers
+      write F_phoneNumbers;
+    property ack: Extended read FAck write FAck;
+    property body: String read FBody write FBody;
+    property broadcast: Boolean read FBroadcast write FBroadcast;
+    property ephemeralOutOfSync: Boolean read FEphemeralOutOfSync
+      write FEphemeralOutOfSync;
+    property forwardedFromWeb: Boolean read FForwardedFromWeb
+      write FForwardedFromWeb;
+    property from: String read FFrom write FFrom;
+    property hasReaction: Boolean read FHasReaction write FHasReaction;
+    property id: TIdClass read FId write FId;
+    property isAvatar: Boolean read FIsAvatar write FIsAvatar;
+    property isDynamicReplyButtonsMsg: Boolean read FIsDynamicReplyButtonsMsg
+      write FIsDynamicReplyButtonsMsg;
+    property isForwarded: Boolean read FIsForwarded write FIsForwarded;
+    property isFromTemplate: Boolean read FIsFromTemplate write FIsFromTemplate;
+    property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
+    property isNewMsg: Boolean read FIsNewMsg write FIsNewMsg;
+    property isQuotedMsgAvailable: Boolean read FIsQuotedMsgAvailable
+      write FIsQuotedMsgAvailable;
+    property isVcardOverMmsDocument: Boolean read FIsVcardOverMmsDocument
+      write FIsVcardOverMmsDocument;
+    property kicNotified: Boolean read FKicNotified write FKicNotified;
     property labels: TArray<String> read FLabels write FLabels;
-    property lastReceivedKey: TLastReceivedKeyClass read FLastReceivedKey
-      write FLastReceivedKey;
-    property msgs: TArray<TMsgsClass> read FMsgs write FMsgs;
-    property muteExpiration: Extended read FMuteExpiration
-      write FMuteExpiration;
-    property notSpam: Boolean read FNotSpam write FNotSpam;
-    property pendingInitialLoading: Boolean read FPendingInitialLoading
-      write FPendingInitialLoading;
-    property pendingMsgs: Boolean read FPendingMsgs write FPendingMsgs;
+    property lastPlaybackProgress: Extended read FLastPlaybackProgress
+      write FLastPlaybackProgress;
+    property linksIndexParsed: Extended read FLinksIndexParsed
+      write FLinksIndexParsed;
+    property local: Boolean read FLocal write FLocal;
+    property mentionedJidList: TArray<String> read FMentionedJidList
+      write FMentionedJidList;
+    property msgChunk: TArray<TMsgChunkClass> read FMsgChunk write FMsgChunk;
+    property notifyName: String read FNotifyName write FNotifyName;
+    property pendingDeleteForMe: Boolean read FPendingDeleteForMe
+      write FPendingDeleteForMe;
+    property phoneNumbersIndexParsed: Extended read FPhoneNumbersIndexParsed
+      write FPhoneNumbersIndexParsed;
+    property pollInvalidated: Boolean read FPollInvalidated
+      write FPollInvalidated;
+    property productHeaderImageRejected: Boolean
+      read FProductHeaderImageRejected write FProductHeaderImageRejected;
+    property pttForwardedFeaturesEnabled: Boolean
+      read FPttForwardedFeaturesEnabled write FPttForwardedFeaturesEnabled;
+    property recvFresh: Boolean read FRecvFresh write FRecvFresh;
+    property requiresDirectConnection: Boolean read FRequiresDirectConnection
+      write FRequiresDirectConnection;
+    property self: String read FSelf write FSelf;
+    property senderObj: TSenderObjClass read FSenderObj write FSenderObj;
+    property stale: Boolean read FStale write FStale;
+    property star: Boolean read FStar write FStar;
+    property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
     property t: Extended read FT write FT;
-    property tcToken: TTcTokenClass read FTcToken write FTcToken;
-    property tcTokenTimestamp: Extended read FTcTokenTimestamp
-      write FTcTokenTimestamp;
-    property unreadCount: Extended read FUnreadCount write FUnreadCount;
-    property unreadMentionCount: Extended read FUnreadMentionCount
-      write FUnreadMentionCount;
-    property unreadMentionsOfMe: TArray<String> read FUnreadMentionsOfMe
-      write FUnreadMentionsOfMe;
+    property &to: String read FTo write FTo;
+    property &type: String read FType write FType;
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
   end;
@@ -216,40 +286,39 @@ begin
   inherited;
 end;
 
-{ TMsgsClass }
-
-constructor TMsgsClass.Create(pAJsonString: string);
-begin
-  inherited Create(pAJsonString);
-  FId := TIdClass.Create(pAJsonString);
-end;
-
-destructor TMsgsClass.Destroy;
-begin
-  FId.free;
-  inherited;
-end;
-
 { TChatClass }
 
 constructor TChatListClass.Create(pAJsonString: string);
 begin
   inherited Create(pAJsonString);
-  FLastReceivedKey := TLastReceivedKeyClass.Create(pAJsonString);
-  FTcToken := TTcTokenClass.Create(pAJsonString);
+  FId := TIdClass.Create(pAJsonString);
+  FSenderObj := TSenderObjClass.Create(pAJsonString);
 end;
 
 destructor TChatListClass.Destroy;
 var
-  LmsgsItem: TMsgsClass;
+  LmsgChunkItem: TMsgChunkClass;
 begin
-  for LmsgsItem in FMsgs do
-    LmsgsItem.free;
 
-  FLastReceivedKey.free;
-  FTcToken.free;
+  for LmsgChunkItem in FMsgChunk do
+    LmsgChunkItem.free;
+
+  FId.free;
+  FSenderObj.free;
   inherited;
 end;
 
+{ TMsgChunkClass }
+
+constructor TMsgChunkClass.Create(pAJsonString: string);
+begin
+  FId := TIdClassMsgChunk.Create(pAJsonString);
+end;
+
+destructor TMsgChunkClass.Destroy;
+begin
+  FId.free;
+  inherited;
+end;
 
 end.

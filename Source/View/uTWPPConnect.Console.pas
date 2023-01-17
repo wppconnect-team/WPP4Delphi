@@ -242,6 +242,7 @@ type
 
     procedure CheckDelivered;
     procedure SendContact(vNumDest, vNum:string; vNameContact: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
     procedure SendBase64(vBase64, vNum, vFileName, vText:string);
     procedure SendLinkPreview(vNum, vLinkPreview, vText: string);
     procedure SendLocation(vNum, vLat, vLng, vText: string);
@@ -262,6 +263,7 @@ type
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
 
+    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure getGroupInviteLink(vIDGroup: string);
     procedure revokeGroupInviteLink(vIDGroup: string);
     procedure setNewName(newName: string);
@@ -1822,11 +1824,29 @@ begin
                             end;
                           end;
 
+
+    //Marcelo 17/08/2022
+    Th_sendVCardContactMessageEx :
+                          begin
+                            LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+
     //Marcelo 25/10/2022
     Th_getList :
                           begin
+
+                            LOutClass2 := TGetChatList.Create(LResultStr.Replace(':[[{',':[{').Replace('}]]}','}]}'));
+
+
                             //LOutClass2 := TGetChatList.Create(LResultStr);
-                            LOutClass2 := TGetChatList.Create(PResponse.JsonString);
+                            //LOutClass2 := TGetChatList.Create(PResponse.JsonString);
+
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
@@ -2035,8 +2055,12 @@ begin
 
 
     Th_GetGroupInviteLink : begin
-                            if Assigned(TWPPConnect(FOwner).OnGetInviteGroup) then
-                              TWPPConnect(FOwner).OnGetInviteGroup(LResultStr);
+                              LResultStr := copy(LResultStr, 11, length(LResultStr));  //REMOVENDO RESULT
+                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); //REMOVENDO }
+                              LResultStr := copy(LResultStr, 12, length(LResultStr));  //REMOVENDO INVITE
+                              LResultStr := copy(LResultStr, 0, length(LResultStr)-2); //REMOVENDO "}
+                              if Assigned(TWPPConnect(FOwner).OnGetInviteGroup) then
+                                TWPPConnect(FOwner).OnGetInviteGroup(LResultStr);
                             end;
 
     Th_GetMe              : begin
@@ -2126,7 +2150,7 @@ begin
  //testa se e um JSON de forma RAPIDA!
 
 
-  if (Pos(UpperCase(message),'WAPI IS NOT DEFINED') > 0) then
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
     //Injeta o JS.ABR de novo
     ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
@@ -2580,6 +2604,18 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.SetGroupDescription(vIDGroup, vDescription : string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_SetGroupDescription;
+  vDescription := CaractersWeb(vDescription);
+
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#Description#', Trim(vDescription));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.revokeGroupInviteLink(vIDGroup: string);
 var
   Ljs: string;
@@ -2666,6 +2702,24 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
 
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  //vText := CaractersWeb(vText);
+  LJS   := FrmConsole_JS_VAR_sendVCardContactMessageEx;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE_DEST#',       Trim(vNumDest));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',            Trim(vNum));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_NAMECONTACT#',      Trim(vNameContact));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(vSeuID));
+  ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.sendVideoStatus(Content, Options: string);
