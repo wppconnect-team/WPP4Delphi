@@ -11,6 +11,10 @@
 [![WhatsApp Group](https://img.shields.io/badge/WhatsApp-Group-25D366?logo=whatsapp)](https://chat.whatsapp.com/HzLflMQVjOPK9bpjzlxcMO)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCD7J9LG08PmGQrF5IS7Yv9A?label=YouTube)](https://www.youtube.com/c/wppconnect)
 
+![image](https://user-images.githubusercontent.com/26030963/212915014-cfb116ec-145c-420d-ab25-767cc4a60feb.png)
+![image](https://user-images.githubusercontent.com/26030963/212915033-f27d217b-363a-4ee9-bf84-a93038628ec2.png)
+
+
 ## ⚙️ Installation
 Installation is done using the [`boss install`](https://github.com/HashLoad/boss) command:
 ``` sh
