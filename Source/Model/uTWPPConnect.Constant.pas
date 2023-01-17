@@ -204,11 +204,14 @@ Const
   FrmConsole_JS_VAR_sendLocationMessage = 'WPP.chat.sendLocationMessage("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} );';
 
   //Adicionado Por Marcelo 09/05/2022     //Alterado Por Marcelo 31/05/2022
-  FrmConsole_JS_VAR_SendLinkPreview     = 'window.WAPI.sendTextMessage2("<#MSG_PHONE#>", "<#MSG_LINK#>", {<#MSG_CORPO#>} );';
+  FrmConsole_JS_VAR_SendLinkPreview     = 'window.WAPI.sendTextMessage2("<#MSG_PHONE#>","<#MSG_LINK#>", {<#MSG_CORPO#>} );';
   //FrmConsole_JS_VAR_SendLinkPreview     = 'window.WAPI.sendLinkWithAutoPreview("<#MSG_PHONE#>", "<#MSG_LINK#>", "<#MSG_CORPO#>")';
 
   //MARCELO 02/05/2022
-  FrmConsole_JS_VAR_SendContact         = 'WPP.chat.sendVCardContactMessage("<#MSG_PHONE_DEST#>", "<#MSG_PHONE#>", {} )';
+  FrmConsole_JS_VAR_SendContact         = 'WPP.chat.sendVCardContactMessage("<#MSG_PHONE_DEST#>","<#MSG_PHONE#>", {} )';
+
+  //MARCELO 16/01/2023
+  FrmConsole_JS_VAR_sendVCardContactMessageEx  = 'window.WAPI.sendVCardContactMessage2Ex("<#MSG_PHONE_DEST#>","<#MSG_PHONE#>", {} ,"<#MSG_SEUID#>" )';
 
   //DANIEL 25/05/2022
   FrmConsole_JS_VAR_BlockContact        = 'WPP.blocklist.blockContact("<#CTT_NAME#>");';
@@ -412,6 +415,7 @@ type
                    , Th_IsAuthenticated=59 //Marcelo 18/09/2022
                    , Th_getPlatformFromMessage=60 //Marcelo 20/09/2022
                    , Th_getList=61 //Marcelo 25/10/2022
+                   , Th_sendVCardContactMessageEx=62 //Marcelo 16/01/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -549,7 +553,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 61; //Marcelo 25/10/2022
+const LmaxCount = 62; //Marcelo 16/01/2023
 var
   I: Integer;
   LNome: String;

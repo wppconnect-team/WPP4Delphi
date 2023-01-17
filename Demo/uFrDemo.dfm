@@ -1619,16 +1619,10 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
       end
@@ -5553,6 +5547,7 @@ object frDemo: TfrDemo
     OnGet_sendFileMessageEx = TWPPConnect1Get_sendFileMessageEx
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
     OnGet_SendLocationMessageEx = TWPPConnect1Get_SendLocationMessageEx
+    OnGet_sendVCardContactMessageEx = TWPPConnect1Get_sendVCardContactMessageEx
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall

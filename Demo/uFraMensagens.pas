@@ -374,7 +374,9 @@ begin
        Exit;
     //               Dest                    Contact
     //               ex: 558199301443@c.us   558187576958@c.us
-    frDemo.TWPPConnect1.sendContact(ed_num.Text,        mem_message.Text);
+    //frDemo.TWPPConnect1.sendContact(ed_num.Text,        mem_message.Text);
+
+    frDemo.TWPPConnect1.sendVCardContactMessageEx(ed_num.Text, mem_message.Text, '', '', '123');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;

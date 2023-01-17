@@ -124,6 +124,7 @@ type
     procedure TimerVerificaConexaoTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TimerCheckOnlineTimer(Sender: TObject);
+    procedure TWPPConnect1Get_sendVCardContactMessageEx(const RespMensagem: TResponsesendTextMessage);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -1543,6 +1544,29 @@ begin
     StatusMensagem := 'Visualizada';
 
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
+
+end;
+
+procedure TfrDemo.TWPPConnect1Get_sendVCardContactMessageEx(const RespMensagem: TResponsesendTextMessage);
+var
+  StatusMensagem : string;
+begin
+  //Adicionado Novo Retorno pegando o SEUID que foi passado no Envio
+  if RespMensagem.Ack = 1 then
+    StatusMensagem := 'Enviada'
+  else
+  if RespMensagem.Ack = 2 then
+    StatusMensagem := 'Recebida'
+  else
+  if RespMensagem.Ack = 3 then
+    StatusMensagem := 'Visualizada';
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('sendVCardContactMessageEx');
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);

@@ -242,6 +242,7 @@ type
 
     procedure CheckDelivered;
     procedure SendContact(vNumDest, vNum:string; vNameContact: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
     procedure SendBase64(vBase64, vNum, vFileName, vText:string);
     procedure SendLinkPreview(vNum, vLinkPreview, vText: string);
     procedure SendLocation(vNum, vLat, vLng, vText: string);
@@ -1823,6 +1824,19 @@ begin
                             end;
                           end;
 
+
+    //Marcelo 17/08/2022
+    Th_sendVCardContactMessageEx :
+                          begin
+                            LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+
     //Marcelo 25/10/2022
     Th_getList :
                           begin
@@ -2688,6 +2702,24 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
 
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  //vText := CaractersWeb(vText);
+  LJS   := FrmConsole_JS_VAR_sendVCardContactMessageEx;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE_DEST#',       Trim(vNumDest));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',            Trim(vNum));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_NAMECONTACT#',      Trim(vNameContact));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(vSeuID));
+  ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.sendVideoStatus(Content, Options: string);
