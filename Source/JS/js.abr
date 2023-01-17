@@ -16145,6 +16145,28 @@ window.WAPI.getInviteCode2 = async function(GROUP_ID) {
     
 };
 
+//Marcelo 16/01/2023
+window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, options, xSeuID)  {
+    const result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("sendVCardContactMessageEx", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO sendVCardContactMessageEx');
+
+    }
+};
 
 
 
