@@ -213,6 +213,9 @@ Const
   //MARCELO 16/01/2023
   FrmConsole_JS_VAR_sendVCardContactMessageEx  = 'window.WAPI.sendVCardContactMessage2Ex("<#MSG_PHONE_DEST#>","<#MSG_PHONE#>", {} ,"<#MSG_SEUID#>" )';
 
+  //MARCELO 17/01/2023
+  FrmConsole_JS_VAR_getHistorySyncProgress  = 'window.WAPI.getHistorySyncProgress2();';
+
   //DANIEL 25/05/2022
   FrmConsole_JS_VAR_BlockContact        = 'WPP.blocklist.blockContact("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_unBlockContact      = 'WPP.blocklist.unblockContact("<#CTT_NAME#>");';
@@ -416,6 +419,7 @@ type
                    , Th_getPlatformFromMessage=60 //Marcelo 20/09/2022
                    , Th_getList=61 //Marcelo 25/10/2022
                    , Th_sendVCardContactMessageEx=62 //Marcelo 16/01/2023
+                   , Th_getHistorySyncProgress=63 //Marcelo 17/01/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -553,7 +557,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 62; //Marcelo 16/01/2023
+const LmaxCount = 63; //Marcelo 17/01/2023
 var
   I: Integer;
   LNome: String;

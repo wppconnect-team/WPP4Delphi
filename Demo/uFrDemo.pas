@@ -60,6 +60,7 @@ type
     BitBtn1: TBitBtn;
     TimerVerificaConexao: TTimer;
     TimerCheckOnline: TTimer;
+    BitBtn2: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -125,6 +126,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure TimerCheckOnlineTimer(Sender: TObject);
     procedure TWPPConnect1Get_sendVCardContactMessageEx(const RespMensagem: TResponsesendTextMessage);
+    procedure TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
+    procedure BitBtn2Click(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
 
   private
@@ -233,6 +236,15 @@ begin
   try
     TWPPConnect1.RebootWPP;
     //FrmConsole.RebootChromium;
+  except on E: Exception do
+  end;
+end;
+
+procedure TfrDemo.BitBtn2Click(Sender: TObject);
+begin
+  //
+  try
+    TWPPConnect1.GetHistorySyncProgress;
   except on E: Exception do
   end;
 end;
@@ -704,6 +716,17 @@ begin
     ShowMessage('Whatsapp Valid -' + Number)
   else
     ShowMessage('Whatsapp Invalid');
+end;
+
+procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
+begin
+ //
+ frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+ frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('progresso: ' + GetHistorySyncProgress.progress.ToString);
+ frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('paused: ' + GetHistorySyncProgress.paused.ToString());
+ frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('inProgress: ' + GetHistorySyncProgress.inProgress.ToString());
+
+ ShowMessage('progresso: ' + GetHistorySyncProgress.progress.ToString);
 end;
 
 procedure TfrDemo.TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);

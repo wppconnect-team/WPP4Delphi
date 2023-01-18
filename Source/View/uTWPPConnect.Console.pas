@@ -246,6 +246,7 @@ type
     procedure SendBase64(vBase64, vNum, vFileName, vText:string);
     procedure SendLinkPreview(vNum, vLinkPreview, vText: string);
     procedure SendLocation(vNum, vLat, vLng, vText: string);
+    procedure getHistorySyncProgress;
     procedure Logout();
     procedure ReloaderWeb;
     procedure StopWebBrowser;
@@ -1825,7 +1826,7 @@ begin
                           end;
 
 
-    //Marcelo 17/08/2022
+    //Marcelo 16/01/2023
     Th_sendVCardContactMessageEx :
                           begin
                             LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
@@ -1833,6 +1834,20 @@ begin
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
                               FreeAndNil(LOutClass2);
+                            end;
+                          end;
+
+    //Marcelo 17/01/2023
+    Th_getHistorySyncProgress :
+                          begin
+                            //LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TResponsegetHistorySyncProgress.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                            finally
+                              FreeAndNil(LOutClass);
                             end;
                           end;
 
@@ -2632,6 +2647,16 @@ begin
   LJS   := FrmConsole_JS_VAR_getGroupInviteLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.getHistorySyncProgress;
+var
+  Ljs: string;
+begin
+  //Marcelo 17/01/2023
+
+  LJS := FrmConsole_JS_VAR_getHistorySyncProgress;
+  ExecuteJS(LJS, False);
 end;
 
 procedure TFrmConsole.getLastSeen(vNumber: String);

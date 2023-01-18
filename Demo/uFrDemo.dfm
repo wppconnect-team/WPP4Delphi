@@ -1558,11 +1558,20 @@ object frDemo: TfrDemo
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
-      Width = 141
+      Width = 150
       Height = 25
-      Caption = 'Abrir Whatsap Web'
+      Caption = 'Abrir WhatsApp Web'
       TabOrder = 0
       OnClick = btnAbrirZapClick
+    end
+    object BitBtn2: TBitBtn
+      Left = 447
+      Top = 82
+      Width = 150
+      Height = 25
+      Caption = 'Progresso WhatsApp'
+      TabOrder = 1
+      OnClick = BitBtn2Click
     end
   end
   object pnlrodape: TPanel
@@ -1624,6 +1633,12 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -1934,9 +1949,9 @@ object frDemo: TfrDemo
   object BitBtn1: TBitBtn
     Left = 287
     Top = 82
-    Width = 141
+    Width = 150
     Height = 25
-    Caption = 'Reiniciar Whatsap Web'
+    Caption = 'Reiniciar WhatsApp Web'
     TabOrder = 10
     OnClick = BitBtn1Click
   end
@@ -5568,6 +5583,7 @@ object frDemo: TfrDemo
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
     OnGetLastSeen = TWPPConnect1GetLastSeen
     OnGetPlatformFromMessage = TWPPConnect1GetPlatformFromMessage
+    OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     Left = 288
     Top = 472
   end
