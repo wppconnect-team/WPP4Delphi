@@ -65,6 +65,12 @@ Const
   FrmConsole_Browser_Direto             = WM_APP + $101;
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
   TWPPConnectJS_JSUrlPadrao             = 'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/main/Source/JS/js.abr';
+
+  // Added by Aurino 21/01/2023 11:10:46
+  TPPConnectJS_libeay32                 = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/libeay32.dll?raw=true';
+  TPPConnectJS_ssleay32                 = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/ssleay32.dll?raw=true';
+  TPPConnectJS_decryptFile              = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/decryptFile.dll?raw=true';
+
   //TWPPConnectJS_JSUrlPadrao             = '';
   TWPPConnectJS_JSLinhasMInimas         = 1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
