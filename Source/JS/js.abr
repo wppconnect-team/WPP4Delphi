@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.3.0.0;1.0.0.9;78.3.0
+//1.4.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2307,7 +2307,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.18.2
+//WPPCONNECT v2.18.3
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -6580,8 +6580,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.rejectCall = void 0;
                 const n = r(8910),
                     o = r(1092),
-                    i = r(9428),
-                    s = r(1489);
+                    i = r(9428);
                 t.rejectCall = async function(e) {
                     let t;
                     if (t = e ? o.CallStore.get(e) : o.CallStore.findFirst((e => e.getState() === i.CALL_STATES.INCOMING_RING || e.isGroup)), !t) throw new n.WPPError("call_not_found", `Call ${e||"<empty>"} not found`, {
@@ -6591,18 +6590,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         callId: e,
                         state: t.getState()
                     });
-                    return await (0, s.sendCallSignalingMsg)({
-                        common: {
-                            peer_jid: t.peerJid.toString()
-                        },
-                        payload: ["reject", {
-                            "call-id": t.id,
-                            "call-creator": t.peerJid.toString({
-                                legacy: !0
-                            }),
-                            count: "0"
-                        }, null]
-                    }), !0
+                    t.peerJid.isGroupCall() || await o.websocket.ensureE2ESessions([t.peerJid]);
+                    const r = o.websocket.smax("call", {
+                        from: o.UserPrefs.getMaybeMeUser().toString({
+                            legacy: !0
+                        }),
+                        to: t.peerJid.toString({
+                            legacy: !0
+                        }),
+                        id: o.websocket.generateId()
+                    }, [o.websocket.smax("reject", {
+                        "call-id": t.id,
+                        "call-creator": t.peerJid.toString({
+                            legacy: !0
+                        }),
+                        count: "0"
+                    }, null)]);
+                    return await o.websocket.sendSmaxStanza(r), !0
                 }
             },
             9596: function(e, t, r) {
@@ -11537,7 +11541,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.18.2";
+                s(r(3115), t), t.waVersion = "2.18.3";
                 const d = new l.Tracker("G-MTQ4KY110F"),
                     f = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
@@ -11769,7 +11773,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.18.2", t.supportedWhatsappWeb = ">=2.2230.9-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.18.3", t.supportedWhatsappWeb = ">=2.2230.9-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -14733,14 +14737,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.multidevice = t.functions = t._moduleIdMap = t.enums = t.contants = void 0, i(r(7590), t), t.contants = s(r(5572)), t.enums = s(r(9428));
+                }), t.websocket = t.multidevice = t.functions = t._moduleIdMap = t.enums = t.contants = void 0, i(r(7590), t), t.contants = s(r(5572)), t.enums = s(r(9428));
                 var a = r(8785);
                 Object.defineProperty(t, "_moduleIdMap", {
                     enumerable: !0,
                     get: function() {
                         return a._moduleIdMap
                     }
-                }), t.functions = s(r(1489)), i(r(3073), t), i(r(7429), t), t.multidevice = s(r(8803)), i(r(5786), t)
+                }), t.functions = s(r(1489)), i(r(3073), t), i(r(7429), t), t.multidevice = s(r(8803)), i(r(5786), t), t.websocket = s(r(1722))
             },
             2064: (e, t, r) => {
                 "use strict";
@@ -15649,6 +15653,75 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: () => (f || (f = new u.LiveLocationCollection), f)
                 }), s.injectFallbackModule("LiveLocationStore", d)
             },
+            8526: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    WapNode: "WapNode"
+                }, (e => e.WapNode))
+            },
+            4122: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    ensureE2ESessions: "ensureE2ESessions"
+                }, (e => e.ensureE2ESessions))
+            },
+            4546: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    generateId: "generateId"
+                }, (e => e.generateId))
+            },
+            1722: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__exportStar || function(e, t) {
+                        for (var r in e) "default" === r || Object.prototype.hasOwnProperty.call(t, r) || n(t, e, r)
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), o(r(4122), t), o(r(4546), t), o(r(6346), t), o(r(8082), t), o(r(216), t), o(r(8526), t)
+            },
+            6346: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    sendSmaxStanza: "sendSmaxStanza"
+                }, (e => e.sendSmaxStanza))
+            },
+            8082: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    smax: "smax"
+                }, (e => e.smax))
+            },
+            216: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    wap: "wap"
+                }, (e => e.wap))
+            },
             4049: (e, t) => {
                 "use strict";
 
@@ -15741,7 +15814,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(3607);
     return __webpack_exports__
 })()));
-
 
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
@@ -16168,5 +16240,15 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
     }
 };
 
+//Marcelo 17/01/2023
+window.WAPI.getHistorySyncProgress2 = async function() {
+    const result = await WPP.conn.getHistorySyncProgress();
+    
+    try {
+        SetConsoleMessage("getHistorySyncProgress", JSON.stringify(result));
 
+    } catch (err) {
+        console.log(err);
+    };    
+};
 

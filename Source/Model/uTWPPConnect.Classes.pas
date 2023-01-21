@@ -1640,6 +1640,18 @@ TPlatformFromMessage = class(TClassPadrao)
     property platform:     String     read Fplatform    write Fplatform;
 end;
 
+//MARCELO 17/01/2023
+TResponsegetHistorySyncProgress  = class(TClassPadrao)
+  private
+    Fprogress: Integer;
+    Fpaused: Boolean;
+    FinProgress: Boolean;
+  public
+    property progress:           Integer     read Fprogress        write Fprogress;
+    property paused:             Boolean     read Fpaused          write Fpaused;
+    property inProgress:         Boolean     read FinProgress      write FinProgress;
+end;
+
 //temis 03-06-2022
 TResponsesendTextMessage  = class(TClassPadrao)
 private

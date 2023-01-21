@@ -78,6 +78,8 @@ type
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
+  TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
+
   TOnGetListChat            = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
 
 
@@ -189,6 +191,7 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
+    FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetListChat              : TGetList;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
@@ -297,6 +300,7 @@ type
 
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
+    procedure getHistorySyncProgress;
     procedure Logout();
     procedure GetBatteryStatus;
     procedure CheckIsValidNumber(PNumberPhone: string);
@@ -449,6 +453,7 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
+    property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
 
   end;
 
@@ -1751,6 +1756,31 @@ begin
   FrmConsole.getGroupInviteLink(PIDGroup);
 end;
 
+procedure TWPPConnect.getHistorySyncProgress;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getHistorySyncProgress();
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.getLastSeen(vNumber: String);
 var
   lThread : TThread;
@@ -2384,6 +2414,13 @@ begin
   begin
     if Assigned(FOnGetPlatformFromMessage) then
       FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
+  end;
+
+  //Marcelo 17/01/2023
+  if PTypeHeader = Th_GetHistorySyncProgress  then
+  begin
+    if Assigned(FOnGetHistorySyncProgress) then
+      FOnGetHistorySyncProgress(TResponsegetHistorySyncProgress(PReturnClass));
   end;
 
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
