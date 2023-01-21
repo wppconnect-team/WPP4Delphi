@@ -19,8 +19,8 @@ object frameMensagensRecebidas: TframeMensagensRecebidas
     Lines.Strings = (
       '...')
     ParentFont = False
+    ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitTop = 95
   end
   object Panel1: TPanel
     Left = 0
