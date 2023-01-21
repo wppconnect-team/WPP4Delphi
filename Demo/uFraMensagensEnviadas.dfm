@@ -19,7 +19,7 @@ object frameMensagensEnviadas: TframeMensagensEnviadas
     Lines.Strings = (
       '...')
     ParentFont = False
+    ScrollBars = ssVertical
     TabOrder = 0
-    ExplicitLeft = 3
   end
 end

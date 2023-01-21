@@ -1633,12 +1633,9 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
         end
       end
     end

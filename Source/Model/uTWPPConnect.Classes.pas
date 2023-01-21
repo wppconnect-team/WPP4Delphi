@@ -39,7 +39,7 @@ uses Generics.Collections, Rest.Json, uTWPPConnect.FrmQRCode, Vcl.Graphics, Syst
     Vcl.IdAntiFreeze,
   {$ENDIF}
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, Vcl.Imaging.jpeg,
-  IdSSLOpenSSL, UrlMon;
+  IdSSLOpenSSL, UrlMon, ShellApi, Activex;
 type
   TQrCodeRet   = (TQR_Http, TQR_Img, TQR_Data);
   TQrCodeRets  = set of TQrCodeRet;
@@ -1866,7 +1866,7 @@ implementation
 uses
   System.JSON, System.SysUtils, Vcl.Dialogs, System.NetEncoding,
   Vcl.Imaging.pngimage, uTWPPConnect.ConfigCEF, Vcl.Forms, Winapi.Windows,
-  uTWPPConnect.Diversos;
+  uTWPPConnect.Diversos ;
 var
   FUltimoQrCode: String;
 //Marcelo 18/06/2022
@@ -2466,8 +2466,12 @@ begin
   {$ENDIF}
   inherited;
 end;
+
+
 function TUrlIndy.DownLoadInternetFile(Source, Dest: String): Boolean;
+
 begin
+
   try
     Result := URLDownloadToFile(nil, PChar(Source), PChar(Dest), 0, nil) = 0
   except
@@ -2486,16 +2490,26 @@ begin
       //Get(Purl, FReturnUrl);
       //temis  03-06-2022
       //DownLoadInternetFile(Purl, 'js.abr');
-      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr's);
+
+      // Added by Aurino 21/01/2023 11:41:35
+      DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
+      DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
+      DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+
       //Aurino 11/07/2022
-      Get(Purl, FReturnUrl);
-      //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'wppconnect-wa.js');
+      Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
 
     Except
       on E : Exception do
       Begin
         if FShowException then
         Begin
+          DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
+          DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
+          DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+          DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+
           if pos(AnsiUpperCase('COLD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
              Application.MessageBox(PWideChar(MSG_Exceptlibeay32dll), PWideChar(Application.Title), MB_ICONERROR + mb_ok) else
              Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr) ' + e.Message), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
@@ -3063,6 +3077,7 @@ destructor TIsAuthenticated.Destroy;
 begin
   inherited;
 end;
+
 
 
 end.
