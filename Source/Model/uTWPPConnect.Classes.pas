@@ -2493,8 +2493,8 @@ begin
       //DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr's);
 
       // Added by Aurino 21/01/2023 11:41:35
-      DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
-      DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
+      //DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
+      //DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
       DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Aurino 11/07/2022
@@ -2505,8 +2505,8 @@ begin
       Begin
         if FShowException then
         Begin
-          DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
-          DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
+          //DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
+          //DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
           DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
           DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
 
