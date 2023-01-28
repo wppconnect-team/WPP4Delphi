@@ -2656,7 +2656,7 @@ begin
   //Marcelo 17/01/2023
 
   LJS := FrmConsole_JS_VAR_getHistorySyncProgress;
-  ExecuteJS(LJS, False);
+  ExecuteJS(LJS, True);
 end;
 
 procedure TFrmConsole.getLastSeen(vNumber: String);
