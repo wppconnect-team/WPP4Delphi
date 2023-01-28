@@ -26,7 +26,7 @@ uses
    uTWPPConnect.ConfigCEF, uTWPPConnect,            uTWPPConnect.Constant,      uTWPPConnect.JS,     uWPPConnectDecryptFile,
    uTWPPConnect.Console,   uTWPPConnect.Diversos,   uTWPPConnect.AdjustNumber,  uTWPPConnect.Config, uTWPPConnect.Classes,
    uTWPPConnect.Emoticons,
-  Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, System.ImageList, Vcl.ImgList;
+  Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls;
 
 type
   TframeLogin = class(TFrame)

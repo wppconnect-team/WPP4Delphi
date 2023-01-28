@@ -190,7 +190,7 @@ begin
       End;
     End;
   finally
-    Result        := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+    Result := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
     if Result then
     begin
       //Atualzia o arquivo interno
