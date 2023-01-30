@@ -1555,6 +1555,19 @@ object frDemo: TfrDemo
       Font.Style = []
       ParentFont = False
     end
+    object Label1: TLabel
+      Left = 746
+      Top = 63
+      Width = 146
+      Height = 19
+      Caption = 'Chave API ChatGPT:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Roboto'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
@@ -1572,6 +1585,37 @@ object frDemo: TfrDemo
       Caption = 'Progresso WhatsApp'
       TabOrder = 1
       OnClick = BitBtn2Click
+    end
+    object BitBtn3: TBitBtn
+      Left = 603
+      Top = 82
+      Width = 134
+      Height = 25
+      BiDiMode = bdRightToLeft
+      Caption = 'Iniciar ChatGPT'
+      ParentBiDiMode = False
+      TabOrder = 2
+      OnClick = BitBtn3Click
+    end
+    object edtApiKeyChatGPT: TEdit
+      Left = 746
+      Top = 84
+      Width = 271
+      Height = 23
+      TabOrder = 3
+    end
+    object SwtChatGPT: TToggleSwitch
+      Left = 938
+      Top = 58
+      Width = 79
+      Height = 21
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Roboto'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 4
     end
   end
   object pnlrodape: TPanel
@@ -1628,13 +1672,13 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
       end
@@ -1689,7 +1733,6 @@ object frDemo: TfrDemo
       Width = 1008
       Height = 595
       WordWrap = False
-      ExplicitLeft = 0
       ExplicitWidth = 1008
       ExplicitHeight = 595
     end
@@ -1709,7 +1752,6 @@ object frDemo: TfrDemo
     inherited memo_unReadMessage: TMemo
       Width = 1008
       Height = 506
-      ExplicitTop = 89
       ExplicitWidth = 1008
       ExplicitHeight = 506
     end

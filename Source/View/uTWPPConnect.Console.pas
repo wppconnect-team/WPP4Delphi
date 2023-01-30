@@ -2669,7 +2669,7 @@ begin
 
   LJS   :=  FrmConsole_JS_VAR_getLastSeen;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vNumber));
-  ExecuteJS(LJS, False);
+  ExecuteJS(LJS, True);
 end;
 
 procedure TFrmConsole.getList(options: string);

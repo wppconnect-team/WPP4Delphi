@@ -15,7 +15,7 @@ unit uFrDemo;
 interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,Rtti, strUtils,
+  System.Classes, Vcl.Graphics,Rtti, strUtils, IniFiles, System.IOUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls, Winapi.ShellAPI,
   // ############ ATENCAO AQUI ####################
   // units adicionais obrigatorias
@@ -27,7 +27,7 @@ uses
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
   uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
-  uFraOutros, uTWPPConnect.ChatList;
+  uFraOutros, uTWPPConnect.ChatList, OpenAIClient, OpenAIDtos;
 type
   TfrDemo = class(TForm)
     SplitView1: TSplitView;
@@ -54,6 +54,10 @@ type
     TimerVerificaConexao: TTimer;
     TimerCheckOnline: TTimer;
     BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    edtApiKeyChatGPT: TEdit;
+    SwtChatGPT: TToggleSwitch;
+    Label1: TLabel;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -121,6 +125,7 @@ type
     procedure TWPPConnect1Get_sendVCardContactMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
     procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -129,6 +134,9 @@ type
     whatsappsms, TentativaConexao: integer;
     procedure VerificaWhatsApp;
     procedure CriarArquivoBAT_ReiniciaAplicacao;
+    function GetAPIKey: string;
+    function AskQuestion(const Question, phoneNumber: string): string;
+    procedure LerConfiguracoes;
   public
     FChatID: string;
     { Public declarations }
@@ -151,11 +159,65 @@ type
   end;
 var
   frDemo: TfrDemo;
+  Client: IOpenAIClient;
 implementation
 uses
   u_Messagem, u_Retorno_SendFileMensagem, System.JSON, System.AnsiStrings, System.DateUtils,
   System.NetEncoding, System.Generics.Collections;
 {$R *.dfm}
+
+function TfrDemo.GetAPIKey: string;
+begin
+  Result := edtApiKeyChatGPT.Text;
+
+  if Trim(Result) = '' then
+  begin
+    showmessage('Informe a API Key ChatGPT');
+    edtApiKeyChatGPT.Setfocus;
+  end;
+
+
+  {if Result <> '' then
+    WriteLn(Format('API Key loaded from environment variable %s.', [CApiKeyVar]))
+  else
+  begin
+    WriteLn('API key not found in system.');
+    WriteLn(Format('It is strongly recommended that you set the API key using environvment variable %s.', [cApiKeyVar]));
+    Write('Please enter your API key manually: ');
+    ReadLn(Result);
+    if Result = '' then
+      raise Exception.Create('API key not provided.');
+  end;
+  WriteLn(''); }
+end;
+
+function TfrDemo.AskQuestion(const Question, phoneNumber: string): string;
+var
+  Request: TCreateCompletionRequest;
+  Response: TCreateCompletionResponse;
+begin
+  Response := nil;
+  Request := TCreateCompletionRequest.Create;
+  try
+    //Request.User := '17981388414'
+    Request.Prompt := Question;
+    Request.Model := 'text-davinci-003';
+    Request.User := phoneNumber;
+    Request.MaxTokens := 2048; // Be careful as this can quickly consume your API quota.
+
+    Response := Client.OpenAI.CreateCompletion(Request);
+
+    if Assigned(Response.Choices) and (Response.Choices.Count > 0) then
+      Result := phoneNumber + '#' + Response.Choices[0].Text
+    else
+      Result := phoneNumber + '#' + '';
+
+  finally
+    Request.Free;
+    Response.Free;
+  end;
+end;
+
 procedure TfrDemo.AddChatList(ANumber: String);
 var
   Item: TListItem;
@@ -226,6 +288,40 @@ begin
     TWPPConnect1.GetHistorySyncProgress;
   except on E: Exception do
   end;
+end;
+
+procedure TfrDemo.BitBtn3Click(Sender: TObject);
+var
+  options : string;
+  NomeArquivo: string;
+  ArquivoConfig: TCustomIniFile;
+begin
+  // Atualiza variaveis globais
+  NomeArquivo := TPath.Combine(ExtractFilePath(ParamStr(0)), 'WPP4DelphiDemo.ini ');
+  ArquivoConfig := TMemIniFile.Create(NomeArquivo);
+  ArquivoConfig.writeString('CONFIGURACAO', 'ApiKeyChatGPT', edtApiKeyChatGPT.Text);
+  ArquivoConfig.UpdateFile;
+  FreeAndNil(ArquivoConfig);
+
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  //Créditos --> https://github.com/landgraf-dev/openai-delphi
+  Client := TOpenAIClient.Create;
+  Client.Config.AccessToken := GetAPIKey;
+
+  if Trim(frameMensagem1.ed_num.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    //frameMensagem.ed_num.SetFocus;
+    Exit;
+  end;
+
+  SwtChatGPT.State := tssOn;
+
+  options := 'createChat: true';
+
+  frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123');
 end;
 
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
@@ -363,6 +459,7 @@ begin
   r_CheckOnline := False;
   whatsappsms := 0;
   TentativaConexao := 0;
+  LerConfiguracoes;
 end;
 
 procedure TfrDemo.FormShow(Sender: TObject);
@@ -416,6 +513,22 @@ begin
   end;
   CloseHandle(FSnapshotHandle);
 end;
+procedure TfrDemo.LerConfiguracoes;
+var
+  NomeArquivo: string;
+  ArquivoConfig: TCustomIniFile;
+begin
+  // Atualiza variaveis globais
+  NomeArquivo := TPath.Combine(ExtractFilePath(ParamStr(0)), 'WPP4DelphiDemo.ini ');
+  ArquivoConfig := TMemIniFile.Create(NomeArquivo);
+
+  edtApiKeyChatGPT.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'ApiKeyChatGPT', '');
+
+  ArquivoConfig.UpdateFile;
+  FreeAndNil(ArquivoConfig);
+
+end;
+
 procedure TfrDemo.TimerVerificaConexaoTimer(Sender: TObject);
 begin
   TimerVerificaConexao.Enabled := False;
@@ -1003,6 +1116,7 @@ var
   contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
+  Question, Answer, phoneNumber : string;
 begin
   for AChat in Chats.Result do
   begin
@@ -1016,6 +1130,8 @@ begin
           FChatID := AChat.id;
           telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
           contato := AMessage.Sender.pushname;
+          Question := AMessage.body;
+
           // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
           {case AnsiIndexStr(UpperCase(AMessage.&type),
             ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
@@ -1131,6 +1247,26 @@ begin
           TWPPConnect1.ReadMessages(AChat.id);
           // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
           // VerificaPalavraChave(AMessage.body, '', telefone, contato);
+
+          if SwtChatGPT.IsOn then
+          begin
+            if Question <> '' then
+            begin
+              //Créditos --> https://github.com/landgraf-dev/openai-delphi
+              Answer := AskQuestion(Question, AChat.id);
+              phoneNumber := Copy(Answer, 1, pos('#', Answer)-1);
+              Answer := StringReplace(Answer, phoneNumber + '#', '',[]);
+
+              if Trim(Answer) <> '' then
+                frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + Answer, 'createChat: true', '123')
+                //frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123')
+              else
+                frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + 'Could not retrieve an answer.', 'createChat: true', '123');
+
+            end;
+          end;
+
+
         end
         else
         begin
