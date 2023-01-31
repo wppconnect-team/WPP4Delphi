@@ -321,7 +321,7 @@ begin
 
   options := 'createChat: true';
 
-  frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123');
+  frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Pergunta?', options, '123');
 end;
 
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
