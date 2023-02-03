@@ -11,7 +11,9 @@
 [![WhatsApp Group](https://img.shields.io/badge/WhatsApp-Group-25D366?logo=whatsapp)](https://chat.whatsapp.com/HzLflMQVjOPK9bpjzlxcMO)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCD7J9LG08PmGQrF5IS7Yv9A?label=YouTube)](https://www.youtube.com/c/wppconnect)
 
-![image](https://user-images.githubusercontent.com/26030963/212915014-cfb116ec-145c-420d-ab25-767cc4a60feb.png)
+![image](https://user-images.githubusercontent.com/26030963/216709406-ef34a678-c5df-4b01-b2b1-cbb4db5539fe.png)
+
+
 ![image](https://user-images.githubusercontent.com/26030963/212915033-f27d217b-363a-4ee9-bf84-a93038628ec2.png)
 
 
@@ -46,8 +48,7 @@ boss install github.com/wppconnect-team/WPP4Delphi
 Dependências: 
 - [`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> <br>
 - [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> <br> 
-
-Atualmente utilizando o CEF Versão: 101.0.4951.67 - Binários: 101.0.18
+Atualmente utilizando o CEF Versão: 109.0.5414.120- Binários: 109.1.18;
 Download: 
 - [`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a> <br>
 - [`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> <br>
@@ -82,6 +83,44 @@ Instalação:
 ```delphi
 // under construction
 ```
+<img align="Left" alt="Csharp" height="80" width="500" src="https://user-images.githubusercontent.com/26030963/216707873-68d32738-3c21-4a31-a7ef-98e0d3906e04.png">
+<br><br><br><p><p><p>
+## ⚡️ Quickstart OpenAI for Delphi in WPP4Delphi<p>
+
+<img align="Left" alt="Csharp" height="40" width="40" src="https://user-images.githubusercontent.com/26030963/216707110-d332df6c-605a-4273-8667-583712fd841d.png">
+<img align="Left" alt="Csharp" height="40" width="40" src="https://user-images.githubusercontent.com/26030963/216706944-fb46fda8-c6fa-471c-8adb-9e23967b86c6.png">
+
+[OpenAI for Delphi](https://github.com/landgraf-dev/openai-delphi) é uma biblioteca cliente para conectar-se à API OpenAI. A partir desta biblioteca, você pode usar serviços OpenAI populares, como [ChatGPT](https://openai.com/blog/chatgpt/) , em seu aplicativo Delphi ou Lazarus.<br>
+
+Example ChatGPT em Delphi com WPP4Delphi | [Demo View](https://www.youtube.com/watch?v=zwA2KYIoxiM&t=2s&ab_channel=WPPConnect)<p>
+```
+function TfrDemo.AskQuestion(const Question, phoneNumber: string): string;
+var
+  Request: TCreateCompletionRequest;
+  Response: TCreateCompletionResponse;
+begin
+  Response := nil;
+  Request := TCreateCompletionRequest.Create;
+  try
+    //Request.User := '17981388414'
+    Request.Prompt := Question;
+    Request.Model := 'text-davinci-003';
+    Request.User := phoneNumber;
+    Request.MaxTokens := 2048; // Be careful as this can quickly consume your API quota. 
+    Response := Client.OpenAI.CreateCompletion(Request);///Client credits in https://github.com/landgraf-dev/openai-delphi
+
+    if Assigned(Response.Choices) and (Response.Choices.Count > 0) then
+      Result := phoneNumber + '#' + Response.Choices[0].Text
+    else
+      Result := phoneNumber + '#' + '';
+  finally
+    Request.Free;
+    Response.Free;
+  end;
+end;
+```
+Mais informações, acesse a [OpenAI for Delphi](https://github.com/landgraf-dev/openai-delphi)
+
 ## License
 
 Copyright 2022 WPPConnect Team <https://wppconnect-team.github.io/>
