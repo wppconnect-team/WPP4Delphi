@@ -102,7 +102,7 @@ type
     procedure RequestCloseInject(var aMessage : TMessage); message FrmConsole_Browser_Direto;
     procedure WMSysCommand(var Message: TWMSysCommand); message WM_SYSCOMMAND;
 
-    Procedure OnTimerMonitoring(Sender: TObject);
+    Procedure OnTimerMonitoring(Sender: TObject); deprecated; //Não Habilitar Função deprecated GetBatteryLevel
     procedure OnTimerConnect(Sender: TObject);
     procedure OnTimerGetQrCode(Sender: TObject);
     Procedure ExecuteCommandConsole(Const PResponse: TResponseConsoleMessage);
@@ -280,7 +280,7 @@ type
 
     procedure GetAllChats;
     procedure GetUnreadMessages;
-    procedure GetBatteryLevel;
+    procedure GetBatteryLevel; deprecated; //Não Habilitar Função deprecated GetBatteryLevel
     procedure CheckIsValidNumber(vNumber:string);
     procedure CheckIsConnected;
     procedure GetMyNumber;
@@ -489,6 +489,8 @@ end;
 
 procedure TFrmConsole.OnTimerMonitoring(Sender: TObject);
 begin
+  //Não Habilitar Função deprecated GetBatteryLevel
+
   //Testa se existe alguma desconexão por parte do aparelho...
   if Application.Terminated then
      Exit;
@@ -507,7 +509,8 @@ begin
     //Falta implementar isso...]
     ISLoggedin;
   finally
-    FTimerMonitoring.Enabled := FConectado;
+    //Não Habilitar Função deprecated GetBatteryLevel
+    //FTimerMonitoring.Enabled := FConectado;
   end;
 end;
 
@@ -612,7 +615,8 @@ end;
 
 procedure TFrmConsole.GetBatteryLevel;
 begin
-  ExecuteJS(FrmConsole_JS_GetBatteryLevel, False);
+  //Não Habilitar Função deprecated GetBatteryLevel
+  //ExecuteJS(FrmConsole_JS_GetBatteryLevel, False);
 end;
 
 procedure TFrmConsole.GetMyNumber;
@@ -866,6 +870,8 @@ begin
   Except
   end;
   FTimerConnect.Enabled    := False;
+
+  //Não Habilitar Função deprecated GetBatteryLevel
   FTimerMonitoring.Enabled := False;
   Chromium1.StopLoad;
   Chromium1.Browser.StopLoad;
@@ -981,6 +987,7 @@ begin
     end;
 
     FTimerConnect.Enabled      := False;
+    //Não Habilitar Função deprecated GetBatteryLevel
     FTimerMonitoring.Enabled   := False;
     try
       GlobalCEFApp.QuitMessageLoop;
@@ -2049,6 +2056,7 @@ begin
                             if not LClose Then
                             Begin
                               FTimerConnect.Enabled    := False;
+                              //Não Habilitar Função deprecated GetBatteryLevel
                               FTimerMonitoring.Enabled := False;
                               ResetEvents;
                               FOnNotificationCenter(Th_ForceDisconnect, '');
@@ -2374,7 +2382,9 @@ begin
       End;
     Until FConectado;
   finally
-    FTimerMonitoring.Enabled  := FConectado;
+    //Não Habilitar Função deprecated GetBatteryLevel
+    FTimerMonitoring.Enabled := False;
+    //FTimerMonitoring.Enabled  := FConectado;
     if not FConectado then
     begin
       SendNotificationCenterDirect(Th_Disconnected);
@@ -2454,6 +2464,8 @@ begin
   Chromium1.DefaultURL      := FrmConsole_JS_URL;
   FTimerMonitoring          := TTimer.Create(nil);
   FTimerMonitoring.Interval := 1000 * 10;  //10 segundos..
+
+  //Não Habilitar Função deprecated GetBatteryLevel
   FTimerMonitoring.Enabled  := False;
   FTimerMonitoring.OnTimer  := OnTimerMonitoring;
 
@@ -2500,6 +2512,7 @@ begin
 
   if Assigned(FTimerMonitoring) then
   Begin
+    //Não Habilitar Função deprecated GetBatteryLevel
     FTimerMonitoring.Enabled  := False;
     FreeAndNil(FTimerMonitoring);
   End;

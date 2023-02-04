@@ -126,6 +126,7 @@ type
     procedure TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
+    procedure ctbtnCategories0Items7Click(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -443,6 +444,11 @@ begin
   frameCatalogo1.Visible:= False;
   frameOutros1.VIsible:= True;
 end;
+procedure TfrDemo.ctbtnCategories0Items7Click(Sender: TObject);
+begin
+//
+end;
+
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   //if TWPPConnect1.IsConnected then
