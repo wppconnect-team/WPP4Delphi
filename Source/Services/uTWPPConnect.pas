@@ -302,7 +302,7 @@ type
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
     procedure getHistorySyncProgress;
     procedure Logout();
-    procedure GetBatteryStatus;
+    procedure GetBatteryStatus; deprecated;
     procedure CheckIsValidNumber(PNumberPhone: string);
     procedure NewCheckIsValidNumber(PNumberPhone : string);
     procedure CheckNumberExists(PNumberPhone : string);
@@ -477,8 +477,9 @@ end;
 
 procedure TWPPConnect.GetBatteryStatus();
 begin
-  if Assigned(FrmConsole) then
-     FrmConsole.GetBatteryLevel;
+  //Não Habilitar Função deprecated GetBatteryLevel
+  //if Assigned(FrmConsole) then
+     //FrmConsole.GetBatteryLevel;
 end;
 
 procedure TWPPConnect.ArquivarChat(PIDContato: String);

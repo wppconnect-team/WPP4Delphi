@@ -79,7 +79,7 @@ Const
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
-  FrmConsole_JS_GetBatteryLevel         = 'window.WAPI.getBatteryLevel();';
+  FrmConsole_JS_GetBatteryLevel         = ''; //'window.WAPI.getBatteryLevel();'; //Não Habilitar Função deprecated GetBatteryLevel
   FrmConsole_JS_GetMyNumber             = 'getMyNumber();';
   FrmConsole_JS_GetUnreadMessages       = 'window.WAPI.getUnreadMessages(includeMe="True", includeNotifications="True", use_unread_count="True");';
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
@@ -164,6 +164,8 @@ Const
   FrmConsole_JS_VAR_SetGroupDescription     = 'WPP.group.setDescription("<#GROUP_ID#>","<#Description#>");';
 
   FrmConsole_JS_VAR_SetGroupPicture         = 'WPP.group.setIcon("<#GROUP_ID#>","<#BASE_64#>");';
+
+
 
   FrmConsole_JS_VAR_checkNumberStatus       = 'window.WAPI.checkNumberStatus("<#PHONE#>");';
   //Adicionado Por Marcelo 01/03/2022 deprecated

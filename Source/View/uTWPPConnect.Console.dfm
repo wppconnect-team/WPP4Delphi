@@ -37,8 +37,8 @@ object FrmConsole: TFrmConsole
     object Lbl_Caption: TLabel
       Left = 1
       Top = 1
-      Width = 106
-      Height = 13
+      Width = 785
+      Height = 18
       Align = alClient
       Alignment = taCenter
       Caption = 'Mega Online Software'
@@ -49,6 +49,8 @@ object FrmConsole: TFrmConsole
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
+      ExplicitWidth = 106
+      ExplicitHeight = 13
     end
     object lbl_Versao: TLabel
       AlignWithMargins = True
