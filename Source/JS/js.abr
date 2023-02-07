@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.4.0.0;1.0.0.9;78.3.0
+//1.5.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2307,7 +2307,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.19.3
+//WPPCONNECT v2.19.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2471,7 +2471,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if ((r >>>= 0) <= (t >>>= 0)) return "";
                     for (e || (e = "utf8");;) switch (e) {
                         case "hex":
-                            return k(this, t, r);
+                            return E(this, t, r);
                         case "utf8":
                         case "utf-8":
                             return x(this, t, r);
@@ -2486,7 +2486,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "ucs-2":
                         case "utf16le":
                         case "utf-16le":
-                            return E(this, t, r);
+                            return k(this, t, r);
                         default:
                             if (n) throw new TypeError("Unknown encoding: " + e);
                             e = (e + "").toLowerCase(), n = !0
@@ -2801,7 +2801,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return n
                 }
 
-                function k(e, t, r) {
+                function E(e, t, r) {
                     const n = e.length;
                     (!t || t < 0) && (t = 0), (!r || r < 0 || r > n) && (r = n);
                     let o = "";
@@ -2809,7 +2809,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
 
-                function E(e, t, r) {
+                function k(e, t, r) {
                     const n = e.slice(t, r);
                     let o = "";
                     for (let e = 0; e < n.length - 1; e += 2) o += String.fromCharCode(n[e] + 256 * n[e + 1]);
@@ -3531,10 +3531,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 if (_) {
                                     var I = [O, P];
                                     P = I[0], O = I[1];
-                                    var k = [j, w];
-                                    w = k[0], j = k[1];
-                                    var E = [S, C];
-                                    C = E[0], S = E[1]
+                                    var E = [j, w];
+                                    w = E[0], j = E[1];
+                                    var k = [S, C];
+                                    C = k[0], S = k[1]
                                 }
                                 M && (x = C / S);
                                 var B = b({
@@ -3863,10 +3863,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             name: t,
                                             original: e
                                         };
-                                    if (r) {
-                                        var s = r.call(o, a);
-                                        !1 !== s && i.emit.apply(i, [a.name].concat(n))
-                                    } else i.emit.apply(i, [t].concat(n))
+                                    r ? !1 !== r.call(o, a) && i.emit.apply(i, [a.name].concat(n)) : i.emit.apply(i, [t].concat(n))
                                 };
                             if (a[e]) throw Error("Event '" + e + "' is already listening");
                             this._listenersCount++, i._newListener && i._removeListener && !n._onNewListener ? (this._onNewListener = function(r) {
@@ -4026,7 +4023,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         this.emitter = e, this.event = t, this.listener = r
                     }
 
-                    function k(e, t, r) {
+                    function E(e, t, r) {
                         if (!0 === r) i = !0;
                         else if (!1 === r) n = !0;
                         else {
@@ -4056,12 +4053,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return [t, u ? new I(this, e, t) : this]
                     }
 
-                    function E(e) {
+                    function k(e) {
                         this._events = {}, this._newListener = !1, this._removeListener = !1, this.verboseMemoryLeak = !1, p.call(this, e)
                     }
                     I.prototype.off = function() {
                         return this.emitter.off(this.event, this.listener), this
-                    }, E.EventEmitter2 = E, E.prototype.listenTo = function(e, t, r) {
+                    }, k.EventEmitter2 = k, k.prototype.listenTo = function(e, t, r) {
                         if ("object" != typeof e) throw TypeError("target musts be an object");
                         var n = this;
 
@@ -4081,7 +4078,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             off: M,
                             reducers: P
                         }), a(t) ? i(y(t)) : i("string" == typeof t ? y(t.split(/\s+/)) : t), this
-                    }, E.prototype.stopListeningTo = function(e, t) {
+                    }, k.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
                         if (!r) return !1;
                         var n, o = r.length,
@@ -4089,21 +4086,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (e && "object" != typeof e) throw TypeError("target should be an object");
                         for (; o-- > 0;) n = r[o], e && n._target !== e || (n.unsubscribe(t), i = !0);
                         return i
-                    }, E.prototype.delimiter = ".", E.prototype.setMaxListeners = function(e) {
+                    }, k.prototype.delimiter = ".", k.prototype.setMaxListeners = function(e) {
                         e !== o && (this._maxListeners = e, this._conf || (this._conf = {}), this._conf.maxListeners = e)
-                    }, E.prototype.getMaxListeners = function() {
+                    }, k.prototype.getMaxListeners = function() {
                         return this._maxListeners
-                    }, E.prototype.event = "", E.prototype.once = function(e, t, r) {
+                    }, k.prototype.event = "", k.prototype.once = function(e, t, r) {
                         return this._once(e, t, !1, r)
-                    }, E.prototype.prependOnceListener = function(e, t, r) {
+                    }, k.prototype.prependOnceListener = function(e, t, r) {
                         return this._once(e, t, !0, r)
-                    }, E.prototype._once = function(e, t, r, n) {
+                    }, k.prototype._once = function(e, t, r, n) {
                         return this._many(e, 1, t, r, n)
-                    }, E.prototype.many = function(e, t, r, n) {
+                    }, k.prototype.many = function(e, t, r, n) {
                         return this._many(e, t, r, !1, n)
-                    }, E.prototype.prependMany = function(e, t, r, n) {
+                    }, k.prototype.prependMany = function(e, t, r, n) {
                         return this._many(e, t, r, !0, n)
-                    }, E.prototype._many = function(e, t, r, n, o) {
+                    }, k.prototype._many = function(e, t, r, n, o) {
                         var i = this;
                         if ("function" != typeof r) throw new Error("many only accepts instances of Function");
 
@@ -4111,7 +4108,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return 0 == --t && i.off(e, a), r.apply(this, arguments)
                         }
                         return a._origin = r, this._on(e, a, n, o)
-                    }, E.prototype.emit = function() {
+                    }, k.prototype.emit = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4181,7 +4178,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         if (!this.ignoreErrors && !this._all && "error" === a) throw arguments[1] instanceof Error ? arguments[1] : new Error("Uncaught, unspecified 'error' event.");
                         return !!this._all
-                    }, E.prototype.emitAsync = function() {
+                    }, k.prototype.emitAsync = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4242,24 +4239,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         } else if (!this.ignoreErrors && !this._all && "error" === a) return arguments[1] instanceof Error ? Promise.reject(arguments[1]) : Promise.reject("Uncaught, unspecified 'error' event.");
                         return Promise.all(l)
-                    }, E.prototype.on = function(e, t, r) {
+                    }, k.prototype.on = function(e, t, r) {
                         return this._on(e, t, !1, r)
-                    }, E.prototype.prependListener = function(e, t, r) {
+                    }, k.prototype.prependListener = function(e, t, r) {
                         return this._on(e, t, !0, r)
-                    }, E.prototype.onAny = function(e) {
+                    }, k.prototype.onAny = function(e) {
                         return this._onAny(e, !1)
-                    }, E.prototype.prependAny = function(e) {
+                    }, k.prototype.prependAny = function(e) {
                         return this._onAny(e, !0)
-                    }, E.prototype.addListener = E.prototype.on, E.prototype._onAny = function(e, t) {
+                    }, k.prototype.addListener = k.prototype.on, k.prototype._onAny = function(e, t) {
                         if ("function" != typeof e) throw new Error("onAny only accepts instances of Function");
                         return this._all || (this._all = []), t ? this._all.unshift(e) : this._all.push(e), this
-                    }, E.prototype._on = function(e, t, r, n) {
+                    }, k.prototype._on = function(e, t, r, n) {
                         if ("function" == typeof e) return this._onAny(e, t), this;
                         if ("function" != typeof t) throw new Error("on only accepts instances of Function");
                         this._events || f.call(this);
                         var i, a = this;
-                        return n !== o && (t = (i = k.call(this, e, t, n))[0], a = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (x.call(this, e, t, r), a) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, g.call(this, this._events[e].length, e))) : this._events[e] = t, a)
-                    }, E.prototype.off = function(e, t) {
+                        return n !== o && (t = (i = E.call(this, e, t, n))[0], a = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (x.call(this, e, t, r), a) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, g.call(this, this._events[e].length, e))) : this._events[e] = t, a)
+                    }, k.prototype.off = function(e, t) {
                         if ("function" != typeof t) throw new Error("removeListener only takes instances of Function");
                         var r, n = [];
                         if (this.wildcard) {
@@ -4283,7 +4280,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }(r === t || r.listener && r.listener === t || r._origin && r._origin === t) && (this.wildcard ? delete s._listeners : delete this._events[e], this._removeListener && this.emit("removeListener", e, t))
                         }
                         return this.listenerTree && S(this.listenerTree), this
-                    }, E.prototype.offAny = function(e) {
+                    }, k.prototype.offAny = function(e) {
                         var t, r = 0,
                             n = 0;
                         if (e && this._all && this._all.length > 0) {
@@ -4295,7 +4292,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this._all = []
                         }
                         return this
-                    }, E.prototype.removeListener = E.prototype.off, E.prototype.removeAllListeners = function(e) {
+                    }, k.prototype.removeListener = k.prototype.off, k.prototype.removeAllListeners = function(e) {
                         if (e === o) return !this._events || f.call(this), this;
                         if (this.wildcard) {
                             var t, r = j.call(this, null, e, this.listenerTree, 0);
@@ -4304,7 +4301,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this.listenerTree && S(this.listenerTree)
                         } else this._events && (this._events[e] = null);
                         return this
-                    }, E.prototype.listeners = function(e) {
+                    }, k.prototype.listeners = function(e) {
                         var t, r, n, i, a, s = this._events;
                         if (e === o) {
                             if (this.wildcard) throw Error("event name required for wildcard emitter");
@@ -4319,12 +4316,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return j.call(this, u, c, a, 0), u
                         }
                         return s && (r = s[e]) ? "function" == typeof r ? [r] : r : []
-                    }, E.prototype.eventNames = function(e) {
+                    }, k.prototype.eventNames = function(e) {
                         var t = this._events;
                         return this.wildcard ? C.call(this, this.listenerTree, [], null, e) : t ? d(t) : []
-                    }, E.prototype.listenerCount = function(e) {
+                    }, k.prototype.listenerCount = function(e) {
                         return this.listeners(e).length
-                    }, E.prototype.hasListeners = function(e) {
+                    }, k.prototype.hasListeners = function(e) {
                         if (this.wildcard) {
                             var t = [],
                                 r = "string" == typeof e ? e.split(this.delimiter) : e.slice();
@@ -4333,9 +4330,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var n = this._events,
                             i = this._all;
                         return !!(i && i.length || n && (e === o ? d(n).length : n[e]))
-                    }, E.prototype.listenersAny = function() {
+                    }, k.prototype.listenersAny = function() {
                         return this._all ? this._all : []
-                    }, E.prototype.waitFor = function(e, t) {
+                    }, k.prototype.waitFor = function(e, t) {
                         var r = this,
                             n = typeof t;
                         return "number" === n ? t = {
@@ -4368,8 +4365,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             overload: t.overload
                         })
                     };
-                    var B = E.prototype;
-                    Object.defineProperties(E, {
+                    var B = k.prototype;
+                    Object.defineProperties(k, {
                         defaultMaxListeners: {
                             get: function() {
                                 return B._maxListeners
@@ -4425,7 +4422,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             configurable: !0
                         }
                     }), (n = function() {
-                        return E
+                        return k
                     }.call(t, r, t, e)) === o || (e.exports = n)
                 }()
             },
@@ -6755,7 +6752,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     o = r(1489);
                 t.editProduct = async function(e, t) {
                     const r = await (0, n.assertGetProduct)(e);
-                    return r.name = t.name, r.description = t.description, r.priceAmount1000 = t.price, r.isHidden = t.isHidden, r.url = t.url, r.retailerId = t.retailerId, await (0, o.editProduct)(r)
+                    return r.name = t.name, r.imageCdnUrl = t.image, r.description = t.description, r.priceAmount1000 = t.price, r.isHidden = t.isHidden, r.url = t.url, r.retailerId = t.retailerId, await (0, o.editProduct)(r)
                 }
             },
             4552: (e, t, r) => {
@@ -8148,18 +8145,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return I.markIsUnread
                     }
                 });
-                var k = r(404);
+                var E = r(404);
                 Object.defineProperty(t, "markPlayed", {
                     enumerable: !0,
                     get: function() {
-                        return k.markPlayed
+                        return E.markPlayed
                     }
                 });
-                var E = r(6915);
+                var k = r(6915);
                 Object.defineProperty(t, "mute", {
                     enumerable: !0,
                     get: function() {
-                        return E.mute
+                        return k.mute
                     }
                 });
                 var B = r(9558);
@@ -11874,7 +11871,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                a(r(3115), t), t.waVersion = "2.19.0";
+                a(r(3115), t), t.waVersion = "2.19.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -12108,7 +12105,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.19.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "2.19.1", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -14820,8 +14817,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    sendQueryExists: ["queryExists"]
-                }, (e => e.queryExists && e.queryPhoneExists))
+                    sendQueryExists: ["queryExists", "queryWidExists"]
+                }, (e => e.queryExists && e.queryPhoneExists || e.queryWidExists && e.queryPhoneExists))
             },
             4526: (e, t, r) => {
                 "use strict";
@@ -16103,34 +16100,30 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return n && (i = i.bind(n)), i.options = o, i
                 }
 
-                function n(e, t, n, o) {
-                    var i;
-                    Object.defineProperty(n, o, {
-                        configurable: !0,
-                        enumerable: !1,
-                        get: function() {
-                            return i
-                        },
-                        set: function(n) {
-                            i = r(e, t, n, this)
-                        }
-                    })
-                }
-
-                function o(e, t, n) {
-                    var o = n.value;
-                    return n.value = r(e, t, o), n
-                }
-
-                function i(e, t) {
-                    for (var r = [], i = 2; i < arguments.length; i++) r[i - 2] = arguments[i];
-                    if (0 === r.length) throw new Error("function applied debounce decorator should be a method");
-                    if (1 === r.length) throw new Error("method applied debounce decorator should have valid name");
-                    var a = r[0],
-                        s = r[1],
-                        u = 3 === r.length && r[2] ? r[2] : Object.getOwnPropertyDescriptor(a, s);
-                    if (u) return o(e, t, u);
-                    n(e, t, a, s)
+                function n(e, t) {
+                    for (var n = [], o = 2; o < arguments.length; o++) n[o - 2] = arguments[o];
+                    if (0 === n.length) throw new Error("function applied debounce decorator should be a method");
+                    if (1 === n.length) throw new Error("method applied debounce decorator should have valid name");
+                    var i = n[0],
+                        a = n[1],
+                        s = 3 === n.length && n[2] ? n[2] : Object.getOwnPropertyDescriptor(i, a);
+                    if (s) return function(e, t, n) {
+                        var o = n.value;
+                        return n.value = r(e, t, o), n
+                    }(e, t, s);
+                    ! function(e, t, n, o) {
+                        var i;
+                        Object.defineProperty(n, o, {
+                            configurable: !0,
+                            enumerable: !1,
+                            get: function() {
+                                return i
+                            },
+                            set: function(n) {
+                                i = r(e, t, n, this)
+                            }
+                        })
+                    }(e, t, i, a)
                 }
                 Object.defineProperty(t, "__esModule", {
                     value: !0
@@ -16139,17 +16132,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, t.debounce = function() {
                     for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
                     var r = 500,
-                        n = !1;
+                        o = !1;
                     if (e.length && ("number" == typeof e[0] || "object" == typeof e[0] && void 0 !== e[0].leading)) {
                         "number" == typeof e[0] && (r = e[0]);
-                        var o = void 0;
-                        return "object" == typeof e[0] && void 0 !== e[0].leading && (o = e[0]), 1 < e.length && "object" == typeof e[1] && void 0 !== e[1].leading && (o = e[1]), o && (n = o.leading),
+                        var i = void 0;
+                        return "object" == typeof e[0] && void 0 !== e[0].leading && (i = e[0]), 1 < e.length && "object" == typeof e[1] && void 0 !== e[1].leading && (i = e[1]), i && (o = i.leading),
                             function() {
                                 for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
-                                return i.apply(void 0, [r, n].concat(e))
+                                return n.apply(void 0, [r, o].concat(e))
                             }
                     }
-                    return i.apply(void 0, [r, n].concat(e))
+                    return n.apply(void 0, [r, o].concat(e))
                 }
             },
             1504: function(e, t) {
