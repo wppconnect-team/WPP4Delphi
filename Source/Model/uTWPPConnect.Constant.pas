@@ -75,7 +75,7 @@ Const
   TWPPConnectJS_JSLinhasMInimas         = 16242; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2305.5';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2306.7';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -428,6 +428,7 @@ type
                    , Th_getList=61 //Marcelo 25/10/2022
                    , Th_sendVCardContactMessageEx=62 //Marcelo 16/01/2023
                    , Th_getHistorySyncProgress=63 //Marcelo 17/01/2023
+                   , Th_QrCodeDesconectouErroCache=64 //Marcelo 06/02/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -565,7 +566,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 63; //Marcelo 17/01/2023
+const LmaxCount = 64; //Marcelo 06/02/2023
 var
   I: Integer;
   LNome: String;

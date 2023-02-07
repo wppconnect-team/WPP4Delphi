@@ -58,6 +58,8 @@ type
     edtApiKeyChatGPT: TEdit;
     SwtChatGPT: TToggleSwitch;
     Label1: TLabel;
+    TimerCopiarPastaCache: TTimer;
+    TimerRestauraPastaCache: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -127,17 +129,23 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure ctbtnCategories0Items7Click(Sender: TObject);
+    procedure TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
+    procedure TimerCopiarPastaCacheTimer(Sender: TObject);
+    procedure TimerRestauraPastaCacheTimer(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
 
     FStatus: Boolean;
-    whatsappsms, TentativaConexao: integer;
+    whatsappsms, TentativaConexao, Count_QrCodeDesconectouErroCache: integer;
     procedure VerificaWhatsApp;
     procedure CriarArquivoBAT_ReiniciaAplicacao;
+    procedure CriarArquivoBAT_RestauraPastaCache;
     function GetAPIKey: string;
     function AskQuestion(const Question, phoneNumber: string): string;
     procedure LerConfiguracoes;
+    procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
+    procedure DeleteFiles(const FileName: String);
   public
     FChatID: string;
     { Public declarations }
@@ -190,6 +198,18 @@ begin
       raise Exception.Create('API key not provided.');
   end;
   WriteLn(''); }
+end;
+
+procedure TfrDemo.DeleteFiles(const FileName: String);
+var
+  FileOp: TSHFileOpStruct;
+begin
+  FileOp.Wnd := Application.Handle;
+  FileOp.wFunc := FO_DELETE;
+  FileOp.pFrom := PChar(FileName + #0);
+  FileOp.pTo := nil;
+  FileOp.fFlags := FOF_ALLOWUNDO or FOF_NOCONFIRMATION or FOF_SILENT;
+  SHFileOperation(FileOp);
 end;
 
 function TfrDemo.AskQuestion(const Question, phoneNumber: string): string;
@@ -341,6 +361,48 @@ begin
   vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
   Result := vText;
 end;
+procedure TfrDemo.copia_arquivo(arquivo_origem, arquivo_destino: string);
+var
+  Origen, Destino: file of byte;
+  Buffer: array [0 .. 4096] of char;
+  Leidos: Integer;
+  Longitud: LongWord;//longint;
+begin
+  try
+    AssignFile(Origen, arquivo_origem);
+    reset(Origen);
+    AssignFile(Destino, arquivo_destino);
+    rewrite(Destino);
+    Longitud := FileSize(Origen);
+    try
+      frameLogin1.Progressbar1.Max := Longitud;
+    except on E: Exception do
+      frameLogin1.Progressbar1.Max := 2147483647;
+    end;
+
+    frameLogin1.Progressbar1.Min := 0;
+    while Longitud > 0 do
+    begin
+      BlockRead(Origen, Buffer[0], SizeOf(Buffer), Leidos);
+      Longitud := Longitud - Leidos;
+      BlockWrite(Destino, Buffer[0], Leidos);
+      frameLogin1.Progressbar1.Position := frameLogin1.Progressbar1.Position + Leidos;
+      Application.ProcessMessages;
+    end;
+    CloseFile(Origen);
+    CloseFile(Destino);
+    frameLogin1.Progressbar1.Max := 0;
+
+  except
+    on E: Exception do
+    begin
+      MessageDlg('Ocorreu um Erro na Cópia do Arquivo!!' + #13#10#13#10 + 'Erro: ' + E.Message, mtInformation, [mbOk], 0);
+      frameLogin1.Progressbar1.Max := 0;
+      exit;
+    end;
+  end;
+end;
+
 procedure TfrDemo.CriarArquivoBAT_ReiniciaAplicacao;
 var
   nomearq: string;
@@ -362,6 +424,41 @@ begin
       Writeln(arq, 'taskkill /F /IM ' + NomeAplicacao + '.exe');
       Writeln(arq, 'timeout /t 10 /nobreak'); //10 Segundos
       //Writeln(arq, 'Copy ' + ExtractFilePath(Application.ExeName) + 'Temp\AtualizadorAutomatico.exe ' + ExtractFilePath(Application.ExeName) + 'AtualizadorAutomatico.exe');
+      Writeln(arq, 'start ' + ExtractFilePath(Application.ExeName) + NomeAplicacao + '.exe');
+
+      Flush(arq);
+    finally
+      CloseFile(arq);
+      //gravar_log('  Arquivo "Reinicia' + NomeAplicacao + '.bat", criado com sucesso! ');
+    end;
+  except
+  end;
+
+end;
+
+procedure TfrDemo.CriarArquivoBAT_RestauraPastaCache;
+var
+  nomearq: string;
+  NomeAplicacao: string;
+  arq: TextFile;
+begin
+  try
+    NomeAplicacao := ExtractFileName(Application.ExeName);
+    NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+    nomearq := ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat';
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, 'taskkill /F /IM ' + NomeAplicacao + '.exe');
+      Writeln(arq, 'timeout /t 15 /nobreak'); //15 Segundos
+      Writeln(arq, 'rd /S /Q ' + ExtractFilePath(Application.ExeName) + 'cache\');
+      Writeln(arq, 'xCopy ' + ExtractFilePath(Application.ExeName) + 'bck_cache\ ' + ExtractFilePath(Application.ExeName) + 'cache\ /E /H /C /I');
+      Writeln(arq, 'timeout /t 15 /nobreak'); //15 Segundos
       Writeln(arq, 'start ' + ExtractFilePath(Application.ExeName) + NomeAplicacao + '.exe');
 
       Flush(arq);
@@ -465,6 +562,7 @@ begin
   r_CheckOnline := False;
   whatsappsms := 0;
   TentativaConexao := 0;
+  Count_QrCodeDesconectouErroCache := 0;
   LerConfiguracoes;
 end;
 
@@ -567,6 +665,74 @@ begin
   TimerCheckOnline.Enabled := True;
 end;
 
+procedure TfrDemo.TimerCopiarPastaCacheTimer(Sender: TObject);
+begin
+  TimerCopiarPastaCache.Enabled := False;
+
+  if not DirectoryExists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+    CreateDir(ExtractFilePath(Application.ExeName) + 'bck_cache/');
+
+  //TWPPConnect1.Disconnect;
+
+  //Aguardar o Componente Destruir as Conexões com WhatsApp, para fazer a Copia da Pasta "IndexedDB" e "Local Storage" com Autenticação com Qrcode
+  Sleep(5000);
+  TDirectory.Copy(ExtractFilePath(Application.ExeName) + 'cache/', ExtractFilePath(Application.ExeName) + 'bck_cache/');
+  //Copia_arquivo(ExtractFilePath(Application.ExeName) + 'cache/IndexedDB', ExtractFilePath(Application.ExeName) + 'bck_cache/IndexedDB');
+
+  //procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
+
+end;
+
+procedure TfrDemo.TimerRestauraPastaCacheTimer(Sender: TObject);
+var
+  NomeAplicacao: string;
+Begin
+  NomeAplicacao := ExtractFileName(Application.ExeName);
+  NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+  TimerRestauraPastaCache.Enabled := False;
+
+  //Executar Arquivo BAT para Reiniciar Aplicação em Caso de Bug
+  if not (FileExists(ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat')) then
+  begin
+    CriarArquivoBAT_RestauraPastaCache;
+    SleepNoFreeze(1000);
+  end;
+  //Forçar Reiniciar a Aplicação
+  ShellExecute(handle,'open',PChar(ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat'), '','',SW_MINIMIZE);
+  Exit;
+
+
+  {TWPPConnect1.Disconnect;
+
+  TWPPConnect1.ShutDown;
+
+
+  //Aguardar o Componente Destruir as Conexões com WhatsApp, para fazer a Copia da Pasta "IndexedDB" e "Local Storage" com Autenticação com Qrcode
+  SleepNoFreeze(6000);
+
+  //TDirectory.Delete(ExtractFilePath(Application.ExeName) + 'cache/', True);
+  DeleteFiles(ExtractFilePath(Application.ExeName) + 'cache/');
+
+  SleepNoFreeze(1000);
+
+  if not DirectoryExists(ExtractFilePath(Application.ExeName) + 'cache/') then
+    CreateDir(ExtractFilePath(Application.ExeName) + 'cache/');
+
+  SleepNoFreeze(500);
+
+  TDirectory.Copy(ExtractFilePath(Application.ExeName) + 'bck_cache/', ExtractFilePath(Application.ExeName) + 'cache/');
+
+  Sleep(1000);
+
+  TWPPConnect1.FormQrCodeType := TFormQrCodeType(1);
+  TWPPConnect1.FormQrCodeStart;
+
+  if not TWPPConnect1.FormQrCodeShowing then
+    TWPPConnect1.FormQrCodeShowing := True; }
+
+end;
+
 procedure TfrDemo.VerificaWhatsApp;
 var
   caminho : string;
@@ -589,12 +755,14 @@ Begin
         frameLogin1.lblStatus.Font.Color := clGrayText;
         frameLogin1.whatsOff.Visible := True;
         frameLogin1.whatsOn.Visible := False;
-        frameLogin1.SpeedButton3.Enabled := False;
-        if TentativaConexao <= 2 then
+        frameLogin1.SpeedButton3.Enabled := True;
+
+        if TentativaConexao >= 2 then
         begin
           TWPPConnect1.RebootWPP;
         end
         else
+        if TentativaConexao >= 3 then
         begin //Reiniciar Aplicação
           //Executar Arquivo BAT para Reiniciar Aplicação em Caso de Bug
           if not (FileExists(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat')) then
@@ -684,6 +852,12 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
   ShowMessage('Conexão foi finalizada pelo celular');
 end;
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -805,6 +979,8 @@ procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticate
 begin
   frameLogin1.lblStatus.Caption := 'Auntenticado';
   Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
+  TimerCopiarPastaCache.Enabled := True;
+
   //Application.ProcessMessages;
 end;
 
@@ -945,6 +1121,10 @@ begin
   frameLogin1.whatsOn.Visible := True;
   ctbtn.Enabled := True;
 
+  //Marcelo 06/02/2023
+  if not TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+    TimerCopiarPastaCache.Enabled := True;
+
   //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
@@ -1019,6 +1199,29 @@ begin
   else
     frameLogin1.imgQrCode.Picture := nil; // Limpa foto
 end;
+procedure TfrDemo.TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
+begin
+  Count_QrCodeDesconectouErroCache := Count_QrCodeDesconectouErroCache + 1;
+
+  if not TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+  begin
+    frameLogin1.lblStatus.Caption := 'Offline';
+    frameLogin1.lblStatus.Font.Color := $002894FF;
+    frameLogin1.lblStatus.Font.Color := clGrayText;
+    frameLogin1.whatsOff.Visible := True;
+    frameLogin1.whatsOn.Visible := False;
+    frameLogin1.SpeedButton3.Enabled := True;
+
+    if Count_QrCodeDesconectouErroCache > 1 then
+    begin
+      Label3.Caption := 'Desconectou Erro na Pasta Cache';
+      ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');
+      TimerRestauraPastaCache.Enabled := True;
+    end;
+
+  end;
+end;
+
 procedure TfrDemo.TWPPConnect1GetStatus(Sender: TObject);
 begin
   if not Assigned(Sender) Then
@@ -1250,6 +1453,16 @@ begin
           if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
             TWPPConnect1.getProfilePicThumb(AChat.id);
             //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
+
+          if Assigned(AChat.chatlistPreview) then
+          begin
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
+          end;
+
           TWPPConnect1.ReadMessages(AChat.id);
           // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
           // VerificaPalavraChave(AMessage.body, '', telefone, contato);
@@ -1276,6 +1489,9 @@ begin
         end
         else
         begin
+
+
+
           {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
           frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add

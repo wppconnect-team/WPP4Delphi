@@ -79,6 +79,7 @@ type
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
+  TOnGetQrCodeDesconectouErroCache = procedure(Const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache) of object; //Marcelo 06/02/2023
 
   TOnGetListChat            = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
 
@@ -192,6 +193,8 @@ type
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
+    FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
+
     FOnGetListChat              : TGetList;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
@@ -454,6 +457,7 @@ type
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
     property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
+    property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
 
   end;
 
@@ -2423,6 +2427,13 @@ begin
   begin
     if Assigned(FOnGetHistorySyncProgress) then
       FOnGetHistorySyncProgress(TResponsegetHistorySyncProgress(PReturnClass));
+  end;
+
+  //Marcelo 06/02/2023
+  if PTypeHeader = Th_QrCodeDesconectouErroCache  then
+  begin
+    if Assigned(FOnGetQrCodeDesconectouErroCache) then
+      FOnGetQrCodeDesconectouErroCache(TQrCodeDesconectouErroCache(PReturnClass));
   end;
 
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022

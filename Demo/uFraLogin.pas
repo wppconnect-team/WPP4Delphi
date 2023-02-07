@@ -38,6 +38,7 @@ type
     whatsOn: TImage;
     SpeedButton3: TButton;
     ImageList1: TImageList;
+    ProgressBar1: TProgressBar;
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
   private

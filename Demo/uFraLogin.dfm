@@ -1329,6 +1329,13 @@ object frameLogin: TframeLogin
     TabOrder = 1
     OnClick = SpeedButton3Click
   end
+  object ProgressBar1: TProgressBar
+    Left = 189
+    Top = 304
+    Width = 478
+    Height = 17
+    TabOrder = 2
+  end
   object ImageList1: TImageList
     DrawingStyle = dsTransparent
     Height = 32

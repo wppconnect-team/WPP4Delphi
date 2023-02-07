@@ -1743,6 +1743,19 @@ begin
                             FgettingChats := False;
                           End;
 
+    //Marcelo 06/02/2023
+    Th_QrCodeDesconectouErroCache :
+                          begin
+                            LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                            LOutClass := TQrCodeDesconectouErroCache.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                            finally
+                              FreeAndNil(LOutClass);
+                            end;
+                          end;
+
     //Marcelo 06/05/2022
     Th_getMessageById   : begin
                             //if Assigned(FMessagesList) then
@@ -2172,18 +2185,36 @@ begin
 
  //testa se e um JSON de forma RAPIDA!
 
-
   if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
     //Injeta o JS.ABR de novo
+    LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');
     ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
-  Begin
+  begin
     LogAdd(message, 'CONSOLE IGNORADO');
+
+    //Desconexão do QrCode, Tratamento após desconectado Add Marcelo 06/02/2023
+    //'Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.'
+    if (Pos('ANOTHER CONNECTION WANTS TO DELETE DATABASE', UpperCase(message)) > 0)
+    or (Pos('CLOSING DB NOW TO RESUME THE DELETE REQUEST.', UpperCase(message)) > 0)  then
+    begin
+      LogAdd('DESCONECTOU QRCODE, ARQUIVO CORROMPIDO PASTA CACHE, NECESSÁRIO RESTAURAR A PASTA DO CACHE ORIGINAL OU REALIZAR A LIMPEZA E NOVA LEITURA DE UM NOVO QRCODE');
+      AResponse := TResponseConsoleMessage.Create( '{"name":"QrCodeDesconectouErroCache","result":"{\"result\":\"Another connection wants to delete database wawc. Closing db now to resume the delete request.\"}"}');
+      //{"name":"getMyNumber","result":"{\"result\":\"5517@c.us\"}"}
+      try
+        if AResponse = nil then
+          Exit;
+        ExecuteCommandConsole(AResponse);
+      finally
+        FreeAndNil(AResponse);
+      end;
+    end;
+
     Exit;
-  End
+  end
   else
   Begin
     if (message = FrmConsole_JS_Ignorar) or (message = FrmConsole_JS_RetornoVazio)  then
@@ -2192,7 +2223,7 @@ begin
         LogAdd(message, 'CONSOLE VAZIO');  }
       Exit;
     end;
-  End;
+  end;
 
   LogAdd(message, 'CONSOLE');
 
