@@ -1454,15 +1454,6 @@ begin
             TWPPConnect1.getProfilePicThumb(AChat.id);
             //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
 
-          if Assigned(AChat.chatlistPreview) then
-          begin
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
-          end;
-
           TWPPConnect1.ReadMessages(AChat.id);
           // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
           // VerificaPalavraChave(AMessage.body, '', telefone, contato);
@@ -1489,8 +1480,14 @@ begin
         end
         else
         begin
-
-
+          if Assigned(AChat.chatlistPreview) then
+          begin
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
+          end;
 
           {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
             (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
