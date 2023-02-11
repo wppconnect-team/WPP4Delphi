@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.5.0.0;1.0.0.9;78.3.0
+//1.6.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -453,6 +453,23 @@ window.WAPI.getAllNewMessages = async function () {
  * @returns {Array|*} List of chats
  */
  
+//Add Marcelo 11/02/2023 Listar todas as Comunidades
+window.WAPI.getAllCommunitys = function(done) {    
+    let community = window.Store.Chat.filter((chat) => chat.kind == 'community');
+
+	if (done !== undefined) done(community);
+	
+
+	let arrCommunity = [];
+	let arr = community;
+	arr.forEach((v , i) => {
+		arrCommunity.push(arr[i]['id']['_serialized']+' '+arr[i]['formattedTitle']);
+	})
+	
+	SetConsoleMessage("getAllcommunity", JSON.stringify(arrCommunity));
+	
+	//return community;
+}; 
  
 window.WAPI.getAllGroups = function(done) {
     let groups = window.Store.Chat.filter((chat) => chat.isGroup);
@@ -16608,4 +16625,3 @@ window.WAPI.getHistorySyncProgress2 = async function() {
         console.log(err);
     };    
 };
-
