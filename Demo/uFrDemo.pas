@@ -58,6 +58,8 @@ type
     edtApiKeyChatGPT: TEdit;
     SwtChatGPT: TToggleSwitch;
     Label1: TLabel;
+    TimerCopiarPastaCache: TTimer;
+    TimerRestauraPastaCache: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -127,17 +129,26 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure ctbtnCategories0Items7Click(Sender: TObject);
+    procedure TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
+    procedure TimerCopiarPastaCacheTimer(Sender: TObject);
+    procedure TimerRestauraPastaCacheTimer(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
 
+    //Controlar as Mensagens Recebidas
+    MensagensArray: array of String;
+    iPosicaoMsgArray: Integer;
     FStatus: Boolean;
-    whatsappsms, TentativaConexao: integer;
+    whatsappsms, TentativaConexao, Count_QrCodeDesconectouErroCache: integer;
     procedure VerificaWhatsApp;
     procedure CriarArquivoBAT_ReiniciaAplicacao;
+    procedure CriarArquivoBAT_RestauraPastaCache;
     function GetAPIKey: string;
     function AskQuestion(const Question, phoneNumber: string): string;
     procedure LerConfiguracoes;
+    procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
+    procedure DeleteFiles(const FileName: String);
   public
     FChatID: string;
     { Public declarations }
@@ -190,6 +201,18 @@ begin
       raise Exception.Create('API key not provided.');
   end;
   WriteLn(''); }
+end;
+
+procedure TfrDemo.DeleteFiles(const FileName: String);
+var
+  FileOp: TSHFileOpStruct;
+begin
+  FileOp.Wnd := Application.Handle;
+  FileOp.wFunc := FO_DELETE;
+  FileOp.pFrom := PChar(FileName + #0);
+  FileOp.pTo := nil;
+  FileOp.fFlags := FOF_ALLOWUNDO or FOF_NOCONFIRMATION or FOF_SILENT;
+  SHFileOperation(FileOp);
 end;
 
 function TfrDemo.AskQuestion(const Question, phoneNumber: string): string;
@@ -341,6 +364,48 @@ begin
   vText  := StringReplace(vText, #$A#$A    ,'<br>'   , [rfReplaceAll] );
   Result := vText;
 end;
+procedure TfrDemo.copia_arquivo(arquivo_origem, arquivo_destino: string);
+var
+  Origen, Destino: file of byte;
+  Buffer: array [0 .. 4096] of char;
+  Leidos: Integer;
+  Longitud: LongWord;//longint;
+begin
+  try
+    AssignFile(Origen, arquivo_origem);
+    reset(Origen);
+    AssignFile(Destino, arquivo_destino);
+    rewrite(Destino);
+    Longitud := FileSize(Origen);
+    try
+      frameLogin1.Progressbar1.Max := Longitud;
+    except on E: Exception do
+      frameLogin1.Progressbar1.Max := 2147483647;
+    end;
+
+    frameLogin1.Progressbar1.Min := 0;
+    while Longitud > 0 do
+    begin
+      BlockRead(Origen, Buffer[0], SizeOf(Buffer), Leidos);
+      Longitud := Longitud - Leidos;
+      BlockWrite(Destino, Buffer[0], Leidos);
+      frameLogin1.Progressbar1.Position := frameLogin1.Progressbar1.Position + Leidos;
+      Application.ProcessMessages;
+    end;
+    CloseFile(Origen);
+    CloseFile(Destino);
+    frameLogin1.Progressbar1.Max := 0;
+
+  except
+    on E: Exception do
+    begin
+      MessageDlg('Ocorreu um Erro na Cópia do Arquivo!!' + #13#10#13#10 + 'Erro: ' + E.Message, mtInformation, [mbOk], 0);
+      frameLogin1.Progressbar1.Max := 0;
+      exit;
+    end;
+  end;
+end;
+
 procedure TfrDemo.CriarArquivoBAT_ReiniciaAplicacao;
 var
   nomearq: string;
@@ -362,6 +427,41 @@ begin
       Writeln(arq, 'taskkill /F /IM ' + NomeAplicacao + '.exe');
       Writeln(arq, 'timeout /t 10 /nobreak'); //10 Segundos
       //Writeln(arq, 'Copy ' + ExtractFilePath(Application.ExeName) + 'Temp\AtualizadorAutomatico.exe ' + ExtractFilePath(Application.ExeName) + 'AtualizadorAutomatico.exe');
+      Writeln(arq, 'start ' + ExtractFilePath(Application.ExeName) + NomeAplicacao + '.exe');
+
+      Flush(arq);
+    finally
+      CloseFile(arq);
+      //gravar_log('  Arquivo "Reinicia' + NomeAplicacao + '.bat", criado com sucesso! ');
+    end;
+  except
+  end;
+
+end;
+
+procedure TfrDemo.CriarArquivoBAT_RestauraPastaCache;
+var
+  nomearq: string;
+  NomeAplicacao: string;
+  arq: TextFile;
+begin
+  try
+    NomeAplicacao := ExtractFileName(Application.ExeName);
+    NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+    nomearq := ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat';
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, 'taskkill /F /IM ' + NomeAplicacao + '.exe');
+      Writeln(arq, 'timeout /t 15 /nobreak'); //15 Segundos
+      Writeln(arq, 'rd /S /Q ' + ExtractFilePath(Application.ExeName) + 'cache\');
+      Writeln(arq, 'xCopy ' + ExtractFilePath(Application.ExeName) + 'bck_cache\ ' + ExtractFilePath(Application.ExeName) + 'cache\ /E /H /C /I');
+      Writeln(arq, 'timeout /t 15 /nobreak'); //15 Segundos
       Writeln(arq, 'start ' + ExtractFilePath(Application.ExeName) + NomeAplicacao + '.exe');
 
       Flush(arq);
@@ -465,6 +565,9 @@ begin
   r_CheckOnline := False;
   whatsappsms := 0;
   TentativaConexao := 0;
+  Count_QrCodeDesconectouErroCache := 0;
+  SetLength(MensagensArray, 50);
+  iPosicaoMsgArray := 0;
   LerConfiguracoes;
 end;
 
@@ -567,6 +670,74 @@ begin
   TimerCheckOnline.Enabled := True;
 end;
 
+procedure TfrDemo.TimerCopiarPastaCacheTimer(Sender: TObject);
+begin
+  TimerCopiarPastaCache.Enabled := False;
+
+  if not DirectoryExists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+    CreateDir(ExtractFilePath(Application.ExeName) + 'bck_cache/');
+
+  //TWPPConnect1.Disconnect;
+
+  //Aguardar o Componente Destruir as Conexões com WhatsApp, para fazer a Copia da Pasta "IndexedDB" e "Local Storage" com Autenticação com Qrcode
+  Sleep(5000);
+  TDirectory.Copy(ExtractFilePath(Application.ExeName) + 'cache/', ExtractFilePath(Application.ExeName) + 'bck_cache/');
+  //Copia_arquivo(ExtractFilePath(Application.ExeName) + 'cache/IndexedDB', ExtractFilePath(Application.ExeName) + 'bck_cache/IndexedDB');
+
+  //procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
+
+end;
+
+procedure TfrDemo.TimerRestauraPastaCacheTimer(Sender: TObject);
+var
+  NomeAplicacao: string;
+Begin
+  NomeAplicacao := ExtractFileName(Application.ExeName);
+  NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+  TimerRestauraPastaCache.Enabled := False;
+
+  //Executar Arquivo BAT para Reiniciar Aplicação em Caso de Bug
+  if not (FileExists(ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat')) then
+  begin
+    CriarArquivoBAT_RestauraPastaCache;
+    SleepNoFreeze(1000);
+  end;
+  //Forçar Reiniciar a Aplicação
+  ShellExecute(handle,'open',PChar(ExtractFilePath(Application.ExeName) + 'RestauraPastaCache' + NomeAplicacao + '.bat'), '','',SW_MINIMIZE);
+  Exit;
+
+
+  {TWPPConnect1.Disconnect;
+
+  TWPPConnect1.ShutDown;
+
+
+  //Aguardar o Componente Destruir as Conexões com WhatsApp, para fazer a Copia da Pasta "IndexedDB" e "Local Storage" com Autenticação com Qrcode
+  SleepNoFreeze(6000);
+
+  //TDirectory.Delete(ExtractFilePath(Application.ExeName) + 'cache/', True);
+  DeleteFiles(ExtractFilePath(Application.ExeName) + 'cache/');
+
+  SleepNoFreeze(1000);
+
+  if not DirectoryExists(ExtractFilePath(Application.ExeName) + 'cache/') then
+    CreateDir(ExtractFilePath(Application.ExeName) + 'cache/');
+
+  SleepNoFreeze(500);
+
+  TDirectory.Copy(ExtractFilePath(Application.ExeName) + 'bck_cache/', ExtractFilePath(Application.ExeName) + 'cache/');
+
+  Sleep(1000);
+
+  TWPPConnect1.FormQrCodeType := TFormQrCodeType(1);
+  TWPPConnect1.FormQrCodeStart;
+
+  if not TWPPConnect1.FormQrCodeShowing then
+    TWPPConnect1.FormQrCodeShowing := True; }
+
+end;
+
 procedure TfrDemo.VerificaWhatsApp;
 var
   caminho : string;
@@ -589,12 +760,14 @@ Begin
         frameLogin1.lblStatus.Font.Color := clGrayText;
         frameLogin1.whatsOff.Visible := True;
         frameLogin1.whatsOn.Visible := False;
-        frameLogin1.SpeedButton3.Enabled := False;
-        if TentativaConexao <= 2 then
+        frameLogin1.SpeedButton3.Enabled := True;
+
+        if TentativaConexao >= 2 then
         begin
           TWPPConnect1.RebootWPP;
         end
         else
+        if TentativaConexao >= 3 then
         begin //Reiniciar Aplicação
           //Executar Arquivo BAT para Reiniciar Aplicação em Caso de Bug
           if not (FileExists(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat')) then
@@ -684,6 +857,12 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
   ShowMessage('Conexão foi finalizada pelo celular');
 end;
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -805,6 +984,8 @@ procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticate
 begin
   frameLogin1.lblStatus.Caption := 'Auntenticado';
   Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
+  TimerCopiarPastaCache.Enabled := True;
+
   //Application.ProcessMessages;
 end;
 
@@ -945,6 +1126,10 @@ begin
   frameLogin1.whatsOn.Visible := True;
   ctbtn.Enabled := True;
 
+  //Marcelo 06/02/2023
+  if not TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+    TimerCopiarPastaCache.Enabled := True;
+
   //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
@@ -1019,6 +1204,29 @@ begin
   else
     frameLogin1.imgQrCode.Picture := nil; // Limpa foto
 end;
+procedure TfrDemo.TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
+begin
+  Count_QrCodeDesconectouErroCache := Count_QrCodeDesconectouErroCache + 1;
+
+  if not TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+  begin
+    frameLogin1.lblStatus.Caption := 'Offline';
+    frameLogin1.lblStatus.Font.Color := $002894FF;
+    frameLogin1.lblStatus.Font.Color := clGrayText;
+    frameLogin1.whatsOff.Visible := True;
+    frameLogin1.whatsOn.Visible := False;
+    frameLogin1.SpeedButton3.Enabled := True;
+
+    if Count_QrCodeDesconectouErroCache > 1 then
+    begin
+      Label3.Caption := 'Desconectou Erro na Pasta Cache';
+      ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');
+      TimerRestauraPastaCache.Enabled := True;
+    end;
+
+  end;
+end;
+
 procedure TfrDemo.TWPPConnect1GetStatus(Sender: TObject);
 begin
   if not Assigned(Sender) Then
@@ -1123,11 +1331,15 @@ var
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
   Question, Answer, phoneNumber : string;
+  x, i : Integer;
+  mensagemDuplicada: Boolean;
 begin
   for AChat in Chats.Result do
   begin
-    for AMessage in AChat.Messages do
+    for x := Length(AChat.Messages) - 1 downto 0 do //Invertendo a Ordem da Classe, para pegar a mensagens na sequência correta
+    //for AMessage in AChat.Messages do
     begin
+      AMessage := AChat.Messages[x];
       if not AChat.isGroup then // Não exibe mensages de grupos
       begin
         if not AMessage.Sender.isMe then // Não exibe mensages enviadas por mim
@@ -1136,159 +1348,153 @@ begin
           FChatID := AChat.id;
           telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
           contato := AMessage.Sender.pushname;
-          Question := AMessage.body;
 
-          // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-          {case AnsiIndexStr(UpperCase(AMessage.&type),
-            ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT']) of
-            0:
-              begin
-                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                  AMessage.mediaKey, 'mp3', AChat.id);
-              end;
-            1:
-              begin
-                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                  AMessage.mediaKey, 'jpg', AChat.id);
-              end;
-            2:
-              begin
-                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                  AMessage.mediaKey, 'mp4', AChat.id);
-              end;
-            3:
-              begin
-                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                  AMessage.mediaKey, 'mp3', AChat.id);
-              end;
-            4:
-              begin
-                WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                  AMessage.mediaKey, 'pdf', AChat.id);
-              end;
-          end;}
-
-          case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
-            0: Extensao_Documento := 'mp3';
-            1: Extensao_Documento := 'jpg';
-            2: Extensao_Documento := 'mp4';
-            3: Extensao_Documento := 'mp3';
-            4:
-            begin
-              Extensao_Documento := ExtractFileExt(AMessage.filename);
-              Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
-            end;
-            5: Extensao_Documento := 'jpg'; //'webp';
-          end;
-          //Novo 05/11/2022
-          Automato_Path := ExtractFilePath(ParamStr(0));
-
-          NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
-                          AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
-
-          SleepNoFreeze(100);
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('UniqueID: ' + AMessage.id));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('Tipo mensagem: ' + AMessage.&type));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('Chat Id: ' + AChat.id));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (StringReplace(AMessage.body, #$A, #13#10,
-            [rfReplaceAll, rfIgnoreCase]));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('ACK: ' + FloatToStr(AMessage.ack)));
-          selectedButtonId := AMessage.selectedButtonId;
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add
-            (PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
-          try
-            if Assigned(AMessage.ListResponse) then
-              if Assigned(AMessage.ListResponse.singleSelectReply) then
-              begin
-                selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
-                if selectedRowId <> '' then
-                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
-              end;
-          except on E: Exception do
-          end;
-          try
-            if Assigned(AMessage.quotedMsg) then
-            begin
-              quotedMsg_caption := AMessage.quotedMsg.Caption;
-              if Trim(quotedMsg_caption) = '' then
-                if Assigned(AMessage.quotedMsg.list) then
-                  quotedMsg_caption := AMessage.quotedMsg.list.description;
-              if Trim(quotedMsg_caption) = '' then
-                quotedMsg_caption := AMessage.quotedMsg.Body;
-              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
-            end;
-            // Mensagem Original do Click do Botão
-          except
-            on E: Exception do
-              quotedMsg_caption := '';
-          end;
-          //Marcelo 25/07/2022 Unique ID Mensagem Origem
-          try
-            if Assigned(AMessage.quotedMsgObj) then
-            begin
-              IdMensagemOrigem := AMessage.quotedMsgObj.id ;
-              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
-            end;
-          except
-            on E: Exception do
-              IdMensagemOrigem := '';
-          end;
-          if selectedButtonId = '' then
-            selectedButtonId := AMessage.selectedId;
-          if selectedButtonId <> '' then
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
-          frameMensagensRecebidas1.ed_profilePicThumbURL.Text :=
-            AChat.contact.profilePicThumb;
-          if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
-            TWPPConnect1.getProfilePicThumb(AChat.id);
-            //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
-          TWPPConnect1.ReadMessages(AChat.id);
-          // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
-          // VerificaPalavraChave(AMessage.body, '', telefone, contato);
-
-          if SwtChatGPT.IsOn then
+          for I := 0 to 29 do
           begin
-            if Question <> '' then
+            if MensagensArray[I] = AMessage.id then
             begin
-              //Créditos --> https://github.com/landgraf-dev/openai-delphi
-              Answer := AskQuestion(Question, AChat.id);
-              phoneNumber := Copy(Answer, 1, pos('#', Answer)-1);
-              Answer := StringReplace(Answer, phoneNumber + '#', '',[]);
-
-              if Trim(Answer) <> '' then
-                frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + Answer, 'createChat: true', '123')
-                //frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123')
-              else
-                frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + 'Could not retrieve an answer.', 'createChat: true', '123');
-
+              mensagemDuplicada := True;
+              //Forçar Marcar como Lida
+              TWPPConnect1.ReadMessages(AChat.id);
+              Break;
             end;
           end;
 
 
+          //AVALIAR MSG JÁ EM MEMÓRIA
+          if not (mensagemDuplicada) then
+          begin
+            if iPosicaoMsgArray <= 29 then
+            begin
+              MensagensArray[iPosicaoMsgArray] := AMessage.id;
+              iPosicaoMsgArray := iPosicaoMsgArray + 1;
+            end
+            else
+            begin
+              iPosicaoMsgArray := 0;
+              MensagensArray[iPosicaoMsgArray] := AMessage.id;
+            end;
+
+            Question := AMessage.body;
+
+            // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+            case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+              0: Extensao_Documento := 'mp3';
+              1: Extensao_Documento := 'jpg';
+              2: Extensao_Documento := 'mp4';
+              3: Extensao_Documento := 'mp3';
+              4:
+              begin
+                Extensao_Documento := ExtractFileExt(AMessage.filename);
+                Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+              end;
+              5: Extensao_Documento := 'jpg'; //'webp';
+            end;
+            //Novo 05/11/2022
+            Automato_Path := ExtractFilePath(ParamStr(0));
+
+            NomeArq_Whats := WPPConnectDecrypt.download(AMessage.deprecatedMms3Url,
+                            AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
+
+            SleepNoFreeze(100);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Chat Id: ' + AChat.id));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
+
+            selectedButtonId := AMessage.selectedButtonId;
+            try
+              if Assigned(AMessage.ListResponse) then
+                if Assigned(AMessage.ListResponse.singleSelectReply) then
+                begin
+                  selectedRowId := AMessage.ListResponse.singleSelectReply.selectedRowId;
+                  if selectedRowId <> '' then
+                    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedRowId: ' + selectedRowId));
+                end;
+            except on E: Exception do
+            end;
+            try
+              if Assigned(AMessage.quotedMsg) then
+              begin
+                quotedMsg_caption := AMessage.quotedMsg.Caption;
+                if Trim(quotedMsg_caption) = '' then
+                  if Assigned(AMessage.quotedMsg.list) then
+                    quotedMsg_caption := AMessage.quotedMsg.list.description;
+                if Trim(quotedMsg_caption) = '' then
+                  quotedMsg_caption := AMessage.quotedMsg.Body;
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+              end;
+              // Mensagem Original do Click do Botão
+            except
+              on E: Exception do
+                quotedMsg_caption := '';
+            end;
+            //Marcelo 25/07/2022 Unique ID Mensagem Origem
+            try
+              if Assigned(AMessage.quotedMsgObj) then
+              begin
+                IdMensagemOrigem := AMessage.quotedMsgObj.id ;
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+              end;
+            except
+              on E: Exception do
+                IdMensagemOrigem := '';
+            end;
+            if selectedButtonId = '' then
+              selectedButtonId := AMessage.selectedId;
+            if selectedButtonId <> '' then
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
+            frameMensagensRecebidas1.ed_profilePicThumbURL.Text := AChat.contact.profilePicThumb;
+            if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
+              TWPPConnect1.getProfilePicThumb(AChat.id);
+              //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
+
+            TWPPConnect1.ReadMessages(AChat.id);
+            // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
+            // VerificaPalavraChave(AMessage.body, '', telefone, contato);
+
+            if SwtChatGPT.IsOn then
+            begin
+              if Question <> '' then
+              begin
+                //Créditos --> https://github.com/landgraf-dev/openai-delphi
+                Answer := AskQuestion(Question, AChat.id);
+                phoneNumber := Copy(Answer, 1, pos('#', Answer)-1);
+                Answer := StringReplace(Answer, phoneNumber + '#', '',[]);
+
+                if Trim(Answer) <> '' then
+                  frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + Answer, 'createChat: true', '123')
+                  //frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123')
+                else
+                  frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + 'Could not retrieve an answer.', 'createChat: true', '123');
+
+              end;
+            end;
+
+          end;
         end
         else
         begin
-          {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (PChar('UniqueID: ' + AMessage.id));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (PChar('Tipo mensagem: ' + AMessage.&type));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (PChar('Chat Id: ' + AChat.id));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (StringReplace(AMessage.body, #$A, #13#10,
-            [rfReplaceAll, rfIgnoreCase]));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add
-            (PChar('ACK: ' + FloatToStr(AMessage.ack)));
+          if Assigned(AChat.chatlistPreview) then
+          begin
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
+          end;
+
+          {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('UniqueID: ' + AMessage.id));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Chat Id: ' + AChat.id));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
+
           selectedButtonId := AMessage.selectedButtonId;
           try
             quotedMsg_caption := AMessage.quotedMsg.Caption;
@@ -1319,6 +1525,7 @@ begin
 
           telefone := AMessage.sender.id;
           telefone := Copy(telefone, 3, Pos('@', telefone) - 3);
+          selectedButtonId := AMessage.selectedButtonId;
 
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('..::GRUPO::..'));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Id Grupo: ' + AChat.id));
@@ -1326,11 +1533,10 @@ begin
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  telefone: ' + Trim(telefone)));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Nome Contato: ' + Trim( IfThen(trim(AMessage.sender.PushName) <> EmptyStr, AMessage.sender.PushName, AMessage.sender.verifiedName) )));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
-
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  UniqueID: ' + AMessage.id));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Tipo mensagem: ' + AMessage.&type));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  ACK: ' + FloatToStr(AMessage.ack)));
-          selectedButtonId := AMessage.selectedButtonId;
+
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
         end;
       end;

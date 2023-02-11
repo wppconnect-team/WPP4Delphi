@@ -1677,14 +1677,23 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -1930,6 +1939,13 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
+          inherited btnMsgAll: TButton
+            ExplicitLeft = 5
+            ExplicitTop = 344
+          end
+          inherited btnDescricaoGrupo: TButton
+            ExplicitTop = 380
+          end
         end
       end
       inherited pnlEsquerda: TPanel
@@ -5621,6 +5637,7 @@ object frDemo: TfrDemo
     OnGetLastSeen = TWPPConnect1GetLastSeen
     OnGetPlatformFromMessage = TWPPConnect1GetPlatformFromMessage
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
+    OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     Left = 288
     Top = 472
   end
@@ -5642,5 +5659,19 @@ object frDemo: TfrDemo
     OnTimer = TimerCheckOnlineTimer
     Left = 632
     Top = 32
+  end
+  object TimerCopiarPastaCache: TTimer
+    Enabled = False
+    Interval = 120000
+    OnTimer = TimerCopiarPastaCacheTimer
+    Left = 736
+    Top = 16
+  end
+  object TimerRestauraPastaCache: TTimer
+    Enabled = False
+    Interval = 30000
+    OnTimer = TimerRestauraPastaCacheTimer
+    Left = 872
+    Top = 8
   end
 end

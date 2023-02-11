@@ -125,6 +125,7 @@ type
     property Result: String           read FResult;
     constructor Create(pAJsonString: string);
   end;
+
   TResponseBattery = class(TClassPadrao)//class(TClassPadraoString)
   private
     FResult: string;
@@ -442,6 +443,7 @@ type
     property imgFull: String      read FImgFull   write FImgFull;
     property tag:     String      read FTag       write FTag;
   end;
+
   TContactClass = class(TClassPadrao)
   private
     FId           : String;
@@ -791,6 +793,7 @@ type
     property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
     property list       : TListClass read FList       write FList;
   end;
+
   TMessagesClass = class(TClassPadrao)
   private
     FId              : String;
@@ -1221,6 +1224,7 @@ type
     property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
     //encFilehash
   end;
+
   TItemClass = class(TClassPadrao)
   private
     FArchiveAtMentionViewedInDrawer: Boolean;
@@ -1280,6 +1284,25 @@ type
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TRootClass;
   end;
+
+  TchatlistPreviewClass = class(TClassPadrao)
+  private
+    Ftype: String;
+    FmsgKey: String;
+    FparentMsgKey: String;
+    FreactionText: String;
+    Fsender: String;
+    Ftimestamp: Int64;
+
+  public
+    property &type              : String           read Ftype                     write Ftype;
+    property msgKey             : String           read FmsgKey                   write FmsgKey;
+    property parentMsgKey       : String           read FparentMsgKey             write FparentMsgKey;
+    property reactionText       : String           read FreactionText             write FreactionText;
+    property sender             : String           read Fsender                   write Fsender;
+    property timestamp          : Int64            read Ftimestamp                write Ftimestamp;
+  end;
+
   TChatClass = class(TClassPadraoList<TMessagesClass>)
   private
     FId             : String;
@@ -1337,6 +1360,7 @@ type
     F_phoneNumbers: TArray<String>;
     F_headerPhoneNumbers: TArray<String>;
     F_footerPhoneNumbers: TArray<String>;
+    FchatlistPreview: TchatlistPreviewClass;
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -1372,31 +1396,36 @@ type
     property tcTokenTimestamp    : Extended               read FtcTokenTimestamp               write FtcTokenTimestamp;
     property tcTokenSenderTimestamp : Extended            read FtcTokenSenderTimestamp         write FtcTokenSenderTimestamp;
     property endOfHistoryTransferType : Extended          read FendOfHistoryTransferType       write FendOfHistoryTransferType;
-    property formattedTitle              : string         read FformattedTitle                 write FformattedTitle;
+    property formattedTitle             : string          read FformattedTitle                 write FformattedTitle;
+
     property msgUnsyncedButtonReplyMsgs : TArray<TmsgUnsyncedButtonReplyMsgsClass> read FmsgUnsyncedButtonReplyMsgs write FmsgUnsyncedButtonReplyMsgs;
+
     //MARCELO 30/05/2022
     property pendingInitialLoading      : Boolean         read FpendingInitialLoading          write FpendingInitialLoading;
-    property tcToken: TtcTokenClass                       read FtcToken                        write FtcToken;
+    property tcToken                    : TtcTokenClass   read FtcToken                        write FtcToken;
 
     //Marcelo 14/08/2022
-    property msgRowOpaqueData : TmsgRowOpaqueDataClass    read FmsgRowOpaqueData               write FmsgRowOpaqueData;
-    property List             : TArray<TListClass>        read FListClass                      write FListClass;
-    property pollOptions      : TpollOptionsClass         read FpollOptions                    write FpollOptions;
-    property messageRangeIndex: String                    Read FmessageRangeIndex              Write FmessageRangeIndex;
-    property hydratedButtons  : TArray<ThydratedButtonsClass>     read FhydratedButtonsClass           write FhydratedButtonsClass;
-    property vcardWAids       : TArray<String>            read FvcardWAids                     write FvcardWAids;
-    property replyButtons     : TArray<TreplyButtonsClass> read FreplyButtonsClass              write FreplyButtonsClass;
-    property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
-    property labels:          TArray<String>  read FLabels             write FLabels;
-    property msgChunk:          TArray<String>  read FmsgChunk             write FmsgChunk;
-    property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
-    property senderObj: TArray<String> read FsenderObj write FsenderObj;
-    property _links: TArray<String> read F_links write F_links;
-    property _headerLinks: TArray<String> read F_headerLinks write F_headerLinks;
-    property _footerLinks: TArray<String> read F_footerLinks write F_footerLinks;
-    property _phoneNumbers: TArray<String> read F_phoneNumbers write F_phoneNumbers;
-    property _headerPhoneNumbers: TArray<String> read F_headerPhoneNumbers write F_headerPhoneNumbers;
-    property _footerPhoneNumbers: TArray<String> read F_footerPhoneNumbers write F_footerPhoneNumbers;
+    property msgRowOpaqueData   : TmsgRowOpaqueDataClass            read FmsgRowOpaqueData       write FmsgRowOpaqueData;
+    property List               : TArray<TListClass>                read FListClass              write FListClass;
+    property pollOptions        : TpollOptionsClass                 read FpollOptions            write FpollOptions;
+    property messageRangeIndex  : String                            Read FmessageRangeIndex      Write FmessageRangeIndex;
+    property hydratedButtons    : TArray<ThydratedButtonsClass>     read FhydratedButtonsClass   write FhydratedButtonsClass;
+    property vcardWAids         : TArray<String>                    read FvcardWAids             write FvcardWAids;
+    property replyButtons       : TArray<TreplyButtonsClass>        read FreplyButtonsClass      write FreplyButtonsClass;
+    property dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons    write FDynamicReplyButtons;
+    property labels             : TArray<String>                    read FLabels                 write FLabels;
+    property msgChunk           : TArray<String>                    read FmsgChunk               write FmsgChunk;
+    property mentionedJidList   : TArray<String>                    read FMentionedJidList       write FMentionedJidList;
+    property senderObj          : TArray<String>                    read FsenderObj              write FsenderObj;
+    property _links             : TArray<String>                    read F_links                 write F_links;
+    property _headerLinks       : TArray<String>                    read F_headerLinks           write F_headerLinks;
+    property _footerLinks       : TArray<String>                    read F_footerLinks           write F_footerLinks;
+    property _phoneNumbers      : TArray<String>                    read F_phoneNumbers          write F_phoneNumbers;
+    property _headerPhoneNumbers: TArray<String>                    read F_headerPhoneNumbers    write F_headerPhoneNumbers;
+    property _footerPhoneNumbers: TArray<String>                    read F_footerPhoneNumbers    write F_footerPhoneNumbers;
+
+    property chatlistPreview    : TchatlistPreviewClass             read FchatlistPreview        write FchatlistPreview;
+
   end;
 
   TChat3Class = class(TClassPadraoList<TMessagesClass>)
@@ -1627,6 +1656,17 @@ public
   destructor  Destroy;
   function ToJsonString: string;
   class function FromJsonString(AJsonString: string): TIncomingiCall;
+end;
+
+TQrCodeDesconectouErroCache = class(TClassPadrao)
+  private
+    FIsErroCache: Boolean;
+    FmsgErro: string;
+  public
+    property isErroCache:      Boolean    read FIsErroCache     write FIsErroCache;
+    property msgErro:          String     read FmsgErro         write FmsgErro;
+    constructor Create(pAJsonString: string);
+    destructor  Destroy;       override;
 end;
 
 TPlatformFromMessage = class(TClassPadrao)
@@ -3079,6 +3119,20 @@ begin
 end;
 
 
+
+{ TQrCodeDesconectouErroCache }
+
+constructor TQrCodeDesconectouErroCache.Create(pAJsonString: string);
+begin
+  FIsErroCache := True;
+  FmsgErro := 'Another connection wants to delete database wawc. Closing db now to resume the delete request.';
+end;
+
+destructor TQrCodeDesconectouErroCache.Destroy;
+begin
+
+  inherited;
+end;
 
 end.
 
