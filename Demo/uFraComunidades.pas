@@ -15,7 +15,7 @@
                                             Maio de 2022
 ####################################################################################################################}
 
-unit uFraGrupos;
+unit uFraComunidades;
 
 interface
 
@@ -26,17 +26,17 @@ uses
   Vcl.ExtDlgs;
 
 type
-  TframeGrupos = class(TFrame)
+  TframeComunidades = class(TFrame)
     pnlEsquerda: TPanel;
     gbNovoGrupo: TGroupBox;
-    edtNomeGrupo: TLabeledEdit;
-    edtTelefoneNovoParticipante: TLabeledEdit;
+    edtNomeComunidade: TLabeledEdit;
+    edtGrupoParticipante: TLabeledEdit;
     btnCriarGrupo: TBitBtn;
     ImageList1: TImageList;
     gbGrupos: TGroupBox;
-    listaGrupos: TListView;
+    listaComunidades: TListView;
     pnlTopoGrupos: TPanel;
-    btnListarGrupos: TBitBtn;
+    btnListarComunidades: TBitBtn;
     pnlGruposParticipantes: TPanel;
     GroupBox1: TGroupBox;
     gbAdmin: TGroupBox;
@@ -73,13 +73,13 @@ type
     btnDescricaoGrupo: TButton;
     Memo1: TMemo;
     Label2: TLabel;
-    edtIdGrupo: TEdit;
-    Label3: TLabel;
+    edtAddSubGrupo: TLabeledEdit;
+    Button1: TButton;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
-    procedure btnListarGruposClick(Sender: TObject);
+    procedure btnListarComunidadesClick(Sender: TObject);
     procedure btnAddPArticiClick(Sender: TObject);
-    procedure listaGruposClick(Sender: TObject);
+    procedure listaComunidadesClick(Sender: TObject);
     procedure listaParticipantesClick(Sender: TObject);
     procedure btnRemoveParticiClick(Sender: TObject);
     procedure btnPromoverClick(Sender: TObject);
@@ -95,6 +95,7 @@ type
     procedure btnAdminOnlyClick(Sender: TObject);
     procedure btnMsgAllClick(Sender: TObject);
     procedure btnDescricaoGrupoClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -107,7 +108,7 @@ implementation
 
 uses uFrDemo;
 
-procedure TframeGrupos.btnSairGrupoClick(Sender: TObject);
+procedure TframeComunidades.btnSairGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -121,7 +122,28 @@ begin
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
 end;
 
-procedure TframeGrupos.btnMsgAllClick(Sender: TObject);
+procedure TframeComunidades.Button1Click(Sender: TObject);
+begin
+   if not frDemo.TWPPConnect1.Auth then
+     Exit;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione a Comunidade na lista');
+    Abort;
+  end;
+
+  if edtAddSubGrupo.Text = '' then
+  begin
+    ShowMessage('Informe o Array com os Grupos que serão adicionado na Comunidade na lista no formatto ["1234567@g.us", "1234567@g.us"]');
+    edtAddSubGrupo.SetFocus;
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.addSubgroups(lbl_idgroup.caption, edtAddSubGrupo.Text);
+end;
+
+procedure TframeComunidades.btnMsgAllClick(Sender: TObject);
 begin
    if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -135,7 +157,7 @@ begin
 
   frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);end;
 
-procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
+procedure TframeComunidades.btnMudarImagemGrupoClick(Sender: TObject);
 var
   LNomeArquivo: String;
 begin
@@ -159,7 +181,7 @@ begin
   frDemo.TWPPConnect1.SetGroupPicture(lbl_idGroup.Caption, LNomeArquivo);
 end;
 
-procedure TframeGrupos.btnDeletarGrupoClick(Sender: TObject);
+procedure TframeComunidades.btnDeletarGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -173,7 +195,7 @@ begin
   frDemo.TWPPConnect1.groupDelete(lbl_idGroup.Caption);
 end;
 
-procedure TframeGrupos.btnAddPArticiClick(Sender: TObject);
+procedure TframeComunidades.btnAddPArticiClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -194,7 +216,7 @@ begin
   frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtNovoParticipante.text);
 end;
 
-procedure TframeGrupos.btnAdminOnlyClick(Sender: TObject);
+procedure TframeComunidades.btnAdminOnlyClick(Sender: TObject);
 begin
    if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -207,7 +229,7 @@ begin
 
   frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);end;
 
-procedure TframeGrupos.btnCancelaLinkClick(Sender: TObject);
+procedure TframeComunidades.btnCancelaLinkClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -221,31 +243,40 @@ begin
   frDemo.TWPPConnect1.GroupRemoveInviteLink(lbl_idGroup.Caption);
 end;
 
-procedure TframeGrupos.btnCriarGrupoClick(Sender: TObject);
+procedure TframeComunidades.btnCriarGrupoClick(Sender: TObject);
 begin
  if not frDemo.TWPPConnect1.Auth then
    Exit;
 
-  if edtnomeGrupo.Text = '' then
+  if edtnomeComunidade.Text = '' then
   begin
-    ShowMessage('Informe o Nome do Grupo');
-    edtnomeGrupo.SetFocus;
+    ShowMessage('Informe o Nome da Counidade');
+    edtnomeComunidade.SetFocus;
     Abort;
   end;
 
-  if edtTelefoneNovoParticipante.Text = '' then
+  if edtGrupoParticipante.Text = '' then
   begin
-    ShowMessage('Informe o Celular do Participante do Grupo');
-    edtTelefoneNovoParticipante.Text;
+    ShowMessage('Informe o IDs do Grupos Participante da Comunidade');
+    edtGrupoParticipante.Text;
     Abort;
   end;
 
-  frDemo.TWPPConnect1.createGroup(edtnomeGrupo.Text, edtTelefoneNovoParticipante.Text);
-  edtnomeGrupo.Clear;
-  edtTelefoneNovoParticipante.Clear;
+  if Trim(memo1.Text) = '' then
+  begin
+    ShowMessage('Informe a Descrição do Grupo');
+    memo1.SetFocus;
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.createcommunity(edtnomeComunidade.Text, Memo1.Text, edtGrupoParticipante.Text);
+
+  //edtnomeComunidade.Clear;
+  //edtGrupoParticipante.Clear;
+  //memo1.Lines.Clear;
 end;
 
-procedure TframeGrupos.btnDescricaoGrupoClick(Sender: TObject);
+procedure TframeComunidades.btnDescricaoGrupoClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -265,7 +296,7 @@ begin
   frDemo.TWPPConnect1.SetGroupDescription(lbl_idGroup.Caption, memo1.Text);
 end;
 
-procedure TframeGrupos.btnDespromoverClick(Sender: TObject);
+procedure TframeComunidades.btnDespromoverClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -279,7 +310,7 @@ begin
   frDemo.TWPPConnect1.GroupDemoteParticipant(lbl_idGroup.Caption, lblIdParticipante.caption);
 end;
 
-procedure TframeGrupos.btnEntrarLinkClick(Sender: TObject);
+procedure TframeComunidades.btnEntrarLinkClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -287,7 +318,7 @@ begin
   frDemo.TWPPConnect1.groupJoinViaLink(edtLinkConvite.Text);
 end;
 
-procedure TframeGrupos.btnGerarLinkConviteClick(Sender: TObject);
+procedure TframeComunidades.btnGerarLinkConviteClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then    Exit;
 
@@ -300,15 +331,15 @@ begin
   frDemo.TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);
 end;
 
-procedure TframeGrupos.btnListarGruposClick(Sender: TObject);
+procedure TframeComunidades.btnListarComunidadesClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
 
-  frDemo.TWPPConnect1.getAllGroups;
+  frDemo.TWPPConnect1.getAllCommunitys;
 end;
 
-procedure TframeGrupos.btnPromoverClick(Sender: TObject);
+procedure TframeComunidades.btnPromoverClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -322,7 +353,7 @@ begin
   frDemo.TWPPConnect1.groupPromoteParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
 end;
 
-procedure TframeGrupos.btnRemoveParticiClick(Sender: TObject);
+procedure TframeComunidades.btnRemoveParticiClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
@@ -336,7 +367,7 @@ begin
   frDemo.TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
 end;
 
-procedure TframeGrupos.btnCriarVotacaoClick(Sender: TObject);
+procedure TframeComunidades.btnCriarVotacaoClick(Sender: TObject);
 var
   LDescricao: String;
   LOpcoes: String;
@@ -365,7 +396,7 @@ begin
 
 end;
 
-procedure TframeGrupos.listaAdministradoresClick(Sender: TObject);
+procedure TframeComunidades.listaAdministradoresClick(Sender: TObject);
 begin
   if listaAdministradores.ItemIndex <>  - 1 then
   begin
@@ -374,14 +405,12 @@ begin
   end;
 end;
 
-procedure TframeGrupos.listaGruposClick(Sender: TObject);
+procedure TframeComunidades.listaComunidadesClick(Sender: TObject);
 begin
- if listaGrupos.ItemIndex <>  - 1 then
+ if listaComunidades.ItemIndex <>  - 1 then
   begin
-    lbl_idGroup.Caption :=  Copy(listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1], 0,
-      Pos('@', listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1]))+'g.us';
-
-    edtIdGrupo.Text := lbl_idGroup.Caption;
+    lbl_idGroup.Caption :=  Copy(listaComunidades.Items[listaComunidades.Selected.Index].SubItems[1], 0,
+      Pos('@', listaComunidades.Items[listaComunidades.Selected.Index].SubItems[1]))+'g.us';
 
     if not frDemo.TWPPConnect1.Auth then
       Exit;
@@ -392,7 +421,7 @@ begin
   end;
 end;
 
-procedure TframeGrupos.listaParticipantesClick(Sender: TObject);
+procedure TframeComunidades.listaParticipantesClick(Sender: TObject);
 begin
   if listaParticipantes.ItemIndex <>  - 1 then
   begin
@@ -401,7 +430,7 @@ begin
   end;
 end;
 
-procedure TframeGrupos.SpeedButton1Click(Sender: TObject);
+procedure TframeComunidades.SpeedButton1Click(Sender: TObject);
 begin
   Clipboard.AsText:= lbl_idGroup.Caption;
 end;

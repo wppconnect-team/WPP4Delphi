@@ -25,7 +25,7 @@ uses
   uTWPPConnect.Config, uTWPPConnect.Classes,
   uTWPPConnect.Emoticons, Clipbrd,
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
-  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos,
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos, uFraComunidades,
   uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
   uFraOutros, uTWPPConnect.ChatList, OpenAIClient, OpenAIDtos;
 type
@@ -60,6 +60,7 @@ type
     Label1: TLabel;
     TimerCopiarPastaCache: TTimer;
     TimerRestauraPastaCache: TTimer;
+    frameComunidades1: TframeComunidades;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -132,6 +133,9 @@ type
     procedure TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
     procedure TimerCopiarPastaCacheTimer(Sender: TObject);
     procedure TimerRestauraPastaCacheTimer(Sender: TObject);
+    procedure frameComunidades1btnCriarGrupoClick(Sender: TObject);
+    procedure frameComunidades1btnListarComunidadesClick(Sender: TObject);
+    procedure TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -155,6 +159,7 @@ type
     procedure AddChatList(ANumber: String);
     procedure AddContactList(ANumber: String);
     procedure AddGroupList(ANumber: string);
+    procedure AddCommunityList(ANumber: string);
     procedure AddGroupAdmins(ANumber: string);
     procedure AddGroupContacts(ANumber: string);
     function VerificaPalavraChave(pMensagem, pSessao, pTelefone,
@@ -254,6 +259,17 @@ begin
   Item.SubItems.Add(Item.Caption + 'SubItem 2');
   Item.ImageIndex := 2;
 end;
+procedure TfrDemo.AddCommunityList(ANumber: string);
+var
+  Item: TListItem;
+begin
+  Item := frameComunidades1.listaComunidades.Items.Add;
+  Item.Caption := ANumber;
+  Item.SubItems.Add(Item.Caption + 'SubItem 1');
+  Item.SubItems.Add(Item.Caption + 'SubItem 2');
+  Item.ImageIndex := 0;
+end;
+
 procedure TfrDemo.AddContactList(ANumber: String);
 var
   Item: TListItem;
@@ -270,7 +286,10 @@ procedure TfrDemo.AddGroupAdmins(ANumber: string);
 var
   Item: TListItem;
 begin
-  Item := frameGrupos1.listaAdministradores.Items.Add;
+  if frameComunidades1.Visible = True then
+    Item := frameComunidades1.listaAdministradores.Items.Add
+  else
+    Item := frameGrupos1.listaAdministradores.Items.Add;
   Item.Caption := ANumber;
   Item.SubItems.Add(Item.Caption + 'SubItem 1');
   Item.SubItems.Add(Item.Caption + 'SubItem 2');
@@ -280,7 +299,10 @@ procedure TfrDemo.AddGroupContacts(ANumber: string);
 var
   Item: TListItem;
 begin
-  Item := frameGrupos1.listaParticipantes.Items.Add;
+  if frameComunidades1.Visible = True then
+    Item := frameComunidades1.listaParticipantes.Items.Add
+  else
+    Item := frameGrupos1.listaParticipantes.Items.Add;
   Item.Caption := ANumber;
   Item.SubItems.Add(Item.Caption + 'SubItem 1');
   Item.SubItems.Add(Item.Caption + 'SubItem 2');
@@ -483,6 +505,7 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items1Click(Sender: TObject);
 begin
@@ -493,6 +516,7 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items2Click(Sender: TObject);
 begin
@@ -503,6 +527,7 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items3Click(Sender: TObject);
 begin
@@ -513,6 +538,7 @@ begin
   frameMensagensEnviadas1.Visible:= True;
   frameCatalogo1.Visible:= False;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items4Click(Sender: TObject);
 begin
@@ -523,6 +549,7 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items5Click(Sender: TObject);
 begin
@@ -533,6 +560,7 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= True;
   frameOutros1.Visible:= False;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items6Click(Sender: TObject);
 begin
@@ -543,10 +571,18 @@ begin
   frameMensagensEnviadas1.Visible:= False;
   frameCatalogo1.Visible:= False;
   frameOutros1.VIsible:= True;
+  frameComunidades1.Visible := False;
 end;
 procedure TfrDemo.ctbtnCategories0Items7Click(Sender: TObject);
 begin
-//
+  frameLogin1.Visible := False;
+  frameMensagem1.Visible := False;
+  frameGrupos1.Visible := False;
+  frameMensagensRecebidas1.Visible:= False;
+  frameMensagensEnviadas1.Visible:= False;
+  frameCatalogo1.Visible:= False;
+  frameOutros1.Visible:= False;
+  frameComunidades1.Visible := True;
 end;
 
 procedure TfrDemo.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -584,6 +620,18 @@ procedure TfrDemo.frameCatalogo1Button1Click(Sender: TObject);
 begin
   frameCatalogo1.Button1Click(Sender);
 end;
+procedure TfrDemo.frameComunidades1btnCriarGrupoClick(Sender: TObject);
+begin
+  frameComunidades1.btnCriarGrupoClick(Sender);
+
+end;
+
+procedure TfrDemo.frameComunidades1btnListarComunidadesClick(Sender: TObject);
+begin
+  frameComunidades1.btnListarComunidadesClick(Sender);
+
+end;
+
 procedure TfrDemo.frameLogin1SpeedButton1Click(Sender: TObject);
 begin
   if not TWPPConnect1.Auth(False) then
@@ -865,11 +913,25 @@ begin
   frameLogin1.SpeedButton3.Enabled := True;
   ShowMessage('Conexão foi finalizada pelo celular');
 end;
+
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
   const PError, PInfoAdc: string);
 begin
   raise Exception.Create(PError + ' - ' + PInfoAdc);
 end;
+
+procedure TfrDemo.TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
+var
+  i: integer;
+begin
+  frameComunidades1.listaComunidades.Clear;
+  for i := 0 to (AllCommunitys.Numbers.count) - 1 do
+  begin
+    AddCommunityList(AllCommunitys.Numbers[i])
+  end;
+
+end;
+
 procedure TfrDemo.TWPPConnect1GetAllContactList(const AllContacts
   : TRetornoAllContacts);
 var
@@ -892,6 +954,17 @@ begin
   begin
     AddGroupAdmins(AllGroups.Numbers[i])
   end;
+
+  //Marcelo 11/02/2023
+  if frameComunidades1.Visible = True then
+  begin
+    frameComunidades1.listaAdministradores.Clear;
+    for i := 0 to (AllGroups.Numbers.count) - 1 do
+    begin
+      AddGroupAdmins(AllGroups.Numbers[i])
+    end;
+  end;
+
 end;
 procedure TfrDemo.TWPPConnect1GetAllGroupContacts(const Contacts
   : TClassAllGroupContacts);

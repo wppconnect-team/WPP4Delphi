@@ -1677,9 +1677,6 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
@@ -1939,13 +1936,6 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
-          inherited btnMsgAll: TButton
-            ExplicitLeft = 5
-            ExplicitTop = 344
-          end
-          inherited btnDescricaoGrupo: TButton
-            ExplicitTop = 380
-          end
         end
       end
       inherited pnlEsquerda: TPanel
@@ -2007,6 +1997,101 @@ object frDemo: TfrDemo
     Caption = 'Reiniciar WhatsApp Web'
     TabOrder = 10
     OnClick = BitBtn1Click
+  end
+  inline frameComunidades1: TframeComunidades
+    Left = 200
+    Top = 113
+    Width = 1008
+    Height = 595
+    Align = alClient
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Roboto'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 11
+    Visible = False
+    ExplicitLeft = 200
+    ExplicitTop = 113
+    ExplicitWidth = 1008
+    ExplicitHeight = 595
+    inherited ScrollBox1: TScrollBox
+      Width = 1008
+      Height = 595
+      ExplicitWidth = 1008
+      ExplicitHeight = 595
+      inherited gbGrupos: TGroupBox
+        Height = 585
+        ExplicitHeight = 585
+        inherited pnlTopoGrupos: TPanel
+          inherited btnListarComunidades: TBitBtn
+            OnClick = frameComunidades1btnListarComunidadesClick
+          end
+        end
+        inherited gbacoes: TGroupBox
+          Height = 411
+          ExplicitHeight = 411
+        end
+      end
+      inherited pnlEsquerda: TPanel
+        Height = 585
+        ExplicitHeight = 585
+        inherited gbNovoGrupo: TGroupBox
+          inherited edtNomeComunidade: TLabeledEdit
+            EditLabel.ExplicitWidth = 87
+          end
+          inherited btnCriarGrupo: TBitBtn
+            OnClick = frameComunidades1btnCriarGrupoClick
+          end
+        end
+      end
+      inherited pnlGruposParticipantes: TPanel
+        Width = 474
+        Height = 585
+        ExplicitWidth = 474
+        ExplicitHeight = 585
+        inherited GroupBox1: TGroupBox
+          Width = 468
+          Height = 579
+          ExplicitWidth = 468
+          ExplicitHeight = 579
+          inherited gbAdmin: TGroupBox
+            Width = 458
+            ExplicitWidth = 458
+            inherited listaAdministradores: TListView
+              Width = 448
+              ExplicitWidth = 448
+            end
+          end
+          inherited gbParticipantes: TGroupBox
+            Width = 458
+            Height = 420
+            ExplicitWidth = 458
+            ExplicitHeight = 420
+            inherited lblIdParticipante: TLabel
+              Width = 448
+            end
+            inherited listaParticipantes: TListView
+              Width = 414
+              Height = 327
+              ExplicitWidth = 414
+              ExplicitHeight = 327
+            end
+            inherited pnlParticipantesBotoes: TPanel
+              Left = 422
+              Height = 333
+              ExplicitLeft = 422
+              ExplicitHeight = 333
+            end
+            inherited pnltopopartici: TPanel
+              Width = 448
+              ExplicitWidth = 448
+            end
+          end
+        end
+      end
+    end
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
@@ -5601,6 +5686,7 @@ object frDemo: TfrDemo
     FormQrCodeType = Ft_Http
     OnGetAllContactList = TWPPConnect1GetAllContactList
     OnGetAllGroupList = TWPPConnect1GetAllGroupList
+    OnGetAllCommunitys = TWPPConnect1GetAllCommunitys
     OnGetAllGroupAdmins = TWPPConnect1GetAllGroupAdmins
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
