@@ -1,4 +1,4 @@
-object frameGrupos: TframeGrupos
+object frameComunidades: TframeComunidades
   Left = 0
   Top = 0
   Width = 934
@@ -24,9 +24,9 @@ object frameGrupos: TframeGrupos
       Width = 263
       Height = 590
       Align = alLeft
-      Caption = 'Grupos'
+      Caption = 'Comunidades'
       TabOrder = 0
-      object listaGrupos: TListView
+      object listaComunidades: TListView
         AlignWithMargins = True
         Left = 5
         Top = 59
@@ -41,7 +41,7 @@ object frameGrupos: TframeGrupos
         StateImages = ImageList1
         TabOrder = 0
         ViewStyle = vsSmallIcon
-        OnClick = listaGruposClick
+        OnClick = listaComunidadesClick
       end
       object pnlTopoGrupos: TPanel
         AlignWithMargins = True
@@ -52,16 +52,16 @@ object frameGrupos: TframeGrupos
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        object btnListarGrupos: TBitBtn
+        object btnListarComunidades: TBitBtn
           AlignWithMargins = True
           Left = 3
           Top = 3
           Width = 247
           Height = 30
           Align = alTop
-          Caption = 'Listar Grupos'
+          Caption = 'Listar Comunidades'
           TabOrder = 0
-          OnClick = btnListarGruposClick
+          OnClick = btnListarComunidadesClick
         end
       end
       object gbacoes: TGroupBox
@@ -70,7 +70,7 @@ object frameGrupos: TframeGrupos
         Width = 259
         Height = 416
         Align = alClient
-        Caption = 'A'#231#245'es para Grupos'
+        Caption = 'A'#231#245'es para Comunidades'
         TabOrder = 2
         object btnCriarVotacao: TButton
           AlignWithMargins = True
@@ -118,7 +118,7 @@ object frameGrupos: TframeGrupos
           Width = 249
           Height = 30
           Align = alTop
-          Caption = 'Sair do Grupo'
+          Caption = 'Sair da Comunidade'
           ImageIndex = 6
           Images = ImageList1
           TabOrder = 2
@@ -131,7 +131,7 @@ object frameGrupos: TframeGrupos
           Width = 249
           Height = 30
           Align = alTop
-          Caption = 'Deletar Grupo'
+          Caption = 'Deletar Comunidade'
           ImageIndex = 7
           Images = ImageList1
           TabOrder = 3
@@ -170,7 +170,7 @@ object frameGrupos: TframeGrupos
           Width = 249
           Height = 30
           Align = alTop
-          Caption = 'Mudar Imagem do Grupo'
+          Caption = 'Mudar Imagem da Comunidade'
           ImageIndex = 12
           Images = ImageList1
           TabOrder = 7
@@ -205,7 +205,7 @@ object frameGrupos: TframeGrupos
           Width = 249
           Height = 30
           Align = alTop
-          Caption = 'Descri'#231#227'o do Grupo'
+          Caption = 'Descri'#231#227'o da Comunidade'
           TabOrder = 10
           OnClick = btnDescricaoGrupoClick
         end
@@ -266,16 +266,9 @@ object frameGrupos: TframeGrupos
       object Label2: TLabel
         Left = 12
         Top = 342
-        Width = 114
+        Width = 150
         Height = 15
-        Caption = 'Descri'#231#227'o do Grupo'
-      end
-      object Label3: TLabel
-        Left = 12
-        Top = 500
-        Width = 66
-        Height = 15
-        Caption = 'Id do Grupo'
+        Caption = 'Descri'#231#227'o da Comunidade'
       end
       object gbNovoGrupo: TGroupBox
         AlignWithMargins = True
@@ -284,27 +277,28 @@ object frameGrupos: TframeGrupos
         Width = 243
         Height = 150
         Align = alTop
-        Caption = 'Criar Novo Grupo'
+        Caption = 'Criar Nova Comunidade'
         TabOrder = 0
-        object edtNomeGrupo: TLabeledEdit
+        object edtNomeComunidade: TLabeledEdit
           Left = 3
           Top = 40
           Width = 232
           Height = 23
-          EditLabel.Width = 89
+          EditLabel.Width = 125
           EditLabel.Height = 15
-          EditLabel.Caption = 'Nome do Grupo'
+          EditLabel.Caption = 'Nome da Comunidade'
           TabOrder = 0
         end
-        object edtTelefoneNovoParticipante: TLabeledEdit
+        object edtGrupoParticipante: TLabeledEdit
           Left = 3
           Top = 88
           Width = 232
           Height = 23
-          EditLabel.Width = 139
+          EditLabel.Width = 203
           EditLabel.Height = 15
-          EditLabel.Caption = 'Telefone do Participante'
+          EditLabel.Caption = 'Array IDs dos Grupos Participantes'
           TabOrder = 1
+          TextHint = '["123456@g.us", "123456@g.us"]'
         end
         object btnCriarGrupo: TBitBtn
           AlignWithMargins = True
@@ -313,7 +307,7 @@ object frameGrupos: TframeGrupos
           Width = 233
           Height = 25
           Align = alBottom
-          Caption = 'Criar Grupo'
+          Caption = 'Criar Comunidade'
           TabOrder = 2
           OnClick = btnCriarGrupoClick
         end
@@ -364,12 +358,26 @@ object frameGrupos: TframeGrupos
         Height = 126
         TabOrder = 3
       end
-      object edtIdGrupo: TEdit
+      object edtAddSubGrupo: TLabeledEdit
         Left = 12
-        Top = 519
-        Width = 226
+        Top = 523
+        Width = 232
         Height = 23
+        EditLabel.Width = 124
+        EditLabel.Height = 15
+        EditLabel.Caption = 'Array IDs dos Grupos'
         TabOrder = 4
+        TextHint = '["1234567@g.us", "1234567@g.us"]'
+      end
+      object Button1: TButton
+        AlignWithMargins = True
+        Left = 8
+        Top = 552
+        Width = 236
+        Height = 30
+        Caption = 'Adicionar SubGrupos'
+        TabOrder = 5
+        OnClick = Button1Click
       end
     end
     object pnlGruposParticipantes: TPanel

@@ -75,7 +75,7 @@ Const
   TWPPConnectJS_JSLinhasMInimas         = 16242; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2306.7';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2307.5';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -134,6 +134,12 @@ Const
   FrmConsole_JS_VAR_getProfilePicThumb      = 'window.WAPI.teste("<#PROFILE_PICTHUMB_URL#>");';
   //MARCELO 02/05/2022
   FrmConsole_JS_VAR_getProfilePicture       = 'WPP.contact.getProfilePicture("<#PHONE#>");';
+
+  //Add Marcelo 11/02/2023
+  FrmConsole_JS_GetAllCommunitys            = 'window.WAPI.getAllCommunitys();';
+  FrmConsole_JS_VAR_CreateCommunity         = 'WPP.community.create("<#COMMUNITY_NAME#>", "<#DESCRIPTION#>", <#GROUP_NUMBERS#>);setTimeout(function(){ window.WAPI.getAllCommunitys(); }, 3000);';
+  FrmConsole_JS_VAR_addSubgroups            = 'WPP.community.addSubgroups("<#COMMUNITY#>", <#GROUP_NUMBERS#>);setTimeout(function(){ window.WAPI.getAllCommunitys(); }, 3000);';
+
   FrmConsole_JS_VAR_CreateGroup             = 'WPP.group.create("<#GROUP_NAME#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
   FrmConsole_JS_VAR_GroupMsgAdminOnly       = 'WPP.group.setProperty("<#GROUP_ID#>", ''announcement'', true);';
   FrmConsole_JS_VAR_GroupMsgAll             = 'WPP.group.setProperty("<#GROUP_ID#>", ''announcement'', false);';
@@ -429,6 +435,7 @@ type
                    , Th_sendVCardContactMessageEx=62 //Marcelo 16/01/2023
                    , Th_getHistorySyncProgress=63 //Marcelo 17/01/2023
                    , Th_QrCodeDesconectouErroCache=64 //Marcelo 06/02/2023
+                   , Th_getAllcommunitys=65 //Marcelo 11/02/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -566,7 +573,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 64; //Marcelo 06/02/2023
+const LmaxCount = 65; //Marcelo 06/02/2023
 var
   I: Integer;
   LNome: String;

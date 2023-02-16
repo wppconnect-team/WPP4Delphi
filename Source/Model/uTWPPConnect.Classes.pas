@@ -190,6 +190,7 @@ type
   Public
     Property Result : Boolean  Read FResult  Write FResult;
   end;
+
   TMediaDataPreviewClass = class(TClassPadrao)
   Private
     F_retainCount      : Integer;
@@ -232,6 +233,7 @@ type
      property released            : Boolean              Read Freleased                 Write Freleased;
      property _blob               : TMediaData_BlobClass Read F_blob                    Write F_blob;
   end;
+
   TMediaDataClass = class(TClassPadrao)
   Private
      Ftype                  : String;
@@ -276,6 +278,7 @@ type
      property isVcardOverMmsDocument : Boolean       read FisVcardOverMmsDocument      write FisVcardOverMmsDocument;
      property renderableUrl          : String        Read FrenderableUrl               Write FrenderableUrl;
   end;
+
   TResponseMyNumber = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
@@ -879,6 +882,7 @@ type
     Ffooter: string;
     Ftitle: string;
     FlistResponse: TlistResponseClass;
+    FgroupMentions: TArray<String>;
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -906,6 +910,7 @@ type
     property labels     : TArray<String>      read FLabels             write FLabels;
     property mediaData  : TMediaDataClass     read FMediaData          write FMediaData;
     property mentionedJidList: TArray<String> read FMentionedJidList   write FMentionedJidList;
+    property groupMentions: TArray<String> read FgroupMentions   write FgroupMentions; //Marcelo 15/02/2023
     // Temis 03/10-2022
     property CardList   : TArray<TCardClass>  read fVCardLIst          write FVCardList;
     property buttons    : TArray<TButtonsClass>  read FButtons         write FButtons;
@@ -1721,6 +1726,16 @@ end;
 //Public
 //  constructor Create(pAJsonString: string);
 //end;
+
+TRetornoAllCommunitys = class(TClassPadrao)
+  private
+    FNumbers: TStringList;
+  public
+    property    Numbers: TStringList   read FNumbers write FNumbers;
+    constructor Create(pAJsonString: string);
+    destructor Destroy; override;
+end;
+
 TRetornoAllGroups = class(TClassPadrao)
   private
     FNumbers: TStringList;
@@ -2700,7 +2715,7 @@ var
   lAJsonObj: TJSONValue;
   lAJsonObj2: TJSONValue;
 begin
-  inherited Create(pAJsonString);
+  //inherited Create(pAJsonString);
   FNumbers      := TStringList.create;
   FNumbers.Text := FJsonString;
   //Quebrar linhas de acordo com cada valor separado por virgula
@@ -2717,7 +2732,7 @@ begin
     if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
       vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
-      inherited Create(vJson);
+      //inherited Create(vJson);
       FNumbers      := TStringList.create;
       FNumbers.Text := vJson;
       //Quebrar linhas de acordo com cada valor separado por virgula
@@ -3132,6 +3147,49 @@ destructor TQrCodeDesconectouErroCache.Destroy;
 begin
 
   inherited;
+end;
+
+{ TRetornoAllCommunitys }
+
+constructor TRetornoAllCommunitys.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+begin
+  //inherited Create(pAJsonString);
+  FNumbers      := TStringList.create;
+  FNumbers.Text := FJsonString;
+  //Quebrar linhas de acordo com cada valor separado por virgula
+  FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+  FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+  FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+  FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+
+  if Trim(FNumbers.Text) = '' then
+  begin
+    vJson := pAJsonString;
+    lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+    begin
+      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+      //inherited Create(vJson);
+      FNumbers      := TStringList.create;
+      FNumbers.Text := vJson;
+      //Quebrar linhas de acordo com cada valor separado por virgula
+      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    end;
+  end;
+end;
+
+destructor TRetornoAllCommunitys.Destroy;
+begin
+  inherited;
+  Freeandnil(FNumbers);
 end;
 
 end.

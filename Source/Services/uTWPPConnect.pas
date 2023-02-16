@@ -65,6 +65,7 @@ type
   TGetMessages              = procedure(Const Chats: TChatList3) of object; //14/08/2022
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
+  TOnAllCommunitys          = procedure(Const AllCommunitys: TRetornoAllCommunitys) of object;
   TOnAllGroups              = procedure(Const AllGroups: TRetornoAllGroups) of object;
   TOnAllGroupContacts       = procedure(Const Contacts: TClassAllGroupContacts) of object;
   TOnAllGroupAdmins         = procedure(Const AllGroups: TRetornoAllGroupAdmins) of object;
@@ -162,6 +163,7 @@ type
     FOnGetAllGroupContacts      : TOnAllGroupContacts;
     FOnGetAllContactList        : TOnAllContacts;
     FOnGetAllGroupList          : TOnAllGroups;
+    FOnGetAllCommunitys          : TOnAllCommunitys;
     FOnGetAllGroupAdmins        : TOnAllGroupAdmins;
     FOnLowBattery               : TNotifyEvent;
     FOnGetBatteryLevel          : TNotifyEvent;
@@ -317,6 +319,7 @@ type
     procedure CheckIsConnected;
     procedure GetAllContacts;
     procedure GetAllGroups;
+    procedure GetAllCommunitys;
     procedure GroupAddParticipant(PIDGroup, PNumber: string);
     procedure GroupRemoveParticipant(PIDGroup, PNumber: string);
     procedure GroupPromoteParticipant(PIDGroup, PNumber: string);
@@ -357,6 +360,8 @@ type
     function  CheckDelivered: String;
     procedure getProfilePicThumb(AProfilePicThumbURL: string);
     procedure createGroup(PGroupName, PParticipantNumber: string);
+    procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
+    procedure addSubgroups(PCommunity, PGroupNumbers: string);
     procedure listGroupContacts(PIDGroup: string);
     Property  BatteryLevel      : Integer              Read FGetBatteryLevel;
     Property  IsConnected       : Boolean              Read FGetIsConnected;
@@ -387,6 +392,7 @@ type
     property LanguageInject              : TLanguageInject            read FLanguageInject                 Write SetLanguageInject                   Default TL_Portugues_BR;
     property OnGetAllContactList         : TOnAllContacts             read FOnGetAllContactList            write FOnGetAllContactList;
     property OnGetAllGroupList           : TOnAllGroups               read FOnGetAllGroupList              write FOnGetAllGroupList;
+    property OnGetAllCommunitys          : TOnAllCommunitys           read FOnGetAllCommunitys             write FOnGetAllCommunitys;
     property OnGetAllGroupAdmins         : TOnAllGroupAdmins          read FOnGetAllGroupAdmins            write FOnGetAllGroupAdmins;
     property OnAfterInjectJS             : TNotifyEvent               read FOnAfterInjectJs                write FOnAfterInjectJs;
     property OnAfterInitialize           : TNotifyEvent               read FOnAfterInitialize              write FOnAfterInitialize;
@@ -484,6 +490,53 @@ begin
   //Não Habilitar Função deprecated GetBatteryLevel
   //if Assigned(FrmConsole) then
      //FrmConsole.GetBatteryLevel;
+end;
+
+procedure TWPPConnect.addSubgroups(PCommunity, PGroupNumbers: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  {PGroupNumbers := AjustNumber.FormatIn(PGroupNumbers);
+  if pos('@', PGroupNumbers) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PParticipantNumber);
+    Exit;
+  end;}
+
+  if Trim(PCommunity) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PCommunity);
+    Exit;
+  end;
+
+  if Trim(PGroupNumbers) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PGroupNumbers);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.addSubgroups(PCommunity, PGroupNumbers);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 procedure TWPPConnect.ArquivarChat(PIDContato: String);
@@ -834,6 +887,59 @@ begin
 
 end;
 
+procedure TWPPConnect.createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  {PGroupNumbers := AjustNumber.FormatIn(PGroupNumbers);
+  if pos('@', PGroupNumbers) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PParticipantNumber);
+    Exit;
+  end;}
+
+  if Trim(PcommunityName) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PcommunityName);
+    Exit;
+  end;
+
+  if Trim(Pdescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, Pdescription);
+    Exit;
+  end;
+
+  if Trim(PGroupNumbers) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PGroupNumbers);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.createcommunity(PcommunityName, Pdescription, PGroupNumbers);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.createGroup(PGroupName, PParticipantNumber: string);
 var
   lThread : TThread;
@@ -1125,6 +1231,12 @@ begin
   if Assigned(FTimerCheckWPPCrash) then
     FreeAndNil(FTimerCheckWPPCrash);
   inherited;
+end;
+
+procedure TWPPConnect.GetAllCommunitys;
+begin
+  if Assigned(FrmConsole) then
+     FrmConsole.GetAllCommunitys;
 end;
 
 procedure TWPPConnect.GetAllContacts;
@@ -2349,9 +2461,15 @@ begin
   end;
 
   if PTypeHeader = Th_getAllGroups then
-  Begin
+  begin
     if Assigned(FOnGetAllGroupList) then
       FOnGetAllGroupList(TRetornoAllGroups(PReturnClass))
+  end;
+
+  if PTypeHeader = Th_getAllCommunitys then
+  begin
+    if Assigned(FOnGetAllCommunitys) then
+      FOnGetAllCommunitys(TRetornoAllCommunitys(PReturnClass))
   end;
 
   if PTypeHeader = Th_getAllGroupAdmins then

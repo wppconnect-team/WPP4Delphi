@@ -129,6 +129,7 @@ type
     FMonitorLowBattry       : Boolean;
     FgettingContact         : Boolean;
     FgettingGroups          : Boolean;
+    FgettingCommunitys       : Boolean;
     FgettingChats           : Boolean;
     FOnErrorInternal        : TOnErroInternal;
     FOwner                  : TComponent;
@@ -252,6 +253,7 @@ type
     procedure StopWebBrowser;
     procedure GetAllContacts(PIgnorarLeitura1: Boolean = False);
     procedure GetAllGroups(PIgnorarLeitura1: Boolean = False);
+    procedure GetAllCommunitys(PIgnorarLeitura1: Boolean = False);
     procedure GroupAddParticipant(vIDGroup, vNumber: string);
     procedure GroupRemoveParticipant(vIDGroup, vNumber: string);
     procedure GroupPromoteParticipant(vIDGroup, vNumber: string);
@@ -285,6 +287,8 @@ type
     procedure CheckIsConnected;
     procedure GetMyNumber;
     procedure CreateGroup(vGroupName, PParticipantNumber: string);
+    procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
+    procedure addSubgroups(PCommunity, PGroupNumbers: string);
     procedure listGroupContacts(vIDGroup: string);
     procedure listGroupAdmins(vIDGroup: string);
 
@@ -311,6 +315,19 @@ uses
   uTWPPConnect.ChatList;
 
 {$R *.dfm}
+
+procedure TFrmConsole.addSubgroups(PCommunity, PGroupNumbers: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_addSubgroups;
+  FrmConsole_JS_AlterVar(LJS, '#COMMUNITY#', Trim(PCommunity));
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_NUMBERS#', Trim(PGroupNumbers));
+  ExecuteJS(LJS, true);
+end;
 
 procedure TFrmConsole.App_EventMinimize(Sender: TObject);
 begin
@@ -571,6 +588,18 @@ begin
   Except
     FrmQRCode.SetView(FrmQRCode.Timg_Animacao);
   end;
+end;
+
+procedure TFrmConsole.GetAllCommunitys(PIgnorarLeitura1: Boolean);
+begin
+  if PIgnorarLeitura1 then
+  Begin
+    ReleaseConnection;
+    Exit;
+  End;
+
+  FgettingCommunitys := True;
+  FrmConsole.ExecuteJS(FrmConsole_JS_GetAllCommunitys, False);
 end;
 
 procedure TFrmConsole.GetAllContacts(PIgnorarLeitura1: Boolean = False);
@@ -1725,6 +1754,15 @@ begin
                           end;
                         end;
 
+    Th_getAllCommunitys : begin
+                            LOutClass := TRetornoAllCommunitys.Create(LResultStr);
+                          try
+                            SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                          finally
+                            FreeAndNil(LOutClass);
+                          end;
+                        end;
+
     Th_getAllGroupAdmins  : begin
                               LOutClass := TRetornoAllGroupAdmins.Create(LResultStr);
                             try
@@ -2428,6 +2466,20 @@ begin
       Chromium1.OnTitleChange           := Chromium1TitleChange;
     end;
   end;
+end;
+
+procedure TFrmConsole.createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS := FrmConsole_JS_VAR_CreateCommunity;
+  FrmConsole_JS_AlterVar(LJS, '#COMMUNITY_NAME#',     Trim(PcommunityName));
+  FrmConsole_JS_AlterVar(LJS, '#DESCRIPTION#',        Trim(Pdescription));
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_NUMBERS#', Trim(PGroupNumbers));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.CreateGroup(vGroupName, PParticipantNumber: string);
