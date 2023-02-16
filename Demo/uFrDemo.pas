@@ -935,7 +935,7 @@ end;
 procedure TfrDemo.TWPPConnect1GetAllContactList(const AllContacts
   : TRetornoAllContacts);
 var
-  AContact: TContactClass;
+  AContact: uTWPPConnect.Classes.TContactClass;
 begin
   frameMensagem1.listaContatos.Clear;
   for AContact in AllContacts.Result do
@@ -1158,6 +1158,7 @@ begin
   try
     wlo_Json := Mensagem.JsonString;
     JMessagem := TMessagemStatusClass.FromJsonString(wlo_Json);
+
     if JMessagem.Result.ack = 1 then
       StatusMensagem := 'Enviada'
     else if JMessagem.Result.ack = 2 then
@@ -1173,6 +1174,23 @@ begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.t)));
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp)));
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
+
+    {if Mensagem.Result.ack = 1 then
+      StatusMensagem := 'Enviada'
+    else if Mensagem.Result.ack = 2 then
+      StatusMensagem := 'Recebida'
+    else if Mensagem.Result.ack = 3 then
+      StatusMensagem := 'Visualizada';
+    ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Telefone: ' + Mensagem.Result.&to);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Id Mensagem: ' + Mensagem.Result.id._serialized);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Mensagem: ' + Mensagem.Result.body);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime(Mensagem.Result.t)));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(Mensagem.Result.ephemeralStartTimestamp)));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');  }
   except
     on E: Exception do
   end;

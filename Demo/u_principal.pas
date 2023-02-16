@@ -1456,7 +1456,7 @@ end;
 procedure TfrmPrincipal.TWPPConnect1GetAllContactList(
   const AllContacts: TRetornoAllContacts);
 var
-  AContact: TContactClass;
+  AContact: uTWPPConnect.Classes.TContactClass;
 begin
   listaContatos.Clear;
 

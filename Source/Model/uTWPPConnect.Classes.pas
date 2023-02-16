@@ -190,6 +190,7 @@ type
   Public
     Property Result : Boolean  Read FResult  Write FResult;
   end;
+
   TMediaDataPreviewClass = class(TClassPadrao)
   Private
     F_retainCount      : Integer;
@@ -232,6 +233,7 @@ type
      property released            : Boolean              Read Freleased                 Write Freleased;
      property _blob               : TMediaData_BlobClass Read F_blob                    Write F_blob;
   end;
+
   TMediaDataClass = class(TClassPadrao)
   Private
      Ftype                  : String;
@@ -276,6 +278,7 @@ type
      property isVcardOverMmsDocument : Boolean       read FisVcardOverMmsDocument      write FisVcardOverMmsDocument;
      property renderableUrl          : String        Read FrenderableUrl               Write FrenderableUrl;
   end;
+
   TResponseMyNumber = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
@@ -879,6 +882,7 @@ type
     Ffooter: string;
     Ftitle: string;
     FlistResponse: TlistResponseClass;
+    FgroupMentions: TArray<String>;
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -906,6 +910,7 @@ type
     property labels     : TArray<String>      read FLabels             write FLabels;
     property mediaData  : TMediaDataClass     read FMediaData          write FMediaData;
     property mentionedJidList: TArray<String> read FMentionedJidList   write FMentionedJidList;
+    property groupMentions: TArray<String> read FgroupMentions   write FgroupMentions; //Marcelo 15/02/2023
     // Temis 03/10-2022
     property CardList   : TArray<TCardClass>  read fVCardLIst          write FVCardList;
     property buttons    : TArray<TButtonsClass>  read FButtons         write FButtons;
