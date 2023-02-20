@@ -65,20 +65,29 @@ function TWPPConnectDecryptFile.shell(program_path: string; OndeSalvar, imagem :
 var
   s1: string;
   DecriptBAT   : TextFile;
+
+  function BatFileName: string;
+  begin
+    Result := OndeSalvar + 'Decripta_'+ExtractFileName(imagem)+'.bat';
+  end;
 begin
   //OndeSalvar := ExtractFilePath(ParamStr(0));
 
   s1 := '"' + ExtractFilePath(Application.ExeName)+'decryptFile.dll" ';
  {$I-}
-    AssignFile(DecriptBAT, OndeSalvar + 'Decripta.bat');
+    AssignFile(DecriptBAT,BatFileName);
     Rewrite(DecriptBAT);
     WriteLn(DecriptBAT, s1 + program_path);
     WriteLn(DecriptBAT, 'del "' + imagem + '.enc"');
+    WriteLn(DecriptBAT, 'del "' + BatFileName + '"');
     CloseFile(DecriptBAT);
   {$I+}
   Sleep(200);
   Application.ProcessMessages;
-  ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + OndeSalvar + 'Decripta.bat"'), nil, SW_HIDE);
+  ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + BatFileName+'"'), nil, SW_HIDE);
+{
+    DeleteFile(BatFileName);
+}
 end;
 
 function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id, onde: string; ADescriptografar: boolean=true) :string;
