@@ -130,7 +130,7 @@ begin
       if FileExists(imagem  + '.enc') then
       begin
         if tipo = 'webp' then
-		      form  :=  format('--type "image" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]) 
+	  form  :=  format('--type "image" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]) 
         else if (tipo <> 'mp3') and (tipo <> 'mp4') and (tipo <> 'jpeg') and (tipo <> 'pdf') and (tipo <> 'jpg') then
           form  :=  format('--type "text" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey])
         else
