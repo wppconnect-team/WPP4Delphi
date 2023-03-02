@@ -80,15 +80,19 @@ type
     FHandleFrm           : HWND;
     FInDesigner          : Boolean;
     FLogConsoleActive    : Boolean;
-    procedure SetDefault;
-    procedure SetPathCache   (const Value: String);
-    procedure SetPathFrameworkDirPath(const Value: String);
-    procedure SetPathLocalesDirPath  (const Value: String);
-    procedure SetPathLogFile         (const Value: String);
-    procedure SetPathResourcesDirPath(const Value: String);
-    procedure SetPathUserDataPath    (const Value: String);
-    function  TestaOk                (POldValue, PNewValue: String): Boolean;
-    procedure SetChromium            (const Value: TChromium);
+    {change to set default directory for CEF4Delphi binary files, in definit folder
+      procedure SetLogConsole(const Value: String);
+      procedure SetLogConsoleActive(const Value: Boolean);
+      procedure SetDefault;
+      procedure SetPathCache   (const Value: String);
+      procedure SetPathFrameworkDirPath(const Value: String);
+      procedure SetPathLocalesDirPath  (const Value: String);
+      procedure SetPathLogFile         (const Value: String);
+      procedure SetPathResourcesDirPath(const Value: String);
+      procedure SetPathUserDataPath    (const Value: String);
+    }
+    function  TestaOk(POldValue, PNewValue: String): Boolean;
+    procedure SetChromium(const Value: TChromium);
     Function  VersaoCEF4Aceita: Boolean;
     procedure SetLogConsole(const Value: String);
     procedure SetLogConsoleActive(const Value: Boolean);
@@ -99,6 +103,20 @@ type
     Procedure UpdateIniFile(Const PSection, PKey, PValue :String);
 
     Procedure  UpdateDateIniFile;
+    
+    {begin refactor to public}
+    //change to set default directory for CEF4Delphi binary files, in definit folder    
+    procedure SetLogConsole(const Value: String);
+    procedure SetLogConsoleActive(const Value: Boolean);
+    procedure SetDefault;
+    procedure SetPathCache   (const Value: String);
+    procedure SetPathFrameworkDirPath(const Value: String);
+    procedure SetPathLocalesDirPath  (const Value: String);
+    procedure SetPathLogFile         (const Value: String);
+    procedure SetPathResourcesDirPath(const Value: String);
+    procedure SetPathUserDataPath    (const Value: String);
+    {end refactor to public}
+    
     function   StartMainProcess : boolean;
     Procedure  SetError;
 
