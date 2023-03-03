@@ -706,6 +706,8 @@ begin
     //menu := ' ';
     menu :=
       'createChat: true,' +
+      'title: "Escolha uma Opção", ' +
+      'footer: "Toque no Botão Formas de Pagamentos e Escolha uma Opção", '+
       'buttonText:"Formas de Pagamento",' +
       'description:"Como deseja pagar pelo servico",' +
       'sections:'+
