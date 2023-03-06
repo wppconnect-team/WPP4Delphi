@@ -94,8 +94,7 @@ type
     function  TestaOk(POldValue, PNewValue: String): Boolean;
     procedure SetChromium(const Value: TChromium);
     Function  VersaoCEF4Aceita: Boolean;
-    procedure SetLogConsole(const Value: String);
-    procedure SetLogConsoleActive(const Value: Boolean);
+
   public
     SetEnableGPU         : Boolean;
     SetDisableFeatures   : String;
@@ -105,7 +104,9 @@ type
     Procedure  UpdateDateIniFile;
     
     {begin refactor to public}
-    //change to set default directory for CEF4Delphi binary files, in definit folder    
+    //change to set default directory for CEF4Delphi binary files, in definit folder   
+    procedure SetLogConsole(const Value: String);
+    procedure SetLogConsoleActive(const Value: Boolean);
     procedure SetDefault;
     procedure SetPathCache   (const Value: String);
     procedure SetPathFrameworkDirPath(const Value: String);
