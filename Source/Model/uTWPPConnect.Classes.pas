@@ -2560,13 +2560,25 @@ begin
       Begin
         if FShowException then
         Begin
-        DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
-        DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
-	if pos(AnsiUpperCase('COLD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
-	Application.MessageBox(PWideChar(MSG_Exceptlibeay32dll), PWideChar(Application.Title), MB_ICONERROR + mb_ok) else
-	Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"'), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
-        // Aurino 03/03/2023
-	ShellExecute(0, nil, PChar('https://wppconnect.io/docs/projects/wpp4delphi/faq#erro-could-not-load-ssl-library'), nil, nil, SW_SHOWNORMAL);
+          DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+          DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+        	if pos(AnsiUpperCase('COULD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
+          begin
+             // Aurino 03/03/2023
+            {$IFNDEF STANDALONE}
+	          Application.MessageBox(PWideChar(MSG_Exceptlibeay32dll), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+          	ShellExecute(0, nil, PChar('https://wppconnect.io/docs/projects/wpp4delphi/faq#erro-could-not-load-ssl-library'), nil, nil, SW_SHOWNORMAL);
+            {$ELSE}
+            raise exception.create(MSG_Exceptlibeay32dll);
+            {$ENDIF}
+          end
+          else
+            {$IFNDEF STANDALONE}
+	          Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"'), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
+            {$ELSE}
+            raise exception.create('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"');
+            {$ENDIF}
+
         End;
       End;
     end;

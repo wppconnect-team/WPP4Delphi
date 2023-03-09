@@ -39,6 +39,8 @@
 //https://www.briskbard.com/index.php?lang=en&pageid=cef
 unit uTWPPConnect.ConfigCEF;
 
+{$I TWPPConnectDiretiva.inc}
+
 interface
 
 uses
@@ -390,10 +392,13 @@ begin
     FErrorInt := true;
     LVReque   := IntToStr(VersaoMinima_CF4_Major)      + '.' + IntToStr(VersaoMinima_CF4_Minor)      + '.' + IntToStr(VersaoMinima_CF4_Release);
     LVerIdent := IntToStr(CEF_SUPPORTED_VERSION_MAJOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_MINOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_BUILD);
-
+    {$IFNDEF STANDALONE}
     Application.MessageBox(PWideChar(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent])),
                            PWideChar(Application.Title), MB_ICONERROR + mb_ok
                           );
+    {$ELSE}
+    raise Exception.Create(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent]));
+    {$ENDIF}
     result := False;
     Exit;
   End;
@@ -457,7 +462,11 @@ begin
   finally
     Result  := (Self.status = asInitialized);
     if not Result then
+    {$IFNDEF STANDALONE}
        Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConnection), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ELSE}
+      raise exception.Create(MSG_ConfigCEF_ExceptConnection);
+    {$ENDIF}
   end;
 end;
 
