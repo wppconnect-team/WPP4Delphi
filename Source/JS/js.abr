@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.8.0.0;1.0.0.9;78.3.0
+//1.9.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.20.2
+//WPPCONNECT v2.22.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2845,7 +2845,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function A(e, t, r, n, o) {
-                    N(t, n, o, e, r, 7);
+                    W(t, n, o, e, r, 7);
                     let i = Number(t & BigInt(4294967295));
                     e[r++] = i, i >>= 8, e[r++] = i, i >>= 8, e[r++] = i, i >>= 8, e[r++] = i;
                     let s = Number(t >> BigInt(32) & BigInt(4294967295));
@@ -2853,7 +2853,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function L(e, t, r, n, o) {
-                    N(t, n, o, e, r, 7);
+                    W(t, n, o, e, r, 7);
                     let i = Number(t & BigInt(4294967295));
                     e[r + 7] = i, i >>= 8, e[r + 6] = i, i >>= 8, e[r + 5] = i, i >>= 8, e[r + 4] = i;
                     let s = Number(t >> BigInt(32) & BigInt(4294967295));
@@ -3094,7 +3094,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                 }
 
-                function W(e) {
+                function N(e) {
                     let t = "",
                         r = e.length;
                     const n = "-" === e[0] ? 1 : 0;
@@ -3102,7 +3102,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return `${e.slice(0,r)}${t}`
                 }
 
-                function N(e, t, r, n, o, i) {
+                function W(e, t, r, n, o, i) {
                     if (e > r || e < t) {
                         const n = "bigint" == typeof t ? "n" : "";
                         let o;
@@ -3128,7 +3128,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), TypeError), G("ERR_OUT_OF_RANGE", (function(e, t, r) {
                     let n = `The value of "${e}" is out of range.`,
                         o = r;
-                    return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = W(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = W(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
+                    return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = N(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = N(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
                 }), RangeError);
                 const q = /[^+/0-9A-Za-z-_]/g;
 
@@ -3219,16 +3219,69 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 e.exports = function() {
                     "use strict";
 
-                    function e() {
-                        return e = Object.assign ? Object.assign.bind() : function(e) {
+                    function e(e, t) {
+                        var r = Object.keys(e);
+                        if (Object.getOwnPropertySymbols) {
+                            var n = Object.getOwnPropertySymbols(e);
+                            t && (n = n.filter((function(t) {
+                                return Object.getOwnPropertyDescriptor(e, t).enumerable
+                            }))), r.push.apply(r, n)
+                        }
+                        return r
+                    }
+
+                    function t(t) {
+                        for (var r = 1; r < arguments.length; r++) {
+                            var o = null != arguments[r] ? arguments[r] : {};
+                            r % 2 ? e(Object(o), !0).forEach((function(e) {
+                                n(t, e, o[e])
+                            })) : Object.getOwnPropertyDescriptors ? Object.defineProperties(t, Object.getOwnPropertyDescriptors(o)) : e(Object(o)).forEach((function(e) {
+                                Object.defineProperty(t, e, Object.getOwnPropertyDescriptor(o, e))
+                            }))
+                        }
+                        return t
+                    }
+
+                    function r(e, t) {
+                        for (var r = 0; r < t.length; r++) {
+                            var n = t[r];
+                            n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(e, i(n.key), n)
+                        }
+                    }
+
+                    function n(e, t, r) {
+                        return (t = i(t)) in e ? Object.defineProperty(e, t, {
+                            value: r,
+                            enumerable: !0,
+                            configurable: !0,
+                            writable: !0
+                        }) : e[t] = r, e
+                    }
+
+                    function o() {
+                        return o = Object.assign ? Object.assign.bind() : function(e) {
                             for (var t = 1; t < arguments.length; t++) {
                                 var r = arguments[t];
                                 for (var n in r) Object.prototype.hasOwnProperty.call(r, n) && (e[n] = r[n])
                             }
                             return e
-                        }, e.apply(this, arguments)
+                        }, o.apply(this, arguments)
                     }
-                    var t = {
+
+                    function i(e) {
+                        var t = function(e, t) {
+                            if ("object" != typeof e || null === e) return e;
+                            var r = e[Symbol.toPrimitive];
+                            if (void 0 !== r) {
+                                var n = r.call(e, t || "default");
+                                if ("object" != typeof n) return n;
+                                throw new TypeError("@@toPrimitive must return a primitive value.")
+                            }
+                            return ("string" === t ? String : Number)(e)
+                        }(e, "string");
+                        return "symbol" == typeof t ? t : String(t)
+                    }
+                    var s = {
                         exports: {}
                     };
                     ! function(e) {
@@ -3275,9 +3328,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 }))
                             })), e.exports ? e.exports = a : t.dataURLtoBlob = a
                         }(window)
-                    }(t);
-                    var r = t.exports,
-                        n = {
+                    }(s);
+                    var a = s.exports,
+                        u = {
                             strict: !0,
                             checkOrientation: !0,
                             retainExif: !1,
@@ -3296,375 +3349,375 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             drew: null,
                             success: null,
                             error: null
-                        };
-                    const o = "undefined" != typeof window && void 0 !== window.document ? window : {},
-                        i = e => e > 0 && e < 1 / 0,
-                        {
-                            slice: s
-                        } = Array.prototype;
+                        },
+                        c = "undefined" != typeof window && void 0 !== window.document ? window : {},
+                        l = function(e) {
+                            return e > 0 && e < 1 / 0
+                        },
+                        d = Array.prototype.slice;
 
-                    function a(e) {
-                        return Array.from ? Array.from(e) : s.call(e)
+                    function f(e) {
+                        return Array.from ? Array.from(e) : d.call(e)
                     }
-                    const u = /^image\/.+$/;
+                    var p = /^image\/.+$/;
 
-                    function c(e) {
-                        return u.test(e)
+                    function m(e) {
+                        return p.test(e)
                     }
-                    const {
-                        fromCharCode: l
-                    } = String;
-                    const {
-                        btoa: d
-                    } = o;
+                    var g = String.fromCharCode;
+                    var y = c.btoa;
 
-                    function f(e, t) {
-                        const r = [];
-                        let n = new Uint8Array(e);
-                        for (; n.length > 0;) r.push(l.apply(null, a(n.subarray(0, 8192)))), n = n.subarray(8192);
-                        return `data:${t};base64,${d(r.join(""))}`
+                    function h(e, t) {
+                        for (var r = [], n = new Uint8Array(e); n.length > 0;) r.push(g.apply(null, f(n.subarray(0, 8192)))), n = n.subarray(8192);
+                        return "data:".concat(t, ";base64,").concat(y(r.join("")))
                     }
 
-                    function p(e) {
-                        const t = new DataView(e);
-                        let r;
+                    function b(e) {
+                        var t, r = new DataView(e);
                         try {
-                            let e, n, o;
-                            if (255 === t.getUint8(0) && 216 === t.getUint8(1)) {
-                                const e = t.byteLength;
-                                let r = 2;
-                                for (; r + 1 < e;) {
-                                    if (255 === t.getUint8(r) && 225 === t.getUint8(r + 1)) {
-                                        n = r;
+                            var n, o, i;
+                            if (255 === r.getUint8(0) && 216 === r.getUint8(1))
+                                for (var s = r.byteLength, a = 2; a + 1 < s;) {
+                                    if (255 === r.getUint8(a) && 225 === r.getUint8(a + 1)) {
+                                        o = a;
                                         break
                                     }
-                                    r += 1
+                                    a += 1
                                 }
-                            }
-                            if (n) {
-                                const r = n + 10;
+                            if (o) {
+                                var u = o + 10;
                                 if ("Exif" === function(e, t, r) {
-                                        let n, o = "";
-                                        for (r += t, n = t; n < r; n += 1) o += l(e.getUint8(n));
+                                        var n, o = "";
+                                        for (r += t, n = t; n < r; n += 1) o += g(e.getUint8(n));
                                         return o
-                                    }(t, n + 4, 4)) {
-                                    const n = t.getUint16(r);
-                                    if (e = 18761 === n, (e || 19789 === n) && 42 === t.getUint16(r + 2, e)) {
-                                        const n = t.getUint32(r + 4, e);
-                                        n >= 8 && (o = r + n)
+                                    }(r, o + 4, 4)) {
+                                    var c = r.getUint16(u);
+                                    if (((n = 18761 === c) || 19789 === c) && 42 === r.getUint16(u + 2, n)) {
+                                        var l = r.getUint32(u + 4, n);
+                                        l >= 8 && (i = u + l)
                                     }
                                 }
                             }
-                            if (o) {
-                                const n = t.getUint16(o, e);
-                                let i, s;
-                                for (s = 0; s < n; s += 1)
-                                    if (i = o + 12 * s + 2, 274 === t.getUint16(i, e)) {
-                                        i += 8, r = t.getUint16(i, e), t.setUint16(i, 1, e);
+                            if (i) {
+                                var d, f, p = r.getUint16(i, n);
+                                for (f = 0; f < p; f += 1)
+                                    if (d = i + 12 * f + 2, 274 === r.getUint16(d, n)) {
+                                        d += 8, t = r.getUint16(d, n), r.setUint16(d, 1, n);
                                         break
                                     }
                             }
                         } catch (e) {
-                            r = 1
+                            t = 1
                         }
-                        return r
+                        return t
                     }
-                    const m = /\.\d*(?:0|9){12}\d*$/;
+                    var v = /\.\d*(?:0|9){12}\d*$/;
 
-                    function g(e) {
-                        let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1e11;
-                        return m.test(e) ? Math.round(e * t) / t : e
+                    function _(e) {
+                        var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1e11;
+                        return v.test(e) ? Math.round(e * t) / t : e
                     }
 
-                    function y(e) {
-                        let {
-                            aspectRatio: t,
-                            height: r,
-                            width: n
-                        } = e, o = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "none";
-                        const s = i(n),
-                            a = i(r);
-                        if (s && a) {
-                            const e = r * t;
-                            ("contain" === o || "none" === o) && e > n || "cover" === o && e < n ? r = n / t : n = r * t
-                        } else s ? r = n / t : a && (n = r * t);
+                    function M(e) {
+                        var t = e.aspectRatio,
+                            r = e.height,
+                            n = e.width,
+                            o = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "none",
+                            i = l(n),
+                            s = l(r);
+                        if (i && s) {
+                            var a = r * t;
+                            ("contain" === o || "none" === o) && a > n || "cover" === o && a < n ? r = n / t : n = r * t
+                        } else i ? r = n / t : s && (n = r * t);
                         return {
                             width: n,
                             height: r
                         }
                     }
-                    const {
-                        ArrayBuffer: h,
-                        FileReader: b
-                    } = o, v = o.URL || o.webkitURL, _ = /\.\w+$/, M = o.Compressor;
-                    class P {
-                        constructor(e, t) {
-                            this.file = e, this.exif = [], this.image = new Image, this.options = {
-                                ...n,
-                                ...t
-                            }, this.aborted = !1, this.result = null, this.init()
+                    var P = c.ArrayBuffer,
+                        w = c.FileReader,
+                        O = c.URL || c.webkitURL,
+                        j = /\.\w+$/,
+                        x = c.Compressor;
+                    return function() {
+                        function e(r, n) {
+                            (function(e, t) {
+                                if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
+                            })(this, e), this.file = r, this.exif = [], this.image = new Image, this.options = t(t({}, u), n), this.aborted = !1, this.result = null, this.init()
                         }
-                        init() {
-                            const {
-                                file: t,
-                                options: r
-                            } = this;
-                            if (n = t, "undefined" == typeof Blob || !(n instanceof Blob || "[object Blob]" === Object.prototype.toString.call(n))) return void this.fail(new Error("The first argument must be a File or Blob object."));
-                            var n;
-                            const o = t.type;
-                            if (!c(o)) return void this.fail(new Error("The first argument must be an image File or Blob object."));
-                            if (!v || !b) return void this.fail(new Error("The current browser does not support image compression."));
-                            h || (r.checkOrientation = !1, r.retainExif = !1);
-                            const i = "image/jpeg" === o,
-                                s = i && r.checkOrientation,
-                                u = i && r.retainExif;
-                            if (!v || s || u) {
-                                const r = new b;
-                                this.reader = r, r.onload = r => {
-                                    let {
-                                        target: n
-                                    } = r;
-                                    const {
-                                        result: i
-                                    } = n, c = {};
-                                    let l = 1;
-                                    s && (l = p(i), l > 1 && e(c, function(e) {
-                                        let t = 0,
-                                            r = 1,
-                                            n = 1;
-                                        switch (e) {
-                                            case 2:
-                                                r = -1;
-                                                break;
-                                            case 3:
-                                                t = -180;
-                                                break;
-                                            case 4:
-                                                n = -1;
-                                                break;
-                                            case 5:
-                                                t = 90, n = -1;
-                                                break;
-                                            case 6:
-                                                t = 90;
-                                                break;
-                                            case 7:
-                                                t = 90, r = -1;
-                                                break;
-                                            case 8:
-                                                t = -90
-                                        }
-                                        return {
-                                            rotate: t,
-                                            scaleX: r,
-                                            scaleY: n
-                                        }
-                                    }(l))), u && (this.exif = function(e) {
-                                        const t = a(new Uint8Array(e)),
-                                            {
-                                                length: r
-                                            } = t,
-                                            n = [];
-                                        let o = 0;
-                                        for (; o + 3 < r;) {
-                                            const e = t[o],
-                                                r = t[o + 1];
-                                            if (255 === e && 218 === r) break;
-                                            if (255 === e && 216 === r) o += 2;
-                                            else {
-                                                const e = o + (256 * t[o + 2] + t[o + 3]) + 2,
-                                                    r = t.slice(o, e);
-                                                n.push(r), o = e
-                                            }
-                                        }
-                                        return n.reduce(((e, t) => 255 === t[0] && 225 === t[1] ? e.concat(t) : e), [])
-                                    }(i)), c.url = s || u ? !v || l > 1 ? f(i, o) : v.createObjectURL(t) : i, this.load(c)
-                                }, r.onabort = () => {
-                                    this.fail(new Error("Aborted to read the image with FileReader."))
-                                }, r.onerror = () => {
-                                    this.fail(new Error("Failed to read the image with FileReader."))
-                                }, r.onloadend = () => {
-                                    this.reader = null
-                                }, s || u ? r.readAsArrayBuffer(t) : r.readAsDataURL(t)
-                            } else this.load({
-                                url: v.createObjectURL(t)
-                            })
-                        }
-                        load(e) {
-                            const {
-                                file: t,
-                                image: r
-                            } = this;
-                            r.onload = () => {
-                                this.draw({
-                                    ...e,
-                                    naturalWidth: r.naturalWidth,
-                                    naturalHeight: r.naturalHeight
-                                })
-                            }, r.onabort = () => {
-                                this.fail(new Error("Aborted to load the image."))
-                            }, r.onerror = () => {
-                                this.fail(new Error("Failed to load the image."))
-                            }, o.navigator && /(?:iPad|iPhone|iPod).*?AppleWebKit/i.test(o.navigator.userAgent) && (r.crossOrigin = "anonymous"), r.alt = t.name, r.src = e.url
-                        }
-                        draw(e) {
-                            let {
-                                naturalWidth: t,
-                                naturalHeight: n,
-                                rotate: o = 0,
-                                scaleX: s = 1,
-                                scaleY: u = 1
-                            } = e;
-                            const {
-                                file: l,
-                                image: d,
-                                options: p
-                            } = this, m = document.createElement("canvas"), h = m.getContext("2d"), v = Math.abs(o) % 180 == 90, _ = ("contain" === p.resize || "cover" === p.resize) && i(p.width) && i(p.height);
-                            let M = Math.max(p.maxWidth, 0) || 1 / 0,
-                                P = Math.max(p.maxHeight, 0) || 1 / 0,
-                                w = Math.max(p.minWidth, 0) || 0,
-                                O = Math.max(p.minHeight, 0) || 0,
-                                j = t / n,
-                                {
-                                    width: x,
-                                    height: C
-                                } = p;
-                            v && ([M, P] = [P, M], [w, O] = [O, w], [x, C] = [C, x]), _ && (j = x / C), ({
-                                width: M,
-                                height: P
-                            } = y({
-                                aspectRatio: j,
-                                width: M,
-                                height: P
-                            }, "contain")), ({
-                                width: w,
-                                height: O
-                            } = y({
-                                aspectRatio: j,
-                                width: w,
-                                height: O
-                            }, "cover")), _ ? ({
-                                width: x,
-                                height: C
-                            } = y({
-                                aspectRatio: j,
-                                width: x,
-                                height: C
-                            }, p.resize)) : ({
-                                width: x = t,
-                                height: C = n
-                            } = y({
-                                aspectRatio: j,
-                                width: x,
-                                height: C
-                            })), x = Math.floor(g(Math.min(Math.max(x, w), M))), C = Math.floor(g(Math.min(Math.max(C, O), P)));
-                            const S = -x / 2,
-                                I = -C / 2,
-                                E = x,
-                                k = C,
-                                T = [];
-                            if (_) {
-                                let e = 0,
-                                    r = 0,
-                                    o = t,
-                                    i = n;
-                                ({
-                                    width: o,
-                                    height: i
-                                } = y({
-                                    aspectRatio: j,
-                                    width: t,
-                                    height: n
-                                }, {
-                                    contain: "cover",
-                                    cover: "contain"
-                                } [p.resize])), e = (t - o) / 2, r = (n - i) / 2, T.push(e, r, o, i)
+                        return n = e, s = [{
+                            key: "noConflict",
+                            value: function() {
+                                return window.Compressor = x, e
                             }
-                            T.push(S, I, E, k), v && ([x, C] = [C, x]), m.width = x, m.height = C, c(p.mimeType) || (p.mimeType = l.type);
-                            let B = "transparent";
-                            l.size > p.convertSize && p.convertTypes.indexOf(p.mimeType) >= 0 && (p.mimeType = "image/jpeg");
-                            const A = "image/jpeg" === p.mimeType;
-                            if (A && (B = "#fff"), h.fillStyle = B, h.fillRect(0, 0, x, C), p.beforeDraw && p.beforeDraw.call(this, h, m), this.aborted) return;
-                            if (h.save(), h.translate(x / 2, C / 2), h.rotate(o * Math.PI / 180), h.scale(s, u), h.drawImage(d, ...T), h.restore(), p.drew && p.drew.call(this, h, m), this.aborted) return;
-                            const L = e => {
-                                if (!this.aborted) {
-                                    const o = e => this.done({
-                                        naturalWidth: t,
-                                        naturalHeight: n,
-                                        result: e
-                                    });
-                                    if (e && A && p.retainExif && this.exif && this.exif.length > 0) {
-                                        const t = e => o(r(f(function(e, t) {
-                                            const r = a(new Uint8Array(e));
-                                            if (255 !== r[2] || 224 !== r[3]) return e;
-                                            const n = 256 * r[4] + r[5],
-                                                o = [255, 216].concat(t, r.slice(4 + n));
-                                            return new Uint8Array(o)
-                                        }(e, this.exif), p.mimeType)));
-                                        if (e.arrayBuffer) e.arrayBuffer().then(t).catch((() => {
-                                            this.fail(new Error("Failed to read the compressed image with Blob.arrayBuffer()."))
-                                        }));
-                                        else {
-                                            const r = new b;
-                                            this.reader = r, r.onload = e => {
-                                                let {
-                                                    target: r
-                                                } = e;
-                                                t(r.result)
-                                            }, r.onabort = () => {
-                                                this.fail(new Error("Aborted to read the compressed image with FileReader."))
-                                            }, r.onerror = () => {
-                                                this.fail(new Error("Failed to read the compressed image with FileReader."))
-                                            }, r.onloadend = () => {
-                                                this.reader = null
-                                            }, r.readAsArrayBuffer(e)
+                        }, {
+                            key: "setDefaults",
+                            value: function(e) {
+                                o(u, e)
+                            }
+                        }], (i = [{
+                            key: "init",
+                            value: function() {
+                                var e, t = this,
+                                    r = this.file,
+                                    n = this.options;
+                                if (e = r, "undefined" != typeof Blob && (e instanceof Blob || "[object Blob]" === Object.prototype.toString.call(e))) {
+                                    var i = r.type;
+                                    if (m(i))
+                                        if (O && w) {
+                                            P || (n.checkOrientation = !1, n.retainExif = !1);
+                                            var s = "image/jpeg" === i,
+                                                a = s && n.checkOrientation,
+                                                u = s && n.retainExif;
+                                            if (!O || a || u) {
+                                                var c = new w;
+                                                this.reader = c, c.onload = function(e) {
+                                                    var n = e.target.result,
+                                                        s = {},
+                                                        c = 1;
+                                                    a && (c = b(n)) > 1 && o(s, function(e) {
+                                                        var t = 0,
+                                                            r = 1,
+                                                            n = 1;
+                                                        switch (e) {
+                                                            case 2:
+                                                                r = -1;
+                                                                break;
+                                                            case 3:
+                                                                t = -180;
+                                                                break;
+                                                            case 4:
+                                                                n = -1;
+                                                                break;
+                                                            case 5:
+                                                                t = 90, n = -1;
+                                                                break;
+                                                            case 6:
+                                                                t = 90;
+                                                                break;
+                                                            case 7:
+                                                                t = 90, r = -1;
+                                                                break;
+                                                            case 8:
+                                                                t = -90
+                                                        }
+                                                        return {
+                                                            rotate: t,
+                                                            scaleX: r,
+                                                            scaleY: n
+                                                        }
+                                                    }(c)), u && (t.exif = function(e) {
+                                                        for (var t = f(new Uint8Array(e)), r = t.length, n = [], o = 0; o + 3 < r;) {
+                                                            var i = t[o],
+                                                                s = t[o + 1];
+                                                            if (255 === i && 218 === s) break;
+                                                            if (255 === i && 216 === s) o += 2;
+                                                            else {
+                                                                var a = o + (256 * t[o + 2] + t[o + 3]) + 2,
+                                                                    u = t.slice(o, a);
+                                                                n.push(u), o = a
+                                                            }
+                                                        }
+                                                        return n.reduce((function(e, t) {
+                                                            return 255 === t[0] && 225 === t[1] ? e.concat(t) : e
+                                                        }), [])
+                                                    }(n)), s.url = a || u ? !O || c > 1 ? h(n, i) : O.createObjectURL(r) : n, t.load(s)
+                                                }, c.onabort = function() {
+                                                    t.fail(new Error("Aborted to read the image with FileReader."))
+                                                }, c.onerror = function() {
+                                                    t.fail(new Error("Failed to read the image with FileReader."))
+                                                }, c.onloadend = function() {
+                                                    t.reader = null
+                                                }, a || u ? c.readAsArrayBuffer(r) : c.readAsDataURL(r)
+                                            } else this.load({
+                                                url: O.createObjectURL(r)
+                                            })
+                                        } else this.fail(new Error("The current browser does not support image compression."));
+                                    else this.fail(new Error("The first argument must be an image File or Blob object."))
+                                } else this.fail(new Error("The first argument must be a File or Blob object."))
+                            }
+                        }, {
+                            key: "load",
+                            value: function(e) {
+                                var r = this,
+                                    n = this.file,
+                                    o = this.image;
+                                o.onload = function() {
+                                    r.draw(t(t({}, e), {}, {
+                                        naturalWidth: o.naturalWidth,
+                                        naturalHeight: o.naturalHeight
+                                    }))
+                                }, o.onabort = function() {
+                                    r.fail(new Error("Aborted to load the image."))
+                                }, o.onerror = function() {
+                                    r.fail(new Error("Failed to load the image."))
+                                }, c.navigator && /(?:iPad|iPhone|iPod).*?AppleWebKit/i.test(c.navigator.userAgent) && (o.crossOrigin = "anonymous"), o.alt = n.name, o.src = e.url
+                            }
+                        }, {
+                            key: "draw",
+                            value: function(e) {
+                                var t = this,
+                                    r = e.naturalWidth,
+                                    n = e.naturalHeight,
+                                    o = e.rotate,
+                                    i = void 0 === o ? 0 : o,
+                                    s = e.scaleX,
+                                    u = void 0 === s ? 1 : s,
+                                    c = e.scaleY,
+                                    d = void 0 === c ? 1 : c,
+                                    p = this.file,
+                                    g = this.image,
+                                    y = this.options,
+                                    b = document.createElement("canvas"),
+                                    v = b.getContext("2d"),
+                                    P = Math.abs(i) % 180 == 90,
+                                    O = ("contain" === y.resize || "cover" === y.resize) && l(y.width) && l(y.height),
+                                    j = Math.max(y.maxWidth, 0) || 1 / 0,
+                                    x = Math.max(y.maxHeight, 0) || 1 / 0,
+                                    C = Math.max(y.minWidth, 0) || 0,
+                                    S = Math.max(y.minHeight, 0) || 0,
+                                    I = r / n,
+                                    E = y.width,
+                                    k = y.height;
+                                if (P) {
+                                    var T = [x, j];
+                                    j = T[0], x = T[1];
+                                    var B = [S, C];
+                                    C = B[0], S = B[1];
+                                    var A = [k, E];
+                                    E = A[0], k = A[1]
+                                }
+                                O && (I = E / k);
+                                var L = M({
+                                    aspectRatio: I,
+                                    width: j,
+                                    height: x
+                                }, "contain");
+                                j = L.width, x = L.height;
+                                var R = M({
+                                    aspectRatio: I,
+                                    width: C,
+                                    height: S
+                                }, "cover");
+                                if (C = R.width, S = R.height, O) {
+                                    var U = M({
+                                        aspectRatio: I,
+                                        width: E,
+                                        height: k
+                                    }, y.resize);
+                                    E = U.width, k = U.height
+                                } else {
+                                    var F = M({
+                                            aspectRatio: I,
+                                            width: E,
+                                            height: k
+                                        }),
+                                        D = F.width;
+                                    E = void 0 === D ? r : D;
+                                    var G = F.height;
+                                    k = void 0 === G ? n : G
+                                }
+                                var N = -(E = Math.floor(_(Math.min(Math.max(E, C), j)))) / 2,
+                                    W = -(k = Math.floor(_(Math.min(Math.max(k, S), x)))) / 2,
+                                    z = E,
+                                    $ = k,
+                                    q = [];
+                                if (O) {
+                                    var V, K, H, Q, J = M({
+                                        aspectRatio: I,
+                                        width: r,
+                                        height: n
+                                    }, {
+                                        contain: "cover",
+                                        cover: "contain"
+                                    } [y.resize]);
+                                    H = J.width, Q = J.height, V = (r - H) / 2, K = (n - Q) / 2, q.push(V, K, H, Q)
+                                }
+                                if (q.push(N, W, z, $), P) {
+                                    var Y = [k, E];
+                                    E = Y[0], k = Y[1]
+                                }
+                                b.width = E, b.height = k, m(y.mimeType) || (y.mimeType = p.type);
+                                var Z = "transparent";
+                                p.size > y.convertSize && y.convertTypes.indexOf(y.mimeType) >= 0 && (y.mimeType = "image/jpeg");
+                                var X = "image/jpeg" === y.mimeType;
+                                if (X && (Z = "#fff"), v.fillStyle = Z, v.fillRect(0, 0, E, k), y.beforeDraw && y.beforeDraw.call(this, v, b), !this.aborted && (v.save(), v.translate(E / 2, k / 2), v.rotate(i * Math.PI / 180), v.scale(u, d), v.drawImage.apply(v, [g].concat(q)), v.restore(), y.drew && y.drew.call(this, v, b), !this.aborted)) {
+                                    var ee = function(e) {
+                                        if (!t.aborted) {
+                                            var o = function(e) {
+                                                return t.done({
+                                                    naturalWidth: r,
+                                                    naturalHeight: n,
+                                                    result: e
+                                                })
+                                            };
+                                            if (e && X && y.retainExif && t.exif && t.exif.length > 0) {
+                                                var i = function(e) {
+                                                    return o(a(h(function(e, t) {
+                                                        var r = f(new Uint8Array(e));
+                                                        if (255 !== r[2] || 224 !== r[3]) return e;
+                                                        var n = 256 * r[4] + r[5],
+                                                            o = [255, 216].concat(t, r.slice(4 + n));
+                                                        return new Uint8Array(o)
+                                                    }(e, t.exif), y.mimeType)))
+                                                };
+                                                if (e.arrayBuffer) e.arrayBuffer().then(i).catch((function() {
+                                                    t.fail(new Error("Failed to read the compressed image with Blob.arrayBuffer()."))
+                                                }));
+                                                else {
+                                                    var s = new w;
+                                                    t.reader = s, s.onload = function(e) {
+                                                        var t = e.target;
+                                                        i(t.result)
+                                                    }, s.onabort = function() {
+                                                        t.fail(new Error("Aborted to read the compressed image with FileReader."))
+                                                    }, s.onerror = function() {
+                                                        t.fail(new Error("Failed to read the compressed image with FileReader."))
+                                                    }, s.onloadend = function() {
+                                                        t.reader = null
+                                                    }, s.readAsArrayBuffer(e)
+                                                }
+                                            } else o(e)
                                         }
-                                    } else o(e)
+                                    };
+                                    b.toBlob ? b.toBlob(ee, y.mimeType, y.quality) : ee(a(b.toDataURL(y.mimeType, y.quality)))
                                 }
-                            };
-                            m.toBlob ? m.toBlob(L, p.mimeType, p.quality) : L(r(m.toDataURL(p.mimeType, p.quality)))
-                        }
-                        done(e) {
-                            let {
-                                naturalWidth: t,
-                                naturalHeight: r,
-                                result: n
-                            } = e;
-                            const {
-                                file: o,
-                                image: i,
-                                options: s
-                            } = this;
-                            if (v && 0 === i.src.indexOf("blob:") && v.revokeObjectURL(i.src), n)
-                                if (s.strict && !s.retainExif && n.size > o.size && s.mimeType === o.type && !(s.width > t || s.height > r || s.minWidth > t || s.minHeight > r || s.maxWidth < t || s.maxHeight < r)) n = o;
-                                else {
-                                    const e = new Date;
-                                    n.lastModified = e.getTime(), n.lastModifiedDate = e, n.name = o.name, n.name && n.type !== o.type && (n.name = n.name.replace(_, function(e) {
-                                        let t = c(e) ? e.substr(6) : "";
-                                        return "jpeg" === t && (t = "jpg"), `.${t}`
-                                    }(n.type)))
-                                }
-                            else n = o;
-                            this.result = n, s.success && s.success.call(this, n)
-                        }
-                        fail(e) {
-                            const {
-                                options: t
-                            } = this;
-                            if (!t.error) throw e;
-                            t.error.call(this, e)
-                        }
-                        abort() {
-                            this.aborted || (this.aborted = !0, this.reader ? this.reader.abort() : this.image.complete ? this.fail(new Error("The compression process has been aborted.")) : (this.image.onload = null, this.image.onabort()))
-                        }
-                        static noConflict() {
-                            return window.Compressor = M, P
-                        }
-                        static setDefaults(t) {
-                            e(n, t)
-                        }
-                    }
-                    return P
+                            }
+                        }, {
+                            key: "done",
+                            value: function(e) {
+                                var t, r, n = e.naturalWidth,
+                                    o = e.naturalHeight,
+                                    i = e.result,
+                                    s = this.file,
+                                    a = this.image,
+                                    u = this.options;
+                                if (O && 0 === a.src.indexOf("blob:") && O.revokeObjectURL(a.src), i)
+                                    if (u.strict && !u.retainExif && i.size > s.size && u.mimeType === s.type && !(u.width > n || u.height > o || u.minWidth > n || u.minHeight > o || u.maxWidth < n || u.maxHeight < o)) i = s;
+                                    else {
+                                        var c = new Date;
+                                        i.lastModified = c.getTime(), i.lastModifiedDate = c, i.name = s.name, i.name && i.type !== s.type && (i.name = i.name.replace(j, (t = i.type, "jpeg" === (r = m(t) ? t.substr(6) : "") && (r = "jpg"), ".".concat(r))))
+                                    }
+                                else i = s;
+                                this.result = i, u.success && u.success.call(this, i)
+                            }
+                        }, {
+                            key: "fail",
+                            value: function(e) {
+                                var t = this.options;
+                                if (!t.error) throw e;
+                                t.error.call(this, e)
+                            }
+                        }, {
+                            key: "abort",
+                            value: function() {
+                                this.aborted || (this.aborted = !0, this.reader ? this.reader.abort() : this.image.complete ? this.fail(new Error("The compression process has been aborted.")) : (this.image.onload = null, this.image.onabort()))
+                            }
+                        }]) && r(n.prototype, i), s && r(n, s), Object.defineProperty(n, "prototype", {
+                            writable: !1
+                        }), e;
+                        var n, i, s
+                    }()
                 }()
             },
             1227: (e, t, r) => {
@@ -8230,18 +8283,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return G.sendCreatePollMessage
                     }
                 });
-                var W = r(18);
+                var N = r(18);
                 Object.defineProperty(t, "sendFileMessage", {
                     enumerable: !0,
                     get: function() {
-                        return W.sendFileMessage
+                        return N.sendFileMessage
                     }
                 });
-                var N = r(8851);
+                var W = r(8851);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return N.sendListMessage
+                        return W.sendListMessage
                     }
                 });
                 var z = r(2814);
@@ -8500,6 +8553,44 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
                 t.pin = s, t.unpin = async function(e) {
                     return s(e, !1)
+                }
+            },
+            3967: function(e, t, r) {
+                "use strict";
+                var n = this && this.__importDefault || function(e) {
+                    return e && e.__esModule ? e : {
+                        default: e
+                    }
+                };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.prepareAudioWaveform = void 0;
+                const o = (0, n(r(1227)).default)("WA-JS:chat:sendFileMessage");
+                t.prepareAudioWaveform = async function(e, t) {
+                    if (e.isPtt && e.waveform) try {
+                        const e = await t.arrayBuffer(),
+                            r = new AudioContext,
+                            n = await r.decodeAudioData(e),
+                            o = n.getChannelData(0),
+                            i = 64,
+                            s = Math.floor(o.length / i),
+                            a = [];
+                        for (let e = 0; e < i; e++) {
+                            const t = s * e;
+                            let r = 0;
+                            for (let e = 0; e < s; e++) r += Math.abs(o[t + e]);
+                            a.push(r / s)
+                        }
+                        const u = Math.pow(Math.max(...a), -1),
+                            c = a.map((e => e * u)),
+                            l = new Uint8Array(c.map((e => Math.floor(100 * e))));
+                        return {
+                            duration: Math.floor(n.duration),
+                            waveform: l
+                        }
+                    } catch (e) {
+                        o("Failed to generate waveform", e)
+                    }
                 }
             },
             8471: function(e, t, r) {
@@ -8887,49 +8978,51 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     m = r(1489),
                     g = r(8381),
                     y = r(758),
-                    h = (0, a.default)("WA-JS:message");
+                    h = r(3967),
+                    b = (0, a.default)("WA-JS:message");
                 t.sendFileMessage = async function(e, t, r) {
                     const n = (r = Object.assign(Object.assign(Object.assign({}, g.defaultSendMessageOptions), {
-                            type: "auto-detect"
+                            type: "auto-detect",
+                            waveform: !0
                         }), r)).createChat ? await (0, u.assertFindChat)(e) : (0, u.assertGetChat)(e),
                         o = await (0, l.convertToFile)(t, r.mimetype, r.filename),
                         i = o.name,
                         s = await f.OpaqueData.createFromData(o, o.type),
                         a = {};
                     let c;
-                    "audio" === r.type ? a.isPtt = r.isPtt : "image" === r.type ? c = r.isViewOnce : "video" === r.type ? a.asGif = r.isGif : "document" === r.type ? a.asDocument = !0 : "sticker" === r.type && (a.asSticker = !0);
+                    "audio" === r.type ? (a.isPtt = r.isPtt, a.precomputedFields = await (0, h.prepareAudioWaveform)(r, o)) : "image" === r.type ? c = r.isViewOnce : "video" === r.type ? a.asGif = r.isGif : "document" === r.type ? a.asDocument = !0 : "sticker" === r.type && (a.asSticker = !0);
                     const d = f.MediaPrep.prepRawMedia(s, a);
                     let p = await (0, y.prepareRawMessage)(n, {
                         caption: r.caption || i,
                         filename: i,
                         footer: r.footer
                     }, r);
-                    p = (0, y.prepareMessageButtons)(p, r), r.markIsRead && (h("marking chat is read before send file"), await (0, y.markIsRead)(n.id).catch((() => null))), await d.waitForPrep(), h(`sending message (${r.type}) with id ${p.id}`);
+                    p = (0, y.prepareMessageButtons)(p, r), r.markIsRead && (b("marking chat is read before send file"), await (0, y.markIsRead)(n.id).catch((() => null))), await d.waitForPrep(), b(`sending message (${r.type}) with id ${p.id}`);
                     const m = d.sendToChat(n, {
                             caption: r.caption,
                             footer: r.footer,
                             isViewOnce: c,
                             productMsgOptions: p
                         }),
-                        b = await new Promise((e => {
+                        v = await new Promise((e => {
                             n.msgs.on("add", (function t(r) {
                                 r.id === p.id && (n.msgs.off("add", t), e(r))
                             }))
                         }));
 
-                    function v(e, t) {
-                        h(`message file ${b.id} is ${t}`)
+                    function _(e, t) {
+                        b(`message file ${v.id} is ${t}`)
                     }
-                    if (h(`message file ${b.id} queued`), b.on("change:mediaData.mediaStage", v), m.finally((() => {
-                            b.off("change:mediaData.mediaStage", v)
+                    if (b(`message file ${v.id} queued`), v.on("change:mediaData.mediaStage", _), m.finally((() => {
+                            v.off("change:mediaData.mediaStage", _)
                         })), r.waitForAck) {
-                        h(`waiting ack for ${b.id}`);
+                        b(`waiting ack for ${v.id}`);
                         const e = await m;
-                        h(`ack received for ${b.id} (ACK: ${b.ack}, SendResult: ${e})`)
+                        b(`ack received for ${v.id} (ACK: ${v.ack}, SendResult: ${e})`)
                     }
                     return {
-                        id: b.id.toString(),
-                        ack: b.ack,
+                        id: v.id.toString(),
+                        ack: v.ack,
                         sendMsgResult: m
                     }
                 }, d.onReady((() => {
@@ -10377,42 +10470,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
             },
-            8552: function(e, t, r) {
+            8552: (e, t) => {
                 "use strict";
-                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
-                        void 0 === n && (n = r);
-                        var o = Object.getOwnPropertyDescriptor(t, r);
-                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
-                            enumerable: !0,
-                            get: function() {
-                                return t[r]
-                            }
-                        }), Object.defineProperty(e, n, o)
-                    } : function(e, t, r, n) {
-                        void 0 === n && (n = r), e[n] = t[r]
-                    }),
-                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
-                        Object.defineProperty(e, "default", {
-                            enumerable: !0,
-                            value: t
-                        })
-                    } : function(e, t) {
-                        e.default = t
-                    }),
-                    i = this && this.__importStar || function(e) {
-                        if (e && e.__esModule) return e;
-                        var t = {};
-                        if (null != e)
-                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
-                        return o(t, e), t
-                    };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.isMultiDevice = void 0;
-                const s = i(r(7046));
-                t.isMultiDevice = function() {
-                    const e = s.search((e => e.isMDBackend));
-                    return !(null == e ? void 0 : e.isMDBackend) || e.isMDBackend()
+                }), t.isMultiDevice = void 0, t.isMultiDevice = function() {
+                    return !0
                 }
             },
             5088: function(e, t, r) {
@@ -11294,7 +11357,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.setSubject = t.setProperty = t.GroupProperty = t.setIcon = t.setDescription = t.revokeInviteCode = t.removeParticipants = t.promoteParticipants = t.leave = t.join = t.iAmSuperAdmin = t.iAmRestrictedMember = t.iAmMember = t.iAmAdmin = t.getParticipants = t.getInviteCode = t.getGroupSizeLimit = t.getGroupInfoFromInviteCode = t.getAllGroups = t.ensureGroupAndParticipants = t.ensureGroup = t.demoteParticipants = t.create = t.canRemove = t.canPromote = t.canDemote = t.canAdd = t.addParticipants = void 0;
+                }), t.setSubject = t.setProperty = t.GroupProperty = t.setIcon = t.setDescription = t.revokeInviteCode = t.removeParticipants = t.removeIcon = t.promoteParticipants = t.leave = t.join = t.iAmSuperAdmin = t.iAmRestrictedMember = t.iAmMember = t.iAmAdmin = t.getParticipants = t.getInviteCode = t.getGroupSizeLimit = t.getGroupInfoFromInviteCode = t.getAllGroups = t.ensureGroupAndParticipants = t.ensureGroup = t.demoteParticipants = t.create = t.canRemove = t.canPromote = t.canDemote = t.canAdd = t.addParticipants = void 0;
                 var n = r(7172);
                 Object.defineProperty(t, "addParticipants", {
                     enumerable: !0,
@@ -11442,51 +11505,58 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return w.promoteParticipants
                     }
                 });
-                var O = r(1277);
+                var O = r(2718);
+                Object.defineProperty(t, "removeIcon", {
+                    enumerable: !0,
+                    get: function() {
+                        return O.removeIcon
+                    }
+                });
+                var j = r(1277);
                 Object.defineProperty(t, "removeParticipants", {
                     enumerable: !0,
                     get: function() {
-                        return O.removeParticipants
+                        return j.removeParticipants
                     }
                 });
-                var j = r(270);
+                var x = r(270);
                 Object.defineProperty(t, "revokeInviteCode", {
                     enumerable: !0,
                     get: function() {
-                        return j.revokeInviteCode
+                        return x.revokeInviteCode
                     }
                 });
-                var x = r(8087);
+                var C = r(8087);
                 Object.defineProperty(t, "setDescription", {
                     enumerable: !0,
                     get: function() {
-                        return x.setDescription
+                        return C.setDescription
                     }
                 });
-                var C = r(5622);
+                var S = r(5622);
                 Object.defineProperty(t, "setIcon", {
                     enumerable: !0,
                     get: function() {
-                        return C.setIcon
+                        return S.setIcon
                     }
                 });
-                var S = r(9380);
+                var I = r(9380);
                 Object.defineProperty(t, "GroupProperty", {
                     enumerable: !0,
                     get: function() {
-                        return S.GroupProperty
+                        return I.GroupProperty
                     }
                 }), Object.defineProperty(t, "setProperty", {
                     enumerable: !0,
                     get: function() {
-                        return S.setProperty
+                        return I.setProperty
                     }
                 });
-                var I = r(8945);
+                var E = r(8945);
                 Object.defineProperty(t, "setSubject", {
                     enumerable: !0,
                     get: function() {
-                        return I.setSubject
+                        return E.setSubject
                     }
                 })
             },
@@ -11559,6 +11629,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return !(null === (t = r.groupMetadata) || void 0 === t ? void 0 : t.participants.canPromote(e))
                         }))) throw new s.WPPError("group_participant_is_already_a_group_admin", `Group ${r.id._serialized}: Group participant is already a group admin`);
                     return a.promoteParticipants(r, n)
+                }
+            },
+            2718: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.removeIcon = void 0;
+                const n = r(1092),
+                    o = r(4336);
+                t.removeIcon = async function(e) {
+                    const t = await (0, o.ensureGroup)(e);
+                    return 200 === (await n.functions.requestDeletePicture(t.id)).status
                 }
             },
             1277: function(e, t, r) {
@@ -11875,7 +11957,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.20.2";
+                s(r(3115), t), t.waVersion = "2.22.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12109,7 +12191,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.20.2", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.22.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -12376,7 +12458,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.setMyStatus = t.setMyProfilePicture = t.isBusiness = t.getMyStatus = t.editBusinessProfile = void 0;
+                }), t.setMyStatus = t.setMyProfilePicture = t.setMyProfileName = t.removeMyProfilePicture = t.isBusiness = t.getMyStatus = t.editBusinessProfile = void 0;
                 var n = r(8067);
                 Object.defineProperty(t, "editBusinessProfile", {
                     enumerable: !0,
@@ -12398,18 +12480,32 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return i.isBusiness
                     }
                 });
-                var s = r(6089);
+                var s = r(528);
+                Object.defineProperty(t, "removeMyProfilePicture", {
+                    enumerable: !0,
+                    get: function() {
+                        return s.removeMyProfilePicture
+                    }
+                });
+                var a = r(5175);
+                Object.defineProperty(t, "setMyProfileName", {
+                    enumerable: !0,
+                    get: function() {
+                        return a.setMyProfileName
+                    }
+                });
+                var u = r(6089);
                 Object.defineProperty(t, "setMyProfilePicture", {
                     enumerable: !0,
                     get: function() {
-                        return s.setMyProfilePicture
+                        return u.setMyProfilePicture
                     }
                 });
-                var a = r(5031);
+                var c = r(5031);
                 Object.defineProperty(t, "setMyStatus", {
                     enumerable: !0,
                     get: function() {
-                        return a.setMyStatus
+                        return c.setMyStatus
                     }
                 })
             },
@@ -12421,6 +12517,27 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const n = r(1092);
                 t.isBusiness = function() {
                     return n.Conn.isSMB
+                }
+            },
+            528: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.removeMyProfilePicture = void 0;
+                const n = r(1092);
+                t.removeMyProfilePicture = async function() {
+                    const e = n.UserPrefs.getMaybeMeUser();
+                    return 200 === (await n.functions.requestDeletePicture(e)).status
+                }
+            },
+            5175: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.setMyProfileName = void 0;
+                const n = r(1092);
+                t.setMyProfileName = async function(e) {
+                    return await n.functions.setPushname(e), !0
                 }
             },
             6089: (e, t, r) => {
@@ -12934,22 +13051,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = n(r(9932)),
                     s = r(8910);
                 t.convertToFile = async function(e, t, r) {
-                    let n = (0, i.default)(e);
-                    if (!n && (0, s.isBase64)(e) && (n = (0, i.default)("data:;base64," + e)), !n) throw "invalid_data_url";
-                    t || (t = n.contentType);
-                    const a = n.toBuffer(),
-                        u = new Blob([new Uint8Array(a, a.byteOffset, a.length)], {
+                    if (e instanceof File) return e;
+                    let n = null;
+                    if ("string" == typeof e) {
+                        let r = (0, i.default)(e);
+                        if (!r && (0, s.isBase64)(e) && (r = (0, i.default)("data:;base64," + e)), !r) throw "invalid_data_url";
+                        t || (t = r.contentType);
+                        const o = r.toBuffer();
+                        n = new Blob([new Uint8Array(o, o.byteOffset, o.length)], {
                             type: t
-                        });
+                        })
+                    } else n = e;
                     if (!r || !t) {
-                        const e = await o.default.fromBuffer(a);
+                        const e = await o.default.fromBuffer(await n.arrayBuffer());
                         if (e) {
                             const n = e.mime.split("/")[0];
                             r = r || `${n}.${e.ext}`, t = t || e.mime
                         }
                         r = r || "unknown", t = t || "application/octet-stream"
                     }
-                    return new File([u], r, {
+                    return new File([n], r, {
                         type: t,
                         lastModified: Date.now()
                     })
@@ -14326,7 +14447,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(9354), t), o(r(3679), t), o(r(7047), t), o(r(1984), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(5355), t), o(r(4048), t), o(r(5115), t), o(r(5579), t), o(r(9293), t), o(r(6639), t), o(r(5264), t), o(r(1713), t), o(r(8879), t), o(r(1897), t), o(r(2922), t), o(r(4005), t), o(r(2235), t), o(r(2129), t), o(r(213), t), o(r(4615), t), o(r(4214), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(3303), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(6494), t), o(r(9114), t), o(r(2547), t), o(r(2907), t), o(r(3553), t), o(r(5863), t), o(r(5350), t), o(r(5767), t), o(r(6198), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(7437), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t), o(r(2575), t)
+                }), o(r(4467), t), o(r(3968), t), o(r(1896), t), o(r(9354), t), o(r(3679), t), o(r(7047), t), o(r(1984), t), o(r(1435), t), o(r(3925), t), o(r(5222), t), o(r(9839), t), o(r(290), t), o(r(2162), t), o(r(9943), t), o(r(8967), t), o(r(3879), t), o(r(6552), t), o(r(6187), t), o(r(5355), t), o(r(4048), t), o(r(5115), t), o(r(5579), t), o(r(9293), t), o(r(6639), t), o(r(5264), t), o(r(1713), t), o(r(8879), t), o(r(1897), t), o(r(2922), t), o(r(4005), t), o(r(2235), t), o(r(2129), t), o(r(213), t), o(r(4615), t), o(r(4214), t), o(r(9472), t), o(r(7212), t), o(r(9731), t), o(r(3303), t), o(r(1486), t), o(r(5627), t), o(r(5244), t), o(r(6494), t), o(r(9114), t), o(r(2547), t), o(r(2907), t), o(r(3553), t), o(r(5863), t), o(r(5350), t), o(r(5767), t), o(r(6198), t), o(r(2891), t), o(r(3642), t), o(r(5221), t), o(r(5931), t), o(r(4526), t), o(r(7437), t), o(r(3643), t), o(r(1232), t), o(r(9381), t), o(r(1638), t), o(r(7358), t), o(r(5602), t), o(r(2457), t), o(r(8522), t), o(r(1426), t), o(r(808), t), o(r(8183), t), o(r(967), t), o(r(4739), t), o(r(267), t), o(r(981), t), o(r(2575), t)
             },
             2235: (e, t, r) => {
                 "use strict";
@@ -14437,7 +14558,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    sendSetPicture: "sendSetPicture"
+                    sendSetPicture: "sendSetPicture",
+                    requestDeletePicture: "requestDeletePicture"
                 }, (e => e.sendSetPicture && e.requestDeletePicture))
             },
             6494: (e, t, r) => {
@@ -14755,6 +14877,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(8785).exportModule)(t, {
                     setPin: "setPin"
                 }, (e => e.setPin && !e.unpinAll))
+            },
+            2457: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(8785).exportModule)(t, {
+                    setPushname: "setPushname"
+                }, (e => e.setPushname && !e.setBrowserId))
             },
             8522: (e, t, r) => {
                 "use strict";
