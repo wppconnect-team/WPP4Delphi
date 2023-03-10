@@ -10,7 +10,7 @@
   an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 
-                              WPPCONNECT - Componente de comunicaÁ„o (N„o Oficial)
+                              WPPCONNECT - Componente de comunica√ß√£o (N√£o Oficial)
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################}
@@ -65,20 +65,29 @@ function TWPPConnectDecryptFile.shell(program_path: string; OndeSalvar, imagem :
 var
   s1: string;
   DecriptBAT   : TextFile;
+
+  function BatFileName: string;
+  begin
+    Result := OndeSalvar + 'Decripta_'+ExtractFileName(imagem)+'.bat';
+  end;
 begin
   //OndeSalvar := ExtractFilePath(ParamStr(0));
 
   s1 := '"' + ExtractFilePath(Application.ExeName)+'decryptFile.dll" ';
  {$I-}
-    AssignFile(DecriptBAT, OndeSalvar + 'Decripta.bat');
+    AssignFile(DecriptBAT,BatFileName);
     Rewrite(DecriptBAT);
     WriteLn(DecriptBAT, s1 + program_path);
     WriteLn(DecriptBAT, 'del "' + imagem + '.enc"');
+    WriteLn(DecriptBAT, 'del "' + BatFileName + '"');
     CloseFile(DecriptBAT);
   {$I+}
   Sleep(200);
   Application.ProcessMessages;
-  ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + OndeSalvar + 'Decripta.bat"'), nil, SW_HIDE);
+  ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + BatFileName+'"'), nil, SW_HIDE);
+{
+    DeleteFile(BatFileName);
+}
 end;
 
 function TWPPConnectDecryptFile.download(clientUrl, mediaKey, tipo, id, onde: string; ADescriptografar: boolean=true) :string;
@@ -90,17 +99,17 @@ begin
 
   //Sleep(1);
 
-  //Marcelo 08/11/2022 opÁ„o de passar somente o tipo
+  //Marcelo 08/11/2022 op√ß√£o de passar somente o tipo
   case AnsiIndexStr(UpperCase(tipo), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
     0: tipo := 'mp3';
     1: tipo := 'jpg';
     2: tipo := 'mp4';
     3: tipo := 'mp3';
     4: tipo := 'pdf';
-    5: tipo := 'jpg';
+    5: tipo := 'webp';
   end;
 
-  //Caso n„o informado onde salvar, criar o diretÛrio "Temp"
+  //Caso n√£o informado onde salvar, criar o diret√≥rio "Temp"
   if (Trim(onde) = '') then
     onde := ExtractFilePath(ParamStr(0)) + 'Temp\';
 
@@ -120,8 +129,9 @@ begin
     begin
       if FileExists(imagem  + '.enc') then
       begin
-
-        if (tipo <> 'mp3') and (tipo <> 'mp4') and (tipo <> 'jpeg') and (tipo <> 'pdf') and (tipo <> 'jpg') then
+        if tipo = 'webp' then
+	  form  :=  format('--type "image" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]) 
+        else if (tipo <> 'mp3') and (tipo <> 'mp4') and (tipo <> 'jpeg') and (tipo <> 'pdf') and (tipo <> 'jpg') then
           form  :=  format('--type "text" --in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey])
         else
           form  :=  format('--in "%s.enc" --out "%s.%s" --key %s',  [imagem,  imagem, tipo, mediakey]);
