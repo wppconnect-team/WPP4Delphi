@@ -36,7 +36,7 @@
 
 unit uTWPPConnect.JS;
 //    https://htmlformatter.com/
-
+{$I TWPPConnectDiretiva.inc}
 interface
 
 uses
@@ -285,7 +285,11 @@ begin
       if Assigned(GlobalCEFApp) then
          GlobalCEFApp.SetError;
       if Assigned(FOnErrorInternal) then
+      {$IFNDEF STANDALONE}
          Application.MessageBox(PWideChar(MSG_ExceptConfigVersaoCompInvalida), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ELSE}
+         raise exception.create(MSG_ExceptConfigVersaoCompInvalida);
+      {$ENDIF}
       exit;
     End;
 
@@ -296,7 +300,11 @@ begin
          GlobalCEFApp.SetError;
 
       if Assigned(FOnErrorInternal) then
+      {$IFNDEF STANDALONE}
          Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptVersaoErrada), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ELSE}
+        raise exception.create( MSG_ConfigCEF_ExceptVersaoErrada);
+      {$ENDIF}
       exit;
     End;
 

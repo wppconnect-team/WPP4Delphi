@@ -32,7 +32,7 @@
 }
 
 unit uTWPPConnect;
-
+{$I TWPPConnectDiretiva.inc}
 interface
 
 uses
@@ -4366,7 +4366,11 @@ begin
 
   if Status in [Inject_Destroying, Server_Disconnecting] then
   begin
+    {$IFNDEF STANDALONE}
     Application.MessageBox(PWideChar(MSG_WarningQrCodeStart1), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ELSE}
+    raise exception.Create(MSG_WarningQrCodeStart1);
+    {$ENDIF}
     Exit;
   end;
 
@@ -4380,7 +4384,11 @@ begin
     else
     if not ConsolePronto then
     begin
+      {$IFNDEF STANDALONE}
       Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConsoleNaoPronto), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ELSE}
+      Raise exception.Create(MSG_ConfigCEF_ExceptConsoleNaoPronto);
+      {$ENDIF}
       Exit;
     end;
 
