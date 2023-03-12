@@ -1,4 +1,4 @@
-program WPPConnectDemo;
+﻿program WPPConnectDemo;
 
 uses
   Vcl.Forms,

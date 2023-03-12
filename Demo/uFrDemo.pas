@@ -136,6 +136,7 @@ type
     procedure frameComunidades1btnCriarGrupoClick(Sender: TObject);
     procedure frameComunidades1btnListarComunidadesClick(Sender: TObject);
     procedure TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
+    procedure frameComunidades1btnMsgAllClick(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -629,6 +630,12 @@ end;
 procedure TfrDemo.frameComunidades1btnListarComunidadesClick(Sender: TObject);
 begin
   frameComunidades1.btnListarComunidadesClick(Sender);
+
+end;
+
+procedure TfrDemo.frameComunidades1btnMsgAllClick(Sender: TObject);
+begin
+  frameComunidades1.btnMsgAllClick(Sender);
 
 end;
 

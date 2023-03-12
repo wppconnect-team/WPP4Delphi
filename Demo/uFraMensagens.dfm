@@ -359,6 +359,21 @@ object frameMensagem: TframeMensagem
       TabOrder = 17
       OnClick = Button2Click
     end
+    object bTextoMarcandoTodosGrupo: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 578
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Texto Simples Marcando Todos'
+      ImageIndex = 0
+      Images = ImageList1
+      TabOrder = 18
+      OnClick = bTextoMarcandoTodosGrupoClick
+      ExplicitLeft = 0
+      ExplicitTop = 595
+    end
   end
   object GroupBox2: TGroupBox
     AlignWithMargins = True

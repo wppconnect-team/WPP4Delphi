@@ -85,6 +85,7 @@ type
     btnValidarListarNumeros: TButton;
     btnGetMessage: TButton;
     Button2: TButton;
+    bTextoMarcandoTodosGrupo: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -126,6 +127,7 @@ type
     procedure btnValidarListarNumerosClick(Sender: TObject);
     procedure btnGetMessageClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure bTextoMarcandoTodosGrupoClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -199,6 +201,64 @@ begin
   begin
 
     frDemo.TWPPConnect1.getMessageById(IdMensagem);
+  end;
+end;
+
+procedure TframeMensagem.bTextoMarcandoTodosGrupoClick(Sender: TObject);
+var
+  options, mentionedList : string;
+  I: Integer;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o id do Grupo para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if Trim(mem_message.Text) = '' then
+    begin
+      messageDlg('Informe o Texto da Mensagem para Continuar', mtWarning, [mbOk], 0);
+      mem_message.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+       Exit;
+
+    options := 'createChat: true';
+    mentionedList := '';
+    //mentionedList: ['123@c.us', '456@c.us']
+
+    if frDemo.frameGrupos1.listaParticipantes.Items.Count = 0 then
+    begin
+      messageDlg('Selecione o Grupo de Onde estão os Participantes a serem Marcados nesta Mensagem para Continuar', mtWarning, [mbOk], 0);
+      Exit;
+    end;
+
+    for I := 0 to frDemo.frameGrupos1.listaParticipantes.Items.Count -1 do
+    begin
+      //listaParticipantes
+      //mentionedList := mentionedList + '"' + frDemo.frameGrupos1.listaParticipantes.Items[frDemo.frameGrupos1.listaParticipantes.Selected.Index].SubItems[1] + '"' + ',';
+      mentionedList := mentionedList + '"' + Copy(frDemo.frameGrupos1.listaParticipantes.Items[I].SubItems[1],1,Pos('@', frDemo.frameGrupos1.listaParticipantes.Items[I].SubItems[1])) + 'c.us' + '"' + ',';
+    end;
+
+    mentionedList := Copy(mentionedList,1,Length(mentionedList)-1);
+    mentionedList := ',mentionedList: [' + mentionedList + ']';
+
+    options := options + mentionedList;
+
+    //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+    //frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //Sleep(5000);
+
+    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
   end;
 end;
 
@@ -320,8 +380,8 @@ begin
 
 
     //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
-    frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
-    frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
     options :=
@@ -341,6 +401,7 @@ begin
         '{id: "idVISITANAO", text: "Não"}' +
       ']' +
       ',footer: "Escolha uma Opção"';
+      //'';
 
     S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
     //S_RETORNO := TWPPConnectEmoticons.robot + ' *Teste Botão com Função Copy* ' + '\n';
