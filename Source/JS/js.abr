@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.9.0.0;1.0.0.9;78.3.0
+//1.10.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.22.0
+//WPPCONNECT v2.22.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -11957,7 +11957,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.22.0";
+                s(r(3115), t), t.waVersion = "2.22.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12191,7 +12191,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.22.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.22.1", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -13359,9 +13359,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     i = r(5267),
                     s = (0, o.default)("WA-JS:webpack");
                 t.isInjected = !1, t.isReady = !1, t.onInjected = function(e) {
-                    i.internalEv.on("webpack.injected", (async () => e()))
+                    i.internalEv.on("webpack.injected", (async () => Promise.resolve().then(e).catch((() => null))))
                 }, t.onReady = function(e) {
-                    i.internalEv.on("webpack.ready", (async () => e()))
+                    i.internalEv.on("webpack.ready", (() => Promise.resolve().then(e).catch((() => null))))
                 }, t.fallbackModules = {}, t.injectLoader = function() {
                     if (t.isInjected) return;
                     const e = "webpackChunkwhatsapp_web_client",
@@ -14948,7 +14948,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
                     uploadProductImage: "uploadProductImage"
-                }, (e => e.MediaPrep))
+                }, (e => e.uploadProductImage && e.MediaPrep))
             },
             981: function(e, t, r) {
                 "use strict";
@@ -14995,8 +14995,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    upsertVotes: "upsertVotes"
-                }, (e => e.upsertVotes))
+                    upsertVotes: ["upsertVotesDb", "upsertVotes"]
+                }, (e => e.upsertVotesDb || e.upsertVotes))
             },
             1092: function(e, t, r) {
                 "use strict";
@@ -15124,8 +15124,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    MediaEntry: "MediaEntry"
-                }, (e => e.MediaEntry))
+                    MediaEntry: ["EncryptedMediaEntry", "MediaEntry"]
+                }, (e => e.EncryptedMediaEntry || e.MediaEntry))
             },
             5430: (e, t, r) => {
                 "use strict";
