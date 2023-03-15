@@ -16433,3 +16433,27 @@ window.WAPI.getHistorySyncProgress2 = async function() {
         console.log(err);
     };    
 };
+
+//Marcelo 14/03/2023
+window.WAPI.getMessageACK2 = async function(uniqueID) {
+    const result = await WPP.chat.getMessageACK(uniqueID);
+
+    if (result) {
+        try {
+             Obj = {
+               idMessage: uniqueID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("getMessageACK", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO getMessageACK');
+
+    }
+    
+};
