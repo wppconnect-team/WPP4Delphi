@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.10.0.0;1.0.0.9;78.3.0
+//1.11.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.22.1
+//WPPCONNECT v2.22.2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -7984,7 +7984,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (!r.asPollCreation) throw new n.WPPError("msg_not_found", `Message ${t.toString()} not not a poll`, {
                         id: t.toString()
                     });
-                    const a = await (0, i.getVotes)(t),
+                    const a = await (0, i.getVotes)([t]),
                         u = {
                             msgId: t,
                             chatId: t.remote,
@@ -11957,7 +11957,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.22.1";
+                s(r(3115), t), t.waVersion = "2.22.2";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12191,7 +12191,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.22.1", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.22.2", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -15145,7 +15145,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), (0, r(8785).exportModule)(t, "MediaPrep", (e => e.MediaPrep))
+                }), (0, r(8785).exportModule)(t, "MediaPrep", (e => e.uploadProductImage && e.MediaPrep))
             },
             4203: (e, t, r) => {
                 "use strict";
