@@ -5754,4 +5754,10 @@ object frDemo: TfrDemo
     Left = 872
     Top = 8
   end
+  object TimerProgress: TTimer
+    Enabled = False
+    OnTimer = TimerProgressTimer
+    Left = 848
+    Top = 168
+  end
 end

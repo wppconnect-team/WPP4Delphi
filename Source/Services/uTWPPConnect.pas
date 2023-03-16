@@ -282,6 +282,8 @@ type
 
     procedure markIsUnread(phoneNumber: string);
 
+    procedure markPlayed(phoneNumber: string);
+
     //MARCELO 28/06/2022
     procedure sendImageStatus(Content, Options: string);
     procedure sendVideoStatus(Content, Options: string);
@@ -291,6 +293,8 @@ type
 
     //Adicionado Por Marcelo 03/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
+
+    procedure getMessageACK(UniqueIDs: string);
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
@@ -1299,6 +1303,36 @@ begin
   lThread.Start;
 end;
 
+procedure TWPPConnect.getMessageACK(UniqueIDs: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 14/03/2023
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getMessageACK(UniqueIDs);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.getMessageById(UniqueIDs, etapa: string);
 var
   lThread : TThread;
@@ -2225,6 +2259,43 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.markmarkIsRecording(phoneNumber, duration);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.markPlayed(phoneNumber: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 14/03/2023
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markPlayed(phoneNumber);
           end;
         end);
 
@@ -4376,7 +4447,7 @@ begin
 
   if Status in [Server_Disconnected, Inject_Destroy] then
   begin
-    //SleepNoFreeze(1000);
+    SleepNoFreeze(800);
     if  ConsolePronto then
     begin
 

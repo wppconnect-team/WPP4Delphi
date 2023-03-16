@@ -61,6 +61,7 @@ type
     TimerCopiarPastaCache: TTimer;
     TimerRestauraPastaCache: TTimer;
     frameComunidades1: TframeComunidades;
+    TimerProgress: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -137,6 +138,7 @@ type
     procedure frameComunidades1btnListarComunidadesClick(Sender: TObject);
     procedure TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
     procedure frameComunidades1btnMsgAllClick(Sender: TObject);
+    procedure TimerProgressTimer(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -335,6 +337,7 @@ begin
     TWPPConnect1.GetHistorySyncProgress;
   except on E: Exception do
   end;
+
 end;
 
 procedure TfrDemo.BitBtn3Click(Sender: TObject);
@@ -743,6 +746,19 @@ begin
 
 end;
 
+procedure TfrDemo.TimerProgressTimer(Sender: TObject);
+begin
+  TimerProgress.Enabled := False;
+
+  try
+    TWPPConnect1.GetHistorySyncProgress;
+  except on E: Exception do
+  end;
+
+
+  TimerProgress.Enabled := True;
+end;
+
 procedure TfrDemo.TimerRestauraPastaCacheTimer(Sender: TObject);
 var
   NomeAplicacao: string;
@@ -1038,6 +1054,8 @@ begin
  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('paused: ' + GetHistorySyncProgress.paused.ToString());
  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('inProgress: ' + GetHistorySyncProgress.inProgress.ToString());
 
+ frameLogin1.ProgressBar1.Position := GetHistorySyncProgress.progress;
+
  ShowMessage('progresso: ' + GetHistorySyncProgress.progress.ToString);
 end;
 
@@ -1065,7 +1083,7 @@ begin
   frameLogin1.lblStatus.Caption := 'Auntenticado';
   Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
   TimerCopiarPastaCache.Enabled := True;
-
+  TimerProgress.Enabled := True;
   //Application.ProcessMessages;
 end;
 
@@ -1073,6 +1091,7 @@ procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
 begin
   frameLogin1.lblStatus.Caption := 'Carregando...';
   Label3.Caption := 'Carregando Conversas Aguarde...';
+  TimerProgress.Enabled := True;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
@@ -1083,6 +1102,7 @@ begin
   frameLogin1.SpeedButton3.Enabled := True;
   frameLogin1.whatsOn.Visible := True;
   ctbtn.Enabled := True;
+  TimerProgress.Enabled := False;
 
   //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;

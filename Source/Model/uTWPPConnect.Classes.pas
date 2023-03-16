@@ -2307,29 +2307,30 @@ begin
   //lAJsonObj      := TJSONObject.ParseJSONValue(pAJsonString);
   FInjectWorking := False;
   try
-   try
-    if NOT Assigned(lAJsonObj) then
-       Exit;
-    //tentar thread aqui...
-    TJson.JsonToObject(Self, TJSONObject(lAJsonObj) ,PJsonOption); //ERRO AQUI
-    //tentar thread aqui...
+    try
+      if NOT Assigned(lAJsonObj) then
+         Exit;
+      //tentar thread aqui...
+      TJson.JsonToObject(Self, TJSONObject(lAJsonObj) ,PJsonOption); //ERRO AQUI
+      //tentar thread aqui...
 
-    FJsonString := pAJsonString;
+      FJsonString := pAJsonString;
           SleepNoFreeze(10);
-    If LowerCase(SELF.ClassName) <> LowerCase('TResponseConsoleMessage') Then
-       LogAdd(PrettyJSON(pAJsonString), SELF.ClassName);
-    FTypeHeader := StrToTypeHeader(name);
-   Except
-     on E : Exception do
-     begin
-       LogAdd(e.Message, 'ERROR ' + SELF.ClassName + #13#10);
-       //MARCELO 02/05/2022 Salvar no Log o JSON que deu erro
-       try LogAdd(PrettyJSON(pAJsonString), ' '); except end;
-     end;
-   end;
+      If LowerCase(SELF.ClassName) <> LowerCase('TResponseConsoleMessage') Then
+         LogAdd(PrettyJSON(pAJsonString), SELF.ClassName);
+      FTypeHeader := StrToTypeHeader(name);
+    except
+      on E : Exception do
+      begin
+        LogAdd(e.Message, 'ERROR ' + SELF.ClassName + #13#10);
+        //MARCELO 02/05/2022 Salvar no Log o JSON que deu erro
+        try LogAdd(PrettyJSON(pAJsonString), ' '); except end;
+      end;
+    end;
   finally
     FreeAndNil(lAJsonObj);
   end;
+
 end;
 destructor TClassPadrao.Destroy;
 begin

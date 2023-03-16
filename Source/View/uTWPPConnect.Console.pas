@@ -204,6 +204,8 @@ type
 
     procedure markIsUnread(phoneNumber: string);
 
+    procedure markPlayed(phoneNumber: string); //Adicionado Por Marcelo 14/03/2023
+
     //Adicionado Por Marcelo 13/06/2022
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
@@ -222,6 +224,8 @@ type
 
     //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
+
+    procedure getMessageACK(UniqueIDs: string); //Adicionado Por Marcelo 14/03/2023
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
@@ -1809,6 +1813,22 @@ begin
                             end;
                           end;
 
+    //Marcelo 14/03/2023
+    Th_getMessageACK   : begin
+                            //if Assigned(FMessagesList) then
+                               //FMessagesList.Free;
+
+                            //FMessagesList := TMessagesList.Create(LResultStr);
+                            //LOutClass2 := TMessagesClass.Create(LResultStr);
+                            //LOutClass2 := TMessagesClass.Create(LResultStr);
+                            {try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              //FreeAndNil(LOutClass2);
+                            end;}
+                         end;
+
+
     //Marcelo 31/05/2022
     Th_sendFileMessage   : begin
                             //LOutClass2 := TMessagesList.Create(LResultStr);
@@ -2798,6 +2818,18 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.getMessageACK(UniqueIDs: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_getMessageACK;
+  FrmConsole_JS_AlterVar(LJS, '#MSGKEY#', Trim(UniqueIDs));
+  ExecuteJS(LJS, false);
+end;
+
 procedure TFrmConsole.getMessageById(UniqueIDs, etapa: string);
 var
   Ljs: string;
@@ -3013,6 +3045,18 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#',      duration);
 
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markPlayed(phoneNumber: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markPlayed;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   ExecuteJS(LJS, true);
 end;
 

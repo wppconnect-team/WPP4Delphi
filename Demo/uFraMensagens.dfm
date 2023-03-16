@@ -371,8 +371,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 18
       OnClick = bTextoMarcandoTodosGrupoClick
-      ExplicitLeft = 0
-      ExplicitTop = 595
     end
   end
   object GroupBox2: TGroupBox
