@@ -84,6 +84,8 @@ type
 
   TOnGetListChat            = procedure(Const getList: TgetListClass) of object; //Marcelo 20/08/2022
 
+  TOnGetMessageACK          = procedure(Const GetMessageACK: TResponsegetMessageACK) of object; //Marcelo 19/03/2023
+
 
   //Adicionado Por Marcelo 06/05/2022
   TGetMessageById            = procedure(Const Mensagem: TMessagesClass) of object;
@@ -198,6 +200,7 @@ type
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
 
     FOnGetListChat              : TGetList;
+    FOnGetMessageACK            : TOnGetMessageACK;
 
     FOnGetMessageById           : TGetMessageById; //Adicionado Por Marcelo 06/05/2022
 
@@ -442,6 +445,8 @@ type
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
 
     property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
+    property OnGetMessageACK             : TOnGetMessageACK           read FOnGetMessageACK                write FOnGetMessageACK; //Marcelo 19/03/2023
+
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
 
@@ -2279,12 +2284,12 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
-  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
   Begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
-  end;
+  end;}
 
   lThread := TThread.CreateAnonymousThread(procedure
       begin
@@ -2382,6 +2387,12 @@ begin
   begin
     if Assigned(OnGetListChat) then
       OnGetListChat(Self, TGetChatList(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_getMessageACK then
+  begin
+    if Assigned(OnGetMessageACK) then
+      OnGetMessageACK(TResponsegetMessageACK(PReturnClass));
   end;
 
   if (PTypeHeader In [Th_GetAllChats, Th_getUnreadMessages,

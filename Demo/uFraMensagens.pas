@@ -86,6 +86,8 @@ type
     btnGetMessage: TButton;
     Button2: TButton;
     bTextoMarcandoTodosGrupo: TButton;
+    Button3: TButton;
+    Button4: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -128,6 +130,8 @@ type
     procedure btnGetMessageClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure bTextoMarcandoTodosGrupoClick(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1188,8 +1192,15 @@ end;
 
 procedure TframeMensagem.btnVerificarNumeroClick(Sender: TObject);
 begin
- if not frDemo.TWPPConnect1.Auth then
-   Exit;
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  if Trim(ed_num.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    ed_num.SetFocus;
+    Exit;
+  end;
 
   //frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
   //frDemo.TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);
@@ -1426,6 +1437,36 @@ begin
 
 
   finally
+  end;
+
+end;
+
+procedure TframeMensagem.Button3Click(Sender: TObject);
+var
+  IdMensagem : string;
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+  begin
+
+    frDemo.TWPPConnect1.getMessageACK(IdMensagem);
+  end;
+
+end;
+
+procedure TframeMensagem.Button4Click(Sender: TObject);
+var
+  IdMensagem : string;
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+  begin
+    //Marcelo 19/03/2023
+    frDemo.TWPPConnect1.markPlayed(IdMensagem);
   end;
 
 end;

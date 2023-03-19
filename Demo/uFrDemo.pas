@@ -139,6 +139,7 @@ type
     procedure TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
     procedure frameComunidades1btnMsgAllClick(Sender: TObject);
     procedure TimerProgressTimer(Sender: TObject);
+    procedure TWPPConnect1GetMessageACK(const GetMessageACK: TResponsegetMessageACK);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1174,6 +1175,35 @@ begin
     aList.Free;
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetMessageACK(const GetMessageACK: TResponsegetMessageACK);
+var
+  StatusMensagem: string;
+begin
+  //GetMessageACK.idMessage;
+
+  if GetMessageACK.ack = 1 then
+    StatusMensagem := 'Enviada'
+  else if GetMessageACK.ack = 2 then
+    StatusMensagem := 'Recebida'
+  else if GetMessageACK.ack = 3 then
+    StatusMensagem := 'Visualizada'
+  else if GetMessageACK.ack = 4 then
+    StatusMensagem := 'Aúdio Escutado';
+
+  ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+  //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Telefone: ' + GetMessageACK.&to);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Id Mensagem: ' + GetMessageACK.idMessage);
+  //if GetMessageACK.playedRemaining = 1 then
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('deliveryRemaining:  ' + FloatToStr(GetMessageACK.deliveryRemaining) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('readRemaining:  ' + FloatToStr(GetMessageACK.readRemaining) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('playedRemaining:  ' + FloatToStr(GetMessageACK.playedRemaining) );
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
+end;
+
 procedure TfrDemo.TWPPConnect1GetMessageById(const Mensagem: TMessagesClass);
 var
   StatusMensagem, wlo_Json: string;
@@ -1191,15 +1221,17 @@ begin
     else if JMessagem.Result.ack = 2 then
       StatusMensagem := 'Recebida'
     else if JMessagem.Result.ack = 3 then
-      StatusMensagem := 'Visualizada';
+      StatusMensagem := 'Visualizada'
+    else if JMessagem.Result.ack = 4 then
+      StatusMensagem := 'Aúdio Escutado';
     ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Telefone: ' + JMessagem.Result.&to);
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Id Mensagem: ' + JMessagem.Result.id._serialized);
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Mensagem: ' + JMessagem.Result.body);
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.t)));
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp)));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Enviada: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.t, False )));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp, False)));
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 
 
@@ -1571,7 +1603,15 @@ begin
               TWPPConnect1.getProfilePicThumb(AChat.id);
               //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
 
+            //Marcar Mensagem como Lida
             TWPPConnect1.ReadMessages(AChat.id);
+
+            //Marcar Audio como Escutado
+            if (UpperCase(AMessage.&type) = 'AUDIO') or (UpperCase(AMessage.&type) = 'PTT') then
+              TWPPConnect1.markPlayed(AMessage.id);
+
+
+
             // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
             // VerificaPalavraChave(AMessage.body, '', telefone, contato);
 

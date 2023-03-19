@@ -1815,6 +1815,13 @@ begin
 
     //Marcelo 14/03/2023
     Th_getMessageACK   : begin
+                            LOutClass2 := TResponsegetMessageACK.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+
                             //if Assigned(FMessagesList) then
                                //FMessagesList.Free;
 

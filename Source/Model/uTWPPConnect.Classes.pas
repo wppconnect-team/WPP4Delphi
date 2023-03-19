@@ -1697,6 +1697,43 @@ TResponsegetHistorySyncProgress  = class(TClassPadrao)
     property inProgress:         Boolean     read FinProgress      write FinProgress;
 end;
 
+
+Tparticipants = class(TClassPadrao)
+  private
+    Fid: String;
+    Fwid: String;
+    FdeliveredAt: Int64;
+
+  public
+    Property id           : String    read Fid           write Fid;
+    Property wid          : String    read Fwid          write Fwid;
+    property deliveredAt  : Int64     read FdeliveredAt  write FdeliveredAt;
+end;
+
+TResponsegetMessageACK  = class(TClassPadrao)
+  private
+    fidMessage : String;
+    Fack: Extended;
+    FfromMe: Boolean;
+    FdeliveryRemaining: Extended;
+    FreadRemaining: Extended;
+    FplayedRemaining: Extended;
+    Fparticipants: TArray<Tparticipants>;
+
+  public
+    Property idMessage          : String                  read FidMessage           write FidMessage;
+    Property ack                : Extended                read Fack                 write Fack;
+    Property fromMe             : Boolean                 read FfromMe              write FfromMe;
+    Property deliveryRemaining  : Extended                read FdeliveryRemaining   write FdeliveryRemaining;
+    Property readRemaining      : Extended                read FreadRemaining       write FreadRemaining;
+    Property playedRemaining    : Extended                read FplayedRemaining     write FplayedRemaining;
+    property participants       : TArray<Tparticipants>   read Fparticipants        write Fparticipants;
+    constructor Create(pAJsonString: string);
+    destructor  Destroy;       override;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TResponsegetMessageACK;
+end;
+
 //temis 03-06-2022
 TResponsesendTextMessage  = class(TClassPadrao)
 private
@@ -3202,6 +3239,80 @@ destructor TRetornoAllCommunitys.Destroy;
 begin
   inherited;
   Freeandnil(FNumbers);
+end;
+
+{ TResponsegetMessageACK }
+
+constructor TResponsegetMessageACK.Create(pAJsonString: string);
+var
+  vJson, UniqueID : String;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  lAJsonObj4: TJSONValue;
+  myarr: TJSONArray;
+begin
+  vJson := copy(pAJsonString, 11, length(pAJsonString) - 11);
+  fidMessage := '';
+
+  lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+  begin
+    vJson := lAJsonObj2.ToJSON;
+    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+
+    fidMessage := '';
+    //{"idMessage":"true_551734226371@c.us_3EB02797217197505925",
+    UniqueID := Copy(vJson,1, pos('"JsonMessage":', vJson)-1);
+
+    //JsonMessage
+    if lAJsonObj.TryGetValue('JsonMessage', lAJsonObj4) then
+    begin
+      vJson := Copy(lAJsonObj4.ToJSON,2,Length(lAJsonObj4.ToJSON)-2);
+      lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+      //vJson := lAJsonObj.ToString;
+      //vJson := Copy(lAJsonObj.ToJSON,2,Length(lAJsonObj.ToJSON)-2);
+
+      vJson := stringreplace(vJson, '\"', '"', [rfReplaceAll, rfIgnoreCase]);
+      vJson := stringreplace(vJson, '{"ack"', UniqueID + '"ack"', [rfReplaceAll, rfIgnoreCase]);
+
+      TResponsegetMessageACK.FromJsonString(vJson);
+      //inherited Create(vJson);
+    end;
+
+
+    {if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+    begin
+      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+
+    end;}
+  end;
+
+
+  //inherited Create(v);
+  //fMessageClass := TMessagesClass.Create(FJsonMessage);
+
+  //FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
+  //FAck      := FMessageClass.ack;
+  //FID    := FMessageClass.id;
+  //FMessageClass.Free;
+end;
+
+destructor TResponsegetMessageACK.Destroy;
+begin
+
+  inherited;
+end;
+
+class function TResponsegetMessageACK.FromJsonString(AJsonString: string): TResponsegetMessageACK;
+begin
+  result := TJson.JsonToObject<TResponsegetMessageACK>(AJsonString)
+end;
+
+function TResponsegetMessageACK.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 end.
