@@ -5703,6 +5703,7 @@ object frDemo: TfrDemo
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
     OnGetMessageACK = TWPPConnect1GetMessageACK
+    OnGetListChat = TWPPConnect1GetListChat
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
