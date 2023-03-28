@@ -2383,12 +2383,6 @@ begin
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
   end;
 
-  if PTypeHeader = Th_getList then
-  begin
-    if Assigned(OnGetListChat) then
-      OnGetListChat(Self, TGetChatList(PReturnClass));
-  end;
-
   if PTypeHeader = Th_getMessageACK then
   begin
     if Assigned(OnGetMessageACK) then

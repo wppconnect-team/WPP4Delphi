@@ -16355,8 +16355,7 @@ window.WAPI.getPlatformFromMessage2 = async function(UniqueID, chatid) {
 
 window.WAPI.list = async function () {
     const options = {
-        onlyGroups: true,
-        onlyUsers: true
+        onlyWithUnreadMessage: true   
       };
     const chats = await WPP.chat.list(options);
     let messagesResult = [];
@@ -16387,7 +16386,7 @@ window.WAPI.list = async function () {
             }
           }
         }
-       // console.log(JSON.stringify(messagesResult));
+        //console.log(JSON.stringify(messagesResult));
         SetConsoleMessage("getList", JSON.stringify(messagesResult));
       } catch (e) {
         console.log('Erro:'.concat(e));
