@@ -2319,7 +2319,7 @@ begin
 
  //testa se e um JSON de forma RAPIDA!
 
-  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) or (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
     //Injeta o JS.ABR de novo
     LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');

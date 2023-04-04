@@ -264,7 +264,7 @@ Const
   FrmConsole_JS_VAR_sendLocationMessageEx   = 'window.WAPI.sendLocationMessage2Ex("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
 
   //Marcelo 25/10/2022
-  FrmConsole_JS_VAR_getList   = 'window.WAPI.list({<#OPTIONS#>} );';
+  FrmConsole_JS_VAR_getList   = 'window.WAPI.list();';
 
 
   //Marcelo 18/07/2022
