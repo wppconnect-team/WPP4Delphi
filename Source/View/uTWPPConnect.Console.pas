@@ -2873,7 +2873,6 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS := FrmConsole_JS_VAR_getList;
-  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',  Trim(Options));
 
   ExecuteJS(LJS, true);
 end;
