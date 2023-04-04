@@ -372,6 +372,32 @@ object frameMensagem: TframeMensagem
       TabOrder = 18
       OnClick = bTextoMarcandoTodosGrupoClick
     end
+    object btnLigar: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 609
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Realizar uma Liga'#231#227'o'
+      ImageIndex = 19
+      Images = ImageList1
+      TabOrder = 19
+      OnClick = btnLigarClick
+    end
+    object btnEncerrarChamada: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 640
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Finalizar uma Liga'#231#227'o'
+      ImageIndex = 19
+      Images = ImageList1
+      TabOrder = 20
+      OnClick = btnEncerrarChamadaClick
+    end
   end
   object GroupBox2: TGroupBox
     AlignWithMargins = True
@@ -629,7 +655,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 18
       OnClick = Button3Click
-      ExplicitLeft = 0
     end
     object Button4: TButton
       AlignWithMargins = True
@@ -644,8 +669,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 19
       OnClick = Button4Click
-      ExplicitLeft = 10
-      ExplicitTop = 586
     end
   end
   object GroupBox3: TGroupBox

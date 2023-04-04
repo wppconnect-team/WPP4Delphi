@@ -1050,14 +1050,14 @@ end;
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
 begin
  //
- frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+ {frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('progresso: ' + GetHistorySyncProgress.progress.ToString);
  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('paused: ' + GetHistorySyncProgress.paused.ToString());
- frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('inProgress: ' + GetHistorySyncProgress.inProgress.ToString());
+ frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('inProgress: ' + GetHistorySyncProgress.inProgress.ToString());}
 
  frameLogin1.ProgressBar1.Position := GetHistorySyncProgress.progress;
 
- ShowMessage('progresso: ' + GetHistorySyncProgress.progress.ToString);
+ //ShowMessage('progresso: ' + GetHistorySyncProgress.progress.ToString);
 end;
 
 procedure TfrDemo.TWPPConnect1GetIncomingiCall(const IncomingiCall: TIncomingiCall);
@@ -1084,7 +1084,7 @@ begin
   frameLogin1.lblStatus.Caption := 'Auntenticado';
   Label3.Caption := 'Auntenticado QrCode Aguarde Sincronizando Conversas...';
   TimerCopiarPastaCache.Enabled := True;
-  TimerProgress.Enabled := True;
+  //TimerProgress.Enabled := True;
   //Application.ProcessMessages;
 end;
 
@@ -1092,7 +1092,7 @@ procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
 begin
   frameLogin1.lblStatus.Caption := 'Carregando...';
   Label3.Caption := 'Carregando Conversas Aguarde...';
-  TimerProgress.Enabled := True;
+  //TimerProgress.Enabled := True;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
@@ -1188,7 +1188,7 @@ begin
   else if GetMessageACK.ack = 3 then
     StatusMensagem := 'Visualizada'
   else if GetMessageACK.ack = 4 then
-    StatusMensagem := 'Aúdio Escutado';
+    StatusMensagem := 'Audio Escutado';
 
   ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
@@ -1223,7 +1223,7 @@ begin
     else if JMessagem.Result.ack = 3 then
       StatusMensagem := 'Visualizada'
     else if JMessagem.Result.ack = 4 then
-      StatusMensagem := 'Aúdio Escutado';
+      StatusMensagem := 'Audio Escutado';
     ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
@@ -1367,7 +1367,7 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
 
-    if Count_QrCodeDesconectouErroCache > 1 then
+    if (Count_QrCodeDesconectouErroCache > 2) then
     begin
       Label3.Caption := 'Desconectou Erro na Pasta Cache';
       ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');

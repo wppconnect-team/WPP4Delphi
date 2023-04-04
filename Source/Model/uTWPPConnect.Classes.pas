@@ -3278,7 +3278,7 @@ begin
       vJson := stringreplace(vJson, '{"ack"', UniqueID + '"ack"', [rfReplaceAll, rfIgnoreCase]);
 
       TResponsegetMessageACK.FromJsonString(vJson);
-      //inherited Create(vJson);
+      inherited Create(vJson);
     end;
 
 

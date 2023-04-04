@@ -221,6 +221,11 @@ type
 
     //Adicionado Por Marcelo 15/06/2022
     procedure rejectCall(id: string);
+    procedure SendCall(id, Options: string); //Adicionado Marcelo 02/04/2023
+    procedure EndCall(id: string); //Adicionado Marcelo 02/04/2023
+    procedure EndCallALL; //Adicionado Marcelo 02/04/2023
+    procedure AcceptCall(id: string); //Adicionado Marcelo 02/04/2023
+    procedure AcceptCallALL; //Adicionado Marcelo 02/04/2023
 
     //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
@@ -319,6 +324,31 @@ uses
   uTWPPConnect.ChatList;
 
 {$R *.dfm}
+
+procedure TFrmConsole.AcceptCall(id: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_AcceptCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',    Trim(id));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.AcceptCallALL;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_AcceptCallALL;
+
+  ExecuteJS(LJS, true);
+end;
 
 procedure TFrmConsole.addSubgroups(PCommunity, PGroupNumbers: string);
 var
@@ -471,8 +501,8 @@ begin
       //Marcelo 12/08/2022
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi", syncAllStatus: False}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
       SleepNoFreeze(40);
 
       If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
@@ -1163,6 +1193,20 @@ begin
 
 end;
 
+procedure TFrmConsole.SendCall(id, Options: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_SendCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',      Trim(id));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#', Trim(Options));
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.SendContact(vNumDest, vNum: string; vNameContact: string = '');
 var
   Ljs: string;
@@ -1705,6 +1749,31 @@ begin
   Chromium1.ShutdownDragAndDrop;
   PostMessage(Handle, CEF_DESTROY, 0, 0);
   aAction := cbaDelay;
+end;
+
+procedure TFrmConsole.EndCall(id: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_EndCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',    Trim(id));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.EndCallALL;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_EndCallALL;
+
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.ExecuteCommandConsole( const PResponse: TResponseConsoleMessage);

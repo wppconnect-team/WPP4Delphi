@@ -75,7 +75,7 @@ Const
   TWPPConnectJS_JSLinhasMInimas         = 16242; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2312.7';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2314.7';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -284,6 +284,14 @@ Const
 
   //Marcelo 15/06/2022
   FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_ID#>");';
+
+  //MARCELO 02/04/2023
+  FrmConsole_JS_VAR_SendCall         = 'WPP.call.offer("<#MSG_ID#>", {<#MSG_OPTIONS#>} ); ';
+  FrmConsole_JS_VAR_EndCall          = 'WPP.call.end("<#MSG_ID#>"); ';
+  FrmConsole_JS_VAR_EndCallALL       = 'WPP.call.end(); ';
+  FrmConsole_JS_VAR_AcceptCall       = 'WPP.call.accept("<#MSG_ID#>"); ';
+  FrmConsole_JS_VAR_AcceptCallALL    = 'WPP.call.accept(); ';
+
 
   //Marcelo 31/07/2022
   FrmConsole_JS_VAR_getLastSeen       = 'window.WAPI.getLastSeen("<#MSG_PHONE#>");';

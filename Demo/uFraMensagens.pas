@@ -88,6 +88,8 @@ type
     bTextoMarcandoTodosGrupo: TButton;
     Button3: TButton;
     Button4: TButton;
+    btnLigar: TButton;
+    btnEncerrarChamada: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -132,6 +134,8 @@ type
     procedure bTextoMarcandoTodosGrupoClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure btnLigarClick(Sender: TObject);
+    procedure btnEncerrarChamadaClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1471,9 +1475,58 @@ begin
 
 end;
 
+procedure TframeMensagem.btnLigarClick(Sender: TObject);
+ var
+  options: string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+    options := '';
+    //options := 'isVideo: true'; //Chamada de Video
+
+    //frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
+    frDemo.TWPPConnect1.SendCall(ed_num.text, options);
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeMensagem.btnEncerrarChamadaClick(Sender: TObject);
+begin
+  try
+    {if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;}
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+    //frDemo.TWPPConnect1.EndCall(ed_num.text);
+    frDemo.TWPPConnect1.EndCallALL;
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
 procedure TframeMensagem.btnArquivoClick(Sender: TObject);
 var
-  caption : string;
+  caption, Extensao : string;
   caminhoArquivo : string;
   isFigurinha : Boolean;
 begin
@@ -1500,7 +1553,11 @@ begin
     else
       Exit;
 
-    isFigurinha := False;
+    Extensao  := LowerCase(Copy(ExtractFileExt(caminhoArquivo),2,5));
+
+    if Extensao = 'webp' then
+      isFigurinha := True else
+      isFigurinha := False;
 
     //Arquivo Selecionado da Pasta
     frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, caminhoArquivo, '123', caption, isFigurinha);
