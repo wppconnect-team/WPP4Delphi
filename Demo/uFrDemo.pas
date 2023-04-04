@@ -170,6 +170,7 @@ type
       pContato: String): Boolean;
     function killtask(ExeFileName: string): Integer;
     function CaractersWeb(vText: string): string;
+    function SomenteNumero(const S: string): string;
 
    var   {validando numeros em listagem}
      r_CheckNumber, r_CheckOnline : boolean;  {verifica se rotina está ativa}
@@ -695,6 +696,26 @@ begin
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
 
+end;
+
+function TfrDemo.SomenteNumero(const S: string): string;
+var
+  vText: PChar;
+begin
+  vText := PChar(S);
+  Result := '';
+
+  while (vText^ <> #0) do
+  begin
+{$IFDEF UNICODE}
+    if CharInSet(vText^, ['0' .. '9']) then
+{$ELSE}
+    if vText^ in ['0' .. '9'] then
+{$ENDIF}
+      Result := Result + vText^;
+
+    inc(vText);
+  end;
 end;
 
 procedure TfrDemo.TimerVerificaConexaoTimer(Sender: TObject);
@@ -1568,7 +1589,7 @@ var
   contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
-  Question, Answer, phoneNumber : string;
+  Question, Answer, phoneNumber, vSender : string;
   x, i : Integer;
   mensagemDuplicada: Boolean;
 begin
@@ -1578,9 +1599,15 @@ begin
     //for AMessage in AChat.Messages do
     begin
       AMessage := AChat.Messages[x];
+      vSender := Copy(AMessage.from, 1 , Pos('@', AMessage.from) - 1);
+
+      //or (AMessage.Sender.id)
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Sender: ' + vSender);
+
       if not AChat.isGroup then // Não exibe mensages de grupos
       begin
-        if not AMessage.Sender.isMe then // Não exibe mensages enviadas por mim
+        //if (not AMessage.Sender.isMe) then
+        if (vSender <> SomenteNumero(TWPPConnect1.MyNumber) ) then // Não exibe mensages enviadas por mim
         begin
           // memo_unReadMessage.Clear;
           FChatID := AChat.id;

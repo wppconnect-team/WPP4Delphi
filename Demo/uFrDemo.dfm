@@ -1683,6 +1683,12 @@ object frDemo: TfrDemo
             ExplicitHeight = 264
           end
         end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
+        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
@@ -5702,8 +5708,8 @@ object frDemo: TfrDemo
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
-    OnGetMessageACK = TWPPConnect1GetMessageACK
     OnGetListChat = TWPPConnect1GetListChat
+    OnGetMessageACK = TWPPConnect1GetMessageACK
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
