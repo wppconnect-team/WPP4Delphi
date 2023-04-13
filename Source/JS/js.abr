@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.12.0.0;1.0.0.9;78.3.0
+//1.13.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -288,8 +288,8 @@ window.WAPI._serializeMessageObj = (obj) => {
         isOnline: _chat.isOnline,
         lastSeen: _chat.lastSeen,
         chatId: obj.id.remote,
-	quotedMsgObj: WAPI._serializeMessageObj(obj['_quotedMsgObj']),
-        //quotedMsgObj: WAPI._serializeMessageObj(WPP.whatsapp.functions.getQuotedMsgObj(obj)),
+	//quotedMsgObj: WAPI._serializeMessageObj(obj['_quotedMsgObj']),
+        quotedMsgObj: WAPI._serializeMessageObj(WPP.whatsapp.functions.getQuotedMsgObj(obj)),
 	//quotedMsgObj: null,
         mediaData: window.WAPI._serializeRawObj(obj['mediaData']),
         reply: body => window.WAPI.reply(_chat.id._serialized, body, obj)
