@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.13.0.0;1.0.0.9;78.3.0
+//1.14.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.23.2
+//WPPCONNECT v2.23.3
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -7571,10 +7571,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 a.onInjected((() => {
                     u.MsgStore.on("add", (async e => {
                         e.isNewMsg && (e = await async function(e) {
-                            var t;
-                            if (void 0 === e.chat && (e.chat = u.ChatStore.get(e.from)), e.isGroupMsg = e.isGroupMsg || (null === (t = null == e ? void 0 : e.chat) || void 0 === t ? void 0 : t.isGroup), void 0 !== e.quotedStanzaID) {
+                            var t, r;
+                            if (void 0 === e.chat && (e.chat = u.ChatStore.get(e.from), Object.defineProperty(e, "chat", {
+                                    value: e.isGroupMsg || (null === (t = null == e ? void 0 : e.chat) || void 0 === t ? void 0 : t.isGroup),
+                                    writable: !1
+                                })), Object.defineProperty(e, "isGroupMsg", {
+                                    value: e.isGroupMsg || (null === (r = null == e ? void 0 : e.chat) || void 0 === r ? void 0 : r.isGroup),
+                                    writable: !1
+                                }), void 0 !== e.quotedStanzaID) {
                                 const t = await (0, c.getQuotedMsg)(e.id);
-                                e._quotedMsgObj = t, e.quotedMsgId = t.id
+                                Object.defineProperties(e, {
+                                    _quotedMsgObj: {
+                                        value: t,
+                                        writable: !1
+                                    },
+                                    quotedMsgId: {
+                                        value: t.id,
+                                        writable: !1
+                                    }
+                                })
                             }
                             return e
                         }(e), queueMicrotask((() => {
@@ -12272,7 +12287,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.23.2";
+                s(r(3115), t), t.waVersion = "2.23.3";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12506,7 +12521,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.23.2", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.23.3", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
