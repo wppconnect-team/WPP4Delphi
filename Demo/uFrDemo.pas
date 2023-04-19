@@ -1606,7 +1606,11 @@ begin
       if not AChat.isGroup then // Não exibe mensages de grupos
       begin
         //if (not AMessage.Sender.isMe) then
-        if (AnsiUpperCase(AMessage.&type) <> 'CIPHERTEXT') and (AnsiUpperCase(AMessage.&type) <> 'E2E_NOTIFICATION') then //Ignorar Mensagem
+        if (AnsiUpperCase(AMessage.&type) <> 'CIPHERTEXT')
+        and (AnsiUpperCase(AMessage.&type) <> 'E2E_NOTIFICATION')
+        and (AnsiUpperCase(AMessage.&type) <> 'GP2')
+        and (AnsiUpperCase(AMessage.&type) <> 'PROTOCOL')
+        then //Ignorar Mensagem
         begin
           if (vSender <> SomenteNumero(TWPPConnect1.MyNumber) ) then // Não exibe mensages enviadas por mim
           begin
@@ -1709,6 +1713,16 @@ begin
                 on E: Exception do
                   IdMensagemOrigem := '';
               end;
+
+
+              if Trim(IdMensagemOrigem) = '' then
+              begin
+                //true_5517981388414@c.us_3EB03311EAF126392DBAF7
+                IdMensagemOrigem :=  'true_' + AMessage.from + '_' + AMessage.quotedStanzaID;
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+              end;
+
+
               if selectedButtonId = '' then
                 selectedButtonId := AMessage.selectedId;
               if selectedButtonId <> '' then

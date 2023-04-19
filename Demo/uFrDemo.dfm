@@ -1683,12 +1683,6 @@ object frDemo: TfrDemo
             ExplicitHeight = 264
           end
         end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox

@@ -75,7 +75,8 @@ Const
   TWPPConnectJS_JSLinhasMInimas         = 16242; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2315.6';
+
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2316.5';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';

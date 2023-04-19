@@ -4628,8 +4628,8 @@ begin
 
   if Status in [Server_Disconnected, Inject_Destroy] then
   begin
-    SleepNoFreeze(800);
-    if  ConsolePronto then
+    SleepNoFreeze(1000);
+    if ConsolePronto then
     begin
 
     end

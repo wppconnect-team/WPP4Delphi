@@ -90,6 +90,9 @@ type
     procedure Img_BrasilClick(Sender: TObject);
     procedure Chromium1LoadEnd(Sender: TObject; const browser: ICefBrowser;
       const frame: ICefFrame; httpStatusCode: Integer);
+    procedure Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: TCefEventHandle;
+      out Result: Boolean);
+    procedure Img_LogoInjectClick(Sender: TObject);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -2399,6 +2402,16 @@ begin
   }
 end;
 
+procedure TFrmConsole.Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: TCefEventHandle;
+  out Result: Boolean);
+begin
+  {if (event = KEYEVENT_RAWKEYDOWN) and (osEvent = VK_F5) then
+  begin
+    Result := True;
+    Chromium1.Browser.Reload;
+  end;}
+end;
+
 procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
   const browser: ICefBrowser; const frame: ICefFrame; httpStatusCode: Integer);
 begin
@@ -2747,6 +2760,29 @@ begin
  TempPoint.Y := 200;
 
  Chromium1.ShowDevTools(TempPoint, nil);
+end;
+
+procedure TFrmConsole.Img_LogoInjectClick(Sender: TObject);
+begin
+  //Marcelo 19/04/2023
+  Chromium1.StopLoad;
+  Chromium1.Browser.ReloadIgnoreCache;
+
+
+  //Aguardar "X" Segundos Injetar JavaScript
+  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  SleepNoFreeze(500);
+
+  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+  //Auto monitorar mensagens não lidas
+  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+  SleepNoFreeze(40);
+  SendNotificationCenterDirect(Th_Initialized);
 end;
 
 procedure TFrmConsole.Int_FrmQRCodeClose(Sender: TObject);
