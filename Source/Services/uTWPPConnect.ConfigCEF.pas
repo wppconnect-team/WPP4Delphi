@@ -39,6 +39,8 @@
 //https://www.briskbard.com/index.php?lang=en&pageid=cef
 unit uTWPPConnect.ConfigCEF;
 
+{$I TWPPConnectDiretiva.inc}
+
 interface
 
 uses
@@ -80,18 +82,21 @@ type
     FHandleFrm           : HWND;
     FInDesigner          : Boolean;
     FLogConsoleActive    : Boolean;
-    procedure SetDefault;
-    procedure SetPathCache   (const Value: String);
-    procedure SetPathFrameworkDirPath(const Value: String);
-    procedure SetPathLocalesDirPath  (const Value: String);
-    procedure SetPathLogFile         (const Value: String);
-    procedure SetPathResourcesDirPath(const Value: String);
-    procedure SetPathUserDataPath    (const Value: String);
-    function  TestaOk                (POldValue, PNewValue: String): Boolean;
-    procedure SetChromium            (const Value: TChromium);
+    {change to set default directory for CEF4Delphi binary files, in definit folder
+      procedure SetLogConsole(const Value: String);
+      procedure SetLogConsoleActive(const Value: Boolean);
+      procedure SetDefault;
+      procedure SetPathCache   (const Value: String);
+      procedure SetPathFrameworkDirPath(const Value: String);
+      procedure SetPathLocalesDirPath  (const Value: String);
+      procedure SetPathLogFile         (const Value: String);
+      procedure SetPathResourcesDirPath(const Value: String);
+      procedure SetPathUserDataPath    (const Value: String);
+    }
+    function  TestaOk(POldValue, PNewValue: String): Boolean;
+    procedure SetChromium(const Value: TChromium);
     Function  VersaoCEF4Aceita: Boolean;
-    procedure SetLogConsole(const Value: String);
-    procedure SetLogConsoleActive(const Value: Boolean);
+
   public
     SetEnableGPU         : Boolean;
     SetDisableFeatures   : String;
@@ -99,6 +104,20 @@ type
     Procedure UpdateIniFile(Const PSection, PKey, PValue :String);
 
     Procedure  UpdateDateIniFile;
+    
+    {begin refactor to public}
+    //change to set default directory for CEF4Delphi binary files, in definit folder   
+    procedure SetLogConsole(const Value: String);
+    procedure SetLogConsoleActive(const Value: Boolean);
+    procedure SetDefault;
+    procedure SetPathCache   (const Value: String);
+    procedure SetPathFrameworkDirPath(const Value: String);
+    procedure SetPathLocalesDirPath  (const Value: String);
+    procedure SetPathLogFile         (const Value: String);
+    procedure SetPathResourcesDirPath(const Value: String);
+    procedure SetPathUserDataPath    (const Value: String);
+    {end refactor to public}
+    
     function   StartMainProcess : boolean;
     Procedure  SetError;
 
@@ -362,10 +381,12 @@ begin
   FDirApp              := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
   FIniFIle             := TIniFile.create(FDirApp + NomeArquivoIni);
   Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', '01/01/1500 05:00:00');
+  //Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', FormatDateTime('dd/mm/yy hh:nn:ss', FPathJsUpdate));
   FPathJS              := FDirApp + NomeArquivoInject;
   FErrorInt            := False;
   FStartTimeOut        := 5000; //(+- 5 Segundos)
   FPathJsUpdate        := StrToDateTimeDef(Lx, StrTodateTime('01/01/1500 00:00'));
+  //FPathJsUpdate        := StrToDateTimeDef(Lx, IncHour(now,-2));
   SetDefault;
 
   if not VersaoCEF4Aceita then
@@ -373,10 +394,13 @@ begin
     FErrorInt := true;
     LVReque   := IntToStr(VersaoMinima_CF4_Major)      + '.' + IntToStr(VersaoMinima_CF4_Minor)      + '.' + IntToStr(VersaoMinima_CF4_Release);
     LVerIdent := IntToStr(CEF_SUPPORTED_VERSION_MAJOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_MINOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_BUILD);
-
+    {$IFNDEF STANDALONE}
     Application.MessageBox(PWideChar(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent])),
                            PWideChar(Application.Title), MB_ICONERROR + mb_ok
                           );
+    {$ELSE}
+    raise Exception.Create(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent]));
+    {$ENDIF}
     result := False;
     Exit;
   End;
@@ -440,7 +464,11 @@ begin
   finally
     Result  := (Self.status = asInitialized);
     if not Result then
+    {$IFNDEF STANDALONE}
        Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConnection), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ELSE}
+      raise exception.Create(MSG_ConfigCEF_ExceptConnection);
+    {$ENDIF}
   end;
 end;
 

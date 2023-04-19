@@ -90,6 +90,9 @@ type
     procedure Img_BrasilClick(Sender: TObject);
     procedure Chromium1LoadEnd(Sender: TObject; const browser: ICefBrowser;
       const frame: ICefFrame; httpStatusCode: Integer);
+    procedure Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: TCefEventHandle;
+      out Result: Boolean);
+    procedure Img_LogoInjectClick(Sender: TObject);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -204,6 +207,8 @@ type
 
     procedure markIsUnread(phoneNumber: string);
 
+    procedure markPlayed(phoneNumber: string); //Adicionado Por Marcelo 14/03/2023
+
     //Adicionado Por Marcelo 13/06/2022
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
@@ -219,9 +224,16 @@ type
 
     //Adicionado Por Marcelo 15/06/2022
     procedure rejectCall(id: string);
+    procedure SendCall(id, Options: string); //Adicionado Marcelo 02/04/2023
+    procedure EndCall(id: string); //Adicionado Marcelo 02/04/2023
+    procedure EndCallALL; //Adicionado Marcelo 02/04/2023
+    procedure AcceptCall(id: string); //Adicionado Marcelo 02/04/2023
+    procedure AcceptCallALL; //Adicionado Marcelo 02/04/2023
 
     //Adicionado Por Marcelo 10/05/2022
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
+
+    procedure getMessageACK(UniqueIDs: string); //Adicionado Por Marcelo 14/03/2023
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
@@ -315,6 +327,31 @@ uses
   uTWPPConnect.ChatList;
 
 {$R *.dfm}
+
+procedure TFrmConsole.AcceptCall(id: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_AcceptCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',    Trim(id));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.AcceptCallALL;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_AcceptCallALL;
+
+  ExecuteJS(LJS, true);
+end;
 
 procedure TFrmConsole.addSubgroups(PCommunity, PGroupNumbers: string);
 var
@@ -467,7 +504,7 @@ begin
       //Marcelo 12/08/2022
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
       ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
       SleepNoFreeze(40);
 
@@ -1159,6 +1196,20 @@ begin
 
 end;
 
+procedure TFrmConsole.SendCall(id, Options: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_SendCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',      Trim(id));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#', Trim(Options));
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.SendContact(vNumDest, vNum: string; vNameContact: string = '');
 var
   Ljs: string;
@@ -1703,6 +1754,31 @@ begin
   aAction := cbaDelay;
 end;
 
+procedure TFrmConsole.EndCall(id: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_EndCall;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ID#',    Trim(id));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.EndCallALL;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_EndCallALL;
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.ExecuteCommandConsole( const PResponse: TResponseConsoleMessage);
 var
   LOutClass  : TObject;
@@ -1808,6 +1884,29 @@ begin
                               //FreeAndNil(LOutClass2);
                             end;
                           end;
+
+    //Marcelo 14/03/2023
+    Th_getMessageACK   : begin
+                            LOutClass2 := TResponsegetMessageACK.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+
+                            //if Assigned(FMessagesList) then
+                               //FMessagesList.Free;
+
+                            //FMessagesList := TMessagesList.Create(LResultStr);
+                            //LOutClass2 := TMessagesClass.Create(LResultStr);
+                            //LOutClass2 := TMessagesClass.Create(LResultStr);
+                            {try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              //FreeAndNil(LOutClass2);
+                            end;}
+                         end;
+
 
     //Marcelo 31/05/2022
     Th_sendFileMessage   : begin
@@ -2223,7 +2322,7 @@ begin
 
  //testa se e um JSON de forma RAPIDA!
 
-  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) or (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
     //Injeta o JS.ABR de novo
     LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');
@@ -2301,6 +2400,16 @@ begin
         LogAdd(e.Message, 'ERROR DOWNLOAD ' + downloadItem.FullPath);
   end;
   }
+end;
+
+procedure TFrmConsole.Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: TCefEventHandle;
+  out Result: Boolean);
+begin
+  {if (event = KEYEVENT_RAWKEYDOWN) and (osEvent = VK_F5) then
+  begin
+    Result := True;
+    Chromium1.Browser.Reload;
+  end;}
 end;
 
 procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
@@ -2653,6 +2762,29 @@ begin
  Chromium1.ShowDevTools(TempPoint, nil);
 end;
 
+procedure TFrmConsole.Img_LogoInjectClick(Sender: TObject);
+begin
+  //Marcelo 19/04/2023
+  Chromium1.StopLoad;
+  Chromium1.Browser.ReloadIgnoreCache;
+
+
+  //Aguardar "X" Segundos Injetar JavaScript
+  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  SleepNoFreeze(500);
+
+  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+  //Auto monitorar mensagens não lidas
+  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+  SleepNoFreeze(40);
+  SendNotificationCenterDirect(Th_Initialized);
+end;
+
 procedure TFrmConsole.Int_FrmQRCodeClose(Sender: TObject);
 begin
   if FFormType = Ft_Desktop then
@@ -2777,7 +2909,6 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS := FrmConsole_JS_VAR_getList;
-  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',  Trim(Options));
 
   ExecuteJS(LJS, true);
 end;
@@ -2796,6 +2927,18 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
 
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.getMessageACK(UniqueIDs: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_getMessageACK;
+  FrmConsole_JS_AlterVar(LJS, '#MSGKEY#', Trim(UniqueIDs));
+  ExecuteJS(LJS, false);
 end;
 
 procedure TFrmConsole.getMessageById(UniqueIDs, etapa: string);
@@ -3013,6 +3156,18 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#',      duration);
 
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markPlayed(phoneNumber: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markPlayed;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
   ExecuteJS(LJS, true);
 end;
 

@@ -1682,15 +1682,6 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
@@ -2032,6 +2023,9 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
+          inherited btnMsgAll: TButton
+            OnClick = frameComunidades1btnMsgAllClick
+          end
         end
       end
       inherited pnlEsquerda: TPanel
@@ -5708,6 +5702,8 @@ object frDemo: TfrDemo
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
+    OnGetListChat = TWPPConnect1GetListChat
+    OnGetMessageACK = TWPPConnect1GetMessageACK
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber
@@ -5759,5 +5755,11 @@ object frDemo: TfrDemo
     OnTimer = TimerRestauraPastaCacheTimer
     Left = 872
     Top = 8
+  end
+  object TimerProgress: TTimer
+    Enabled = False
+    OnTimer = TimerProgressTimer
+    Left = 848
+    Top = 168
   end
 end

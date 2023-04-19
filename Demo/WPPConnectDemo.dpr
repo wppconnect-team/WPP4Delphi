@@ -1,4 +1,4 @@
-program WPPConnectDemo;
+Ôªøprogram WPPConnectDemo;
 
 uses
   Vcl.Forms,
@@ -21,43 +21,82 @@ uses
 
 {$R *.res}
 
-var arqIni: TInifile;
-
+var
+arqIni: TInifile;
+pathapp, pathcef : string ;
+pathcustom : boolean;
 begin
   {##########################################################################################
-  Colocar arquivos CEFLib junto a pasta bin·ria da aplicaÁ„o (Nao definir ou passar vazio)
-  Caso deseja informar.. segue exemplo abaixo
+  Place CEFLib files next to the application's executable path (Do not set or pass empty)
+  If you want to inform the default path "c:\..\cef4\", change the variable pathcustom = true;
+  Usage examples below:
+  ##########################################################################################
+  Colocar arquivos CEFLib junto ao path do execut√°vel da aplica√ß√£o (Nao definir ou passar vazio)
+  Caso deseje informar o path default "c:\..\cef4\", altere a vari√°vel pathcustom = true;
+  Exemplos de uso abaixo:
   ##########################################################################################}
 
 
+  {file ini}
   arqIni  := Tinifile.Create(ExtractFilePath(Application.ExeName)+ 'ConfTWPPConnect.ini');
 
-  {GlobalCEFApp.PathLogFile          := '';
-  GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('CONFIG', 'FRAMEWORK', '');  //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN';
-  GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('CONFIG', 'RESOURCES', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN';
-  GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('CONFIG', 'LOCALES', '');  //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\locales';
-  GlobalCEFApp.Pathcache            := arqIni.ReadString('CONFIG', 'CACHE', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\Cache';
-  GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('CONFIG', 'USERDATA', ''); //'C:\TWPPConnect\Projeto-TWPPConnect-master\Demo\BIN\User Data';
-  }
+ case pathcustom of
+   true : //path custom
+    begin
+      // ############################
+      //  {path default cef4delphi}
+      // ############################
 
-  GlobalCEFApp.PathLogFile          := '';
-  GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FRAMEWORK', '');
-  GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'RESOURCES', '');
-  GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
-  GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
-  GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
+      //executable directory
+      pathapp :=  ExtractFilePath(Application.ExeName) ;
+      //default directory
+      pathcef := 'cef4\';
 
+      {config path custom}
+      with GlobalCEFApp do
+      begin
+        SetPathCache(pathapp + pathcef + 'cache');
+        SetPathUserDataPath(pathapp + pathcef+'User Data');
+        SetPathLocalesDirPath(pathapp + pathcef+'locales') ;
+        SetPathResourcesDirPath(pathapp);
+        SetPathFrameworkDirPath(pathapp) ;
+        SetLogConsole (pathapp + pathcef+ 'logs\Log Console');
+        SetLogConsoleActive (true) ;
+      end;
 
+      {create file ini}
+      arqIni.WriteString('Path Defines', 'Binary', pathapp + pathcef);
+      arqIni.WriteString('Path Defines', 'FrameWork', pathapp + pathcef);
+      arqIni.WriteString('Path Defines', 'Resources', pathapp + pathcef);
+      arqIni.WriteString('Path Defines', 'Locales', pathapp + pathcef + 'locales');
+      arqIni.WriteString('Path Defines', 'Cache', pathapp + pathcef + 'cache');
+      arqIni.WriteString('Path Defines', 'Data User', pathapp + pathcef + 'User Data');
+      arqIni.WriteString('Path Defines', 'Log File', pathapp + pathcef + 'logs\Log File');
+      arqIni.WriteString('Path Defines', 'Log Console', pathapp + pathcef + 'logs\Log Console');
 
-  //Forma 1 GlobalCEFApp.Pathxx       := '';                      //Ir· procura procurar o Arquivo PADRAO no mesmo local do EXE
-  //Forma 2 GlobalCEFApp.Pathxx       := 'C:\Componentes\demo\bin'; //<-  NOME do ARQUIVO INFORMADO
-  //Forma 3 GlobalCEFApp.Pathxx       := 'BIN';                     //<-  NOME do ARQUIVO INFORMADO
-  //Forma 4 GlobalCEFApp.Pathx         := '..\Source\;              //<-  NOME do ARQUIVO INFORMADO
-  //Exemplo se aplica para todos os PATH
+      {read file ini}
+      GlobalCEFApp.PathLogFile          := pathapp + pathcef + 'logs\';
+      GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FrameWork', '');
+      GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'Resources', '');
+      GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'Locales', '');
+      GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'Cache', '');
+      GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'Data User', '');
+    end;
 
-
-  If not GlobalCEFApp.StartMainProcess then
-     Exit;
+    false: {example default demo}
+    begin
+      {read file ini}
+      GlobalCEFApp.PathLogFile          := '';
+      GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FRAMEWORK', '');
+      GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'RESOURCES', '');
+      GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
+      GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
+      GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
+    end;
+  end;
+ 
+  {start service cef4delphi chromium}
+  If not GlobalCEFApp.StartMainProcess then Exit;
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;

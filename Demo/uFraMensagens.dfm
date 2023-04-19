@@ -359,6 +359,45 @@ object frameMensagem: TframeMensagem
       TabOrder = 17
       OnClick = Button2Click
     end
+    object bTextoMarcandoTodosGrupo: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 578
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Texto Simples Marcando Todos'
+      ImageIndex = 0
+      Images = ImageList1
+      TabOrder = 18
+      OnClick = bTextoMarcandoTodosGrupoClick
+    end
+    object btnLigar: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 609
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Realizar uma Liga'#231#227'o'
+      ImageIndex = 19
+      Images = ImageList1
+      TabOrder = 19
+      OnClick = btnLigarClick
+    end
+    object btnEncerrarChamada: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 640
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Finalizar uma Liga'#231#227'o'
+      ImageIndex = 19
+      Images = ImageList1
+      TabOrder = 20
+      OnClick = btnEncerrarChamadaClick
+    end
   end
   object GroupBox2: TGroupBox
     AlignWithMargins = True
@@ -602,6 +641,34 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = btnGetMessageClick
+    end
+    object Button3: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 578
+      Width = 221
+      Height = 25
+      Cursor = crHandPoint
+      Align = alTop
+      Caption = 'Get Message ACK'
+      ImageIndex = 16
+      Images = ImageList1
+      TabOrder = 18
+      OnClick = Button3Click
+    end
+    object Button4: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 609
+      Width = 221
+      Height = 25
+      Cursor = crHandPoint
+      Align = alTop
+      Caption = 'Marcar Audio como Escutado'
+      ImageIndex = 16
+      Images = ImageList1
+      TabOrder = 19
+      OnClick = Button4Click
     end
   end
   object GroupBox3: TGroupBox
