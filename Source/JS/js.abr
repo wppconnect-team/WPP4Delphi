@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.14.0.0;1.0.0.9;78.3.0
+//1.15.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.23.3
+//WPPCONNECT v2.23.4
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -12287,7 +12287,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(5005)),
                     c = r(5267),
                     l = r(3115);
-                s(r(3115), t), t.waVersion = "2.23.3";
+                s(r(3115), t), t.waVersion = "2.23.4";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12521,7 +12521,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.23.3", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.23.4", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             9203: (e, t, r) => {
                 "use strict";
@@ -14544,8 +14544,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
-                    canEditMsg: "canEditMsg"
-                }, (e => e.canEditMsg))
+                    canEditMsg: ["canEditText", "canEditMsg"]
+                }, (e => e.canEditMsg || e.canEditText))
             },
             3679: (e, t, r) => {
                 "use strict";
@@ -14749,7 +14749,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), (0, r(8785).exportModule)(t, {
                     getHistorySyncProgress: "getHistorySyncProgress"
-                }, (e => e.getHistorySyncProgress))
+                }, (e => e.getHistorySyncProgress && !e.getHistorySyncLogDetailsString))
             },
             6639: (e, t, r) => {
                 "use strict";
