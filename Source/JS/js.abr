@@ -17376,3 +17376,26 @@ window.WAPI.getMessageACK2 = async function(uniqueID) {
     }
     
 };
+
+//Marcelo 03/05/2023
+window.WAPI.GetisOnline2 = async function() {
+    const result = await WPP.conn.isOnline();
+    
+    try {
+        SetConsoleMessage("GetisOnline", JSON.stringify(result));
+
+    } catch (err) {
+        console.log(err);
+    };    
+};
+
+//Marcelo 03/05/2023
+WPP.on('conn.online', (online) => {
+  if (online) {
+    //console.log('You are online');
+    SetConsoleMessage("GetEnvisOnline", JSON.stringify({isOnline: true}));
+  } else {
+    //console.log('You are offline');
+    SetConsoleMessage("GetEnvisOnline", JSON.stringify({isOnline: false}));
+  }
+});
