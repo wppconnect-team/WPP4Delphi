@@ -890,6 +890,7 @@ object frameLogin: TframeLogin
       14F640ADA5924463183F90A67692095E54E613D4E2A01CFB5F02848AE364A31E
       E00000000049454E44AE426082}
     ShowHint = False
+    OnClick = whatsOffClick
   end
   object imgQrCode: TImage
     Left = 394
@@ -1302,6 +1303,7 @@ object frameLogin: TframeLogin
       0C18C07599324E37C36AB3C7BB88C0C44FCEC830D3358E28B2BDBCB9730CF77E
       3C75350728D6FF03977073E6941C5E320000000049454E44AE426082}
     Visible = False
+    OnClick = whatsOnClick
   end
   object rgTipoLogin: TRadioGroup
     Left = 192
@@ -1332,7 +1334,7 @@ object frameLogin: TframeLogin
   object ProgressBar1: TProgressBar
     Left = 189
     Top = 304
-    Width = 478
+    Width = 188
     Height = 17
     TabOrder = 2
   end

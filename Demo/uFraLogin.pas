@@ -41,6 +41,8 @@ type
     ProgressBar1: TProgressBar;
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure whatsOnClick(Sender: TObject);
+    procedure whatsOffClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -72,6 +74,22 @@ begin
 
    frDemo.TWPPConnect1.Logout;
    frDemo.TWPPConnect1.Disconnect;
+end;
+
+procedure TframeLogin.whatsOffClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.auth then
+    exit;
+
+  frDemo.TWPPConnect1.IsOnline;
+end;
+
+procedure TframeLogin.whatsOnClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.auth then
+    exit;
+
+  frDemo.TWPPConnect1.IsOnline;
 end;
 
 end.

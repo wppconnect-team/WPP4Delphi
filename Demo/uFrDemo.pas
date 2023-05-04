@@ -140,6 +140,8 @@ type
     procedure frameComunidades1btnMsgAllClick(Sender: TObject);
     procedure TimerProgressTimer(Sender: TObject);
     procedure TWPPConnect1GetMessageACK(const GetMessageACK: TResponsegetMessageACK);
+    procedure TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
+    procedure TWPPConnect1GetIsOnline(Response: TIsOnline);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -731,7 +733,7 @@ begin
     whatsappsms := 0;
     r_CheckOnline := True;
 
-    try TWPPConnect1.CheckNumberExists('17981388414'); except end;
+    try TWPPConnect1.CheckNumberExists('17981594861'); except end;
 
     inc(TentativaConexao);
 
@@ -1068,6 +1070,34 @@ begin
   else
     ShowMessage('Whatsapp Invalid');
 end;
+procedure TfrDemo.TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
+begin
+  if Response.IsOnline then
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Online"');
+
+    Label3.Caption := 'Online';
+    frameLogin1.lblStatus.Caption := 'Online';
+    frameLogin1.lblStatus.Font.Color := $0000AE11;
+    frameLogin1.SpeedButton3.Enabled := True;
+    frameLogin1.whatsOn.Visible := True;
+    StatusBar1.Panels[1].Text := 'Online';
+  end
+  else
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Offline"');
+
+    Label3.Caption := 'Offline';
+    frameLogin1.lblStatus.Caption := 'Offline';
+    frameLogin1.lblStatus.Font.Color := $002894FF;
+    frameLogin1.lblStatus.Font.Color := clGrayText;
+    frameLogin1.whatsOff.Visible := True;
+    frameLogin1.whatsOn.Visible := False;
+    frameLogin1.SpeedButton3.Enabled := True;
+    StatusBar1.Panels[1].Text := 'Offline';
+  end;
+end;
+
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
 begin
  //
@@ -1114,6 +1144,32 @@ begin
   frameLogin1.lblStatus.Caption := 'Carregando...';
   Label3.Caption := 'Carregando Conversas Aguarde...';
   //TimerProgress.Enabled := True;
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsOnline(Response: TIsOnline);
+begin
+  if Response.IsOnline then
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Online');
+
+    frameLogin1.lblStatus.Caption := 'Online';
+    frameLogin1.lblStatus.Font.Color := $0000AE11;
+    frameLogin1.SpeedButton3.Enabled := True;
+    frameLogin1.whatsOn.Visible := True;
+    StatusBar1.Panels[1].Text := 'Online';
+  end
+  else
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Offline');
+
+    frameLogin1.lblStatus.Caption := 'Offline';
+    frameLogin1.lblStatus.Font.Color := $002894FF;
+    frameLogin1.lblStatus.Font.Color := clGrayText;
+    frameLogin1.whatsOff.Visible := True;
+    frameLogin1.whatsOn.Visible := False;
+    frameLogin1.SpeedButton3.Enabled := True;
+    StatusBar1.Panels[1].Text := 'Offline';
+  end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);

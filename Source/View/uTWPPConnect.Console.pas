@@ -157,6 +157,7 @@ type
     { Public declarations }
     procedure ExecuteJSDir(PScript: string; Purl:String = 'about:blank'; pStartline: integer=0);
     procedure RebootChromium;
+    procedure RebootChromiumNew;
     Function  ConfigureNetWork:Boolean;
     Procedure SetZoom(Pvalue: Integer);
     Property  Conectado: Boolean    Read FConectado;
@@ -240,6 +241,8 @@ type
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
+
+    procedure IsOnline;
 
     //Adicionado por Daniel 25/05/2022
     procedure BloquearContato(vContato: string);
@@ -349,6 +352,18 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_AcceptCallALL;
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.IsOnline;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GetIsOnline;
 
   ExecuteJS(LJS, true);
 end;
@@ -489,7 +504,8 @@ end;
 
 procedure TFrmConsole.QRCodeForm_Start;
 begin
-  ExecuteJS(FrmConsole_JS_monitorQRCode, False);
+  if FrmConsole_JS_monitorQRCode <> '' then
+    ExecuteJS(FrmConsole_JS_monitorQRCode, False);
 end;
 
 procedure TFrmConsole.OnTimerConnect(Sender: TObject);
@@ -1084,6 +1100,28 @@ procedure TFrmConsole.RebootChromium;
 begin
   TWppConnect(FOwner).SetNewStatus(Server_Rebooting);
   FrmConsole.Chromium1.LoadURL(FrmConsole_JS_URL);
+end;
+
+procedure TFrmConsole.RebootChromiumNew;
+begin
+  //Marcelo 03/05/2023
+  Chromium1.StopLoad;
+  Chromium1.Browser.ReloadIgnoreCache;
+
+  //Aguardar "X" Segundos Injetar JavaScript
+  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  SleepNoFreeze(500);
+
+  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+  //Auto monitorar mensagens não lidas
+  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+  SleepNoFreeze(40);
+  SendNotificationCenterDirect(Th_Initialized);
 end;
 
 procedure TFrmConsole.rejectCall(id: string);
@@ -1893,19 +1931,29 @@ begin
                             finally
                               FreeAndNil(LOutClass2);
                             end;
+                         end;
 
-                            //if Assigned(FMessagesList) then
-                               //FMessagesList.Free;
-
-                            //FMessagesList := TMessagesList.Create(LResultStr);
-                            //LOutClass2 := TMessagesClass.Create(LResultStr);
-                            //LOutClass2 := TMessagesClass.Create(LResultStr);
-                            {try
+    //Marcelo 03/05/2023
+    Th_GetisOnline   : begin
+                            LOutClass2 := TIsOnline.Create(LResultStr);
+                            try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
-                              //FreeAndNil(LOutClass2);
-                            end;}
+                              FreeAndNil(LOutClass2);
+                            end;
                          end;
+
+    //Marcelo 03/05/2023
+    Th_GetEnvisOnline   : begin
+                            LOutClass2 := TEnvIsOnline.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                         end;
+
+
 
 
     //Marcelo 31/05/2022
@@ -2326,7 +2374,20 @@ begin
   begin
     //Injeta o JS.ABR de novo
     LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');
-    ExecuteJSDir(TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    //Chromium1.StopLoad;
+    //Chromium1.Browser.ReloadIgnoreCache;
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    {SleepNoFreeze(500);
+
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+      //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);}
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
@@ -2424,7 +2485,7 @@ begin
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
     SleepNoFreeze(500);
 
-    If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
       //Auto monitorar mensagens não lidas
@@ -2767,7 +2828,6 @@ begin
   //Marcelo 19/04/2023
   Chromium1.StopLoad;
   Chromium1.Browser.ReloadIgnoreCache;
-
 
   //Aguardar "X" Segundos Injetar JavaScript
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then

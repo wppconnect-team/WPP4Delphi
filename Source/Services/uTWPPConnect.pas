@@ -114,6 +114,8 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
+  TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
+  TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
   TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
   TWPPConnect = class(TComponent)
   private
@@ -228,6 +230,9 @@ type
     FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
     FOnGetIsAuthenticated: TGetIsAuthenticated; //Marcelo 17/09/2022
 
+    FOnGetIsOnline: TGetIsOnline; //Marcelo 03/05/2023
+    FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
+
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
     procedure Loaded; override;
@@ -328,6 +333,7 @@ type
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta;
+    procedure IsOnline;
     procedure CheckIsConnected;
     procedure GetAllContacts;
     procedure GetAllGroups;
@@ -448,6 +454,10 @@ type
 
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
+
+    //Marcelo 03/05/2023
+    property OnGetIsOnline               : TGetIsOnline               read FOnGetIsOnline                  write FOnGetIsOnline;
+    property OnGetEnvIsOnline            : TGetEnvIsOnline            read FOnGetEnvIsOnline               write FOnGetEnvIsOnline;
 
     property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
     property OnGetMessageACK             : TOnGetMessageACK           read FOnGetMessageACK                write FOnGetMessageACK; //Marcelo 19/03/2023
@@ -2140,6 +2150,13 @@ begin
     FrmConsole.isBeta;
 end;
 
+procedure TWPPConnect.IsOnline;
+begin
+  //Adicionado Por Marcelo 03/05/2023
+  if Assigned(FrmConsole) then
+    FrmConsole.IsOnline;
+end;
+
 procedure TWPPConnect.LimparQrCodeInterno;
 var
   ltmp: TResultQRCodeClass;
@@ -2453,6 +2470,19 @@ begin
     if Assigned(OnGetIsAuthenticated) then
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
   end;
+
+  if PTypeHeader = Th_getIsOnline then
+  Begin
+    if Assigned(OnGetIsOnline) then
+      OnGetIsOnline( TIsOnline(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_getEnvIsOnline then
+  Begin
+    if Assigned(OnGetEnvIsOnline) then
+      OnGetEnvIsOnline( TEnvIsOnline(PReturnClass));
+  end;
+
 
   if PTypeHeader = Th_getMessageACK then
   begin
@@ -2834,7 +2864,8 @@ end;
 
 procedure TWPPConnect.RebootWPP;
 begin
-  frmConsole.RebootChromium;
+  //frmConsole.RebootChromium;
+  frmConsole.RebootChromiumNew;
 end;
 
 procedure TWPPConnect.rejectCall(id: string);

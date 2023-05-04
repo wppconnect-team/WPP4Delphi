@@ -82,6 +82,7 @@ object FrmConsole: TFrmConsole
       Top = 1
       Width = 28
       Height = 18
+      Hint = 'Reload Inject Again'
       Center = True
       Picture.Data = {
         0A544A504547496D6167653E1D0000FFD8FFE000104A46494600010100000100

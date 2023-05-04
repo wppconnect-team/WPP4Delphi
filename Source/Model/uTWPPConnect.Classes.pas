@@ -1641,6 +1641,25 @@ public
   destructor  Destroy;
 end;
 
+TIsOnline = class(TClassPadrao)
+private
+  FIsOnline: Boolean;
+public
+  property IsOnline:      Boolean    read FIsOnline     write FIsOnline;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
+TEnvIsOnline = class(TClassPadrao)
+private
+  FIsOnline: Boolean;
+public
+  property IsOnline:      Boolean    read FIsOnline     write FIsOnline;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
+
 //Marcelo 18/06/2022
 TIncomingiCall = class(TClassPadrao)
 private
@@ -3313,6 +3332,40 @@ end;
 function TResponsegetMessageACK.ToJsonString: string;
 begin
   result := TJson.ObjectToJsonString(self);
+end;
+
+{ TIsOnline }
+
+constructor TIsOnline.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  myarr: TJSONArray;
+begin
+  if pos('true', pAJsonString) > 0 then
+    FIsOnline := True else
+    FIsOnline := False;
+end;
+
+destructor TIsOnline.Destroy;
+begin
+  inherited;
+end;
+
+{ TEnvIsOnline }
+
+constructor TEnvIsOnline.Create(pAJsonString: string);
+begin
+  if pos('true', pAJsonString) > 0 then
+    FIsOnline := True else
+    FIsOnline := False;
+end;
+
+destructor TEnvIsOnline.Destroy;
+begin
+  inherited;
 end;
 
 end.

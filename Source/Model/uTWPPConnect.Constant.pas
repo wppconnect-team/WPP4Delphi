@@ -76,7 +76,7 @@ Const
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2316.5';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2318.8';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -88,7 +88,7 @@ Const
   FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
   //FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
   FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelectorAll("button"); if (all[0]) { if (all.includes("recarregar")) { all[0].click() } } })}, 60000);';
-  FrmConsole_JS_monitorQRCode           = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
+  FrmConsole_JS_monitorQRCode           = ''; //'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
   FrmConsole_JS_StopMonitor             = 'stopMonitor();';
   FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
   FrmConsole_JS_VAR_StartMonitor         = 'startMonitor(intervalSeconds=<#TEMPO#>)';
@@ -297,6 +297,9 @@ Const
   //Marcelo 31/07/2022
   FrmConsole_JS_VAR_getLastSeen       = 'window.WAPI.getLastSeen("<#MSG_PHONE#>");';
 
+  //Marcelo 03/05/2023
+  FrmConsole_JS_VAR_GetIsOnline       = 'window.WAPI.GetisOnline2();';
+
 resourcestring
   MSG_ConfigCEF_ExceptNotFoundJS       = '';
   MSG_ConfigCEF_ExceptNotFoundPATH     = '';
@@ -452,6 +455,8 @@ type
                    , Th_QrCodeDesconectouErroCache=64 //Marcelo 06/02/2023
                    , Th_getAllcommunitys=65 //Marcelo 11/02/2023
                    , Th_getMessageACK=66 //Marcelo 14/03/2023
+                   , Th_getIsOnline=67 //Marcelo 03/05/2023
+                   , Th_getEnvIsOnline=68 //Marcelo 03/05/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -589,7 +594,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 66; //Marcelo 14/03/2023
+const LmaxCount = 68; //Marcelo 03/05/2023
 var
   I: Integer;
   LNome: String;
