@@ -85,10 +85,19 @@ Const
   FrmConsole_JS_GetUnreadMessages       = 'window.WAPI.getUnreadMessages(includeMe="True", includeNotifications="True", use_unread_count="True");';
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
   FrmConsole_JS_checkDelivered          = 'window.WAPI.getDelivered();';
-  FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
+  //FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
+
+  //Marcelo 05/05/2023
+  FrmConsole_JS_WEBmonitorQRCode        = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
   //FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
-  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelectorAll("button"); if (all[0]) { if (all.includes("recarregar")) { all[0].click() } } })}, 60000);';
-  FrmConsole_JS_monitorQRCode           = ''; //'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
+  //FrmConsole_JS_refreshOnlyQRCode       = ' interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelector("button"); if (all) { if (all.text.includes("recarregar")) { all.click() } } })}, 60000);';
+
+  //Marcelo 05/05/2023
+  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() { await new Promise((resolve, reject) => {let all = Array.from(document.querySelectorAll("button")); if (all[0]) {if (all.some(btn => btn.textContent.includes("recarregar")))' + ' {all[0].click();}}resolve();});}, 60000);';
+  //FrmConsole_JS_monitorQRCode           = ''; //'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
+
+  //Marcelo 05/05/2023
+  FrmConsole_JS_monitorQRCode           = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
   FrmConsole_JS_StopMonitor             = 'stopMonitor();';
   FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
   FrmConsole_JS_VAR_StartMonitor         = 'startMonitor(intervalSeconds=<#TEMPO#>)';

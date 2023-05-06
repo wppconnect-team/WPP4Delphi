@@ -43,6 +43,7 @@ type
     procedure SpeedButton1Click(Sender: TObject);
     procedure whatsOnClick(Sender: TObject);
     procedure whatsOffClick(Sender: TObject);
+    procedure rgTipoLoginClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -54,6 +55,11 @@ implementation
 {$R *.dfm}
 
 uses uFrDemo;
+
+procedure TframeLogin.rgTipoLoginClick(Sender: TObject);
+begin
+  frDemo.TWPPConnect1.FormQrCodeType := TFormQrCodeType(rgTipoLogin.ItemIndex);
+end;
 
 procedure TframeLogin.SpeedButton1Click(Sender: TObject);
 begin

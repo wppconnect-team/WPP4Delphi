@@ -958,6 +958,7 @@ begin
   frameLogin1.whatsOff.Visible := True;
   frameLogin1.whatsOn.Visible := False;
   frameLogin1.SpeedButton3.Enabled := True;
+
   ShowMessage('Conexão foi finalizada pelo celular');
 end;
 
@@ -1081,7 +1082,9 @@ begin
     frameLogin1.lblStatus.Font.Color := $0000AE11;
     frameLogin1.SpeedButton3.Enabled := True;
     frameLogin1.whatsOn.Visible := True;
+    frameLogin1.whatsOff.Visible := False;
     StatusBar1.Panels[1].Text := 'Online';
+    frameLogin1.imgQrCode.Picture := nil;
   end
   else
   begin
@@ -1156,7 +1159,9 @@ begin
     frameLogin1.lblStatus.Font.Color := $0000AE11;
     frameLogin1.SpeedButton3.Enabled := True;
     frameLogin1.whatsOn.Visible := True;
+    frameLogin1.whatsOff.Visible := False;
     StatusBar1.Panels[1].Text := 'Online';
+    frameLogin1.imgQrCode.Picture := nil;
   end
   else
   begin
@@ -1179,6 +1184,8 @@ begin
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
   frameLogin1.whatsOn.Visible := True;
+  frameLogin1.whatsOff.Visible := False;
+  frameLogin1.imgQrCode.Picture := nil;
   ctbtn.Enabled := True;
   TimerProgress.Enabled := False;
 
@@ -1439,6 +1446,8 @@ begin
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
   frameLogin1.whatsOn.Visible := True;
+  frameLogin1.whatsOff.Visible := False;
+  frameLogin1.imgQrCode.Picture := nil;
   ctbtn.Enabled := True;
 
   //Marcelo 06/02/2023
@@ -1521,10 +1530,10 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
 begin
-  Count_QrCodeDesconectouErroCache := Count_QrCodeDesconectouErroCache + 1;
-
-  if not TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
+  if TDirectory.Exists(ExtractFilePath(Application.ExeName) + 'bck_cache/') then
   begin
+    Count_QrCodeDesconectouErroCache := Count_QrCodeDesconectouErroCache + 1;
+
     frameLogin1.lblStatus.Caption := 'Offline';
     frameLogin1.lblStatus.Font.Color := $002894FF;
     frameLogin1.lblStatus.Font.Color := clGrayText;
@@ -1532,7 +1541,7 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
 
-    if (Count_QrCodeDesconectouErroCache > 2) then
+    if (Count_QrCodeDesconectouErroCache > 3) then
     begin
       Label3.Caption := 'Desconectou Erro na Pasta Cache';
       ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');

@@ -1311,12 +1311,13 @@ object frameLogin: TframeLogin
     Width = 185
     Height = 185
     Caption = 'M'#233'todo de acesso'
-    ItemIndex = 0
+    ItemIndex = 1
     Items.Strings = (
       'Formul'#225'rio com QrCode'
       'Whatsapp Web'
       'QrCode Manual')
     TabOrder = 0
+    OnClick = rgTipoLoginClick
   end
   object SpeedButton3: TButton
     Left = 189
