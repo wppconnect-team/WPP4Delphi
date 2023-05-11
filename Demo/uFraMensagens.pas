@@ -1592,9 +1592,16 @@ end;
 
 procedure TframeMensagem.listaContatosDblClick(Sender: TObject);
 begin
-  ed_num.text := copy(listaContatos.Items[listaContatos.Selected.Index].SubItems
-    [1], 0, pos('@', listaContatos.Items[listaContatos.Selected.Index].SubItems
-    [1])) + 'c.us';
+  if pos('@lid', listaContatos.Items[listaContatos.Selected.Index].SubItems[1]) > 0 then
+  begin
+    ed_num.text := frDemo.SomenteNumero(copy(listaContatos.Items[listaContatos.Selected.Index].SubItems[1],
+      pos('-', listaContatos.Items[listaContatos.Selected.Index].SubItems[1]) + 1, length(listaContatos.Items[listaContatos.Selected.Index].SubItems[1])));
+    ed_num.Text := Copy(ed_num.Text, 1, length(ed_num.Text)-1);
+    ed_num.Text :=  ed_num.Text + '@c.us'
+  end
+  else
+    ed_num.text := copy(listaContatos.Items[listaContatos.Selected.Index].SubItems[1], 0,
+      pos('@', listaContatos.Items[listaContatos.Selected.Index].SubItems[1])) + 'c.us';
 end;
 
 {$REGION 'CONVERSAO BASE64'}

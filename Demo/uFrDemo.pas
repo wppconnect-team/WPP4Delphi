@@ -984,11 +984,16 @@ procedure TfrDemo.TWPPConnect1GetAllContactList(const AllContacts
   : TRetornoAllContacts);
 var
   AContact: uTWPPConnect.Classes.TContactClass;
+  wlo_AuxNome: string;
 begin
+
   frameMensagem1.listaContatos.Clear;
   for AContact in AllContacts.Result do
   begin
-    AddContactList(AContact.id + ' ' + AContact.name);
+    wlo_AuxNome := AContact.name;
+    if Trim(wlo_AuxNome) = '' then
+      wlo_AuxNome := AContact.formattedName;
+    AddContactList(AContact.id + ' - ' + wlo_AuxNome);
   end;
   AContact := nil;
 end;

@@ -678,6 +678,7 @@ object frameMensagem: TframeMensagem
     Width = 231
     Height = 675
     Align = alLeft
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = 'Fun'#231#245'es Diversas'
     TabOrder = 3
     object groupListaContatos: TGroupBox
