@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.17.0.0;1.0.0.9;78.3.0
+//1.18.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.24.0
+//WPPCONNECT v2.24.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -8117,13 +8117,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const n = r(63327),
                     o = r(11092),
                     i = r(21489);
-                t.generateMessageID = function(e) {
+                t.generateMessageID = async function(e) {
                     const t = o.UserPrefs.getMaybeMeUser();
                     let r, a;
                     return r = e instanceof o.Wid ? e : e instanceof o.ChatModel ? e.id : (0, n.assertWid)(e), r.isGroup() && (a = o.WidFactory.toUserWid(t)), new o.MsgKey({
                         from: t,
                         to: r,
-                        id: (0, i.randomMessageId)(),
+                        id: await Promise.resolve((0, i.randomMessageId)()),
                         participant: a,
                         selfDir: "out"
                     })
@@ -9275,7 +9275,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         });
                         t.id = r.messageId
                     }
-                    if (t.id || (t.id = (0, l.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
+                    if (t.id || (t.id = await (0, l.generateMessageID)(e)), r.mentionedList && !Array.isArray(r.mentionedList)) throw new i.WPPError("mentioned_list_is_not_array", "The option mentionedList is not an array", {
                         mentionedList: r.mentionedList
                     });
                     if (r.detectMentioned && e.isGroup && (!r.mentionedList || !r.mentionedList.length)) {
@@ -12352,7 +12352,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (!(null === (r = s.groupMetadata) || void 0 === r ? void 0 : r.canSetDescription())) throw new n.WPPError("you_are_not_allowed_set_group_description", `You are not allowed to set group description in ${s.id._serialized}`, {
                         groupId: s.id.toString()
                     });
-                    const u = (0, o.randomMessageId)();
+                    const u = await Promise.resolve((0, o.randomMessageId)());
                     return await (0, o.sendSetGroupDescription)(s.id, t, u, null === (a = s.groupMetadata) || void 0 === a ? void 0 : a.descId), s.groupMetadata.descId = u, s.groupMetadata.desc = t, !0
                 }
             },
@@ -12593,7 +12593,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                a(r(13115), t), t.waVersion = "2.24.0";
+                a(r(13115), t), t.waVersion = "2.24.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -12827,7 +12827,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.24.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "2.24.1", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -14052,17 +14052,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 })),
                                 n = [
                                     [/locale/, 99],
-                                    [/vendor.*main~/, 83],
-                                    [/vendor.*main/, 82],
+                                    [/vendor.*main~/, 84],
+                                    [/vendor.*main/, 83],
+                                    [/vendor/, 82],
                                     [/main~/, 81],
                                     [/main/, 80],
                                     [/vendor.*lazy.*high/, 75],
                                     [/lazy.*high.*~/, 74],
                                     [/lazy.*high/, 73],
-                                    [/vendor.*lazy.*low/, 72],
                                     [/lazy.*low.*~/, 71],
                                     [/lazy.*low/, 70],
-                                    [/vendor/, 2],
                                     [/lazy/, 1]
                                 ],
                                 o = e => {
@@ -14070,8 +14069,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     for (const e of n)
                                         if (e[0].test(r)) return e[1];
                                     return 0
-                                };
-                            await Promise.all(r.sort(((e, t) => o(t) - o(e))).map((e => t.webpackRequire.e(e)))), t.isReady = !0, a("ready to use"), await i.internalEv.emitAsync("webpack.ready").catch((() => null))
+                                },
+                                s = r.sort(((e, t) => o(t) - o(e)));
+                            for (const e of s) try {
+                                await t.webpackRequire.e(e)
+                            } catch (r) {
+                                a("load file error", t.webpackRequire.e(e))
+                            }
+                            t.isReady = !0, a("ready to use"), await i.internalEv.emitAsync("webpack.ready").catch((() => null))
                         }
                     ])
                 };
