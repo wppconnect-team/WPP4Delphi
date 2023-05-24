@@ -17184,7 +17184,7 @@ async function deleteAllChats() {
         try {
             for (var i = 0; i < chat.length; i++) {                 
                    if (chat[i].hasUnread == false) {              
-                       await WPP.chat.deleteChat(chat[i].id._serialized).then(x => console.log(x))                
+                       await WPP.chat.delete(chat[i].id._serialized).then(x => console.log(x))                
                    }
                        
             }
