@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.19.0.0;1.0.0.9;78.3.0
+//1.20.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -17184,7 +17184,7 @@ async function deleteAllChats() {
         try {
             for (var i = 0; i < chat.length; i++) {                 
                    if (chat[i].hasUnread == false) {              
-                       await apagarChat(chat[i].id._serialized).then(x => console.log(x))                
+                       await WPP.chat.deleteChat(chat[i].id._serialized).then(x => console.log(x))                
                    }
                        
             }
