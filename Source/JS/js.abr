@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.21.0.0;1.0.0.9;78.3.0
+//1.22.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2324,7 +2324,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.24.3
+//WPPCONNECT v2.24.4
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2865,11 +2865,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r < 0) throw new RangeError("Index out of range")
                 }
 
-                function U(e, t, r, n, i) {
+                function F(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function F(e, t, r, n, i) {
+                function U(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3027,13 +3027,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
                     return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeFloatLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
-                }, u.prototype.writeFloatBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
-                }, u.prototype.writeDoubleLE = function(e, t, r) {
                     return F(this, e, t, !0, r)
-                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
+                }, u.prototype.writeDoubleLE = function(e, t, r) {
+                    return U(this, e, t, !0, r)
+                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                    return U(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3675,21 +3675,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     height: C
                                 }, "cover");
                                 if (S = R.width, C = R.height, O) {
-                                    var U = M({
+                                    var F = M({
                                         aspectRatio: I,
                                         width: E,
                                         height: k
                                     }, y.resize);
-                                    E = U.width, k = U.height
+                                    E = F.width, k = F.height
                                 } else {
-                                    var F = M({
+                                    var U = M({
                                             aspectRatio: I,
                                             width: E,
                                             height: k
                                         }),
-                                        D = F.width;
+                                        D = U.width;
                                     E = void 0 === D ? r : D;
-                                    var G = F.height;
+                                    var G = U.height;
                                     k = void 0 === G ? n : G
                                 }
                                 var W = -(E = Math.floor(_(Math.min(Math.max(E, S), j)))) / 2,
@@ -8716,18 +8716,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return R.unpin
                     }
                 });
-                var U = r(48471);
+                var F = r(48471);
                 Object.defineProperty(t, "prepareLinkPreview", {
                     enumerable: !0,
                     get: function() {
-                        return U.prepareLinkPreview
+                        return F.prepareLinkPreview
                     }
                 });
-                var F = r(49872);
+                var U = r(49872);
                 Object.defineProperty(t, "prepareMessageButtons", {
                     enumerable: !0,
                     get: function() {
-                        return F.prepareMessageButtons
+                        return U.prepareMessageButtons
                     }
                 });
                 var D = r(48384);
@@ -9680,7 +9680,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                     return n = (0, d.prepareMessageButtons)(n, t), await (0, l.sendRawMessage)(e, n, t)
                 }, s.onInjected((() => {
-                    (0, a.wrapModuleFunction)(u.typeAttributeFromProtobuf, ((e, ...t) => {
+                    (0, a.wrapModuleFunction)(u.mediaTypeFromProtobuf, ((e, ...t) => {
+                        const [r] = t;
+                        return r.locationMessage ? null : e(...t)
+                    })), (0, a.wrapModuleFunction)(u.typeAttributeFromProtobuf, ((e, ...t) => {
                         const [r] = t;
                         return r.locationMessage ? "text" : e(...t)
                     }))
@@ -12466,7 +12469,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         groupId: c.id.toString()
                     });
                     if (t === s.EPHEMERAL) {
-                        if ("boolean" != typeof r && 1 !== r || (r = 604800), [0, 86400, 604800, 7776e3].includes(r)) throw new n.WPPError("invalid_ephemeral_duration", "Invalid ephemeral duration", {
+                        if ("boolean" != typeof r && 1 !== r || (r = 604800), ![0, 86400, 604800, 7776e3].includes(r)) throw new n.WPPError("invalid_ephemeral_duration", "Invalid ephemeral duration", {
                             value: r
                         })
                     } else r = r ? 1 : 0;
@@ -12653,7 +12656,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                s(r(13115), t), t.waVersion = "2.24.3-alpha.0";
+                s(r(13115), t), t.waVersion = "2.24.4";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -12887,7 +12890,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.24.3-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.24.4", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -16992,6 +16995,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(63607);
     return __webpack_exports__
 })()));
+
 
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
