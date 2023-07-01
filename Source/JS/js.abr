@@ -1,5 +1,5 @@
-﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.22.0.0;1.0.0.9;78.3.0
+//Version_JS;Version_TInjectMin;Version_CEF4Min;
+//1.23.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -248,11 +248,13 @@ window.WAPI._serializeContactObj = (obj) => {
         formattedName: obj.formattedName,
         isHighLevelVerified: obj.isHighLevelVerified,
         isMe: obj.isMe,
-        isMyContact: obj.isMyContact,
+        //isMyContact: obj.isMyContact,
+		isMyContact: (obj.isAddressBookContact === 1) ? true : false,
+		isAddressBookContact: obj.isAddressBookContact,
         isPSA: obj.isPSA,
         isUser: obj.isUser,
         isVerified: obj.isVerified,
-        isWAContact: obj.isWAContact,
+        isWAContact: obj.isWAContact,		
         profilePicThumb: profilePhoto,
 		statusMute: obj.statusMute,
         msgs: null
@@ -382,7 +384,8 @@ window.WAPI.getAllContacts = function(done) {
  * @returns {Array|*} List of contacts
  */
 window.WAPI.getMyContacts = function(done) {
-    const contacts = window.Store.Contact.filter((contact) => contact.isMyContact === true).map((contact) => WAPI._serializeContactObj(contact));
+    //const contacts = window.Store.Contact.filter((contact) => contact.isMyContact === true).map((contact) => WAPI._serializeContactObj(contact));
+	const contacts = window.Store.Contact.filter((contact) => contact.isAddressBookContact === 1).map((contact) => WAPI._serializeContactObj(contact));
     if (done !== undefined) done(contacts);
     return contacts;
 };
@@ -1289,13 +1292,13 @@ window.WAPI.getUnreadMessages = function(includeMe, includeNotifications, use_un
                 for (let i = messages.length - 1; i >= 0; i--) {
                     let messageObj = messages[i];
                     if (n > 0) {
-                        if (!messageObj.isSentByMe) {
+                        if (!messageObj.fromMe) {
                             let message = WAPI.processMessageObj(messageObj, includeMe, includeNotifications);
                             messageGroup.messages.unshift(message);
                             n -= 1;
                         }
                     } else if (n === -1) { // chat was marked as unread so will fetch last message as unread
-                        if (!messageObj.isSentByMe) {
+                        if (!messageObj.fromMe) {
                             let message = WAPI.processMessageObj(messageObj, includeMe, includeNotifications);
                             messageGroup.messages.unshift(message);
                             break;
