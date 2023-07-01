@@ -387,6 +387,9 @@ window.WAPI.getMyContacts = function(done) {
     //const contacts = window.Store.Contact.filter((contact) => contact.isMyContact === true).map((contact) => WAPI._serializeContactObj(contact));
     const contacts = window.Store.Contact.filter((contact) => contact.isAddressBookContact === 1).map((contact) => WAPI._serializeContactObj(contact));
     if (done !== undefined) done(contacts);
+
+    SetConsoleMessage("getMyContacts", JSON.stringify(contacts));
+
     return contacts;
 };
 
