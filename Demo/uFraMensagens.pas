@@ -1576,7 +1576,8 @@ end;
 
 procedure TframeMensagem.btnListarCOntatosClick(Sender: TObject);
 begin
-  frDemo.TWPPConnect1.getAllContacts;
+  //frDemo.TWPPConnect1.getAllContacts;
+  frDemo.TWPPConnect1.getMyContacts;
 end;
 
 procedure TframeMensagem.edtURLDblClick(Sender: TObject);

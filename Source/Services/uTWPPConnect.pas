@@ -65,6 +65,7 @@ type
   TGetMessages              = procedure(Const Chats: TChatList3) of object; //14/08/2022
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
+  TOnMyContacts             = procedure(Const MyContacts: TRetornoAllContacts) of object; //add Marcelo 01/07/2023
   TOnAllCommunitys          = procedure(Const AllCommunitys: TRetornoAllCommunitys) of object;
   TOnAllGroups              = procedure(Const AllGroups: TRetornoAllGroups) of object;
   TOnAllGroupContacts       = procedure(Const Contacts: TClassAllGroupContacts) of object;
@@ -166,8 +167,10 @@ type
     FOnGetMessages              : TGetMessages; //14/08/2022
     FOnGetAllGroupContacts      : TOnAllGroupContacts;
     FOnGetAllContactList        : TOnAllContacts;
+    FOnGetMyContactList         : TOnMyContacts;
+
     FOnGetAllGroupList          : TOnAllGroups;
-    FOnGetAllCommunitys          : TOnAllCommunitys;
+    FOnGetAllCommunitys         : TOnAllCommunitys;
     FOnGetAllGroupAdmins        : TOnAllGroupAdmins;
     FOnLowBattery               : TNotifyEvent;
     FOnGetBatteryLevel          : TNotifyEvent;
@@ -336,6 +339,8 @@ type
     procedure IsOnline;
     procedure CheckIsConnected;
     procedure GetAllContacts;
+    procedure GetMyContacts;
+
     procedure GetAllGroups;
     procedure GetAllCommunitys;
     procedure GroupAddParticipant(PIDGroup, PNumber: string);
@@ -409,6 +414,8 @@ type
     property FormQrCodeType              : TFormQrCodeType            read FFormQrCodeType                 Write SetQrCodeStyle                      Default Ft_Desktop;
     property LanguageInject              : TLanguageInject            read FLanguageInject                 Write SetLanguageInject                   Default TL_Portugues_BR;
     property OnGetAllContactList         : TOnAllContacts             read FOnGetAllContactList            write FOnGetAllContactList;
+    property OnGetMyContactsList         : TOnMyContacts              read FOnGetMyContactList             write FOnGetMyContactList;
+
     property OnGetAllGroupList           : TOnAllGroups               read FOnGetAllGroupList              write FOnGetAllGroupList;
     property OnGetAllCommunitys          : TOnAllCommunitys           read FOnGetAllCommunitys             write FOnGetAllCommunitys;
     property OnGetAllGroupAdmins         : TOnAllGroupAdmins          read FOnGetAllGroupAdmins            write FOnGetAllGroupAdmins;
@@ -1454,6 +1461,12 @@ begin
 
 end;
 
+procedure TWPPConnect.GetMyContacts;
+begin
+  if Assigned(FrmConsole) then
+     FrmConsole.GetMyContacts;
+end;
+
 procedure TWPPConnect.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
 var
   lThread : TThread;
@@ -2296,7 +2309,7 @@ begin
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
   Begin
-    //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
 
@@ -2637,6 +2650,13 @@ begin
     Exit;
   end;
 
+  if PTypeHeader = Th_GetMyContacts then //Add Marcelo 01/07/2023
+  begin
+    if Assigned(FOnGetMyContactList) then
+      FOnGetMyContactList(TRetornoAllContacts(PReturnClass))
+  end;
+
+
   if PTypeHeader = Th_getAllGroups then
   begin
     if Assigned(FOnGetAllGroupList) then
@@ -2854,11 +2874,11 @@ begin
   if Config.AutoDelete Then
   begin
     if assigned(FrmConsole) then
-       FrmConsole.ReadMessagesAndDelete(vID);
+      FrmConsole.ReadMessagesAndDelete(vID);
   end else
   Begin
     if assigned(FrmConsole) then
-       FrmConsole.ReadMessages(vID);
+      FrmConsole.ReadMessages(vID);
   end;
 end;
 

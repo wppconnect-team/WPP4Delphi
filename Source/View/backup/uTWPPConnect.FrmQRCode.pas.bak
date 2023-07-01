@@ -38,7 +38,7 @@ interface
 
 uses
   {$IFDEF FPC}
-  Windows, Messages, SysUtils, Variants, Classes, UiTypes, Graphics, Controls, Forms, Dialogs, ExtCtrls,
+  Windows, Messages, SysUtils, Variants, Classes, UiTypes, Graphics, Controls, Forms, Dialogs, ExtCtrls, Imaging.GIFImg,
   {$else}
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   System.UiTypes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.GIFImg,

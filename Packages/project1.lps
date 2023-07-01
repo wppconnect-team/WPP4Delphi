@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="51"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Services\uTWPPConnect.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="2" Y="35"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Model\uTWPPConnect.Classes.pas"/>
+        <TopLine Value="19"/>
+        <CursorPos X="4" Y="38"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmQRCode.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="24"/>
+        <CursorPos X="3" Y="45"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Model\uTWPPConnect.Constant.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="47"/>
+        <CursorPos X="54" Y="62"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Model\UBase64.pas"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Model\uCSV.Import.pas"/>
+        <UnitName Value="UCSV.Import"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="18"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="4">
+      <Position>
+        <Filename Value="..\Source\Model\uTWPPConnect.Classes.pas"/>
+        <Caret Line="36" Column="40" TopLine="19"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmQRCode.pas"/>
+        <Caret Line="43" Column="23" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmQRCode.pas"/>
+        <Caret Line="40" Column="11" TopLine="26"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmQRCode.pas"/>
+        <Caret Line="41" Column="104" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Source\Model\uTWPPConnect.Constant.pas"/>
+        <Caret Line="41" Column="32" TopLine="22"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

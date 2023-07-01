@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1449427374"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -l -vewnhibq -FiC:\Componente\WPP4Delphi\Packages\Compilados\lazarus -FuC:\Componente\WPP4Delphi\Source\Services -FuC:\Componente\WPP4Delphi\Source\Model -FuC:\Componente\WPP4Delphi\Source\View -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Componente\dcpcrypt\lib\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\components\buildintf\units\x86_64-win64 -FuC:\lazarus\components\freetype\lib\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\components\lazcontrols\lib\x86_64-win64\win32 -FuC:\lazarus\components\ideintf\units\x86_64-win64\win32 -FuC:\Componente\CEF4Delphi-master\packages\lib\x86_64-win64 -FuC:\Componente\WPP4Delphi\Packages\ -FUC:\Componente\WPP4Delphi\Packages\lib\x86_64-win64\ -dLCL -dLCLwin32 twpp4delphicollection.pas"/>
+  <Complete Value="False" MainPPUExists="False"/>
+</CONFIG>

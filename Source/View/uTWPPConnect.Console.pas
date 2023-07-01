@@ -267,6 +267,7 @@ type
     procedure ReloaderWeb;
     procedure StopWebBrowser;
     procedure GetAllContacts(PIgnorarLeitura1: Boolean = False);
+    procedure GetMyContacts(PIgnorarLeitura1: Boolean = False);
     procedure GetAllGroups(PIgnorarLeitura1: Boolean = False);
     procedure GetAllCommunitys(PIgnorarLeitura1: Boolean = False);
     procedure GroupAddParticipant(vIDGroup, vNumber: string);
@@ -699,6 +700,20 @@ procedure TFrmConsole.GetBatteryLevel;
 begin
   //Não Habilitar Função deprecated GetBatteryLevel
   //ExecuteJS(FrmConsole_JS_GetBatteryLevel, False);
+end;
+
+procedure TFrmConsole.GetMyContacts(PIgnorarLeitura1: Boolean);
+begin
+  if PIgnorarLeitura1 then
+  Begin
+    ReleaseConnection;
+    Exit;
+  End;
+  if FgettingContact then
+     Exit;
+
+  FgettingContact := True;
+  FrmConsole.ExecuteJS(FrmConsole_JS_GetMyContacts, False);
 end;
 
 procedure TFrmConsole.GetMyNumber;
@@ -1854,6 +1869,11 @@ begin
    Case PResponse.TypeHeader of
 
     Th_getAllContacts   : Begin
+                            ProcessPhoneBook(LResultStr);
+                            Exit;
+                          End;
+
+    Th_GetMyContacts   : Begin  //01/07/2023
                             ProcessPhoneBook(LResultStr);
                             Exit;
                           End;

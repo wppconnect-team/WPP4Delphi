@@ -36,8 +36,12 @@ unit uTWPPConnect.Constant;
 
 interface
 
-Uses Winapi.Messages, System.SysUtils, typinfo, REST.Json;
-
+Uses
+  {$IFDEF FPC}
+    Messages, SysUtils, typinfo
+  {$else}
+    Winapi.Messages, System.SysUtils, typinfo, REST.Json
+  {$ENDIF};
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
@@ -65,6 +69,7 @@ Const
   FrmConsole_Browser_Direto             = WM_APP + $101;
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
   TWPPConnectJS_JSUrlPadrao             = 'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/main/Source/JS/js.abr';
+  //TWPPConnectJS_JSUrlPadrao               = '';
 
   // Added by Aurino 21/01/2023 11:10:46
   TPPConnectJS_libeay32                 = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/libeay32.dll?raw=true';
@@ -76,10 +81,11 @@ Const
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2320.7';
-  FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
+  FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2326.8';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
+  FrmConsole_JS_GetMyContacts           = 'window.WAPI.getMyContacts();'; //01/07/2023
   FrmConsole_JS_GetBatteryLevel         = ''; //'window.WAPI.getBatteryLevel();'; //Não Habilitar Função deprecated GetBatteryLevel
   FrmConsole_JS_GetMyNumber             = 'getMyNumber();';
   FrmConsole_JS_GetUnreadMessages       = 'window.WAPI.getUnreadMessages(includeMe="True", includeNotifications="True", use_unread_count="True");';
@@ -466,6 +472,7 @@ type
                    , Th_getMessageACK=66 //Marcelo 14/03/2023
                    , Th_getIsOnline=67 //Marcelo 03/05/2023
                    , Th_getEnvIsOnline=68 //Marcelo 03/05/2023
+                   , Th_GetMyContacts=69 //Marcelo 01/07/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -603,7 +610,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 68; //Marcelo 03/05/2023
+const LmaxCount = 69; //Marcelo 01/07/2023
 var
   I: Integer;
   LNome: String;

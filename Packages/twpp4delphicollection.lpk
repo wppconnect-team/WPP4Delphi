@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="\"/>
+    <Name Value="TWPP4DelphiCollection"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="Compilados\lazarus"/>
+        <OtherUnitFiles Value="..\Source\Services;..\Source\Model;..\Source\View"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Files>
+      <Item>
+        <Filename Value="..\Source\Services\uTWPPConnect.pas"/>
+        <UnitName Value="uTWPPConnect"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Services\uTWPPConnect.languages.pas"/>
+        <UnitName Value="uTWPPConnect.languages"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Services\uTWPPConnect.ConfigCEF.pas"/>
+        <UnitName Value="uTWPPConnect.ConfigCEF"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\UBase64.pas"/>
+        <UnitName Value="UBase64"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uCSV.Import.pas"/>
+        <UnitName Value="UCSV.Import"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.AdjustNumber.pas"/>
+        <UnitName Value="uTWPPConnect.AdjustNumber"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.ChatList.pas"/>
+        <UnitName Value="uTWPPConnect.ChatList"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.Classes.pas"/>
+        <UnitName Value="uTWPPConnect.Classes"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.Config.pas"/>
+        <UnitName Value="uTWPPConnect.Config"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.Constant.pas"/>
+        <UnitName Value="uTWPPConnect.Constant"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.Diversos.pas"/>
+        <UnitName Value="uTWPPConnect.Diversos"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.Emoticons.pas"/>
+        <UnitName Value="uTWPPConnect.Emoticons"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.ExePath.pas"/>
+        <UnitName Value="uTWPPConnect.ExePath"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.JS.pas"/>
+        <UnitName Value="uTWPPConnect.JS"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uWPPConnectDecryptFile.pas"/>
+        <UnitName Value="uWPPConnectDecryptFile"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\View\uTWPPConnect.Console.pas"/>
+        <UnitName Value="uTWPPConnect.Console"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmConfigNetWork.pas"/>
+        <UnitName Value="uTWPPConnect.FrmConfigNetWork"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\View\uTWPPConnect.FrmQRCode.pas"/>
+        <UnitName Value="uTWPPConnect.FrmQRCode"/>
+      </Item>
+      <Item>
+        <Filename Value="Compilados\lazarus\TWPPConnectDiretiva.inc"/>
+        <Type Value="Include"/>
+      </Item>
+    </Files>
+    <RequiredPkgs>
+      <Item>
+        <PackageName Value="CEF4Delphi_Lazarus"/>
+      </Item>
+      <Item>
+        <PackageName Value="FCL"/>
+      </Item>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

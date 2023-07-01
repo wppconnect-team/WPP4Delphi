@@ -142,6 +142,7 @@ type
     procedure TWPPConnect1GetMessageACK(const GetMessageACK: TResponsegetMessageACK);
     procedure TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
     procedure TWPPConnect1GetIsOnline(Response: TIsOnline);
+    procedure TWPPConnect1GetMyContactsList(const MyContacts: TRetornoAllContacts);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1444,6 +1445,23 @@ begin
 
 end;
 
+procedure TfrDemo.TWPPConnect1GetMyContactsList(const MyContacts: TRetornoAllContacts);
+var
+  AContact: uTWPPConnect.Classes.TContactClass;
+  wlo_AuxNome: string;
+begin
+
+  frameMensagem1.listaContatos.Clear;
+  for AContact in MyContacts.Result do
+  begin
+    wlo_AuxNome := AContact.name;
+    if Trim(wlo_AuxNome) = '' then
+      wlo_AuxNome := AContact.formattedName;
+    AddContactList(AContact.id + ' - ' + wlo_AuxNome);
+  end;
+  AContact := nil;
+end;
+
 procedure TfrDemo.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
   lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect(Sender).MyNumber;
@@ -1660,7 +1678,7 @@ var
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
   Question, Answer, phoneNumber, vSender : string;
-  x, i : Integer;
+  x, i, m : Integer;
   mensagemDuplicada: Boolean;
 begin
   for AChat in Chats.Result do
@@ -1788,8 +1806,11 @@ begin
               if Trim(IdMensagemOrigem) = '' then
               begin
                 //true_5517981388414@c.us_3EB03311EAF126392DBAF7
-                IdMensagemOrigem :=  'true_' + AMessage.from + '_' + AMessage.quotedStanzaID;
-                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+                if Trim(AMessage.quotedStanzaID) <> '' then
+                begin
+                  IdMensagemOrigem :=  'true_' + AMessage.from + '_' + AMessage.quotedStanzaID;
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
+                end;
               end;
 
 
@@ -1893,8 +1914,24 @@ begin
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Nome Contato: ' + Trim( IfThen(trim(AMessage.sender.PushName) <> EmptyStr, AMessage.sender.PushName, AMessage.sender.verifiedName) )));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  UniqueID: ' + AMessage.id));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Tipo mensagem: ' + AMessage.&type));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  ACK: ' + FloatToStr(AMessage.ack)));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Tipo mensagem: ' + AMessage.&type));
+
+
+          if AMessage.&type = 'poll_creation' then
+          begin
+            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(AMessage.pollName));
+
+            for m := 0 to Length(AMessage.pollOptions) -1 do
+            begin
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(AMessage.pollOptions[m].LocalId.toString + ' - ' + AMessage.pollOptions[m].name));
+              //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  LocalId: ' + AMessage.pollOptions[m].LocalId.toString));
+              //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Name: ' + AMessage.pollOptions[m].name));
+            end;
+          end;
+
+          //Marcar Mensagem como Lida
+          TWPPConnect1.ReadMessages(AChat.id);
 
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
         end;
