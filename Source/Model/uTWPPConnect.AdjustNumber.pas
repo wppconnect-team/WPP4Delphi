@@ -104,10 +104,15 @@ begin
   if FAllowOneDigit then
     LInc := 1 else
     LInc := 0;
+
   Result := Pnum;
 
   try
     if not AutoAdjust then
+      Exit;
+
+    //Marcelo Não Validar Número ja Formatado 02/07/2023
+    if pos('@c.us', PNum) > 0  then
       Exit;
 
     //Garante valores LIMPOS (sem mascaras, letras, etc) apenas NUMEROS
