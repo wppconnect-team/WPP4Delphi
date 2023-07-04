@@ -93,6 +93,7 @@ type
     procedure Chromium1KeyEvent(Sender: TObject; const browser: ICefBrowser; const event: PCefKeyEvent; osEvent: TCefEventHandle;
       out Result: Boolean);
     procedure Img_LogoInjectClick(Sender: TObject);
+    procedure Lbl_CaptionClick(Sender: TObject);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -158,6 +159,7 @@ type
     procedure ExecuteJSDir(PScript: string; Purl:String = 'about:blank'; pStartline: integer=0);
     procedure RebootChromium;
     procedure RebootChromiumNew;
+    procedure Console_Clear;
     Function  ConfigureNetWork:Boolean;
     Procedure SetZoom(Pvalue: Integer);
     Property  Conectado: Boolean    Read FConectado;
@@ -369,6 +371,11 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.Lbl_CaptionClick(Sender: TObject);
+begin
+  Console_Clear;
+end;
+
 procedure TFrmConsole.addSubgroups(PCommunity, PGroupNumbers: string);
 var
   Ljs: string;
@@ -512,6 +519,7 @@ end;
 procedure TFrmConsole.OnTimerConnect(Sender: TObject);
 var
   lNovoStatus: Boolean;
+  Version_JS, vWAJS: string;
 begin
   lNovoStatus            := True;
   FTimerConnect.Enabled  := False;
@@ -523,6 +531,17 @@ begin
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
         SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
       ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+
+      {vWAJS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text, pos('//WPPCONNECT', TWPPConnect(FOwner).InjectJS.JSScript.Text) + 12 );
+      vWAJS := 'wa-js:' + Copy(vWAJS, 1, pos('/*', TWPPConnect(FOwner).InjectJS.JSScript.Text) -2);
+      lbl_Versao.Caption := vWAJS;
+
+      Version_JS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text,53,200);
+      Version_JS := Copy(Version_JS,1,pos(';', Version_JS) -1);
+      lbl_Versao.Caption := lbl_Versao.Caption + ' / ' + Version_JS;
+      }
+
       SleepNoFreeze(40);
 
       If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
@@ -2658,6 +2677,11 @@ begin
   end;
 end;
 
+procedure TFrmConsole.Console_Clear;
+begin
+  Chromium1.Browser.MainFrame.ExecuteJavaScript('console.clear();', '', 0);
+end;
+
 procedure TFrmConsole.createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
 var
   Ljs: string;
@@ -2800,10 +2824,21 @@ end;
 
 
 procedure TFrmConsole.FormShow(Sender: TObject);
+var
+  Version_JS, vWAJS: string;
 begin
-  Lbl_Caption.Caption      := 'WPPConnect '; //Text_FrmConsole_Caption;
-  Lbl_Caption.Caption       := Lbl_Caption.Caption + ' CEF lib ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.LibCefVersion + ' Chrome ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.ChromeVersion; //+ ' TWPPConnect V. ' + TWPPConnectVersion;
-  Lbl_Versao.Caption       := 'V. 2.8.2' + ''; //TWPPConnectVersion;
+  Lbl_Caption.Caption := 'WPPConnect '; //Text_FrmConsole_Caption;
+  Lbl_Caption.Caption := Lbl_Caption.Caption + ' CEF lib ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.LibCefVersion + ' Chrome ' + uTWPPConnect.ConfigCEF.GlobalCEFApp.ChromeVersion; //+ ' TWPPConnect V. ' + TWPPConnectVersion;
+  Lbl_Versao.Caption := 'V. 2.8.2' + ''; //TWPPConnectVersion;
+
+  vWAJS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text, pos('//WPPCONNECT', TWPPConnect(FOwner).InjectJS.JSScript.Text) + 12, 150);
+  vWAJS := 'wa-js: ' + Trim(Copy(vWAJS, 1, pos('/*', vWAJS) -3));
+  //lbl_Versao.Caption := vWAJS;
+
+  Version_JS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text,53,200);
+  Version_JS := Copy(Version_JS,1,pos(';', Version_JS) -1);
+
+  lbl_Versao.Caption := vWAJS + ' / ' + Version_JS;
 end;
 
 procedure TFrmConsole.Form_Normal;

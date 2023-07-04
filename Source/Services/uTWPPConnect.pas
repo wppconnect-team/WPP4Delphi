@@ -402,6 +402,7 @@ type
     Procedure FormQrCodeReloader;
     Function  Auth(PRaise: Boolean = true): Boolean;
 
+    procedure console_clear;
     procedure RebootWPP;
     procedure OnTimerWPPCrash(Sender: TObject);
   published
@@ -937,6 +938,11 @@ begin
   except
     Result := False;
   end
+end;
+
+procedure TWPPConnect.Console_Clear;
+begin
+  FrmConsole.Console_Clear;
 end;
 
 constructor TWPPConnect.Create(AOwner: TComponent);
