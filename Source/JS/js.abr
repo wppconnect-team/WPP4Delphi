@@ -17653,3 +17653,27 @@ WPP.on('conn.online', (online) => {
     SetConsoleMessage("GetEnvisOnline", JSON.stringify({isOnline: false}));
   }
 });
+
+//Marcelo 06/07/2023
+window.WAPI.getVotes = async function(uniqueID) {
+    const result = await WPP.chat.getVotes(uniqueID);
+
+    if (result) {
+        try {
+             Obj = {
+               idMessage: uniqueID,
+               JsonMessage: JSON.stringify(result)
+             }
+
+            SetConsoleMessage("getVotes", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO getVotes');
+
+    }
+    
+};
