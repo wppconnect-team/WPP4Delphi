@@ -133,6 +133,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 11
       Images = ImageList1
       TabOrder = 12
+      Visible = False
       OnClick = btnLocalizacaoBotaoClick
     end
     object btnLink: TButton
@@ -159,6 +160,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 5
       Images = ImageList1
       TabOrder = 6
+      Visible = False
       OnClick = btnImagemBotaoClick
     end
     object btnImagem: TButton
@@ -185,6 +187,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 4
       Images = ImageList1
       TabOrder = 4
+      Visible = False
       OnClick = btnVideoBotaoClick
     end
     object btnVideo: TButton
@@ -213,6 +216,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 2
       Images = ImageList1
       TabOrder = 2
+      Visible = False
       OnClick = btnListaMenuClick
     end
     object btnBotaoSimples: TButton
@@ -227,6 +231,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 1
       Images = ImageList1
       TabOrder = 1
+      Visible = False
       OnClick = btnBotaoSimplesClick
     end
     object btnTextoSimples: TButton

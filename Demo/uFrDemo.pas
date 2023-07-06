@@ -1700,7 +1700,9 @@ begin
         and (AnsiUpperCase(AMessage.&type) <> 'PROTOCOL')
         then //Ignorar Mensagem
         begin
-          if (vSender <> SomenteNumero(TWPPConnect1.MyNumber) ) then // Não exibe mensages enviadas por mim
+          //if (vSender <> SomenteNumero(TWPPConnect1.MyNumber) ) then // Não exibe mensages enviadas por mim
+          //if AMessage.Sender.isMe then
+          if AMessage.fromMe then
           begin
             // memo_unReadMessage.Clear;
             FChatID := AChat.id;
@@ -1855,36 +1857,53 @@ begin
               end;
 
             end;
+          end
+          else
+          begin
+            if Assigned(AChat.chatlistPreview) then
+            begin
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
+            end;
+
+            {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('UniqueID: ' + AMessage.id));
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Chat Id: ' + AChat.id));
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
+
+            selectedButtonId := AMessage.selectedButtonId;
+            try
+              quotedMsg_caption := AMessage.quotedMsg.Caption;
+              // Mensagem Original do Click do Botão
+            except
+              on E: Exception do
+                quotedMsg_caption := '';
+            end;
+            if selectedButtonId = '' then
+              selectedButtonId := AMessage.selectedId;}
+
+            if AMessage.&type = 'poll_creation' then
+            begin
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(AMessage.pollName));
+
+              for m := 0 to Length(AMessage.pollOptions) -1 do
+              begin
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(AMessage.pollOptions[m].LocalId.toString + ' - ' + AMessage.pollOptions[m].name));
+                //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  LocalId: ' + AMessage.pollOptions[m].LocalId.toString));
+                //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Name: ' + AMessage.pollOptions[m].name));
+              end;
+            end;
+
           end;
         end
         else
         begin
-          if Assigned(AChat.chatlistPreview) then
-          begin
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reação: ' + AChat.chatlistPreview.reactionText);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  Sender: ' + AChat.chatlistPreview.sender);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  msgKey: ' + AChat.chatlistPreview.msgKey);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('  parentMsgKey: ' + AChat.chatlistPreview.parentMsgKey);
-            frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' ');
-          end;
 
-          {frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('UniqueID: ' + AMessage.id));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('Chat Id: ' + AChat.id));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
-
-          selectedButtonId := AMessage.selectedButtonId;
-          try
-            quotedMsg_caption := AMessage.quotedMsg.Caption;
-            // Mensagem Original do Click do Botão
-          except
-            on E: Exception do
-              quotedMsg_caption := '';
-          end;
-          if selectedButtonId = '' then
-            selectedButtonId := AMessage.selectedId;}
         end;
       end
       else
