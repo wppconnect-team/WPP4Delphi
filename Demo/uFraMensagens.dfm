@@ -26,6 +26,13 @@ object frameMensagem: TframeMensagem
       Height = 15
       Caption = 'Mensagem:'
     end
+    object Label2: TLabel
+      Left = 12
+      Top = 232
+      Width = 109
+      Height = 15
+      Caption = 'Array Choices Pool'
+    end
     object ed_num: TLabeledEdit
       Left = 11
       Top = 24
@@ -40,7 +47,7 @@ object frameMensagem: TframeMensagem
       Left = 11
       Top = 77
       Width = 214
-      Height = 201
+      Height = 148
       ScrollBars = ssVertical
       TabOrder = 1
     end
@@ -70,8 +77,6 @@ object frameMensagem: TframeMensagem
       Height = 221
       Cursor = crHandPoint
       ActivePage = tsImage
-      Align = alBottom
-      Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 3
       object tsImage: TTabSheet
         Caption = 'Image Preview'
@@ -111,6 +116,14 @@ object frameMensagem: TframeMensagem
           TabOrder = 0
         end
       end
+    end
+    object eChoicesPool: TEdit
+      Left = 12
+      Top = 252
+      Width = 213
+      Height = 23
+      TabOrder = 4
+      Text = '["OP'#199#195'O 1","OP'#199#195'O 2","OP'#199#195'O 3"]'
     end
   end
   object gbAcoesBasicas: TGroupBox
@@ -226,12 +239,11 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Bot'#245'es Simples'
+      Caption = 'Criar Vota'#231#227'o'
       HotImageIndex = 2
       ImageIndex = 1
       Images = ImageList1
       TabOrder = 1
-      Visible = False
       OnClick = btnBotaoSimplesClick
     end
     object btnTextoSimples: TButton

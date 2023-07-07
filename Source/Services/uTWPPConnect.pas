@@ -350,6 +350,7 @@ type
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
     procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions: string);
+    procedure CreatePool(PID, PDescription, PPoolOptions: string);
     procedure SetGroupPicture(PIDGroup, PFileName: string);
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
@@ -1075,6 +1076,58 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.CreateGroup(PGroupName, PParticipantNumber);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.CreatePool(PID, PDescription, PPoolOptions: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PID);
+    Exit;
+  end;
+
+  PID := AjustNumber.FormatIn(PID);
+  if pos('@', PID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PID);
+    Exit;
+  end;
+
+
+  if Trim(PDescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
+    Exit;
+  end;
+
+   if Trim(PPoolOptions) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PPoolOptions);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreate(PID, PDescription, PPoolOptions);
           end;
         end);
 

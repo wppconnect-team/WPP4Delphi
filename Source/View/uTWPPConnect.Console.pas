@@ -280,6 +280,7 @@ type
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions: string);
+    procedure PoolCreate(vID, vDescription, vPoolOptions: string);
     procedure SetGroupPicture(vIDGroup, vBase64:string);
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
@@ -602,6 +603,20 @@ begin
     //Não Habilitar Função deprecated GetBatteryLevel
     //FTimerMonitoring.Enabled := FConectado;
   end;
+end;
+
+procedure TFrmConsole.PoolCreate(vID, vDescription, vPoolOptions: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_CreatePoolMessage;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
+  FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',        Trim(vPoolOptions));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.ProcessGroupBook(PCommand: string);
