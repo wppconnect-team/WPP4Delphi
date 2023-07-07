@@ -17677,3 +17677,9 @@ window.WAPI.getVotes = async function(uniqueID) {
     }
     
 };
+
+//Marcelo 07/07/2023
+WPP.on('chat.poll_response', (msg) => {
+    //console.log(msg);
+    SetConsoleMessage("Getpoll_response", JSON.stringify({msg}));
+});
