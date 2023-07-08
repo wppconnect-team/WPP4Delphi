@@ -143,6 +143,8 @@ type
     procedure TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
     procedure TWPPConnect1GetIsOnline(Response: TIsOnline);
     procedure TWPPConnect1GetMyContactsList(const MyContacts: TRetornoAllContacts);
+    procedure TWPPConnect1GetPoolResponse(const PoolResponse: TPoolResponseClass);
+    procedure TWPPConnect1GetPoolResponseEvento(const PoolResponse: TPoolResponseClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1498,6 +1500,48 @@ begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Plataforma: ' + AnsiUpperCase(PlatformFromMessage.platform));
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + PlatformFromMessage.IdMensagem);
+end;
+
+procedure TfrDemo.TWPPConnect1GetPoolResponse(const PoolResponse: TPoolResponseClass);
+var
+  wlo_Celular : string;
+  m: Integer;
+begin
+  wlo_Celular := Copy(PoolResponse.msg.chatId,1,  pos('@', PoolResponse.msg.chatId) -1); // nr telefone
+  //ShowMessage('Plataforma: ' + AnsiUpperCase(PoolResponse.platform) + ' Número WhatsApp: ' + wlo_Celular);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + PoolResponse.msg.msgId._serialized);
+
+  for m := 0 to Length(PoolResponse.msg.selectedOptions) -1 do
+  begin
+    try
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Nome Opção: ' + AnsiUpperCase(PoolResponse.msg.selectedOptions[m].name));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Local id: ' + PoolResponse.msg.selectedOptions[m].localId.toString);
+    except on E: Exception do
+    end;
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1GetPoolResponseEvento(const PoolResponse: TPoolResponseClass);
+var
+  wlo_Celular : string;
+  m: Integer;
+begin
+  wlo_Celular := Copy(PoolResponse.msg.chatId,1,  pos('@', PoolResponse.msg.chatId) -1); // nr telefone
+  //ShowMessage('Plataforma: ' + AnsiUpperCase(PoolResponse.platform) + ' Número WhatsApp: ' + wlo_Celular);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + PoolResponse.msg.msgId._serialized);
+
+  for m := 0 to Length(PoolResponse.msg.selectedOptions) -1 do
+  begin
+    try
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Nome Opção: ' + AnsiUpperCase(PoolResponse.msg.selectedOptions[m].name));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Local id: ' + PoolResponse.msg.selectedOptions[m].localId.toString);
+    except on E: Exception do
+    end;
+  end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);

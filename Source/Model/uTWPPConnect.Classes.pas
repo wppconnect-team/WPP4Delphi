@@ -1700,6 +1700,66 @@ TQrCodeDesconectouErroCache = class(TClassPadrao)
     destructor  Destroy;       override;
 end;
 
+
+//Marcelo 07/07/2023
+TSelectedOptionsClass = class(TClassPadrao)
+private
+  FLocalId: Extended;
+  FName: String;
+public
+  property localId: Extended read FLocalId write FLocalId;
+  property name: String read FName write FName;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TSelectedOptionsClass;
+end;
+
+//Marcelo 07/07/2023
+TMsgIdClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FFromMe: Boolean;
+  FId: String;
+  FRemote: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property fromMe: Boolean read FFromMe write FFromMe;
+  property id: String read FId write FId;
+  property remote: String read FRemote write FRemote;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TMsgIdClass;
+end;
+
+//Marcelo 07/07/2023
+TMsgClass = class(TClassPadrao)
+private
+  FChatId: String;
+  FMsgId: TMsgIdClass;
+  FSelectedOptions: TArray<TSelectedOptionsClass>;
+  FSender: String;
+  FTimestamp: Extended;
+public
+  property chatId: String read FChatId write FChatId;
+  property msgId: TMsgIdClass read FMsgId write FMsgId;
+  property selectedOptions: TArray<TSelectedOptionsClass> read FSelectedOptions write FSelectedOptions;
+  property sender: String read FSender write FSender;
+  property timestamp: Extended read FTimestamp write FTimestamp;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TMsgClass;
+end;
+
+//Marcelo 07/07/2023
+TPoolResponseClass = class(TClassPadrao)
+  private
+    FMsg: TMsgClass;
+  public
+    property msg: TMsgClass read FMsg write FMsg;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TRootClass;
+end;
+
+
 TPlatformFromMessage = class(TClassPadrao)
   private
     FId: String;
@@ -3375,6 +3435,7 @@ destructor TEnvIsOnline.Destroy;
 begin
   inherited;
 end;
+
 
 end.
 

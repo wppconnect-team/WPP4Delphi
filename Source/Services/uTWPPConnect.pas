@@ -80,6 +80,9 @@ type
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
 
+  TOnGetPoolResponse = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
+  TOnGetPoolResponseEvento = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
+
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
   TOnGetQrCodeDesconectouErroCache = procedure(Const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache) of object; //Marcelo 06/02/2023
 
@@ -201,6 +204,8 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
+    FOnGetPoolResponse          : TOnGetPoolResponse; //Marcelo 07/07/2023
+    FOnGetPoolResponseEvento    : TOnGetPoolResponseEvento; //Marcelo 07/07/2023
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
 
@@ -311,6 +316,7 @@ type
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
     procedure getMessageACK(UniqueIDs: string);
+    procedure getVotes(UniqueID: string);
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
@@ -495,6 +501,8 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
+    property OnGetPoolResponse           : TOnGetPoolResponse         read FOnGetPoolResponse              write FOnGetPoolResponse;
+    property OnGetPoolResponseEvento     : TOnGetPoolResponseEvento   read FOnGetPoolResponseEvento        write FOnGetPoolResponseEvento;
     property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
 
@@ -1108,7 +1116,6 @@ begin
     Exit;
   end;
 
-
   if Trim(PDescription) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
@@ -1606,6 +1613,36 @@ begin
 
   lThread.FreeOnTerminate := true;
   lThread.Start;
+end;
+
+procedure TWPPConnect.getVotes(UniqueID: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 07/07/2023
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getVotes(UniqueID);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
 end;
 
 procedure TWPPConnect.GroupAddParticipant(PIDGroup, PNumber: string);
@@ -2795,6 +2832,21 @@ begin
     if Assigned(FOnGetPlatformFromMessage) then
       FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
   end;
+
+  //Marcelo 07/07/2023
+  if PTypeHeader = Th_GetVotes  then
+  begin
+    if Assigned(FOnGetPoolResponse) then
+      FOnGetPoolResponse(TPoolResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 07/07/2023
+  if PTypeHeader = Th_Getpoll_response  then
+  begin
+    if Assigned(FOnGetPoolResponseEvento) then
+      FOnGetPoolResponseEvento(TPoolResponseClass(PReturnClass));
+  end;
+
 
   //Marcelo 17/01/2023
   if PTypeHeader = Th_GetHistorySyncProgress  then

@@ -263,6 +263,9 @@ Const
   FrmConsole_JS_VAR_UnPinChat           = 'WPP.chat.unpin("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#POOL_OPTIONS#>, {createchat:true, selectableCount:0} ); ';
 
+  //Marcelo 07/07/2023
+  FrmConsole_JS_VAR_GetVotes           = 'window.WAPI.getVotes("<#MSG_UNIQUE_ID#>");';
+
   //Marcelo 14/09/2022
   FrmConsole_JS_VAR_DeleteChat          = 'WPP.chat.delete("<#MSG_PHONE#>");';
 
@@ -473,6 +476,8 @@ type
                    , Th_getIsOnline=67 //Marcelo 03/05/2023
                    , Th_getEnvIsOnline=68 //Marcelo 03/05/2023
                    , Th_GetMyContacts=69 //Marcelo 01/07/2023
+                   , Th_GetVotes=70 //Marcelo 07/07/2023
+                   , Th_Getpoll_response=71 //Marcelo 07/07/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -610,7 +615,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 69; //Marcelo 01/07/2023
+const LmaxCount = 71; //Marcelo 07/07/2023
 var
   I: Integer;
   LNome: String;
