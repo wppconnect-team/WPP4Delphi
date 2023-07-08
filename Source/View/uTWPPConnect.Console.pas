@@ -280,8 +280,8 @@ type
     procedure GroupLeave(vIDGroup: string);
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
-    procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions: string);
-    procedure PoolCreate(vID, vDescription, vPoolOptions: string);
+    procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
+    procedure PoolCreate(vID, vDescription, vPoolOptions, vOptions: string);
     procedure SetGroupPicture(vIDGroup, vBase64:string);
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
@@ -606,7 +606,7 @@ begin
   end;
 end;
 
-procedure TFrmConsole.PoolCreate(vID, vDescription, vPoolOptions: string);
+procedure TFrmConsole.PoolCreate(vID, vDescription, vPoolOptions, vOptions: string);
 var
   Ljs: string;
 begin
@@ -616,7 +616,9 @@ begin
   LJS   := FrmConsole_JS_VAR_CreatePoolMessage;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
-  FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',        Trim(vPoolOptions));
+  FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',       Trim(vPoolOptions));
+  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
+
   ExecuteJS(LJS, true);
 end;
 
@@ -887,8 +889,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupPoolCreate(vIDGroup, vDescription,
-  vPoolOptions: string);
+procedure TFrmConsole.GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
 var
   Ljs: string;
 begin
@@ -899,6 +900,7 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
   FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',        Trim(vPoolOptions));
+  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
   ExecuteJS(LJS, true);
 end;
 

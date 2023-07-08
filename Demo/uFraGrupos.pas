@@ -339,7 +339,7 @@ end;
 procedure TframeGrupos.btnCriarVotacaoClick(Sender: TObject);
 var
   LDescricao: String;
-  LOpcoes: String;
+  LOpcoes, Options: String;
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -358,10 +358,13 @@ begin
   Lopcoes := '["OPÇÃO 1","OPÇÃO 2","OPÇÃO 3"]';
   //Lopcoes := '["Bolo","Cachorro Quente"]';
 
+  Options := 'createchat:true, selectableCount:1'; // Apenas 1 Escolha
+  //Options := 'createchat:true, selectableCount:0'; // Multipla Escolha
+
   if eChoicesPool.Text <> '' then
     Lopcoes := eChoicesPool.Text;
 
-  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption, LDescricao, Lopcoes);
+  frDemo.TWPPConnect1.GroupCreatePool(lbl_idGroup.Caption, LDescricao, Lopcoes, Options);
 
 end;
 

@@ -355,8 +355,8 @@ type
     procedure GroupDemoteParticipant(PIDGroup, PNumber: string);
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
-    procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions: string);
-    procedure CreatePool(PID, PDescription, PPoolOptions: string);
+    procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
+    procedure CreatePool(PID, PDescription, PPoolOptions, POptions: string);
     procedure SetGroupPicture(PIDGroup, PFileName: string);
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
@@ -1093,7 +1093,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.CreatePool(PID, PDescription, PPoolOptions: string);
+procedure TWPPConnect.CreatePool(PID, PDescription, PPoolOptions, POptions: string);
 var
   lThread : TThread;
 begin
@@ -1134,7 +1134,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.PoolCreate(PID, PDescription, PPoolOptions);
+            FrmConsole.PoolCreate(PID, PDescription, PPoolOptions, POptions);
           end;
         end);
 
@@ -1679,8 +1679,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription,
-  PPoolOptions: string);
+procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
 var
   lThread : TThread;
 begin
@@ -1714,7 +1713,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions);
+            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions, POptions);
           end;
         end);
 

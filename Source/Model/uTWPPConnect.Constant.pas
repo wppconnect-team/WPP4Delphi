@@ -261,7 +261,7 @@ Const
   FrmConsole_JS_VAR_DeleteAllChats      = 'deleteAllChats()';
   FrmConsole_JS_VAR_PinChat             = 'WPP.chat.pin("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_UnPinChat           = 'WPP.chat.unpin("<#CTT_NAME#>");';
-  FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#POOL_OPTIONS#>, {createchat:true, selectableCount:0} ); ';
+  FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#POOL_OPTIONS#>, {createchat:true, selectableCount:1} ); ';
 
   //Marcelo 07/07/2023
   FrmConsole_JS_VAR_GetVotes           = 'window.WAPI.getVotes("<#MSG_UNIQUE_ID#>");';
