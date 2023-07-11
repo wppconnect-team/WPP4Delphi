@@ -376,7 +376,7 @@ end;
 procedure TframeMensagem.btnBotaoSimplesClick(Sender: TObject);
 var
   LDescricao: String;
-  LOpcoes: String;
+  LOpcoes, Options: String;
 begin
   if not frDemo.TWPPConnect1.Auth then
      Exit;
@@ -399,7 +399,10 @@ begin
   if eChoicesPool.Text <> '' then
     Lopcoes := eChoicesPool.Text;
 
-  frDemo.TWPPConnect1.CreatePool(ed_num.Text, LDescricao, Lopcoes);
+  Options := 'createchat:true, selectableCount:1'; // Apenas 1 Escolha
+  //Options := 'createchat:true, selectableCount:0'; // Multipla Escolha
+
+  frDemo.TWPPConnect1.CreatePool(ed_num.Text, LDescricao, Lopcoes, Options);
 
 (*var
   S_RETORNO, options : wideString;
