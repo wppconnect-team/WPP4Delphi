@@ -77,6 +77,7 @@ object frameMensagem: TframeMensagem
       Height = 221
       Cursor = crHandPoint
       ActivePage = tsImage
+      Align = alBottom
       TabOrder = 3
       object tsImage: TTabSheet
         Caption = 'Image Preview'

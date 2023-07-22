@@ -1746,7 +1746,7 @@ begin
         begin
           //if (vSender <> SomenteNumero(TWPPConnect1.MyNumber) ) then // Não exibe mensages enviadas por mim
           //if AMessage.Sender.isMe then
-          if AMessage.fromMe then
+          if not AMessage.fromMe then
           begin
             // memo_unReadMessage.Clear;
             FChatID := AChat.id;
