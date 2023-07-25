@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.25.0.0;1.0.0.9;78.3.0
+//1.26.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -17496,25 +17496,17 @@ window.WAPI.getMessages = async function(chatid, options) {
 };
 
 
-//Evento Recebendo Nova Mensagem
+//Evento Recebendo Nova Mensagem Marcelo 25/07/2023 
 WPP.on("chat.new_message", (msg) => {
-    //SetConsoleMessage("new_message", JSON.stringify({message: msg});	
-    //console.log(msg);
-	//result = msg;
-    //if (msg !== undefined) 	 
-	    //SetConsoleMessage("new_message", JSON.stringify(msg);
-	    //return msg;
+    SetConsoleMessage("Getnew_message", JSON.stringify({msg}));
+
 });
 
 
-//Evento Recebendo Nova Reação
+//Evento Recebendo Nova Reação Marcelo 25/07/2023
 WPP.on("chat.new_reaction", (msg) => {
-	//SetConsoleMessage("new_reaction", JSON.stringify({message: msg});
-    //console.log(msg);	
-    //result = msg;
-    //if (msg !== undefined) 	 
-	    //SetConsoleMessage("new_reaction", JSON.stringify(msg);
-	    //return msg;
+    SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
+
 });
 
 window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
@@ -17735,3 +17727,27 @@ WPP.on('chat.poll_response', (msg) => {
     //console.log(msg);
     SetConsoleMessage("Getpoll_response", JSON.stringify({msg}));
 });
+
+//Marcelo 25/07/2023
+window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, options, xSeuID, xSeuID2) {
+    const result = await WPP.chat.sendCreatePollMessage(chatid, name, choices, options);
+
+    if (result) {
+        try {
+             Obj = {
+               Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               JsonMessage: JSON.stringify(result)
+             }
+	
+            SetConsoleMessage("sendCreatePollMessageEx", JSON.stringify(Obj));
+
+        } catch (err) {
+            console.log(err);
+        };
+
+    } else {
+        console.log('ERRO');
+
+    }
+};
