@@ -1759,6 +1759,168 @@ TPoolResponseClass = class(TClassPadrao)
     //class function FromJsonString(AJsonString: string): TRootClass;
 end;
 
+//Marcelo 25/07/2023
+TMsgReactionClass = class(TClassPadrao)
+private
+  FId: TIdClass;
+  FMsgId: TMsgIdClass;
+  FOrphan: Extended;
+  FReactionText: String;
+  FRead: Boolean;
+  FSender: String;
+  FTimestamp: Extended;
+public
+  property id: TIdClass read FId write FId;
+  property msgId: TMsgIdClass read FMsgId write FMsgId;
+  property orphan: Extended read FOrphan write FOrphan;
+  property reactionText: String read FReactionText write FReactionText;
+  property read: Boolean read FRead write FRead;
+  property sender: String read FSender write FSender;
+  property timestamp: Extended read FTimestamp write FTimestamp;
+end;
+
+//Marcelo 25/07/2023
+TReactionResponseClass = class(TClassPadrao)
+  private
+    FMsg: TMsgReactionClass;
+  public
+    property msg: TMsgReactionClass read FMsg write FMsg;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TRootClass;
+end;
+
+//Marcelo 25/07/2023
+TNewMsgClass = class
+private
+  FAck: Extended;
+  FBody: String;
+  FFrom: String;
+  FGroupMentions: TArray<String>;
+  FHasReaction: Boolean;
+  FId: TIdClass;
+  FInvis: Boolean;
+  FIsAvatar: Boolean;
+  FIsDynamicReplyButtonsMsg: Boolean;
+  FIsForwarded: Boolean;
+  FIsFromTemplate: Boolean;
+  FIsMdHistoryMsg: Boolean;
+  FIsNewMsg: Boolean;
+  FIsSentCagPollCreation: Boolean;
+  FIsVcardOverMmsDocument: Boolean;
+  FKicNotified: Boolean;
+  FLabels: TArray<String>;
+  FLastPlaybackProgress: Extended;
+  FLastUpdateFromServerTs: Extended;
+  FMentionedJidList: TArray<String>;
+  FNotifyName: String;
+  FPollInvalidated: Boolean;
+  FProductHeaderImageRejected: Boolean;
+  FRecvFresh: Boolean;
+  FSelf: String;
+  FStar: Boolean;
+  FStickerSentTs: Extended;
+  FT: Extended;
+  FTo: String;
+  FType: String;
+  FpollOptions: TArray<TpollOptionsClass>;
+  Fpollname: string;
+  FpollSelectableOptionsCount: Extended;
+  FvcardFormattedName: string;
+  Ffilehash: String;
+  Fmimetype: String;
+  Fsize: Extended;
+  Ffilename: String;
+  FisViewOnce: Boolean;
+  FcanonicalUrl: String;
+  FmatchedText: String;
+  Fthumbnail: String;
+  Ftitle: String;
+  Fdescription: String;
+  Fcaption: String;
+  FrichPreviewType: Extended;
+  FisGif: Boolean;
+  Fwidth: Extended;
+  Fheight: Extended;
+  FLat: Extended;
+  FLng: Extended;
+  Floc: String;
+
+public
+  property ack: Extended read FAck write FAck;
+  property body: String read FBody write FBody;
+  property from: String read FFrom write FFrom;
+  property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
+  property hasReaction: Boolean read FHasReaction write FHasReaction;
+  property id: TIdClass read FId write FId;
+  property invis: Boolean read FInvis write FInvis;
+  property isAvatar: Boolean read FIsAvatar write FIsAvatar;
+  property isDynamicReplyButtonsMsg: Boolean read FIsDynamicReplyButtonsMsg write FIsDynamicReplyButtonsMsg;
+  property isForwarded: Boolean read FIsForwarded write FIsForwarded;
+  property isFromTemplate: Boolean read FIsFromTemplate write FIsFromTemplate;
+  property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
+  property isNewMsg: Boolean read FIsNewMsg write FIsNewMsg;
+  property isSentCagPollCreation: Boolean read FIsSentCagPollCreation write FIsSentCagPollCreation;
+  property isVcardOverMmsDocument: Boolean read FIsVcardOverMmsDocument write FIsVcardOverMmsDocument;
+  property kicNotified: Boolean read FKicNotified write FKicNotified;
+  property labels: TArray<String> read FLabels write FLabels;
+  property lastPlaybackProgress: Extended read FLastPlaybackProgress write FLastPlaybackProgress;
+  property lastUpdateFromServerTs: Extended read FLastUpdateFromServerTs write FLastUpdateFromServerTs;
+  property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
+  property notifyName: String read FNotifyName write FNotifyName;
+  property pollInvalidated: Boolean read FPollInvalidated write FPollInvalidated;
+  property productHeaderImageRejected: Boolean read FProductHeaderImageRejected write FProductHeaderImageRejected;
+  property recvFresh: Boolean read FRecvFresh write FRecvFresh;
+  property self: String read FSelf write FSelf;
+  property star: Boolean read FStar write FStar;
+  property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
+  property t: Extended read FT write FT;
+  property &to: String read FTo write FTo;
+  property &type: String read FType write FType;
+  property pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
+  property pollname                    : string   read Fpollname                      write Fpollname;
+  property pollSelectableOptionsCount: Extended read FpollSelectableOptionsCount write FpollSelectableOptionsCount;
+  property vcardFormattedName          : string   read FvcardFormattedName            write FvcardFormattedName;
+  property size               : Extended      Read Fsize                        Write Fsize;
+  property filehash           : String        Read Ffilehash                    Write Ffilehash;
+  property mimetype           : String        Read Fmimetype                    Write Fmimetype;
+  property filename           : String        Read Ffilename                    Write Ffilename;
+  property isViewOnce         : Boolean       read FisViewOnce                  write FisViewOnce;
+  property canonicalUrl       : String        Read FcanonicalUrl                Write FcanonicalUrl;
+  property matchedText        : String        Read FmatchedText                 Write FmatchedText;
+  property thumbnail          : String        Read Fthumbnail                   Write Fthumbnail;
+  property title              : String        Read Ftitle                       Write Ftitle;
+  property description        : String        Read Fdescription                 Write Fdescription;
+  property caption            : String        Read Fcaption                     Write Fcaption;
+  property richPreviewType    : Extended      Read FrichPreviewType             Write FrichPreviewType;
+  property isGif              : Boolean       read FisGif                       write FisGif;
+  property width              : Extended      read Fwidth                       write Fwidth;
+  property height             : Extended      read Fheight                      write Fheight;
+  property lat                : Extended      read FLat                         write FLat;
+  property lng                : Extended      read FLng                         write FLng;
+  property loc                : String        Read Floc                         Write Floc;
+
+end;
+
+//Marcelo 25/07/2023
+TNewMessageResponseClass = class(TClassPadrao)
+  private
+    FMsg: TNewMsgClass;
+  public
+    property msg: TNewMsgClass read FMsg write FMsg;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TRootClass;
+end;
+
+TSendPollMessageResponseClass = class(TClassPadrao)
+private
+  FJsonMessage: String;
+  FSeuid: String;
+  FSeuid2: String;
+public
+  property JsonMessage: String read FJsonMessage write FJsonMessage;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+end;
 
 TPlatformFromMessage = class(TClassPadrao)
   private

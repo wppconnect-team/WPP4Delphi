@@ -145,6 +145,9 @@ type
     procedure TWPPConnect1GetMyContactsList(const MyContacts: TRetornoAllContacts);
     procedure TWPPConnect1GetPoolResponse(const PoolResponse: TPoolResponseClass);
     procedure TWPPConnect1GetPoolResponseEvento(const PoolResponse: TPoolResponseClass);
+    procedure TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
+    procedure TWPPConnect1GetReactResponseEvento(const ReactionResponse: TReactionResponseClass);
+    procedure TWPPConnect1Get_SendPollMessageResponse(const SendPollMessageResponse: TSendPollMessageResponseClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1490,6 +1493,21 @@ begin
     lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
+var
+  wlo_Celular : string;
+begin
+  wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
+  //ShowMessage('body: ' + AnsiUpperCase(NewMessageResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(NewMessageResponse.msg.body));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + NewMessageResponse.msg.id._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + NewMessageResponse.msg.&type._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+end;
+
 procedure TfrDemo.TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
 var
   wlo_Celular : string;
@@ -1616,6 +1634,18 @@ begin
     end;
 
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1GetReactResponseEvento(const ReactionResponse: TReactionResponseClass);
+var
+  wlo_Celular : string;
+begin
+  wlo_Celular := Copy(ReactionResponse.msg.sender,1,  pos('@', ReactionResponse.msg.sender) -1); // nr telefone
+  //ShowMessage('body: ' + AnsiUpperCase(ReactionResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Reaction: ' + AnsiUpperCase(ReactionResponse.msg.reactionText));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id Origem: ' + ReactionResponse.msg.msgId._serialized);
 end;
 
 procedure TfrDemo.TWPPConnect1GetStatus(Sender: TObject);
@@ -2193,6 +2223,63 @@ begin
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
 
+end;
+
+procedure TfrDemo.TWPPConnect1Get_SendPollMessageResponse(const SendPollMessageResponse: TSendPollMessageResponseClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO : string;
+  jsonString: string;
+  jsonObject: TJSONObject;
+begin
+  //NOVO Necessário Recompilar o Projeto
+  try
+    wlo_Json := SendPollMessageResponse.JsonMessage;
+    jsonString := SendPollMessageResponse.JsonMessage;
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuId: ' + SendPollMessageResponse.Seuid);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuId2: ' + SendPollMessageResponse.Seuid2);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('' + wlo_Json);
+
+    // Faça o parsing do JSON
+    jsonObject := TJSONObject.ParseJSONValue(jsonString) as TJSONObject;
+
+    try
+      // A partir daqui, você pode acessar os valores do JSON por suas chaves
+      // Por exemplo:
+      if jsonObject <> nil then
+      begin
+        frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
+        frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Ack: ' + jsonObject.GetValue('ack').Value);
+        frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+      end
+      else
+      begin
+        frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('JSON inválido.');
+      end;
+    finally
+      // Não se esqueça de liberar a memória do objeto JSON
+      jsonObject.Free;
+    end;
+
+    {JMessagem := TRetorno_SendFileMensagemClass.FromJsonString(wlo_Json);
+
+    if JMessagem.result.ack = 1 then
+      StatusMensagem := 'Enviada'
+    else
+    if JMessagem.result.ack = 2 then
+      StatusMensagem := 'Recebida'
+    else
+    if JMessagem.result.ack = 3 then
+      StatusMensagem := 'Visualizada';
+    S_NUMERO := copy(JMessagem.result.id, 8, pos('@', JMessagem.result.id) - 8);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('A Mensagem Foi "' + StatusMensagem + '"');
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Id Mensagem: ' + JMessagem.result.id);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + S_NUMERO);
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');}
+    //ShowMessage('A Mensagem Foi "' + StatusMensagem + '"');
+  except on E: Exception do
+  end;
 end;
 
 procedure TfrDemo.TWPPConnect1Get_sendTextMessage(const Mensagem: TMessagesClass);

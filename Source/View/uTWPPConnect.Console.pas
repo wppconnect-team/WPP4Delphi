@@ -281,7 +281,8 @@ type
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
-    procedure PoolCreate(vID, vDescription, vPoolOptions, vOptions: string);
+    procedure PoolCreate(vID, vDescription, vChoices, vOptions: string);
+    procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
     procedure SetGroupPicture(vIDGroup, vBase64:string);
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
@@ -606,18 +607,40 @@ begin
   end;
 end;
 
-procedure TFrmConsole.PoolCreate(vID, vDescription, vPoolOptions, vOptions: string);
+procedure TFrmConsole.PoolCreate(vID, vDescription, vChoices, vOptions: string);
 var
   Ljs: string;
 begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
+  vDescription := CaractersWeb(vDescription);
+
   LJS   := FrmConsole_JS_VAR_CreatePoolMessage;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
-  FrmConsole_JS_AlterVar(LJS, '#POOL_OPTIONS#',       Trim(vPoolOptions));
+  FrmConsole_JS_AlterVar(LJS, '#CHOICES#',            Trim(vChoices));
   FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  vDescription := CaractersWeb(vDescription);
+
+  LJS   := FrmConsole_JS_VAR_CreatePoolMessageEx;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
+  FrmConsole_JS_AlterVar(LJS, '#CHOICES#',            Trim(vChoices));
+  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',          Trim(vSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',         Trim(vSeuID2));
 
   ExecuteJS(LJS, true);
 end;
@@ -2430,6 +2453,42 @@ begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
                              LOutClass := TPoolResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_Getnew_reaction :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TReactionResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_Getnew_message :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TNewMessageResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_sendCreatePollMessageEx :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TSendPollMessageResponseClass.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                              finally

@@ -83,6 +83,10 @@ type
   TOnGetPoolResponse = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
   TOnGetPoolResponseEvento = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
 
+  TOnGetReactResponseEvento = procedure(Const ReactionResponse: TReactionResponseClass) of object; //Marcelo 25/07/2023
+  TOnGetNewMessageResponseEvento = procedure(Const NewMessageResponse: TNewMessageResponseClass) of object; //Marcelo 25/07/2023
+  TOnGet_SendPollMessageResponse = procedure(Const SendPollMessageResponse: TSendPollMessageResponseClass) of object; //Marcelo 25/07/2023
+
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
   TOnGetQrCodeDesconectouErroCache = procedure(Const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache) of object; //Marcelo 06/02/2023
 
@@ -206,6 +210,11 @@ type
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
     FOnGetPoolResponse          : TOnGetPoolResponse; //Marcelo 07/07/2023
     FOnGetPoolResponseEvento    : TOnGetPoolResponseEvento; //Marcelo 07/07/2023
+
+    FOnGetReactResponseEvento      : TOnGetReactResponseEvento; //Marcelo 25/07/2023
+    FOnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento; //Marcelo 25/07/2023
+    FOnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse; //Marcelo 25/07/2023
+
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
 
@@ -356,7 +365,8 @@ type
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
     procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
-    procedure CreatePool(PID, PDescription, PPoolOptions, POptions: string);
+    procedure CreatePool(PID, PDescription, PChoices, POptions: string);
+    procedure CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
     procedure SetGroupPicture(PIDGroup, PFileName: string);
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
@@ -503,6 +513,11 @@ type
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
     property OnGetPoolResponse           : TOnGetPoolResponse         read FOnGetPoolResponse              write FOnGetPoolResponse;
     property OnGetPoolResponseEvento     : TOnGetPoolResponseEvento   read FOnGetPoolResponseEvento        write FOnGetPoolResponseEvento;
+
+    property OnGetReactResponseEvento      : TOnGetReactResponseEvento       read FOnGetReactResponseEvento       write FOnGetReactResponseEvento;
+    property OnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento  read FOnGetNewMessageResponseEvento  write FOnGetNewMessageResponseEvento;
+    property OnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse  read FOnGet_SendPollMessageResponse  write FOnGet_SendPollMessageResponse;
+
     property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
 
@@ -1093,7 +1108,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.CreatePool(PID, PDescription, PPoolOptions, POptions: string);
+procedure TWPPConnect.CreatePool(PID, PDescription, PChoices, POptions: string);
 var
   lThread : TThread;
 begin
@@ -1122,9 +1137,9 @@ begin
     Exit;
   end;
 
-   if Trim(PPoolOptions) = '' then
+   if Trim(PChoices) = '' then
   begin
-    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PPoolOptions);
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
     Exit;
   end;
 
@@ -1134,7 +1149,58 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.PoolCreate(PID, PDescription, PPoolOptions, POptions);
+            FrmConsole.PoolCreate(PID, PDescription, PChoices, POptions);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PID);
+    Exit;
+  end;
+
+  PID := AjustNumber.FormatIn(PID);
+  if pos('@', PID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PID);
+    Exit;
+  end;
+
+  if Trim(PDescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
+    Exit;
+  end;
+
+   if Trim(PChoices) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2);
           end;
         end);
 
@@ -2846,6 +2912,26 @@ begin
       FOnGetPoolResponseEvento(TPoolResponseClass(PReturnClass));
   end;
 
+  //Marcelo 25/07/2023
+  if PTypeHeader = Th_Getnew_message  then
+  begin
+    if Assigned(FOnGetNewMessageResponseEvento) then
+      FOnGetNewMessageResponseEvento(TNewMessageResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 25/07/2023
+  if PTypeHeader = Th_Getnew_reaction  then
+  begin
+    if Assigned(FOnGetReactResponseEvento) then
+      FOnGetReactResponseEvento(TReactionResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 25/07/2023
+  if PTypeHeader = Th_sendCreatePollMessageEx  then
+  begin
+    if Assigned(FOnGet_SendPollMessageResponse) then
+      FOnGet_SendPollMessageResponse(TSendPollMessageResponseClass(PReturnClass));
+  end;
 
   //Marcelo 17/01/2023
   if PTypeHeader = Th_GetHistorySyncProgress  then
