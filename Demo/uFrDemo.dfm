@@ -5739,6 +5739,8 @@ object frDemo: TfrDemo
     OnGetReactResponseEvento = TWPPConnect1GetReactResponseEvento
     OnGetNewMessageResponseEvento = TWPPConnect1GetNewMessageResponseEvento
     OnGet_SendPollMessageResponse = TWPPConnect1Get_SendPollMessageResponse
+    OnGetAck_changeEvento = TWPPConnect1GetAck_changeEvento
+    OnGetmsg_revokeEvento = TWPPConnect1Getmsg_revokeEvento
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     Left = 288

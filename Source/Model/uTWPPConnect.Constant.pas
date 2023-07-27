@@ -484,6 +484,8 @@ type
                    , Th_sendCreatePollMessageEx=72 //Marcelo 25/07/2023
                    , Th_Getnew_message=73 //Marcelo 25/07/2023
                    , Th_Getnew_reaction=74 //Marcelo 25/07/2023
+                   , Th_Getmsg_ack_change=75 //Marcelo 26/07/2023
+                   , Th_Getmsg_revoke=76 //Marcelo 26/07/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -621,7 +623,7 @@ Begin
 End;
 
 function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 74; //Marcelo 25/07/2023
+const LmaxCount = 76; //Marcelo 26/07/2023
 var
   I: Integer;
   LNome: String;

@@ -87,6 +87,9 @@ type
   TOnGetNewMessageResponseEvento = procedure(Const NewMessageResponse: TNewMessageResponseClass) of object; //Marcelo 25/07/2023
   TOnGet_SendPollMessageResponse = procedure(Const SendPollMessageResponse: TSendPollMessageResponseClass) of object; //Marcelo 25/07/2023
 
+  TOnGetAck_changeEvento = procedure(Const Ack_change: TAck_changeClass) of object; //Marcelo 26/07/2023
+  TOnGetmsg_revokeEvento = procedure(Const RevokeMsg: TRevokeClass) of object; //Marcelo 26/07/2023
+
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
   TOnGetQrCodeDesconectouErroCache = procedure(Const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache) of object; //Marcelo 06/02/2023
 
@@ -214,6 +217,9 @@ type
     FOnGetReactResponseEvento      : TOnGetReactResponseEvento; //Marcelo 25/07/2023
     FOnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento; //Marcelo 25/07/2023
     FOnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse; //Marcelo 25/07/2023
+
+    FOnGetAck_changeEvento      : TOnGetAck_changeEvento; //Marcelo 26/07/2023
+    FOnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento; //Marcelo 26/07/2023
 
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
@@ -517,6 +523,9 @@ type
     property OnGetReactResponseEvento      : TOnGetReactResponseEvento       read FOnGetReactResponseEvento       write FOnGetReactResponseEvento;
     property OnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento  read FOnGetNewMessageResponseEvento  write FOnGetNewMessageResponseEvento;
     property OnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse  read FOnGet_SendPollMessageResponse  write FOnGet_SendPollMessageResponse;
+
+    property OnGetAck_changeEvento      : TOnGetAck_changeEvento       read FOnGetAck_changeEvento       write FOnGetAck_changeEvento;
+    property OnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento       read FOnGetmsg_revokeEvento       write FOnGetmsg_revokeEvento;
 
     property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
@@ -2932,6 +2941,21 @@ begin
     if Assigned(FOnGet_SendPollMessageResponse) then
       FOnGet_SendPollMessageResponse(TSendPollMessageResponseClass(PReturnClass));
   end;
+
+  //Marcelo 26/07/2023
+  if PTypeHeader = Th_Getmsg_ack_change  then
+  begin
+    if Assigned(FOnGetAck_changeEvento) then
+      FOnGetAck_changeEvento(TAck_changeClass(PReturnClass));
+  end;
+
+  //Marcelo 26/07/2023
+  if PTypeHeader = Th_Getmsg_revoke  then
+  begin
+    if Assigned(FOnGetmsg_revokeEvento) then
+      FOnGetmsg_revokeEvento(TRevokeClass(PReturnClass));
+  end;
+
 
   //Marcelo 17/01/2023
   if PTypeHeader = Th_GetHistorySyncProgress  then

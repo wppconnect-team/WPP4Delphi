@@ -1012,11 +1012,13 @@ type
     FFromMe     : Boolean;
     FId         : String;
     FRemote     : String;
+    FParticipant: String;
   public
     property _serialized: String   read F_serialized write F_serialized;
     property fromMe:      Boolean  read FFromMe      write FFromMe;
     property id:          String   read FId          write FId;
     property remote:      String   read FRemote      write FRemote;
+    property participant: String   read FParticipant write FParticipant;
   end;
   //Marcelo 27/04/2022
   TunsyncedButtonRepliesClass = class(TClassPadrao)
@@ -1844,6 +1846,10 @@ private
   FLat: Extended;
   FLng: Extended;
   Floc: String;
+  FQuotedParticipant: String;
+  FQuotedMsg: TQuotedMsgClass;
+  FquotedStanzaID: string;
+  FAuthor: String;
 
 public
   property ack: Extended read FAck write FAck;
@@ -1878,26 +1884,30 @@ public
   property &type: String read FType write FType;
   property pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
   property pollname                    : string   read Fpollname                      write Fpollname;
-  property pollSelectableOptionsCount: Extended read FpollSelectableOptionsCount write FpollSelectableOptionsCount;
+  property pollSelectableOptionsCount  : Extended read FpollSelectableOptionsCount    write FpollSelectableOptionsCount;
   property vcardFormattedName          : string   read FvcardFormattedName            write FvcardFormattedName;
-  property size               : Extended      Read Fsize                        Write Fsize;
-  property filehash           : String        Read Ffilehash                    Write Ffilehash;
-  property mimetype           : String        Read Fmimetype                    Write Fmimetype;
-  property filename           : String        Read Ffilename                    Write Ffilename;
-  property isViewOnce         : Boolean       read FisViewOnce                  write FisViewOnce;
-  property canonicalUrl       : String        Read FcanonicalUrl                Write FcanonicalUrl;
-  property matchedText        : String        Read FmatchedText                 Write FmatchedText;
-  property thumbnail          : String        Read Fthumbnail                   Write Fthumbnail;
-  property title              : String        Read Ftitle                       Write Ftitle;
-  property description        : String        Read Fdescription                 Write Fdescription;
-  property caption            : String        Read Fcaption                     Write Fcaption;
-  property richPreviewType    : Extended      Read FrichPreviewType             Write FrichPreviewType;
-  property isGif              : Boolean       read FisGif                       write FisGif;
-  property width              : Extended      read Fwidth                       write Fwidth;
-  property height             : Extended      read Fheight                      write Fheight;
-  property lat                : Extended      read FLat                         write FLat;
-  property lng                : Extended      read FLng                         write FLng;
-  property loc                : String        Read Floc                         Write Floc;
+  property size               : Extended        Read Fsize                        Write Fsize;
+  property filehash           : String          Read Ffilehash                    Write Ffilehash;
+  property mimetype           : String          Read Fmimetype                    Write Fmimetype;
+  property filename           : String          Read Ffilename                    Write Ffilename;
+  property isViewOnce         : Boolean         read FisViewOnce                  write FisViewOnce;
+  property canonicalUrl       : String          Read FcanonicalUrl                Write FcanonicalUrl;
+  property matchedText        : String          Read FmatchedText                 Write FmatchedText;
+  property thumbnail          : String          Read Fthumbnail                   Write Fthumbnail;
+  property title              : String          Read Ftitle                       Write Ftitle;
+  property description        : String          Read Fdescription                 Write Fdescription;
+  property caption            : String          Read Fcaption                     Write Fcaption;
+  property richPreviewType    : Extended        Read FrichPreviewType             Write FrichPreviewType;
+  property isGif              : Boolean         read FisGif                       write FisGif;
+  property width              : Extended        read Fwidth                       write Fwidth;
+  property height             : Extended        read Fheight                      write Fheight;
+  property lat                : Extended        read FLat                         write FLat;
+  property lng                : Extended        read FLng                         write FLng;
+  property loc                : String          read Floc                         write Floc;
+  property quotedMsg          : TQuotedMsgClass read FQuotedMsg                   write FQuotedMsg;
+  property quotedParticipant  : String          read FQuotedParticipant           write FQuotedParticipant;
+  property quotedStanzaID     : string          read FquotedStanzaID              write FquotedStanzaID;
+  property author             : String          read FAuthor                      write FAuthor;
 
 end;
 
@@ -1921,6 +1931,80 @@ public
   property Seuid: String read FSeuid write FSeuid;
   property Seuid2: String read FSeuid2 write FSeuid2;
 end;
+
+TRefIdClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FFromMe: Boolean;
+  FId: String;
+  FRemote: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property fromMe: Boolean read FFromMe write FFromMe;
+  property id: String read FId write FId;
+  property remote: String read FRemote write FRemote;
+end;
+
+TMsgRevokeClass = class(TClassPadrao)
+private
+  FFrom: String;
+  FId: TIdClass;
+  FRefId: TRefIdClass;
+  FTo: String;
+  FType: String;
+  FAuthor: String;
+public
+  property from: String read FFrom write FFrom;
+  property id: TIdClass read FId write FId;
+  property refId: TRefIdClass read FRefId write FRefId;
+  property &to: String read FTo write FTo;
+  property &type: String read FType write FType;
+  property author             : String          read FAuthor                      write FAuthor;
+end;
+
+TRevokeClass = class(TClassPadrao)
+private
+  FMsg: TMsgRevokeClass;
+public
+  property msg: TMsgRevokeClass read FMsg write FMsg;
+end;
+
+TIdsClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FFromMe: Boolean;
+  FId: String;
+  FRemote: String;
+  FParticipant: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property fromMe: Boolean read FFromMe write FFromMe;
+  property id: String read FId write FId;
+  property remote: String read FRemote write FRemote;
+  property participant: String read FParticipant write FParticipant;
+end;
+
+TMsgAck_changeClass = class(TClassPadrao)
+private
+  FAck: Extended;
+  FChat: String;
+  FIds: TArray<TIdsClass>;
+  FSender: String;
+
+public
+  property ack: Extended read FAck write FAck;
+  property chat: String read FChat write FChat;
+  property ids: TArray<TIdsClass> read FIds write FIds;
+  property sender: String read FSender write FSender;
+end;
+
+TAck_changeClass = class(TClassPadrao)
+private
+  FMsg: TMsgAck_changeClass;
+public
+  property msg: TMsgAck_changeClass read FMsg write FMsg;
+end;
+
 
 TPlatformFromMessage = class(TClassPadrao)
   private
