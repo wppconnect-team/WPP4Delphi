@@ -17496,19 +17496,6 @@ window.WAPI.getMessages = async function(chatid, options) {
 };
 
 
-//Evento Recebendo Nova Mensagem Marcelo 25/07/2023 
-WPP.on("chat.new_message", (msg) => {
-    SetConsoleMessage("Getnew_message", JSON.stringify({msg}));
-
-});
-
-
-//Evento Recebendo Nova Reação Marcelo 25/07/2023
-WPP.on("chat.new_reaction", (msg) => {
-    SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
-
-});
-
 window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     const result = await WPP.chat.sendLocationMessage(chatid, options);
 
@@ -17755,11 +17742,24 @@ window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, opt
 //Marcelo 26/07/2023
 WPP.on('chat.msg_ack_change', (msg) => {
     //console.log(msg);
-    SetConsoleMessage("Getmsg_ack_change", JSON.stringify({msg}));
+    //SetConsoleMessage("Getmsg_ack_change", JSON.stringify({msg}));
 });
 
 //Marcelo 26/07/2023
 WPP.on('chat.msg_revoke', (msg) => {
     //console.log(msg);
-    SetConsoleMessage("Getmsg_revoke", JSON.stringify({msg}));
+    //SetConsoleMessage("Getmsg_revoke", JSON.stringify({msg}));
+});
+
+//Evento Recebendo Nova Mensagem Marcelo 25/07/2023 
+WPP.on("chat.new_message", (msg) => {
+    //SetConsoleMessage("Getnew_message", JSON.stringify({msg}));
+
+});
+
+
+//Evento Recebendo Nova Reação Marcelo 25/07/2023
+WPP.on("chat.new_reaction", (msg) => {
+    //SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
+
 });
