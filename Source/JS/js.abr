@@ -1,4 +1,4 @@
-//Version_JS;Version_TInjectMin;Version_CEF4Min;
+﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
 //1.27.0.0;1.0.0.9;78.3.0
 //
 //
@@ -17546,49 +17546,37 @@ window.WAPI.getPlatformFromMessage2 = async function(UniqueID, chatid) {
     
 };
 
+
 window.WAPI.list = async function () {
-    const options = {
-        onlyWithUnreadMessage: true   
-      };
-    const chats = await WPP.chat.list(options);
-    let messagesResult = [];
-  
-    if (chats) {
-      try {
-        for (var i = 0; i < chats.length; i++) {
-          if (chats[i].unreadCount > 0) {        
-            let messages = await WPP.chat.getMessages(chats[i].id._serialized, {
-              onlyUnread: true
-            });
-            for (var j = 0; j < messages.length; j++) {
-              let data = messages[j];
-              if (data.isNewMsg || !data.hasOwnProperty('isNewMsg')) {        
-                let messageResult = new WPP.whatsapp.MsgModel(data);               
-                if (messageResult.id._serialized.includes('@g.us')) {
-                    // ChatId inclui "@g.us" significa que é um grupo
-                    let jsonString = JSON.stringify(messageResult);
-                    let jsonObject = JSON.parse(jsonString);
-                    jsonObject.isGroup = true;
-                    let newJsonString = JSON.stringify(jsonObject);
-                    let newmessageResult = JSON.parse(newJsonString);
-                    messagesResult.push(newmessageResult);
-                  } else {                    
-                    messagesResult.push(messageResult);
-                  }               
-              }
+  const options = {
+    onlyWithUnreadMessage: true
+  };
+
+  const chats = await WPP.chat.list(options);
+  let messagesResult = [];
+
+  if (chats) {
+    try {
+      for (var i = 0; i < chats.length; i++) {
+        if (chats[i].unreadCount > 0) { // Verifique se msgs existe
+          let msgs = chats[i].msgs;
+          for (var j = 0; j < msgs._models.length; j++) {
+            console.log('msgs: ',msgs._models[j]);
+            if (msgs._models[j].__x_type === 'chat') {
+              messagesResult.push(msgs._models[j]);
             }
           }
         }
-        //console.log(JSON.stringify(messagesResult));
-        SetConsoleMessage("getList", JSON.stringify(messagesResult));
-      } catch (e) {
-        console.log('Erro:'.concat(e));
       }
-    } else {
-      console.log('ERRO');
+      //console.log(JSON.stringify(messagesResult));
+      SetConsoleMessage("getList", JSON.stringify(messagesResult));
+    } catch (e) {
+      console.log('Erro:'.concat(e));
     }
-  };
-
+  } else {
+    console.log('ERRO');
+  }
+};
 
 //Marcelo 11/01/2023
 window.WAPI.getInviteCode2 = async function(GROUP_ID) {
