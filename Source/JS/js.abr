@@ -17561,7 +17561,6 @@ window.WAPI.list = async function () {
         if (chats[i].unreadCount > 0) { // Verifique se msgs existe
           let msgs = chats[i].msgs;
           for (var j = 0; j < msgs._models.length; j++) {
-            console.log('msgs: ',msgs._models[j]);
             if (msgs._models[j].__x_type === 'chat') {
               messagesResult.push(msgs._models[j]);
             }
