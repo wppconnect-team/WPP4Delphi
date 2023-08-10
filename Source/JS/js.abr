@@ -17729,7 +17729,7 @@ window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, opt
 //Marcelo 26/07/2023
 WPP.on('chat.msg_ack_change', (msg) => {
     //console.log(msg);
-    //SetConsoleMessage("Getmsg_ack_change", JSON.stringify({msg}));
+    SetConsoleMessage("Getmsg_ack_change", JSON.stringify({msg}));
 });
 
 //Marcelo 26/07/2023
