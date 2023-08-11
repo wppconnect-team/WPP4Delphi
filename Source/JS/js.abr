@@ -17559,10 +17559,11 @@ window.WAPI.list = async function () {
     try {
       for (var i = 0; i < chats.length; i++) {
         if (chats[i].unreadCount > 0) { // Verifique se msgs existe
-          let msgs = chats[i].msgs;
-          for (var j = 0; j < msgs._models.length; j++) {
-            if (msgs._models[j].__x_type === 'chat') {
-              messagesResult.push(msgs._models[j]);
+          let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
+          for (var j = 0; j < msgs.length; j++) {
+            
+            if (msgs[j].__x_type === 'chat' && msgs[j].__x_isNewMsg === true) {                    
+              messagesResult.push(msgs[j]);
             }
           }
         }
