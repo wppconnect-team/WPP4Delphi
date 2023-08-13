@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.27.0.0;1.0.0.9;78.3.0
+//1.28.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2330,7 +2330,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.24.7
+//WPPCONNECT v2.24.8 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -3227,7 +3227,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     compare: () => l,
                     compareVersions: () => c,
                     satisfies: () => g,
-                    validate: () => m
+                    validate: () => m,
+                    validateStrict: () => y
                 });
                 const n = /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i,
                     o = e => {
@@ -3299,7 +3300,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             v = "~" === n ? 2 : b > 1 ? b : 1;
                         return 0 === u(y.slice(0, v), h.slice(0, v)) && -1 !== u(y.slice(v), h.slice(v))
                     },
-                    m = e => "string" == typeof e && /^[v\d]/.test(e) && n.test(e)
+                    m = e => "string" == typeof e && /^[v\d]/.test(e) && n.test(e),
+                    y = e => "string" == typeof e && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/.test(e)
             },
             98005: function(e) {
                 e.exports = function() {
@@ -6544,7 +6546,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     a = r(63327),
                     u = r(11092),
                     c = r(75572),
-                    l = i(r(21489));
+                    l = i(r(21489)),
+                    d = r(6139);
                 t.blockContact = async function(e) {
                     const t = (0, a.assertWid)(e),
                         r = u.ContactStore.get(t) || new u.ContactModel({
@@ -6556,7 +6559,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         bizOptOutArgs: null
                     }) : await l.blockContact(r), {
                         wid: t,
-                        isBlocked: r.isBlocked()
+                        isBlocked: (0, d.isBlocked)(t)
                     }
                 }
             },
@@ -6603,9 +6606,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     o = r(11092);
                 t.isBlocked = function(e) {
                     const t = (0, n.assertWid)(e);
-                    return (o.ContactStore.get(t) || new o.ContactModel({
-                        id: t
-                    })).isBlocked()
+                    return !!o.BlocklistStore.get(t)
                 }
             },
             81677: function(e, t, r) {
@@ -6642,7 +6643,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.unblockContact = void 0;
                 const s = r(63327),
                     a = r(11092),
-                    u = i(r(21489));
+                    u = i(r(21489)),
+                    c = r(6139);
                 t.unblockContact = async function(e) {
                     const t = (0, s.assertWid)(e),
                         r = a.ContactStore.get(t) || new a.ContactModel({
@@ -6650,7 +6652,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         });
                     return await u.unblockContact(r), {
                         wid: t,
-                        isBlocked: r.isBlocked()
+                        isBlocked: (0, c.isBlocked)(t)
                     }
                 }
             },
@@ -8861,7 +8863,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     let i = n.ChatStore.getModelsArray().slice();
                     if (e.onlyUsers && (i = i.filter((e => e.isUser))), e.onlyGroups && (i = i.filter((e => e.isGroup))), e.onlyCommunities && (i = i.filter((e => {
                             var t;
-                            return e.isGroup && "DEFAULT_ANNOUNCEMENT_GROUP" === (null === (t = e.groupMetadata) || void 0 === t ? void 0 : t.groupType)
+                            return e.isGroup && "COMMUNITY" === (null === (t = e.groupMetadata) || void 0 === t ? void 0 : t.groupType)
                         }))), e.onlyWithUnreadMessage && (i = i.filter((e => e.hasUnread))), e.withLabels) {
                         const t = e.withLabels.map((e => {
                             const t = n.LabelStore.findFirst((t => t.name === e));
@@ -9978,10 +9980,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
                 s.onInjected((() => {
                     setTimeout(c, 1e3)
-                })), s.onInjected((() => {
-                    if ("stylex" in window) return;
-                    const e = s.search((e => e.default.dedupe));
-                    (null == e ? void 0 : e.default) && (window.stylex = null == e ? void 0 : e.default)
                 }))
             },
             94296: (e, t) => {
@@ -12770,7 +12768,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                s(r(13115), t), t.waVersion = "2.24.7";
+                s(r(13115), t), t.waVersion = "2.24.8-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13004,7 +13002,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.24.7", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.24.8-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -14079,7 +14077,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(86405),
                     c = r(33111),
                     l = (0, o.default)("WA-JS:link-preview"),
-                    d = i.config.linkPreviewApiServers || ["https://linkpreview.ddns.info", "https://wajsapi.titanchat.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
+                    d = i.config.linkPreviewApiServers || ["https://wajs-server.calixto.shop", "https://wajsapi.titanchat.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
                     f = 140;
                 ! function(e) {
                     for (let t = e.length - 1; t > 0; t--) {
@@ -14209,8 +14207,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 const o = n(r(11227)),
                     i = r(65267),
                     s = (0, o.default)("WA-JS:webpack");
-                t.isInjected = !1, t.isReady = !1, t.onInjected = function(e) {
-                    i.internalEv.on("webpack.injected", (async () => Promise.resolve().then(e).catch((() => null))))
+                t.isInjected = !1, t.isReady = !1, t.onInjected = function(e, t = 0) {
+                    i.internalEv.on("webpack.injected", (() => {
+                        setTimeout(e, t)
+                    }))
                 }, t.onReady = function(e) {
                     i.internalEv.on("webpack.ready", (() => Promise.resolve().then(e).catch((() => null))))
                 }, t.fallbackModules = {}, t.injectLoader = function() {
@@ -14230,15 +14230,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         return !r.includes("undefined") && (!r.includes("locales") || navigator.languages.some((e => r.includes(`locales/${e}`))))
                                     })),
                                     n = [
-                                        [/locale/, 99],
-                                        [/vendor.*main~/, 84],
-                                        [/vendor.*main/, 83],
-                                        [/vendor/, 82],
-                                        [/main~/, 81],
-                                        [/main/, 80],
+                                        [/vendor.*main~/, 85],
+                                        [/vendor.*main/, 84],
                                         [/vendor.*lazy.*high/, 75],
-                                        [/lazy.*high.*~/, 74],
-                                        [/lazy.*high/, 73],
+                                        [/vendor.*lazy.*low/, 74],
+                                        [/vendor/, 83],
+                                        [/main~/, 82],
+                                        [/locale/, 81],
+                                        [/main/, 80],
+                                        [/lazy.*high.*~/, 73],
+                                        [/lazy.*high/, 72],
                                         [/lazy.*low.*~/, 71],
                                         [/lazy.*low/, 70],
                                         [/lazy/, 1]
@@ -14391,8 +14392,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 const n = r(58785);
                 r(92651), (0, n.exportModule)(t, {
-                    CallCollection: "CallCollectionImpl"
-                }, (e => e.CallCollectionImpl))
+                    CallCollection: ["CallCollectionImpl", "default.constructor"]
+                }, (e => e.CallCollectionImpl || e.default.processIncomingCall))
             },
             30264: (e, t, r) => {
                 "use strict";
