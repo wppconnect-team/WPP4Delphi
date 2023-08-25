@@ -65,7 +65,9 @@ var gettingUnreadMessages = false;
 
 function startMonitor(intervalSeconds = 0) {
     isLoggedStatus = WAPI.isLoggedIn();
-	
+    console.log("***intervalSeconds***");
+    console.log(intervalSeconds);
+
     if (intervalSeconds >= 1) {
         intervalMonitor = window.setInterval(monitorUnReadMessages, intervalSeconds * 1000);
     }
@@ -17563,7 +17565,7 @@ window.WAPI.list = async function () {
           let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
           for (var j = 0; j < msgs.length; j++) {
             
-            if (msgs[j].__x_type === 'chat' && msgs[j].__x_isNewMsg === true) {                    
+            if (msgs[j].__x_isNewMsg === true) {                    
               messagesResult.push(msgs[j]);
             }
           }
