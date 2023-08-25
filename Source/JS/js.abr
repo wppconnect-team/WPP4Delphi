@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.28.0.0;1.0.0.9;78.3.0
+//1.29.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -62,6 +62,10 @@ function SetConsoleMessage(jsName, resultValue) {
 var intervalMonitor;
 var isLoggedStatus = false;
 var gettingUnreadMessages = false;
+//Add Marcelo 24/08/2023
+var intervalMonitorNew;
+var isLoggedStatusNew = false;
+var gettingUnreadMessagesNew = false;
 
 function startMonitor(intervalSeconds = 0) {
     isLoggedStatus = WAPI.isLoggedIn();
@@ -73,8 +77,24 @@ function startMonitor(intervalSeconds = 0) {
     }
 }
 
+//Add Marcelo 24/08/2023
+function startMonitorNew(intervalSecondsNew = 0) {
+    isLoggedStatusNew = WAPI.isLoggedIn();
+    console.log("***intervalSecondsNew***");
+    console.log(intervalSecondsNew);
+
+    if (intervalSecondsNew >= 1) {
+        intervalMonitorNew = window.setInterval(monitorUnReadMessagesNew, intervalSecondsNew * 1000);
+    }
+}
+
 function stopMonitor() {
     window.clearInterval(intervalMonitor)
+}
+
+//Add Marcelo 24/08/2023
+function stopMonitorNew() {
+    window.clearInterval(intervalMonitorNew)
 }
 
 function removeElementsByClass(elementClass) {
@@ -111,6 +131,24 @@ function monitorUnReadMessages() {
         WAPI.getUnreadMessages(includeMe = "true", includeNotifications = "true", use_unread_count = "true");
     }
     gettingUnreadMessages = false;
+}
+
+//Add Marcelo 24/08/2023
+function monitorUnReadMessagesNew() {
+    if (gettingUnreadMessagesNew) return;
+    
+    gettingUnreadMessagesNew = true;
+    
+    var currentStatus = WAPI.isLoggedIn();
+    if (currentStatus != isLoggedStatusNew) {
+        isLoggedStatusNew = WAPI.isLoggedIn();
+        SetConsoleMessage("OnChangeConnect", JSON.stringify(isLoggedStatusNew));
+    }
+
+    if (isLoggedStatusNew) {        
+	window.WAPI.list();
+    }
+    gettingUnreadMessagesNew = false;
 }
 
 if (!window.Store||!window.Store.Msg) {
