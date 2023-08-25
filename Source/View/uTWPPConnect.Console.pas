@@ -198,6 +198,8 @@ type
     procedure SendFileMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
 
+    procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+
     //Adicionado Por Marcelo 17/09/2022
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
 
@@ -321,8 +323,10 @@ type
     procedure DeleteChat(vID: string);
 
     procedure StartMonitor(Seconds: Integer);
+    procedure StartMonitorNew(Seconds: Integer);
     procedure StartMonitorWPPCrash(Seconds: Integer);
     procedure StopMonitor;
+    procedure StopMonitorNew;
   end;
 
 var
@@ -552,7 +556,9 @@ begin
 
       //Auto monitorar mensagens não lidas
       StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
       StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
       SleepNoFreeze(40);
 
       lNovoStatus    := False;
@@ -970,6 +976,14 @@ begin
   ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#TEMPO#' , Seconds.ToString));
 end;
 
+procedure TFrmConsole.StartMonitorNew(Seconds: Integer);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartMonitorNew;
+  ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#TEMPO#' , Seconds.ToString));
+end;
+
 procedure TFrmConsole.StartMonitorWPPCrash(Seconds: Integer);
 var
   LJS: String;
@@ -1024,6 +1038,11 @@ begin
   ExecuteJS(FrmConsole_JS_StopMonitor, true);
 end;
 
+procedure TFrmConsole.StopMonitorNew;
+begin
+  ExecuteJS(FrmConsole_JS_StopMonitorNew, true);
+end;
+
 procedure TFrmConsole.StopQrCode(PQrCodeType: TFormQrCodeType);
 begin
   FrmQRCode.HIDE;
@@ -1036,6 +1055,7 @@ begin
   LPaginaId := 0;
   try
     StopMonitor;
+    StopMonitorNew;
   Except
   end;
   FTimerConnect.Enabled    := False;
@@ -1057,7 +1077,7 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS := FrmConsole_JS_VAR_ReadMessages;
-  ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#' , Trim(vID)), False);
+  ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#' , Trim(vID)), True);
 end;
 
 procedure TFrmConsole.DeletarTodosOsChats;
@@ -1153,7 +1173,7 @@ begin
 
     try
       if Assigned(FrmQRCode) then
-         FrmQRCode.FTimerGetQrCode.Enabled  := False;
+        FrmQRCode.FTimerGetQrCode.Enabled  := False;
     Except
       //Pode nao ter sido destruido na primeira tentativa
     end;
@@ -1164,6 +1184,7 @@ begin
     try
       GlobalCEFApp.QuitMessageLoop;
       StopMonitor;
+      StopMonitorNew;
     Except
       //nao manda ERRO
     end;
@@ -1177,6 +1198,24 @@ begin
   Except
   end;
   FConectado                       := False;
+end;
+
+procedure TFrmConsole.editMessage(UniqueID, NewMessage, Options: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  NewMessage := CaractersWeb(NewMessage);
+  options := CaractersQuebraLinha(options);
+
+  LJS   := FrmConsole_JS_VAR_editMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#',    Trim(UniqueID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_NEW_MESSAGE#',  Trim(NewMessage));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(Options));
+
+  ExecuteJS(LJS, true);
 end;
 
 //Marca como lida e deleta a conversa
@@ -1209,6 +1248,7 @@ begin
 
   //Auto monitorar mensagens não lidas
   StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
   StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);
@@ -2548,15 +2588,33 @@ begin
   //if POS('getUnreadMessages', message) = 0 then
     //LogAdd(message, 'CONSOLE GERAL');
 
- //testa se e um JSON de forma RAPIDA!
+  //testa se e um JSON de forma RAPIDA!
 
-  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) or (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) or (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0)
+  or (Pos('WEBPACKCHUNKWHATSAPP_WEB_CLIENT IS NOT DEFINED', UpperCase(message)) > 0)
+  then
   begin
     //Injeta o JS.ABR de novo
     LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');
-    //Chromium1.StopLoad;
-    //Chromium1.Browser.ReloadIgnoreCache;
+
+    Chromium1.StopLoad;
+    Chromium1.Browser.ReloadIgnoreCache;
+
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    SleepNoFreeze(500);
+
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+    //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
 
     {SleepNoFreeze(500);
 
@@ -2565,6 +2623,7 @@ begin
 
       //Auto monitorar mensagens não lidas
     StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
     StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);}
@@ -2670,6 +2729,7 @@ begin
 
       //Auto monitorar mensagens não lidas
     StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
     StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
@@ -3036,6 +3096,7 @@ begin
 
   //Auto monitorar mensagens não lidas
   StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
   StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);
@@ -3206,7 +3267,7 @@ begin
 
   LJS   := FrmConsole_JS_VAR_getMessageById;
   FrmConsole_JS_AlterVar(LJS, '#MSGKEY#', Trim(UniqueIDs));
-  ExecuteJS(LJS, false);
+  ExecuteJS(LJS, True);
 end;
 
 procedure TFrmConsole.sendTextStatus(Content, Options: string);

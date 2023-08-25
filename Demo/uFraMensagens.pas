@@ -92,6 +92,7 @@ type
     btnEncerrarChamada: TButton;
     eChoicesPool: TEdit;
     Label2: TLabel;
+    bEditMessage: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -138,6 +139,7 @@ type
     procedure Button4Click(Sender: TObject);
     procedure btnLigarClick(Sender: TObject);
     procedure btnEncerrarChamadaClick(Sender: TObject);
+    procedure bEditMessageClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -180,6 +182,26 @@ begin
   finally
     lInput.Free;
     lOutput.Free;
+  end;
+
+end;
+
+procedure TframeMensagem.bEditMessageClick(Sender: TObject);
+var
+  option, content, IdMensagem: string;
+begin
+  content := '';
+  IdMensagem := '';
+  option := '';
+
+  option := 'linkPreview: true, mentionedJidList: [''5517981388414@c.us'']';
+
+  if InputQuery('Informe a ID da Mensagem que Deseja Editar.', 'Unique ID: ', IdMensagem) then
+  begin
+    if InputQuery('Informe a Nova Mensagem.', 'New Message: ', content) then
+    begin
+      frDemo.TWPPConnect1.editMessage(IdMensagem, content, option);
+    end;
   end;
 
 end;
@@ -534,7 +556,8 @@ begin
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
-    frDemo.TWPPConnect1.GetMe();
+    //frDemo.TWPPConnect1.GetMe();
+    frDemo.TWPPConnect1.getList('');
   finally
 
   end;

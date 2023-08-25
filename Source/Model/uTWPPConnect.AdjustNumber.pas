@@ -112,7 +112,11 @@ begin
       Exit;
 
     //Marcelo Não Validar Número ja Formatado 02/07/2023
-    if pos('@c.us', PNum) > 0  then
+    if pos('@c.us', PNum) > 0 then
+      Exit;
+
+    //Marcelo Não Validar ID de Grupo ja Formatado 01/08/2023
+    if pos('@g.us', PNum) > 0 then
       Exit;
 
     //Garante valores LIMPOS (sem mascaras, letras, etc) apenas NUMEROS

@@ -429,7 +429,7 @@ object frameMensagem: TframeMensagem
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 175
+      Top = 206
       Width = 221
       Height = 25
       Align = alTop
@@ -442,7 +442,7 @@ object frameMensagem: TframeMensagem
     object btnArquivar: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 113
+      Top = 144
       Width = 221
       Height = 25
       Align = alTop
@@ -481,7 +481,7 @@ object frameMensagem: TframeMensagem
     object btnVerificarNumero: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 206
+      Top = 237
       Width = 221
       Height = 25
       Align = alTop
@@ -494,7 +494,7 @@ object frameMensagem: TframeMensagem
     object btnStatus: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 237
+      Top = 268
       Width = 221
       Height = 25
       Align = alTop
@@ -507,7 +507,7 @@ object frameMensagem: TframeMensagem
     object btnDetalhe: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 268
+      Top = 299
       Width = 221
       Height = 25
       Align = alTop
@@ -520,7 +520,7 @@ object frameMensagem: TframeMensagem
     object btnBloquear: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 299
+      Top = 330
       Width = 221
       Height = 25
       Align = alTop
@@ -533,7 +533,7 @@ object frameMensagem: TframeMensagem
     object btnDesbloquear: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 330
+      Top = 361
       Width = 221
       Height = 25
       Align = alTop
@@ -546,7 +546,7 @@ object frameMensagem: TframeMensagem
     object btnFixarChat: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 361
+      Top = 392
       Width = 221
       Height = 25
       Align = alTop
@@ -559,7 +559,7 @@ object frameMensagem: TframeMensagem
     object btnDesfixarChat: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 392
+      Top = 423
       Width = 221
       Height = 25
       Align = alTop
@@ -572,7 +572,7 @@ object frameMensagem: TframeMensagem
     object BitBtn1: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 144
+      Top = 175
       Width = 221
       Height = 25
       Align = alTop
@@ -598,7 +598,7 @@ object frameMensagem: TframeMensagem
     object btnArquivarTodosChats: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 423
+      Top = 454
       Width = 221
       Height = 25
       Align = alTop
@@ -610,7 +610,7 @@ object frameMensagem: TframeMensagem
     object btnDeletarTodosChats: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 454
+      Top = 485
       Width = 221
       Height = 25
       Align = alTop
@@ -622,7 +622,7 @@ object frameMensagem: TframeMensagem
     object Button1: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 485
+      Top = 516
       Width = 221
       Height = 25
       Align = alTop
@@ -635,7 +635,7 @@ object frameMensagem: TframeMensagem
     object btnValidarListarNumeros: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 516
+      Top = 547
       Width = 221
       Height = 25
       Cursor = crHandPoint
@@ -649,7 +649,7 @@ object frameMensagem: TframeMensagem
     object btnGetMessage: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 547
+      Top = 578
       Width = 221
       Height = 25
       Cursor = crHandPoint
@@ -663,7 +663,7 @@ object frameMensagem: TframeMensagem
     object Button3: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 578
+      Top = 609
       Width = 221
       Height = 25
       Cursor = crHandPoint
@@ -677,7 +677,7 @@ object frameMensagem: TframeMensagem
     object Button4: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 609
+      Top = 640
       Width = 221
       Height = 25
       Cursor = crHandPoint
@@ -687,6 +687,20 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 19
       OnClick = Button4Click
+    end
+    object bEditMessage: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 113
+      Width = 221
+      Height = 25
+      Cursor = crHandPoint
+      Align = alTop
+      Caption = 'Editar Mensagem'
+      ImageIndex = 0
+      Images = ImageList1
+      TabOrder = 20
+      OnClick = bEditMessageClick
     end
   end
   object GroupBox3: TGroupBox

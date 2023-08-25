@@ -63,6 +63,8 @@ Type
     FReceiveAttachmentAuto: Boolean;
     FZoom: SmallInt;
     FSecondsMonitorWppCrash: integer;
+    FSecondsMonitorNew: integer;
+
     procedure SetSecondsMonitor(const Value: integer);
     procedure SetLowBattery(const Value: SmallInt);
     procedure SetControlSendTimeSec(const Value: SmallInt);
@@ -70,9 +72,10 @@ Type
     procedure SetReceiveAttachmentAuto(const Value: Boolean);
     procedure SetZoom(const Value: SmallInt);
     procedure SetSecondsMonitorWppCrash(const Value: integer);
+    procedure SetSecondsMonitorNew(const Value: integer);
   public
-     constructor Create(AOwner: TComponent);
-     Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
+    constructor Create(AOwner: TComponent);
+    Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
 
   published
     property ControlSend          : Boolean   read FControlSend           write FControlSend               default True;
@@ -84,12 +87,13 @@ Type
     property ReceiveAttachmentPath : String   read FReceiveAttachmentPath write SetReceiveAttachmentPath;
     property Zoom : SmallInt                  read FZoom                  write SetZoom                    default -1;
 
-
-    property LowBatteryIs  : SmallInt         read FLowBattery            write SetLowBattery              default 30;
-    property SecondsMonitor: integer          read FSecondsMonitor        write SetSecondsMonitor          default 3;
-    property SecondsMonitorWppCrash: integer  read FSecondsMonitorWppCrash write SetSecondsMonitorWppCrash default 0;
-    property SyncContacts  : Boolean          read FSyncContacts          write FSyncContacts              default true;
-    property ShowRandom    : Boolean          read FShowRandom            write FShowRandom                default true;
+    property LowBatteryIs      : SmallInt         read FLowBattery             write SetLowBattery              default 30;
+    property SecondsMonitor    : integer          read FSecondsMonitor         write SetSecondsMonitor          default 0;
+    property SecondsMonitorWppCrash: integer      read FSecondsMonitorWppCrash write SetSecondsMonitorWppCrash  default 0;
+    //Add Marcelo 25/08/2023
+    property SecondsMonitorNew : integer          read FSecondsMonitorNew      write SetSecondsMonitorNew       default 0;
+    property SyncContacts      : Boolean          read FSyncContacts           write FSyncContacts              default true;
+    property ShowRandom        : Boolean          read FShowRandom             write FShowRandom                default true;
   end;
 
 implementation
@@ -109,7 +113,8 @@ begin
   FAutoDelay              := 2500;
   FAutoDelete             := false;
   FLowBattery             := 30;
-  FSecondsMonitor         := 3;
+  //FSecondsMonitor         := 3;
+  //FSecondsMonitorNew      := 3;
   FZoom                   := -1;
   FSyncContacts           := true;
   FShowRandom             := true;
@@ -170,8 +175,16 @@ procedure TWPPConnectConfig.SetSecondsMonitor(const Value: integer);
 begin
   FSecondsMonitor := Value;
   //Não permitir que fique zero ou negativo.
-  if Value < 0.1 then
-     FSecondsMonitor := 3;
+  {if Value < 0.1 then
+     FSecondsMonitor := 3;}
+end;
+
+procedure TWPPConnectConfig.SetSecondsMonitorNew(const Value: integer);
+begin
+  FSecondsMonitorNew := Value;
+  //Não permitir que fique zero ou negativo.
+  {if Value < 0.1 then
+     FSecondsMonitorNew := 3;}
 end;
 
 procedure TWPPConnectConfig.SetSecondsMonitorWppCrash(const Value: integer);

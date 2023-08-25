@@ -77,11 +77,11 @@ Const
   TPPConnectJS_decryptFile              = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/decryptFile.dll?raw=true';
 
   //TWPPConnectJS_JSUrlPadrao             = '';
-  TWPPConnectJS_JSLinhasMInimas         = 16242; //1400;
+  TWPPConnectJS_JSLinhasMInimas         = 17726; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2331.7';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2335.6';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -89,6 +89,8 @@ Const
   FrmConsole_JS_GetBatteryLevel         = ''; //'window.WAPI.getBatteryLevel();'; //Não Habilitar Função deprecated GetBatteryLevel
   FrmConsole_JS_GetMyNumber             = 'getMyNumber();';
   FrmConsole_JS_GetUnreadMessages       = 'window.WAPI.getUnreadMessages(includeMe="True", includeNotifications="True", use_unread_count="True");';
+  //FrmConsole_JS_GetUnreadMessages       = '';
+
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
   FrmConsole_JS_checkDelivered          = 'window.WAPI.getDelivered();';
   //FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
@@ -103,10 +105,12 @@ Const
   //FrmConsole_JS_monitorQRCode           = ''; //'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
 
   //Marcelo 05/05/2023
-  FrmConsole_JS_monitorQRCode           = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
-  FrmConsole_JS_StopMonitor             = 'stopMonitor();';
-  FrmConsole_JS_IsLoggedIn              = 'WAPI.isLoggedIn();';
+  FrmConsole_JS_monitorQRCode            = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+  FrmConsole_JS_StopMonitor              = 'stopMonitor();';
+  FrmConsole_JS_StopMonitorNew           = 'stopMonitorNew();'; //Add Marcelo 25/08/2023
+  FrmConsole_JS_IsLoggedIn               = 'WAPI.isLoggedIn();';
   FrmConsole_JS_VAR_StartMonitor         = 'startMonitor(intervalSeconds=<#TEMPO#>)';
+  FrmConsole_JS_VAR_StartMonitorNew      = 'startMonitorNew(intervalSecondsNew=<#TEMPO#>)'; //Add Marcelo 25/08/2023
   FrmConsole_JS_VAR_StartMonitorWPPCrash = 'startMonitorWPPCrash(intervalSeconds=<#TEMPO#>)';
 
   //Marcelo 21/06/2022
@@ -284,6 +288,8 @@ Const
 
   //Marcelo 17/09/2022
   FrmConsole_JS_VAR_sendLocationMessageEx   = 'window.WAPI.sendLocationMessage2Ex("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
+
+  FrmConsole_JS_VAR_editMessage         = 'WPP.chat.editMessage("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>} );';
 
   //Marcelo 25/10/2022
   FrmConsole_JS_VAR_getList   = 'window.WAPI.list();';

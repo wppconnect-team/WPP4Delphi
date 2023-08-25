@@ -294,6 +294,8 @@ type
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
 
+    procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+
     procedure getList(options: string); //Add Marcelo 25/10/2022
 
     //Daniel - 13/06/2022
@@ -1002,7 +1004,7 @@ begin
   FInjectConfig                       := TWPPConnectConfig.Create(self);
   FInjectConfig.OnNotificationCenter  := Int_OnNotificationCenter;
   FInjectConfig.AutoDelay             := 1000;
-  FInjectConfig.SecondsMonitor        := 3;
+  //FInjectConfig.SecondsMonitor        := 3;
   FInjectConfig.ControlSend           := True;
   FInjectConfig.LowBatteryis          := 30;
   FInjectConfig.ControlSendTimeSec    := 8;
@@ -1577,7 +1579,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  FrmConsole.getMessageById(UniqueIDs);
 
+  {
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1599,7 +1603,7 @@ begin
       end);
   lThread.FreeOnTerminate := true;
   lThread.Start;
-
+  }
 end;
 
 procedure TWPPConnect.GetMyContacts;
@@ -2763,6 +2767,13 @@ begin
         OnGet_sendVCardContactMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
+    //Marcelo 25/07/2023
+    if PTypeHeader = Th_sendCreatePollMessageEx  then
+    begin
+      if Assigned(FOnGet_SendPollMessageResponse) then
+        FOnGet_SendPollMessageResponse(TSendPollMessageResponseClass(PReturnClass));
+    end;
+
     //Marcelo 17/06/2022
     If PTypeHeader = Th_IncomingiCall Then
     Begin
@@ -2933,13 +2944,6 @@ begin
   begin
     if Assigned(FOnGetReactResponseEvento) then
       FOnGetReactResponseEvento(TReactionResponseClass(PReturnClass));
-  end;
-
-  //Marcelo 25/07/2023
-  if PTypeHeader = Th_sendCreatePollMessageEx  then
-  begin
-    if Assigned(FOnGet_SendPollMessageResponse) then
-      FOnGet_SendPollMessageResponse(TSendPollMessageResponseClass(PReturnClass));
   end;
 
   //Marcelo 26/07/2023
@@ -4572,6 +4576,49 @@ begin
   FDestroyTmr.Enabled := True;
 end;
 
+
+procedure TWPPConnect.editMessage(UniqueID, NewMessage, Options: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 15/08/2023
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(UniqueID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, UniqueID);
+    Exit;
+  end;
+
+  if Trim(NewMessage) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, NewMessage);
+    Exit;
+  end;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.editMessage(UniqueID, NewMessage, options);
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
 
 procedure TWPPConnect.EndCall(id: string);
 var
