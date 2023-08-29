@@ -17603,11 +17603,10 @@ window.WAPI.list = async function () {
       for (var i = 0; i < chats.length; i++) {
         if (chats[i].unreadCount > 0) { // Verifique se msgs existe
           let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
-          for (var j = 0; j < msgs.length; j++) {
-            messagesResult.push(msgs[j]);
-            /*if (msgs[j].__x_isNewMsg === true) {                    
+          for (var j = 0; j < msgs.length; j++) {            
+            if (msgs[j].__x_isNewMsg === true) {                    
               messagesResult.push(msgs[j]);
-            }*/
+            }
           }
         }
       }
