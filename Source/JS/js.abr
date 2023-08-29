@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.30.0.0;1.0.0.9;78.3.0
+//1.31.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -17604,10 +17604,10 @@ window.WAPI.list = async function () {
         if (chats[i].unreadCount > 0) { // Verifique se msgs existe
           let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
           for (var j = 0; j < msgs.length; j++) {
-            
-            if (msgs[j].__x_isNewMsg === true) {                    
+            messagesResult.push(msgs[j]);
+            /*if (msgs[j].__x_isNewMsg === true) {                    
               messagesResult.push(msgs[j]);
-            }
+            }*/
           }
         }
       }
