@@ -243,6 +243,7 @@ end;
     property richPreviewType: Extended read FRichPreviewType write FRichPreviewType;
     property thumbnail: String read FThumbnail write FThumbnail;
 
+
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
   end;
@@ -282,6 +283,8 @@ begin
   inherited Create(pAJsonString);
   FId := TIdClass.Create(pAJsonString);
   FQuotedMsg := TQuotedMsgClass.Create(pAJsonString);
+  if True then
+
 end;
 
 destructor TChatListClass.Destroy;

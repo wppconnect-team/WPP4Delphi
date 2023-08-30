@@ -190,19 +190,18 @@ object frameMensagem: TframeMensagem
       TabOrder = 5
       OnClick = btnImagemClick
     end
-    object btnVideoBotao: TButton
+    object btnInstantVideo: TButton
       AlignWithMargins = True
       Left = 5
       Top = 144
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Enviar V'#237'deo com Bot'#227'o'
+      Caption = 'Enviar Instant Video'
       ImageIndex = 4
       Images = ImageList1
       TabOrder = 4
-      Visible = False
-      OnClick = btnVideoBotaoClick
+      OnClick = btnInstantVideoClick
     end
     object btnVideo: TButton
       AlignWithMargins = True

@@ -1272,7 +1272,7 @@ begin
     begin
       if not LChatClass.id.fromMe then //mensagens que eu nao enviei
       begin
-        if LChatClass.isNewMsg then
+        //if LChatClass.isNewMsg then
         begin
           if (AnsiUpperCase(LChatClass.&type) <> 'CIPHERTEXT')
           and (AnsiUpperCase(LChatClass.&type) <> 'E2E_NOTIFICATION')
@@ -1316,8 +1316,10 @@ begin
                 NomeArq_Whats := WPPConnectDecrypt.download(LChatClass.deprecatedMms3Url,
                                 LChatClass.mediaKey, Extensao_Documento, LChatClass.id.Remote, Automato_Path + 'Temp\');
                 frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Caption: ' + Trim(LChatClass.Caption)));
                 frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Filename: ' + Trim(LChatClass.filename)));
                 frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('mediakey: ' + Trim(LChatClass.mediaKey)));
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('deprecatedMms3Url: ' + Trim(LChatClass.deprecatedMms3Url)));
               end;
 
 
@@ -1355,6 +1357,7 @@ begin
                   IdMensagemOrigem := 'true_' + LChatClass.id.remote+'_' + LChatClass.quotedStanzaID;
                   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique ID IdMensagemOrigem: ' + IdMensagemOrigem);
                   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('body MensagemOrigem: ' + LChatClass.quotedMsg.body);
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Type MensagemOrigem: ' + LChatClass.quotedMsg.&type);
                 end;
               except
                 on E: Exception do

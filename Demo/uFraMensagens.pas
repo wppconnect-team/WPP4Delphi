@@ -36,7 +36,7 @@ type
     btnLink: TButton;
     btnImagemBotao: TButton;
     btnImagem: TButton;
-    btnVideoBotao: TButton;
+    btnInstantVideo: TButton;
     btnVideo: TButton;
     btnListaMenu: TButton;
     btnBotaoSimples: TButton;
@@ -98,7 +98,7 @@ type
     procedure btnBotaoSimplesClick(Sender: TObject);
     procedure btnListaMenuClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
-    procedure btnVideoBotaoClick(Sender: TObject);
+    procedure btnInstantVideoClick(Sender: TObject);
     procedure btnImagemClick(Sender: TObject);
     procedure btnImagemBotaoClick(Sender: TObject);
     procedure btnLinkClick(Sender: TObject);
@@ -777,6 +777,7 @@ end;
 procedure TframeMensagem.btnLinkClick(Sender: TObject);
  var
   options: string;
+  LBase64 : TStringList;
 begin
   try
     if Trim(ed_num.Text) = '' then
@@ -789,10 +790,50 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
 
-    options :=
-      'linkPreview: { ' +
-      'title: "WPPConnect", ' +
-      'description: "WPPConnect/WA-JS" }';
+    LBase64 := TStringList.Create;
+    TRY
+      if FileExists('C:\Executaveis\WPPConnectDemo\Base64ImagemPuro.txt') then
+      begin
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64ImagemPuro.txt');
+        memo1.clear;
+        memo1.Text := LBase64.text;
+      end
+      else
+      begin
+        {inicio - capturando imagem e convertendo em base 64}
+        OpenDialog1.Execute;
+        Image1.Picture.LoadFromFile(OpenDialog1.FileName);
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := ImageToBase64( Image1 ) ;
+        //LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text;  //add DataURI
+        memo1.clear;
+        memo1.Text := LBase64.Text ;
+        {final - capturando imagem e convertendo em base 64}
+      end;
+    FINALLY
+      options :=
+        '"linkPreview": { ' +
+        '  "title": "WPPConnect", ' +
+        '  "description": "WPPConnect/WA-JS", ' +
+        '  "canonicalUrl": "' + edtUrl.text + '",  ' +
+        '  "matchedText": "' + edtUrl.text + '",  ' +
+        '  "doNotPlayInline": false, ' +
+        '  "richPreviewType": 0, ' +
+        '  "thumbnail": "' + LBase64.Text {memo1.Text} + '" ' +
+        '}';
+      freeAndNil(LBase64);
+    END;
+
+
+
+(*linkPreview?: boolean | {
+    canonicalUrl?: string;
+    description?: string;
+    doNotPlayInline: boolean;
+    matchedText?: string;
+    richPreviewType?: number;
+    thumbnail?: string;
+    title?: string;}*)
 
     //frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.text, edtUrl.text, options, '123');
@@ -1269,7 +1310,7 @@ begin
 
 end;
 
-procedure TframeMensagem.btnVideoBotaoClick(Sender: TObject);
+procedure TframeMensagem.btnInstantVideoClick(Sender: TObject);
 var
   content, options, options_Figurinha, options_Imagem, options_Audio,
     description, buttontext, menu, menu2, menu3 : string;
@@ -1306,59 +1347,14 @@ begin
 
       content := mem_message.Text;
 
-      options_Audio :=
-        'type: "audio", ' +
-        'isPtt: true'; // false for common audio
-
       options :=
         'createChat: true, ' +
-        //'useTemplateButtons: undefined, ' +
-        'useTemplateButtons: true, ' +
-        //'title: "Novidades",  ' +
-        //'footer: "Video com Botão",  ' +
-        'caption: "Video com Botão", ' +
-        'buttons: [ ' +
+        'type: "ptv", ' +
+        'isPtv: true';
 
-        (*
-        '  { ' +
-        '    url: "https://wppconnect-team.github.io/", ' +
-        '    text: "Acesse Nosso Site" ' +
-        '  }, ' +
-        '{phoneNumber: "5517981388414", text: "☎️ Qualquer Dúvida Ligue"},' +
-        *)
-
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
-        ']  ';
-
-      options_Figurinha := 'type: "sticker"';
-
-      options_Imagem :=
-         '  type: "image", ' +
-         '  caption: "My image",  ' +
-         '  isViewOnce: true  '; //Temporaria Somente 1 Visualização
-
-      //Imagem com Temporaria Somente 1 Visualização
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Imagem, '');
-
-      //Audio
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Audio, '');
-
-      //Botões IMAGEM
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
-
-      //Botões VIDEO
-      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options, '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
 
-      //Figurinha Stickers
-      //TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, options_Figurinha, '');
+
     FINALLY
       freeAndNil(LBase64);
     END;
