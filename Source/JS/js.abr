@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.31.0.0;1.0.0.9;78.3.0
+//1.32.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2370,7 +2370,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.25.0 
+//WPPCONNECT v2.25.1 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -9566,7 +9566,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         s = await f.OpaqueData.createFromData(o, o.type),
                         a = {};
                     let c;
-                    "audio" === r.type ? (a.isPtt = r.isPtt, a.precomputedFields = await (0, h.prepareAudioWaveform)(r, o)) : "image" === r.type ? c = r.isViewOnce : "video" === r.type ? a.asGif = r.isGif : "document" === r.type ? a.asDocument = !0 : "sticker" === r.type && (a.asSticker = !0);
+                    "audio" === r.type ? (a.isPtt = r.isPtt, a.precomputedFields = await (0, h.prepareAudioWaveform)(r, o)) : "image" === r.type ? c = r.isViewOnce : "video" === r.type ? a.asGif = r.isGif : "ptv" === r.type ? a.isPtv = !0 : "document" === r.type ? a.asDocument = !0 : "sticker" === r.type && (a.asSticker = !0);
                     const d = f.MediaPrep.prepRawMedia(s, a);
                     let p = await (0, y.prepareRawMessage)(n, {
                         caption: r.caption || i,
@@ -9644,6 +9644,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             (0, g.isAnimatedWebp)(t) && (n.mediaBlob = await f.OpaqueData.createFromData(e, r.type()))
                         }
                         return n
+                    })), (0, p.wrapModuleFunction)(g.processRawMedia, (async (e, ...t) => {
+                        var r;
+                        const [n] = t;
+                        let o = await e(...t);
+                        return (null === (r = t[1]) || void 0 === r ? void 0 : r.isPtv) && (o = await (0, g.processRawAudioVideo)(n, !1, null, !1, null, n.type(), !0)), o
+                    })), (0, p.wrapModuleFunction)(g.processRawAudioVideo, (async (e, ...t) => {
+                        const [r] = t, n = await e(...t);
+                        return "video/mp4" === r.type() && t[6] && (n.type = "ptv"), n
                     }))
                 }))
             },
@@ -12805,7 +12813,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                s(r(13115), t), t.waVersion = "2.25.0";
+                s(r(13115), t), t.waVersion = "2.25.1-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13044,7 +13052,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.25.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.25.1-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -15623,7 +15631,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(84467), t), o(r(86847), t), o(r(23968), t), o(r(51896), t), o(r(79354), t), o(r(53679), t), o(r(14004), t), o(r(57047), t), o(r(90659), t), o(r(45541), t), o(r(42414), t), o(r(71435), t), o(r(93925), t), o(r(35222), t), o(r(79839), t), o(r(290), t), o(r(52162), t), o(r(26237), t), o(r(79943), t), o(r(8967), t), o(r(43879), t), o(r(99513), t), o(r(26552), t), o(r(6187), t), o(r(53598), t), o(r(61181), t), o(r(95355), t), o(r(95394), t), o(r(88140), t), o(r(34048), t), o(r(5115), t), o(r(45579), t), o(r(79293), t), o(r(45290), t), o(r(45851), t), o(r(96639), t), o(r(25264), t), o(r(1713), t), o(r(68879), t), o(r(21897), t), o(r(29816), t), o(r(52922), t), o(r(14005), t), o(r(66888), t), o(r(82235), t), o(r(32129), t), o(r(70213), t), o(r(94615), t), o(r(54214), t), o(r(59472), t), o(r(17212), t), o(r(86436), t), o(r(69731), t), o(r(43303), t), o(r(71486), t), o(r(45627), t), o(r(35244), t), o(r(16494), t), o(r(89114), t), o(r(2547), t), o(r(32907), t), o(r(23553), t), o(r(65863), t), o(r(75350), t), o(r(35767), t), o(r(78879), t), o(r(52891), t), o(r(63642), t), o(r(85221), t), o(r(75931), t), o(r(44526), t), o(r(67437), t), o(r(93643), t), o(r(71232), t), o(r(99381), t), o(r(1638), t), o(r(87358), t), o(r(15602), t), o(r(12457), t), o(r(98522), t), o(r(72577), t), o(r(61426), t), o(r(30808), t), o(r(18183), t), o(r(90967), t), o(r(94739), t), o(r(40267), t), o(r(981), t), o(r(42575), t)
+                }), o(r(84467), t), o(r(86847), t), o(r(23968), t), o(r(51896), t), o(r(79354), t), o(r(53679), t), o(r(14004), t), o(r(57047), t), o(r(90659), t), o(r(45541), t), o(r(42414), t), o(r(71435), t), o(r(93925), t), o(r(35222), t), o(r(79839), t), o(r(290), t), o(r(52162), t), o(r(26237), t), o(r(79943), t), o(r(8967), t), o(r(43879), t), o(r(99513), t), o(r(26552), t), o(r(6187), t), o(r(53598), t), o(r(61181), t), o(r(95355), t), o(r(95394), t), o(r(88140), t), o(r(34048), t), o(r(5115), t), o(r(45579), t), o(r(79293), t), o(r(45290), t), o(r(45851), t), o(r(96639), t), o(r(25264), t), o(r(1713), t), o(r(68879), t), o(r(21897), t), o(r(29816), t), o(r(52922), t), o(r(14005), t), o(r(66888), t), o(r(82235), t), o(r(32129), t), o(r(70213), t), o(r(94615), t), o(r(54214), t), o(r(59472), t), o(r(17212), t), o(r(86436), t), o(r(69731), t), o(r(53474), t), o(r(31176), t), o(r(43303), t), o(r(71486), t), o(r(45627), t), o(r(35244), t), o(r(16494), t), o(r(89114), t), o(r(2547), t), o(r(32907), t), o(r(23553), t), o(r(65863), t), o(r(75350), t), o(r(35767), t), o(r(78879), t), o(r(52891), t), o(r(63642), t), o(r(85221), t), o(r(75931), t), o(r(44526), t), o(r(67437), t), o(r(93643), t), o(r(71232), t), o(r(99381), t), o(r(1638), t), o(r(87358), t), o(r(15602), t), o(r(12457), t), o(r(98522), t), o(r(72577), t), o(r(61426), t), o(r(30808), t), o(r(18183), t), o(r(90967), t), o(r(94739), t), o(r(40267), t), o(r(981), t), o(r(42575), t)
             },
             82235: (e, t, r) => {
                 "use strict";
@@ -15706,6 +15714,25 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(58785).exportModule)(t, {
                     msgFindQuery: "msgFindQuery"
                 }, (e => e.msgFindQuery && e.msgFindByIds || e.msgFindQuery && e.getMsgsByMsgKey))
+            },
+            53474: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    processRawAudioVideo: "processRawAudioVideo"
+                }, (e => e.processRawAudioVideo))
+            },
+            31176: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    processRawMedia: ["processRawMedia", "default"]
+                }, (e => {
+                    var t, r;
+                    return e.processRawMedia || (null === (r = null === (t = e.default) || void 0 === t ? void 0 : t.toString) || void 0 === r ? void 0 : r.call(t).includes("Received unsupported mediaType"))
+                }))
             },
             43303: (e, t, r) => {
                 "use strict";
@@ -17590,36 +17617,6 @@ window.WAPI.getPlatformFromMessage2 = async function(UniqueID, chatid) {
 };
 
 
-window.WAPI.list = async function () {
-  const options = {
-    onlyWithUnreadMessage: true
-  };
-
-  const chats = await WPP.chat.list(options);
-  let messagesResult = [];
-
-  if (chats) {
-    try {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].unreadCount > 0) { // Verifique se msgs existe
-          let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
-          for (var j = 0; j < msgs.length; j++) {            
-            if (msgs[j].__x_isNewMsg === true) {                    
-              messagesResult.push(msgs[j]);
-            }
-          }
-        }
-      }
-      //console.log(JSON.stringify(messagesResult));
-      SetConsoleMessage("getList", JSON.stringify(messagesResult));
-    } catch (e) {
-      console.log('Erro:'.concat(e));
-    }
-  } else {
-    console.log('ERRO');
-  }
-};
-
 //Marcelo 11/01/2023
 window.WAPI.getInviteCode2 = async function(GROUP_ID) {
     const result = await WPP.group.getInviteCode(GROUP_ID);
@@ -17793,3 +17790,36 @@ WPP.on("chat.new_reaction", (msg) => {
     //SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
 
 });
+
+//Novo metodo para receber as Mensagens
+window.WAPI.list = async function () {
+  const options = {
+    onlyWithUnreadMessage: true
+  };
+
+  const chats = await WPP.chat.list(options);
+  let messagesResult = [];
+
+  if (chats) {
+    try {
+      for (var i = 0; i < chats.length; i++) {
+        if (chats[i].unreadCount > 0) { // Verifique se msgs existe
+          let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
+          for (var j = 0; j < msgs.length; j++) {  
+            //Marcelo 30/08/2023 com este if só pega a ultima mensagem
+            //if (msgs[j].__x_isNewMsg === true) {                    
+              messagesResult.push(msgs[j]);
+            //}
+          }
+        }
+      }
+      //console.log(JSON.stringify(messagesResult));
+      SetConsoleMessage("getList", JSON.stringify(messagesResult));
+    } catch (e) {
+      console.log('Erro:'.concat(e));
+    }
+  } else {
+    console.log('ERRO');
+  }
+};
+
