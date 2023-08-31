@@ -199,6 +199,7 @@ type
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+    procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
 
     //Adicionado Por Marcelo 17/09/2022
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
@@ -3059,6 +3060,19 @@ begin
   Width                    := 1000; //680
   Pnl_Geral.Enabled        := True;
   BorderStyle              := bsDialog;
+end;
+
+procedure TFrmConsole.forwardMessage(phoneNumber, UniqueID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_forwardMessage;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',  Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#',    Trim(UniqueID));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.Image2Click(Sender: TObject);

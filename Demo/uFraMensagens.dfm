@@ -428,7 +428,7 @@ object frameMensagem: TframeMensagem
     object btnLimparConversa: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 206
+      Top = 237
       Width = 221
       Height = 25
       Align = alTop
@@ -437,11 +437,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 5
       OnClick = btnLimparConversaClick
+      ExplicitTop = 206
     end
     object btnArquivar: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 144
+      Top = 175
       Width = 221
       Height = 25
       Align = alTop
@@ -450,6 +451,7 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 3
       OnClick = btnArquivarClick
+      ExplicitTop = 144
     end
     object btnResponder: TButton
       AlignWithMargins = True
@@ -480,7 +482,7 @@ object frameMensagem: TframeMensagem
     object btnVerificarNumero: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 237
+      Top = 268
       Width = 221
       Height = 25
       Align = alTop
@@ -489,11 +491,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnVerificarNumeroClick
+      ExplicitTop = 237
     end
     object btnStatus: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 268
+      Top = 299
       Width = 221
       Height = 25
       Align = alTop
@@ -502,19 +505,21 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnStatusClick
+      ExplicitTop = 268
     end
     object btnDetalhe: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 299
+      Top = 144
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Detalhes do Telefone'
-      ImageIndex = 25
+      Caption = 'Encaminhar Mensagem'
+      ImageIndex = 2
       Images = ImageList1
       TabOrder = 8
       OnClick = btnDetalheClick
+      ExplicitLeft = 0
     end
     object btnBloquear: TButton
       AlignWithMargins = True
@@ -571,7 +576,7 @@ object frameMensagem: TframeMensagem
     object BitBtn1: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 175
+      Top = 206
       Width = 221
       Height = 25
       Align = alTop
@@ -580,6 +585,7 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 4
       OnClick = BitBtn1Click
+      ExplicitTop = 175
     end
     object BitBtn2: TButton
       AlignWithMargins = True

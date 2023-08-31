@@ -549,6 +549,8 @@ begin
 end;
 
 procedure TframeMensagem.btnDetalheClick(Sender: TObject);
+var
+  idMensagem: string;
 begin
 
   try
@@ -556,8 +558,23 @@ begin
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
+    if ed_Num.Text = '' then
+    begin
+      if Trim(ed_num.Text) = '' then
+      begin
+        messageDlg('Informe o Contato para Continuar', mtWarning, [mbOk], 0);
+        ed_num.SetFocus;
+        Exit;
+      end;
+    end;
+
+    if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
+    begin
+
+      frDemo.TWPPConnect1.forwardMessage(ed_num.text, IdMensagem);
+    end;
     //frDemo.TWPPConnect1.GetMe();
-    frDemo.TWPPConnect1.getList('');
+    //frDemo.TWPPConnect1.getList('');
   finally
 
   end;
