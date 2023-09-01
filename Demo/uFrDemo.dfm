@@ -5675,7 +5675,7 @@ object frDemo: TfrDemo
     InjectJS.SecondsWaitInject = 4
     Config.AutoStart = True
     Config.AutoDelay = 1000
-    Config.SecondsMonitor = 5
+    Config.SecondsMonitorNew = 5
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http

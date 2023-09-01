@@ -194,8 +194,6 @@ begin
   IdMensagem := '';
   option := '';
 
-  option := 'linkPreview: true, mentionedJidList: [''5517981388414@c.us'']';
-
   if InputQuery('Informe a ID da Mensagem que Deseja Editar.', 'Unique ID: ', IdMensagem) then
   begin
     if InputQuery('Informe a Nova Mensagem.', 'New Message: ', content) then
@@ -552,7 +550,6 @@ procedure TframeMensagem.btnDetalheClick(Sender: TObject);
 var
   idMensagem: string;
 begin
-
   try
 
     if not frDemo.TWPPConnect1.Auth then

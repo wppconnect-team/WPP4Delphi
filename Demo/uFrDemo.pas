@@ -1261,7 +1261,8 @@ var
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
   Question, Answer, phoneNumber : string;
-  ChatGroup : Boolean;
+  ChatGroup, mensagemDuplicada : Boolean;
+  I: Integer;
 begin
 
   for LChatClass in ChatsList.result do
@@ -1283,11 +1284,37 @@ begin
             FChatID := LChatClass.id.Remote;
             telefone := Copy(LChatClass.id.Remote, 3, Pos('@',  LChatClass.id.Remote) - 3);
             contato := LChatClass.notifyName;
-
             Extensao_Documento := '';
 
+            mensagemDuplicada := False;
+
+            for I := 0 to 29 do
+            begin
+              if MensagensArray[I] = LChatClass.id._serialized then
+              begin
+                mensagemDuplicada := True;
+                //Forçar Marcar como Lida
+                TWPPConnect1.ReadMessages(FChatID);
+                Break;
+              end;
+            end;
+
+            //AVALIAR MSG JÁ EM MEMÓRIA
+            if not (mensagemDuplicada) then
+            begin
+              if iPosicaoMsgArray <= 29 then
+              begin
+                MensagensArray[iPosicaoMsgArray] := LChatClass.id._serialized;
+                iPosicaoMsgArray := iPosicaoMsgArray + 1;
+              end
+              else
+              begin
+                iPosicaoMsgArray := 0;
+                MensagensArray[iPosicaoMsgArray] := LChatClass.id._serialized;
+              end;
+
             // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-              case AnsiIndexStr(UpperCase(LChatClass.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+              case AnsiIndexStr(UpperCase(LChatClass.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
                 0: Extensao_Documento := 'mp3';
                 1: Extensao_Documento := 'jpg';
                 2: Extensao_Documento := 'mp4';
@@ -1298,6 +1325,7 @@ begin
                   Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
                 end;
                 5: Extensao_Documento := 'jpg'; //'webp';
+                6: Extensao_Documento := 'mp4'; //Instant Vídeo
               end;
 
               Automato_Path := ExtractFilePath(ParamStr(0));
@@ -1378,6 +1406,7 @@ begin
               //Marcar Audio como Escutado
               if (UpperCase(LChatClass.&type) = 'AUDIO') or (UpperCase(LChatClass.&type) = 'PTT') then
                 TWPPConnect1.markPlayed(LChatClass.id._serialized);
+            end;
           end;
         end;
       end;
@@ -1915,7 +1944,7 @@ begin
               Question := AMessage.body;
 
               // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
-              case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER']) of
+              case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
                 0: Extensao_Documento := 'mp3';
                 1: Extensao_Documento := 'jpg';
                 2: Extensao_Documento := 'mp4';
@@ -1926,6 +1955,7 @@ begin
                   Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
                 end;
                 5: Extensao_Documento := 'jpg'; //'webp';
+                6: Extensao_Documento := 'mp4'; //Instant Vídeo
               end;
               //Novo 05/11/2022
               Automato_Path := ExtractFilePath(ParamStr(0));
