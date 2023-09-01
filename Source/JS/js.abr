@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.32.0.0;1.0.0.9;78.3.0
+//1.33.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2370,7 +2370,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.25.1 alpha
+//WPPCONNECT v2.25.1 alpha.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -8206,7 +8206,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         type: "protocol",
                         subtype: "message_edit",
                         protocolMessageKey: u.id,
-                        body: t.trim()
+                        body: t.trim(),
+                        editMsgType: u.type
                     };
                     return c = await (0, s.prepareRawMessage)(u.chat, c, r), c.latestEditMsgKey = c.id, c.latestEditSenderTimestampMs = c.t, await (0, s.sendRawMessage)(null === (a = u.chat) || void 0 === a ? void 0 : a.id, c, r)
                 }
@@ -8536,7 +8537,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.starMessage = t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.requestPhoneNumber = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markPlayed = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getVotes = t.getReactions = t.getQuotedMsgKey = t.getQuotedMsg = t.getPlatformFromMessage = t.getMessages = t.getMessageById = t.getMessageACK = t.getLastSeen = t.getActiveChat = t.get = t.generateMessageID = t.forwardMessage = t.find = t.editMessage = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canReply = t.canMute = t.canMarkPlayed = t.unarchive = t.archive = void 0, t.unmute = void 0;
+                }), t.sendVCardContactMessage = t.sendTextMessage = t.sendReactionToMessage = t.sendRawMessage = t.sendOrderMessage = t.sendLocationMessage = t.sendListMessage = t.sendFileMessage = t.sendCreatePollMessage = t.requestPhoneNumber = t.prepareRawMessage = t.prepareMessageButtons = t.prepareLinkPreview = t.unpin = t.pin = t.openChatFromUnread = t.openChatBottom = t.openChatAt = t.mute = t.markPlayed = t.markIsUnread = t.markIsRecording = t.markIsRead = t.markIsPaused = t.markIsComposing = t.list = t.getVotes = t.getReactions = t.getQuotedMsgKey = t.getQuotedMsg = t.getPlatformFromMessage = t.getMessages = t.getMessageById = t.getMessageACK = t.getLastSeen = t.getActiveChat = t.get = t.generateMessageID = t.forwardMessage = t.find = t.editMessage = t.downloadMedia = t.deleteMessage = t.delete = t.clear = t.canReply = t.canMute = t.canMarkPlayed = t.unarchive = t.archive = void 0, t.unmute = t.starMessage = void 0;
                 var n = r(71200);
                 Object.defineProperty(t, "archive", {
                     enumerable: !0,
@@ -8848,46 +8849,53 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return $.sendLocationMessage
                     }
                 });
-                var V = r(70682);
+                var V = r(20506);
+                Object.defineProperty(t, "sendOrderMessage", {
+                    enumerable: !0,
+                    get: function() {
+                        return V.sendOrderMessage
+                    }
+                });
+                var K = r(70682);
                 Object.defineProperty(t, "sendRawMessage", {
                     enumerable: !0,
                     get: function() {
-                        return V.sendRawMessage
+                        return K.sendRawMessage
                     }
                 });
-                var K = r(93731);
+                var H = r(93731);
                 Object.defineProperty(t, "sendReactionToMessage", {
                     enumerable: !0,
                     get: function() {
-                        return K.sendReactionToMessage
+                        return H.sendReactionToMessage
                     }
                 });
-                var H = r(16627);
+                var J = r(16627);
                 Object.defineProperty(t, "sendTextMessage", {
                     enumerable: !0,
                     get: function() {
-                        return H.sendTextMessage
+                        return J.sendTextMessage
                     }
                 });
-                var J = r(46017);
+                var Q = r(46017);
                 Object.defineProperty(t, "sendVCardContactMessage", {
                     enumerable: !0,
                     get: function() {
-                        return J.sendVCardContactMessage
+                        return Q.sendVCardContactMessage
                     }
                 });
-                var Q = r(57709);
+                var Y = r(57709);
                 Object.defineProperty(t, "starMessage", {
                     enumerable: !0,
                     get: function() {
-                        return Q.starMessage
+                        return Y.starMessage
                     }
                 });
-                var Y = r(8205);
+                var Z = r(8205);
                 Object.defineProperty(t, "unmute", {
                     enumerable: !0,
                     get: function() {
-                        return Y.unmute
+                        return Z.unmute
                     }
                 })
             },
@@ -9776,6 +9784,110 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }))
                 }))
             },
+            20506: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.sendOrderMessage = void 0;
+                const n = r(68910),
+                    o = r(11092),
+                    i = r(21489),
+                    s = r(28381),
+                    a = r(60758);
+                t.sendOrderMessage = async function(e, t, r) {
+                    if (!t || !e) throw new n.WPPError("parameter_not_fount", "Please, send all the required parameters");
+                    r = Object.assign(Object.assign({}, s.defaultSendMessageOptions), r);
+                    const u = [];
+                    let c = 0,
+                        l = null;
+                    const d = o.CatalogStore.get(o.UserPrefs.getMaybeMeUser());
+                    for (const e of t)
+                        if ("product" == e.type) {
+                            const {
+                                data: t
+                            } = await (0, i.queryProduct)(o.UserPrefs.getMaybeMeUser(), e.id, 100, 100, void 0, !0);
+                            if (void 0 === t) throw new n.WPPError("product_not_found", `The product id ${e.id} not found`);
+                            const s = (null == d ? void 0 : d.productCollection).get(e.id);
+                            l || (l = s.getProductImageCollectionHead().mediaData.preview.getBase64());
+                            const a = {
+                                retailer_id: t.id,
+                                name: t.name,
+                                amount: {
+                                    value: Number(t.price),
+                                    offset: Number(r.offset) || 1e3
+                                },
+                                quantity: Number(e.qnt || 1),
+                                isCustomItem: !1,
+                                isQuantitySet: !0
+                            };
+                            c += Number(t.price) * Number(e.qnt || 1), u.push(a)
+                        } else {
+                            const t = {
+                                retailer_id: `custom-item-${(0,n.generateOrderUniqueId)()}`,
+                                name: e.name,
+                                amount: {
+                                    value: Number(e.price),
+                                    offset: Number(r.offset) || 1e3
+                                },
+                                quantity: Number(e.qnt || 1),
+                                isCustomItem: !0,
+                                isQuantitySet: !0
+                            };
+                            c += Number(e.price) * Number(e.qnt || 1), u.push(t)
+                        } const f = c + Number((null == r ? void 0 : r.tax) || 0) + Number((null == r ? void 0 : r.shipping) || 0) - Number((null == r ? void 0 : r.discount) || 0),
+                        p = {
+                            reference_id: (0, n.generateOrderUniqueId)(),
+                            type: "physical-goods",
+                            payment_configuration: "merchant_categorization_code",
+                            currency: await (0, i.currencyForCountryShortcode)(await (0, i.getCountryShortcodeByPhone)(o.UserPrefs.getMeUser().user)),
+                            total_amount: {
+                                value: f,
+                                offset: Number(r.offset) || 1e3
+                            },
+                            order: {
+                                status: "pending",
+                                items: u,
+                                subtotal: {
+                                    value: Number(c),
+                                    offset: Number(r.offset) || 1e3
+                                },
+                                tax: (null == r ? void 0 : r.tax) ? {
+                                    value: null == r ? void 0 : r.tax,
+                                    offset: Number(r.offset) || 1e3
+                                } : null,
+                                shipping: (null == r ? void 0 : r.shipping) ? {
+                                    value: null == r ? void 0 : r.shipping,
+                                    offset: Number(r.offset) || 1e3
+                                } : null,
+                                discount: (null == r ? void 0 : r.discount) ? {
+                                    value: null == r ? void 0 : r.discount,
+                                    offset: Number(r.offset) || 1e3
+                                } : null
+                            }
+                        },
+                        g = {
+                            type: "interactive",
+                            caption: null == r ? void 0 : r.notes,
+                            nativeFlowName: "order_details",
+                            interactiveType: "native_flow",
+                            interactiveHeader: {
+                                hasmediaAttachment: !1,
+                                mediaType: void 0,
+                                subtitle: void 0,
+                                thumbnail: l,
+                                title: null
+                            },
+                            interactivePayload: {
+                                buttons: [{
+                                    buttonParamsJson: JSON.stringify(p),
+                                    name: "review_and_pay"
+                                }],
+                                messageVersion: 1
+                            }
+                        };
+                    return await (0, a.sendRawMessage)(e, g, r)
+                }
+            },
             70682: function(e, t, r) {
                 "use strict";
                 var n = this && this.__importDefault || function(e) {
@@ -9795,7 +9907,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 t.sendRawMessage = async function(e, t, r = {}) {
                     const n = (r = Object.assign(Object.assign({}, a.defaultSendMessageOptions), r)).createChat ? await (0, i.assertFindChat)(e) : (0, i.assertGetChat)(e);
                     t = await (0, u.prepareRawMessage)(n, t, r), r.markIsRead && (c("marking chat is read before send message"), await (0, u.markIsRead)(n.id).catch((() => null))), c(`sending message (${t.type}) with id ${t.id}`);
-                    const o = await (0, s.addAndSendMsgToChat)(n, t);
+                    let o = null;
+                    if ("protocol" === t.type && "message_edit" === t.subtype) {
+                        const e = await (0, u.getMessageById)(t.protocolMessageKey);
+                        await (0, s.addAndSendMessageEdit)(e, t), o = [await (0, u.getMessageById)(t.protocolMessageKey), null]
+                    } else o = await (0, s.addAndSendMsgToChat)(n, t);
                     c(`message ${t.id} queued`);
                     const l = await o[0];
                     if (r.waitForAck) {
@@ -11723,7 +11839,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return e.includes(i) && queueMicrotask((() => {
                             var e;
                             const t = o.participants.map((e => "id" in e ? e.id : e));
-                            "add" === i && o.isInvite ? i = "join" : "remove" === i && t.some((e => e.equals(n.author))) && (i = "leave"), s.internalEv.emit("group.participant_changed", {
+                            "add" !== i || !o.isInvite && "invite" !== o.reason ? "remove" === i && t.some((e => e.equals(n.author))) && (i = "leave") : i = "join", s.internalEv.emit("group.participant_changed", {
                                 author: null === (e = n.author) || void 0 === e ? void 0 : e.toString(),
                                 authorPushName: n.pushname,
                                 groupId: n.chatId.toString(),
@@ -12904,7 +13020,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.license = t.supportedWhatsappWeb = t.version = t.waitFor = t.stopListeningTo = t.setMaxListeners = t.removeListener = t.removeAllListeners = t.prependOnceListener = t.prependMany = t.prependListener = t.prependAny = t.once = t.onAny = t.on = t.offAny = t.off = t.many = t.listenersAny = t.listeners = t.listenerCount = t.listenTo = t.hasListeners = t.getMaxListeners = t.eventNames = t.emitAsync = t.emit = t.whatsapp = t.util = t.status = t.profile = t.labels = t.group = t.community = t.ev = t.contact = t.conn = t.chat = t.catalog = t.call = t.blocklist = t.config = t.isFullReady = t.isReady = t.isInjected = t.webpack = void 0, r(62275), r(23905), r(38721);
+                }), t.license = t.supportedWhatsappWeb = t.version = t.waitFor = t.stopListeningTo = t.setMaxListeners = t.removeListener = t.removeAllListeners = t.prependOnceListener = t.prependMany = t.prependListener = t.prependAny = t.once = t.onAny = t.on = t.offAny = t.off = t.many = t.listenersAny = t.listeners = t.listenerCount = t.listenTo = t.hasListeners = t.getMaxListeners = t.eventNames = t.emitAsync = t.emit = t.order = t.whatsapp = t.util = t.status = t.profile = t.labels = t.group = t.community = t.ev = t.contact = t.conn = t.chat = t.catalog = t.call = t.blocklist = t.config = t.isFullReady = t.isReady = t.isInjected = t.webpack = void 0, r(62275), r(23905), r(38721);
                 const s = i(r(97046));
                 t.webpack = s;
                 var a = r(97046);
@@ -12930,7 +13046,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return u.config
                     }
-                }), t.blocklist = i(r(65140)), t.call = i(r(19596)), t.catalog = i(r(79363)), t.chat = i(r(28381)), t.conn = i(r(35005)), t.contact = i(r(26380)), t.ev = i(r(65267)), t.community = i(r(48600)), t.group = i(r(99474)), t.labels = i(r(40130)), t.profile = i(r(86523)), t.status = i(r(79881)), t.util = i(r(68910)), t.whatsapp = i(r(11092));
+                }), t.blocklist = i(r(65140)), t.call = i(r(19596)), t.catalog = i(r(79363)), t.chat = i(r(28381)), t.conn = i(r(35005)), t.contact = i(r(26380)), t.ev = i(r(65267)), t.community = i(r(48600)), t.group = i(r(99474)), t.labels = i(r(40130)), t.profile = i(r(86523)), t.status = i(r(79881)), t.util = i(r(68910)), t.whatsapp = i(r(11092)), t.order = i(r(7772));
                 var c = r(65267);
                 Object.defineProperty(t, "emit", {
                     enumerable: !0,
@@ -13293,6 +13409,111 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 })
+            },
+            22844: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), r(44037)
+            },
+            44037: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const s = r(65267),
+                    a = i(r(97046)),
+                    u = r(11092);
+                a.onInjected((() => {
+                    u.MsgStore.on("add", (e => {
+                        var t, r;
+                        if ("interactive" !== e.type || "payment_method" !== (null === (t = e.interactivePayload) || void 0 === t ? void 0 : t.buttons[0].name) || !e.isNewMsg) return;
+                        const n = JSON.parse(null === (r = e.interactivePayload) || void 0 === r ? void 0 : r.buttons[0].buttonParamsJson);
+                        queueMicrotask((() => {
+                            s.internalEv.emit("order.payment_status", {
+                                method: n.payment_method,
+                                timestamp: n.payment_timestamp,
+                                reference_id: n.reference_id,
+                                msgId: e.id
+                            })
+                        }))
+                    }))
+                }))
+            },
+            54256: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.get = void 0;
+                const n = r(68910),
+                    o = r(11092),
+                    i = r(21489);
+                t.get = async function(e) {
+                    const t = o.MsgStore.get(e);
+                    if (!t) throw new n.WPPError("msg_not_found", "Message not found");
+                    return await (0, i.getOrderInfo)(t)
+                }
+            },
+            58486: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.get = void 0;
+                var n = r(54256);
+                Object.defineProperty(t, "get", {
+                    enumerable: !0,
+                    get: function() {
+                        return n.get
+                    }
+                })
+            },
+            7772: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__exportStar || function(e, t) {
+                        for (var r in e) "default" === r || Object.prototype.hasOwnProperty.call(t, r) || n(t, e, r)
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), o(r(22844), t), o(r(58486), t)
             },
             28067: (e, t, r) => {
                 "use strict";
@@ -14054,6 +14275,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }))
                 }
             },
+            57932: (e, t) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.generateOrderUniqueId = void 0, t.generateOrderUniqueId = function() {
+                    const e = String(Date.now()) + Math.random().toFixed(4).slice(-4);
+                    return ("function" == typeof BigInt ? BigInt(e) : Number(e)).toString(36).toUpperCase()
+                }
+            },
             3614: (e, t, r) => {
                 "use strict";
                 var n = r(48764).lW;
@@ -14098,7 +14328,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(93823), t), o(r(35118), t), o(r(98930), t), o(r(33779), t), o(r(86405), t), o(r(70542), t), o(r(33111), t), o(r(3614), t), o(r(99531), t), o(r(76081), t), o(r(92153), t), o(r(58878), t)
+                }), o(r(93823), t), o(r(35118), t), o(r(98930), t), o(r(33779), t), o(r(86405), t), o(r(70542), t), o(r(33111), t), o(r(57932), t), o(r(3614), t), o(r(99531), t), o(r(76081), t), o(r(92153), t), o(r(58878), t)
             },
             99531: (e, t) => {
                 "use strict";
@@ -15092,6 +15322,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     f[a] = (0, c.wrapFunction)(e.bind(f), r), p.set(f[a], n), g.set(f[a], i)
                 }
             },
+            44418: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    addAndSendMessageEdit: "addAndSendMessageEdit"
+                }, (e => e.addAndSendMessageEdit))
+            },
             84467: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -15282,6 +15520,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     createOrUpdateReactions: "createOrUpdateReactions"
                 }, (e => e.createOrUpdateReactions))
             },
+            76641: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    currencyForCountryShortcode: ["currencyForCountryShortcode"]
+                }, (e => e.currencyForCountryShortcode))
+            },
             35222: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -15458,6 +15704,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     getCommunityParticipants: "getCommunityParticipants"
                 }, (e => e.getCommunityParticipants))
             },
+            85456: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    getCountryShortcodeByPhone: ["getCountryShortcodeByPhone"]
+                }, (e => e.getCountryShortcodeByPhone))
+            },
             95394: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -15522,6 +15776,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, r(58785).exportModule)(t, {
                     getNumChatsPinned: "getNumChatsPinned"
                 }, (e => e.getNumChatsPinned))
+            },
+            38297: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(58785).exportModule)(t, {
+                    getOrderInfo: "getOrderInfo"
+                }, (e => e.getOrderInfo))
             },
             96639: (e, t, r) => {
                 "use strict";
@@ -15631,7 +15893,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(84467), t), o(r(86847), t), o(r(23968), t), o(r(51896), t), o(r(79354), t), o(r(53679), t), o(r(14004), t), o(r(57047), t), o(r(90659), t), o(r(45541), t), o(r(42414), t), o(r(71435), t), o(r(93925), t), o(r(35222), t), o(r(79839), t), o(r(290), t), o(r(52162), t), o(r(26237), t), o(r(79943), t), o(r(8967), t), o(r(43879), t), o(r(99513), t), o(r(26552), t), o(r(6187), t), o(r(53598), t), o(r(61181), t), o(r(95355), t), o(r(95394), t), o(r(88140), t), o(r(34048), t), o(r(5115), t), o(r(45579), t), o(r(79293), t), o(r(45290), t), o(r(45851), t), o(r(96639), t), o(r(25264), t), o(r(1713), t), o(r(68879), t), o(r(21897), t), o(r(29816), t), o(r(52922), t), o(r(14005), t), o(r(66888), t), o(r(82235), t), o(r(32129), t), o(r(70213), t), o(r(94615), t), o(r(54214), t), o(r(59472), t), o(r(17212), t), o(r(86436), t), o(r(69731), t), o(r(53474), t), o(r(31176), t), o(r(43303), t), o(r(71486), t), o(r(45627), t), o(r(35244), t), o(r(16494), t), o(r(89114), t), o(r(2547), t), o(r(32907), t), o(r(23553), t), o(r(65863), t), o(r(75350), t), o(r(35767), t), o(r(78879), t), o(r(52891), t), o(r(63642), t), o(r(85221), t), o(r(75931), t), o(r(44526), t), o(r(67437), t), o(r(93643), t), o(r(71232), t), o(r(99381), t), o(r(1638), t), o(r(87358), t), o(r(15602), t), o(r(12457), t), o(r(98522), t), o(r(72577), t), o(r(61426), t), o(r(30808), t), o(r(18183), t), o(r(90967), t), o(r(94739), t), o(r(40267), t), o(r(981), t), o(r(42575), t)
+                }), o(r(44418), t), o(r(84467), t), o(r(86847), t), o(r(23968), t), o(r(51896), t), o(r(79354), t), o(r(53679), t), o(r(14004), t), o(r(57047), t), o(r(90659), t), o(r(45541), t), o(r(42414), t), o(r(71435), t), o(r(93925), t), o(r(76641), t), o(r(35222), t), o(r(79839), t), o(r(290), t), o(r(52162), t), o(r(26237), t), o(r(79943), t), o(r(8967), t), o(r(43879), t), o(r(99513), t), o(r(26552), t), o(r(6187), t), o(r(53598), t), o(r(61181), t), o(r(95355), t), o(r(85456), t), o(r(95394), t), o(r(88140), t), o(r(34048), t), o(r(5115), t), o(r(45579), t), o(r(79293), t), o(r(45290), t), o(r(45851), t), o(r(38297), t), o(r(96639), t), o(r(25264), t), o(r(1713), t), o(r(68879), t), o(r(21897), t), o(r(29816), t), o(r(52922), t), o(r(14005), t), o(r(66888), t), o(r(82235), t), o(r(32129), t), o(r(70213), t), o(r(94615), t), o(r(54214), t), o(r(59472), t), o(r(17212), t), o(r(86436), t), o(r(69731), t), o(r(53474), t), o(r(31176), t), o(r(43303), t), o(r(71486), t), o(r(45627), t), o(r(35244), t), o(r(16494), t), o(r(89114), t), o(r(2547), t), o(r(32907), t), o(r(23553), t), o(r(65863), t), o(r(75350), t), o(r(35767), t), o(r(78879), t), o(r(52891), t), o(r(63642), t), o(r(85221), t), o(r(75931), t), o(r(44526), t), o(r(67437), t), o(r(93643), t), o(r(71232), t), o(r(99381), t), o(r(1638), t), o(r(87358), t), o(r(15602), t), o(r(12457), t), o(r(98522), t), o(r(72577), t), o(r(61426), t), o(r(30808), t), o(r(18183), t), o(r(90967), t), o(r(94739), t), o(r(40267), t), o(r(981), t), o(r(42575), t)
             },
             82235: (e, t, r) => {
                 "use strict";
@@ -17804,10 +18066,10 @@ window.WAPI.list = async function () {
     try {
       for (var i = 0; i < chats.length; i++) {
         if (chats[i].unreadCount > 0) { // Verifique se msgs existe
-          let msgs = await WPP.chat.getMessages(chats[i].__x_id._serialized, {count: -1, onlyUnread: true});
+          let msgs = await WPP.chat.getMessages(chats[i].id._serialized, {count: -1, onlyUnread: true});
           for (var j = 0; j < msgs.length; j++) {  
-            //Marcelo 30/08/2023 com este if só pega a ultima mensagem
-            //if (msgs[j].__x_isNewMsg === true) {                    
+            
+            //if (msgs[j].isNewMsg === true) {                    
               messagesResult.push(msgs[j]);
             //}
           }
