@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.33.0.0;1.0.0.9;78.3.0
+//1.34.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2370,7 +2370,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.25.1 alpha.1
+//WPPCONNECT v2.26.1 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -8404,7 +8404,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         const e = i.MsgStore.get(l);
                         e && f.push(e.attributes)
                     }
-                    return f = f.map((e => e instanceof i.MsgModel ? e : i.MsgStore.get(e) || new i.MsgModel(e))), f
+                    return f = f.map((e => ((null == t ? void 0 : t.onlyUnread) && (e.isNewMsg = !0), e instanceof i.MsgModel ? e : i.MsgStore.get(e) || new i.MsgModel(e)))), f
                 }
             },
             28376: (e, t, r) => {
@@ -12929,7 +12929,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                s(r(13115), t), t.waVersion = "2.25.1-alpha.0";
+                s(r(13115), t), t.waVersion = "2.26.1-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13168,7 +13168,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.25.1-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.26.1-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -18069,9 +18069,9 @@ window.WAPI.list = async function () {
           let msgs = await WPP.chat.getMessages(chats[i].id._serialized, {count: -1, onlyUnread: true});
           for (var j = 0; j < msgs.length; j++) {  
             
-            //if (msgs[j].isNewMsg === true) {                    
+            if (msgs[j].isNewMsg === true) {                    
               messagesResult.push(msgs[j]);
-            //}
+            }
           }
         }
       }
