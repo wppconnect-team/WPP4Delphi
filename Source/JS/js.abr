@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.34.0.0;1.0.0.9;78.3.0
+//1.35.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18056,10 +18056,14 @@ WPP.on("chat.new_reaction", (msg) => {
 //Novo metodo para receber as Mensagens
 window.WAPI.list = async function () {
   const options = {
-    onlyWithUnreadMessage: true
+    onlyWithUnreadMessage: true,
+    count: 20, 
+    direction: 'before', 
+    onlyUsers: true 
   };
 
   const chats = await WPP.chat.list(options);
+  //const chats = WPP.chat.list({onlyWithUnreadMessage: true});
   let messagesResult = [];
 
   if (chats) {
