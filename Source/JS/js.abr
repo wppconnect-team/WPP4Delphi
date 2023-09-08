@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.35.0.0;1.0.0.9;78.3.0
+//1.36.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18058,7 +18058,6 @@ window.WAPI.list = async function () {
   const options = {
     onlyWithUnreadMessage: true,
     count: 20, 
-    direction: 'before', 
     onlyUsers: true 
   };
 
