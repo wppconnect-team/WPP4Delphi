@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.36.0.0;1.0.0.9;78.3.0
+//1.37.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2370,7 +2370,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.26.1 alpha
+//WPPCONNECT v2.26.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -12929,7 +12929,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(35005)),
                     c = r(65267),
                     l = r(13115);
-                s(r(13115), t), t.waVersion = "2.26.1-alpha.0";
+                s(r(13115), t), t.waVersion = "2.26.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13168,7 +13168,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "2.26.1-alpha.0", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "2.26.1", t.supportedWhatsappWeb = ">=2.2245.8-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             39203: (e, t, r) => {
                 "use strict";
@@ -14511,12 +14511,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         [o], {},
                         e => {
                             t.webpackRequire = e, queueMicrotask((() => (async e => {
-                                t.webpackRequire = e, t.isInjected = !0, s("injected"), await i.internalEv.emitAsync("webpack.injected").catch((() => null));
-                                const r = new Array(1e4).fill(1).map(((e, t) => e + t)).filter((e => !t.webpackRequire.u(e).includes("undefined"))),
-                                    n = r.filter((e => {
+                                t.webpackRequire = e, t.isInjected = !0, s("injected"), await i.internalEv.emitAsync("webpack.injected").catch((() => null)), await new Promise((e => setTimeout(e, 1e3)));
+                                const r = new Array(1e4).fill(1).map(((e, t) => e + t)).filter((e => {
                                         const r = t.webpackRequire.u(e);
-                                        return r.includes("locales") ? navigator.languages.some((e => r.includes(`locales/${e}`))) : r.includes("main")
-                                    }));
+                                        return r.includes("locales") ? navigator.languages.some((e => r.includes(`locales/${e}`))) : !r.includes("undefined")
+                                    })),
+                                    n = r.filter((e => t.webpackRequire.u(e).includes("main")));
                                 for (const e of n) try {
                                     await t.webpackRequire.e(e)
                                 } catch (r) {
@@ -15469,7 +15469,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), (0, o.exportModule)(t, {
                     getDisplayName: "getDisplayName",
                     getPnForLid: "getPnForLid",
-                    getDisplayNameOrPnForLid: "getDisplayNameOrPnForLid",
+                    getDisplayNameOrPnForLid: ["getUserDisplayNameForLid", "getDisplayNameOrPnForLid"],
                     getFormattedPhone: "getFormattedPhone",
                     getSearchName: "getSearchName",
                     getFormattedShortNameWithNonBreakingSpaces: "getFormattedShortNameWithNonBreakingSpaces",
