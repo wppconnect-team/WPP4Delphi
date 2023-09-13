@@ -1020,7 +1020,7 @@ window.WAPI.processMessageObj = function(messageObj, includeMe, includeNotificat
         return WAPI._serializeMessageObj(messageObj);
     }
 
-    SetConsoleMessage("processMessageObj", JSON.stringify(messageObj));
+    //SetConsoleMessage("processMessageObj", JSON.stringify(messageObj));
     return;
 };
 
