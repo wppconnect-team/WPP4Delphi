@@ -1253,8 +1253,7 @@ procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen
 begin
   ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.LastSeen, False)));
 end;
-procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject;
-  ChatsList: TGetChatList);
+procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject; ChatsList: TGetChatList);
 var
   LChatClass: TChatListClass;
   contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
@@ -1406,6 +1405,8 @@ begin
               //Marcar Audio como Escutado
               if (UpperCase(LChatClass.&type) = 'AUDIO') or (UpperCase(LChatClass.&type) = 'PTT') then
                 TWPPConnect1.markPlayed(LChatClass.id._serialized);
+
+              TWPPConnect1.getProfilePicThumb(LChatClass.id.remote);
             end;
           end;
         end;
@@ -1882,7 +1883,7 @@ var
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
   Question, Answer, phoneNumber, vSender : string;
-  x, i, m : Integer;
+  x, i, m, a : Integer;
   mensagemDuplicada, ChatGroup: Boolean;
 begin
   for AChat in Chats.Result do
@@ -2022,6 +2023,14 @@ begin
                 end;
               end;
 
+              if Assigned(AMessage.CardList) then
+              begin
+                for a := 0 to Length(AMessage.CardList) -1 do
+                begin
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('displayName: ' + AMessage.CardList[a].displayName);
+                  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('vCard: ' + AMessage.CardList[a].vCard);
+                end;
+              end;
 
               if selectedButtonId = '' then
                 selectedButtonId := AMessage.selectedId;

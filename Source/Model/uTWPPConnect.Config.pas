@@ -177,6 +177,9 @@ begin
   //Não permitir que fique zero ou negativo.
   {if Value < 0.1 then
      FSecondsMonitor := 3;}
+
+  if Value > 0 then
+     FSecondsMonitorNew := 0;
 end;
 
 procedure TWPPConnectConfig.SetSecondsMonitorNew(const Value: integer);
@@ -185,6 +188,9 @@ begin
   //Não permitir que fique zero ou negativo.
   {if Value < 0.1 then
      FSecondsMonitorNew := 3;}
+
+  if Value > 0 then
+     FSecondsMonitor := 0;
 end;
 
 procedure TWPPConnectConfig.SetSecondsMonitorWppCrash(const Value: integer);

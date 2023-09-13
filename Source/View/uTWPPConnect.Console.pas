@@ -2655,7 +2655,7 @@ begin
   end
   else
   Begin
-    if (message = FrmConsole_JS_Ignorar) or (message = FrmConsole_JS_RetornoVazio)  then
+    if (message = FrmConsole_JS_Ignorar) or (message = FrmConsole_JS_RetornoVazio) or (message = FrmConsole_JS_Ignorar2) then
     begin
       {if POS('getUnreadMessages', message) = 0 then
         LogAdd(message, 'CONSOLE VAZIO');  }

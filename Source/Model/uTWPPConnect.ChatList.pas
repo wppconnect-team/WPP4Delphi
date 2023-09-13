@@ -80,8 +80,10 @@ private
   FStickerSentTs: Extended;
   FTitle: String;
   FType: String;
+  Fcaption: String;
 public
   property body: String read FBody write FBody;
+  property caption: String read Fcaption write Fcaption;
   property ephemeralStartTimestamp: Extended read FEphemeralStartTimestamp write FEphemeralStartTimestamp;
   property footer: String read FFooter write FFooter;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
@@ -176,6 +178,8 @@ end;
     FQuotedStanzaID: String;
     FQuotedMsg: TQuotedMsgClass;
     FInviteGrpType: String;
+    FTitle: String;
+    FFooter: String;
   public
     property ack: Extended read FAck write FAck;
     property author: String read FAuthor write FAuthor;
@@ -210,6 +214,8 @@ end;
     property &type: String read FType write FType;
     property isGroup: Boolean read FisGroup write FisGroup;
     property caption: String read FCaption write FCaption;
+    property Title: String read FTitle write FTitle;
+    property Footer: String read FFooter write FFooter;
     property deprecatedMms3Url: String read FDeprecatedMms3Url write FDeprecatedMms3Url;
     property directPath: String read FDirectPath write FDirectPath;
     property encFilehash: String read FEncFilehash write FEncFilehash;
