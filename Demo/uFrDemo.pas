@@ -1772,13 +1772,13 @@ procedure TfrDemo.TWPPConnect1GetReactResponseEvento(const ReactionResponse: TRe
 var
   wlo_Celular : string;
 begin
-  {wlo_Celular := Copy(ReactionResponse.msg.sender,1,  pos('@', ReactionResponse.msg.sender) -1); // nr telefone
+  wlo_Celular := Copy(ReactionResponse.msg.sender,1,  pos('@', ReactionResponse.msg.sender) -1); // nr telefone
   //ShowMessage('body: ' + AnsiUpperCase(ReactionResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
 
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Reaction: ' + AnsiUpperCase(ReactionResponse.msg.reactionText));
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id Origem: ' + ReactionResponse.msg.msgId._serialized);
-  }
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id Origem: ' + ReactionResponse.msg.msgId._serialized + #13#10);
+
 end;
 
 procedure TfrDemo.TWPPConnect1GetStatus(Sender: TObject);

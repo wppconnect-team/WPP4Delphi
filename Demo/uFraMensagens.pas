@@ -824,7 +824,7 @@ begin
       options :=
         '"linkPreview": { ' +
         '  "title": "WPPConnect", ' +
-        '  "description": "WPPConnect/WA-JS x", ' +
+        '  "description": "WPPConnect/WA-JS", ' +
         '  "canonicalUrl": "' + edtUrl.text + '",  ' +
         '  "matchedText": "' + edtUrl.text + '",  ' +
         '  "doNotPlayInline": false, ' +

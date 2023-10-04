@@ -324,6 +324,8 @@ type
 
     procedure DeleteChat(vID: string);
 
+    procedure localStorage_debug;
+
     procedure StartMonitor(Seconds: Integer);
     procedure StartMonitorNew(Seconds: Integer);
     procedure StartMonitorWPPCrash(Seconds: Integer);
@@ -539,6 +541,8 @@ begin
   try
     If TWPPConnect(FOwner).Status = Server_Connected then
     Begin
+      localStorage_debug;
+
       //Marcelo 12/08/2022
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -558,7 +562,7 @@ begin
       SleepNoFreeze(40);
 
       If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-         TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
       //Auto monitorar mensagens não lidas
       StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
@@ -1248,6 +1252,8 @@ begin
   //Marcelo 03/05/2023
   Chromium1.StopLoad;
   Chromium1.Browser.ReloadIgnoreCache;
+
+  localStorage_debug;
 
   //Aguardar "X" Segundos Injetar JavaScript
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -2678,6 +2684,8 @@ begin
     Chromium1.StopLoad;
     Chromium1.Browser.ReloadIgnoreCache;
 
+    localStorage_debug;
+
     //Aguardar "X" Segundos Injetar JavaScript
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
@@ -2802,6 +2810,8 @@ procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
 begin
   if TWPPConnect(FOwner).Status = Server_Rebooting then
   begin
+    localStorage_debug;
+
     //Marcelo 12/08/2022
     //Aguardar "X" Segundos Injetar JavaScript
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -3191,6 +3201,8 @@ begin
   Chromium1.StopLoad;
   Chromium1.Browser.ReloadIgnoreCache;
 
+  localStorage_debug;
+
   //Aguardar "X" Segundos Injetar JavaScript
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
     SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
@@ -3275,6 +3287,14 @@ var
 begin
   LJS   := FrmConsole_JS_VAR_listGroupContacts;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.localStorage_debug;
+var
+  Ljs: string;
+begin
+  LJS   := 'localStorage.debug = ''*'';';
   ExecuteJS(LJS, true);
 end;
 
