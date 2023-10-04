@@ -75,8 +75,7 @@ var habilitaEvento_new_reaction;
 
 function startEvento_msg_ack_change(hab_msg_ack_change = false){
     habilitaEvento_msg_ack_change = hab_msg_ack_change;
-    console.log("**habilitaEvento_msg_ack_change**");
-    console.log(habilitaEvento_msg_ack_change);
+    console.log("**habilitaEvento_msg_ack_change=" + habilitaEvento_msg_ack_change);
 }
 
 function startEvento_msg_revoke(hab_msg_revoke = false){
