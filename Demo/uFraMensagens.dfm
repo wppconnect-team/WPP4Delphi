@@ -143,11 +143,10 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Enviar Localiza'#231#227'o c/ Bot'#227'o'
+      Caption = 'Enviar Agendamento de Liga'#231#227'o'
       ImageIndex = 11
       Images = ImageList1
       TabOrder = 12
-      Visible = False
       OnClick = btnLocalizacaoBotaoClick
     end
     object btnLink: TButton
@@ -437,7 +436,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 5
       OnClick = btnLimparConversaClick
-      ExplicitTop = 206
     end
     object btnArquivar: TButton
       AlignWithMargins = True
@@ -451,7 +449,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 3
       OnClick = btnArquivarClick
-      ExplicitTop = 144
     end
     object btnResponder: TButton
       AlignWithMargins = True
@@ -491,7 +488,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnVerificarNumeroClick
-      ExplicitTop = 237
     end
     object btnStatus: TButton
       AlignWithMargins = True
@@ -505,7 +501,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnStatusClick
-      ExplicitTop = 268
     end
     object btnDetalhe: TButton
       AlignWithMargins = True
@@ -519,7 +514,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnDetalheClick
-      ExplicitLeft = 0
     end
     object btnBloquear: TButton
       AlignWithMargins = True
@@ -585,7 +579,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 4
       OnClick = BitBtn1Click
-      ExplicitTop = 175
     end
     object BitBtn2: TButton
       AlignWithMargins = True

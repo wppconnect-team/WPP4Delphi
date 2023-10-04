@@ -82,7 +82,7 @@ Const
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2338.8';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2341.18';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -113,6 +113,11 @@ Const
   FrmConsole_JS_VAR_StartMonitor         = 'startMonitor(intervalSeconds=<#TEMPO#>)';
   FrmConsole_JS_VAR_StartMonitorNew      = 'startMonitorNew(intervalSecondsNew=<#TEMPO#>)'; //Add Marcelo 25/08/2023
   FrmConsole_JS_VAR_StartMonitorWPPCrash = 'startMonitorWPPCrash(intervalSeconds=<#TEMPO#>)';
+
+  FrmConsole_JS_VAR_StartEvento_msg_ack_change = 'startEvento_msg_ack_change(hab_msg_ack_change=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_msg_revoke = 'startEvento_msg_revoke(hab_msg_revoke=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_new_message = 'startEvento_new_message(hab_new_message=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_new_reaction = 'startEvento_new_reaction(hab_new_reaction=<#ACTIVE#>)';
 
   //Marcelo 21/06/2022
   //FrmConsole_JS_VAR_ReadMessages        = 'window.WAPI.sendSeen("<#MSG_PHONE#>")';
@@ -228,6 +233,8 @@ Const
 
   FrmConsole_JS_VAR_SendReactionMessage = 'WPP.chat.sendReactionToMessage("<#MSG_UNIQUE_ID#>", <#MSG_REACTION#>);';
 
+
+  FrmConsole_JS_VAR_SendScheduledCallMessage = 'WPP.chat.sendScheduledCallMessage("<#MSG_PHONE#>", {<#MSG_OPTIONS#>}); ';
 
   //Adicionado Por Marcelo 26/04/2022
   //FrmConsole_JS_VAR_SendButtons        = 'window.WAPI.sendButtons("<#MSG_PHONE#>","<#MSG_TITLE#>",<#MSG_BUTTONS#>,"<#MSG_FOOTER#>")';

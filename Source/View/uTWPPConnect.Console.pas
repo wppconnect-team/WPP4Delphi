@@ -283,6 +283,7 @@ type
     procedure GroupLeave(vIDGroup: string);
     procedure GroupDelete(vIDGroup: string);
     procedure GroupJoinViaLink(vLinkGroup: string);
+    procedure sendScheduledCallMessage(vID, vOptions: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
     procedure PoolCreate(vID, vDescription, vChoices, vOptions: string);
     procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
@@ -326,6 +327,10 @@ type
     procedure StartMonitor(Seconds: Integer);
     procedure StartMonitorNew(Seconds: Integer);
     procedure StartMonitorWPPCrash(Seconds: Integer);
+    procedure startEvento_msg_ack_change(active: Boolean);
+    procedure startEvento_msg_revoke(active: Boolean);
+    procedure startEvento_new_message(active: Boolean);
+    procedure startEvento_new_reaction(active: Boolean);
     procedure StopMonitor;
     procedure StopMonitorNew;
   end;
@@ -559,6 +564,12 @@ begin
       StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
       StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
       StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
       SleepNoFreeze(40);
 
@@ -1251,6 +1262,13 @@ begin
   StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
   StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
   StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+  //Ativar Eventos add Marcelo 28/09/2023
+  startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+  startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+  startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+  startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);
 end;
@@ -1686,6 +1704,48 @@ begin
     Chromium1.DecZoomStep;
 end;
 
+procedure TFrmConsole.startEvento_msg_ack_change(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_msg_ack_change;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_msg_revoke(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_msg_revoke;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_new_message(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_new_message;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+
+end;
+
+procedure TFrmConsole.startEvento_new_reaction(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_new_reaction;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+
+end;
+
 procedure TFrmConsole.SendNotificationCenterDirect(PValor: TTypeHeader; Const PSender : TObject);
 begin
   FHeaderAtual := PValor;
@@ -1737,6 +1797,23 @@ begin
   LJS   := FrmConsole_JS_VAR_SendReactionMessage;
   FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#',    Trim(UniqueID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_REACTION#',  Trim(Reaction));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.sendScheduledCallMessage(vID, vOptions: string);
+var
+  Ljs: string;
+  i : integer;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  vOptions := CaractersQuebraLinha(vOptions);
+
+  LJS   := FrmConsole_JS_VAR_SendScheduledCallMessage;
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
   ExecuteJS(LJS, true);
 end;
 
@@ -2614,6 +2691,13 @@ begin
     StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
     StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
     StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
 
@@ -2732,6 +2816,14 @@ begin
     StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
     StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
     StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
   end;
@@ -3112,6 +3204,14 @@ begin
   StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
   StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
   StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+  //Ativar Eventos add Marcelo 28/09/2023
+  startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+  startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+  startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+  startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);
 end;

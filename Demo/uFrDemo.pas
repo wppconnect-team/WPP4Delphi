@@ -1166,7 +1166,8 @@ begin
   Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Recebendo Ligação: ' + IncomingiCall.sender;
   Application.ProcessMessages;
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebendo Ligação: sender: ' + IncomingiCall.sender + ' peerJid: ' + IncomingiCall.peerJid + ' isGroup: ' + IncomingiCall.isGroup.ToString() + ' isVideo: ' + IncomingiCall.isVideo.ToString()+ ' offerTime: ' + DateTimeToStr(UnixToDateTime(IncomingiCall.offerTime)) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebendo Ligação: sender: ' + IncomingiCall.sender + ' peerJid: ' + IncomingiCall.peerJid + ' isGroup: ' + IncomingiCall.isGroup.ToString() + ' isVideo: ' + IncomingiCall.isVideo.ToString()+
+    ' offerTime: ' + DateTimeToStr(UnixToDateTime(IncomingiCall.offerTime, False)) );
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
   SleepNoFreeze(2000);
   TWPPConnect1.rejectCall(IncomingiCall.id);
@@ -1175,6 +1176,7 @@ begin
   Caption := 'WPP4Delphi - Powered by WPPConnect Team';
   Application.ProcessMessages;
 end;
+
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
   Clipboard.AsText := 'https://chat.whatsapp.com/' + Invite;
@@ -1608,7 +1610,7 @@ procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageRespon
 var
   wlo_Celular, quotedMsg_caption : string;
 begin
-  {wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
+  wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
   //ShowMessage('body: ' + AnsiUpperCase(NewMessageResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento');
@@ -1635,7 +1637,7 @@ begin
   end;
 
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
-  }
+
 end;
 
 procedure TfrDemo.TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);

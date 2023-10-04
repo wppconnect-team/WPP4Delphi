@@ -380,6 +380,8 @@ type
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
 
+    procedure sendScheduledCallMessage(vID, vOptions: string);
+
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
     procedure ArquivarChat(PIDContato:String);
@@ -3975,6 +3977,43 @@ begin
           begin
             FrmConsole.SendReactionMessage(UniqueID, Reaction);
 
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.sendScheduledCallMessage(vID, vOptions: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  vID := AjustNumber.FormatIn(vID);
+  if pos('@', vID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vID);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendScheduledCallMessage(vID, vOptions);
           end;
         end);
 

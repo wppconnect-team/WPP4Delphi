@@ -64,6 +64,10 @@ Type
     FZoom: SmallInt;
     FSecondsMonitorWppCrash: integer;
     FSecondsMonitorNew: integer;
+    FEvento_msg_ack_change: Boolean;
+    FEvento_new_reaction: Boolean;
+    FEvento_new_message: Boolean;
+    FEvento_msg_revoke: Boolean;
 
     procedure SetSecondsMonitor(const Value: integer);
     procedure SetLowBattery(const Value: SmallInt);
@@ -94,6 +98,11 @@ Type
     property SecondsMonitorNew : integer          read FSecondsMonitorNew      write SetSecondsMonitorNew       default 0;
     property SyncContacts      : Boolean          read FSyncContacts           write FSyncContacts              default true;
     property ShowRandom        : Boolean          read FShowRandom             write FShowRandom                default true;
+
+    property Evento_msg_ack_change   : Boolean    read FEvento_msg_ack_change  write FEvento_msg_ack_change     default false;
+    property Evento_msg_revoke       : Boolean    read FEvento_msg_revoke      write FEvento_msg_revoke         default false;
+    property Evento_new_message      : Boolean    read FEvento_new_message     write FEvento_new_message        default false;
+    property Evento_new_reaction     : Boolean    read FEvento_new_reaction    write FEvento_new_reaction       default false;
   end;
 
 implementation

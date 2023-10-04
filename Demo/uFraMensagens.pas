@@ -22,7 +22,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls, uTWPPConnect.Constant ,
-  EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo;
+  EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo, System.DateUtils;
 
 type
   TframeMensagem = class(TFrame)
@@ -758,16 +758,12 @@ begin
 
       caption := frDemo.CaractersWeb(mem_message.Text);
 
-
       options :=
         ' type: "image", ' +
         ' caption: "' + caption + '",  ' +
         ' isViewOnce: false  '; //Temporaria Somente 1 Visualização
 
-      //Botões IMAGEM
-      //frDemo.TWPPConnect1.SendFileMessage(ed_num.text, LBase64.Text, '', '');
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
-
 
     FINALLY
       freeAndNil(LBase64);
@@ -828,7 +824,7 @@ begin
       options :=
         '"linkPreview": { ' +
         '  "title": "WPPConnect", ' +
-        '  "description": "WPPConnect/WA-JS", ' +
+        '  "description": "WPPConnect/WA-JS x", ' +
         '  "canonicalUrl": "' + edtUrl.text + '",  ' +
         '  "matchedText": "' + edtUrl.text + '",  ' +
         '  "doNotPlayInline": false, ' +
@@ -940,6 +936,7 @@ end;
 procedure TframeMensagem.btnLocalizacaoBotaoClick(Sender: TObject);
 var
   options : string;
+  horarioAgendamento: string;
 begin
   try
     if Trim(ed_num.Text) = '' then
@@ -952,7 +949,18 @@ begin
     if not frDemo.TWPPConnect1.Auth then
       Exit;
 
+    horarioAgendamento := '';
+
+    horarioAgendamento :=  IntToStr(DateTimeToUnix( IncDay(now,2) ));
+
     options :=
+      'title: "Reunião Agendada", ' +
+      'callType: "voice", '+
+      'scheduledTimestampMs: ' + horarioAgendamento;
+      //'scheduledTimestampMs: 1696084222000';
+
+
+    (*options :=
       'createChat: true, ' +
       'lat: -22.95201, ' +
       'lng: -43.2102601, ' +
@@ -978,9 +986,9 @@ begin
       '    text: "Curti"  ' +
       '  }  ' +
       ']  ';
+  *)
 
-    //frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
-    frDemo.TWPPConnect1.SendLocationMessageEx(ed_num.text, options, '123');
+    frDemo.TWPPConnect1.sendScheduledCallMessage(ed_num.text, options);
 
   finally
     ed_num.SelectAll;
@@ -1247,7 +1255,6 @@ begin
     frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
-    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
   finally
     ed_num.SelectAll;
