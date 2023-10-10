@@ -321,6 +321,8 @@ Const
   FrmConsole_JS_VAR_sendRawStatus    = 'WPP.status.sendRawStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
   FrmConsole_JS_VAR_getMyStatus      = 'getMyStatus();';
 
+  FrmConsole_JS_VAR_newsletter_create  = 'WPP.newsletter.create("<#NAME#>",{<#OPTIONS#>} );';
+
   //Marcelo 15/06/2022
   FrmConsole_JS_VAR_rejectCall       = 'WPP.call.rejectCall("<#MSG_ID#>");';
 

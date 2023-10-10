@@ -148,11 +148,13 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
+      ExplicitLeft = 3
+      ExplicitTop = 385
     end
     object btnLink: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 237
+      Top = 206
       Width = 221
       Height = 25
       Align = alTop
@@ -161,20 +163,21 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
+      ExplicitTop = 237
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 206
+      Top = 423
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Enviar Imagem com Bot'#227'o'
+      Caption = 'Criar Canal'
       ImageIndex = 5
       Images = ImageList1
       TabOrder = 6
-      Visible = False
       OnClick = btnImagemBotaoClick
+      ExplicitLeft = 0
     end
     object btnImagem: TButton
       AlignWithMargins = True
@@ -261,7 +264,7 @@ object frameMensagem: TframeMensagem
     object btnAudio: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 268
+      Top = 237
       Width = 221
       Height = 25
       Align = alTop
@@ -270,11 +273,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
+      ExplicitTop = 268
     end
     object btnContato: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 330
+      Top = 299
       Width = 221
       Height = 25
       Align = alTop
@@ -283,11 +287,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
+      ExplicitTop = 330
     end
     object btnSticker: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 299
+      Top = 268
       Width = 221
       Height = 25
       Align = alTop
@@ -296,11 +301,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
+      ExplicitTop = 299
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 361
+      Top = 330
       Width = 221
       Height = 25
       Align = alTop
@@ -309,11 +315,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
+      ExplicitTop = 361
     end
     object btnArquivo: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 423
+      Top = 361
       Width = 221
       Height = 25
       Align = alTop
@@ -322,6 +329,7 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
+      ExplicitLeft = 0
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True

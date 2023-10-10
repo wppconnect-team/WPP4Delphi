@@ -314,6 +314,8 @@ type
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
 
+    procedure CreateNewsLetter(Content, Options: string);
+
     procedure markIsUnread(phoneNumber: string);
 
     procedure markPlayed(phoneNumber: string);
@@ -1120,6 +1122,35 @@ begin
 
   lThread.FreeOnTerminate := true;
   lThread.Start;
+end;
+
+procedure TWPPConnect.CreateNewsLetter(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 09/10/2023
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CreateNewsLetter(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
 end;
 
 procedure TWPPConnect.CreatePool(PID, PDescription, PChoices, POptions: string);

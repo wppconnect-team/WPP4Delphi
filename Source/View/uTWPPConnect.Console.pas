@@ -218,6 +218,10 @@ type
     //Adicionado Por Marcelo 13/06/2022
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
+
+    //Marcelo 09/10/2023
+    procedure CreateNewsLetter(Content, Options: string);
+
     procedure sendTextStatus(Content, Options: string);
 
     //MARCELO 28/06/2022
@@ -3010,6 +3014,26 @@ begin
   LJS := FrmConsole_JS_VAR_CreateGroup;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_NAME#',         Trim(vGroupName));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(PParticipantNumber));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.CreateNewsLetter(Content, Options: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  Content := CaractersWeb(Content);
+  //options := CaractersWeb(options);
+  options := CaractersQuebraLinha(options);
+
+  LJS   := FrmConsole_JS_VAR_newsletter_create;
+  FrmConsole_JS_AlterVar(LJS, '#NAME#',  Trim(Content));
+  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',  Trim(options));
+
+  SalvaLog(LJS + #13#10, 'CONSOLE');
+
   ExecuteJS(LJS, true);
 end;
 
