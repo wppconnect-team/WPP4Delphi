@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.39.0.0;1.0.0.9;78.3.0
+//1.40.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18437,3 +18437,28 @@ window.WAPI.list = async function () {
   }
 };
 
+//Add Marcelo 21/10/2023
+async function deleteOldChats(QtdChatsExcluir) {
+    const options = {
+        onlyWithUnreadMessage: false,
+        onlyUsers: true
+    };
+
+    try {
+        const chats = await WPP.chat.list(options);
+
+        // Ordene os chats de forma inversa (do mais recente para o mais antigo)
+        chats.reverse();
+
+        
+        const numChatsToDelete = Math.min(QtdChatsExcluir, chats.length);
+
+        for (let i = 0; i < numChatsToDelete; i++) {
+            await WPP.chat.delete(chats[i].id._serialized).then(result => {
+                //console.log('Chat ${chats[i].id._serialized} excluído:', result);
+            });
+        }
+    } catch (e) {
+        console.error('Erro:', e);
+    }
+}
