@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.42.0.0;1.0.0.9;78.3.0
+//1.43.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18481,6 +18481,6 @@ async function TotalChatsUserRead() {
 
 //Add Marcelo 21/10/2023
 window.WAPI.getWAVersion = function () {
-    const Version window.Debug.VERSION;
+    const Version = window.Debug.VERSION;
     SetConsoleMessage("getWAVersion", JSON.stringify({WAVersion:Version}));
 }
