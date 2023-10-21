@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.41.0.0;1.0.0.9;78.3.0
+//1.42.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18472,9 +18472,15 @@ async function TotalChatsUserRead() {
 
     try {
         const chats = await WPP.chat.list(options);        
-        SetConsoleMessage("TotalChatsUserRead", JSON.stringify({totalchats:chats.length}));
+        SetConsoleMessage("getTotalChatsUserRead", JSON.stringify({totalchats:chats.length}));
         
     } catch (e) {
         console.error('Erro:', e);
     }
+}
+
+//Add Marcelo 21/10/2023
+window.WAPI.getWAVersion = function () {
+    const Version window.Debug.VERSION;
+    SetConsoleMessage("getWAVersion", JSON.stringify({WAVersion:Version}));
 }
