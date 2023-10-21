@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.40.0.0;1.0.0.9;78.3.0
+//1.41.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18458,6 +18458,22 @@ async function deleteOldChats(QtdChatsExcluir) {
                 //console.log('Chat ${chats[i].id._serialized} excluído:', result);
             });
         }
+    } catch (e) {
+        console.error('Erro:', e);
+    }
+}
+
+//Add Marcelo 21/10/2023
+async function TotalChatsUserRead() {
+    const options = {
+        onlyWithUnreadMessage: false,
+        onlyUsers: true
+    };
+
+    try {
+        const chats = await WPP.chat.list(options);        
+        SetConsoleMessage("TotalChatsUserRead", JSON.stringify({totalchats:chats.length}));
+        
     } catch (e) {
         console.error('Erro:', e);
     }
