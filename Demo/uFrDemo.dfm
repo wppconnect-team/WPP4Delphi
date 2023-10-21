@@ -1682,15 +1682,6 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
@@ -5685,6 +5676,9 @@ object frDemo: TfrDemo
     Config.AutoStart = True
     Config.AutoDelay = 500
     Config.SecondsMonitor = 1
+    Config.Evento_msg_ack_change = True
+    Config.Evento_msg_revoke = True
+    Config.Evento_new_reaction = True
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http

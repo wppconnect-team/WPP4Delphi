@@ -261,6 +261,7 @@ type
     procedure DesarquivarChat(vContato:String);
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
+    procedure DeletarOldChats(QtdChatsExcluir: string);
     procedure FixarChat(vContato:String);
     procedure DesfixarChat(vContato:String);
     //Daniel - 13/06/2022
@@ -1098,6 +1099,18 @@ begin
 
   LJS := FrmConsole_JS_VAR_ReadMessages;
   ExecuteJS(FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#' , Trim(vID)), True);
+end;
+
+procedure TFrmConsole.DeletarOldChats(QtdChatsExcluir: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_DeleteOldChats;
+  FrmConsole_JS_AlterVar(LJS, '#QtdChatsExcluir#',     Trim(QtdChatsExcluir));
+  ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.DeletarTodosOsChats;

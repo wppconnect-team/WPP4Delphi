@@ -390,6 +390,7 @@ type
     procedure DesarquivarChat(PIDContato:String);
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
+    procedure DeletarOldChats(QtdChatsExcluir: string);
     procedure FixarChat(PIDContato:String);
     procedure DesfixarChat(PIDContato:String);
 
@@ -1246,6 +1247,37 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DeletarOldChats(QtdChatsExcluir: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if QtdChatsExcluir = '' then
+    QtdChatsExcluir := '1';
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarOldChats(QtdChatsExcluir);
           end;
         end);
 

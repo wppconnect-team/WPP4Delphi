@@ -93,6 +93,7 @@ type
     eChoicesPool: TEdit;
     Label2: TLabel;
     bEditMessage: TButton;
+    btnDeletarOldChat: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -140,6 +141,7 @@ type
     procedure btnLigarClick(Sender: TObject);
     procedure btnEncerrarChamadaClick(Sender: TObject);
     procedure bEditMessageClick(Sender: TObject);
+    procedure btnDeletarOldChatClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -980,7 +982,8 @@ begin
 
     horarioAgendamento := '';
 
-    horarioAgendamento :=  IntToStr(DateTimeToUnix( IncDay(now,3), False) * 1000);
+    //horarioAgendamento :=  IntToStr(DateTimeToUnix( IncDay(now,3), False) * 1000);
+    horarioAgendamento :=  IntToStr(DateTimeToUnix( IncMinute(now,3), False) * 1000);
 
     options :=
       'title:"Reunião Agendada",' +
@@ -989,6 +992,7 @@ begin
       //'scheduledTimestampMs: 1696084222000';
 
     frDemo.TWPPConnect1.sendScheduledCallMessage(ed_num.text, options);
+
 
     (*options :=
       'createChat: true, ' +
@@ -1059,6 +1063,15 @@ begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
+end;
+
+procedure TframeMensagem.btnDeletarOldChatClick(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+   frDemo.TWPPConnect1.DeletarOldChats('2'); //Exemplo Apagando os 2 Últimos Chats mais antigos da sua lista de conversa
+
 end;
 
 procedure TframeMensagem.btnReagirClick(Sender: TObject);
