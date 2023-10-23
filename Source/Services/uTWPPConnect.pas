@@ -2974,7 +2974,7 @@ begin
 
     FrmConsole.GetMyNumber;
     FrmConsole.getWAVersion;
-    FrmConsole.GetTotalChatsUserRead;
+    //FrmConsole.GetTotalChatsUserRead;
   end;
 
 
@@ -2984,8 +2984,8 @@ begin
       Exit;
 
     FrmConsole.GetMyNumber;
-    FrmConsole.getWAVersion;
-    FrmConsole.GetTotalChatsUserRead;
+    //FrmConsole.getWAVersion;
+    //FrmConsole.GetTotalChatsUserRead;
 
     SleepNoFreeze(40);
 
@@ -3034,6 +3034,7 @@ begin
     FMyNumber := FAdjustNumber.FormatOut(PValue);
     if Assigned(FOnGetMyNumber) then
       FOnGetMyNumber(Self);
+
     try
       FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber;
       //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
