@@ -510,8 +510,8 @@ end;
 procedure TframeMensagem.btnDeletarTodosChatsClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-      Exit;
-   frDemo.TWPPConnect1.DeletarTodosOsChats;
+    Exit;
+  frDemo.TWPPConnect1.DeletarTodosOsChats;
 end;
 
 procedure TframeMensagem.btnDesbloquearClick(Sender: TObject);
@@ -1068,9 +1068,9 @@ end;
 procedure TframeMensagem.btnDeletarOldChatClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
-      Exit;
+    Exit;
 
-   frDemo.TWPPConnect1.DeletarOldChats('2'); //Exemplo Apagando os 2 Últimos Chats mais antigos da sua lista de conversa
+  frDemo.TWPPConnect1.DeletarOldChats('2'); //Exemplo Apagando os 2 Últimos Chats mais antigos da sua lista de conversa
 
 end;
 

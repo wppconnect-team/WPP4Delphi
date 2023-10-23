@@ -1668,6 +1668,20 @@ public
   destructor  Destroy;
 end;
 
+TTotalChatsUserRead = class(TClassPadrao)
+private
+  Ftotalchats: Integer;
+public
+  property totalchats:      Integer    read Ftotalchats     write Ftotalchats;
+end;
+
+TWAVersion = class(TClassPadrao)
+private
+  FWAVersion: string;
+public
+  property WAVersion:      string    read FWAVersion     write FWAVersion;
+end;
+
 
 //Marcelo 18/06/2022
 TIncomingiCall = class(TClassPadrao)

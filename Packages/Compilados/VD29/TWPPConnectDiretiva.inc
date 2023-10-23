@@ -1,30 +1,28 @@
 {####################################################################################################################
-                              TINJECT - Componente de comunicação (Não Oficial)
-                                           www.tinject.com.br
-                                            Novembro de 2019
+                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                                           https://wppconnect-team.github.io/
+                                            Maio de 2022
 ####################################################################################################################
-    Developer.: Joathan Theiller           - jtheiller@hotmail.com   -
-                Daniel Oliveira Rodrigues  - Dor_poa@hotmail.com     - +55 51 9.9155-9228
+    Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
+    Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
+            
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
-       Mike W. Lustosa;
-     - Colocar na evolução as Modificação juntamente com as informaçoes do colaborador: Data, Nova Versao, Autor;
-     - Mantenha sempre a versao mais atual acima das demais;
-     - Todo Commit ao repositório deverá ser declarado as mudança na UNIT e ainda o Incremento da Versão de
-       compilação (último digito);
-
-####################################################################################################################
-                                  Evolução do Código
-####################################################################################################################
-  Autor........:
-  Email........:
-  Data.........:
-  Identificador:
-  Modificação..:
+       Marcelo;
+     
 ####################################################################################################################
 }
 
+
+
+//Uncomment the directive for the type of application you will use. If it is a standalone application, use STANDALONE, and if it is operated by a user, use APPWINDOWS.
+//DO NOT USE BOTH DIRECTIVES AT THE SAME TIME.
+//Descomente a diretiva para o tipo de aplicação que for usar, se for uma aplicação que irá executar sozinha em um servidor, utilize STANDALONE, se é uma aplicação que vai ser operada por um usuário 
+//utilize APPWINDOWS. 
+//NAO USE AS DUAS DIRETIVAS AO MESMO TEMPO
+{$DEFINE APPWINDOWS} 
+{.$DEFINE STANDALONE} 
 
 {$DEFINE DELPHI_VERSION_UNKNOW}
 
@@ -361,4 +359,88 @@
   {$DEFINE DELPHI24_UP}
   {$DEFINE DELPHI25_UP}
   {$DEFINE DELPHI26_UP}
+{$ENDIF}
+
+// Rad Studio 10.4 - Delphi Sydney
+{$IFDEF VER340}
+  {$UNDEF DELPHI_VERSION_UNKNOW}
+  {$DEFINE DELPHI5_UP}
+  {$DEFINE DELPHI6_UP}
+  {$DEFINE DELPHI7_UP}
+  {$DEFINE DELPHI8_UP}
+  {$DEFINE DELPHI9_UP}
+  {$DEFINE DELPHI10_UP}
+  {$DEFINE DELPHI11_UP}
+  {$DEFINE DELPHI12_UP}
+  {$DEFINE DELPHI14_UP}
+  {$DEFINE DELPHI15_UP}
+  {$DEFINE DELPHI16_UP}
+  {$DEFINE DELPHI17_UP}
+  {$DEFINE DELPHI18_UP}
+  {$DEFINE DELPHI19_UP}
+  {$DEFINE DELPHI20_UP}
+  {$DEFINE DELPHI21_UP}
+  {$DEFINE DELPHI22_UP}
+  {$DEFINE DELPHI23_UP}
+  {$DEFINE DELPHI24_UP}
+  {$DEFINE DELPHI25_UP}
+  {$DEFINE DELPHI26_UP}
+  {$DEFINE DELPHI27_UP}
+{$ENDIF}
+
+// Rad Studio 11.0 - Delphi Alexandria
+{$IFDEF VER350}
+  {$UNDEF DELPHI_VERSION_UNKNOW}
+  {$DEFINE DELPHI5_UP}
+  {$DEFINE DELPHI6_UP}
+  {$DEFINE DELPHI7_UP}
+  {$DEFINE DELPHI8_UP}
+  {$DEFINE DELPHI9_UP}
+  {$DEFINE DELPHI10_UP}
+  {$DEFINE DELPHI11_UP}
+  {$DEFINE DELPHI12_UP}
+  {$DEFINE DELPHI14_UP}
+  {$DEFINE DELPHI15_UP}
+  {$DEFINE DELPHI16_UP}
+  {$DEFINE DELPHI17_UP}
+  {$DEFINE DELPHI18_UP}
+  {$DEFINE DELPHI19_UP}
+  {$DEFINE DELPHI20_UP}
+  {$DEFINE DELPHI21_UP}
+  {$DEFINE DELPHI22_UP}
+  {$DEFINE DELPHI23_UP}
+  {$DEFINE DELPHI24_UP}
+  {$DEFINE DELPHI25_UP}
+  {$DEFINE DELPHI26_UP}
+  {$DEFINE DELPHI27_UP}
+  {$DEFINE DELPHI28_UP}
+{$ENDIF}
+
+// Rad Studio 12.0 - Delphi yukon
+{$IFDEF VER360}
+  {$UNDEF DELPHI_VERSION_UNKNOW}
+  {$DEFINE DELPHI5_UP}
+  {$DEFINE DELPHI6_UP}
+  {$DEFINE DELPHI7_UP}
+  {$DEFINE DELPHI8_UP}
+  {$DEFINE DELPHI9_UP}
+  {$DEFINE DELPHI10_UP}
+  {$DEFINE DELPHI11_UP}
+  {$DEFINE DELPHI12_UP}
+  {$DEFINE DELPHI14_UP}
+  {$DEFINE DELPHI15_UP}
+  {$DEFINE DELPHI16_UP}
+  {$DEFINE DELPHI17_UP}
+  {$DEFINE DELPHI18_UP}
+  {$DEFINE DELPHI19_UP}
+  {$DEFINE DELPHI20_UP}
+  {$DEFINE DELPHI21_UP}
+  {$DEFINE DELPHI22_UP}
+  {$DEFINE DELPHI23_UP}
+  {$DEFINE DELPHI24_UP}
+  {$DEFINE DELPHI25_UP}
+  {$DEFINE DELPHI26_UP}
+  {$DEFINE DELPHI27_UP}
+  {$DEFINE DELPHI28_UP}
+  {$DEFINE DELPHI29_UP}
 {$ENDIF}

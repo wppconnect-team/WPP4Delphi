@@ -3,7 +3,7 @@ object FrmQRCode: TFrmQRCode
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'TInject - Carregando QRCode...'
+  Caption = 'TWPPConnect - Carregando QRCode...'
   ClientHeight = 304
   ClientWidth = 311
   Color = clBtnFace

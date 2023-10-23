@@ -150,6 +150,8 @@ type
     procedure TWPPConnect1Get_SendPollMessageResponse(const SendPollMessageResponse: TSendPollMessageResponseClass);
     procedure TWPPConnect1Getmsg_revokeEvento(const RevokeMsg: TRevokeClass);
     procedure TWPPConnect1GetAck_changeEvento(const Ack_change: TAck_changeClass);
+    procedure TWPPConnect1GetTotalChatsUserRead(const TotalChatsUserRead: TTotalChatsUserRead);
+    procedure TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1035,6 +1037,7 @@ begin
     wlo_AuxNome := AContact.name;
     if Trim(wlo_AuxNome) = '' then
       wlo_AuxNome := AContact.formattedName;
+
     AddContactList(AContact.id + ' - ' + wlo_AuxNome);
   end;
   AContact := nil;
@@ -1877,6 +1880,12 @@ begin
     ShowMessage(Result.id + ' - ' + Result.status);
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetTotalChatsUserRead(const TotalChatsUserRead: TTotalChatsUserRead);
+begin
+  //
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('TotalChatsUserRead: ' + TotalChatsUserRead.totalchats.ToString);
+end;
+
 procedure TfrDemo.TWPPConnect1GetUnReadMessages(const Chats: TChatList);
 var
   AChat: TChatClass;
@@ -2179,6 +2188,11 @@ begin
     end;
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('WhatsAppWebVersion: ' + WhatsAppWebVersion.WAVersion);
+end;
+
 procedure TfrDemo.TWPPConnect1Get_ProductCatalog(Sender: TObject;
   const ProductCatalog: TProductsList);
 var

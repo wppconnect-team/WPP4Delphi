@@ -92,6 +92,10 @@ Const
   FrmConsole_JS_GetUnreadMessages       = 'window.WAPI.getUnreadMessages(includeMe="True", includeNotifications="True", use_unread_count="True");';
   //FrmConsole_JS_GetUnreadMessages       = '';
 
+  //Marcelo 22/10/2023
+  FrmConsole_JS_getWAVersion            = 'window.WAPI.getWAVersion();';
+  FrmConsole_JS_GetTotalChatsUserRead   = 'TotalChatsUserRead();';
+
   FrmConsole_JS_GetAllChats             = 'window.WAPI.getAllChats();';
   FrmConsole_JS_checkDelivered          = 'window.WAPI.getDelivered();';
   //FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
@@ -277,6 +281,11 @@ Const
   //MARCELO 21/10/2023
   FrmConsole_JS_VAR_DeleteOldChats      = 'deleteOldChats(<#QtdChatsExcluir#>);';
 
+  //MARCELO 22/10/2023
+  FrmConsole_JS_VAR_MarkIsReadChats     = 'markIsReadChats(<#NumberChatsIsRead#>);';
+
+  //MARCELO 23/10/2023
+  FrmConsole_JS_VAR_MarkIsUnreadChats   = 'markIsUnreadChats(<#NumberChatsUnread#>);';
 
   FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#CHOICES#>, {<#OPTIONS#>} ); ';
   FrmConsole_JS_VAR_CreatePoolMessageEx = 'window.WAPI.sendCreatePollMessage2Ex("<#GROUP_ID#>","<#MSG_CONTENT#>",<#CHOICES#>, {<#OPTIONS#>}, "<#MSG_SEUID#>", "<#MSG_SEUID2#>" ); ';
@@ -508,6 +517,8 @@ type
                    , Th_Getnew_reaction=74 //Marcelo 25/07/2023
                    , Th_Getmsg_ack_change=75 //Marcelo 26/07/2023
                    , Th_Getmsg_revoke=76 //Marcelo 26/07/2023
+                   , Th_GetTotalChatsUserRead=77 //Marcelo 22/10/2023
+                   , Th_GetWAVersion=78 //Marcelo 22/10/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -644,8 +655,8 @@ Begin
   end;
 End;
 
-function   StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 76; //Marcelo 26/07/2023
+function  StrToTypeHeader(PText: string): TTypeHeader;
+const LmaxCount = 78; //Marcelo 22/10/2023
 var
   I: Integer;
   LNome: String;

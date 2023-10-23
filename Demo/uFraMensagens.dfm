@@ -148,8 +148,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
-      ExplicitLeft = 3
-      ExplicitTop = 385
     end
     object btnLink: TButton
       AlignWithMargins = True
@@ -163,7 +161,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
-      ExplicitTop = 237
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
@@ -177,7 +174,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
-      ExplicitLeft = 0
     end
     object btnImagem: TButton
       AlignWithMargins = True
@@ -273,7 +269,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
-      ExplicitTop = 268
     end
     object btnContato: TButton
       AlignWithMargins = True
@@ -287,7 +282,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
-      ExplicitTop = 330
     end
     object btnSticker: TButton
       AlignWithMargins = True
@@ -301,7 +295,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
-      ExplicitTop = 299
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
@@ -315,7 +308,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
-      ExplicitTop = 361
     end
     object btnArquivo: TButton
       AlignWithMargins = True
@@ -329,7 +321,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
-      ExplicitLeft = 0
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
@@ -609,6 +600,7 @@ object frameMensagem: TframeMensagem
       Height = 25
       Align = alTop
       Caption = 'Arquivar todos os Chats'
+      ImageIndex = 14
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivarTodosChatsClick
@@ -621,10 +613,10 @@ object frameMensagem: TframeMensagem
       Height = 25
       Align = alTop
       Caption = 'Deletar todos os Chats'
+      ImageIndex = 15
       Images = ImageList1
       TabOrder = 14
       OnClick = btnDeletarTodosChatsClick
-      ExplicitTop = 485
     end
     object Button1: TButton
       AlignWithMargins = True
@@ -638,7 +630,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = Button1Click
-      ExplicitTop = 516
     end
     object btnValidarListarNumeros: TButton
       AlignWithMargins = True
@@ -653,7 +644,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnValidarListarNumerosClick
-      ExplicitTop = 547
     end
     object btnGetMessage: TButton
       AlignWithMargins = True
@@ -668,7 +658,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = btnGetMessageClick
-      ExplicitTop = 578
     end
     object Button3: TButton
       AlignWithMargins = True
@@ -683,7 +672,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 18
       OnClick = Button3Click
-      ExplicitTop = 609
     end
     object Button4: TButton
       AlignWithMargins = True
@@ -698,7 +686,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 19
       OnClick = Button4Click
-      ExplicitTop = 640
     end
     object bEditMessage: TButton
       AlignWithMargins = True
@@ -721,12 +708,11 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Deletar Old Chats'
+      Caption = 'Deletar Old Chats Novo'
+      ImageIndex = 15
       Images = ImageList1
       TabOrder = 21
       OnClick = btnDeletarOldChatClick
-      ExplicitLeft = 10
-      ExplicitTop = 493
     end
   end
   object GroupBox3: TGroupBox

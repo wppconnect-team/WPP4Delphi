@@ -46,6 +46,17 @@ type
     CEFWindowParent1: TCEFWindowParent;
     lbl_Versao: TLabel;
     Img_LogoInject: TImage;
+    bInfo: TBitBtn;
+    lblNumber: TLabel;
+    Pnl_quick_maintenance: TPanel;
+    bDeleteOldChats: TBitBtn;
+    eNumberChats: TEdit;
+    Label1: TLabel;
+    bDeleteAllChat: TBitBtn;
+    Label2: TLabel;
+    bFinish: TBitBtn;
+    bMarkIsReadChats: TBitBtn;
+    bMarkIsUnreadChats: TBitBtn;
     procedure Chromium1AfterCreated(Sender: TObject;      const browser: ICefBrowser);
     procedure Chromium1BeforeClose(Sender: TObject; const browser: ICefBrowser);
     procedure Chromium1BeforePopup(Sender: TObject; const browser: ICefBrowser;
@@ -94,6 +105,13 @@ type
       out Result: Boolean);
     procedure Img_LogoInjectClick(Sender: TObject);
     procedure Lbl_CaptionClick(Sender: TObject);
+    procedure bInfoClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure bDeleteOldChatsClick(Sender: TObject);
+    procedure bDeleteAllChatClick(Sender: TObject);
+    procedure bFinishClick(Sender: TObject);
+    procedure bMarkIsReadChatsClick(Sender: TObject);
+    procedure bMarkIsUnreadChatsClick(Sender: TObject);
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -262,6 +280,9 @@ type
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
     procedure DeletarOldChats(QtdChatsExcluir: string);
+    procedure MarkIsReadChats(NumberChatsIsRead: string);
+    procedure MarkIsUnreadChats(NumberChatsUnread: string);
+
     procedure FixarChat(vContato:String);
     procedure DesfixarChat(vContato:String);
     //Daniel - 13/06/2022
@@ -309,6 +330,9 @@ type
     procedure CheckNumberExists(vNumber:String);
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
     procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
+
+    procedure getWAVersion;
+    procedure GetTotalChatsUserRead;
 
     procedure GetAllChats;
     procedure GetUnreadMessages;
@@ -436,6 +460,39 @@ begin
   LJS   := FrmConsole_JS_VAR_ArchiveAllChats;
   ExecuteJS(LJS, true);
 
+end;
+
+procedure TFrmConsole.bInfoClick(Sender: TObject);
+begin
+  getWAVersion;
+  GetTotalChatsUserRead;
+  Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + TWPPConnect(FOwner).WhatsAppWebVersion +  ' - Conversas Lidas(' + TWPPConnect(FOwner).TotalChatsUserRead.ToString + ')  Number: ' + TWPPConnect(FOwner).MyNumber;
+  lblNumber.Caption := 'Number: ' + TWPPConnect(FOwner).MyNumber;
+end;
+
+procedure TFrmConsole.bDeleteOldChatsClick(Sender: TObject);
+begin
+  DeletarOldChats(eNumberChats.Text);
+end;
+
+procedure TFrmConsole.bFinishClick(Sender: TObject);
+begin
+  Pnl_quick_maintenance.Visible := False;
+end;
+
+procedure TFrmConsole.bMarkIsReadChatsClick(Sender: TObject);
+begin
+  markIsReadChats(eNumberChats.Text);
+end;
+
+procedure TFrmConsole.bMarkIsUnreadChatsClick(Sender: TObject);
+begin
+  MarkIsUnreadChats(eNumberChats.Text);
+end;
+
+procedure TFrmConsole.bDeleteAllChatClick(Sender: TObject);
+begin
+  DeletarTodosOsChats;
 end;
 
 procedure TFrmConsole.BloquearContato(vContato: string);
@@ -835,6 +892,14 @@ begin
   ExecuteJS(LJS, False);
 end;
 
+procedure TFrmConsole.GetTotalChatsUserRead;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  FrmConsole.ExecuteJS(FrmConsole_JS_GetTotalChatsUserRead, False);
+end;
+
 procedure TFrmConsole.GetUnreadMessages;
 begin
   ExecuteJS(FrmConsole_JS_GetUnreadMessages, False);
@@ -851,6 +916,14 @@ begin
   LJS   := FrmConsole_JS_VAR_getMessageACK;
   FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#', Trim(UniqueID));
   ExecuteJS(LJS, false);
+end;
+
+procedure TFrmConsole.getWAVersion;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  FrmConsole.ExecuteJS(FrmConsole_JS_getWAVersion, False);
 end;
 
 procedure TFrmConsole.GroupAddParticipant(vIDGroup, vNumber: string);
@@ -2189,7 +2262,31 @@ begin
                             end;
                          end;
 
+    //Marcelo 22/10/2023
+    Th_GetTotalChatsUserRead   : begin
+                            LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                            LOutClass := TTotalChatsUserRead.Create(LResultStr);
 
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                            finally
+                              FreeAndNil(LOutClass);
+                            end;
+                         end;
+
+    //Marcelo 22/10/2023
+    Th_GetWAVersion   : begin
+                            LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                            LOutClass := TWAVersion.Create(LResultStr);
+
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                            finally
+                              FreeAndNil(LOutClass);
+                            end;
+                         end;
 
 
     //Marcelo 31/05/2022
@@ -3164,6 +3261,14 @@ begin
 end;
 
 
+procedure TFrmConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if key = vk_F2 then
+  begin
+    Pnl_quick_maintenance.Visible := not Pnl_quick_maintenance.Visible;
+  end;
+end;
+
 procedure TFrmConsole.FormShow(Sender: TObject);
 var
   Version_JS, vWAJS: string;
@@ -3180,6 +3285,8 @@ begin
   Version_JS := Copy(Version_JS,1,pos(';', Version_JS) -1);
 
   lbl_Versao.Caption := vWAJS + ' / ' + Version_JS;
+
+
 end;
 
 procedure TFrmConsole.Form_Normal;
@@ -3615,6 +3722,18 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.MarkIsReadChats(NumberChatsIsRead: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_MarkIsReadChats;
+  FrmConsole_JS_AlterVar(LJS, '#NumberChatsIsRead#', Trim(NumberChatsIsRead));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.markIsUnread(phoneNumber: string);
 var
   Ljs: string;
@@ -3624,6 +3743,18 @@ begin
 
   LJS   := FrmConsole_JS_VAR_markIsUnread;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.MarkIsUnreadChats(NumberChatsUnread: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS := FrmConsole_JS_VAR_MarkIsUnreadChats;
+  FrmConsole_JS_AlterVar(LJS, '#NumberChatsUnread#', Trim(NumberChatsUnread));
   ExecuteJS(LJS, true);
 end;
 
