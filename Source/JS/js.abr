@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.44.0.0;1.0.0.9;78.3.0
+//1.45.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18500,6 +18500,31 @@ async function markIsReadChats(NumberChatsIsRead) {
     for (let i = 0; i < numChatsToRead; i++) {
       await WPP.chat
         .markIsRead(chats[i].id._serialized)
+        .then((_) => true)
+        .catch((_) => false); 
+      };
+    
+    } catch (e) {
+      console.error('Erro:', e);
+      return e;
+  }
+};
+
+//Add Marcelo 23/10/2023
+async function markIsUnreadChats(NumberChatsUnread) {
+  const options = {
+    onlyWithUnreadMessage: false,
+    onlyUsers: true,
+  };
+
+  try {
+    const chats = await WPP.chat.list(options);
+    chats.reverse();
+    const numChatsToUnread = Math.min(NumberChatsUnread, chats.length);
+
+    for (let i = 0; i < numChatsToUnread; i++) {
+      await WPP.chat
+        .markIsUnread(chats[i].id._serialized)
         .then((_) => true)
         .catch((_) => false); 
       };
