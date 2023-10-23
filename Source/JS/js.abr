@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.40.0.0;1.0.0.9;78.3.0
+//1.45.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18462,3 +18462,75 @@ async function deleteOldChats(QtdChatsExcluir) {
         console.error('Erro:', e);
     }
 }
+
+//Add Marcelo 21/10/2023
+async function TotalChatsUserRead() {
+    const options = {
+        onlyWithUnreadMessage: false,
+        onlyUsers: true
+    };
+
+    try {
+        const chats = await WPP.chat.list(options);        
+        SetConsoleMessage("getTotalChatsUserRead", JSON.stringify({totalchats:chats.length}));
+        
+    } catch (e) {
+        console.error('Erro:', e);
+    }
+}
+
+//Add Marcelo 21/10/2023
+window.WAPI.getWAVersion = function () {
+    const Version = window.Debug.VERSION;
+    SetConsoleMessage("getWAVersion", JSON.stringify({WAVersion:Version}));
+}
+
+//Add Marcelo 22/10/2023
+async function markIsReadChats(NumberChatsIsRead) {
+  const options = {
+    onlyWithUnreadMessage: true,
+    onlyUsers: true,
+  };
+
+  try {
+    const chats = await WPP.chat.list(options);
+    chats.reverse();
+    const numChatsToRead = Math.min(NumberChatsIsRead, chats.length);
+
+    for (let i = 0; i < numChatsToRead; i++) {
+      await WPP.chat
+        .markIsRead(chats[i].id._serialized)
+        .then((_) => true)
+        .catch((_) => false); 
+      };
+    
+    } catch (e) {
+      console.error('Erro:', e);
+      return e;
+  }
+};
+
+//Add Marcelo 23/10/2023
+async function markIsUnreadChats(NumberChatsUnread) {
+  const options = {
+    onlyWithUnreadMessage: false,
+    onlyUsers: true,
+  };
+
+  try {
+    const chats = await WPP.chat.list(options);
+    chats.reverse();
+    const numChatsToUnread = Math.min(NumberChatsUnread, chats.length);
+
+    for (let i = 0; i < numChatsToUnread; i++) {
+      await WPP.chat
+        .markIsUnread(chats[i].id._serialized)
+        .then((_) => true)
+        .catch((_) => false); 
+      };
+    
+    } catch (e) {
+      console.error('Erro:', e);
+      return e;
+  }
+};
