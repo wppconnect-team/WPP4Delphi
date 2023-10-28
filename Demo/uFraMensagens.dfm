@@ -227,7 +227,6 @@ object frameMensagem: TframeMensagem
       ImageIndex = 2
       Images = ImageList1
       TabOrder = 2
-      Visible = False
       OnClick = btnListaMenuClick
     end
     object btnBotaoSimples: TButton

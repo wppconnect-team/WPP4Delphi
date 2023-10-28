@@ -82,7 +82,7 @@ Const
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2346.52';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2347.53';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
