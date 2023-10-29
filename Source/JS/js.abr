@@ -2073,18 +2073,12 @@ window.WAPI.getGroupInviteLink = async function (chatId) {
 /**
  * Returns an object with all of your host device details
  */
-window.WAPI.getMe = function(){
-   	
-	vMe = {...WAPI.quickClean({
-        //...Store.Contact.get(Store.Me.wid).attributes,
-        ...Store.Me.attributes
-    }),
-    me:Store.Me.me};
- 
-  SetConsoleMessage("GetMe", JSON.stringify(vMe)); 
-  
-  return vMe;
-    
+
+window.WAPI.getMe = function(){   		
+  var vMyNumber = getMyNumberID();
+  var vMe = window.Store.Contact.getMeContact(vMyNumber);
+  SetConsoleMessage("GetMe", JSON.stringify(vMe));   
+  return vMe;    
 }
 
 window.WAPI.getStatus = async (id) => {
