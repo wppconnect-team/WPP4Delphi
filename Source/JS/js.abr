@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.46.0.0;1.0.0.9;78.3.0
+//1.47.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2082,8 +2082,10 @@ window.WAPI.getMe = function(){
 }
 
 window.WAPI.getStatus = async (id) => {
- SetConsoleMessage("GetStatusMessage", JSON.stringify(await Store.MyStatus.getStatus(id)));	 
- //return status; 
+  //SetConsoleMessage("GetStatusMessage", JSON.stringify(await Store.MyStatus.getStatus(id)));	 
+  var status = await WPP.contact.getStatus(id);
+  SetConsoleMessage("GetStatusMessage", JSON.stringify(status));
+ return status; 
 }
 
 window.WAPI.checkNumberStatus = async function (id) {
