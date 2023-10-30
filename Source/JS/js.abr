@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.46.0.0;1.0.0.9;78.3.0
+//1.47.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2073,23 +2073,34 @@ window.WAPI.getGroupInviteLink = async function (chatId) {
 /**
  * Returns an object with all of your host device details
  */
-window.WAPI.getMe = function(){
-   	
-	vMe = {...WAPI.quickClean({
-        //...Store.Contact.get(Store.Me.wid).attributes,
-        ...Store.Me.attributes
-    }),
-    me:Store.Me.me};
- 
-  SetConsoleMessage("GetMe", JSON.stringify(vMe)); 
-  
-  return vMe;
-    
+
+window.WAPI.getMe = function(){   		
+  var vMyNumber = getMyNumberID();
+  var vMe = window.Store.Contact.getMeContact(vMyNumber);
+  SetConsoleMessage("GetMe", JSON.stringify(vMe));   
+  return vMe;    
 }
 
 window.WAPI.getStatus = async (id) => {
- SetConsoleMessage("GetStatusMessage", JSON.stringify(await Store.MyStatus.getStatus(id)));	 
- //return status; 
+  try {
+    // Obtém o status do contato usando 'await' para aguardar a resolução da Promise
+    var status = await WPP.contact.getStatus(id);
+
+    // Cria um objeto com 'id' e 'status'
+    var result = { id: id, status: status };
+
+    // Converte o objeto em uma string JSON
+    var jsonResult = JSON.stringify(result);
+
+    // Chama a função SetConsoleMessage com a mensagem JSON
+    SetConsoleMessage("GetStatusMessage", jsonResult);
+
+    // Retorna o status
+    return status;
+  } catch (error) {
+    console.error("Erro ao obter o status do contato:", error);
+    return null; // Ou outro valor apropriado em caso de erro
+  }
 }
 
 window.WAPI.checkNumberStatus = async function (id) {
