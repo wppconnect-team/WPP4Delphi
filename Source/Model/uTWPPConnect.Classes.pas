@@ -406,30 +406,53 @@ type
 
  TGetMeClass = class(TClassPadrao)
    private
-    Fbattery: integer;
+    {Fbattery: integer;
     Flocate: String;
     Flc: String;
     FserverToken: String;
     Fplugged: boolean;
-    Fpushname: String;
     Flg: String;
     Fme : String;
     Fphone : TPhoneClass;
-    Fstatus : TResponseStatusMessage;
+    Fstatus : TResponseStatusMessage; deprecated}
+    Fid: String;
+    FisContactSyncCompleted: Extended;
+    FverifiedLevel: Extended;
+    Fpushname: String;
+    FshortName: String;
+    Fname: String;
+    FprivacyMode: String;
+    FIsEnterprise: Boolean;
+    FIsBusiness: Boolean;
+    FLabels: TArray<String>;
+    FisSmb: Boolean;
+
+
    public
     constructor Create(pAJsonString: string; PJsonOption: TJsonOptions = JsonOptionClassPadrao);
     destructor Destroy; override;
-    property  battery     : integer read Fbattery write Fbattery;
+
+    {property  battery     : integer read Fbattery write Fbattery;
     property  lc          : String read Flc write Flc;
     property  lg          : String read Flg write Flg;
     property  locate      : String read Flocate write Flocate;
     property  plugged     : boolean read Fplugged write Fplugged;
-    property  pushname    : String read Fpushname write Fpushname;
     property  serverToken : String read FserverToken write FserverToken;
- // property   platform : String
     property  phone       : TPhoneClass read Fphone write Fphone;
     property  status      : TResponseStatusMessage read Fstatus write Fstatus;
-    property  me          : String read Fme write Fme;
+    property  me          : String read Fme write Fme;}
+
+    property id :                    String          read Fid                     write Fid;
+    property isContactSyncCompleted: Extended        read FisContactSyncCompleted write FisContactSyncCompleted;
+    property  pushname    : String read Fpushname write Fpushname;
+    property shortName:              String          Read FshortName              Write FshortName;
+    property name:                   String          Read Fname                   Write Fname;
+    property privacyMode:            String          Read FprivacyMode            Write FprivacyMode;
+    property verifiedLevel:          Extended        Read FverifiedLevel          Write FverifiedLevel;
+    property isBusiness:             Boolean         read FIsBusiness             write FIsBusiness;
+    property isEnterprise:           Boolean         read FIsEnterprise           write FIsEnterprise;
+    property isSmb:                  Boolean         read FisSmb                  write FisSmb;
+    property labels:                 TArray<String>  read FLabels                 write FLabels;
  end;
 
   TProfilePicThumbObjClass = class(TClassPadrao)
@@ -3123,7 +3146,8 @@ begin
   if Trim(FNumbers.Text) = '' then
   begin
     vJson := pAJsonString;
-    lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+    //lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+    lAJsonObj := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(pAJsonString),0) as TJSONObject;
 
     if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
@@ -3249,15 +3273,18 @@ begin
 end;
 { TGetMeClass }
 constructor TGetMeClass.Create(pAJsonString: string; PJsonOption: TJsonOptions = JsonOptionClassPadrao);
+var
+  auxJSON: string;
 begin
- Fphone    := TPhoneClass.Create(JsonString);
- Fstatus   := TResponseStatusMessage.Create(JsonString);
+ //Fphone    := TPhoneClass.Create(JsonString);
+ //Fstatus   := TResponseStatusMessage.Create(JsonString);
+ auxJSON := pAJsonString;
  inherited Create(pAJsonString);
 end;
 destructor TGetMeClass.Destroy;
 begin
-  FreeAndNil(Fphone);
-  FreeAndNil(Fstatus);
+  //FreeAndNil(Fphone);
+  //FreeAndNil(Fstatus);
   inherited;
 end;
 { TResponseIsDelivered }

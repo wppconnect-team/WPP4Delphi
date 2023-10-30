@@ -94,6 +94,7 @@ type
     Label2: TLabel;
     bEditMessage: TButton;
     btnDeletarOldChat: TButton;
+    bGetMe: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -142,6 +143,7 @@ type
     procedure btnEncerrarChamadaClick(Sender: TObject);
     procedure bEditMessageClick(Sender: TObject);
     procedure btnDeletarOldChatClick(Sender: TObject);
+    procedure bGetMeClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -204,6 +206,17 @@ begin
     end;
   end;
 
+end;
+
+procedure TframeMensagem.bGetMeClick(Sender: TObject);
+begin
+  try
+   if not frDemo.TWPPConnect1.Auth then
+     Exit;
+
+    frDemo.TWPPConnect1.GetMe;
+  finally
+  end;
 end;
 
 procedure TframeMensagem.BitBtn1Click(Sender: TObject);
@@ -987,7 +1000,8 @@ begin
 
     options :=
       'title:"Reunião Agendada",' +
-      'callType:"voice",'+
+      //'callType:"voice",'+
+      'callType:"video",'+
       'scheduledTimestampMs:' + horarioAgendamento;
       //'scheduledTimestampMs: 1696084222000';
 
@@ -1109,13 +1123,12 @@ end;
 
 procedure TframeMensagem.btnStatusClick(Sender: TObject);
 begin
- try
-
+  try
     FStatus := true;
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
-   frDemo.TWPPConnect1.GetStatusContact(ed_num.Text);
+    frDemo.TWPPConnect1.GetStatusContact(ed_num.Text);
   finally
 
   end;

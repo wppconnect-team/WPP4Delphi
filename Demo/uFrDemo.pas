@@ -16,7 +16,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,Rtti, strUtils, IniFiles, System.IOUtils,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls, Winapi.ShellAPI,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls, Winapi.ShellAPI, RegularExpressions, System.Character,
   // ############ ATENCAO AQUI ####################
   // units adicionais obrigatorias
   uTWPPConnect.ConfigCEF, uTWPPConnect, uTWPPConnect.Constant, uTWPPConnect.JS,
@@ -169,6 +169,8 @@ type
     procedure LerConfiguracoes;
     procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
     procedure DeleteFiles(const FileName: String);
+    function ConvertUnicodeEscapeToUTF8(const input: string): UTF8String;
+    function IsValidUnicodeCodePoint(value: Word): Boolean;
   public
     FChatID: string;
     { Public declarations }
@@ -1083,11 +1085,16 @@ procedure TfrDemo.TWPPConnect1GetAllGroupList(const AllGroups
   : TRetornoAllGroups);
 var
   i: integer;
+  TextGroup: String;
 begin
   frameGrupos1.listaGrupos.Clear;
   for i := 0 to (AllGroups.Numbers.count) - 1 do
   begin
-    AddGroupList(AllGroups.Numbers[i])
+    TextGroup := AllGroups.Numbers[i];
+    //TextGroup := UnicodeToUtf8(AllGroups.Numbers[i]);
+    //UnicodeToUtf8(TextGroup, AllGroups.Numbers[i], 0);
+    //TextGroup := ConvertUnicodeEscapeToUTF8(UTF8Encode(AllGroups.Numbers[i]));
+    AddGroupList(TextGroup);
   end;
 end;
 procedure TfrDemo.TWPPConnect1GetChatList(const Chats: TChatList);
@@ -1882,7 +1889,6 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1GetTotalChatsUserRead(const TotalChatsUserRead: TTotalChatsUserRead);
 begin
-  //
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('TotalChatsUserRead: ' + TotalChatsUserRead.totalchats.ToString);
 end;
 
@@ -2541,4 +2547,48 @@ function TfrDemo.VerificaPalavraChave(pMensagem, pSessao, pTelefone,
   pContato: String): Boolean;
 begin
 end;
+
+
+function TfrDemo.ConvertUnicodeEscapeToUTF8(const input: string): UTF8String;
+var
+  regex: TRegEx;
+  match: TMatch;
+  unicodeCode: string;
+  unicodeValue: Word;
+  resultStr: string;
+begin
+  regex := TRegEx.Create('\\u([0-9A-Fa-f]{4})');
+  match := regex.Match(input);
+  resultStr := input;
+
+  while match.Success do
+  begin
+    if match.Groups.Count = 2 then
+    begin
+      unicodeCode := match.Groups[1].Value;
+      try
+        unicodeValue := StrToInt('$' + unicodeCode);
+
+        // Verifique se o valor Unicode é válido e corresponde a um caractere válido
+        if IsValidUnicodeCodePoint(unicodeValue) then
+        begin
+          resultStr := resultStr.Replace(match.Value, WideChar(unicodeValue));
+        end;
+      except
+        // Em caso de erro na conversão, mantenha a sequência original
+      end;
+    end;
+
+    match := match.NextMatch;
+  end;
+
+  Result := UTF8Decode(AnsiString(resultStr));//WideStringToUnicodeString(resultStr, CP_UTF8);
+end;
+
+function TfrDemo.IsValidUnicodeCodePoint(value: Word): Boolean;
+begin
+  // Verifica se o valor Unicode está dentro do intervalo válido (0-10FFFF)
+  Result := (value >= $0000) and ((value <= $D7FF) or ((value >= $E000) and (value <= $10FFFF)));
+end;
+
 end.
