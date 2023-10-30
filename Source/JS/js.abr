@@ -2084,7 +2084,7 @@ window.WAPI.getMe = function(){
 window.WAPI.getStatus = async (id) => {
   //SetConsoleMessage("GetStatusMessage", JSON.stringify(await Store.MyStatus.getStatus(id)));	 
   var status = await WPP.contact.getStatus(id);
-  SetConsoleMessage("GetStatusMessage", JSON.stringify(status));
+  SetConsoleMessage("GetStatusMessage", JSON.stringify({'id:' + id + ',status:' + status)});
  return status; 
 }
 
