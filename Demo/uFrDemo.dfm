@@ -1751,6 +1751,10 @@ object frDemo: TfrDemo
         ExplicitLeft = 10
         ExplicitTop = 493
       end
+      inherited bGetMe: TButton
+        ExplicitLeft = 5
+        ExplicitTop = 299
+      end
     end
     inherited GroupBox3: TGroupBox
       Height = 589
