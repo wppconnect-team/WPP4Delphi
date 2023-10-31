@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.47.0.0;1.0.0.9;78.3.0
+//1.48.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18626,7 +18626,7 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 	var jsonResult = JSON.stringify(result);
 	
 	// Chama a função SetConsoleMessage com a mensagem JSON
-	SetConsoleMessage("GenLinkDeviceCodeForPhoneNumber", jsonResult);
+	SetConsoleMessage("GetgenLinkDeviceCodeForPhoneNumber", jsonResult);
 
     } catch (err) {
         console.log(err);
