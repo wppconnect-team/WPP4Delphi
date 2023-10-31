@@ -18613,3 +18613,22 @@ async function markIsUnreadChats(NumberChatsUnread) {
       return e;
   }
 };
+
+//Marcelo 30/10/2023
+window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {    
+    const code = await WPP.conn.genLinkDeviceCodeForPhoneNumber(chatid);
+    
+    try {        
+	// Cria um objeto com 'id' e 'code'
+	var result = { id: id, code: code };
+	
+	// Converte o objeto em uma string JSON
+	var jsonResult = JSON.stringify(result);
+	
+	// Chama a função SetConsoleMessage com a mensagem JSON
+	SetConsoleMessage("GenLinkDeviceCodeForPhoneNumber", jsonResult);
+
+    } catch (err) {
+        console.log(err);
+    };    
+};
