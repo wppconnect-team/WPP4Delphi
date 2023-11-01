@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.48.0.0;1.0.0.9;78.3.0
+//1.49.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -18239,7 +18239,11 @@ window.WAPI.getMessages = async function(chatid, options) {
 
     if (result) {
         try {
-            SetConsoleMessage("getMessages", JSON.stringify(result));
+             Obj = {
+               id: chatid,
+               msg: JSON.stringify(result)
+             }
+            SetConsoleMessage("getMessages", JSON.stringify(Obj));
 
         } catch (err) {
             console.log(err);
