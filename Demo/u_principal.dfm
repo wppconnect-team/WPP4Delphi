@@ -31,15 +31,11 @@ object frmPrincipal: TfrmPrincipal
     Top = 3
     Width = 1096
     Height = 677
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Autentica'#231#227'o / Authentication'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Pnl_Config: TPanel
         AlignWithMargins = True
         Left = 375
@@ -2936,10 +2932,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet3: TTabSheet
       Caption = 'A'#231#245'es Manuais / Actions'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object groupEnvioMsg: TGroupBox
         Left = 0
         Top = 0
@@ -3640,10 +3632,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet4: TTabSheet
       Caption = 'Logs Recebimento'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         1088
         649)
@@ -3708,10 +3696,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet5: TTabSheet
       Caption = 'Logs Envio'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object memo_unReadMessageEnv: TMemo
         Left = 8
         Top = 17
@@ -3732,10 +3716,6 @@ object frmPrincipal: TfrmPrincipal
     object TabSheet2: TTabSheet
       Caption = 'A'#231#245'es em grupo /  Group actions'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         AlignWithMargins = True
         Left = 3

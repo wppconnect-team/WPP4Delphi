@@ -1677,84 +1677,24 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
         end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
       Height = 589
       ExplicitHeight = 589
-      inherited btnLocalizacaoBotao: TButton
-        ExplicitLeft = 3
-        ExplicitTop = 385
-      end
-      inherited btnLink: TButton
-        ExplicitTop = 237
-      end
-      inherited btnImagemBotao: TButton
-        ExplicitLeft = 0
-      end
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
-      end
-      inherited btnAudio: TButton
-        ExplicitTop = 268
-      end
-      inherited btnContato: TButton
-        ExplicitTop = 330
-      end
-      inherited btnSticker: TButton
-        ExplicitTop = 299
-      end
-      inherited btnLocalizacao: TButton
-        ExplicitTop = 361
-      end
-      inherited btnArquivo: TButton
-        ExplicitLeft = 0
       end
     end
     inherited GroupBox2: TGroupBox
       Height = 589
       ExplicitHeight = 589
-      inherited btnDeletarTodosChats: TButton
-        ExplicitTop = 485
-      end
-      inherited Button1: TButton
-        ExplicitTop = 516
-      end
-      inherited btnValidarListarNumeros: TButton
-        ExplicitTop = 547
-      end
-      inherited btnGetMessage: TButton
-        ExplicitTop = 578
-      end
-      inherited Button3: TButton
-        ExplicitTop = 609
-      end
-      inherited Button4: TButton
-        ExplicitTop = 640
-      end
-      inherited btnDeletarOldChat: TButton
-        ExplicitLeft = 10
-        ExplicitTop = 493
-      end
-      inherited bGetMe: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 299
-      end
     end
     inherited GroupBox3: TGroupBox
       Height = 589
@@ -5736,7 +5676,6 @@ object frDemo: TfrDemo
     Config.AutoStart = True
     Config.AutoDelay = 500
     Config.SecondsMonitor = 1
-    Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
     Config.Evento_new_reaction = True
     AjustNumber.LengthPhone = 8
@@ -5750,6 +5689,7 @@ object frDemo: TfrDemo
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
     OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
+    OnGetMessages = TWPPConnect1GetMessages
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetMessageById = TWPPConnect1GetMessageById
@@ -5794,6 +5734,7 @@ object frDemo: TfrDemo
     OnGetmsg_revokeEvento = TWPPConnect1Getmsg_revokeEvento
     OnGetTotalChatsUserRead = TWPPConnect1GetTotalChatsUserRead
     OnGetWAVersion = TWPPConnect1GetWAVersion
+    OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     Left = 288

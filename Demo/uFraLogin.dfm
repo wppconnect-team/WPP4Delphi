@@ -1,7 +1,7 @@
 object frameLogin: TframeLogin
   Left = 0
   Top = 0
-  Width = 683
+  Width = 752
   Height = 349
   Align = alClient
   Font.Charset = ANSI_CHARSET
@@ -894,7 +894,7 @@ object frameLogin: TframeLogin
   end
   object imgQrCode: TImage
     Left = 394
-    Top = 35
+    Top = 24
     Width = 273
     Height = 260
     Center = True
@@ -1305,6 +1305,22 @@ object frameLogin: TframeLogin
     Visible = False
     OnClick = whatsOnClick
   end
+  object lblCodeLinkDevice: TLabel
+    Left = 394
+    Top = 320
+    Width = 194
+    Height = 23
+    Cursor = crHandPoint
+    Caption = 'Gera Code Link Device'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Roboto'
+    Font.Style = [fsBold, fsUnderline]
+    ParentFont = False
+    Transparent = True
+    OnClick = lblCodeLinkDeviceClick
+  end
   object rgTipoLogin: TRadioGroup
     Left = 192
     Top = 47
@@ -1338,6 +1354,22 @@ object frameLogin: TframeLogin
     Width = 188
     Height = 17
     TabOrder = 2
+  end
+  object eNumberWhats: TEdit
+    Left = 394
+    Top = 291
+    Width = 183
+    Height = 23
+    TabOrder = 3
+  end
+  object bgetgenLinkDeviceCodeFor: TBitBtn
+    Left = 583
+    Top = 290
+    Width = 166
+    Height = 25
+    Caption = 'Gera Code Link Device'
+    TabOrder = 4
+    OnClick = bgetgenLinkDeviceCodeForClick
   end
   object ImageList1: TImageList
     DrawingStyle = dsTransparent

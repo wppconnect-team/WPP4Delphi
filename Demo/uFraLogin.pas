@@ -39,11 +39,16 @@ type
     SpeedButton3: TButton;
     ImageList1: TImageList;
     ProgressBar1: TProgressBar;
+    lblCodeLinkDevice: TLabel;
+    eNumberWhats: TEdit;
+    bgetgenLinkDeviceCodeFor: TBitBtn;
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure whatsOnClick(Sender: TObject);
     procedure whatsOffClick(Sender: TObject);
     procedure rgTipoLoginClick(Sender: TObject);
+    procedure lblCodeLinkDeviceClick(Sender: TObject);
+    procedure bgetgenLinkDeviceCodeForClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -55,6 +60,30 @@ implementation
 {$R *.dfm}
 
 uses uFrDemo;
+
+procedure TframeLogin.bgetgenLinkDeviceCodeForClick(Sender: TObject);
+begin
+  if Trim(eNumberWhats.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    eNumberWhats.SetFocus;
+    Exit;
+  end;
+
+  frDemo.TWPPConnect1.getgenLinkDeviceCodeForPhoneNumber(eNumberWhats.Text);
+end;
+
+procedure TframeLogin.lblCodeLinkDeviceClick(Sender: TObject);
+begin
+  if Trim(eNumberWhats.Text) = '' then
+  begin
+    messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+    eNumberWhats.SetFocus;
+    Exit;
+  end;
+
+  frDemo.TWPPConnect1.getgenLinkDeviceCodeForPhoneNumber(eNumberWhats.Text);
+end;
 
 procedure TframeLogin.rgTipoLoginClick(Sender: TObject);
 begin

@@ -323,6 +323,7 @@ type
     procedure setNewName(newName: string);
     procedure setNewStatus(newStatus: string);
     procedure SetProfilePicture(ABase64: String);
+    procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure getStatus(vTelefone: string);
     procedure CleanChat(vTelefone: string);
     procedure fGetMe;
@@ -2286,7 +2287,21 @@ begin
                             finally
                               FreeAndNil(LOutClass);
                             end;
-                         end;
+                        end;
+
+    //Marcelo 30/10/2023
+    Th_GetgenLinkDeviceCodeForPhoneNumber   :
+                        begin
+                            LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                            LOutClass := TGenLinkDeviceCodeForPhoneNumber.Create(LResultStr);
+
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                            finally
+                              FreeAndNil(LOutClass);
+                            end;
+                        end;
 
 
     //Marcelo 31/05/2022
@@ -2460,14 +2475,28 @@ begin
 
     Th_getMessages: begin
                       //LOutClass2 := TRootClass.Create(LResultStr); //03/09/2022
-                      LOutClass2 := TRootClass.Create(PResponse.JsonString); //03/09/2022
+                      //LOutClass2 := TRootClass.Create(PResponse.JsonString); //03/09/2022
+                      LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                      LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                      LResultStr := LResultStr;
                       try
-                        SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                        try
+                          //LOutClass := TGetMessageClass.Create('');
+                          //LOutClass := TNewMsgClass.Create('');
+                          LOutClass := TGetMessageClass.Create(LResultStr);
+                          //TJson.JsonToObject(LOutClass, LResultStr);
+                          //LOutClass := TJson.JsonToObject<TGetMessageClass>(LResultStr);
+                          //LOutClass := TJson.JsonToObject<TNewMsgClass>(LResultStr);
+
+                          SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                        except on E: Exception do
+                        end;
+
                       finally
-                        FreeAndNil(LOutClass2);
+                        FreeAndNil(LOutClass);
                       end;
 
-                      FgettingChats := False;
+                      //FgettingChats := False;
                     end;
 
 
@@ -3461,6 +3490,15 @@ begin
   LJS   := FrmConsole_JS_VAR_removeGroupInviteLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_genLinkDeviceCodeForPhoneNumber;
+  FrmConsole_JS_AlterVar(LJS, '#PHONE#', Trim(vTelefone));
+  ExecuteJS(LJS, false);
 end;
 
 procedure TFrmConsole.getGroupInviteLink(vIDGroup: string);

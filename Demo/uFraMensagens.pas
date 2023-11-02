@@ -95,6 +95,7 @@ type
     bEditMessage: TButton;
     btnDeletarOldChat: TButton;
     bGetMe: TButton;
+    bGetMensagem: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -144,6 +145,7 @@ type
     procedure bEditMessageClick(Sender: TObject);
     procedure btnDeletarOldChatClick(Sender: TObject);
     procedure bGetMeClick(Sender: TObject);
+    procedure bGetMensagemClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -217,6 +219,29 @@ begin
     frDemo.TWPPConnect1.GetMe;
   finally
   end;
+end;
+
+procedure TframeMensagem.bGetMensagemClick(Sender: TObject);
+var
+ options: string;
+begin
+  if ed_Num.Text = '' then
+  begin
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Contato para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+  end;
+
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  //https://wppconnect.io/wa-js/functions/chat.getMessages.html
+  options := 'count: -1'; //All messages
+
+  frDemo.TWPPConnect1.getMessage(ed_num.text, options);
 end;
 
 procedure TframeMensagem.BitBtn1Click(Sender: TObject);

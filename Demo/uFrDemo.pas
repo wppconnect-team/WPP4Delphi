@@ -116,7 +116,6 @@ type
     procedure TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
     procedure TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
     procedure TWPPConnect1GetMessageById(const Mensagem: TMessagesClass);
-    procedure TWPPConnect1GetMessages(const Chats: TRootClass);
     procedure TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
     procedure TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
     procedure TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
@@ -152,6 +151,8 @@ type
     procedure TWPPConnect1GetAck_changeEvento(const Ack_change: TAck_changeClass);
     procedure TWPPConnect1GetTotalChatsUserRead(const TotalChatsUserRead: TTotalChatsUserRead);
     procedure TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
+    procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
+    procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -630,6 +631,7 @@ end;
 procedure TfrDemo.FormShow(Sender: TObject);
 begin
   frameLogin1.Visible := True;
+  frameLogin1.lblCodeLinkDevice.Caption := '';
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
   timerStatus.Enabled := True;
   //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
@@ -1158,6 +1160,12 @@ begin
   end;
 end;
 
+procedure TfrDemo.TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
+begin
+  frameLogin1.lblCodeLinkDevice.Caption := Response.code;
+  Update;
+end;
+
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
 begin
  //
@@ -1265,6 +1273,7 @@ procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen
 begin
   ShowMessage('Visto por Último: '+ DateTimeToStr(UnixToDateTime(vgetLastSeen.LastSeen, False)));
 end;
+
 procedure TfrDemo.TWPPConnect1GetListChat(Sender: TObject; ChatsList: TGetChatList);
 var
   LChatClass: TChatListClass;
@@ -1509,7 +1518,6 @@ begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Recebida: ' + DateTimeToStr(UnixToDateTime(JMessagem.Result.ephemeralStartTimestamp, False)));
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 
-
     {if Mensagem.Result.ack = 1 then
       StatusMensagem := 'Enviada'
     else if Mensagem.Result.ack = 2 then
@@ -1530,15 +1538,84 @@ begin
   end;
 end;
 
-procedure TfrDemo.TWPPConnect1GetMessages(const Chats: TRootClass);
+procedure TfrDemo.TWPPConnect1GetMessages(const Response: TGetMessageClass);
 var
-  AChat: uTWPPConnect.Classes.TResultClass;
+  wlo_Celular, quotedMsg_caption, Extensao_Documento, Automato_Path, NomeArq_Whats, IdMensagemOrigem : string;
+  m: integer;
+  WPPConnectDecrypt: TWPPConnectDecryptFile;
+  ChatGroup: Boolean;
 begin
-  for AChat in Chats.Result do
-  begin
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Body: ' + Trim(AChat.body)));
-  end;
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('getMessage: ' + Response.Chatid);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('TotalMensagens: ' + IntToStr(Length(Response.Msgs)));
 
+  for m := 0 to Length(Response.Msgs) -1 do
+  begin
+    ChatGroup := pos('@g.us', Response.Msgs[m].id.Remote) > 0;
+    if ChatGroup then
+    begin
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Group: True');
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Chat Id: ' + Response.Msgs[m].id.remote);
+    end;
+
+    wlo_Celular := Copy(Response.Msgs[m].from,1,  pos('@', Response.Msgs[m].from) -1); // nr telefone
+    //ShowMessage('body: ' + AnsiUpperCase(Response.Msgs[m].body) + ' Número WhatsApp: ' + wlo_Celular);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+    if Response.Msgs[m].id.fromMe then
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');
+
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Nome Contato Sender: ' + Trim(Response.Msgs[m].notifyName));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(Response.Msgs[m].body));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + Response.Msgs[m].id._serialized);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + Response.Msgs[m].&type);
+
+    if Response.Msgs[m].mediaKey <> '' then
+    begin
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('mimetype: ' + Response.Msgs[m].mimetype);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('deprecatedMms3Url: ' + Response.Msgs[m].deprecatedMms3Url);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('mediaKey: ' + Response.Msgs[m].mediaKey);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('filename: ' + Response.Msgs[m].filename);
+
+      // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+      case AnsiIndexStr(UpperCase(Response.Msgs[m].&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
+        0: Extensao_Documento := 'mp3';
+        1: Extensao_Documento := 'jpg';
+        2: Extensao_Documento := 'mp4';
+        3: Extensao_Documento := 'mp3';
+        4:
+        begin
+          Extensao_Documento := ExtractFileExt(Response.Msgs[m].filename);
+          Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+        end;
+        5: Extensao_Documento := 'jpg'; //'webp';
+        6: Extensao_Documento := 'mp4'; //Instant Vídeo
+      end;
+
+      Automato_Path := ExtractFilePath(ParamStr(0));
+
+      //Download
+      {NomeArq_Whats := WPPConnectDecrypt.download(Response.Msgs[m].deprecatedMms3Url,
+                      Response.Msgs[m].mediaKey, Extensao_Documento, Response.Msgs[m].id, Automato_Path + 'Temp\');}
+    end;
+
+    //Mensagem Origem
+    if Assigned(Response.Msgs[m].quotedMsg) then
+    begin
+      quotedMsg_caption := Response.Msgs[m].quotedMsg.Caption;
+      if Trim(quotedMsg_caption) = '' then
+        if Assigned(Response.Msgs[m].quotedMsg.list) then
+          quotedMsg_caption := Response.Msgs[m].quotedMsg.list.description;
+      if Trim(quotedMsg_caption) = '' then
+        quotedMsg_caption := Response.Msgs[m].quotedMsg.Body;
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+      IdMensagemOrigem := 'true_' + Response.Msgs[m].id.remote+'_' + Response.Msgs[m].quotedStanzaID;
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Unique id Origem: ' + IdMensagemOrigem);
+    end;
+
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+  end;
 
 end;
 

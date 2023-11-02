@@ -62,7 +62,7 @@ type
   TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
 
   TGetUnReadMessages        = procedure(Const Chats: TChatList) of object;
-  TGetMessages              = procedure(Const Chats: TChatList3) of object; //14/08/2022
+  TGetMessages              = procedure(Const Response: TGetMessageClass) of object; //31/10/2023
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
   TOnMyContacts             = procedure(Const MyContacts: TRetornoAllContacts) of object; //add Marcelo 01/07/2023
@@ -92,6 +92,8 @@ type
 
   TOnGetTotalChatsUserRead = procedure(Const TotalChatsUserRead: TTotalChatsUserRead) of object; //Marcelo 22/10/2023
   TOnGetWAVersion = procedure(Const WhatsAppWebVersion: TWAVersion) of object; //Marcelo 22/10/2023
+
+  TOnGetgenLinkDeviceCodeForPhoneNumber = procedure(Const Response: TGenLinkDeviceCodeForPhoneNumber) of object; //Marcelo 30/10/2023
 
 
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
@@ -132,6 +134,7 @@ type
   TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
   TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
   TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
+
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -157,6 +160,7 @@ type
     FWhatsAppWebVersion     : String;
     FTotalChatsUserRead     : Integer;
     FWAJS_Version           : String;
+    FgenLinkDeviceCode      : string;
 
 
     { Private  declarations }
@@ -265,6 +269,7 @@ type
 
     FOnGetIsOnline: TGetIsOnline; //Marcelo 03/05/2023
     FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
+    FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
@@ -414,6 +419,7 @@ type
     procedure SetProfilePicture(vFileName: string);
     procedure SetStatus(vStatus: String);
     procedure GetStatusContact(PNumber: String);
+    procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure GetGroupInviteLink(PIDGroup : string);
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
@@ -435,6 +441,8 @@ type
     Property  IsConnected        : Boolean              Read FGetIsConnected;
     Property  MyNumber           : String               Read FMyNumber;
     Property  WAJS_Version       : String               Read FWAJS_Version;
+    Property  genLinkDeviceCode  : String               Read FgenLinkDeviceCode;
+
     Property  WhatsAppWebVersion : String               Read FWhatsAppWebVersion;
     Property  TotalChatsUserRead : Integer              Read FTotalChatsUserRead default 0;
 
@@ -554,6 +562,8 @@ type
 
     property OnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead     read FOnGetTotalChatsUserRead     write FOnGetTotalChatsUserRead;
     property OnGetWAVersion             : TOnGetWAVersion              read FOnGetWAVersion              write FOnGetWAVersion;
+
+    property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
 
     property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
@@ -1588,6 +1598,25 @@ end;
 function TWPPConnect.GetContact(Pindex: Integer): TContactClass;
 begin
   Result := Nil;
+end;
+
+procedure TWPPConnect.getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
+begin
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  vTelefone := AjustNumber.FormatIn(vTelefone);
+
+  if pos('@', vTelefone) = 0 then
+  begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vTelefone);
+    Exit;
+  end;
+
+  FrmConsole.getgenLinkDeviceCodeForPhoneNumber(vTelefone);
 end;
 
 procedure TWPPConnect.getMessage(vNumber, vOptions: String);
@@ -2792,11 +2821,11 @@ begin
   end;
 
 
-  //Marcelo 14/08/2022
+  //Marcelo 31/10/2023
   if PTypeHeader = Th_getMessages then
   Begin
     if Assigned(OnGetMessages) then
-      OnGetMessages(TChatList3(PReturnClass));
+      OnGetMessages(TGetMessageClass(PReturnClass));
   end;
 
   //Marcelo 17/09/2022
@@ -3041,9 +3070,7 @@ begin
       FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
     except on E: Exception do
     end;
-
   end;
-
 
   //29/12/2020
   if PTypeHeader = Th_getIsDelivered then
@@ -3162,6 +3189,20 @@ begin
       except on E: Exception do
       end;
 
+    end;
+  end;
+
+  if PTypeHeader = Th_GetgenLinkDeviceCodeForPhoneNumber then
+  Begin
+    if Assigned(FOnGetgenLinkDeviceCodeForPhoneNumber) then
+    begin
+      FOnGetgenLinkDeviceCodeForPhoneNumber(TGenLinkDeviceCodeForPhoneNumber(PReturnClass));
+      try
+        FgenLinkDeviceCode := TGenLinkDeviceCodeForPhoneNumber(PReturnClass).code;
+        //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+        FrmConsole.lblNumber.Caption := ' Code: ' + FgenLinkDeviceCode;
+      except on E: Exception do
+      end;
     end;
   end;
 

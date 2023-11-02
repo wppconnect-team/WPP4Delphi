@@ -82,7 +82,7 @@ Const
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2347.53';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2348.50';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -190,6 +190,8 @@ Const
   FrmConsole_JS_VAR_getStatus               = 'window.WAPI.getStatus("<#PHONE#>");';
   FrmConsole_JS_VAR_ClearChat               = 'WPP.chat.clear("<#PHONE#>");';
   FrmConsole_JS_VAR_getMe                   = 'window.WAPI.getMe();';
+
+  FrmConsole_JS_VAR_genLinkDeviceCodeForPhoneNumber = 'window.WAPI.genLinkDeviceCodeForPhoneNumber2("<#PHONE#>");';
 
   //FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
   FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getInviteCode2("<#GROUP_ID#>");';
@@ -519,6 +521,7 @@ type
                    , Th_Getmsg_revoke=76 //Marcelo 26/07/2023
                    , Th_GetTotalChatsUserRead=77 //Marcelo 22/10/2023
                    , Th_GetWAVersion=78 //Marcelo 22/10/2023
+                   , Th_GetgenLinkDeviceCodeForPhoneNumber=79 //Marcelo 30/10/2023
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -656,7 +659,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 78; //Marcelo 22/10/2023
+const LmaxCount = 79; //Marcelo 30/10/2023
 var
   I: Integer;
   LNome: String;

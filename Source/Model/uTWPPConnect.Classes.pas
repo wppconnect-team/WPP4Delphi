@@ -1705,6 +1705,14 @@ public
   property WAVersion:      string    read FWAVersion     write FWAVersion;
 end;
 
+TGenLinkDeviceCodeForPhoneNumber = class(TClassPadrao)
+private
+  Fid: string;
+  Fcode: string;
+public
+  property id:        string    read Fid       write Fid;
+  property code:      string    read Fcode     write Fcode;
+end;
 
 //Marcelo 18/06/2022
 TIncomingiCall = class(TClassPadrao)
@@ -1829,7 +1837,7 @@ TReactionResponseClass = class(TClassPadrao)
 end;
 
 //Marcelo 25/07/2023
-TNewMsgClass = class
+TNewMsgClass = class(TClassPadrao)
 private
   FAck: Extended;
   FBody: String;
@@ -1887,6 +1895,20 @@ private
   FQuotedMsg: TQuotedMsgClass;
   FquotedStanzaID: string;
   FAuthor: String;
+  FTemplateParams: TArray<String>;
+  FInteractiveAnnotations: TArray<String>;
+  FscansSidecar: TscansSidecarClass;
+  FscanLengths: TArray<Extended>;
+  fVCardLIst: TArray<TCardClass>;
+  FMediaKey: String;
+  FFooter: String;
+  FDeprecatedMms3Url: String;
+  FDirectPath: String;
+  FEncFilehash: String;
+  FMediaKeyTimestamp: Extended;
+  FIsCaptionByUser: Boolean;
+  FList: TListClass;
+  FlistResponse: TlistResponseClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -1917,8 +1939,8 @@ public
   property star: Boolean read FStar write FStar;
   property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
   property t: Extended read FT write FT;
-  property &to: String read FTo write FTo;
-  property &type: String read FType write FType;
+  property &to                         : String read FTo write FTo;
+  property &type                       : String read FType write FType;
   property pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
   property pollname                    : string   read Fpollname                      write Fpollname;
   property pollSelectableOptionsCount  : Extended read FpollSelectableOptionsCount    write FpollSelectableOptionsCount;
@@ -1945,7 +1967,21 @@ public
   property quotedParticipant  : String          read FQuotedParticipant           write FQuotedParticipant;
   property quotedStanzaID     : string          read FquotedStanzaID              write FquotedStanzaID;
   property author             : String          read FAuthor                      write FAuthor;
-
+  property templateParams     : TArray<String>  read FTemplateParams              write FTemplateParams;
+  //property groupMentions      : TArray<String>      read FGroupMentions               write FGroupMentions;
+  property interactiveAnnotations: TArray<String>     read FInteractiveAnnotations write FInteractiveAnnotations;
+  property scanLengths           : TArray<Extended>   read FscanLengths            write FscanLengths;
+  property scansSidecar          : TscansSidecarClass read FscansSidecar           write FscansSidecar; //NOT IMPLEMENT
+  property CardList              : TArray<TCardClass> read fVCardLIst              write FVCardList;
+  property Footer                : String             read FFooter                 write FFooter;
+  property deprecatedMms3Url     : String             read FDeprecatedMms3Url      write FDeprecatedMms3Url;
+  property directPath            : String             read FDirectPath             write FDirectPath;
+  property encFilehash           : String             read FEncFilehash            write FEncFilehash;
+  property isCaptionByUser       : Boolean            read FIsCaptionByUser        write FIsCaptionByUser;
+  property mediaKey              : String             read FMediaKey               write FMediaKey;
+  property mediaKeyTimestamp     : Extended           read FMediaKeyTimestamp      write FMediaKeyTimestamp;
+  property list                  : TListClass         read FList                   write FList;
+  property listResponse          : TlistResponseClass read FlistResponse           write FlistResponse;
 end;
 
 //Marcelo 25/07/2023
@@ -1956,7 +1992,25 @@ TNewMessageResponseClass = class(TClassPadrao)
     property msg: TNewMsgClass read FMsg write FMsg;
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TRootClass;
+  end;
+
+//TResponseMessageClass = class(TClassPadrao)
+TGetMessageClass = class(TClassPadrao)
+private
+  FChatid: String;
+  FMsgs: TArray<TNewMsgClass>;
+public
+  property Chatid: String read FChatid write FChatid;
+  property Msgs: TArray<TNewMsgClass> read FMsgs write FMsgs;
 end;
+
+
+{TGetMessageClass = class(TClassPadrao)
+private
+  Fresult: string;
+public
+  property result: string read Fresult write Fresult;
+end;}
 
 TSendPollMessageResponseClass = class(TClassPadrao)
 private
@@ -2707,6 +2761,7 @@ TClassPadrao }
 constructor TClassPadrao.Create(pAJsonString: string; PJsonOption: TJsonOptions);
 var
   lAJsonObj: TJSONValue;
+  lAJsonArray: TJSONArray;
 begin
   lAJsonObj := nil;
   //lAJsonObj := TJSONObject.ParseJSONValue(TFile.ReadAllBytes(pAJsonString), 0);
