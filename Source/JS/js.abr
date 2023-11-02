@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.49.0.0;1.0.0.9;78.3.0
+//1.50.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2406,7 +2406,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.27.1 aplha
 //WPPCONNECT v2.27.1 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
@@ -18242,7 +18241,7 @@ window.WAPI.getMessages = async function(chatid, options) {
         try {
              Obj = {
                chatid: chatid,
-               msg: JSON.stringify(result)
+               msgs: result
              }
             SetConsoleMessage("getMessages", JSON.stringify(Obj));
 
