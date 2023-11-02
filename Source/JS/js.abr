@@ -18234,13 +18234,14 @@ window.WAPI.getLastSeen = async function(chatid) {
         };
 };
 
+//02/11/2023
 window.WAPI.getMessages = async function(chatid, options) {
     const result = await WPP.chat.getMessages(chatid, options);
 
     if (result) {
         try {
              Obj = {
-               id: chatid,
+               chatid: chatid,
                msg: JSON.stringify(result)
              }
             SetConsoleMessage("getMessages", JSON.stringify(Obj));
