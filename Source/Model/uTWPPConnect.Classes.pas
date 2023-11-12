@@ -3362,7 +3362,10 @@ begin
   inherited Create(v);
   fMessageClass := TMessagesClass.Create(FJsonMessage);
   //true_1234434@us
-  FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
+  if pos('@g.us', FMessageclass.FId) > 0 then
+    FTelefone := Copy(FMessageclass.FId,6, Pos('@g.us',FMessageclass.FId)-6) + '@g.us'
+  else
+    FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
   FAck      := FMessageClass.ack;
   FID    := FMessageClass.id;
   FMessageClass.Free;
