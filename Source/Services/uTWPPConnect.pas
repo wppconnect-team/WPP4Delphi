@@ -1358,7 +1358,7 @@ begin
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
-           sleep(random(Config.AutoDelay));
+          sleep(random(Config.AutoDelay));
 
         TThread.Synchronize(nil, procedure
         begin
@@ -1367,7 +1367,6 @@ begin
             FrmConsole.DeletarTodosOsChatsUsers();
           end;
         end);
-
       end);
 
   lThread.FreeOnTerminate := true;
