@@ -279,6 +279,7 @@ type
     procedure DesarquivarChat(vContato:String);
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
+    procedure DeletarTodosOsChatsUsers;
     procedure DeletarOldChats(QtdChatsExcluir: string);
     procedure MarkIsReadChats(NumberChatsIsRead: string);
     procedure MarkIsUnreadChats(NumberChatsUnread: string);
@@ -1195,6 +1196,17 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_DeleteAllChats;
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.DeletarTodosOsChatsUsers;
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_DeleteAllChatsUsers;
   ExecuteJS(LJS, true);
 end;
 
@@ -3467,8 +3479,8 @@ procedure TFrmConsole.localStorage_debug;
 var
   Ljs: string;
 begin
-  LJS   := 'localStorage.debug = ''*'';';
-  ExecuteJS(LJS, true);
+  //LJS   := 'localStorage.debug = ''*'';';
+  //ExecuteJS(LJS, true);
 end;
 
 procedure TFrmConsole.SetGroupDescription(vIDGroup, vDescription : string);

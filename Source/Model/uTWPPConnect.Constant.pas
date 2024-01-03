@@ -82,7 +82,7 @@ Const
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2349.50';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2352.1';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -277,6 +277,7 @@ Const
   FrmConsole_JS_VAR_UnarchiveChat       = 'WPP.chat.unarchive("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_ArchiveAllChats     = 'archiveAllChats()';
   FrmConsole_JS_VAR_DeleteAllChats      = 'deleteAllChats()';
+  FrmConsole_JS_VAR_DeleteAllChatsUsers = 'deleteAllChatsUsers()';
   FrmConsole_JS_VAR_PinChat             = 'WPP.chat.pin("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_UnPinChat           = 'WPP.chat.unpin("<#CTT_NAME#>");';
 

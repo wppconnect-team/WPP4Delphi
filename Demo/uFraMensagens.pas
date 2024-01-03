@@ -549,7 +549,9 @@ procedure TframeMensagem.btnDeletarTodosChatsClick(Sender: TObject);
 begin
   if not frDemo.TWPPConnect1.Auth then
     Exit;
-  frDemo.TWPPConnect1.DeletarTodosOsChats;
+
+  //frDemo.TWPPConnect1.DeletarTodosOsChats;
+  frDemo.TWPPConnect1.DeletarTodosOsChatsUsers
 end;
 
 procedure TframeMensagem.btnDesbloquearClick(Sender: TObject);

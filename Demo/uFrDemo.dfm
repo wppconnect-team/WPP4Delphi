@@ -1682,6 +1682,9 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
         end
       end
     end

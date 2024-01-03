@@ -2199,9 +2199,9 @@ begin
       end
       else
       begin  //GRUPO
-        TWPPConnect1.ReadMessages(AChat.id);
+        //TWPPConnect1.ReadMessages(AChat.id);
 
-        (*
+
         FChatID  := AChat.id;
 
         // Added by Aurino 21/01/2023 14:34:50
@@ -2213,7 +2213,7 @@ begin
         }
         if Assigned(AMessage.Sender) then
         begin
-          contato  := AMessage.Sender.pushname ;
+          contato  := AMessage.Sender.pushname;
           contato  := IfThen(trim(AMessage.sender.PushName) <> EmptyStr, AMessage.sender.PushName, AMessage.sender.verifiedName);
 
           telefone := AMessage.sender.id;
@@ -2248,7 +2248,7 @@ begin
 
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
         end;
-        *)
+
       end;
 
     end;

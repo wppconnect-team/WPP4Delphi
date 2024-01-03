@@ -255,6 +255,9 @@ type
      FisViewOnce: Boolean;
      FstaticUrl: String;
      FisVcardOverMmsDocument: Boolean;
+     FgifAttribution: Extended;
+     FisGif: Boolean;
+
   public
      constructor Create(pAJsonString: string);
      destructor  Destroy;       override;
@@ -277,12 +280,15 @@ type
      property staticUrl              : String        Read FstaticUrl                   Write FstaticUrl;
      property isVcardOverMmsDocument : Boolean       read FisVcardOverMmsDocument      write FisVcardOverMmsDocument;
      property renderableUrl          : String        Read FrenderableUrl               Write FrenderableUrl;
+     property gifAttribution         : Extended      read FgifAttribution              write FgifAttribution;
+     property isGif                  : Boolean       read FisGif                       write FisGif;
   end;
 
   TResponseMyNumber = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
   end;
+
   TResponseIsDelivered = class(TClassPadraoString)
   public
     constructor Create(pAJsonString: string);
@@ -292,16 +298,19 @@ type
   public
     constructor Create(pAJsonString: string);
   end;
+
   TResponseIsBeta = class(TClassPadraoString) //MARCELO 02/03/2022
   public
     constructor Create(pAJsonString: string);
   end;
+
   TChatStatesClass = class(TClassPadrao)
   private
     FTeste: String;
   public
     property teste: String read FTeste write FTeste;
   end;
+
   TPresenceClass = class(TClassPadraoList<TChatstatesClass>)
   private
     FChatstates: TArray<TChatstatesClass>;
@@ -312,6 +321,7 @@ type
     property   chatstates: TArray<TChatstatesClass> read FChatstates write FChatstates;
     property   id        : String                        read FId         write FId;
   end;
+
   TParticipantsClass = class(TClassPadrao)
   private
     FId          : String;
@@ -321,6 +331,30 @@ type
     property id:           String   read   FId           write FId;
     property isAdmin:      Boolean  read   FIsAdmin      write FIsAdmin;
     property isSuperAdmin: Boolean  read   FIsSuperAdmin write FIsSuperAdmin;
+  end;
+
+  TsubgroupSuggestionsClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
+  TmembershipApprovalRequestsClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
+  TpastParticipantsClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
+  TuniqueShortNameMapClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
   end;
 
   TGroupMetadataClass = class(TClassPadraoList<TParticipantsClass>)
@@ -335,6 +369,10 @@ type
     FParticipants: TArray<TParticipantsClass>;
     FPendingParticipants:TArray<TParticipantsClass>;
     FRestrict    : Boolean;
+    FsubgroupSuggestions: TArray<TsubgroupSuggestionsClass>;
+    FmembershipApprovalRequests: TArray<TmembershipApprovalRequestsClass>;
+    FpastParticipants: TArray<TpastParticipantsClass>;
+    FuniqueShortNameMap: TuniqueShortNameMapClass;
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -346,8 +384,12 @@ type
     property id       : String       read FId         write FId;
     property owner    : String       read FOwner      write FOwner;
     property restrict : Boolean      read FRestrict   write FRestrict;
-    property participants: TArray<TParticipantsClass>        read FParticipants        write FParticipants;
-    property pendingParticipants: TArray<TParticipantsClass> read FPendingParticipants Write FPendingParticipants;
+    property participants: TArray<TParticipantsClass>          read FParticipants         write FParticipants;
+    property pendingParticipants: TArray<TParticipantsClass>   read FPendingParticipants  Write FPendingParticipants;
+    property pastParticipants: TArray<TpastParticipantsClass>  read FpastParticipants Write FpastParticipants;
+    property membershipApprovalRequests: TArray<TmembershipApprovalRequestsClass> read FmembershipApprovalRequests Write FmembershipApprovalRequests;
+    property subgroupSuggestions: TArray<TsubgroupSuggestionsClass> read FsubgroupSuggestions Write FsubgroupSuggestions;
+    property uniqueShortNameMap : TuniqueShortNameMapClass     read FuniqueShortNameMap   write FuniqueShortNameMap;
   end;
 
  TPhoneClass = class(TClassPadrao)
@@ -910,6 +952,9 @@ type
     FlistResponse: TlistResponseClass;
     FgroupMentions: TArray<String>;
     Fpollname: string;
+    FisGif: Boolean;
+    FgifAttribution: Extended;
+    Frecipients: TArray<String>;
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -945,6 +990,8 @@ type
     property notifyName : String              read FNotifyName         write FNotifyName;
     property recvFresh  : Boolean             read FRecvFresh          write FRecvFresh;
     property self       : String              read FSelf               write FSelf;
+    property gifAttribution : Extended        read FgifAttribution     write FgifAttribution;
+    property isGif      : Boolean             read FisGif              write FisGif;
     property mimetype   : String              read Fmimetype           Write Fmimetype;
     property filename   : String              read Ffilename           Write Ffilename;
     property deprecatedMms3Url  : String      read FdeprecatedMms3Url  Write FdeprecatedMms3Url;
@@ -1004,6 +1051,7 @@ type
     property title                       : string   read Ftitle                        write Ftitle;
     //Marcelo 18/06/2022
     property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
+    property recipients                  : TArray<String>      read Frecipients        write Frecipients;
 
     //encFilehash
   end;
@@ -2513,7 +2561,7 @@ begin
         Png.LoadFromStream(FAQrCodeImageStream);
         FAQrCodeImage.Graphic := PNG;
       finally
-        PNG.Free;
+        PNG.DisposeOf;
       end;
    {$ENDIF}
     result := True;
@@ -2523,7 +2571,7 @@ end;
 destructor TResultQRCodeClass.Destroy;
 begin
   FreeAndNil(FAQrCodeImage);
-  FAQrCodeImageStream.Free;
+  FAQrCodeImageStream.DisposeOf;
   inherited;
 end;
 procedure TResultQRCodeClass.ProcessQRCodeImage;
@@ -2538,7 +2586,7 @@ begin
     Exit;
   End;
   FUltimoQrCode  := AQrCode;
-  FAQrCodeImageStream.Free;
+  FAQrCodeImageStream.DisposeOf;
   FAQrCodeSucess        := False;
   LMem                  := TMemoryStream.Create;
   FAQrCodeImageStream   := TMemoryStream.Create;
@@ -2564,7 +2612,7 @@ begin
   finally
     FAImageDif     := TRUE;
     FreeAndNil(LConvert);
-    LMem.Free;
+    LMem.DisposeOf;
   end;
 end;
 { TResponseConsoleMessage }
@@ -3001,7 +3049,7 @@ begin
   FTImeOutIndy.Interval      := FTimeOut * 1000;
   FTImeOutIndy.Enabled       := False;
   try
-    FReturnUrl.Free;
+    FReturnUrl.DisposeOf;
     FReturnUrl               := TMemoryStream.Create;
     FTImeOutIndy.Enabled     := True;
     try
@@ -3267,8 +3315,8 @@ end;
 
 destructor TResultClass.Destroy;
 begin
-  FId.free;
-  FMsgRowOpaqueData.free;
+  FId.DisposeOf;
+  FMsgRowOpaqueData.DisposeOf;
   inherited;
 end;
 
@@ -3368,12 +3416,12 @@ begin
     FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
   FAck      := FMessageClass.ack;
   FID    := FMessageClass.id;
-  FMessageClass.Free;
+  //FMessageClass.DisposeOf;
 end;
 
 destructor TResponsesendTextMessage.Destroy;
 begin
-
+  FMessageClass.DisposeOf;
   inherited;
 end;
 
@@ -3448,7 +3496,7 @@ end;
 
 destructor TWppCrashClass.Destroy;
 begin
-  FResult.Free;
+  FResult.DisposeOf;
   inherited;
 end;
 

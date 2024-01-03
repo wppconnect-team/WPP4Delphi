@@ -405,6 +405,7 @@ type
     procedure DesarquivarChat(PIDContato:String);
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
+    procedure DeletarTodosOsChatsUsers;
     procedure DeletarOldChats(QtdChatsExcluir: string);
     procedure MarkIsReadChats(NumberChatsIsRead: string);
     procedure MarkIsUnreadChats(NumberChatsUnread: string);
@@ -1336,6 +1337,34 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.DeletarTodosOsChats();
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DeletarTodosOsChatsUsers;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarTodosOsChatsUsers();
           end;
         end);
 
