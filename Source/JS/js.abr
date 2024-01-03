@@ -18676,6 +18676,28 @@ async function deleteOldChats(QtdChatsExcluir) {
     }
 }
 
+//Add Marcelo 03/01/2024
+async function deleteAllChatsUsers() {
+  const options = {
+    onlyWithUnreadMessage: false,
+    onlyUsers: true,
+  };
+
+  const chat = await WPP.chat.list(options);
+  // Ordene os chats de forma inversa (do mais recente para o mais antigo)
+  chat.reverse();
+
+  try {
+    for (let i = 0; i < chat.length; i++) {
+      await WPP.chat.delete(chat[i].id._serialized).then((result) => {
+        //console.log('Chat ${chat[i].id._serialized} excluído:', result);
+      });
+    }
+  } catch (e) {
+    console.log("Erro:".concat(e));
+  }
+}
+
 //Add Marcelo 21/10/2023
 async function TotalChatsUserRead() {
     const options = {
