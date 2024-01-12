@@ -62,6 +62,7 @@ type
     TimerRestauraPastaCache: TTimer;
     frameComunidades1: TframeComunidades;
     TimerProgress: TTimer;
+    lblNomeConta: TLabel;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -1453,7 +1454,9 @@ begin
     aList.Add('shortName: ' + vMe.shortName);
     aList.Add('name: ' + vMe.name);
 
-    ShowMessage(aList.Text);
+    lblNomeConta.Caption := vMe.pushname;
+
+    //ShowMessage(aList.Text);
   finally
     aList.Free;
   end;

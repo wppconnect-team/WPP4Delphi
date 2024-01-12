@@ -145,6 +145,7 @@ type
     FDestroyTmr             : Ttimer;
     FFormQrCodeType         : TFormQrCodeType;
     FMyNumber               : string;
+    FMyPushName             : string;
 
     FIsDelivered            : string;
     FGetBatteryLevel        : Integer;
@@ -441,6 +442,7 @@ type
     Property  BatteryLevel       : Integer              Read FGetBatteryLevel; //deprecated;
     Property  IsConnected        : Boolean              Read FGetIsConnected;
     Property  MyNumber           : String               Read FMyNumber;
+    Property  MyPushName         : String               Read FMyPushName;
     Property  WAJS_Version       : String               Read FWAJS_Version;
     Property  genLinkDeviceCode  : String               Read FgenLinkDeviceCode;
 
@@ -3030,6 +3032,7 @@ begin
       fOnGetStatus(Self);
 
     FrmConsole.GetMyNumber;
+    FrmConsole.fGetMe();
     FrmConsole.getWAVersion;
     //FrmConsole.GetTotalChatsUserRead;
   end;
@@ -3093,7 +3096,9 @@ begin
       FOnGetMyNumber(Self);
 
     try
-      FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber;
+      if Trim(FMyPushName) <> '' then
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName else
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber;
       //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
       FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
     except on E: Exception do
@@ -3118,7 +3123,18 @@ begin
   if PTypeHeader = Th_GetMe  then
   begin
     if Assigned(FOnGetMe) then
+    begin
       FOnGetMe(TGetMeClass(PReturnClass));
+      FMyPushName := TGetMeClass(PReturnClass).pushname;
+    end;
+
+    try
+      FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName;
+      //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+      FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
+    except on E: Exception do
+    end;
+
   end;
 
   if PTypeHeader = Th_NewCheckIsValidNumber  then
@@ -3196,7 +3212,7 @@ begin
       FOnGetTotalChatsUserRead(TTotalChatsUserRead(PReturnClass));
       try
         FTotalChatsUserRead := TTotalChatsUserRead(PReturnClass).totalchats;
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
         FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
       except on E: Exception do
       end;
@@ -3212,7 +3228,7 @@ begin
       FOnGetWAVersion(TWAVersion(PReturnClass));
       try
         FWhatsAppWebVersion := TWAVersion(PReturnClass).WAVersion;
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
         FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
       except on E: Exception do
       end;

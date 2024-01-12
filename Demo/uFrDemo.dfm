@@ -1573,6 +1573,18 @@ object frDemo: TfrDemo
       Font.Style = [fsBold]
       ParentFont = False
     end
+    object lblNomeConta: TLabel
+      Left = 539
+      Top = 22
+      Width = 6
+      Height = 29
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -24
+      Font.Name = 'Roboto Bk'
+      Font.Style = []
+      ParentFont = False
+    end
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
@@ -1681,9 +1693,6 @@ object frDemo: TfrDemo
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
       end
