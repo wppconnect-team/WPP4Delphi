@@ -16235,8 +16235,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(58785).exportModule)(t, {
-                    getHistorySyncProgress: "getHistorySyncProgress"
-                }, (e => e.getHistorySyncProgress && !e.getHistorySyncLogDetailsString))
+                    getHistorySyncProgress: ["getHistorySyncProgressModel", "getHistorySyncProgress"]
+                }, (e => e.getHistorySyncProgressModel || e.getHistorySyncProgress && !e.getHistorySyncLogDetailsString))
             },
             45290: (e, t, r) => {
                 "use strict";
@@ -18095,7 +18095,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(63607);
     return __webpack_exports__
 })()));
-
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
