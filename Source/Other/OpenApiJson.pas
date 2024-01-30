@@ -1,6 +1,13 @@
 unit OpenApiJson;
 
-{$IFDEF FPC}{$MODE Delphi}{$ENDIF}
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ELSE}
+  {$IF CompilerVersion < 28}
+    {$DEFINE USEDBX}
+  {$IFEND}
+{$ENDIF}
+
 
 interface
 
@@ -9,7 +16,11 @@ uses
   fpjson, jsonparser,
 {$ELSE}
   Generics.Collections,
-  JSON,
+  {$IFDEF USEDBX}
+    Data.DBXJSON,
+  {$ELSE}
+    System.JSON,
+  {$ENDIF}
 {$ENDIF}
   SysUtils;
 
@@ -18,7 +29,11 @@ type
   TJSONValue = fpjson.TJSONData;
   TJSONBool = fpjson.TJSONBoolean;
 {$ELSE}
-  TJSONValue = System.JSON.TJSONValue;
+  {$IFDEF USEDBX}
+    TJSONValue = Data.DBXJSON.TJSONValue;
+  {$ELSE}
+    TJSONValue = System.JSON.TJSONValue;
+  {$ENDIF}
 {$ENDIF}
 
   TJsonWrapper = class
@@ -140,18 +155,32 @@ end;
 
 function TJsonWrapper.ArrayGet(JArr: TJSONValue; Index: Integer): TJSONValue;
 begin
+{$IFDEF USEDBX}
+  Result := TJSONArray(JArr).Get(Index);
+{$ELSE}
   Result := TJSONArray(JArr).Items[Index];
+{$ENDIF}
 end;
 
 function TJsonWrapper.ArrayLength(JArr: TJSONValue): Integer;
 begin
+{$IFDEF USEDBX}
+  Result := TJSONArray(JArr).Size;
+{$ELSE}
   Result := TJSONArray(JArr).Count;
+{$ENDIF}
 end;
 
 function TJsonWrapper.BooleanFromJsonValue(Value: TJSONValue): Boolean;
 begin
   if IsBoolean(Value) then
+  begin
+{$IFDEF USEDBX}
+    Result := Value is TJSONTrue;
+{$ELSE}
     Result := TJSONBool(Value).AsBoolean
+{$ENDIF}
+  end
   else
     Result := False;
 end;
@@ -255,7 +284,11 @@ end;
 
 function TJsonWrapper.IsBoolean(Value: TJSONValue): Boolean;
 begin
+{$IFDEF USEDBX}
+  Result := (Value is TJSONTrue) or (Value is TJSONFalse);
+{$ELSE}
   Result := Value is TJSONBool;
+{$ENDIF}
 end;
 
 function TJsonWrapper.IsFloatingPoint(const Value: string): Boolean;
@@ -317,13 +350,25 @@ begin
 end;
 
 function TJsonWrapper.ObjContains(JObj: TJSONValue; const Name: string; out Value: TJSONValue): Boolean;
+{$IFDEF USEDBX}
+var
+  Pair: TJSONPair;
+{$ENDIF}
 begin
 {$IFDEF FPC}
   Value := TJSONObject(JObj).Find(Name);
 {$ELSE}
+  {$IFDEF USEDBX}
+  Pair := TJSONObject(JObj).Get(Name);
+  if Assigned(Pair) then
+    Value := Pair.JsonValue
+  else
+    Value := nil;
+  {$ELSE}
   Value := TJSONObject(JObj).GetValue(Name);
-{$ENDIF}
+  {$ENDIF}
   Result := Value <> nil;
+{$ENDIF}
 end;
 
 function TJsonWrapper.StringFromJsonValue(Value: TJSONValue): string;

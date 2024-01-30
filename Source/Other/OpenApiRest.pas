@@ -1,5 +1,9 @@
 unit OpenApiRest;
 
+{$IF CompilerVersion < 29}
+  {$DEFINE USEINDY}
+{$IFEND}
+
 interface
 
 uses
@@ -214,7 +218,11 @@ uses
 {$IFDEF FPC}
   OpenApiFpc,
 {$ELSE}
-  OpenApiHttp,
+  {$IFDEF USEINDY}
+    OpenApiIndy,
+  {$ELSE}
+    OpenApiHttp,
+  {$ENDIF}
 {$ENDIF}
   OpenApiUtils;
 
