@@ -82,7 +82,7 @@ Const
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2402.2';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2404.1';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';
@@ -523,6 +523,7 @@ type
                    , Th_GetTotalChatsUserRead=77 //Marcelo 22/10/2023
                    , Th_GetWAVersion=78 //Marcelo 22/10/2023
                    , Th_GetgenLinkDeviceCodeForPhoneNumber=79 //Marcelo 30/10/2023
+                   , Th_Getmsg_edited=80 //Marcelo 29/01/2024
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -660,7 +661,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 79; //Marcelo 30/10/2023
+const LmaxCount = 80; //Marcelo 29/01/2024
 var
   I: Integer;
   LNome: String;

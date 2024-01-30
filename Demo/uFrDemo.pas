@@ -154,6 +154,7 @@ type
     procedure TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
     procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
     procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
+    procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1619,6 +1620,42 @@ begin
 
     frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
   end;
+
+end;
+
+procedure TfrDemo.TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
+var
+  wlo_Celular, quotedMsg_caption : string;
+begin
+
+  //wlo_Celular := Copy(MsgEdited.msg.chat,1,  pos('@', MsgEdited.msg.chat) -1); // nr telefone
+  wlo_Celular := Copy(MsgEdited.msg.msg.from,1,  pos('@', MsgEdited.msg.msg.from) -1); // nr telefone
+  //ShowMessage('body: ' + AnsiUpperCase(MsgEdited.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento Msg Edited');
+  {if MsgEdited.msg.id.fromMe then
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');}
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Nome Contato: ' + Trim(MsgEdited.msg.msg.notifyName));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('msg Edit body: ' + AnsiUpperCase(MsgEdited.msg.msg.body));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + MsgEdited.msg.msg.id._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + MsgEdited.msg.msg.&type);
+
+  if Assigned(MsgEdited.msg.msg.quotedMsg) then
+  begin
+    quotedMsg_caption := MsgEdited.msg.msg.quotedMsg.Caption;
+    if Trim(quotedMsg_caption) = '' then
+      if Assigned(MsgEdited.msg.msg.quotedMsg.list) then
+        quotedMsg_caption := MsgEdited.msg.msg.quotedMsg.list.description;
+    if Trim(quotedMsg_caption) = '' then
+      quotedMsg_caption := MsgEdited.msg.msg.quotedMsg.Body;
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+
+  end;
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
 
 end;
 

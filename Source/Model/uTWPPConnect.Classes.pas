@@ -1809,6 +1809,22 @@ public
 end;
 
 //Marcelo 07/07/2023
+TLatestEditMsgKeyClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FFromMe: Boolean;
+  FId: String;
+  FRemote: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property fromMe: Boolean read FFromMe write FFromMe;
+  property id: String read FId write FId;
+  property remote: String read FRemote write FRemote;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TMsgIdClass;
+end;
+
+//Marcelo 07/07/2023
 TMsgIdClass = class(TClassPadrao)
 private
   F_serialized: String;
@@ -1957,6 +1973,8 @@ private
   FIsCaptionByUser: Boolean;
   FList: TListClass;
   FlistResponse: TlistResponseClass;
+  FLatestEditMsgKey: TLatestEditMsgKeyClass;
+    FrequiresDirectConnection: Boolean;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2016,20 +2034,22 @@ public
   property quotedStanzaID     : string          read FquotedStanzaID              write FquotedStanzaID;
   property author             : String          read FAuthor                      write FAuthor;
   property templateParams     : TArray<String>  read FTemplateParams              write FTemplateParams;
-  //property groupMentions      : TArray<String>      read FGroupMentions               write FGroupMentions;
-  property interactiveAnnotations: TArray<String>     read FInteractiveAnnotations write FInteractiveAnnotations;
-  property scanLengths           : TArray<Extended>   read FscanLengths            write FscanLengths;
-  property scansSidecar          : TscansSidecarClass read FscansSidecar           write FscansSidecar; //NOT IMPLEMENT
-  property CardList              : TArray<TCardClass> read fVCardLIst              write FVCardList;
-  property Footer                : String             read FFooter                 write FFooter;
-  property deprecatedMms3Url     : String             read FDeprecatedMms3Url      write FDeprecatedMms3Url;
-  property directPath            : String             read FDirectPath             write FDirectPath;
-  property encFilehash           : String             read FEncFilehash            write FEncFilehash;
-  property isCaptionByUser       : Boolean            read FIsCaptionByUser        write FIsCaptionByUser;
-  property mediaKey              : String             read FMediaKey               write FMediaKey;
-  property mediaKeyTimestamp     : Extended           read FMediaKeyTimestamp      write FMediaKeyTimestamp;
-  property list                  : TListClass         read FList                   write FList;
-  property listResponse          : TlistResponseClass read FlistResponse           write FlistResponse;
+  //property groupMentions      : TArray<String>          read FGroupMentions               write FGroupMentions;
+  property interactiveAnnotations: TArray<String>         read FInteractiveAnnotations write FInteractiveAnnotations;
+  property scanLengths           : TArray<Extended>       read FscanLengths            write FscanLengths;
+  property scansSidecar          : TscansSidecarClass     read FscansSidecar           write FscansSidecar; //NOT IMPLEMENT
+  property CardList              : TArray<TCardClass>     read fVCardLIst              write FVCardList;
+  property Footer                : String                 read FFooter                 write FFooter;
+  property deprecatedMms3Url     : String                 read FDeprecatedMms3Url      write FDeprecatedMms3Url;
+  property directPath            : String                 read FDirectPath             write FDirectPath;
+  property encFilehash           : String                 read FEncFilehash            write FEncFilehash;
+  property isCaptionByUser       : Boolean                read FIsCaptionByUser        write FIsCaptionByUser;
+  property mediaKey              : String                 read FMediaKey               write FMediaKey;
+  property mediaKeyTimestamp     : Extended               read FMediaKeyTimestamp      write FMediaKeyTimestamp;
+  property list                  : TListClass             read FList                   write FList;
+  property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
+  property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
+  property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
 end;
 
 //Marcelo 25/07/2023
@@ -2106,6 +2126,24 @@ private
   FMsg: TMsgRevokeClass;
 public
   property msg: TMsgRevokeClass read FMsg write FMsg;
+end;
+
+TMsgEditedClass = class(TClassPadrao)
+private
+  Fchat: String;
+  FId: String;
+  Fmsg: TNewMsgClass;
+public
+  property chat: String read Fchat write Fchat;
+  property id: String read FId write FId;
+  property msg: TNewMsgClass read Fmsg write Fmsg;
+end;
+
+TEditedClass = class(TClassPadrao)
+private
+  FMsg: TMsgEditedClass;
+public
+  property msg: TMsgEditedClass read FMsg write FMsg;
 end;
 
 TIdsClass = class(TClassPadrao)
@@ -3035,15 +3073,14 @@ end;
 
 
 function TUrlIndy.DownLoadInternetFile(Source, Dest: String): Boolean;
-
 begin
-
   try
     Result := URLDownloadToFile(nil, PChar(Source), PChar(Dest), 0, nil) = 0
   except
     Result := False;
   end;
 end;
+
 function TUrlIndy.GetUrl(const Purl: String): Boolean;
 begin
   FTImeOutIndy.Interval      := FTimeOut * 1000;
@@ -3064,7 +3101,11 @@ begin
       DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Aurino 11/07/2022
-      Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
+      //Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
+
+      //Joffas 24/01/2024
+      if DownLoadInternetFile(Purl, 'js.abr') then
+        FReturnUrl.LoadFromFile('js.abr');
 
     Except
       on E : Exception do

@@ -557,7 +557,7 @@ begin
   end;
 
   if not FConectado then
-     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   If Chromium1.Browser <> nil then
   begin
@@ -2780,6 +2780,18 @@ begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
                              LOutClass := TRevokeClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_Getmsg_edited :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TEditedClass.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                              finally

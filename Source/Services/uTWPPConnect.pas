@@ -90,6 +90,8 @@ type
   TOnGetAck_changeEvento = procedure(Const Ack_change: TAck_changeClass) of object; //Marcelo 26/07/2023
   TOnGetmsg_revokeEvento = procedure(Const RevokeMsg: TRevokeClass) of object; //Marcelo 26/07/2023
 
+  TOnGetmsg_EditedEvento = procedure(Const MsgEdited: TEditedClass) of object; //Marcelo 29/01/2024
+
   TOnGetTotalChatsUserRead = procedure(Const TotalChatsUserRead: TTotalChatsUserRead) of object; //Marcelo 22/10/2023
   TOnGetWAVersion = procedure(Const WhatsAppWebVersion: TWAVersion) of object; //Marcelo 22/10/2023
 
@@ -232,6 +234,7 @@ type
 
     FOnGetAck_changeEvento      : TOnGetAck_changeEvento; //Marcelo 26/07/2023
     FOnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento; //Marcelo 26/07/2023
+    FOnGetmsg_EditedEvento      : TOnGetmsg_EditedEvento; //Marcelo 29/01/2024
 
     FOnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead; //Marcelo 22/10/2023
     FOnGetWAVersion             : TOnGetWAVersion; //Marcelo 22/10/2023
@@ -562,6 +565,7 @@ type
 
     property OnGetAck_changeEvento      : TOnGetAck_changeEvento       read FOnGetAck_changeEvento       write FOnGetAck_changeEvento;
     property OnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento       read FOnGetmsg_revokeEvento       write FOnGetmsg_revokeEvento;
+    property OnGetmsg_EditedEvento      : TOnGetmsg_EditedEvento       read FOnGetmsg_EditedEvento       write FOnGetmsg_EditedEvento;
 
     property OnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead     read FOnGetTotalChatsUserRead     write FOnGetTotalChatsUserRead;
     property OnGetWAVersion             : TOnGetWAVersion              read FOnGetWAVersion              write FOnGetWAVersion;
@@ -3202,6 +3206,13 @@ begin
   begin
     if Assigned(FOnGetmsg_revokeEvento) then
       FOnGetmsg_revokeEvento(TRevokeClass(PReturnClass));
+  end;
+
+  //Marcelo 29/01/2024
+  if PTypeHeader = Th_Getmsg_edited  then
+  begin
+    if Assigned(FOnGetmsg_EditedEvento) then
+      FOnGetmsg_EditedEvento(TEditedClass(PReturnClass));
   end;
 
   //Marcelo 22/10/2023

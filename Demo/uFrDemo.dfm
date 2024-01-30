@@ -5688,6 +5688,7 @@ object frDemo: TfrDemo
     Config.AutoStart = True
     Config.AutoDelay = 500
     Config.SecondsMonitor = 1
+    Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
     Config.Evento_new_reaction = True
     AjustNumber.LengthPhone = 8
@@ -5744,6 +5745,7 @@ object frDemo: TfrDemo
     OnGet_SendPollMessageResponse = TWPPConnect1Get_SendPollMessageResponse
     OnGetAck_changeEvento = TWPPConnect1GetAck_changeEvento
     OnGetmsg_revokeEvento = TWPPConnect1Getmsg_revokeEvento
+    OnGetmsg_EditedEvento = TWPPConnect1Getmsg_EditedEvento
     OnGetTotalChatsUserRead = TWPPConnect1GetTotalChatsUserRead
     OnGetWAVersion = TWPPConnect1GetWAVersion
     OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
