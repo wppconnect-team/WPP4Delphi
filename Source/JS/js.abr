@@ -1,5 +1,5 @@
 ﻿//Version_JS;Version_TInjectMin;Version_CEF4Min;
-//1.51.0.0;1.0.0.9;78.3.0
+//1.52.0.0;1.0.0.9;78.3.0
 //
 //
 
@@ -2406,7 +2406,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
   }
 }
 
-//WPPCONNECT v2.28.2 alpha
+//WPPCONNECT v2.28.2 alpha2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */ ! function(e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.WPP = t() : e.WPP = t()
 }(self, (() => (() => {
@@ -2951,7 +2951,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function U(e, t, r, n, i) {
+                function D(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3113,9 +3113,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
                 }, u.prototype.writeDoubleLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
+                    return D(this, e, t, !0, r)
                 }, u.prototype.writeDoubleBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
+                    return D(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3148,10 +3148,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return this
                 };
-                const D = {};
+                const U = {};
 
                 function N(e, t, r) {
-                    D[e] = class extends r {
+                    U[e] = class extends r {
                         constructor() {
                             super(), Object.defineProperty(this, "message", {
                                 value: t.apply(this, arguments),
@@ -3188,20 +3188,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (e > r || e < t) {
                         const n = "bigint" == typeof t ? "n" : "";
                         let o;
-                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new D.ERR_OUT_OF_RANGE("value", o, e)
+                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new U.ERR_OUT_OF_RANGE("value", o, e)
                     }! function(e, t, r) {
                         z(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || q(t, e.length - (r + 1))
                     }(n, o, i)
                 }
 
                 function z(e, t) {
-                    if ("number" != typeof e) throw new D.ERR_INVALID_ARG_TYPE(t, "number", e)
+                    if ("number" != typeof e) throw new U.ERR_INVALID_ARG_TYPE(t, "number", e)
                 }
 
                 function q(e, t, r) {
-                    if (Math.floor(e) !== e) throw z(e, r), new D.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
-                    if (t < 0) throw new D.ERR_BUFFER_OUT_OF_BOUNDS;
-                    throw new D.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
+                    if (Math.floor(e) !== e) throw z(e, r), new U.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
+                    if (t < 0) throw new U.ERR_BUFFER_OUT_OF_BOUNDS;
+                    throw new U.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
                 }
                 N("ERR_BUFFER_OUT_OF_BOUNDS", (function(e) {
                     return e ? `${e} is outside of buffer bounds` : "Attempt to access memory outside buffer bounds"
@@ -3771,14 +3771,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     }, y.resize);
                                     k = F.width, E = F.height
                                 } else {
-                                    var U = M({
+                                    var D = M({
                                             aspectRatio: I,
                                             width: k,
                                             height: E
                                         }),
-                                        D = U.width;
-                                    k = void 0 === D ? r : D;
-                                    var N = U.height;
+                                        U = D.width;
+                                    k = void 0 === U ? r : U;
+                                    var N = D.height;
                                     E = void 0 === N ? n : N
                                 }
                                 var G = -(k = Math.floor(_(Math.min(Math.max(k, x), j)))) / 2,
@@ -7526,7 +7526,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), r(14278), r(72385), r(40145), r(97824), r(8910), r(37207), r(38307), r(53728), r(6127)
+                }), r(14278), r(72385), r(40145), r(97824), r(8910), r(37207), r(38307), r(53728), r(6127), r(34514)
             },
             14278: function(e, t, r) {
                 "use strict";
@@ -7651,6 +7651,53 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u.ChatStore.on("change:active", ((e, t) => {
                         t && queueMicrotask((() => {
                             s.internalEv.emit("chat.active_chat", e)
+                        }))
+                    }))
+                }))
+            },
+            34514: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const s = r(65267),
+                    a = i(r(97046)),
+                    u = r(11092);
+                a.onFullReady((function() {
+                    u.MsgStore.on("change:latestEditMsgKey", (e => {
+                        queueMicrotask((() => {
+                            s.internalEv.emit("chat.msg_edited", {
+                                chat: e.to,
+                                id: e.id.toString(),
+                                msg: e
+                            })
                         }))
                     }))
                 }))
@@ -8832,23 +8879,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return F.openChatFromUnread
                     }
                 });
-                var U = r(33177);
+                var D = r(33177);
                 Object.defineProperty(t, "pin", {
                     enumerable: !0,
                     get: function() {
-                        return U.pin
+                        return D.pin
                     }
                 }), Object.defineProperty(t, "unpin", {
                     enumerable: !0,
                     get: function() {
-                        return U.unpin
+                        return D.unpin
                     }
                 });
-                var D = r(48471);
+                var U = r(48471);
                 Object.defineProperty(t, "prepareLinkPreview", {
                     enumerable: !0,
                     get: function() {
-                        return D.prepareLinkPreview
+                        return U.prepareLinkPreview
                     }
                 });
                 var N = r(49872);
@@ -16235,8 +16282,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), (0, r(58785).exportModule)(t, {
-                    getHistorySyncProgress: "getHistorySyncProgress"
-                }, (e => e.getHistorySyncProgress && !e.getHistorySyncLogDetailsString))
+                    getHistorySyncProgress: ["getHistorySyncProgressModel", "getHistorySyncProgress"]
+                }, (e => e.getHistorySyncProgressModel || e.getHistorySyncProgress && !e.getHistorySyncLogDetailsString))
             },
             45290: (e, t, r) => {
                 "use strict";
@@ -18613,6 +18660,12 @@ WPP.on("chat.new_reaction", (msg) => {
     if (habilitaEvento_new_reaction){
         SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
     }
+});
+
+//Marcelo 29/01/2024
+WPP.on('chat.msg_edited', (msg) => {
+    //console.log(msg);
+    SetConsoleMessage("Getmsg_edited", JSON.stringify({msg}));
 });
 
 //Novo metodo para receber as Mensagens
