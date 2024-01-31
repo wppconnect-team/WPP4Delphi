@@ -138,8 +138,8 @@ begin
       if (Length(LClearNum) <= (LengthDDD + LengthPhone + LInc)) or (Length(PNum) <= (LengthDDD + LengthPhone + LInc)) then
       begin
         if (Copy(LClearNum, 0, LengthDDI) <> DDIDefault.ToString)
-        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 10)) //(55)8125-3929 Ajust com DDD 55
-        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 11)) //(55)98125-3929 Ajust com DDD 55
+        or ((Copy(PNum,1,2) = DDIDefault.ToString) and (Length(PNum) = 10)) //(55)8125-3929 Ajust com DDD 55
+        or ((Copy(PNum,1,2) = DDIDefault.ToString) and (Length(PNum) = 11)) //(55)98125-3929 Ajust com DDD 55
         then
           LClearNum := DDIDefault.ToString + LClearNum;
         Result := LClearNum +  CardContact;
