@@ -170,10 +170,19 @@ end;
 Procedure TWPPConnectConfig.SetReceiveAttachmentPath(const Value: String);
 begin
   if FReceiveAttachmentPath  = value then
-     Exit;
+    Exit;
 
-  if not ForceDirectories(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown) Then
-     raise Exception.Create(Text_DefaultError + (IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown));
+  try
+    if not ForceDirectories(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown) Then
+      raise Exception.Create(Text_DefaultError + (IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown));
+  except
+    on E: Exception do
+    begin
+
+      Exit;
+    end;
+  end;
+
 
   FReceiveAttachmentPath := IncludeTrailingPathDelimiter(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown);
   GlobalCEFApp.UpdateIniFile('Path Defines', 'Auto Receiver attached Path', Value);
