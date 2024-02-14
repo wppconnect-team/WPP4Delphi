@@ -21,6 +21,8 @@ function DateTimeToISO(const Value: TDateTime): string;
 function DateToISO(const Value: TDate): string;
 function ISOToDateTime(const Value: string): TDateTime;
 function ISOToDate(const Value: string): TDate;
+function BoolToParam(const Value: Boolean): string;
+function DoubleToParam(const Value: Double): string;
 
 resourcestring
   SInvalidDateFormat = 'Value %s is not a valid datetime';
@@ -40,7 +42,11 @@ type
     HourOff: Integer;
     MinOff: Integer;
     HasTimeZone: Boolean;
+    IsUTC: Boolean;
   end;
+
+var
+  InternalFormatSettings: TFormatSettings;
 
 function NewTimeZoneInfo: TTimeZoneInfo;
 begin
@@ -358,6 +364,7 @@ var
   Year, Month, Day: Integer;
   CharIndex: Integer;
   HasDateChar: Boolean;
+  TempDate: TDateTime;
 begin
   DateTime := 0;
   if Text = '' then
@@ -377,8 +384,9 @@ begin
     if not ExtractDoubleDigit(CharIndex, Day) then Exit(False);
     if not IsFinal(CharIndex) then Exit(False);
 
-    DateTime := EncodeDate(Year, Month, Day);
-    Result := True;
+    Result := TryEncodeDate(Year, Month, Day, TempDate);
+    if Result then
+      DateTime := TempDate;
   end;
 end;
 
@@ -404,15 +412,6 @@ var
     Result := ExtractDigit(CharIndex, N10) and ExtractDigit(CharIndex, N);
     if Result then
       Value := N10 * 10 + N;
-  end;
-
-  function ExtractTripleDigit(var CharIndex: Integer; out Value: Integer): Boolean;
-  var
-    N100, N10, N: Integer;
-  begin
-    Result := ExtractDigit(CharIndex, N100) and ExtractDigit(CharIndex, N10) and ExtractDigit(CharIndex, N);
-    if Result then
-      Value := N100 * 100 + N10 * 10 + N;
   end;
 
   function ExtractChar(var CharIndex: Integer; C: Char): Boolean;
@@ -454,7 +453,7 @@ var
       Result := False;
   end;
 
-  function IsFinal(var CharIndex: Integer; out HasTimeZone: Boolean): Boolean;
+  function IsFinal(var CharIndex: Integer; out HasTimeZone: Boolean; out IsUTC: Boolean): Boolean;
   var
     C: Char;
   begin
@@ -464,14 +463,17 @@ var
       C := #0;
     Result := (C = #0) or (C = 'Z') or (C = '+') or (C = '-');
     HasTimeZone := C <> #0;
+    IsUTC := C = 'Z';
   end;
 
 var
-  Hour, Min, Sec, MSec: Integer;
+  Hour, Min, Sec, MSec, MsecDigit: Integer;
   HourOff, MinOff: Integer;
   HasTimeChar: Boolean;
   HasTimeZone: Boolean;
+  IsUTC: Boolean;
   CharIndex: Integer;
+  Mul: Integer;
 begin
   DateTime := 0;
   if Text = '' then
@@ -486,20 +488,28 @@ begin
     HourOff := 0;
     MinOff := 0;
     HasTimeZone := False;
+    IsUTC := False;
 
     TextLen := Length(Text);
     CharIndex := 1;
     if not ExtractDoubleDigit(CharIndex, Hour) then Exit(False);
     HasTimeChar := ExtractChar(CharIndex, ':');
     if not ExtractDoubleDigit(CharIndex, Min) then Exit(False);
-    if not IsFinal(CharIndex, HasTimeZone) then
+    if not IsFinal(CharIndex, HasTimeZone, IsUTC) then
     begin
       if HasTimeChar and not ExtractChar(CharIndex, ':') then Exit(False);
       if not ExtractDoubleDigit(CharIndex, Sec) then Exit(False);
-      if not IsFinal(CharIndex, HasTimeZone) then
+      if not IsFinal(CharIndex, HasTimeZone, IsUTC) then
       begin
-        if not (ExtractChar(CharIndex, '.') and ExtractTripleDigit(CharIndex, MSec) and IsFinal(CharIndex, HasTimeZone)) then
+        // extract miliseconds
+        if not ExtractChar(CharIndex, '.') then
           Exit(False);
+        Mul := 100;
+        repeat
+          if not ExtractDigit(CharIndex, MsecDigit) then Exit(False);
+          Msec := Msec + MsecDigit * Mul;
+          Mul := Mul div 10;
+        until IsFinal(CharIndex, HasTimeZone, IsUTC);
       end;
     end;
     if HasTimeZone then
@@ -507,12 +517,14 @@ begin
       if not ExtractTimeZone(CharIndex, HourOff, MinOff) then Exit(False);
     end;
 
-    DateTime := EncodeTime(Hour, Min, Sec, MSec);
-    TimeZone.HourOff := HourOff;
-    TimeZone.MinOff := MinOff;
-    TimeZone.HasTimeZone := HasTimeZone;
-
-    Result := True;
+    Result := TryEncodeTime(Hour, Min, Sec, MSec, DateTime);
+    if Result then
+    begin
+      TimeZone.HourOff := HourOff;
+      TimeZone.MinOff := MinOff;
+      TimeZone.HasTimeZone := HasTimeZone;
+      TimeZone.IsUTC := IsUTC;
+    end;
   end;
 end;
 
@@ -612,4 +624,21 @@ begin
   Result := InternalISOTODateTime(Value, zmAsLocal);
 end;
 
+function BoolToParam(const Value: Boolean): string;
+begin
+  if Value then
+    Result := 'true'
+  else
+    Result := 'false';
+end;
+
+function DoubleToParam(const Value: Double): string;
+begin
+  Result := FloatToStr(Value, InternalFormatSettings);
+end;
+
+
+initialization
+  InternalFormatSettings := TFormatSettings.Create;
+  InternalFormatSettings.DecimalSeparator := '.';
 end.
