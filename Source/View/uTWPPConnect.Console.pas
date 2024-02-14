@@ -368,6 +368,54 @@ type
     procedure StopMonitorNew;
   end;
 
+{
+  TCefWindowOpenDisposition = (
+    WOD_UNKNOWN,
+    WOD_CURRENT_TAB,
+    WOD_SINGLETON_TAB,
+    WOD_NEW_FOREGROUND_TAB,
+    WOD_NEW_BACKGROUND_TAB,
+    WOD_NEW_POPUP,
+    WOD_NEW_WINDOW,
+    WOD_SAVE_TO_DISK,
+    WOD_OFF_THE_RECORD,
+    WOD_IGNORE_ACTION,
+    WOD_SWITCH_TO_TAB,
+    WOD_NEW_PICTURE_IN_PICTURE
+  );
+  or CEF starting from version 120
+  TCefWindowOpenDisposition = (
+    CEF_WOD_UNKNOWN,
+    CEF_WOD_CURRENT_TAB,
+    CEF_WOD_SINGLETON_TAB,
+    CEF_WOD_NEW_FOREGROUND_TAB,
+    CEF_WOD_NEW_BACKGROUND_TAB,
+    CEF_WOD_NEW_POPUP,
+    CEF_WOD_NEW_WINDOW,
+    CEF_WOD_SAVE_TO_DISK,
+    CEF_WOD_OFF_THE_RECORD,
+    CEF_WOD_IGNORE_ACTION,
+    CEF_WOD_SWITCH_TO_TAB,
+    CEF_WOD_NEW_PICTURE_IN_PICTURE
+  );
+}
+
+  {$IFDEF CEFCurrentVersion}
+  const
+    MyForegroundTabConstant = CEF_WOD_NEW_FOREGROUND_TAB;
+    MyBackgroundTabConstant = CEF_WOD_NEW_BACKGROUND_TAB;
+    MyPopupConstant = CEF_WOD_NEW_POPUP;
+    MyWindowConstant = CEF_WOD_NEW_WINDOW;
+  {$ELSE}
+  const
+    MyForegroundTabConstant = WOD_NEW_FOREGROUND_TAB;
+    MyBackgroundTabConstant = WOD_NEW_BACKGROUND_TAB;
+    MyPopupConstant = WOD_NEW_POPUP;
+    MyWindowConstant = WOD_NEW_WINDOW;
+    //In case of error Add Compilation Directive "CEFCurrentVersion" / Em caso de erro Add Diretiva de Compilação "CEFCurrentVersion"
+    //CEF 120 modification Constant
+  {$ENDIF}
+
 var
   FrmConsole: TFrmConsole;
 
@@ -2098,7 +2146,9 @@ procedure TFrmConsole.Chromium1BeforePopup(Sender: TObject;
 begin
 // bloqueia todas as janelas pop-up e novas guias
   ShellExecute(Handle, 'open', PChar(targetUrl), '', '', 1);
-  Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
+
+  Result := (targetDisposition in [MyForegroundTabConstant, MyBackgroundTabConstant, MyPopupConstant, MyWindowConstant]);
+  //Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
 end;
 
 procedure TFrmConsole.Chromium1Close(Sender: TObject;
@@ -3012,7 +3062,8 @@ procedure TFrmConsole.Chromium1OpenUrlFromTab(Sender: TObject;
   out Result: Boolean);
 begin
  //Bloqueia popup do windows e novas abas
-  Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
+  //Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
+  Result := (targetDisposition in [MyForegroundTabConstant, MyBackgroundTabConstant, MyPopupConstant, MyWindowConstant]);
 end;
 
 procedure TFrmConsole.Chromium1TitleChange(Sender: TObject;

@@ -46,6 +46,7 @@ interface
 uses
   System.Classes,
   System.SysUtils,
+  System.Rtti,
   Winapi.Windows,
   Vcl.Forms,
   DateUtils,
@@ -228,7 +229,29 @@ end;
 
 
 Procedure TCEFConfig.SetDefault;
+var
+  ctx: TRttiContext;
+  prop: TRttiProperty;
 begin
+  ctx := TRttiContext.Create;
+  try
+    prop := ctx.GetType(Self.ClassType).GetProperty('UserDataPath');
+    if Assigned(prop) then
+    begin
+      // A propriedade UserDataPath existe, você pode acessá-la aqui.
+      //Self.UserDataPath := 'User Data';
+      prop.SetValue(Self, 'User Data');
+    end
+    else
+    begin
+      // A propriedade UserDataPath não existe.
+      // Handle the case where the property does not exist in the current version
+    end;
+  finally
+    ctx.Free;
+  end;
+
+
   if not FInDesigner then //padrão aqui é if not FInDesigner
   Begin
     FIniFIle.WriteString ('Informacao', 'Aplicativo vinculado',    Application.ExeName);
@@ -257,7 +280,17 @@ begin
   Self.ResourcesDirPath   := '';
   Self.LocalesDirPath     := 'locales';
   Self.cache              := 'cache';
-  Self.UserDataPath       := 'User Data';
+
+//Marcelo 13/02/2024 FIXED property does not exist in the current version
+(*
+{$IF DEFINED(Self.UserDataPath)}
+  Self.UserDataPath := 'User Data';
+  //Comment the top line in new versions of CEF
+{$ELSE}
+  //Handle the case where the property does not exist in the current version
+{$ENDIF}
+*)
+
 end;
 
 
@@ -368,7 +401,13 @@ var
   Linicio: Cardinal;
   LVReque, LVerIdent: String;
   FDirApp, Lx: String;
+var
+  ctx: TRttiContext;
+  prop: TRttiProperty;
+  propValue: TValue;
 begin
+  ctx := TRttiContext.Create;
+
   //ta lento pq estou conectado em um tunel estou daki ao meu pc.;. do meu pc a
   Result  := (Self.status = asInitialized);
   if (Result) Then
@@ -416,8 +455,31 @@ begin
      Self.LocalesDirPath      := PathLocalesDirPath;
   If Pathcache            <> '' then
      Self.cache               := Pathcache;
-  If PathUserDataPath     <> '' then
-     Self.UserDataPath        := PathUserDataPath;
+
+//Marcelo 13/02/2024 FIXED property does not exist in the current version
+  try
+    prop := ctx.GetType(Self.ClassType).GetProperty('UserDataPath');
+    if Assigned(prop) then
+    begin
+      //Self.UserDataPath := 'User Data';
+      //Comment the top line in new versions of CEF
+      If PathUserDataPath     <> '' then
+        prop.SetValue(Self, PathUserDataPath);
+      //UpdateIniFile('Path Defines', 'Data User',     prop.GetValue(Self));
+      propValue := prop.GetValue(Self);
+      UpdateIniFile('Path Defines', 'Data User',     propValue.AsString);
+    end
+    else
+    begin
+      // A propriedade UserDataPath não existe.
+      // Handle the case where the property does not exist in the current version
+    end;
+  finally
+    ctx.Free;
+  end;
+  {If PathUserDataPath     <> '' then
+     Self.UserDataPath        := PathUserDataPath;}
+
   If PathLogFile          <> '' then
      Self.LogFile             := PathLogFile;
   If SetLogSeverity then
@@ -428,7 +490,7 @@ begin
   UpdateIniFile('Path Defines', 'Binary',        Self.ResourcesDirPath);
   UpdateIniFile('Path Defines', 'Locales',       Self.LocalesDirPath);
   UpdateIniFile('Path Defines', 'Cache',         Self.cache);
-  UpdateIniFile('Path Defines', 'Data User',     Self.UserDataPath);
+  //UpdateIniFile('Path Defines', 'Data User',     Self.UserDataPath);
   UpdateIniFile('Path Defines', 'Log File',      Self.LogFile);
   UpdateIniFile('Path Defines', 'Log Console',   LogConsole);
 
