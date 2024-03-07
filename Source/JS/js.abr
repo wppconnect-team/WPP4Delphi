@@ -19178,7 +19178,7 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
     
     try {        
 	// Cria um objeto com 'id' e 'code'
-	var result = { id: id, code: code };
+	var result = { id: chatid, code: code };
 	
 	// Converte o objeto em uma string JSON
 	var jsonResult = JSON.stringify(result);
