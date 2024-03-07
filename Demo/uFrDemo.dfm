@@ -1694,15 +1694,6 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
@@ -5696,8 +5687,10 @@ object frDemo: TfrDemo
     InjectJS.SecondsWaitInject = 4
     Config.AutoStart = True
     Config.AutoDelay = 500
-    Config.ReceiveAttachmentPath = 'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\'
-    Config.SecondsMonitor = 1
+    Config.ReceiveAttachmentPath = 
+      'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
+      's\'
+    Config.SecondsMonitor = 4
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
     Config.Evento_new_reaction = True

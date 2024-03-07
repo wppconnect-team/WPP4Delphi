@@ -40,7 +40,7 @@ unit uTWPPConnect.JS;
 interface
 
 uses
-  System.Classes, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
+  System.Classes, IniFiles, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
   Vcl.ExtCtrls, IdHTTP, uTWPPConnect.Diversos,
 
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
@@ -144,11 +144,24 @@ begin
 end;
 
 constructor TWPPConnectJS.Create(POwner: TComponent);
+var
+  MyIniFIle: TIniFile;
+  DirApp, Caminho_JS: string;
 begin
+  try
+    DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+    MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
+    Caminho_JS           := MyIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
+    //TWPPConnectJS_JSUrlPadrao := Caminho_JS;
+    MyIniFIle.Free;
+  except on E: Exception do
+  end;
+
   Owner                      := POwner;
   FAutoUpdateTimeOut         := 10;
   FJSScript                  := TstringList.create;
   FAutoUpdate                := True;
+  //FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
   FJSURL                     := TWPPConnectJS_JSUrlPadrao;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
@@ -240,18 +253,22 @@ begin
     if ( GlobalCEFApp.PathJsOverdue = False) and (FileExists(GlobalCEFApp.PathJs)) Then
     Begin
       Result      := AtualizarInternamente(Tup_Local);
-    End else
+    End
+    else
     Begin
       Result      := AtualizarInternamente(Tup_Web);
       If not Result Then
          Result      := AtualizarInternamente(Tup_Local);  //Se nao consegui ele pega o arquivo Local
     end;
-  End else
+  End
+  else
   Begin
     //Usando via ARQUIVO
     Result      := AtualizarInternamente(Tup_Local);
   end;
+
   FReady        := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+  //FReady        := TRUE;
 end;
 
 function TWPPConnectJS.ValidaJs(const TValor: Tstrings): Boolean;
@@ -262,23 +279,30 @@ begin
   if Assigned(GlobalCEFApp) then
   Begin
     if GlobalCEFApp.ErrorInt Then
-       Exit;
+      Exit;
   end;
   if (TValor.Count < TWPPConnectJS_JSLinhasMInimas) then    //nao tem linhas suficiente
-     Exit;
+    Exit;
 
   If Pos(AnsiUpperCase(';'),  AnsiUpperCase(TValor.Strings[0])) <= 0 then   //Nao tem a variavel
-     Exit;
+    Exit;
 
   If not ReadCSV(TValor.Strings[0], TValor.Strings[1]) Then
-     Exit;
+    Exit;
 
   If (Pos(AnsiUpperCase('!window.Store'),       AnsiUpperCase(TValor.text))     <= 0) or
      (Pos(AnsiUpperCase('window.WAPI'),         AnsiUpperCase(TValor.text))     <= 0) or
      (Pos(AnsiUpperCase('window.Store.Chat.'),  AnsiUpperCase(TValor.text))     <= 0)  then
+
+  {if (Pos(AnsiUpperCase('WPP.whatsapp'),        AnsiUpperCase(TValor.text))     <= 0) or
+     (Pos(AnsiUpperCase('window.WAPI'),         AnsiUpperCase(TValor.text))     <= 0) or
+     (Pos(AnsiUpperCase('!window.Store'),       AnsiUpperCase(TValor.text))     <= 0) or
+     (Pos(AnsiUpperCase('window.Store.Chat.'),  AnsiUpperCase(TValor.text))     <= 0)
+  then}
   Begin
-     Exit;
-  End Else
+    Exit;
+  End
+  Else
   Begin
     if not VerificaCompatibilidadeVersao(InjectJSDefine.FVersion_TWPPConnectMin, TWPPConnectVersion) then
     Begin
@@ -350,8 +374,8 @@ begin
 
     LHttp.TimeOut     := AutoUpdateTimeOut;
     //Temis 03-06-2022
-    //if LHttp.GetUrl(JSURL) = true Then
-    if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
+    if LHttp.GetUrl(JSURL) = true Then
+    //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
     Begin
       LRet.LoadFromStream(LHttp.ReturnUrl);
       if not ValidaJs(LRet) Then

@@ -44,7 +44,7 @@ uses
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
-  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, uTWPPConnect.ChatList;
+  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, IniFiles, uTWPPConnect.ChatList;
 
 
 type
@@ -1024,6 +1024,10 @@ begin
 end;
 
 constructor TWPPConnect.Create(AOwner: TComponent);
+var
+  MyIniFIle: TIniFile;
+  DirApp, Caminho_JS, vSecondsMonitor, vSecondsMonitorNew: string;
+  HabEvento_msg_ack_change, HabEvento_msg_revoke, HabEvento_new_message, HabEvento_new_reaction : Boolean;
 begin
   inherited;
   FDestroyTmr                         := Ttimer.Create(nil);
@@ -1056,6 +1060,53 @@ begin
   FInjectJS                        := TWPPConnectJS.Create(Self);
   FInjectJS.OnUpdateJS             := Int_OnUpdateJS;
   FInjectJS.OnErrorInternal        := Int_OnErroInterno;
+
+  DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+  MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
+
+  HabEvento_msg_ack_change := MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '1') = '1';
+  HabEvento_msg_revoke := MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '1') = '1';
+  HabEvento_new_message  := MyIniFIle.ReadString('Config', 'Evento_new_message', '1') = '1';
+  HabEvento_new_reaction  := MyIniFIle.ReadString('Config', 'Evento_new_reaction', '1') = '1';
+  vSecondsMonitor := MyIniFIle.ReadString('Config', 'SecondsMonitor', '0');
+  vSecondsMonitorNew := MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '0');
+
+ //CONFIGURAÇÃO A PARTIR DE ARQUIVO INI / CONFIGURATION FROM THE INI FILE
+  if MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '') <> '' then
+    FInjectConfig.Evento_msg_ack_change := HabEvento_msg_ack_change;
+  if MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '') <> '' then
+    FInjectConfig.Evento_msg_revoke := HabEvento_msg_revoke;
+  if MyIniFIle.ReadString('Config', 'Evento_new_message', '') <> '' then
+    FInjectConfig.Evento_new_message := HabEvento_new_message;
+  if MyIniFIle.ReadString('Config', 'Evento_new_reaction', '') <> '' then
+    FInjectConfig.Evento_new_reaction := HabEvento_new_reaction;
+
+  if MyIniFIle.ReadString('Config', 'SecondsMonitor', '') <> '' then
+    FInjectConfig.SecondsMonitor := StrToIntDef(vSecondsMonitor,0);
+  if MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '') <> '' then
+    FInjectConfig.SecondsMonitorNew := StrToIntDef(vSecondsMonitorNew,0);
+
+
+  //creating empty configurations, to adjust according to your use
+  if not(MyIniFIle.ValueExists('Config', 'SecondsMonitor')) then
+    MyIniFIle.writeString('Config', 'SecondsMonitor', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'SecondsMonitorNew')) then
+    MyIniFIle.writeString('Config', 'SecondsMonitorNew', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_msg_ack_change')) then
+    MyIniFIle.writeString('Config', 'Evento_msg_ack_change', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_msg_revoke')) then
+    MyIniFIle.writeString('Config', 'Evento_msg_revoke', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_new_message')) then
+    MyIniFIle.writeString('Config', 'Evento_new_message', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_new_reaction')) then
+    MyIniFIle.writeString('Config', 'Evento_new_reaction', '');
+
+  MyIniFIle.Free;
 
   //temis 03-06-2022
   //coloquei pra carregar na thread, antes carregava direto, faltava carregar as propriedades setadas no TWPPConnect

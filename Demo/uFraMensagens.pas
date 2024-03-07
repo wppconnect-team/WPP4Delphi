@@ -324,8 +324,10 @@ begin
     //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
+    frDemo.TWPPConnect1.Send(ed_num.Text, mem_message.Text);
+
     //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
-    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
+    //frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -593,7 +595,6 @@ var
   idMensagem: string;
 begin
   try
-
     if not frDemo.TWPPConnect1.Auth then
        Exit;
 
@@ -1329,7 +1330,7 @@ begin
     end;
 
     if not frDemo.TWPPConnect1.Auth then
-       Exit;
+      Exit;
 
     options := 'createChat: true';
 

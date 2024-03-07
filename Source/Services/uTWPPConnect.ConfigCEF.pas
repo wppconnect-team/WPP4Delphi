@@ -400,7 +400,7 @@ function TCEFConfig.StartMainProcess: boolean;
 var
   Linicio: Cardinal;
   LVReque, LVerIdent: String;
-  FDirApp, Lx: String;
+  FDirApp, Lx, Caminho_JS: String;
 var
   ctx: TRttiContext;
   prop: TRttiProperty;
@@ -421,6 +421,10 @@ begin
   FIniFIle             := TIniFile.create(FDirApp + NomeArquivoIni);
   Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', '01/01/1500 05:00:00');
   //Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', FormatDateTime('dd/mm/yy hh:nn:ss', FPathJsUpdate));
+
+  Caminho_JS           := FIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
+
+
   FPathJS              := FDirApp + NomeArquivoInject;
   FErrorInt            := False;
   FStartTimeOut        := 5000; //(+- 5 Segundos)
@@ -499,7 +503,9 @@ begin
   FIniFIle.WriteBool('Path Defines', 'Log Console Active',   LogConsoleActive);
 
   UpdateIniFile('TWPPConnect Comp', 'TWPPConnect Versão',   TWPPConnectVersion);
-  UpdateIniFile('TWPPConnect Comp', 'Caminho JS'    ,   TWPPConnectJS_JSUrlPadrao);
+
+  //UpdateIniFile('TWPPConnect Comp', 'Caminho JS',   TWPPConnectJS_JSUrlPadrao);
+  UpdateIniFile('TWPPConnect Comp', 'Caminho JS', Caminho_JS);
   UpdateIniFile('TWPPConnect Comp', 'CEF4 Versão'   ,   IntToStr(CEF_SUPPORTED_VERSION_MAJOR) +'.'+ IntToStr(CEF_SUPPORTED_VERSION_MINOR)  +'.'+ IntToStr(CEF_SUPPORTED_VERSION_RELEASE) +'.'+ IntToStr(CEF_SUPPORTED_VERSION_BUILD));
   UpdateIniFile('TWPPConnect Comp', 'CHROME Versão' ,   IntToStr(CEF_CHROMEELF_VERSION_MAJOR) +'.'+ IntToStr(CEF_CHROMEELF_VERSION_MINOR)  +'.'+ IntToStr(CEF_CHROMEELF_VERSION_RELEASE) +'.'+ IntToStr(CEF_CHROMEELF_VERSION_BUILD));
   UpdateIniFile('TWPPConnect Comp', 'Dlls'          ,   LIBCEF_DLL + ' / ' + CHROMEELF_DLL);

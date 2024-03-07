@@ -68,6 +68,7 @@ Const
   FrmConsole_Browser_Created            = WM_APP + $100;
   FrmConsole_Browser_Direto             = WM_APP + $101;
   //MARCELO JS.ABR CUSTOMIZADO Marcelo 09/05/2022
+
   TWPPConnectJS_JSUrlPadrao             = 'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/main/Source/JS/js.abr';
   //TWPPConnectJS_JSUrlPadrao               = '';
 
@@ -77,12 +78,13 @@ Const
   TPPConnectJS_decryptFile              = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/decryptFile.dll?raw=true';
 
   //TWPPConnectJS_JSUrlPadrao             = '';
-  TWPPConnectJS_JSLinhasMInimas         = 17726; //1400;
+  TWPPConnectJS_JSLinhasMInimas         = 17726; //2400; //17726; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';
 
-  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2404.1';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.2405.0';
+  //FrmConsole_JS_URL                     = 'https://web.whatsapp.com/?v=2.3000.1011682686';
   FrmConsole_JS_URL                     = 'https://web.whatsapp.com/';
 
   FrmConsole_JS_GetAllContacts          = 'window.WAPI.getAllContacts();';

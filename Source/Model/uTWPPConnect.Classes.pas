@@ -955,6 +955,7 @@ type
     FisGif: Boolean;
     FgifAttribution: Extended;
     Frecipients: TArray<String>;
+    Floc: String;
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -976,6 +977,7 @@ type
     property isNewMsg   : Boolean             read FIsNewMsg           write FIsNewMsg;
     property lat        : Extended            read FLat                write FLat;
     property lng        : Extended            read FLng                write FLng;
+    property loc        : String              read Floc                write Floc;
     property subType    : String              read FSubType            write FSubType;
     property isNotification: Boolean          read FIsNotification     write FIsNotification;
     property isPSA      : Boolean             read FIsPSA              write FIsPSA;
@@ -1974,7 +1976,7 @@ private
   FList: TListClass;
   FlistResponse: TlistResponseClass;
   FLatestEditMsgKey: TLatestEditMsgKeyClass;
-    FrequiresDirectConnection: Boolean;
+  FrequiresDirectConnection: Boolean;
 
 public
   property ack: Extended read FAck write FAck;

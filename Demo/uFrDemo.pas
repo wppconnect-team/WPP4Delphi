@@ -1718,7 +1718,16 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
 var
-  wlo_Celular, quotedMsg_caption : string;
+  wlo_Celular : string;
+  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
+    Extensao_Documento, NomeArq_Whats, Automato_Path: string;
+  WPPConnectDecrypt: TWPPConnectDecryptFile;
+  Question, Answer, phoneNumber, FChatID, quotedMsg_body, S_Type_origem, DescricaoLista, foto_perfil : string;
+  From, idMensagem, body, S_Caption, S_type, filename, mediakey, mimeType, deprecatedMms3Url, Title, Footer: string;
+  ChatGroup, mensagemDuplicada, eh_arquivo, isGif : Boolean;
+  latitude, longitude, localidade, base64localidade : String;
+  ack: extended;
+  I: Integer;
 begin
   wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
   //ShowMessage('body: ' + AnsiUpperCase(NewMessageResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
@@ -2014,8 +2023,8 @@ begin
       //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Sender: ' + vSender);
 
       ChatGroup := pos('@g.us', AChat.id) > 0;
-      //if  (ChatGroup = False) then
-      if (AChat.isGroup = False)  then // Não exibe mensages de grupos
+      if  (ChatGroup = False) then
+      //if (AChat.isGroup = False)  then // Não exibe mensages de grupos
       begin
         //if (not AMessage.Sender.isMe) then
         if (AnsiUpperCase(AMessage.&type) <> 'CIPHERTEXT')
@@ -2061,7 +2070,7 @@ begin
 
               Question := AMessage.body;
 
-              // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+              // Tratando o tipo do arquivo recebido e faz o download para pasta / Treating the type of file received and downloading it to the folder \temp
               case AnsiIndexStr(UpperCase(AMessage.&type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
                 0: Extensao_Documento := 'mp3';
                 1: Extensao_Documento := 'jpg';
@@ -2089,6 +2098,13 @@ begin
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
+
+              if AMessage.loc <> '' then
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('loc: ' + AMessage.loc));
+              if AMessage.lat <> 0 then
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('latitude: ' + FloatToStr(AMessage.lat)));
+              if AMessage.lng <> 0 then
+                frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('longitude: ' + FloatToStr(AMessage.lng)));
 
               selectedButtonId := AMessage.selectedButtonId;
               try
@@ -2154,7 +2170,10 @@ begin
               if selectedButtonId <> '' then
                 frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('selectedId: ' + selectedButtonId));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar(''));
-              frameMensagensRecebidas1.ed_profilePicThumbURL.Text := AChat.contact.profilePicThumb;
+
+              if Assigned(AChat.contact) then
+                frameMensagensRecebidas1.ed_profilePicThumbURL.Text := AChat.contact.profilePicThumb;
+
               if frameMensagensRecebidas1.ed_profilePicThumbURL.Text <> '' then
                 TWPPConnect1.getProfilePicThumb(AChat.id);
                 //GetImagemProfile(AChat.contact.profilePicThumb, AChat.id);
@@ -2241,8 +2260,8 @@ begin
       begin  //GRUPO
         //TWPPConnect1.ReadMessages(AChat.id);
 
-
         FChatID  := AChat.id;
+        TWPPConnect1.ReadMessages(AChat.id);
 
         // Added by Aurino 21/01/2023 14:34:50
         {debug in error}
@@ -2251,6 +2270,7 @@ begin
         'Access violation at address 009F7AE6. Read of address 00000030
         causa: usuario admin do grupo nao faz mais parte do grupo, logo o amessage.sender = nil;
         }
+
         if Assigned(AMessage.Sender) then
         begin
           contato  := AMessage.Sender.pushname;
@@ -2287,6 +2307,7 @@ begin
           TWPPConnect1.ReadMessages(AChat.id);
 
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
         end;
 
       end;

@@ -22,7 +22,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, StrUtils,
 
   uCEFWinControl, uCEFChromiumCore,   uCEFTypes,
-  uCEFInterfaces, uCEFConstants,      uCEFWindowParent, uCEFChromium,
+  uCEFInterfaces, uCEFConstants,      uCEFWindowParent, uCEFChromium, uCEFApplication,
 
   //units adicionais obrigatórias
   uTWPPConnect.Classes,  uTWPPConnect.constant, uTWPPConnect.Diversos,
@@ -112,6 +112,10 @@ type
     procedure bFinishClick(Sender: TObject);
     procedure bMarkIsReadChatsClick(Sender: TObject);
     procedure bMarkIsUnreadChatsClick(Sender: TObject);
+
+    procedure Chromium1BeforeResourceLoad(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const request: ICefRequest;
+      const callback: ICefCallback; out Result: TCefReturnValue);
+
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
     procedure WMMove(var aMessage : TWMMove); message WM_MOVE;
@@ -2151,6 +2155,57 @@ begin
   //Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
 end;
 
+procedure TFrmConsole.Chromium1BeforeResourceLoad(Sender: TObject;
+  const browser: ICefBrowser;
+  const frame: ICefFrame;
+  const request: ICefRequest;
+  const callback: ICefCallback;
+  out Result: TCefReturnValue);
+var
+  htmlContent: TStringList;
+  htmlString: string;
+  requestContext: ICefRequestContext;
+begin
+  // Verifique se a solicitação é para a URL desejada
+  {
+  if SameText(request.Url, 'https://web.whatsapp.com') then
+  begin
+    // Carregue o conteúdo HTML fixo em vez de fazer a solicitação real
+    htmlContent := TStringList.Create;
+    try
+      // Carregue seu HTML fixo aqui
+      htmlContent.LoadFromFile(ExtractFilePath(Application.ExeName) + 'wa-version/2.2405.4.html');
+      htmlString := htmlContent.Text;  }
+
+      // Crie uma resposta personalizada
+      {response := TCefResponseRef.New;
+      response.Status := 200;
+      response.StatusText := 'OK';
+      response.MimeType := 'text/html';
+
+      // Fornecer o conteúdo HTML como resposta
+      callback.Continue(True);
+      frame.LoadRequest(
+        TCefRequestRef.New('about:blank', RT_BROWSER),
+        TCefWebURLRequestClientRef.New(nil),
+        TCefResourceHandlerRef.New(TCefStreamReaderRef.New(TCefStreamResourceReaderRef.New(htmlString, 'text/html', htmlString.Length, false)), response, nil)
+      );}
+
+
+ {   finally
+      htmlContent.Free;
+    end;
+
+    // Indicar que a resposta foi manipulada
+    Result := RV_CANCEL;
+  end
+  else
+  begin
+    // Continue com a solicitação padrão para outras URLs
+    Result := RV_CONTINUE;
+  end; }
+end;
+
 procedure TFrmConsole.Chromium1Close(Sender: TObject;
   const browser: ICefBrowser; var aAction: TCefCloseBrowserAction);
 begin
@@ -2891,12 +2946,9 @@ begin
 
   //testa se e um JSON de forma RAPIDA!
 
-  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) or (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0)
-  or (Pos('WEBPACKCHUNKWHATSAPP_WEB_CLIENT IS NOT DEFINED', UpperCase(message)) > 0)
-  then
+  if (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
   begin
-    //Injeta o JS.ABR de novo
-    LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo');
+    LogAdd('"WPP IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
 
     Chromium1.StopLoad;
     Chromium1.Browser.ReloadIgnoreCache;
@@ -2925,6 +2977,43 @@ begin
 
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
+  end
+  else
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
+  begin
+    //Injeta o JS.ABR de novo
+    LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
+
+    Chromium1.StopLoad;
+    Chromium1.Browser.ReloadIgnoreCache;
+
+    localStorage_debug;
+
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    SleepNoFreeze(500);
+
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+    //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
+
+
+
 
     {SleepNoFreeze(500);
 
