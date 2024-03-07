@@ -5,6 +5,7 @@ interface
 uses
   SysUtils, 
   OpenApiRest, 
+  OpenApiUtils, 
   OpenAIJson, 
   OpenAIDtos;
 
@@ -41,7 +42,11 @@ type
     /// </summary>
     function CreateCompletion(Body: TCreateCompletionRequest): TCreateCompletionResponse;
     /// <summary>
-    /// Creates a new edit for the provided input, instruction, and parameters
+    /// Creates a completion for the chat message
+    /// </summary>
+    function CreateChatCompletion(Body: TCreateChatCompletionRequest): TCreateChatCompletionResponse;
+    /// <summary>
+    /// Creates a new edit for the provided input, instruction, and parameters.
     /// </summary>
     function CreateEdit(Body: TCreateEditRequest): TCreateEditResponse;
     /// <summary>
@@ -183,6 +188,7 @@ type
     /// </param>
     function RetrieveEngine(EngineId: string): TEngine;
     function CreateCompletion(Body: TCreateCompletionRequest): TCreateCompletionResponse;
+    function CreateChatCompletion(Body: TCreateChatCompletionRequest): TCreateChatCompletionResponse;
     function CreateEdit(Body: TCreateEditRequest): TCreateEditResponse;
     function CreateImage(Body: TCreateImageRequest): TImagesResponse;
     function CreateEmbedding(Body: TCreateEmbeddingRequest): TCreateEmbeddingResponse;
@@ -312,6 +318,20 @@ begin
   Response := Request.Execute;
   CheckError(Response);
   Result := Converter.TCreateCompletionResponseFromJson(Response.ContentAsString);
+end;
+
+function TOpenAIService.CreateChatCompletion(Body: TCreateChatCompletionRequest): TCreateChatCompletionResponse;
+var
+  Request: IRestRequest;
+  Response: IRestResponse;
+begin
+  Request := CreateRequest('/chat/completions', 'POST');
+  Request.AddBody(Converter.TCreateChatCompletionRequestToJson(Body));
+  Request.AddHeader('Content-Type', 'application/json');
+  Request.AddHeader('Accept', 'application/json');
+  Response := Request.Execute;
+  CheckError(Response);
+  Result := Converter.TCreateChatCompletionResponseFromJson(Response.ContentAsString);
 end;
 
 function TOpenAIService.CreateEdit(Body: TCreateEditRequest): TCreateEditResponse;
@@ -509,7 +529,7 @@ var
 begin
   Request := CreateRequest('/fine-tunes/{fine_tune_id}/events', 'GET');
   Request.AddUrlParam('fine_tune_id', FineTuneId);
-  Request.AddQueryParam('stream', FineTuneId);
+  Request.AddQueryParam('stream', BoolToParam(Stream));
   Request.AddHeader('Accept', 'application/json');
   Response := Request.Execute;
   CheckError(Response);
