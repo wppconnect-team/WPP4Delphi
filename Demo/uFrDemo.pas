@@ -63,6 +63,7 @@ type
     frameComunidades1: TframeComunidades;
     TimerProgress: TTimer;
     lblNomeConta: TLabel;
+    Timer1: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -155,6 +156,7 @@ type
     procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
     procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
     procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
+    procedure Timer1Timer(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -757,6 +759,24 @@ begin
   end;
 
   TimerVerificaConexao.Enabled := True;
+end;
+
+procedure TfrDemo.Timer1Timer(Sender: TObject);
+begin
+  Timer1.Enabled := False;
+
+  try
+    if not TWPPConnect1.Auth(False) then
+    Begin
+      TWPPConnect1.FormQrCodeType :=
+        TFormQrCodeType(frameLogin1.rgTipoLogin.ItemIndex);
+      TWPPConnect1.FormQrCodeStart;
+    End;
+    if not TWPPConnect1.FormQrCodeShowing then
+      TWPPConnect1.FormQrCodeShowing := True;
+
+  except on E: Exception do
+  end;
 end;
 
 procedure TfrDemo.TimerCheckOnlineTimer(Sender: TObject);

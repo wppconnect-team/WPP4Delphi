@@ -1694,6 +1694,15 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -5689,7 +5698,7 @@ object frDemo: TfrDemo
     Config.AutoDelay = 500
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
-      's\'
+      's\TWPPConnectAnexos\'
     Config.SecondsMonitor = 4
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5795,5 +5804,11 @@ object frDemo: TfrDemo
     OnTimer = TimerProgressTimer
     Left = 848
     Top = 168
+  end
+  object Timer1: TTimer
+    Interval = 2000
+    OnTimer = Timer1Timer
+    Left = 592
+    Top = 240
   end
 end

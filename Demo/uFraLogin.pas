@@ -70,7 +70,18 @@ begin
     Exit;
   end;
 
-  frDemo.TWPPConnect1.getgenLinkDeviceCodeForPhoneNumber(eNumberWhats.Text);
+  {if not frDemo.TWPPConnect1.Auth(false) then
+  Begin
+    frDemo.TWPPConnect1.FormQrCodeType := TFormQrCodeType(2);//TFormQrCodeType(rgTipoLogin.ItemIndex);
+    frDemo.TWPPConnect1.FormQrCodeStart;
+  End;
+
+  if not frDemo.TWPPConnect1.FormQrCodeShowing then
+     frDemo.TWPPConnect1.FormQrCodeShowing := True;
+  }
+
+  if frDemo.TWPPConnect1.Auth then
+    frDemo.TWPPConnect1.getgenLinkDeviceCodeForPhoneNumber(eNumberWhats.Text);
 end;
 
 procedure TframeLogin.lblCodeLinkDeviceClick(Sender: TObject);
