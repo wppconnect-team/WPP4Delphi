@@ -1689,13 +1689,13 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
         inherited tsBase64: TTabSheet
@@ -5694,14 +5694,14 @@ object frDemo: TfrDemo
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
     InjectJS.SecondsWaitInject = 4
-    Config.AutoStart = True
     Config.AutoDelay = 500
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
       's\TWPPConnectAnexos\'
-    Config.SecondsMonitor = 4
+    Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
+    Config.Evento_new_message = True
     Config.Evento_new_reaction = True
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
@@ -5806,7 +5806,7 @@ object frDemo: TfrDemo
     Top = 168
   end
   object Timer1: TTimer
-    Interval = 2000
+    Interval = 7000
     OnTimer = Timer1Timer
     Left = 592
     Top = 240

@@ -1749,29 +1749,204 @@ var
   ack: extended;
   I: Integer;
 begin
-  wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
-  //ShowMessage('body: ' + AnsiUpperCase(NewMessageResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento');
-  if NewMessageResponse.msg.id.fromMe then
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento NewMessage ');
 
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Nome Contato: ' + Trim(NewMessageResponse.msg.notifyName));
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Número WhatsApp: ' + wlo_Celular);
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(NewMessageResponse.msg.body));
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + NewMessageResponse.msg.id._serialized);
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + NewMessageResponse.msg.&type);
-
-  if Assigned(NewMessageResponse.msg.quotedMsg) then
+  if (NewMessageResponse.msg.id.remote = 'status@broadcast') then
   begin
-    quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Caption;
-    if Trim(quotedMsg_caption) = '' then
-      if Assigned(NewMessageResponse.msg.quotedMsg.list) then
-        quotedMsg_caption := NewMessageResponse.msg.quotedMsg.list.description;
-    if Trim(quotedMsg_caption) = '' then
-      quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('status@broadcast');
+
+  end
+  else
+  begin
+    if not NewMessageResponse.msg.isGroup then //CHAT USER
+    begin
+      FChatID := NewMessageResponse.msg.from;
+      TWPPConnect1.ReadMessages(FChatID);
+      wlo_Celular := Copy(NewMessageResponse.msg.author,1,  pos('@', NewMessageResponse.msg.author) -1); // nr telefone
+
+      if NewMessageResponse.msg.id.fromMe then //Foi Enviado por Mim está Mensagem / This message was sent by me
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Nome Contato: ' + Trim(NewMessageResponse.msg.notifyName));
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Number WhatsApp: ' + wlo_Celular);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(NewMessageResponse.msg.body));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + NewMessageResponse.msg.id._serialized);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + NewMessageResponse.msg.&type);
+
+      S_Type := NewMessageResponse.msg.&type;
+
+      if Assigned(NewMessageResponse.msg.quotedMsg) then
+      begin
+        quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Caption;
+        if Trim(quotedMsg_caption) = '' then
+          if Assigned(NewMessageResponse.msg.quotedMsg.list) then
+            quotedMsg_caption := NewMessageResponse.msg.quotedMsg.list.description;
+        if Trim(quotedMsg_caption) = '' then
+          quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+      end;
+
+      ack := 3;
+
+      S_Caption := NewMessageResponse.msg.caption;
+
+      // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+      case AnsiIndexStr(UpperCase(S_Type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
+        0: Extensao_Documento := 'mp3';
+        1: Extensao_Documento := 'jpg';
+        2: Extensao_Documento := 'mp4';
+        3: Extensao_Documento := 'mp3';
+        4:
+        begin
+          Extensao_Documento := ExtractFileExt(NewMessageResponse.msg.filename);
+          Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+        end;
+        5: Extensao_Documento := 'jpg'; //'webp';
+        6: Extensao_Documento := 'mp4'; //Instant Vídeo
+      end;
+
+      Automato_Path := ExtractFilePath(ParamStr(0));
+      filename := NewMessageResponse.msg.filename;
+      mediaKey := NewMessageResponse.msg.mediaKey;
+      mimetype := NewMessageResponse.msg.mimetype;
+      deprecatedMms3Url := NewMessageResponse.msg.DeprecatedMms3Url;
+      latitude := '';
+      longitude := '';
+      base64localidade := '';
+
+      if NewMessageResponse.msg.lat <> 0 then
+        latitude := FloatToStr(NewMessageResponse.msg.lat);
+
+      if NewMessageResponse.msg.lng <> 0 then
+        longitude := FloatToStr(NewMessageResponse.msg.lng);
+
+      if NewMessageResponse.msg.loc <> '' then
+        localidade := NewMessageResponse.msg.loc;
+
+      if latitude <> '' then
+        base64localidade := Body;
+
+      eh_arquivo := False;
+
+      if Extensao_Documento <> '' then
+      begin
+        eh_arquivo := True;
+
+        NomeArq_Whats := WPPConnectDecrypt.download(deprecatedMms3Url,
+                        mediaKey, Extensao_Documento, wlo_Celular, Automato_Path + 'Temp\');
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('Caption: ' + Trim(S_Caption)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('Filename: ' + Trim(filename)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('mediakey: ' + Trim(mediaKey)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('mimetype: ' + Trim(mimetype)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('deprecatedMms3Url: ' + Trim(deprecatedMms3Url)));
+      end;
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+      {ProcessaMsgNaoLida(FChatID, From, idMensagem, '', '', contato,
+        body, S_Caption, Title, Footer, DescricaoLista,
+        filename, S_Type, eh_arquivo,
+        mediaKey, deprecatedMms3Url, mimetype,
+        foto_perfil, IdMensagemOrigem, quotedMsg_caption, quotedMsg_body, S_Type_origem, ack, isGif,
+        latitude, longitude, localidade, base64localidade, idGrupo, NomeGrupo);}
+    end
+    else
+    begin //GROUP
+      FChatID := NewMessageResponse.msg.from;
+      TWPPConnect1.ReadMessages(FChatID);
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Name Group: ' + Trim(NewMessageResponse.msg.formattedTitle));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('id Group: ' + Trim(NewMessageResponse.msg.id.remote));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('participant: ' + Trim(NewMessageResponse.msg.id.participant));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Name participant: ' + Trim(NewMessageResponse.msg.notifyName));
+
+      wlo_Celular := Copy(NewMessageResponse.msg.author,1,  pos('@', NewMessageResponse.msg.author) -1); // nr telefone
+
+      //ShowMessage('body: ' + AnsiUpperCase(NewMessageResponse.msg.body) + ' Número WhatsApp: ' + wlo_Celular);
+
+      if NewMessageResponse.msg.id.fromMe then
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(NewMessageResponse.msg.body));
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + NewMessageResponse.msg.id._serialized);
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + NewMessageResponse.msg.&type);
+
+      S_Type := NewMessageResponse.msg.&type;
+
+      if Assigned(NewMessageResponse.msg.quotedMsg) then
+      begin
+        quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Caption;
+        if Trim(quotedMsg_caption) = '' then
+          if Assigned(NewMessageResponse.msg.quotedMsg.list) then
+            quotedMsg_caption := NewMessageResponse.msg.quotedMsg.list.description;
+        if Trim(quotedMsg_caption) = '' then
+          quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+      end;
+
+      ack := 3;
+
+      S_Caption := NewMessageResponse.msg.caption;
+
+      // Tratando o tipo do arquivo recebido e faz o download para pasta \temp
+      case AnsiIndexStr(UpperCase(S_Type), ['PTT', 'IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'STICKER', 'PTV']) of
+        0: Extensao_Documento := 'mp3';
+        1: Extensao_Documento := 'jpg';
+        2: Extensao_Documento := 'mp4';
+        3: Extensao_Documento := 'mp3';
+        4:
+        begin
+          Extensao_Documento := ExtractFileExt(NewMessageResponse.msg.filename);
+          Extensao_Documento := Copy(Extensao_Documento,2,length(Extensao_Documento));
+        end;
+        5: Extensao_Documento := 'jpg'; //'webp';
+        6: Extensao_Documento := 'mp4'; //Instant Vídeo
+      end;
+
+      Automato_Path := ExtractFilePath(ParamStr(0));
+      filename := NewMessageResponse.msg.filename;
+      mediaKey := NewMessageResponse.msg.mediaKey;
+      mimetype := NewMessageResponse.msg.mimetype;
+      deprecatedMms3Url := NewMessageResponse.msg.DeprecatedMms3Url;
+      latitude := '';
+      longitude := '';
+      base64localidade := '';
+
+      if NewMessageResponse.msg.lat <> 0 then
+        latitude := FloatToStr(NewMessageResponse.msg.lat);
+
+      if NewMessageResponse.msg.lng <> 0 then
+        longitude := FloatToStr(NewMessageResponse.msg.lng);
+
+      if NewMessageResponse.msg.loc <> '' then
+        localidade := NewMessageResponse.msg.loc;
+
+      if latitude <> '' then
+        base64localidade := Body;
+
+      eh_arquivo := False;
+
+      if Extensao_Documento <> '' then
+      begin
+        eh_arquivo := True;
+
+        NomeArq_Whats := WPPConnectDecrypt.download(deprecatedMms3Url,
+                        mediaKey, Extensao_Documento, wlo_Celular, Automato_Path + 'Temp\');
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('NomeArq_Whats: ' + Trim(NomeArq_Whats)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('Caption: ' + Trim(S_Caption)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('Filename: ' + Trim(filename)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('mediakey: ' + Trim(mediaKey)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('mimetype: ' + Trim(mimetype)));
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('deprecatedMms3Url: ' + Trim(deprecatedMms3Url)));
+      end;
+
+      frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+    end;
 
   end;
 

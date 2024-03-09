@@ -581,12 +581,15 @@ type
     FFromMe     : Boolean;
     FId         : String;
     FRemote     : String;
+    Fparticipant: String;
   public
     property _serialized: String   read F_serialized write F_serialized;
     property fromMe:      Boolean  read FFromMe      write FFromMe;
     property id:          String   read FId          write FId;
     property remote:      String   read FRemote      write FRemote;
+    property participant: String   read Fparticipant write Fparticipant;
   end;
+
   TButtonsClass = class(TClassPadrao)
   private
     FID            :string;
@@ -956,6 +959,9 @@ type
     FgifAttribution: Extended;
     Frecipients: TArray<String>;
     Floc: String;
+    FtemplateParams: TArray<String>;
+    //FLastReceivedKey: TLastReceivedKeyClass;
+    //FUnreadMentionsOfMe: TArray<String>;
   public
     constructor Create(pAJsonString: string);
     destructor  Destroy;       override;
@@ -984,7 +990,9 @@ type
     property labels     : TArray<String>      read FLabels             write FLabels;
     property mediaData  : TMediaDataClass     read FMediaData          write FMediaData;
     property mentionedJidList: TArray<String> read FMentionedJidList   write FMentionedJidList;
-    property groupMentions: TArray<String> read FgroupMentions   write FgroupMentions; //Marcelo 15/02/2023
+    property groupMentions: TArray<String>    read FgroupMentions      write FgroupMentions; //Marcelo 15/02/2023
+    property templateParams: TArray<String>   read FtemplateParams     write FtemplateParams; //Marcelo 09/03/2023
+
     // Temis 03/10-2022
     property CardList   : TArray<TCardClass>  read fVCardLIst          write FVCardList;
     property buttons    : TArray<TButtonsClass>  read FButtons         write FButtons;
@@ -1052,9 +1060,11 @@ type
     property footer                      : string   read Ffooter                       write Ffooter;
     property title                       : string   read Ftitle                        write Ftitle;
     //Marcelo 18/06/2022
-    property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
-    property recipients                  : TArray<String>      read Frecipients        write Frecipients;
-
+    property listResponse                : TlistResponseClass     read FlistResponse       write FlistResponse;
+    property recipients                  : TArray<String>         read Frecipients         write Frecipients;
+    //property lastReceivedKey             : TLastReceivedKeyClass  read FLastReceivedKey    write FLastReceivedKey;
+    //property unreadMentionsOfMe          : TArray<String>         read FUnreadMentionsOfMe write FUnreadMentionsOfMe;
+    //TLastReceivedKeyClass
     //encFilehash
   end;
   //Marcelo 27/04/2022
@@ -1129,6 +1139,7 @@ type
     property LocalId: Integer read FLocalId write FLocalId;
     property Name: string read FName write FName;
   end;
+
   //NEW 25/10/2022
   TMsgsClass = class(TClassPadrao)
   private
@@ -1512,7 +1523,8 @@ type
     property _footerPhoneNumbers: TArray<String>                    read F_footerPhoneNumbers    write F_footerPhoneNumbers;
 
     property chatlistPreview    : TchatlistPreviewClass             read FchatlistPreview        write FchatlistPreview;
-
+    //property lastReceivedKey             : TLastReceivedKeyClass  read FLastReceivedKey    write FLastReceivedKey;
+    //property unreadMentionsOfMe          : TArray<String>         read FUnreadMentionsOfMe write FUnreadMentionsOfMe;
   end;
 
   TChat3Class = class(TClassPadraoList<TMessagesClass>)
@@ -1977,6 +1989,8 @@ private
   FlistResponse: TlistResponseClass;
   FLatestEditMsgKey: TLatestEditMsgKeyClass;
   FrequiresDirectConnection: Boolean;
+  FformattedTitle: String;
+  FisGroup: Boolean;
 
 public
   property ack: Extended read FAck write FAck;
@@ -1992,6 +2006,7 @@ public
   property isFromTemplate: Boolean read FIsFromTemplate write FIsFromTemplate;
   property isMdHistoryMsg: Boolean read FIsMdHistoryMsg write FIsMdHistoryMsg;
   property isNewMsg: Boolean read FIsNewMsg write FIsNewMsg;
+  property isGroup: Boolean read FisGroup write FisGroup;
   property isSentCagPollCreation: Boolean read FIsSentCagPollCreation write FIsSentCagPollCreation;
   property isVcardOverMmsDocument: Boolean read FIsVcardOverMmsDocument write FIsVcardOverMmsDocument;
   property kicNotified: Boolean read FKicNotified write FKicNotified;
@@ -2000,6 +2015,7 @@ public
   property lastUpdateFromServerTs: Extended read FLastUpdateFromServerTs write FLastUpdateFromServerTs;
   property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
   property notifyName: String read FNotifyName write FNotifyName;
+  property formattedTitle: String read FformattedTitle write FformattedTitle;
   property pollInvalidated: Boolean read FPollInvalidated write FPollInvalidated;
   property productHeaderImageRejected: Boolean read FProductHeaderImageRejected write FProductHeaderImageRejected;
   property recvFresh: Boolean read FRecvFresh write FRecvFresh;
@@ -2052,6 +2068,7 @@ public
   property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
   property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
+
 end;
 
 //Marcelo 25/07/2023
