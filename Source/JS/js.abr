@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.3;1.0.0.9;78.3.0
+//2.0.0.4;1.0.0.9;78.3.0
 //
 //
 
@@ -2407,6 +2407,19 @@ window.WAPI.getStatus = async (id) => {
 };
 
 window.WAPI.checkNumberStatus = async function (id) {
+    const result = await WPP.contact.queryExists(id);
+    //Ajust 09/03/2024 
+    if (result) {
+        try {            
+                SetConsoleMessage("NewCheckIsValidNumber",    JSON.stringify({ id : result.wid, valid : true}));			
+        } catch (err) {            			
+                SetConsoleMessage("NewCheckIsValidNumber",    JSON.stringify({ id : id, valid : false}));
+        };
+
+    } else {
+        SetConsoleMessage("NewCheckIsValidNumber",    JSON.stringify({ id : id, valid : false}));
+    }
+
     /*
     try {
         let isMd = true
@@ -18992,13 +19005,17 @@ WPP.on('chat.msg_revoke', (msg) => {
 
 //Evento Recebendo Nova Mensagem Marcelo 25/07/2023 
 WPP.on("chat.new_message", async (msg) => {
-    if (habilitaEvento_new_message){	
-
-        /*let pushname = await WPP.whatsapp.functions.getPushname(msg.id.remote);
-        msg = msg.toJSON();  
-        //let isGroup = msg.id.remote.includes('@g.us');        
-        //msg.isGroup = isGroup;        
-        msg.formattedTitle = pushname;*/
+    if (habilitaEvento_new_message){	        
+        msg = msg.toJSON();
+        let contacts = await WPP.contact.get(msg.from);
+        
+        //console.log('Valor de msg.from.server: ', msg.from.server);
+        //console.log('Valor de msg.from._serialized: ', msg.from._serialized);
+        let isGroup = typeof msg.from._serialized === 'string' && msg.from._serialized.trim().includes('@g.us');        
+        msg.isGroup = isGroup;        
+        
+        //Added Name Group
+        msg.formattedTitle = contacts.name;        
         SetConsoleMessage("Getnew_message", JSON.stringify({msg}));
     }
 });
