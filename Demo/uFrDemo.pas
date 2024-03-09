@@ -1844,6 +1844,7 @@ begin
         frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('deprecatedMms3Url: ' + Trim(deprecatedMms3Url)));
       end;
 
+      TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
 
       {ProcessaMsgNaoLida(FChatID, From, idMensagem, '', '', contato,
@@ -1856,7 +1857,7 @@ begin
     else
     begin //GROUP
       FChatID := NewMessageResponse.msg.from;
-      TWPPConnect1.ReadMessages(FChatID);
+      TWPPConnect1.ReadMessages(NewMessageResponse.msg.id.remote);
 
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Name Group: ' + Trim(NewMessageResponse.msg.formattedTitle));
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('id Group: ' + Trim(NewMessageResponse.msg.id.remote));
@@ -1943,14 +1944,12 @@ begin
         frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('mimetype: ' + Trim(mimetype)));
         frameMensagensRecebidas1.memo_unReadMessage.Lines.add(PChar('deprecatedMms3Url: ' + Trim(deprecatedMms3Url)));
       end;
-
+      TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
-
     end;
-
   end;
 
-  frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
 
 end;
 
@@ -2379,6 +2378,7 @@ begin
               //Marcar Audio como Escutado
               if (UpperCase(AMessage.&type) = 'AUDIO') or (UpperCase(AMessage.&type) = 'PTT') then
                 TWPPConnect1.markPlayed(AMessage.id);
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
 
               // if frameMensagensRecebidas1.chk_AutoResposta.Checked then
               // VerificaPalavraChave(AMessage.body, '', telefone, contato);
@@ -2475,14 +2475,13 @@ begin
           telefone := Copy(telefone, 3, Pos('@', telefone) - 3);
           selectedButtonId := AMessage.selectedButtonId;
 
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('..::GRUPO::..'));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Id Grupo: ' + AChat.id));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Grupo: ' + Trim(AChat.formattedTitle)));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  telefone: ' + Trim(telefone)));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Nome Contato: ' + Trim( IfThen(trim(AMessage.sender.PushName) <> EmptyStr, AMessage.sender.PushName, AMessage.sender.verifiedName) )));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('..::GROUP::..'));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Id Group: ' + AChat.id));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Name Grupo: ' + Trim(AChat.formattedTitle)));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Number Participant: ' + Trim(telefone)));
+          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Name Contact: ' + Trim( IfThen(trim(AMessage.sender.PushName) <> EmptyStr, AMessage.sender.PushName, AMessage.sender.verifiedName) )));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10, [rfReplaceAll, rfIgnoreCase]));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  UniqueID: ' + AMessage.id));
-          frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  ACK: ' + FloatToStr(AMessage.ack)));
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('  Tipo mensagem: ' + AMessage.&type));
 
 
