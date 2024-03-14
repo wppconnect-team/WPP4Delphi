@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.5;1.0.0.9;78.3.0
+//2.0.0.6;1.0.0.9;78.3.0
 //
 //
 
@@ -18508,9 +18508,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
 //Customização Marcelo Retorno das Mensagens
 window.WAPI.getMessageById2 = async function(UniqueID) {
-  const result = await WPP.chat.getMessageById(UniqueID);
+    var result = "";
+    try{
+    	result = await WPP.chat.getMessageById(UniqueID);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               UniqueID: UniqueID,               
+               RetEvent: "getMessageById",
+               Error: RetError
+             }            
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-  if (result) {     
+
+  if (result !== "") {     
     try {            	       
 		 SetConsoleMessage("getMessageById", JSON.stringify(result));
 		 
@@ -18522,9 +18535,21 @@ window.WAPI.getMessageById2 = async function(UniqueID) {
 };
 
 window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
-    const result = await WPP.chat.sendTextMessage(chatid, content, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendTextMessage(chatid, content, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,               
+               RetEvent: "sendTextMessage",
+               Error: RetError
+             }            
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
             SetConsoleMessage("sendTextMessage", JSON.stringify(result));
 
@@ -18539,9 +18564,21 @@ window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
 };
 
 window.WAPI.sendListMessage2 = async function(chatid, options) {
-    const result = await WPP.chat.sendListMessage(chatid, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendListMessage(chatid, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,               
+               RetEvent: "sendListMessage",
+               Error: RetError
+             }            
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
             SetConsoleMessage("sendListMessage", JSON.stringify(result));
 
@@ -18556,9 +18593,21 @@ window.WAPI.sendListMessage2 = async function(chatid, options) {
 };
 
 window.WAPI.sendLocation2 = async function(chatid, options) {
-    const result = await WPP.chat.sendLocation(chatid, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendLocation(chatid, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,               
+               RetEvent: "sendLocation",
+               Error: RetError
+             }            
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
             SetConsoleMessage("sendLocation", JSON.stringify(result));
 
@@ -18574,9 +18623,22 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
 
 
 window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)  {
-    const result = await WPP.chat.sendTextMessage(chatid, content, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendTextMessage(chatid, content, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,
+               Seuid: xSeuID,          
+               RetEvent: "sendTextMessageEx",
+               Error: RetError
+             }            
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result != "") {
         try {
              Obj = {
                Seuid: xSeuID,
@@ -18596,9 +18658,23 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)
 };
 
 window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID)  {
-    const result = await WPP.chat.sendFileMessage(chatid, content, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendFileMessage(chatid, content, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,
+               Seuid: xSeuID,          
+               RetEvent: "sendFileMessageEx",
+               Error: RetError
+             }
+            //console.log("ErrorResponse", JSON.stringify(Obj));
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
              Obj = {
                Seuid: xSeuID,
@@ -18607,20 +18683,33 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
 
             SetConsoleMessage("sendFileMessageEx", JSON.stringify(Obj));
 
-        } catch (err) {
+        } catch (err) {             
             console.log(err);
         };
 
-    } else {
-        console.log('ERRO');
-
+    } else {            
+           console.log('ERRO');
     }
 };
 
 window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
-    const result = await WPP.chat.sendListMessage(chatid, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendListMessage(chatid, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,
+               Seuid: xSeuID,          
+               RetEvent: "sendListMessageEx",
+               Error: RetError
+             }
+            //console.log("ErrorResponse", JSON.stringify(Obj));
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
              Obj = {
                Seuid: xSeuID,
@@ -18792,11 +18881,24 @@ window.WAPI.getMessages = async function(chatid, options) {
     }
 };
 
-
 window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
-    const result = await WPP.chat.sendLocationMessage(chatid, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendLocationMessage(chatid, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,
+               Seuid: xSeuID,          
+               RetEvent: "sendLocationMessageEx",
+               Error: RetError
+             }
+            //console.log("ErrorResponse", JSON.stringify(Obj));
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
              Obj = {
                Seuid: xSeuID,
@@ -18859,9 +18961,23 @@ window.WAPI.getInviteCode2 = async function(GROUP_ID) {
 
 //Marcelo 16/01/2023
 window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, options, xSeuID)  {
-    const result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
+    var result = "";
+    try{
+    	result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
+    } catch (error) {
+        const RetError = error;
+        Obj = {
+               chatid: chatid,
+               Seuid: xSeuID,          
+               RetEvent: "sendVCardContactMessageEx",
+               Error: RetError
+             }
+            //console.log("ErrorResponse", JSON.stringify(Obj));
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return error;
+    }
 
-    if (result) {
+    if (result !== "") {
         try {
              Obj = {
                Seuid: xSeuID,
