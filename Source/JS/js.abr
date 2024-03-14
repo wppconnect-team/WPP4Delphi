@@ -18512,7 +18512,7 @@ window.WAPI.getMessageById2 = async function(UniqueID) {
     try{
     	result = await WPP.chat.getMessageById(UniqueID);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
@@ -18542,7 +18542,7 @@ window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
     try{
     	result = await WPP.chat.sendTextMessage(chatid, content, options);
     } catch (error) {
-        var RetError = error.message;  
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";  
         var statusCode = error.code;      
 
         Obj = {
@@ -18574,7 +18574,7 @@ window.WAPI.sendListMessage2 = async function(chatid, options) {
     try{
     	result = await WPP.chat.sendListMessage(chatid, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
@@ -18606,7 +18606,7 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
     try{
     	result = await WPP.chat.sendLocation(chatid, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
@@ -18639,7 +18639,7 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID
     try{
     	result = await WPP.chat.sendTextMessage(chatid, content, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         /*if (typeof RetError === 'object' && RetError !== null) {
@@ -18686,7 +18686,7 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
     try{
     	result = await WPP.chat.sendFileMessage(chatid, content, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;        
 
         Obj = {
@@ -18724,7 +18724,7 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
     try{
     	result = await WPP.chat.sendListMessage(chatid, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
@@ -18916,7 +18916,7 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     try{
     	result = await WPP.chat.sendLocationMessage(chatid, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
@@ -18998,7 +18998,7 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
     try{
     	result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
     } catch (error) {
-        var RetError = error.message;
+        var RetError = error.message === undefined ? (error.stack || "Unknown") : "Unknown";
         var statusCode = error.code;
 
         Obj = {
