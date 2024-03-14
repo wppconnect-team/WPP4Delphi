@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.6;1.0.0.9;78.3.0
+//2.0.0.7;1.0.0.9;78.3.0
 //
 //
 
@@ -18512,11 +18512,14 @@ window.WAPI.getMessageById2 = async function(UniqueID) {
     try{
     	result = await WPP.chat.getMessageById(UniqueID);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                UniqueID: UniqueID,               
                RetEvent: "getMessageById",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,               
+               Error: RetError
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18539,11 +18542,14 @@ window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
     try{
     	result = await WPP.chat.sendTextMessage(chatid, content, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;  
+        var statusCode = error.code;      
+
         Obj = {
                chatid: chatid,               
                RetEvent: "sendTextMessage",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18568,11 +18574,14 @@ window.WAPI.sendListMessage2 = async function(chatid, options) {
     try{
     	result = await WPP.chat.sendListMessage(chatid, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                chatid: chatid,               
                RetEvent: "sendListMessage",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18597,11 +18606,14 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
     try{
     	result = await WPP.chat.sendLocation(chatid, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                chatid: chatid,               
                RetEvent: "sendLocation",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18622,17 +18634,29 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
 };
 
 
-window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)  {
+window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID)  {
     var result = "";
     try{
     	result = await WPP.chat.sendTextMessage(chatid, content, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
+        /*if (typeof RetError === 'object' && RetError !== null) {
+            RetError = JSON.stringify(RetError);
+            
+        }else{
+            RetError = error.message;
+            
+        }*/
+
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendTextMessageEx",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
+               
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18662,12 +18686,15 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
     try{
     	result = await WPP.chat.sendFileMessage(chatid, content, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;        
+
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendFileMessageEx",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18697,12 +18724,15 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
     try{
     	result = await WPP.chat.sendListMessage(chatid, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendListMessageEx",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18886,12 +18916,15 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
     try{
     	result = await WPP.chat.sendLocationMessage(chatid, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendLocationMessageEx",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18965,12 +18998,15 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
     try{
     	result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
     } catch (error) {
-        const RetError = error;
+        var RetError = error.message;
+        var statusCode = error.code;
+
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendVCardContactMessageEx",
-               Error: JSON.stringify(RetError)
+               statusCode: statusCode,
+               Error: RetError
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
