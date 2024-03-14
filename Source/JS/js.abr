@@ -18516,7 +18516,7 @@ window.WAPI.getMessageById2 = async function(UniqueID) {
         Obj = {
                UniqueID: UniqueID,               
                RetEvent: "getMessageById",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18543,7 +18543,7 @@ window.WAPI.sendTextMessage2 = async function(chatid, content, options) {
         Obj = {
                chatid: chatid,               
                RetEvent: "sendTextMessage",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18572,7 +18572,7 @@ window.WAPI.sendListMessage2 = async function(chatid, options) {
         Obj = {
                chatid: chatid,               
                RetEvent: "sendListMessage",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18601,7 +18601,7 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
         Obj = {
                chatid: chatid,               
                RetEvent: "sendLocation",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18632,7 +18632,7 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options,xSeuID)
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendTextMessageEx",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }            
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
             return error;
@@ -18667,7 +18667,7 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendFileMessageEx",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18702,7 +18702,7 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendListMessageEx",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18891,7 +18891,7 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendLocationMessageEx",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
@@ -18970,7 +18970,7 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
                chatid: chatid,
                Seuid: xSeuID,          
                RetEvent: "sendVCardContactMessageEx",
-               Error: RetError
+               Error: JSON.stringify(RetError)
              }
             //console.log("ErrorResponse", JSON.stringify(Obj));
             SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
