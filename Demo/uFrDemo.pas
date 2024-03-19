@@ -157,6 +157,7 @@ type
     procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
     procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
     procedure Timer1Timer(Sender: TObject);
+    procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -2512,6 +2513,21 @@ end;
 procedure TfrDemo.TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
 begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('WhatsAppWebVersion: ' + WhatsAppWebVersion.WAVersion);
+end;
+
+procedure TfrDemo.TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('RetEvent: ' + Response.RetEvent);
+
+  if Response.chatid <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('chatid: ' + Response.chatid);
+  if Response.Seuid <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid: ' + Response.Seuid);
+  if Response.UniqueID <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('UniqueID: ' + Response.UniqueID);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Error: ' + Response.Error);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+
 end;
 
 procedure TfrDemo.TWPPConnect1Get_ProductCatalog(Sender: TObject;

@@ -126,6 +126,9 @@ type
   //Marcelo 16/01/2023
   TGet_sendVCardContactMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
 
+  //Marcelo 14/03/2024
+  TGet_ErrorResponse       = procedure(Const Response: TErrorResponseClass) of object;
+
   TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
@@ -164,6 +167,7 @@ type
     FTotalChatsUserRead     : Integer;
     FWAJS_Version           : String;
     FgenLinkDeviceCode      : string;
+    FOnGet_ErrorResponse: TGet_ErrorResponse;
 
 
     { Private  declarations }
@@ -572,8 +576,10 @@ type
 
     property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
 
-    property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
+    property OnGetHistorySyncProgress   : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
+
+    property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
 
   end;
 
@@ -3324,6 +3330,12 @@ begin
   begin
     if Assigned(FOnGetQrCodeDesconectouErroCache) then
       FOnGetQrCodeDesconectouErroCache(TQrCodeDesconectouErroCache(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_ErrorResponse  then
+  begin
+    if Assigned(FOnGet_ErrorResponse) then
+      FOnGet_ErrorResponse(TErrorResponseClass(PReturnClass));
   end;
 
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022

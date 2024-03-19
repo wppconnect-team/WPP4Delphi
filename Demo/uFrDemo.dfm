@@ -1689,13 +1689,13 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
+          end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
           end
         end
         inherited tsBase64: TTabSheet
@@ -5697,7 +5697,7 @@ object frDemo: TfrDemo
     Config.AutoDelay = 500
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
-      's\TWPPConnectAnexos\'
+      's\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5763,6 +5763,7 @@ object frDemo: TfrDemo
     OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
+    OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     Left = 288
     Top = 472
   end

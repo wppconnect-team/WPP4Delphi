@@ -2165,6 +2165,21 @@ public
   property msg: TMsgEditedClass read FMsg write FMsg;
 end;
 
+TErrorResponseClass = class(TClassPadrao)
+private
+  FError: string;
+  FRetEvent: String;
+  FSeuid: String;
+  FChatid: String;
+  FUniqueID: String;
+public
+  property Error: string read FError write FError;
+  property RetEvent: String read FRetEvent write FRetEvent;
+  property Seuid: String read FSeuid write FSeuid;
+  property chatid: String read FChatid write FChatid;
+  property UniqueID: String read FUniqueID write FUniqueID;
+end;
+
 TIdsClass = class(TClassPadrao)
 private
   F_serialized: String;
@@ -3888,6 +3903,9 @@ destructor TEnvIsOnline.Destroy;
 begin
   inherited;
 end;
+
+
+{ TErrorResponseClass }
 
 
 end.

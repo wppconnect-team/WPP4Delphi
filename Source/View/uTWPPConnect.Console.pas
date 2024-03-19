@@ -2904,6 +2904,18 @@ begin
                              end;
                      end;
 
+    Th_ErrorResponse :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TErrorResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
     Th_sendCreatePollMessageEx :
                      begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
@@ -3011,21 +3023,6 @@ begin
 
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
-
-
-
-
-    {SleepNoFreeze(500);
-
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
-
-      //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);}
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
@@ -3057,6 +3054,12 @@ begin
     begin
       {if POS('getUnreadMessages', message) = 0 then
         LogAdd(message, 'CONSOLE VAZIO');  }
+      Exit;
+    end
+    else
+    if (Pos('Error with Permissions-Policy header', message ) > 0) then
+    begin
+
       Exit;
     end;
   end;

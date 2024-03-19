@@ -526,6 +526,7 @@ type
                    , Th_GetWAVersion=78 //Marcelo 22/10/2023
                    , Th_GetgenLinkDeviceCodeForPhoneNumber=79 //Marcelo 30/10/2023
                    , Th_Getmsg_edited=80 //Marcelo 29/01/2024
+                   , Th_ErrorResponse=81 //Marcelo 14/03/2024
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -663,7 +664,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 80; //Marcelo 29/01/2024
+const LmaxCount = 81; //Marcelo 29/01/2024
 var
   I: Integer;
   LNome: String;
