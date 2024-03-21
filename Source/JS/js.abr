@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.8;1.0.0.9;78.3.0
+//2.0.0.9;1.0.0.9;78.3.0
 //
 //
 
@@ -589,12 +589,26 @@ window.WAPI.getAllChats = async function(done) {
     if (chats) {
       try {
         for (var i = 0; i < chats.length; i++) {          
-            let contacts = await WPP.contact.get(chats[i].id._serialized);
+            //let contacts = await WPP.contact.get(chats[i].id._serialized);
             
             chats[i] = chats[i].toJSON();  
+            
+            let profilePhoto = ".";
+
+            //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
+            chats[i].contact = {
+                id: chats[i].id._serialized,
+                name: chats[i].name,
+                pushname: chats[i].name,
+                formattedName: chats[i].name,
+                profilePicThumb: profilePhoto                
+            };
+
+            //Deletar JSON Array das Mensagens do msgs
+            delete chats[i].msgs;
 
             // Verifique se os contatos existem e têm comprimento maior que zero
-            if (contacts && Object.keys(contacts).length > 0) {   
+            /*if (contacts && Object.keys(contacts).length > 0) {   
                 let profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
 
                 chats[i].contact = {
@@ -605,9 +619,9 @@ window.WAPI.getAllChats = async function(done) {
                     profilePicThumb: profilePhoto,
                     isBusiness: contacts.isBusiness,
                     isEnterprise: contacts.isEnterprise
-                  };                
+                  };
                 //console.log(`Chats[${i}] com propriedade "contact":`, chats[i]);
-            }
+            }*/
 
             delete chats[i].msgs;
         }
