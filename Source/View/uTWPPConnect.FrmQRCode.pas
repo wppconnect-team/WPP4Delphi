@@ -37,9 +37,13 @@ unit uTWPPConnect.FrmQRCode;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  System.UiTypes,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.GIFImg,
+  {$IFDEF FPC}
+  Windows, Messages, SysUtils, Variants, Classes, UiTypes, Graphics, Controls, Forms, Dialogs, ExtCtrls,
+  {$else}
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  System.UiTypes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.GIFImg,
+  {$ENDIF}
+
   uTWPPConnect.Constant;
 
 type

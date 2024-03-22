@@ -87,6 +87,42 @@ type
     function TCreateCompletionResponseToJson(Source: TCreateCompletionResponse): string;
     function TCreateCompletionResponseFromJsonValue(Source: TJSONValue): TCreateCompletionResponse;
     function TCreateCompletionResponseFromJson(Source: string): TCreateCompletionResponse;
+    function TChatCompletionRequestMessageToJsonValue(Source: TChatCompletionRequestMessage): TJSONValue;
+    function TChatCompletionRequestMessageToJson(Source: TChatCompletionRequestMessage): string;
+    function TChatCompletionRequestMessageFromJsonValue(Source: TJSONValue): TChatCompletionRequestMessage;
+    function TChatCompletionRequestMessageFromJson(Source: string): TChatCompletionRequestMessage;
+    function TChatCompletionResponseMessageToJsonValue(Source: TChatCompletionResponseMessage): TJSONValue;
+    function TChatCompletionResponseMessageToJson(Source: TChatCompletionResponseMessage): string;
+    function TChatCompletionResponseMessageFromJsonValue(Source: TJSONValue): TChatCompletionResponseMessage;
+    function TChatCompletionResponseMessageFromJson(Source: string): TChatCompletionResponseMessage;
+    function TChatCompletionRequestMessageListToJsonValue(Source: TChatCompletionRequestMessageList): TJSONValue;
+    function TChatCompletionRequestMessageListToJson(Source: TChatCompletionRequestMessageList): string;
+    function TChatCompletionRequestMessageListFromJsonValue(Source: TJSONValue): TChatCompletionRequestMessageList;
+    function TChatCompletionRequestMessageListFromJson(Source: string): TChatCompletionRequestMessageList;
+    function TCreateChatCompletionRequestLogitBiasToJsonValue(Source: TCreateChatCompletionRequestLogitBias): TJSONValue;
+    function TCreateChatCompletionRequestLogitBiasToJson(Source: TCreateChatCompletionRequestLogitBias): string;
+    function TCreateChatCompletionRequestLogitBiasFromJsonValue(Source: TJSONValue): TCreateChatCompletionRequestLogitBias;
+    function TCreateChatCompletionRequestLogitBiasFromJson(Source: string): TCreateChatCompletionRequestLogitBias;
+    function TCreateChatCompletionRequestToJsonValue(Source: TCreateChatCompletionRequest): TJSONValue;
+    function TCreateChatCompletionRequestToJson(Source: TCreateChatCompletionRequest): string;
+    function TCreateChatCompletionRequestFromJsonValue(Source: TJSONValue): TCreateChatCompletionRequest;
+    function TCreateChatCompletionRequestFromJson(Source: string): TCreateChatCompletionRequest;
+    function TCreateChatCompletionResponseChoicesItemToJsonValue(Source: TCreateChatCompletionResponseChoicesItem): TJSONValue;
+    function TCreateChatCompletionResponseChoicesItemToJson(Source: TCreateChatCompletionResponseChoicesItem): string;
+    function TCreateChatCompletionResponseChoicesItemFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseChoicesItem;
+    function TCreateChatCompletionResponseChoicesItemFromJson(Source: string): TCreateChatCompletionResponseChoicesItem;
+    function TCreateChatCompletionResponseChoicesItemListToJsonValue(Source: TCreateChatCompletionResponseChoicesItemList): TJSONValue;
+    function TCreateChatCompletionResponseChoicesItemListToJson(Source: TCreateChatCompletionResponseChoicesItemList): string;
+    function TCreateChatCompletionResponseChoicesItemListFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseChoicesItemList;
+    function TCreateChatCompletionResponseChoicesItemListFromJson(Source: string): TCreateChatCompletionResponseChoicesItemList;
+    function TCreateChatCompletionResponseUsageToJsonValue(Source: TCreateChatCompletionResponseUsage): TJSONValue;
+    function TCreateChatCompletionResponseUsageToJson(Source: TCreateChatCompletionResponseUsage): string;
+    function TCreateChatCompletionResponseUsageFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseUsage;
+    function TCreateChatCompletionResponseUsageFromJson(Source: string): TCreateChatCompletionResponseUsage;
+    function TCreateChatCompletionResponseToJsonValue(Source: TCreateChatCompletionResponse): TJSONValue;
+    function TCreateChatCompletionResponseToJson(Source: TCreateChatCompletionResponse): string;
+    function TCreateChatCompletionResponseFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponse;
+    function TCreateChatCompletionResponseFromJson(Source: string): TCreateChatCompletionResponse;
     function TCreateEditRequestToJsonValue(Source: TCreateEditRequest): TJSONValue;
     function TCreateEditRequestToJson(Source: TCreateEditRequest): string;
     function TCreateEditRequestFromJsonValue(Source: TJSONValue): TCreateEditRequest;
@@ -319,6 +355,22 @@ type
     function TCreateEmbeddingResponseToJson(Source: TCreateEmbeddingResponse): string;
     function TCreateEmbeddingResponseFromJsonValue(Source: TJSONValue): TCreateEmbeddingResponse;
     function TCreateEmbeddingResponseFromJson(Source: string): TCreateEmbeddingResponse;
+    function TCreateTranscriptionRequestToJsonValue(Source: TCreateTranscriptionRequest): TJSONValue;
+    function TCreateTranscriptionRequestToJson(Source: TCreateTranscriptionRequest): string;
+    function TCreateTranscriptionRequestFromJsonValue(Source: TJSONValue): TCreateTranscriptionRequest;
+    function TCreateTranscriptionRequestFromJson(Source: string): TCreateTranscriptionRequest;
+    function TCreateTranscriptionResponseToJsonValue(Source: TCreateTranscriptionResponse): TJSONValue;
+    function TCreateTranscriptionResponseToJson(Source: TCreateTranscriptionResponse): string;
+    function TCreateTranscriptionResponseFromJsonValue(Source: TJSONValue): TCreateTranscriptionResponse;
+    function TCreateTranscriptionResponseFromJson(Source: string): TCreateTranscriptionResponse;
+    function TCreateTranslationRequestToJsonValue(Source: TCreateTranslationRequest): TJSONValue;
+    function TCreateTranslationRequestToJson(Source: TCreateTranslationRequest): string;
+    function TCreateTranslationRequestFromJsonValue(Source: TJSONValue): TCreateTranslationRequest;
+    function TCreateTranslationRequestFromJson(Source: string): TCreateTranslationRequest;
+    function TCreateTranslationResponseToJsonValue(Source: TCreateTranslationResponse): TJSONValue;
+    function TCreateTranslationResponseToJson(Source: TCreateTranslationResponse): string;
+    function TCreateTranslationResponseFromJsonValue(Source: TJSONValue): TCreateTranslationResponse;
+    function TCreateTranslationResponseFromJson(Source: string): TCreateTranslationResponse;
   end;
   
 implementation
@@ -1595,6 +1647,622 @@ begin
   end;
 end;
 
+function TJsonConverter.TChatCompletionRequestMessageToJsonValue(Source: TChatCompletionRequestMessage): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'role', Self.stringToJsonValue(Source.Role));
+    Json.ObjAddProp(Result, 'content', Self.stringToJsonValue(Source.Content));
+    if Source.NameHasValue then
+      Json.ObjAddProp(Result, 'name', Self.stringToJsonValue(Source.Name));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageToJson(Source: TChatCompletionRequestMessage): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TChatCompletionRequestMessageToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageFromJsonValue(Source: TJSONValue): TChatCompletionRequestMessage;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TChatCompletionRequestMessage.Create;
+  try
+    if Json.ObjContains(Source, 'role', JValue) then
+      Result.Role := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'content', JValue) then
+      Result.Content := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'name', JValue) then
+      Result.Name := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageFromJson(Source: string): TChatCompletionRequestMessage;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TChatCompletionRequestMessageFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionResponseMessageToJsonValue(Source: TChatCompletionResponseMessage): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'role', Self.stringToJsonValue(Source.Role));
+    Json.ObjAddProp(Result, 'content', Self.stringToJsonValue(Source.Content));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionResponseMessageToJson(Source: TChatCompletionResponseMessage): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TChatCompletionResponseMessageToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionResponseMessageFromJsonValue(Source: TJSONValue): TChatCompletionResponseMessage;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TChatCompletionResponseMessage.Create;
+  try
+    if Json.ObjContains(Source, 'role', JValue) then
+      Result.Role := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'content', JValue) then
+      Result.Content := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionResponseMessageFromJson(Source: string): TChatCompletionResponseMessage;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TChatCompletionResponseMessageFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageListToJsonValue(Source: TChatCompletionRequestMessageList): TJSONValue;
+var
+  Index: Integer;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateArray;
+  try
+    for Index := 0 to Source.Count - 1 do
+      Json.ArrayAdd(Result, Self.TChatCompletionRequestMessageToJsonValue(Source[Index]));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageListToJson(Source: TChatCompletionRequestMessageList): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TChatCompletionRequestMessageListToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageListFromJsonValue(Source: TJSONValue): TChatCompletionRequestMessageList;
+var
+  Index: Integer;
+begin
+  if not Json.IsArray(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TChatCompletionRequestMessageList.Create;
+  try
+    for Index := 0 to Json.ArrayLength(Source) - 1 do
+      Result.Add(Self.TChatCompletionRequestMessageFromJsonValue(Json.ArrayGet(Source, Index)));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TChatCompletionRequestMessageListFromJson(Source: string): TChatCompletionRequestMessageList;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TChatCompletionRequestMessageListFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestLogitBiasToJsonValue(Source: TCreateChatCompletionRequestLogitBias): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestLogitBiasToJson(Source: TCreateChatCompletionRequestLogitBias): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionRequestLogitBiasToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestLogitBiasFromJsonValue(Source: TJSONValue): TCreateChatCompletionRequestLogitBias;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionRequestLogitBias.Create;
+  try
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestLogitBiasFromJson(Source: string): TCreateChatCompletionRequestLogitBias;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionRequestLogitBiasFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestToJsonValue(Source: TCreateChatCompletionRequest): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'model', Self.stringToJsonValue(Source.Model));
+    Json.ObjAddProp(Result, 'messages', Self.TChatCompletionRequestMessageListToJsonValue(Source.Messages));
+    if Source.TemperatureHasValue then
+      Json.ObjAddProp(Result, 'temperature', Self.DoubleToJsonValue(Source.Temperature));
+    if Source.TopPHasValue then
+      Json.ObjAddProp(Result, 'top_p', Self.DoubleToJsonValue(Source.TopP));
+    if Source.NHasValue then
+      Json.ObjAddProp(Result, 'n', Self.IntegerToJsonValue(Source.N));
+    if Source.StreamHasValue then
+      Json.ObjAddProp(Result, 'stream', Self.BooleanToJsonValue(Source.Stream));
+    if Source.StopHasValue then
+      Json.ObjAddProp(Result, 'stop', Self.stringToJsonValue(Source.Stop));
+    if Source.MaxTokensHasValue then
+      Json.ObjAddProp(Result, 'max_tokens', Self.IntegerToJsonValue(Source.MaxTokens));
+    if Source.PresencePenaltyHasValue then
+      Json.ObjAddProp(Result, 'presence_penalty', Self.DoubleToJsonValue(Source.PresencePenalty));
+    if Source.FrequencyPenaltyHasValue then
+      Json.ObjAddProp(Result, 'frequency_penalty', Self.DoubleToJsonValue(Source.FrequencyPenalty));
+    if Assigned(Source.LogitBias) then
+      Json.ObjAddProp(Result, 'logit_bias', Self.TCreateChatCompletionRequestLogitBiasToJsonValue(Source.LogitBias));
+    if Source.UserHasValue then
+      Json.ObjAddProp(Result, 'user', Self.stringToJsonValue(Source.User));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestToJson(Source: TCreateChatCompletionRequest): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionRequestToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestFromJsonValue(Source: TJSONValue): TCreateChatCompletionRequest;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionRequest.Create;
+  try
+    if Json.ObjContains(Source, 'model', JValue) then
+      Result.Model := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'messages', JValue) then
+      Result.Messages := Self.TChatCompletionRequestMessageListFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'temperature', JValue) then
+      Result.Temperature := Self.DoubleFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'top_p', JValue) then
+      Result.TopP := Self.DoubleFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'n', JValue) then
+      Result.N := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'stream', JValue) then
+      Result.Stream := Self.BooleanFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'stop', JValue) then
+      Result.Stop := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'max_tokens', JValue) then
+      Result.MaxTokens := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'presence_penalty', JValue) then
+      Result.PresencePenalty := Self.DoubleFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'frequency_penalty', JValue) then
+      Result.FrequencyPenalty := Self.DoubleFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'logit_bias', JValue) then
+      Result.LogitBias := Self.TCreateChatCompletionRequestLogitBiasFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'user', JValue) then
+      Result.User := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionRequestFromJson(Source: string): TCreateChatCompletionRequest;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionRequestFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemToJsonValue(Source: TCreateChatCompletionResponseChoicesItem): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    if Source.IndexHasValue then
+      Json.ObjAddProp(Result, 'index', Self.IntegerToJsonValue(Source.Index));
+    if Assigned(Source.Message) then
+      Json.ObjAddProp(Result, 'message', Self.TChatCompletionResponseMessageToJsonValue(Source.Message));
+    if Source.FinishReasonHasValue then
+      Json.ObjAddProp(Result, 'finish_reason', Self.stringToJsonValue(Source.FinishReason));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemToJson(Source: TCreateChatCompletionResponseChoicesItem): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionResponseChoicesItemToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseChoicesItem;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionResponseChoicesItem.Create;
+  try
+    if Json.ObjContains(Source, 'index', JValue) then
+      Result.Index := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'message', JValue) then
+      Result.Message := Self.TChatCompletionResponseMessageFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'finish_reason', JValue) then
+      Result.FinishReason := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemFromJson(Source: string): TCreateChatCompletionResponseChoicesItem;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionResponseChoicesItemFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemListToJsonValue(Source: TCreateChatCompletionResponseChoicesItemList): TJSONValue;
+var
+  Index: Integer;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateArray;
+  try
+    for Index := 0 to Source.Count - 1 do
+      Json.ArrayAdd(Result, Self.TCreateChatCompletionResponseChoicesItemToJsonValue(Source[Index]));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemListToJson(Source: TCreateChatCompletionResponseChoicesItemList): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionResponseChoicesItemListToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemListFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseChoicesItemList;
+var
+  Index: Integer;
+begin
+  if not Json.IsArray(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionResponseChoicesItemList.Create;
+  try
+    for Index := 0 to Json.ArrayLength(Source) - 1 do
+      Result.Add(Self.TCreateChatCompletionResponseChoicesItemFromJsonValue(Json.ArrayGet(Source, Index)));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseChoicesItemListFromJson(Source: string): TCreateChatCompletionResponseChoicesItemList;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionResponseChoicesItemListFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseUsageToJsonValue(Source: TCreateChatCompletionResponseUsage): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'prompt_tokens', Self.IntegerToJsonValue(Source.PromptTokens));
+    Json.ObjAddProp(Result, 'completion_tokens', Self.IntegerToJsonValue(Source.CompletionTokens));
+    Json.ObjAddProp(Result, 'total_tokens', Self.IntegerToJsonValue(Source.TotalTokens));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseUsageToJson(Source: TCreateChatCompletionResponseUsage): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionResponseUsageToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseUsageFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponseUsage;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionResponseUsage.Create;
+  try
+    if Json.ObjContains(Source, 'prompt_tokens', JValue) then
+      Result.PromptTokens := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'completion_tokens', JValue) then
+      Result.CompletionTokens := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'total_tokens', JValue) then
+      Result.TotalTokens := Self.IntegerFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseUsageFromJson(Source: string): TCreateChatCompletionResponseUsage;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionResponseUsageFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseToJsonValue(Source: TCreateChatCompletionResponse): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'id', Self.stringToJsonValue(Source.Id));
+    Json.ObjAddProp(Result, 'object', Self.stringToJsonValue(Source.&Object));
+    Json.ObjAddProp(Result, 'created', Self.IntegerToJsonValue(Source.Created));
+    Json.ObjAddProp(Result, 'model', Self.stringToJsonValue(Source.Model));
+    Json.ObjAddProp(Result, 'choices', Self.TCreateChatCompletionResponseChoicesItemListToJsonValue(Source.Choices));
+    if Assigned(Source.Usage) then
+      Json.ObjAddProp(Result, 'usage', Self.TCreateChatCompletionResponseUsageToJsonValue(Source.Usage));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseToJson(Source: TCreateChatCompletionResponse): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateChatCompletionResponseToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseFromJsonValue(Source: TJSONValue): TCreateChatCompletionResponse;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateChatCompletionResponse.Create;
+  try
+    if Json.ObjContains(Source, 'id', JValue) then
+      Result.Id := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'object', JValue) then
+      Result.&Object := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'created', JValue) then
+      Result.Created := Self.IntegerFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'model', JValue) then
+      Result.Model := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'choices', JValue) then
+      Result.Choices := Self.TCreateChatCompletionResponseChoicesItemListFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'usage', JValue) then
+      Result.Usage := Self.TCreateChatCompletionResponseUsageFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateChatCompletionResponseFromJson(Source: string): TCreateChatCompletionResponse;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateChatCompletionResponseFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
 function TJsonConverter.TCreateEditRequestToJsonValue(Source: TCreateEditRequest): TJSONValue;
 begin
   if not Assigned(Source) then
@@ -2069,10 +2737,8 @@ begin
   end;
   Result := Json.CreateObject;
   try
-    Json.ObjAddProp(Result, 'id', Self.stringToJsonValue(Source.Id));
     Json.ObjAddProp(Result, 'object', Self.stringToJsonValue(Source.&Object));
     Json.ObjAddProp(Result, 'created', Self.IntegerToJsonValue(Source.Created));
-    Json.ObjAddProp(Result, 'model', Self.stringToJsonValue(Source.Model));
     Json.ObjAddProp(Result, 'choices', Self.TCreateEditResponseChoicesItemListToJsonValue(Source.Choices));
     Json.ObjAddProp(Result, 'usage', Self.TCreateEditResponseUsageToJsonValue(Source.Usage));
   except
@@ -2104,14 +2770,10 @@ begin
   end;
   Result := TCreateEditResponse.Create;
   try
-    if Json.ObjContains(Source, 'id', JValue) then
-      Result.Id := Self.stringFromJsonValue(JValue);
     if Json.ObjContains(Source, 'object', JValue) then
       Result.&Object := Self.stringFromJsonValue(JValue);
     if Json.ObjContains(Source, 'created', JValue) then
       Result.Created := Self.IntegerFromJsonValue(JValue);
-    if Json.ObjContains(Source, 'model', JValue) then
-      Result.Model := Self.stringFromJsonValue(JValue);
     if Json.ObjContains(Source, 'choices', JValue) then
       Result.Choices := Self.TCreateEditResponseChoicesItemListFromJsonValue(JValue);
     if Json.ObjContains(Source, 'usage', JValue) then
@@ -5566,6 +6228,276 @@ begin
   JValue := JsonToJsonValue(Source);
   try
     Result := TCreateEmbeddingResponseFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionRequestToJsonValue(Source: TCreateTranscriptionRequest): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'file', Self.stringToJsonValue(Source.&File));
+    Json.ObjAddProp(Result, 'model', Self.stringToJsonValue(Source.Model));
+    if Source.PromptHasValue then
+      Json.ObjAddProp(Result, 'prompt', Self.stringToJsonValue(Source.Prompt));
+    if Source.ResponseFormatHasValue then
+      Json.ObjAddProp(Result, 'response_format', Self.stringToJsonValue(Source.ResponseFormat));
+    if Source.TemperatureHasValue then
+      Json.ObjAddProp(Result, 'temperature', Self.DoubleToJsonValue(Source.Temperature));
+    if Source.LanguageHasValue then
+      Json.ObjAddProp(Result, 'language', Self.stringToJsonValue(Source.Language));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionRequestToJson(Source: TCreateTranscriptionRequest): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateTranscriptionRequestToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionRequestFromJsonValue(Source: TJSONValue): TCreateTranscriptionRequest;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateTranscriptionRequest.Create;
+  try
+    if Json.ObjContains(Source, 'file', JValue) then
+      Result.&File := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'model', JValue) then
+      Result.Model := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'prompt', JValue) then
+      Result.Prompt := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'response_format', JValue) then
+      Result.ResponseFormat := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'temperature', JValue) then
+      Result.Temperature := Self.DoubleFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'language', JValue) then
+      Result.Language := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionRequestFromJson(Source: string): TCreateTranscriptionRequest;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateTranscriptionRequestFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionResponseToJsonValue(Source: TCreateTranscriptionResponse): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'text', Self.stringToJsonValue(Source.Text));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionResponseToJson(Source: TCreateTranscriptionResponse): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateTranscriptionResponseToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionResponseFromJsonValue(Source: TJSONValue): TCreateTranscriptionResponse;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateTranscriptionResponse.Create;
+  try
+    if Json.ObjContains(Source, 'text', JValue) then
+      Result.Text := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranscriptionResponseFromJson(Source: string): TCreateTranscriptionResponse;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateTranscriptionResponseFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationRequestToJsonValue(Source: TCreateTranslationRequest): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'file', Self.stringToJsonValue(Source.&File));
+    Json.ObjAddProp(Result, 'model', Self.stringToJsonValue(Source.Model));
+    if Source.PromptHasValue then
+      Json.ObjAddProp(Result, 'prompt', Self.stringToJsonValue(Source.Prompt));
+    if Source.ResponseFormatHasValue then
+      Json.ObjAddProp(Result, 'response_format', Self.stringToJsonValue(Source.ResponseFormat));
+    if Source.TemperatureHasValue then
+      Json.ObjAddProp(Result, 'temperature', Self.DoubleToJsonValue(Source.Temperature));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationRequestToJson(Source: TCreateTranslationRequest): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateTranslationRequestToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationRequestFromJsonValue(Source: TJSONValue): TCreateTranslationRequest;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateTranslationRequest.Create;
+  try
+    if Json.ObjContains(Source, 'file', JValue) then
+      Result.&File := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'model', JValue) then
+      Result.Model := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'prompt', JValue) then
+      Result.Prompt := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'response_format', JValue) then
+      Result.ResponseFormat := Self.stringFromJsonValue(JValue);
+    if Json.ObjContains(Source, 'temperature', JValue) then
+      Result.Temperature := Self.DoubleFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationRequestFromJson(Source: string): TCreateTranslationRequest;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateTranslationRequestFromJsonValue(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationResponseToJsonValue(Source: TCreateTranslationResponse): TJSONValue;
+begin
+  if not Assigned(Source) then
+  begin
+    Result := Json.CreateNull;
+    Exit;
+  end;
+  Result := Json.CreateObject;
+  try
+    Json.ObjAddProp(Result, 'text', Self.stringToJsonValue(Source.Text));
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationResponseToJson(Source: TCreateTranslationResponse): string;
+var
+  JValue: TJSONValue;
+begin
+  JValue := TCreateTranslationResponseToJsonValue(Source);
+  try
+    Result := JsonValueToJson(JValue);
+  finally
+    JValue.Free;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationResponseFromJsonValue(Source: TJSONValue): TCreateTranslationResponse;
+var
+  JValue: TJSONValue;
+begin
+  if not Json.IsObject(Source) then
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TCreateTranslationResponse.Create;
+  try
+    if Json.ObjContains(Source, 'text', JValue) then
+      Result.Text := Self.stringFromJsonValue(JValue);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TJsonConverter.TCreateTranslationResponseFromJson(Source: string): TCreateTranslationResponse;
+var
+  JValue: TJSONValue;
+begin
+  JValue := JsonToJsonValue(Source);
+  try
+    Result := TCreateTranslationResponseFromJsonValue(JValue);
   finally
     JValue.Free;
   end;

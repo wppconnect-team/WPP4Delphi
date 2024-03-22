@@ -104,10 +104,19 @@ begin
   if FAllowOneDigit then
     LInc := 1 else
     LInc := 0;
+
   Result := Pnum;
 
   try
     if not AutoAdjust then
+      Exit;
+
+    //Marcelo Não Validar Número ja Formatado 02/07/2023
+    if pos('@c.us', PNum) > 0 then
+      Exit;
+
+    //Marcelo Não Validar ID de Grupo ja Formatado 01/08/2023
+    if pos('@g.us', PNum) > 0 then
       Exit;
 
     //Garante valores LIMPOS (sem mascaras, letras, etc) apenas NUMEROS
@@ -129,8 +138,8 @@ begin
       if (Length(LClearNum) <= (LengthDDD + LengthPhone + LInc)) or (Length(PNum) <= (LengthDDD + LengthPhone + LInc)) then
       begin
         if (Copy(LClearNum, 0, LengthDDI) <> DDIDefault.ToString)
-        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 10)) //(55)8125-3929 Ajust com DDD 55
-        or ((Copy(PNum,1,2) = '55') and (Length(PNum) = 11)) //(55)98125-3929 Ajust com DDD 55
+        or ((Copy(PNum,1,2) = DDIDefault.ToString) and (Length(PNum) = 10)) //(55)8125-3929 Ajust com DDD 55
+        or ((Copy(PNum,1,2) = DDIDefault.ToString) and (Length(PNum) = 11)) //(55)98125-3929 Ajust com DDD 55
         then
           LClearNum := DDIDefault.ToString + LClearNum;
         Result := LClearNum +  CardContact;

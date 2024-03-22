@@ -305,6 +305,7 @@ private
   Flabels: TArray<String>;
   FisAvatar: Boolean;
   FgroupMentions: TArray<String>;
+  Frowid: String;
 public
   property ack: Extended read FAck write FAck;
   property body: String read FBody write FBody;
@@ -337,6 +338,7 @@ public
   property labels: TArray<String> read Flabels write Flabels;
   property groupMentions: TArray<String> read FgroupMentions write FgroupMentions;
   property isAvatar: Boolean read FisAvatar write FisAvatar;
+  property rowid: String read Frowid write Frowid;
 
   constructor Create;
   destructor Destroy; override;

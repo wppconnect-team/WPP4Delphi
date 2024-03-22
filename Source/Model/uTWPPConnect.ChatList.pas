@@ -80,8 +80,10 @@ private
   FStickerSentTs: Extended;
   FTitle: String;
   FType: String;
+  Fcaption: String;
 public
   property body: String read FBody write FBody;
+  property caption: String read Fcaption write Fcaption;
   property ephemeralStartTimestamp: Extended read FEphemeralStartTimestamp write FEphemeralStartTimestamp;
   property footer: String read FFooter write FFooter;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
@@ -176,6 +178,10 @@ end;
     FQuotedStanzaID: String;
     FQuotedMsg: TQuotedMsgClass;
     FInviteGrpType: String;
+    FTitle: String;
+    FFooter: String;
+    FgifAttribution: Extended;
+    FisGif: Boolean;
   public
     property ack: Extended read FAck write FAck;
     property author: String read FAuthor write FAuthor;
@@ -210,6 +216,8 @@ end;
     property &type: String read FType write FType;
     property isGroup: Boolean read FisGroup write FisGroup;
     property caption: String read FCaption write FCaption;
+    property Title: String read FTitle write FTitle;
+    property Footer: String read FFooter write FFooter;
     property deprecatedMms3Url: String read FDeprecatedMms3Url write FDeprecatedMms3Url;
     property directPath: String read FDirectPath write FDirectPath;
     property encFilehash: String read FEncFilehash write FEncFilehash;
@@ -219,6 +227,8 @@ end;
     property mediaKey: String read FMediaKey write FMediaKey;
     property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
     property mimetype: String read FMimetype write FMimetype;
+     property gifAttribution         : Extended      read FgifAttribution              write FgifAttribution;
+     property isGif                  : Boolean       read FisGif                       write FisGif;
     property pageCount: Extended read FPageCount write FPageCount;
     property pollOptions: TArray<String> read FPollOptions write FPollOptions;
     property rowId: Extended read FRowId write FRowId;
@@ -242,6 +252,7 @@ end;
     property quotedStanzaID: String read FQuotedStanzaID write FQuotedStanzaID;
     property richPreviewType: Extended read FRichPreviewType write FRichPreviewType;
     property thumbnail: String read FThumbnail write FThumbnail;
+
 
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -282,6 +293,8 @@ begin
   inherited Create(pAJsonString);
   FId := TIdClass.Create(pAJsonString);
   FQuotedMsg := TQuotedMsgClass.Create(pAJsonString);
+  if True then
+
 end;
 
 destructor TChatListClass.Destroy;

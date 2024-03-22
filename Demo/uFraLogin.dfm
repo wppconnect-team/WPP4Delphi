@@ -1,7 +1,7 @@
 object frameLogin: TframeLogin
   Left = 0
   Top = 0
-  Width = 683
+  Width = 752
   Height = 349
   Align = alClient
   Font.Charset = ANSI_CHARSET
@@ -890,10 +890,11 @@ object frameLogin: TframeLogin
       14F640ADA5924463183F90A67692095E54E613D4E2A01CFB5F02848AE364A31E
       E00000000049454E44AE426082}
     ShowHint = False
+    OnClick = whatsOffClick
   end
   object imgQrCode: TImage
     Left = 394
-    Top = 35
+    Top = 24
     Width = 273
     Height = 260
     Center = True
@@ -1302,6 +1303,23 @@ object frameLogin: TframeLogin
       0C18C07599324E37C36AB3C7BB88C0C44FCEC830D3358E28B2BDBCB9730CF77E
       3C75350728D6FF03977073E6941C5E320000000049454E44AE426082}
     Visible = False
+    OnClick = whatsOnClick
+  end
+  object lblCodeLinkDevice: TLabel
+    Left = 394
+    Top = 320
+    Width = 194
+    Height = 23
+    Cursor = crHandPoint
+    Caption = 'Gera Code Link Device'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Roboto'
+    Font.Style = [fsBold, fsUnderline]
+    ParentFont = False
+    Transparent = True
+    OnClick = lblCodeLinkDeviceClick
   end
   object rgTipoLogin: TRadioGroup
     Left = 192
@@ -1309,12 +1327,13 @@ object frameLogin: TframeLogin
     Width = 185
     Height = 185
     Caption = 'M'#233'todo de acesso'
-    ItemIndex = 0
+    ItemIndex = 2
     Items.Strings = (
       'Formul'#225'rio com QrCode'
       'Whatsapp Web'
       'QrCode Manual')
     TabOrder = 0
+    OnClick = rgTipoLoginClick
   end
   object SpeedButton3: TButton
     Left = 189
@@ -1332,9 +1351,25 @@ object frameLogin: TframeLogin
   object ProgressBar1: TProgressBar
     Left = 189
     Top = 304
-    Width = 478
+    Width = 188
     Height = 17
     TabOrder = 2
+  end
+  object eNumberWhats: TEdit
+    Left = 394
+    Top = 291
+    Width = 183
+    Height = 23
+    TabOrder = 3
+  end
+  object bgetgenLinkDeviceCodeFor: TBitBtn
+    Left = 583
+    Top = 290
+    Width = 166
+    Height = 25
+    Caption = 'Gera Code Link Device'
+    TabOrder = 4
+    OnClick = bgetgenLinkDeviceCodeForClick
   end
   object ImageList1: TImageList
     DrawingStyle = dsTransparent

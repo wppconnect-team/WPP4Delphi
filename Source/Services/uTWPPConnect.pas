@@ -44,7 +44,7 @@ uses
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
-  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, uTWPPConnect.ChatList;
+  uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, IniFiles, uTWPPConnect.ChatList;
 
 
 type
@@ -62,9 +62,10 @@ type
   TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
 
   TGetUnReadMessages        = procedure(Const Chats: TChatList) of object;
-  TGetMessages              = procedure(Const Chats: TChatList3) of object; //14/08/2022
+  TGetMessages              = procedure(Const Response: TGetMessageClass) of object; //31/10/2023
   TOnGetQrCode              = procedure(Const Sender: Tobject; Const QrCode: TResultQRCodeClass) of object;
   TOnAllContacts            = procedure(Const AllContacts: TRetornoAllContacts) of object;
+  TOnMyContacts             = procedure(Const MyContacts: TRetornoAllContacts) of object; //add Marcelo 01/07/2023
   TOnAllCommunitys          = procedure(Const AllCommunitys: TRetornoAllCommunitys) of object;
   TOnAllGroups              = procedure(Const AllGroups: TRetornoAllGroups) of object;
   TOnAllGroupContacts       = procedure(Const Contacts: TClassAllGroupContacts) of object;
@@ -78,6 +79,24 @@ type
   TOnGetLastSeen            = procedure(Const vGetLastSeen : TReturngetLastSeen) of object; //Marcelo 31/07/2022
 
   TOnGetPlatformFromMessage = procedure(Const PlatformFromMessage: TPlatformFromMessage) of object; //Marcelo 20/08/2022
+
+  TOnGetPoolResponse = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
+  TOnGetPoolResponseEvento = procedure(Const PoolResponse: TPoolResponseClass) of object; //Marcelo 07/07/2023
+
+  TOnGetReactResponseEvento = procedure(Const ReactionResponse: TReactionResponseClass) of object; //Marcelo 25/07/2023
+  TOnGetNewMessageResponseEvento = procedure(Const NewMessageResponse: TNewMessageResponseClass) of object; //Marcelo 25/07/2023
+  TOnGet_SendPollMessageResponse = procedure(Const SendPollMessageResponse: TSendPollMessageResponseClass) of object; //Marcelo 25/07/2023
+
+  TOnGetAck_changeEvento = procedure(Const Ack_change: TAck_changeClass) of object; //Marcelo 26/07/2023
+  TOnGetmsg_revokeEvento = procedure(Const RevokeMsg: TRevokeClass) of object; //Marcelo 26/07/2023
+
+  TOnGetmsg_EditedEvento = procedure(Const MsgEdited: TEditedClass) of object; //Marcelo 29/01/2024
+
+  TOnGetTotalChatsUserRead = procedure(Const TotalChatsUserRead: TTotalChatsUserRead) of object; //Marcelo 22/10/2023
+  TOnGetWAVersion = procedure(Const WhatsAppWebVersion: TWAVersion) of object; //Marcelo 22/10/2023
+
+  TOnGetgenLinkDeviceCodeForPhoneNumber = procedure(Const Response: TGenLinkDeviceCodeForPhoneNumber) of object; //Marcelo 30/10/2023
+
 
   TOnGetHistorySyncProgress = procedure(Const GetHistorySyncProgress: TResponsegetHistorySyncProgress) of object; //Marcelo 17/01/2023
   TOnGetQrCodeDesconectouErroCache = procedure(Const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache) of object; //Marcelo 06/02/2023
@@ -107,6 +126,9 @@ type
   //Marcelo 16/01/2023
   TGet_sendVCardContactMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
 
+  //Marcelo 14/03/2024
+  TGet_ErrorResponse       = procedure(Const Response: TErrorResponseClass) of object;
+
   TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
@@ -114,7 +136,10 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
+  TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
+  TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
   TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
+
   TWPPConnect = class(TComponent)
   private
     FInjectConfig           : TWPPConnectConfig;
@@ -125,6 +150,7 @@ type
     FDestroyTmr             : Ttimer;
     FFormQrCodeType         : TFormQrCodeType;
     FMyNumber               : string;
+    FMyPushName             : string;
 
     FIsDelivered            : string;
     FGetBatteryLevel        : Integer;
@@ -136,7 +162,12 @@ type
     FLanguageInject         : TLanguageInject;
     FOnDisconnectedBrute    : TNotifyEvent;
     FCrashMonitorLastUpdate : TDateTime;
-    FOnWPPMonitorCrash: TWPPMonitorCrash;
+    FOnWPPMonitorCrash      : TWPPMonitorCrash;
+    FWhatsAppWebVersion     : String;
+    FTotalChatsUserRead     : Integer;
+    FWAJS_Version           : String;
+    FgenLinkDeviceCode      : string;
+    FOnGet_ErrorResponse: TGet_ErrorResponse;
 
 
     { Private  declarations }
@@ -164,8 +195,10 @@ type
     FOnGetMessages              : TGetMessages; //14/08/2022
     FOnGetAllGroupContacts      : TOnAllGroupContacts;
     FOnGetAllContactList        : TOnAllContacts;
+    FOnGetMyContactList         : TOnMyContacts;
+
     FOnGetAllGroupList          : TOnAllGroups;
-    FOnGetAllCommunitys          : TOnAllCommunitys;
+    FOnGetAllCommunitys         : TOnAllCommunitys;
     FOnGetAllGroupAdmins        : TOnAllGroupAdmins;
     FOnLowBattery               : TNotifyEvent;
     FOnGetBatteryLevel          : TNotifyEvent;
@@ -196,6 +229,20 @@ type
 
     FOngetLastSeen              : TOngetLastSeen; //Marcelo 31/07/2022
     FOnGetPlatformFromMessage   : TOnGetPlatformFromMessage; //Marcelo 20/08/2022
+    FOnGetPoolResponse          : TOnGetPoolResponse; //Marcelo 07/07/2023
+    FOnGetPoolResponseEvento    : TOnGetPoolResponseEvento; //Marcelo 07/07/2023
+
+    FOnGetReactResponseEvento      : TOnGetReactResponseEvento; //Marcelo 25/07/2023
+    FOnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento; //Marcelo 25/07/2023
+    FOnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse; //Marcelo 25/07/2023
+
+    FOnGetAck_changeEvento      : TOnGetAck_changeEvento; //Marcelo 26/07/2023
+    FOnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento; //Marcelo 26/07/2023
+    FOnGetmsg_EditedEvento      : TOnGetmsg_EditedEvento; //Marcelo 29/01/2024
+
+    FOnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead; //Marcelo 22/10/2023
+    FOnGetWAVersion             : TOnGetWAVersion; //Marcelo 22/10/2023
+
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
 
@@ -227,6 +274,10 @@ type
     FOnGetIsReady: TGetIsReady; //Marcelo 17/09/2022
     FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
     FOnGetIsAuthenticated: TGetIsAuthenticated; //Marcelo 17/09/2022
+
+    FOnGetIsOnline: TGetIsOnline; //Marcelo 03/05/2023
+    FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
+    FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
 
@@ -266,6 +317,9 @@ type
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
 
+    procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+    procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
+
     procedure getList(options: string); //Add Marcelo 25/10/2022
 
     //Daniel - 13/06/2022
@@ -282,6 +336,8 @@ type
     procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
     procedure sendTextStatus(Content, Options: string);
+
+    procedure CreateNewsLetter(Content, Options: string);
 
     procedure markIsUnread(phoneNumber: string);
 
@@ -303,6 +359,7 @@ type
     procedure getMessageById(UniqueIDs: string; etapa: string = '');
 
     procedure getMessageACK(UniqueIDs: string);
+    procedure getVotes(UniqueID: string);
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
@@ -328,8 +385,11 @@ type
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta;
+    procedure IsOnline;
     procedure CheckIsConnected;
     procedure GetAllContacts;
+    procedure GetMyContacts;
+
     procedure GetAllGroups;
     procedure GetAllCommunitys;
     procedure GroupAddParticipant(PIDGroup, PNumber: string);
@@ -338,10 +398,14 @@ type
     procedure GroupDemoteParticipant(PIDGroup, PNumber: string);
     procedure GroupLeave(PIDGroup: string);
     procedure GroupDelete(PIDGroup: string);
-    procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions: string);
+    procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
+    procedure CreatePool(PID, PDescription, PChoices, POptions: string);
+    procedure CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
     procedure SetGroupPicture(PIDGroup, PFileName: string);
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
+
+    procedure sendScheduledCallMessage(vID, vOptions: string);
 
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
@@ -349,6 +413,11 @@ type
     procedure DesarquivarChat(PIDContato:String);
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
+    procedure DeletarTodosOsChatsUsers;
+    procedure DeletarOldChats(QtdChatsExcluir: string);
+    procedure MarkIsReadChats(NumberChatsIsRead: string);
+    procedure MarkIsUnreadChats(NumberChatsUnread: string);
+
     procedure FixarChat(PIDContato:String);
     procedure DesfixarChat(PIDContato:String);
 
@@ -359,11 +428,13 @@ type
     procedure SetProfilePicture(vFileName: string);
     procedure SetStatus(vStatus: String);
     procedure GetStatusContact(PNumber: String);
+    procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure GetGroupInviteLink(PIDGroup : string);
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
 
-
+    procedure getWAVersion;
+    procedure GetTotalChatsUserRead;
 
     Function  GetContact(Pindex: Integer): TContactClass;  deprecated;  //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
     procedure GetAllChats;
@@ -375,22 +446,29 @@ type
     procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
     procedure addSubgroups(PCommunity, PGroupNumbers: string);
     procedure listGroupContacts(PIDGroup: string);
-    Property  BatteryLevel      : Integer              Read FGetBatteryLevel;
-    Property  IsConnected       : Boolean              Read FGetIsConnected;
-    Property  MyNumber          : String               Read FMyNumber;
+    Property  BatteryLevel       : Integer              Read FGetBatteryLevel; //deprecated;
+    Property  IsConnected        : Boolean              Read FGetIsConnected;
+    Property  MyNumber           : String               Read FMyNumber;
+    Property  MyPushName         : String               Read FMyPushName;
+    Property  WAJS_Version       : String               Read FWAJS_Version;
+    Property  genLinkDeviceCode  : String               Read FgenLinkDeviceCode;
 
-    Property  IsDelivered       : String               Read FIsDelivered;
+    Property  WhatsAppWebVersion : String               Read FWhatsAppWebVersion;
+    Property  TotalChatsUserRead : Integer              Read FTotalChatsUserRead default 0;
 
-    property  Authenticated     : boolean              read TestConnect;
-    property  Status            : TStatusType          read FStatus;
-    Function  StatusToStr       : String;
-    Property  Emoticons         : TWPPConnectEmoticons     Read FEmoticons                     Write FEmoticons;
-    property  FormQrCodeShowing : Boolean              read GetAppShowing                  Write SetAppShowing;
+    Property  IsDelivered        : String               Read FIsDelivered;
+
+    property  Authenticated      : boolean              read TestConnect;
+    property  Status             : TStatusType          read FStatus;
+    Function  StatusToStr        : String;
+    Property  Emoticons          : TWPPConnectEmoticons     Read FEmoticons                     Write FEmoticons;
+    property  FormQrCodeShowing  : Boolean              read GetAppShowing                  Write SetAppShowing;
     Procedure FormQrCodeStart(PViewForm:Boolean = true);
     Procedure FormQrCodeStop;
     Procedure FormQrCodeReloader;
     Function  Auth(PRaise: Boolean = true): Boolean;
 
+    procedure console_clear;
     procedure RebootWPP;
     procedure OnTimerWPPCrash(Sender: TObject);
   published
@@ -403,6 +481,8 @@ type
     property FormQrCodeType              : TFormQrCodeType            read FFormQrCodeType                 Write SetQrCodeStyle                      Default Ft_Desktop;
     property LanguageInject              : TLanguageInject            read FLanguageInject                 Write SetLanguageInject                   Default TL_Portugues_BR;
     property OnGetAllContactList         : TOnAllContacts             read FOnGetAllContactList            write FOnGetAllContactList;
+    property OnGetMyContactsList         : TOnMyContacts              read FOnGetMyContactList             write FOnGetMyContactList;
+
     property OnGetAllGroupList           : TOnAllGroups               read FOnGetAllGroupList              write FOnGetAllGroupList;
     property OnGetAllCommunitys          : TOnAllCommunitys           read FOnGetAllCommunitys             write FOnGetAllCommunitys;
     property OnGetAllGroupAdmins         : TOnAllGroupAdmins          read FOnGetAllGroupAdmins            write FOnGetAllGroupAdmins;
@@ -449,6 +529,10 @@ type
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
 
+    //Marcelo 03/05/2023
+    property OnGetIsOnline               : TGetIsOnline               read FOnGetIsOnline                  write FOnGetIsOnline;
+    property OnGetEnvIsOnline            : TGetEnvIsOnline            read FOnGetEnvIsOnline               write FOnGetEnvIsOnline;
+
     property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
     property OnGetMessageACK             : TOnGetMessageACK           read FOnGetMessageACK                write FOnGetMessageACK; //Marcelo 19/03/2023
 
@@ -476,8 +560,26 @@ type
     property OnCheckNumberExists         : TOnCheckNumberExists       read FOnCheckNumberExists            write FOnCheckNumberExists;
     property OnGetLastSeen               : TOnGetLastSeen             read FOnGetLastSeen                  write FOnGetLastSeen;
     property OnGetPlatformFromMessage    : TOnGetPlatformFromMessage  read FOnGetPlatformFromMessage       write FOnGetPlatformFromMessage;
-    property OnGetHistorySyncProgress    : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
+    property OnGetPoolResponse           : TOnGetPoolResponse         read FOnGetPoolResponse              write FOnGetPoolResponse;
+    property OnGetPoolResponseEvento     : TOnGetPoolResponseEvento   read FOnGetPoolResponseEvento        write FOnGetPoolResponseEvento;
+
+    property OnGetReactResponseEvento      : TOnGetReactResponseEvento       read FOnGetReactResponseEvento       write FOnGetReactResponseEvento;
+    property OnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento  read FOnGetNewMessageResponseEvento  write FOnGetNewMessageResponseEvento;
+    property OnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse  read FOnGet_SendPollMessageResponse  write FOnGet_SendPollMessageResponse;
+
+    property OnGetAck_changeEvento      : TOnGetAck_changeEvento       read FOnGetAck_changeEvento       write FOnGetAck_changeEvento;
+    property OnGetmsg_revokeEvento      : TOnGetmsg_revokeEvento       read FOnGetmsg_revokeEvento       write FOnGetmsg_revokeEvento;
+    property OnGetmsg_EditedEvento      : TOnGetmsg_EditedEvento       read FOnGetmsg_EditedEvento       write FOnGetmsg_EditedEvento;
+
+    property OnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead     read FOnGetTotalChatsUserRead     write FOnGetTotalChatsUserRead;
+    property OnGetWAVersion             : TOnGetWAVersion              read FOnGetWAVersion              write FOnGetWAVersion;
+
+    property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
+
+    property OnGetHistorySyncProgress   : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
+
+    property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
 
   end;
 
@@ -922,7 +1024,16 @@ begin
   end
 end;
 
+procedure TWPPConnect.Console_Clear;
+begin
+  FrmConsole.Console_Clear;
+end;
+
 constructor TWPPConnect.Create(AOwner: TComponent);
+var
+  MyIniFIle: TIniFile;
+  DirApp, Caminho_JS, vSecondsMonitor, vSecondsMonitorNew: string;
+  HabEvento_msg_ack_change, HabEvento_msg_revoke, HabEvento_new_message, HabEvento_new_reaction : Boolean;
 begin
   inherited;
   FDestroyTmr                         := Ttimer.Create(nil);
@@ -946,7 +1057,7 @@ begin
   FInjectConfig                       := TWPPConnectConfig.Create(self);
   FInjectConfig.OnNotificationCenter  := Int_OnNotificationCenter;
   FInjectConfig.AutoDelay             := 1000;
-  FInjectConfig.SecondsMonitor        := 3;
+  //FInjectConfig.SecondsMonitor        := 3;
   FInjectConfig.ControlSend           := True;
   FInjectConfig.LowBatteryis          := 30;
   FInjectConfig.ControlSendTimeSec    := 8;
@@ -955,6 +1066,53 @@ begin
   FInjectJS                        := TWPPConnectJS.Create(Self);
   FInjectJS.OnUpdateJS             := Int_OnUpdateJS;
   FInjectJS.OnErrorInternal        := Int_OnErroInterno;
+
+  DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+  MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
+
+  HabEvento_msg_ack_change := MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '1') = '1';
+  HabEvento_msg_revoke := MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '1') = '1';
+  HabEvento_new_message  := MyIniFIle.ReadString('Config', 'Evento_new_message', '1') = '1';
+  HabEvento_new_reaction  := MyIniFIle.ReadString('Config', 'Evento_new_reaction', '1') = '1';
+  vSecondsMonitor := MyIniFIle.ReadString('Config', 'SecondsMonitor', '0');
+  vSecondsMonitorNew := MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '0');
+
+ //CONFIGURAÇÃO A PARTIR DE ARQUIVO INI / CONFIGURATION FROM THE INI FILE
+  if MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '') <> '' then
+    FInjectConfig.Evento_msg_ack_change := HabEvento_msg_ack_change;
+  if MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '') <> '' then
+    FInjectConfig.Evento_msg_revoke := HabEvento_msg_revoke;
+  if MyIniFIle.ReadString('Config', 'Evento_new_message', '') <> '' then
+    FInjectConfig.Evento_new_message := HabEvento_new_message;
+  if MyIniFIle.ReadString('Config', 'Evento_new_reaction', '') <> '' then
+    FInjectConfig.Evento_new_reaction := HabEvento_new_reaction;
+
+  if MyIniFIle.ReadString('Config', 'SecondsMonitor', '') <> '' then
+    FInjectConfig.SecondsMonitor := StrToIntDef(vSecondsMonitor,0);
+  if MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '') <> '' then
+    FInjectConfig.SecondsMonitorNew := StrToIntDef(vSecondsMonitorNew,0);
+
+
+  //creating empty configurations, to adjust according to your use
+  if not(MyIniFIle.ValueExists('Config', 'SecondsMonitor')) then
+    MyIniFIle.writeString('Config', 'SecondsMonitor', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'SecondsMonitorNew')) then
+    MyIniFIle.writeString('Config', 'SecondsMonitorNew', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_msg_ack_change')) then
+    MyIniFIle.writeString('Config', 'Evento_msg_ack_change', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_msg_revoke')) then
+    MyIniFIle.writeString('Config', 'Evento_msg_revoke', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_new_message')) then
+    MyIniFIle.writeString('Config', 'Evento_new_message', '');
+
+  if not(MyIniFIle.ValueExists('Config', 'Evento_new_reaction')) then
+    MyIniFIle.writeString('Config', 'Evento_new_reaction', '');
+
+  MyIniFIle.Free;
 
   //temis 03-06-2022
   //coloquei pra carregar na thread, antes carregava direto, faltava carregar as propriedades setadas no TWPPConnect
@@ -1061,6 +1219,168 @@ begin
   lThread.Start;
 end;
 
+procedure TWPPConnect.CreateNewsLetter(Content, Options: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 09/10/2023
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CreateNewsLetter(Content, Options);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.CreatePool(PID, PDescription, PChoices, POptions: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PID);
+    Exit;
+  end;
+
+  PID := AjustNumber.FormatIn(PID);
+  if pos('@', PID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PID);
+    Exit;
+  end;
+
+  if Trim(PDescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
+    Exit;
+  end;
+
+   if Trim(PChoices) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreate(PID, PDescription, PChoices, POptions);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(PID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PID);
+    Exit;
+  end;
+
+  PID := AjustNumber.FormatIn(PID);
+  if pos('@', PID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PID);
+    Exit;
+  end;
+
+  if Trim(PDescription) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PDescription);
+    Exit;
+  end;
+
+   if Trim(PChoices) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DeletarOldChats(QtdChatsExcluir: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if QtdChatsExcluir = '' then
+    QtdChatsExcluir := '1';
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarOldChats(QtdChatsExcluir);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.DeletarTodosOsChats;
 var
   lThread : TThread;
@@ -1083,6 +1403,33 @@ begin
           end;
         end);
 
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.DeletarTodosOsChatsUsers;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarTodosOsChatsUsers();
+          end;
+        end);
       end);
 
   lThread.FreeOnTerminate := true;
@@ -1344,6 +1691,25 @@ begin
   Result := Nil;
 end;
 
+procedure TWPPConnect.getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
+begin
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  vTelefone := AjustNumber.FormatIn(vTelefone);
+
+  if pos('@', vTelefone) = 0 then
+  begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vTelefone);
+    Exit;
+  end;
+
+  FrmConsole.getgenLinkDeviceCodeForPhoneNumber(vTelefone);
+end;
+
 procedure TWPPConnect.getMessage(vNumber, vOptions: String);
 var
   lThread : TThread;
@@ -1419,7 +1785,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  FrmConsole.getMessageById(UniqueIDs);
 
+  {
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1441,7 +1809,13 @@ begin
       end);
   lThread.FreeOnTerminate := true;
   lThread.Start;
+  }
+end;
 
+procedure TWPPConnect.GetMyContacts;
+begin
+  if Assigned(FrmConsole) then
+     FrmConsole.GetMyContacts;
 end;
 
 procedure TWPPConnect.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
@@ -1526,6 +1900,42 @@ begin
   lThread.Start;
 end;
 
+procedure TWPPConnect.getVotes(UniqueID: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 07/07/2023
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getVotes(UniqueID);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.getWAVersion;
+begin
+  if Assigned(FrmConsole) then
+    FrmConsole.getWAVersion;
+end;
+
 procedure TWPPConnect.GroupAddParticipant(PIDGroup, PNumber: string);
 var
   lThread : TThread;
@@ -1560,8 +1970,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription,
-  PPoolOptions: string);
+procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
 var
   lThread : TThread;
 begin
@@ -1595,7 +2004,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions);
+            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions, POptions);
           end;
         end);
 
@@ -1966,6 +2375,12 @@ begin
   FrmConsole.getStatus(PNumber);
 end;
 
+procedure TWPPConnect.GetTotalChatsUserRead;
+begin
+  if Assigned(FrmConsole) then
+    FrmConsole.GetTotalChatsUserRead;
+end;
+
 procedure TWPPConnect.GetGroupInviteLink(PIDGroup : string);
 begin
   If Application.Terminated Then
@@ -2140,6 +2555,13 @@ begin
     FrmConsole.isBeta;
 end;
 
+procedure TWPPConnect.IsOnline;
+begin
+  //Adicionado Por Marcelo 03/05/2023
+  if Assigned(FrmConsole) then
+    FrmConsole.IsOnline;
+end;
+
 procedure TWPPConnect.LimparQrCodeInterno;
 var
   ltmp: TResultQRCodeClass;
@@ -2265,6 +2687,37 @@ begin
 
 end;
 
+procedure TWPPConnect.MarkIsReadChats(NumberChatsIsRead: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if NumberChatsIsRead = '' then
+    NumberChatsIsRead := '1';
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.MarkIsReadChats(NumberChatsIsRead);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.markIsUnread(phoneNumber: string);
 var
   lThread : TThread;
@@ -2279,7 +2732,7 @@ begin
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
   Begin
-    //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
 
@@ -2300,6 +2753,37 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 
+end;
+
+procedure TWPPConnect.MarkIsUnreadChats(NumberChatsUnread: string);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if NumberChatsUnread = '' then
+    NumberChatsUnread := '1';
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.MarkIsUnreadChats(NumberChatsUnread);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 procedure TWPPConnect.markmarkIsRecording(phoneNumber, duration, etapa: string);
@@ -2428,11 +2912,11 @@ begin
   end;
 
 
-  //Marcelo 14/08/2022
+  //Marcelo 31/10/2023
   if PTypeHeader = Th_getMessages then
   Begin
     if Assigned(OnGetMessages) then
-      OnGetMessages(TChatList3(PReturnClass));
+      OnGetMessages(TGetMessageClass(PReturnClass));
   end;
 
   //Marcelo 17/09/2022
@@ -2453,6 +2937,19 @@ begin
     if Assigned(OnGetIsAuthenticated) then
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
   end;
+
+  if PTypeHeader = Th_getIsOnline then
+  Begin
+    if Assigned(OnGetIsOnline) then
+      OnGetIsOnline( TIsOnline(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_getEnvIsOnline then
+  Begin
+    if Assigned(OnGetEnvIsOnline) then
+      OnGetEnvIsOnline( TEnvIsOnline(PReturnClass));
+  end;
+
 
   if PTypeHeader = Th_getMessageACK then
   begin
@@ -2550,6 +3047,13 @@ begin
         OnGet_sendVCardContactMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
 
+    //Marcelo 25/07/2023
+    if PTypeHeader = Th_sendCreatePollMessageEx  then
+    begin
+      if Assigned(FOnGet_SendPollMessageResponse) then
+        FOnGet_SendPollMessageResponse(TSendPollMessageResponseClass(PReturnClass));
+    end;
+
     //Marcelo 17/06/2022
     If PTypeHeader = Th_IncomingiCall Then
     Begin
@@ -2589,6 +3093,9 @@ begin
       fOnGetStatus(Self);
 
     FrmConsole.GetMyNumber;
+    FrmConsole.fGetMe();
+    FrmConsole.getWAVersion;
+    //FrmConsole.GetTotalChatsUserRead;
   end;
 
 
@@ -2598,6 +3105,9 @@ begin
       Exit;
 
     FrmConsole.GetMyNumber;
+    //FrmConsole.getWAVersion;
+    //FrmConsole.GetTotalChatsUserRead;
+
     SleepNoFreeze(40);
 
 
@@ -2606,6 +3116,13 @@ begin
       fOnGetStatus(Self);
     Exit;
   end;
+
+  if PTypeHeader = Th_GetMyContacts then //Add Marcelo 01/07/2023
+  begin
+    if Assigned(FOnGetMyContactList) then
+      FOnGetMyContactList(TRetornoAllContacts(PReturnClass))
+  end;
+
 
   if PTypeHeader = Th_getAllGroups then
   begin
@@ -2638,8 +3155,16 @@ begin
     FMyNumber := FAdjustNumber.FormatOut(PValue);
     if Assigned(FOnGetMyNumber) then
       FOnGetMyNumber(Self);
-  end;
 
+    try
+      if Trim(FMyPushName) <> '' then
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName else
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber;
+      //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+      FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
+    except on E: Exception do
+    end;
+  end;
 
   //29/12/2020
   if PTypeHeader = Th_getIsDelivered then
@@ -2659,7 +3184,18 @@ begin
   if PTypeHeader = Th_GetMe  then
   begin
     if Assigned(FOnGetMe) then
+    begin
       FOnGetMe(TGetMeClass(PReturnClass));
+      FMyPushName := TGetMeClass(PReturnClass).pushname;
+    end;
+
+    try
+      FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName;
+      //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+      FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
+    except on E: Exception do
+    end;
+
   end;
 
   if PTypeHeader = Th_NewCheckIsValidNumber  then
@@ -2687,6 +3223,101 @@ begin
       FOnGetPlatformFromMessage(TPlatformFromMessage(PReturnClass));
   end;
 
+  //Marcelo 07/07/2023
+  if PTypeHeader = Th_GetVotes  then
+  begin
+    if Assigned(FOnGetPoolResponse) then
+      FOnGetPoolResponse(TPoolResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 07/07/2023
+  if PTypeHeader = Th_Getpoll_response  then
+  begin
+    if Assigned(FOnGetPoolResponseEvento) then
+      FOnGetPoolResponseEvento(TPoolResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 25/07/2023
+  if PTypeHeader = Th_Getnew_message  then
+  begin
+    if Assigned(FOnGetNewMessageResponseEvento) then
+      FOnGetNewMessageResponseEvento(TNewMessageResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 25/07/2023
+  if PTypeHeader = Th_Getnew_reaction  then
+  begin
+    if Assigned(FOnGetReactResponseEvento) then
+      FOnGetReactResponseEvento(TReactionResponseClass(PReturnClass));
+  end;
+
+  //Marcelo 26/07/2023
+  if PTypeHeader = Th_Getmsg_ack_change  then
+  begin
+    if Assigned(FOnGetAck_changeEvento) then
+      FOnGetAck_changeEvento(TAck_changeClass(PReturnClass));
+  end;
+
+  //Marcelo 26/07/2023
+  if PTypeHeader = Th_Getmsg_revoke  then
+  begin
+    if Assigned(FOnGetmsg_revokeEvento) then
+      FOnGetmsg_revokeEvento(TRevokeClass(PReturnClass));
+  end;
+
+  //Marcelo 29/01/2024
+  if PTypeHeader = Th_Getmsg_edited  then
+  begin
+    if Assigned(FOnGetmsg_EditedEvento) then
+      FOnGetmsg_EditedEvento(TEditedClass(PReturnClass));
+  end;
+
+  //Marcelo 22/10/2023
+  if PTypeHeader = Th_GetTotalChatsUserRead  then
+  begin
+    if Assigned(FOnGetTotalChatsUserRead) then
+    begin
+      FOnGetTotalChatsUserRead(TTotalChatsUserRead(PReturnClass));
+      try
+        FTotalChatsUserRead := TTotalChatsUserRead(PReturnClass).totalchats;
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
+        FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
+      except on E: Exception do
+      end;
+
+    end;
+  end;
+
+  //Marcelo 22/10/2023
+  if PTypeHeader = Th_GetWAVersion  then
+  begin
+    if Assigned(FOnGetWAVersion) then
+    begin
+      FOnGetWAVersion(TWAVersion(PReturnClass));
+      try
+        FWhatsAppWebVersion := TWAVersion(PReturnClass).WAVersion;
+        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
+        FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
+      except on E: Exception do
+      end;
+
+    end;
+  end;
+
+  if PTypeHeader = Th_GetgenLinkDeviceCodeForPhoneNumber then
+  Begin
+    if Assigned(FOnGetgenLinkDeviceCodeForPhoneNumber) then
+    begin
+      FOnGetgenLinkDeviceCodeForPhoneNumber(TGenLinkDeviceCodeForPhoneNumber(PReturnClass));
+      try
+        FgenLinkDeviceCode := TGenLinkDeviceCodeForPhoneNumber(PReturnClass).code;
+        //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
+        FrmConsole.lblNumber.Caption := ' Code: ' + FgenLinkDeviceCode;
+      except on E: Exception do
+      end;
+    end;
+  end;
+
   //Marcelo 17/01/2023
   if PTypeHeader = Th_GetHistorySyncProgress  then
   begin
@@ -2699,6 +3330,12 @@ begin
   begin
     if Assigned(FOnGetQrCodeDesconectouErroCache) then
       FOnGetQrCodeDesconectouErroCache(TQrCodeDesconectouErroCache(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_ErrorResponse  then
+  begin
+    if Assigned(FOnGet_ErrorResponse) then
+      FOnGet_ErrorResponse(TErrorResponseClass(PReturnClass));
   end;
 
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
@@ -2824,17 +3461,18 @@ begin
   if Config.AutoDelete Then
   begin
     if assigned(FrmConsole) then
-       FrmConsole.ReadMessagesAndDelete(vID);
+      FrmConsole.ReadMessagesAndDelete(vID);
   end else
   Begin
     if assigned(FrmConsole) then
-       FrmConsole.ReadMessages(vID);
+      FrmConsole.ReadMessages(vID);
   end;
 end;
 
 procedure TWPPConnect.RebootWPP;
 begin
-  frmConsole.RebootChromium;
+  //frmConsole.RebootChromium;
+  frmConsole.RebootChromiumNew;
 end;
 
 procedure TWPPConnect.rejectCall(id: string);
@@ -3708,6 +4346,43 @@ begin
 
 end;
 
+procedure TWPPConnect.sendScheduledCallMessage(vID, vOptions: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 18/05/2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  vID := AjustNumber.FormatIn(vID);
+  if pos('@', vID) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vID);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendScheduledCallMessage(vID, vOptions);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.SendTextMessage(phoneNumber, content, options, etapa: string);
 var
   lThread : TThread;
@@ -4302,6 +4977,49 @@ begin
 end;
 
 
+procedure TWPPConnect.editMessage(UniqueID, NewMessage, Options: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 15/08/2023
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(UniqueID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, UniqueID);
+    Exit;
+  end;
+
+  if Trim(NewMessage) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, NewMessage);
+    Exit;
+  end;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.editMessage(UniqueID, NewMessage, options);
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
 procedure TWPPConnect.EndCall(id: string);
 var
   lThread : TThread;
@@ -4667,6 +5385,49 @@ begin
   FrmConsole.StopQrCode(FormQrCodeType);
 end;
 
+
+procedure TWPPConnect.forwardMessage(phoneNumber, UniqueID: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 15/08/2023
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(UniqueID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, UniqueID);
+    Exit;
+  end;
+
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.forwardMessage(phoneNumber, UniqueID);
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
 
 function TWPPConnect.StatusToStr: String;
 begin

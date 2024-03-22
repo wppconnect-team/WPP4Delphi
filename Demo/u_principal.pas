@@ -1547,7 +1547,7 @@ var aList : TStringList;
 begin
  try
   aList := TStringList.Create();
-
+  {
   aList.Add('Battery: ' + vME.battery.ToString);
   aList.Add('LC: ' +  vMe.lc);
   aList.Add('LG: ' + vMe.lg);
@@ -1574,7 +1574,7 @@ begin
    aList.Add('Phone InjectWorkink: true')
   else
    aList.Add('Phone InjectWorkin: false');
-
+  }
   Showmessage (aList.Text);
  finally
   aList.Free;

@@ -46,6 +46,7 @@ interface
 uses
   System.Classes,
   System.SysUtils,
+  System.Rtti,
   Winapi.Windows,
   Vcl.Forms,
   DateUtils,
@@ -228,7 +229,29 @@ end;
 
 
 Procedure TCEFConfig.SetDefault;
+var
+  ctx: TRttiContext;
+  prop: TRttiProperty;
 begin
+  ctx := TRttiContext.Create;
+  try
+    prop := ctx.GetType(Self.ClassType).GetProperty('UserDataPath');
+    if Assigned(prop) then
+    begin
+      // A propriedade UserDataPath existe, você pode acessá-la aqui.
+      //Self.UserDataPath := 'User Data';
+      prop.SetValue(Self, 'User Data');
+    end
+    else
+    begin
+      // A propriedade UserDataPath não existe.
+      // Handle the case where the property does not exist in the current version
+    end;
+  finally
+    ctx.Free;
+  end;
+
+
   if not FInDesigner then //padrão aqui é if not FInDesigner
   Begin
     FIniFIle.WriteString ('Informacao', 'Aplicativo vinculado',    Application.ExeName);
@@ -257,7 +280,17 @@ begin
   Self.ResourcesDirPath   := '';
   Self.LocalesDirPath     := 'locales';
   Self.cache              := 'cache';
-  Self.UserDataPath       := 'User Data';
+
+//Marcelo 13/02/2024 FIXED property does not exist in the current version
+(*
+{$IF DEFINED(Self.UserDataPath)}
+  Self.UserDataPath := 'User Data';
+  //Comment the top line in new versions of CEF
+{$ELSE}
+  //Handle the case where the property does not exist in the current version
+{$ENDIF}
+*)
+
 end;
 
 
@@ -367,8 +400,14 @@ function TCEFConfig.StartMainProcess: boolean;
 var
   Linicio: Cardinal;
   LVReque, LVerIdent: String;
-  FDirApp, Lx: String;
+  FDirApp, Lx, Caminho_JS: String;
+var
+  ctx: TRttiContext;
+  prop: TRttiProperty;
+  propValue: TValue;
 begin
+  ctx := TRttiContext.Create;
+
   //ta lento pq estou conectado em um tunel estou daki ao meu pc.;. do meu pc a
   Result  := (Self.status = asInitialized);
   if (Result) Then
@@ -382,6 +421,10 @@ begin
   FIniFIle             := TIniFile.create(FDirApp + NomeArquivoIni);
   Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', '01/01/1500 05:00:00');
   //Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', FormatDateTime('dd/mm/yy hh:nn:ss', FPathJsUpdate));
+
+  Caminho_JS           := FIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
+
+
   FPathJS              := FDirApp + NomeArquivoInject;
   FErrorInt            := False;
   FStartTimeOut        := 5000; //(+- 5 Segundos)
@@ -416,8 +459,31 @@ begin
      Self.LocalesDirPath      := PathLocalesDirPath;
   If Pathcache            <> '' then
      Self.cache               := Pathcache;
-  If PathUserDataPath     <> '' then
-     Self.UserDataPath        := PathUserDataPath;
+
+//Marcelo 13/02/2024 FIXED property does not exist in the current version
+  try
+    prop := ctx.GetType(Self.ClassType).GetProperty('UserDataPath');
+    if Assigned(prop) then
+    begin
+      //Self.UserDataPath := 'User Data';
+      //Comment the top line in new versions of CEF
+      If PathUserDataPath     <> '' then
+        prop.SetValue(Self, PathUserDataPath);
+      //UpdateIniFile('Path Defines', 'Data User',     prop.GetValue(Self));
+      propValue := prop.GetValue(Self);
+      UpdateIniFile('Path Defines', 'Data User',     propValue.AsString);
+    end
+    else
+    begin
+      // A propriedade UserDataPath não existe.
+      // Handle the case where the property does not exist in the current version
+    end;
+  finally
+    ctx.Free;
+  end;
+  {If PathUserDataPath     <> '' then
+     Self.UserDataPath        := PathUserDataPath;}
+
   If PathLogFile          <> '' then
      Self.LogFile             := PathLogFile;
   If SetLogSeverity then
@@ -428,7 +494,7 @@ begin
   UpdateIniFile('Path Defines', 'Binary',        Self.ResourcesDirPath);
   UpdateIniFile('Path Defines', 'Locales',       Self.LocalesDirPath);
   UpdateIniFile('Path Defines', 'Cache',         Self.cache);
-  UpdateIniFile('Path Defines', 'Data User',     Self.UserDataPath);
+  //UpdateIniFile('Path Defines', 'Data User',     Self.UserDataPath);
   UpdateIniFile('Path Defines', 'Log File',      Self.LogFile);
   UpdateIniFile('Path Defines', 'Log Console',   LogConsole);
 
@@ -437,7 +503,9 @@ begin
   FIniFIle.WriteBool('Path Defines', 'Log Console Active',   LogConsoleActive);
 
   UpdateIniFile('TWPPConnect Comp', 'TWPPConnect Versão',   TWPPConnectVersion);
-  UpdateIniFile('TWPPConnect Comp', 'Caminho JS'    ,   TWPPConnectJS_JSUrlPadrao);
+
+  //UpdateIniFile('TWPPConnect Comp', 'Caminho JS',   TWPPConnectJS_JSUrlPadrao);
+  UpdateIniFile('TWPPConnect Comp', 'Caminho JS', Caminho_JS);
   UpdateIniFile('TWPPConnect Comp', 'CEF4 Versão'   ,   IntToStr(CEF_SUPPORTED_VERSION_MAJOR) +'.'+ IntToStr(CEF_SUPPORTED_VERSION_MINOR)  +'.'+ IntToStr(CEF_SUPPORTED_VERSION_RELEASE) +'.'+ IntToStr(CEF_SUPPORTED_VERSION_BUILD));
   UpdateIniFile('TWPPConnect Comp', 'CHROME Versão' ,   IntToStr(CEF_CHROMEELF_VERSION_MAJOR) +'.'+ IntToStr(CEF_CHROMEELF_VERSION_MINOR)  +'.'+ IntToStr(CEF_CHROMEELF_VERSION_RELEASE) +'.'+ IntToStr(CEF_CHROMEELF_VERSION_BUILD));
   UpdateIniFile('TWPPConnect Comp', 'Dlls'          ,   LIBCEF_DLL + ' / ' + CHROMEELF_DLL);

@@ -102,7 +102,7 @@ end;
 
 function TSparkleRestResponse.ContentAsString: string;
 begin
-  Result := TEncoding.UTF8.GetString(FResponse.ContentAsBytes);
+  Result := TEncoding.UTF8.GetString(ContentAsBytes);
 end;
 
 end.

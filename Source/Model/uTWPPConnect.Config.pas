@@ -63,6 +63,12 @@ Type
     FReceiveAttachmentAuto: Boolean;
     FZoom: SmallInt;
     FSecondsMonitorWppCrash: integer;
+    FSecondsMonitorNew: integer;
+    FEvento_msg_ack_change: Boolean;
+    FEvento_new_reaction: Boolean;
+    FEvento_new_message: Boolean;
+    FEvento_msg_revoke: Boolean;
+
     procedure SetSecondsMonitor(const Value: integer);
     procedure SetLowBattery(const Value: SmallInt);
     procedure SetControlSendTimeSec(const Value: SmallInt);
@@ -70,9 +76,10 @@ Type
     procedure SetReceiveAttachmentAuto(const Value: Boolean);
     procedure SetZoom(const Value: SmallInt);
     procedure SetSecondsMonitorWppCrash(const Value: integer);
+    procedure SetSecondsMonitorNew(const Value: integer);
   public
-     constructor Create(AOwner: TComponent);
-     Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
+    constructor Create(AOwner: TComponent);
+    Property  OnNotificationCenter : TNotificationCenter  Read FOnNotificationCenter      Write FOnNotificationCenter;
 
   published
     property ControlSend          : Boolean   read FControlSend           write FControlSend               default True;
@@ -84,12 +91,18 @@ Type
     property ReceiveAttachmentPath : String   read FReceiveAttachmentPath write SetReceiveAttachmentPath;
     property Zoom : SmallInt                  read FZoom                  write SetZoom                    default -1;
 
+    property LowBatteryIs      : SmallInt         read FLowBattery             write SetLowBattery              default 30;
+    property SecondsMonitor    : integer          read FSecondsMonitor         write SetSecondsMonitor          default 0;
+    property SecondsMonitorWppCrash: integer      read FSecondsMonitorWppCrash write SetSecondsMonitorWppCrash  default 0;
+    //Add Marcelo 25/08/2023
+    property SecondsMonitorNew : integer          read FSecondsMonitorNew      write SetSecondsMonitorNew       default 0;
+    property SyncContacts      : Boolean          read FSyncContacts           write FSyncContacts              default true;
+    property ShowRandom        : Boolean          read FShowRandom             write FShowRandom                default true;
 
-    property LowBatteryIs  : SmallInt         read FLowBattery            write SetLowBattery              default 30;
-    property SecondsMonitor: integer          read FSecondsMonitor        write SetSecondsMonitor          default 3;
-    property SecondsMonitorWppCrash: integer  read FSecondsMonitorWppCrash write SetSecondsMonitorWppCrash default 0;
-    property SyncContacts  : Boolean          read FSyncContacts          write FSyncContacts              default true;
-    property ShowRandom    : Boolean          read FShowRandom            write FShowRandom                default true;
+    property Evento_msg_ack_change   : Boolean    read FEvento_msg_ack_change  write FEvento_msg_ack_change     default false;
+    property Evento_msg_revoke       : Boolean    read FEvento_msg_revoke      write FEvento_msg_revoke         default false;
+    property Evento_new_message      : Boolean    read FEvento_new_message     write FEvento_new_message        default false;
+    property Evento_new_reaction     : Boolean    read FEvento_new_reaction    write FEvento_new_reaction       default false;
   end;
 
 implementation
@@ -109,7 +122,8 @@ begin
   FAutoDelay              := 2500;
   FAutoDelete             := false;
   FLowBattery             := 30;
-  FSecondsMonitor         := 3;
+  //FSecondsMonitor         := 3;
+  //FSecondsMonitorNew      := 3;
   FZoom                   := -1;
   FSyncContacts           := true;
   FShowRandom             := true;
@@ -156,10 +170,19 @@ end;
 Procedure TWPPConnectConfig.SetReceiveAttachmentPath(const Value: String);
 begin
   if FReceiveAttachmentPath  = value then
-     Exit;
+    Exit;
 
-  if not ForceDirectories(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown) Then
-     raise Exception.Create(Text_DefaultError + (IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown));
+  try
+    if not ForceDirectories(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown) Then
+      raise Exception.Create(Text_DefaultError + (IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown));
+  except
+    on E: Exception do
+    begin
+
+      Exit;
+    end;
+  end;
+
 
   FReceiveAttachmentPath := IncludeTrailingPathDelimiter(IncludeTrailingPathDelimiter(Value) + Text_DefaultPathDown);
   GlobalCEFApp.UpdateIniFile('Path Defines', 'Auto Receiver attached Path', Value);
@@ -170,8 +193,22 @@ procedure TWPPConnectConfig.SetSecondsMonitor(const Value: integer);
 begin
   FSecondsMonitor := Value;
   //Não permitir que fique zero ou negativo.
-  if Value < 0.1 then
-     FSecondsMonitor := 3;
+  {if Value < 0.1 then
+     FSecondsMonitor := 3;}
+
+  if Value > 0 then
+     FSecondsMonitorNew := 0;
+end;
+
+procedure TWPPConnectConfig.SetSecondsMonitorNew(const Value: integer);
+begin
+  FSecondsMonitorNew := Value;
+  //Não permitir que fique zero ou negativo.
+  {if Value < 0.1 then
+     FSecondsMonitorNew := 3;}
+
+  if Value > 0 then
+     FSecondsMonitor := 0;
 end;
 
 procedure TWPPConnectConfig.SetSecondsMonitorWppCrash(const Value: integer);

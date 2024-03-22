@@ -1573,6 +1573,18 @@ object frDemo: TfrDemo
       Font.Style = [fsBold]
       ParentFont = False
     end
+    object lblNomeConta: TLabel
+      Left = 539
+      Top = 22
+      Width = 6
+      Height = 29
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -24
+      Font.Name = 'Roboto Bk'
+      Font.Style = []
+      ParentFont = False
+    end
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
@@ -1682,6 +1694,15 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -1820,9 +1841,6 @@ object frDemo: TfrDemo
       Width = 118
       ExplicitLeft = 5
       ExplicitWidth = 118
-    end
-    inherited rgTipoLogin: TRadioGroup
-      ItemIndex = 1
     end
   end
   inline frameCatalogo1: TframeCatalogo
@@ -2038,6 +2056,10 @@ object frDemo: TfrDemo
           inherited btnCriarGrupo: TBitBtn
             OnClick = frameComunidades1btnCriarGrupoClick
           end
+        end
+        inherited Memo1: TMemo
+          Left = 92
+          ExplicitLeft = 92
         end
       end
       inherited pnlGruposParticipantes: TPanel
@@ -5672,19 +5694,27 @@ object frDemo: TfrDemo
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
     InjectJS.SecondsWaitInject = 4
-    Config.AutoStart = True
-    Config.AutoDelay = 1000
-    Config.SecondsMonitor = 5
+    Config.AutoDelay = 500
+    Config.ReceiveAttachmentPath = 
+      'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
+      's\TWPPConnectAnexos\TWPPConnectAnexos\'
+    Config.SecondsMonitor = 40
+    Config.Evento_msg_ack_change = True
+    Config.Evento_msg_revoke = True
+    Config.Evento_new_message = True
+    Config.Evento_new_reaction = True
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
     OnGetAllContactList = TWPPConnect1GetAllContactList
+    OnGetMyContactsList = TWPPConnect1GetMyContactsList
     OnGetAllGroupList = TWPPConnect1GetAllGroupList
     OnGetAllCommunitys = TWPPConnect1GetAllCommunitys
     OnGetAllGroupAdmins = TWPPConnect1GetAllGroupAdmins
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
     OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
+    OnGetMessages = TWPPConnect1GetMessages
     OnGetAllGroupContacts = TWPPConnect1GetAllGroupContacts
     OnGetStatus = TWPPConnect1GetStatus
     OnGetMessageById = TWPPConnect1GetMessageById
@@ -5702,6 +5732,8 @@ object frDemo: TfrDemo
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
+    OnGetIsOnline = TWPPConnect1GetIsOnline
+    OnGetEnvIsOnline = TWPPConnect1GetEnvIsOnline
     OnGetListChat = TWPPConnect1GetListChat
     OnGetMessageACK = TWPPConnect1GetMessageACK
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
@@ -5718,8 +5750,20 @@ object frDemo: TfrDemo
     OnCheckNumberExists = TWPPConnect1CheckNumberExists
     OnGetLastSeen = TWPPConnect1GetLastSeen
     OnGetPlatformFromMessage = TWPPConnect1GetPlatformFromMessage
+    OnGetPoolResponse = TWPPConnect1GetPoolResponse
+    OnGetPoolResponseEvento = TWPPConnect1GetPoolResponseEvento
+    OnGetReactResponseEvento = TWPPConnect1GetReactResponseEvento
+    OnGetNewMessageResponseEvento = TWPPConnect1GetNewMessageResponseEvento
+    OnGet_SendPollMessageResponse = TWPPConnect1Get_SendPollMessageResponse
+    OnGetAck_changeEvento = TWPPConnect1GetAck_changeEvento
+    OnGetmsg_revokeEvento = TWPPConnect1Getmsg_revokeEvento
+    OnGetmsg_EditedEvento = TWPPConnect1Getmsg_EditedEvento
+    OnGetTotalChatsUserRead = TWPPConnect1GetTotalChatsUserRead
+    OnGetWAVersion = TWPPConnect1GetWAVersion
+    OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
+    OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     Left = 288
     Top = 472
   end
@@ -5761,5 +5805,11 @@ object frDemo: TfrDemo
     OnTimer = TimerProgressTimer
     Left = 848
     Top = 168
+  end
+  object Timer1: TTimer
+    Interval = 7000
+    OnTimer = Timer1Timer
+    Left = 592
+    Top = 240
   end
 end
