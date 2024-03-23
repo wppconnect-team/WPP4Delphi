@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.9;1.0.0.9;78.3.0
+//2.0.0.10;1.0.0.9;78.3.0
 //
 //
 
@@ -7138,7 +7138,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         sender: u.WidFactory.toChatWid(e.peerJid),
                         peerJid: e.peerJid
                     })
-                })), void u.CallStore.on("change:_state change:state", (e => {
+                })), void u.CallStore.on("change", (e => {
                     e.getState() === c.CALL_STATES.INCOMING_RING && s.internalEv.emit("call.incoming_call", {
                         id: e.id,
                         isGroup: e.isGroup,
