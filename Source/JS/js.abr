@@ -594,7 +594,7 @@ window.WAPI.getAllChats = async function(done) {
             chats[i] = chats[i].toJSON();  
             
             let profilePhoto = ".";
-            let notifyName = chats[i].msgs[0].notifyName;
+            let notifyName = chats[i].msgs.length > 0 ? chats[i].msgs[0].notifyName : undefined;
             let namechat = chats[i].name;
 
             //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
