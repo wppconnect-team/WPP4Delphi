@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.11;1.0.0.9;78.3.0
+//2.0.0.12;1.0.0.9;78.3.0
 //
 //
 
@@ -594,12 +594,14 @@ window.WAPI.getAllChats = async function(done) {
             chats[i] = chats[i].toJSON();  
             
             let profilePhoto = ".";
+            let notifyName = chats[i].msgs[0].notifyName;
+            let namechat = chats[i].name;
 
             //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
             chats[i].contact = {
                 id: chats[i].id._serialized,
-                name: chats[i].name,
-                pushname: chats[i].name,
+                name: notifyName ? (notifyName ? namechat : undefined) : undefined,
+                pushname: notifyName ? (notifyName ? namechat : undefined) : undefined,
                 formattedName: chats[i].name,
                 profilePicThumb: profilePhoto                
             };
