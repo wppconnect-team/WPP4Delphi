@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.10;1.0.0.9;78.3.0
+//2.0.0.11;1.0.0.9;78.3.0
 //
 //
 
@@ -9850,7 +9850,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         return 1 === (null === (o = s.buttonsMessage) || void 0 === o ? void 0 : o.headerType) || 2 === (null === (i = s.buttonsMessage) || void 0 === i ? void 0 : i.headerType) ? "text" : e(...t)
                     })), (0, c.wrapModuleFunction)(l.createFanoutMsgStanza, (async (e, ...t) => {
-                        const [, , r] = t;
+                        const [ , r] = t;
                         let n = null;
                         if (r.buttonsMessage) n = a.websocket.smax("buttons");
                         else if (r.listMessage) {
