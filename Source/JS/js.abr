@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.12;1.0.0.9;78.3.0
+//2.0.0.13;1.0.0.9;78.3.0
 //
 //
 
@@ -583,21 +583,33 @@ window.WAPI.getAllChats = async function(done) {
     //let chats = await WPP.chat.list(options);
     //chats = chats.map((chat) => WAPI._serializeChatObj(chat));
 
-    let chats = (await WPP.chat.list(options));
-    let allContacts = []; 
+    var chats = (await WPP.chat.list(options));
+    var allContacts = []; 
 
     if (chats) {
       try {
         for (var i = 0; i < chats.length; i++) {          
-            //let contacts = await WPP.contact.get(chats[i].id._serialized);
+            var contacts = await WPP.contact.get(chats[i].id._serialized);
             
             chats[i] = chats[i].toJSON();  
             
-            let profilePhoto = ".";
+            //var profilePhoto = ".";
+            var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
+
+            chats[i].contact = {
+                id: contacts.id,
+                name: contacts.name,
+                pushname: contacts.name,
+                formattedName: contacts.name,
+                profilePicThumb: profilePhoto,
+                isBusiness: contacts.isBusiness,
+                isEnterprise: contacts.isEnterprise
+              };
+
             //let notifyName = chats[i].msgs.length > 0 ? chats[i].msgs[0].notifyName : undefined;
 
-            let notifyName = WPP.whatsapp.functions.getPushname(chats[i].id._serialized);
-            let namechat = chats[i].name;
+            /*var notifyName = await WPP.whatsapp.functions.getPushname(chats[i].id._serialized);
+            var namechat = chats[i].name;
 
             //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
             chats[i].contact = {
@@ -606,7 +618,7 @@ window.WAPI.getAllChats = async function(done) {
                 pushname: notifyName ? (notifyName ? namechat : undefined) : undefined,
                 formattedName: chats[i].name,
                 profilePicThumb: profilePhoto                
-            };
+            };*/
 
             //Deletar JSON Array das Mensagens do msgs
             delete chats[i].msgs;
@@ -636,22 +648,6 @@ window.WAPI.getAllChats = async function(done) {
     } else {
       //console.log('VAZIO');
     }
-
-
-    ///var jsonString = JSON.stringify(chats, replacer);
-    //var jsonString = JSON.stringify(chats);
-    //console.log(jsonString); 
-
-    //let contactnew = await WPP.contact.get('5517981388414@c.us');
-    //console.log("getcontact: " + JSON.stringify(contactnew));
-
-
-    //console.log(chats);
-
-    //.map((chats) => WAPI._serializeChatObj(chats));
-
-    //const output = (await WPP.group.getParticipants(id))
-    //.map((participant) => participant.id);
 
     if (done !== undefined) done(chats);
 
@@ -1495,7 +1491,7 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
         onlyUsers: false 
       };
         
-    const chats = await WPP.chat.list(options);
+    var chats = await WPP.chat.list(options);
 
     if (chats) {
         try {
@@ -1507,12 +1503,11 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
               chats[i].formattedTitle = chats[i].name;
 
               /*A consulta buscando o contato foi desativado para melhorar a performance*/
-              /*let contacts = await WPP.contact.get(chats[i].id._serialized);
+              var contacts = await WPP.contact.get(chats[i].id._serialized);
+	      var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
 
               // Verifique se os contatos existem e têm comprimento maior que zero
               if (contacts && Object.keys(contacts).length > 0) {   
-                  let profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
-  
                   chats[i].contact = {
                       id: contacts.id,
                       name: contacts.name,
@@ -1523,19 +1518,26 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
                       isEnterprise: contacts.isEnterprise
                     };
                   //console.log(`Chats[${i}] com propriedade "contact":`, chats[i]);
-              }*/
+              } else{
+                  chats[i].contact = {
+	              id: chats[i].id._serialized,
+	              name: chats[i].name,
+	              pushname: chats[i].name,
+	              formattedName: chats[i].name,
+	              profilePicThumb: profilePhoto 
+	      }
   
               
-              let profilePhoto = ".";
+              //let profilePhoto = ".";
 
               //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
-              chats[i].contact = {
+              /*chats[i].contact = {
                 id: chats[i].id._serialized,
                 name: chats[i].name,
                 pushname: chats[i].name,
                 formattedName: chats[i].name,
                 profilePicThumb: profilePhoto                
-              };
+              };*/
 
               //Deletar JSON Array das Mensagens do nó msgs, buscar logo abaixo as Mensagens Não Lidas deste Chat
               delete chats[i].msgs;
@@ -1549,28 +1551,28 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
     }
          
     //const chats = WPP.whatsapp.Chat.getModelsArray(); deprecated
-    let output = [];
+    var output = [];
 
-    for (let chat in chats) {
+    for (var chat in chats) {
         if (isNaN(chat)) {
             continue;
         }
 
-        let messageGroupObj = chats[chat];
-        let messageGroup = chats[chat]; //WAPI._serializeChatObj(messageGroupObj);
+        var messageGroupObj = chats[chat];
+        var messageGroup = chats[chat]; //WAPI._serializeChatObj(messageGroupObj);
 
         messageGroup.messages = [];
 
         //const messages = messageGroupObj.msgs._models; deprecated       
-        let messages = await WPP.chat.getMessages(chats[chat].id._serialized, {count: -1, onlyUnread: true});
+        var messages = await WPP.chat.getMessages(chats[chat].id._serialized, {count: -1, onlyUnread: true});
         
         for (let i = messages.length - 1; i >= 0; i--) {
             
-            let messageObj = messages[i];
+            var messageObj = messages[i];
 
             messageObj.isNewMsg = false;
                 
-            let message = WAPI.processMessageObj(messageObj, includeMe, false); //includeNotifications);// MUDAR PARA "FALSE" AQUI
+            var message = WAPI.processMessageObj(messageObj, includeMe, false); //includeNotifications);// MUDAR PARA "FALSE" AQUI
             if (message) {
                 messageGroup.messages.push(message);
             }
