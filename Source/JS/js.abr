@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.13;1.0.0.9;78.3.0
+//2.0.0.14;1.0.0.9;78.3.0
 //
 //
 
@@ -1504,9 +1504,9 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
 
               /*A consulta buscando o contato foi desativado para melhorar a performance*/
               var contacts = await WPP.contact.get(chats[i].id._serialized);
-	      var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
+	          var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
 
-              // Verifique se os contatos existem e têm comprimento maior que zero
+              // Verifique se os contatos existem e tÃªm comprimento maior que zero
               if (contacts && Object.keys(contacts).length > 0) {   
                   chats[i].contact = {
                       id: contacts.id,
@@ -1525,12 +1525,12 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
 	              pushname: chats[i].name,
 	              formattedName: chats[i].name,
 	              profilePicThumb: profilePhoto 
-	      }
-  
+	            }
+            }
               
               //let profilePhoto = ".";
 
-              //Criado Contact passando dados Basicos para manter a compatibilidade, como a versão anterior
+              //Criado Contact passando dados Basicos para manter a compatibilidade, como a versÃ£o anterior
               /*chats[i].contact = {
                 id: chats[i].id._serialized,
                 name: chats[i].name,
@@ -1539,7 +1539,7 @@ window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, 
                 profilePicThumb: profilePhoto                
               };*/
 
-              //Deletar JSON Array das Mensagens do nó msgs, buscar logo abaixo as Mensagens Não Lidas deste Chat
+              //Deletar JSON Array das Mensagens do nÃ³ msgs, buscar logo abaixo as Mensagens NÃ£o Lidas deste Chat
               delete chats[i].msgs;
           }
           
