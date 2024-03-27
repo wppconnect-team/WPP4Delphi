@@ -1327,7 +1327,7 @@ object frameLogin: TframeLogin
     Width = 185
     Height = 185
     Caption = 'M'#233'todo de acesso'
-    ItemIndex = 2
+    ItemIndex = 1
     Items.Strings = (
       'Formul'#225'rio com QrCode'
       'Whatsapp Web'

@@ -94,6 +94,8 @@ begin
       GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
     end;
   end;
+
+  GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
  
   {start service cef4delphi chromium}
   If not GlobalCEFApp.StartMainProcess then Exit;

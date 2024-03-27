@@ -1130,6 +1130,7 @@ begin
   frameMensagem1.listaChats.Clear;
   for AChat in Chats.Result do
   begin
+    NomeContato := '';
     if AChat.contact.pushname <> '' then
       NomeContato := AChat.contact.pushname
     else
@@ -1763,7 +1764,7 @@ begin
     begin
       FChatID := NewMessageResponse.msg.from;
       TWPPConnect1.ReadMessages(FChatID);
-      wlo_Celular := Copy(NewMessageResponse.msg.author,1,  pos('@', NewMessageResponse.msg.author) -1); // nr telefone
+      wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
 
       if NewMessageResponse.msg.id.fromMe then //Foi Enviado por Mim está Mensagem / This message was sent by me
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
@@ -1787,6 +1788,8 @@ begin
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+        IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 
       ack := 3;
@@ -1888,6 +1891,8 @@ begin
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+        IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 
       ack := 3;
@@ -2286,7 +2291,7 @@ begin
                               AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
 
               SleepNoFreeze(100);
-              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AChat.Contact.pushname)));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Chat Id: ' + AChat.id));

@@ -1914,6 +1914,34 @@ TReactionResponseClass = class(TClassPadrao)
     //class function FromJsonString(AJsonString: string): TRootClass;
 end;
 
+//Marcelo 23/03/2024
+TUrlButtonClass2 = class
+private
+  //F$$unknownFieldCount: Extended;
+  FDisplayText: String;
+  FUrl: String;
+public
+  //property &$$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+  property displayText: String read FDisplayText write FDisplayText;
+  property url: String read FUrl write FUrl;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TUrlButtonClass;
+end;
+
+THydratedButtonsClass2 = class
+private
+  //F$$unknownFieldCount: Extended;
+  FUrlButton: TUrlButtonClass2;
+public
+  //property &$$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+  property urlButton: TUrlButtonClass2 read FUrlButton write FUrlButton;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): THydratedButtonsClass;
+end;
+
+
 //Marcelo 25/07/2023
 TNewMsgClass = class(TClassPadrao)
 private
@@ -1991,6 +2019,7 @@ private
   FrequiresDirectConnection: Boolean;
   FformattedTitle: String;
   FisGroup: Boolean;
+    FHydratedButtons: TArray<THydratedButtonsClass2>;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2068,7 +2097,8 @@ public
   property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
   property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
-
+  property hydratedButtons: TArray<THydratedButtonsClass2> read FHydratedButtons write FHydratedButtons;
+  //property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
 end;
 
 //Marcelo 25/07/2023
