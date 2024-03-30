@@ -1788,7 +1788,9 @@ begin
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
-        IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+
+        //IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+        IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 
@@ -1891,7 +1893,9 @@ begin
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
-        IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+
+        //IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+        IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 

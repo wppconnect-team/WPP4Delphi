@@ -722,6 +722,22 @@ type
   end;
 
   //Marcelo 27/04/2022
+  TidClass = class(TClassPadrao)
+  private
+    F_serialized: String;
+    FFromMe     : Boolean;
+    FId         : String;
+    FRemote     : String;
+    FParticipant: String;
+  public
+    property _serialized: String   read F_serialized write F_serialized;
+    property fromMe:      Boolean  read FFromMe      write FFromMe;
+    property id:          String   read FId          write FId;
+    property remote:      String   read FRemote      write FRemote;
+    property participant: String   read FParticipant write FParticipant;
+  end;
+
+  //Marcelo 27/04/2022
   TquotedMsgClass = class(TClassPadrao)
   private
     Ftype            : string;
@@ -735,6 +751,7 @@ type
     FisDynamicReplyButtonsMsg: boolean;
     FheaderType: integer;
     FList: TListClass;
+    FId: TIdClass;
   public
     property    &type           : string     read Ftype            write Ftype;
     property    isFromTemplate  : Boolean    read FisFromTemplate  write FisFromTemplate;
@@ -747,13 +764,22 @@ type
     property    isDynamicReplyButtonsMsg : boolean  read FisDynamicReplyButtonsMsg write FisDynamicReplyButtonsMsg;
     property    headerType      : integer    read FheaderType      write FheaderType;
     property    list            : TListClass read FList            write FList;
+    property    id              : TIdClass   read FId              write FId;
   end;
+
+  TstreamingSidecarClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
   //Marcelo 27/04/2022
   TscansSidecarClass = class(TClassPadrao)
   private
     //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
   public
   end;
+
   //Marcelo 27/04/2022
   TpollOptionsClass = class(TClassPadrao)
   private
@@ -1088,21 +1114,7 @@ type
     property id             : String                      read FId                    write FId;
     property timestamp      : Extended                    read Ftimestamp             write Ftimestamp;
   end;
-  //Marcelo 27/04/2022
-  TidClass = class(TClassPadrao)
-  private
-    F_serialized: String;
-    FFromMe     : Boolean;
-    FId         : String;
-    FRemote     : String;
-    FParticipant: String;
-  public
-    property _serialized: String   read F_serialized write F_serialized;
-    property fromMe:      Boolean  read FFromMe      write FFromMe;
-    property id:          String   read FId          write FId;
-    property remote:      String   read FRemote      write FRemote;
-    property participant: String   read FParticipant write FParticipant;
-  end;
+
   //Marcelo 27/04/2022
   TunsyncedButtonRepliesClass = class(TClassPadrao)
   private
@@ -1941,6 +1953,15 @@ public
   //class function FromJsonString(AJsonString: string): THydratedButtonsClass;
 end;
 
+TWaveformClass = class(TClassPadrao)
+private
+  F0: Extended;
+  F1: Extended;
+public
+  property v0: Extended read F0 write F0;
+  property v1: Extended read F1 write F1;
+end;
+
 
 //Marcelo 25/07/2023
 TNewMsgClass = class(TClassPadrao)
@@ -2019,7 +2040,9 @@ private
   FrequiresDirectConnection: Boolean;
   FformattedTitle: String;
   FisGroup: Boolean;
-    FHydratedButtons: TArray<THydratedButtonsClass2>;
+  FHydratedButtons: TArray<THydratedButtonsClass2>;
+  FstreamingSidecar: TstreamingSidecarClass;
+  FWaveform: TWaveformClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2085,6 +2108,7 @@ public
   property interactiveAnnotations: TArray<String>         read FInteractiveAnnotations write FInteractiveAnnotations;
   property scanLengths           : TArray<Extended>       read FscanLengths            write FscanLengths;
   property scansSidecar          : TscansSidecarClass     read FscansSidecar           write FscansSidecar; //NOT IMPLEMENT
+  property streamingSidecar      : TstreamingSidecarClass read FstreamingSidecar       write FstreamingSidecar; //NOT IMPLEMENT
   property CardList              : TArray<TCardClass>     read fVCardLIst              write FVCardList;
   property Footer                : String                 read FFooter                 write FFooter;
   property deprecatedMms3Url     : String                 read FDeprecatedMms3Url      write FDeprecatedMms3Url;
@@ -2097,8 +2121,10 @@ public
   property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
   property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
-  property hydratedButtons: TArray<THydratedButtonsClass2> read FHydratedButtons write FHydratedButtons;
+  property hydratedButtons: TArray<THydratedButtonsClass2> read FHydratedButtons        write FHydratedButtons;
+  property waveform              : TWaveformClass          read FWaveform               write FWaveform;
   //property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
+
 end;
 
 //Marcelo 25/07/2023

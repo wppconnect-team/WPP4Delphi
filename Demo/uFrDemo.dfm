@@ -5701,7 +5701,7 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
       's\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConn' +
-      'ectAnexos\'
+      'ectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
