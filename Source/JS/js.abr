@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.17;1.0.0.9;78.3.0
+//2.0.0.18;1.0.0.9;78.3.0
 //
 //
 
@@ -39268,8 +39268,9 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 
 //Marcelo 06/04/2024
 window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
+  var isGroup = wid.includes('@g.us');
   try {
-    const validar = await WPP.contact.queryExists(wid);
+    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39355,8 +39356,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
 
 //Marcelo 06/04/2024
 window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
+  var isGroup = wid.includes('@g.us');
   try {
-    const validar = await WPP.contact.queryExists(wid);
+    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39443,8 +39445,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
 
 //Marcelo 06/04/2024
 window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
+  var isGroup = wid.includes('@g.us');
   try {
-    const validar = await WPP.contact.queryExists(wid);
+    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39531,8 +39534,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
 
 //Marcelo 06/04/2024
 window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, options, xSeuID) {
+  var isGroup = wid.includes('@g.us');
   try {
-    const validar = await WPP.contact.queryExists(wid);
+    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
     const validarContact = await WPP.contact.queryExists(widcontacts);
 
     if (validar !== null && validar !== undefined && validarContact !== null && validarContact !== undefined) {
@@ -39630,8 +39634,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
 
 //Marcelo 06/04/2024
 window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
+  var isGroup = wid.includes('@g.us');
   try {
-    const validar = await WPP.contact.queryExists(wid);
+    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
