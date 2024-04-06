@@ -136,10 +136,12 @@ object frameMensagem: TframeMensagem
     Align = alLeft
     Caption = 'Envio de Mensagens'
     TabOrder = 1
+    ExplicitLeft = 234
+    ExplicitTop = 23
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 392
+      Top = 454
       Width = 221
       Height = 25
       Align = alTop
@@ -148,11 +150,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
+      ExplicitTop = 392
     end
     object btnLink: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 206
+      Top = 237
       Width = 221
       Height = 25
       Align = alTop
@@ -161,11 +164,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
+      ExplicitTop = 206
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 423
+      Top = 485
       Width = 221
       Height = 25
       Align = alTop
@@ -174,11 +178,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
+      ExplicitTop = 423
     end
     object btnImagem: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 175
+      Top = 206
       Width = 221
       Height = 25
       Align = alTop
@@ -187,11 +192,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 5
       OnClick = btnImagemClick
+      ExplicitTop = 175
     end
     object btnInstantVideo: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 144
+      Top = 175
       Width = 221
       Height = 25
       Align = alTop
@@ -200,11 +206,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 4
       OnClick = btnInstantVideoClick
+      ExplicitTop = 144
     end
     object btnVideo: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 113
+      Top = 144
       Width = 221
       Height = 25
       Align = alTop
@@ -214,11 +221,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 3
       OnClick = btnVideoClick
+      ExplicitTop = 113
     end
     object btnListaMenu: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 82
+      Top = 113
       Width = 221
       Height = 25
       Align = alTop
@@ -228,11 +236,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 2
       OnClick = btnListaMenuClick
+      ExplicitTop = 82
     end
     object btnBotaoSimples: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 51
+      Top = 82
       Width = 221
       Height = 25
       Align = alTop
@@ -242,11 +251,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 1
       OnClick = btnBotaoSimplesClick
+      ExplicitTop = 51
     end
     object btnTextoSimples: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 20
+      Top = 51
       Width = 221
       Height = 25
       Align = alTop
@@ -255,11 +265,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 0
       OnClick = btnTextoSimplesClick
+      ExplicitTop = 20
     end
     object btnAudio: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 237
+      Top = 268
       Width = 221
       Height = 25
       Align = alTop
@@ -268,11 +279,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
+      ExplicitTop = 237
     end
     object btnContato: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 299
+      Top = 330
       Width = 221
       Height = 25
       Align = alTop
@@ -281,11 +293,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
+      ExplicitTop = 299
     end
     object btnSticker: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 268
+      Top = 299
       Width = 221
       Height = 25
       Align = alTop
@@ -294,11 +307,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
+      ExplicitTop = 268
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 330
+      Top = 361
       Width = 221
       Height = 25
       Align = alTop
@@ -307,11 +321,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
+      ExplicitTop = 330
     end
     object btnArquivo: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 361
+      Top = 423
       Width = 221
       Height = 25
       Align = alTop
@@ -320,11 +335,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
+      ExplicitTop = 361
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 454
+      Top = 516
       Width = 221
       Height = 25
       Align = alTop
@@ -333,11 +349,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 14
       OnClick = btnStatusTextoClick
+      ExplicitTop = 454
     end
     object btnStatusImagem: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 485
+      Top = 547
       Width = 221
       Height = 25
       Align = alTop
@@ -346,11 +363,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = btnStatusImagemClick
+      ExplicitTop = 485
     end
     object btnVideoStatus: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 516
+      Top = 578
       Width = 221
       Height = 25
       Align = alTop
@@ -359,11 +377,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
+      ExplicitTop = 516
     end
     object Button2: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 547
+      Top = 609
       Width = 221
       Height = 25
       Align = alTop
@@ -372,11 +391,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = Button2Click
+      ExplicitTop = 547
     end
     object bTextoMarcandoTodosGrupo: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 578
+      Top = 640
       Width = 221
       Height = 25
       Align = alTop
@@ -385,11 +405,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 18
       OnClick = bTextoMarcandoTodosGrupoClick
+      ExplicitTop = 578
     end
     object btnLigar: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 609
+      Top = 671
       Width = 221
       Height = 25
       Align = alTop
@@ -398,11 +419,12 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 19
       OnClick = btnLigarClick
+      ExplicitTop = 609
     end
     object btnEncerrarChamada: TButton
       AlignWithMargins = True
       Left = 5
-      Top = 640
+      Top = 702
       Width = 221
       Height = 25
       Align = alTop
@@ -411,6 +433,37 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 20
       OnClick = btnEncerrarChamadaClick
+      ExplicitTop = 640
+    end
+    object btnSendSimpleTextNew: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 20
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Texto Simples New'
+      ImageIndex = 0
+      Images = ImageList1
+      TabOrder = 21
+      OnClick = btnSendSimpleTextNewClick
+      ExplicitLeft = 10
+      ExplicitTop = 28
+    end
+    object Button5: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 392
+      Width = 221
+      Height = 25
+      Align = alTop
+      Caption = 'Enviar Arquivo da Pasta New'
+      ImageIndex = 6
+      Images = ImageList1
+      TabOrder = 22
+      OnClick = Button5Click
+      ExplicitLeft = 10
+      ExplicitTop = 400
     end
   end
   object GroupBox2: TGroupBox

@@ -293,6 +293,7 @@ type
     //funcao experimental para configuracao de proxy de rede(Ainda nao foi testada)
     //Olhar em uTWPPConnect.Console funcao ConfigureNetWork
     //Function    ConfigureNetwork: Boolean;
+    function SomenteNumero(const S: string): string;
     procedure ReadMessages(vID: string);
     function  TestConnect:  Boolean;
     procedure Send(PNumberPhone, PMessage: string; PEtapa: string = ''); deprecated;
@@ -308,14 +309,20 @@ type
     procedure SendFileMessage(phoneNumber, content, options: string; etapa: string = '');
     procedure SendLocationMessage(phoneNumber, options: string; etapa: string = '');
 
-    //temis 03-06-2022
-    //procedure SendFileMessageEx(phoneNumber, content, options: string;  xSeuID: string = '');
-    //temis 08-06-2022
+    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendFileMessageEx(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String; pIsSticker : boolean);overload;
     procedure SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
-    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
     procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 16/01/2023
     procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
+
+    //Marcelo 06/04/2024
+    procedure SendTextMessageNew(phoneNumber, content, options: string; xSeuID: string = '');
+    procedure SendFileMessageNew(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String; pIsSticker : boolean);overload;
+    procedure SendFileMessageNew(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
+    procedure SendListMessageNew(phoneNumber, options: string; xSeuID: string = '');
+    procedure sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 06/04/2024
+    procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
@@ -369,8 +376,6 @@ type
 
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
-    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 16/01/2023
-
 
     procedure SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
     procedure SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
@@ -3817,7 +3822,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendFileMessageEx(phoneNumber, pBase64, options, xSeuID);
           end;
         end);
@@ -3825,6 +3830,168 @@ begin
       end);
   lThread.FreeOnTerminate := true;
   lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendFileMessageNew(phoneNumber, pBase64, Options, xSeuID: string);
+var
+  lThread : TThread;
+
+begin
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendFileMessageNew(phoneNumber, pBase64, options, xSeuID);
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendFileMessageNew(phoneNumber, PFileName, xSeuID, pMessage: String; pIsSticker: boolean);
+var
+  lThread : TThread;
+  LStream     : TMemoryStream;
+  LBase64File : TBase64Encoding;
+  LExtension  : String;
+  LBase64     : String;
+  options     : String;
+
+  function IsImage : Boolean;
+  var
+    I : integer;
+    LTmp : String;
+  begin
+    //Temis 11/10/22
+    if pIsSticker then
+      begin
+        result := true;
+        exit;
+      end;
+
+    result := false;
+    for I := 0 to 10 do
+    begin
+      Ltmp := LowerCase(Copy(GetEnumName(TypeInfo(TSendFile_Image), ord(TSendFile_Image(i))), 3, 50));
+      if pos(LExtension, Ltmp) > 0 Then
+      Begin
+        Result := true;
+      end
+    end;
+
+  end;
+
+begin
+  if Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  LExtension   := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
+  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;
+
+  If not FileExists(Trim(PFileName)) then
+  begin
+    Int_OnErroInterno(Self, 'SendFileMessaEx: ' + Format(MSG_ExceptPath, [phoneNumber]), phoneNumber);
+    Exit;
+  end;
+
+  LStream     := TMemoryStream.Create;
+  LBase64File := TBase64Encoding.Create;
+  try
+    try
+      LStream.LoadFromFile(PFileName);
+      if LStream.Size = 0 then
+      Begin
+        Int_OnErroInterno(Self, 'SendFileMessageEx: ' + Format(MSG_WarningErrorFile, [phoneNumber]), phoneNumber);
+        Exit;
+      end;
+
+      LStream.Position := 0;
+      LBase64      := LBase64File.EncodeBytesToString(LStream.Memory, LStream.Size);
+      LBase64      := StrExtFile_Base64Type(PFileName) + LBase64;
+    except
+      Int_OnErroInterno(Self, 'SendFileMessageEx: ' + MSG_ExceptMisc, phoneNumber);
+    end;
+  finally
+    FreeAndNil(LStream);
+    FreeAndNil(LBase64File);
+  end;
+
+  options :=
+    'createChat: true, ';
+
+  if (LExtension = 'mp3') then
+  begin
+    options := options +
+      'type: "audio", ' +
+      'isPtt: true';
+  end
+
+  else if (LExtension = 'mpeg') or (LExtension = 'avi') or (LExtension = 'mpg') or (LExtension = 'mp4') then
+  begin
+    options := options +
+      '  type: "video",' +
+      '  caption: "' + PMessage + '"';
+      //'  filename: "' + ExtractFileName(PFileName) + '", '+
+      //'  mimetype: "video/'+LExtension+'"';
+  end
+
+  else if IsImage then
+  begin
+    if pIsSticker then
+    begin
+      options := options +
+         '  type: "sticker" ';
+    end
+    else
+    begin
+      options := options +
+         '  type: "image", ' +
+         '  caption: "'+PMessage+'"  ';
+    end;
+  end
+  else
+  begin
+    options := options +
+       '  type: "document", '+
+       '  caption: "'+PMessage+'",  '+
+       '  filename: "'+ExtractFileName(PFileName)+'", '+
+       '  mimetype: "application/'+LExtension+'"';
+  end;
+
+  SendFileMessageNew( phoneNumber, lBase64, options, xSeuID);
 
 end;
 
@@ -4076,8 +4243,58 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.sendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID);
+            {if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;}
+          end;
+        end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendListMessageNew(phoneNumber, options, xSeuID: string);
+var
+  lThread : TThread;
+begin
+  //Adicionado Por Marcelo 01/03/2022
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  if Trim(options) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, options);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendListMessageNew(phoneNumber, options, xSeuID);
             {if etapa <> '' then
             begin
               FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
@@ -4214,11 +4431,53 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID);
 
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
 
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendLocationMessageNew(phoneNumber, options, xSeuID: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 17/09/2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if pos('@', phoneNumber) = 0 then
+  begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);
 
@@ -4464,11 +4723,60 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID);
 
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
 
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.SendTextMessageNew(phoneNumber, content, options, xSeuID: string);
+var
+  lThread : TThread;
+begin
+  //temis 03-06-2022
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  if Trim(content) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);
 
@@ -4542,6 +4850,57 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if pos('@', vNum) = 0 then
+    vNum := SomenteNumero(vNum);
+
+  if pos('@', vNumDest) = 0 then
+    vNumDest := SomenteNumero(vNumDest);
+
+  {vNumDest := AjustNumber.FormatIn(vNumDest);
+
+  if (pos('@', vNumDest) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumDest);
+    Exit;
+  end;
+
+  vNum := AjustNumber.FormatIn(vNum);
+
+  if (pos('@', vNum) = 0) then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vNumDest);
+    Exit;
+  end;}
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID);
           end;
         end);
 
@@ -5274,6 +5633,26 @@ begin
     FreeAndNil(GlobalCEFApp); {descomentado} //alteração em 17/07/2022
     //if CallTerminateProcs then PostQuitMessage(0);
   end
+end;
+
+function TWPPConnect.SomenteNumero(const S: string): string;
+var
+  vText: PChar;
+begin
+  vText := PChar(S);
+  Result := '';
+
+  while (vText^ <> #0) do
+  begin
+{$IFDEF UNICODE}
+    if CharInSet(vText^, ['0' .. '9']) then
+{$ELSE}
+    if vText^ in ['0' .. '9'] then
+{$ENDIF}
+      Result := Result + vText^;
+
+    inc(vText);
+  end;
 end;
 
 procedure TWPPConnect.FixarChat(PIDContato: String);

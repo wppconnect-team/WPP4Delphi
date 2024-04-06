@@ -96,6 +96,8 @@ type
     btnDeletarOldChat: TButton;
     bGetMe: TButton;
     bGetMensagem: TButton;
+    btnSendSimpleTextNew: TButton;
+    Button5: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -146,6 +148,8 @@ type
     procedure btnDeletarOldChatClick(Sender: TObject);
     procedure bGetMeClick(Sender: TObject);
     procedure bGetMensagemClick(Sender: TObject);
+    procedure btnSendSimpleTextNewClick(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -540,7 +544,9 @@ begin
     //               ex: 558199301443@c.us   558187576958@c.us
     //frDemo.TWPPConnect1.sendContact(ed_num.Text,        mem_message.Text);
 
-    frDemo.TWPPConnect1.sendVCardContactMessageEx(ed_num.Text, mem_message.Text, '', '', '123');
+    //frDemo.TWPPConnect1.sendVCardContactMessageEx(ed_num.Text, mem_message.Text, '', '', '123');
+    frDemo.TWPPConnect1.sendVCardContactMessageNew(ed_num.Text, mem_message.Text, '', '', '123');
+
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -997,7 +1003,8 @@ begin
 
 
     //frDemo.TWPPConnect1.SendListMessage(ed_num.text, ButtonText, description, menu, '');
-    frDemo.TWPPConnect1.SendListMessageEx(ed_num.text, ButtonText, description, menu, '123');
+    //frDemo.TWPPConnect1.SendListMessageEx(ed_num.text, ButtonText, description, menu, '123');
+    frDemo.TWPPConnect1.SendListMessageNew(ed_num.text, menu, '123');
 
   finally
     ed_num.SelectAll;
@@ -1099,7 +1106,7 @@ begin
 
     //frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
     //Marcelo 17/09/2022
-    frDemo.TWPPConnect1.SendLocationMessageEx(ed_num.text, options, '123');
+    frDemo.TWPPConnect1.SendLocationMessageNew(ed_num.text, options, '123');
 
   finally
     ed_num.SelectAll;
@@ -1630,6 +1637,88 @@ begin
     frDemo.TWPPConnect1.markPlayed(IdMensagem);
   end;
 
+end;
+
+procedure TframeMensagem.Button5Click(Sender: TObject);
+var
+  caption, Extensao : string;
+  caminhoArquivo : string;
+  isFigurinha : Boolean;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+    caption := frDemo.CaractersWeb(mem_message.Text);
+
+    caminhoArquivo := '';
+
+    OpenDialog1.Execute();
+
+    if FileExists(OpenDialog1.FileName) then
+      caminhoArquivo := OpenDialog1.FileName
+    else
+      Exit;
+
+    Extensao  := LowerCase(Copy(ExtractFileExt(caminhoArquivo),2,5));
+
+    if Extensao = 'webp' then
+      isFigurinha := True else
+      isFigurinha := False;
+
+    //Arquivo Selecionado da Pasta
+    frDemo.TWPPConnect1.SendFileMessageNew(ed_num.text, caminhoArquivo, '123', caption, isFigurinha);
+
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeMensagem.btnSendSimpleTextNewClick(Sender: TObject);
+var
+  options : string;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if Trim(mem_message.Text) = '' then
+    begin
+      messageDlg('Informe o Texto da Mensagem para Continuar', mtWarning, [mbOk], 0);
+      mem_message.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+    options := 'createChat: true';
+
+    //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
+    //frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //Sleep(5000);
+
+    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, '123');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
 end;
 
 procedure TframeMensagem.btnLigarClick(Sender: TObject);

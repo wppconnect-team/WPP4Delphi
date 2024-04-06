@@ -1793,10 +1793,8 @@ begin
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
 
-        {if NewMessageResponse.msg.id.fromMe then
-          IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID else
-          IdMensagemOrigem := 'false_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;}
 
+        //Obter o Unique ID de Origem
         if Assigned(NewMessageResponse.msg.quotedMsg.id) then
           IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized
         else
@@ -1812,10 +1810,10 @@ begin
           end
           else
             IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
-
         end;
 
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
+
       end;
 
       ack := 3;
@@ -1919,7 +1917,25 @@ begin
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
 
         //IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
-        IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized;
+
+        //Obter o Unique ID de Origem
+        if Assigned(NewMessageResponse.msg.quotedMsg.id) then
+          IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized
+        else
+        begin
+          if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.from then
+            IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID
+          else
+          if NewMessageResponse.msg.author <> '' then
+          begin
+            if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.author then
+              IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID else
+              IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+          end
+          else
+            IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+        end;
+
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 
