@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.0.0.18;1.0.0.9;78.3.0
+//2.0.0.19;1.0.0.9;78.3.0
 //
 //
 
@@ -39270,10 +39270,10 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
   var isGroup = wid.includes('@g.us');
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
-      let result;
+      let result;   
       SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
 
       result = await WPP.chat.sendTextMessage(validar.wid._serialized, texto, options);
@@ -39341,7 +39341,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
       //console.error("Erro desconhecido:", error);
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
-        chatid: chatid,
+        chatid: wid,
         Seuid: xSeuID,
         RetEvent: "sendTextMessageNew",
         statusCode: 303,
@@ -39358,7 +39358,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
 window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
   var isGroup = wid.includes('@g.us');
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39430,7 +39430,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
       //console.error("Erro desconhecido:", error);
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
-        chatid: chatid,
+        chatid: wid,
         Seuid: xSeuID,
         RetEvent: "sendFileMessageNew",
         statusCode: 303,
@@ -39447,7 +39447,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
 window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
   var isGroup = wid.includes('@g.us');
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39519,7 +39519,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
       //console.error("Erro desconhecido:", error);
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
-        chatid: chatid,
+        chatid: wid,
         Seuid: xSeuID,
         RetEvent: "sendListMessageNew",
         statusCode: 303,
@@ -39536,7 +39536,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
 window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, options, xSeuID) {
   var isGroup = wid.includes('@g.us');
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
     const validarContact = await WPP.contact.queryExists(widcontacts);
 
     if (validar !== null && validar !== undefined && validarContact !== null && validarContact !== undefined) {
@@ -39618,7 +39618,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
       //console.error("Erro desconhecido:", error);
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
-        chatid: chatid,
+        chatid: wid,
         widContacts: widContacts,
         Seuid: xSeuID,
         RetEvent: "sendVCardContactMessageNew",
@@ -39636,7 +39636,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
 window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
   var isGroup = wid.includes('@g.us');
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -39708,7 +39708,7 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
       //console.error("Erro desconhecido:", error);
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
-        chatid: chatid,
+        chatid: wid,
         Seuid: xSeuID,
         RetEvent: "sendLocationMessageNew",
         statusCode: 303,
