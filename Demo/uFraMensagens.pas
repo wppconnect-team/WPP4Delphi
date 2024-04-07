@@ -406,7 +406,6 @@ begin
 
       //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
       frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
-      frDemo.TWPPConnect1.markmarkIsRecording(ed_num.Text, '5000'); //Gravando Audio 5 Segundos
       Sleep(5000);
 
       //Audio
