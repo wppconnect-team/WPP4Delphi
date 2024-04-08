@@ -41,7 +41,8 @@ interface
 
 uses
   System.Classes, IniFiles, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
-  Vcl.ExtCtrls, IdHTTP, uTWPPConnect.Diversos,
+  Vcl.ExtCtrls, StrUtils,
+  IdHTTP, uTWPPConnect.Diversos,
 
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
@@ -84,7 +85,7 @@ type
     procedure  SeTWPPConnectScript(const Value: TstringList);
     function   PegarLocalJS_Designer: String;
     function   PegarLocalJS_Web: String;
-    Function   AtualizarInternamente(PForma: TFormaUpdate):Boolean;
+    Function   UpdateExec(PForma: TFormaUpdate):Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
     procedure SetSecondsWaitInject(const Value: integer);
 
@@ -166,9 +167,9 @@ begin
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
   FSecondsWaitInject         := 6;
-  UpdateNow;   //UpdateNow; Temis 03-06-2022
+
 end;
-function TWPPConnectJS.AtualizarInternamente(PForma: TFormaUpdate): Boolean;
+function TWPPConnectJS.UpdateExec(PForma: TFormaUpdate): Boolean;
 var
   Ltmp: String;
 begin
@@ -245,30 +246,24 @@ end;
 
 function TWPPConnectJS.UpdateNow: Boolean;
 begin
+
+  Result := False;
+
   if FAutoUpdate  Then
   Begin
-    //Atualiza pela Web  O retorno e o SUCESSO do que esta programado para trabalhar!!
-    //Se nao obter sucesso da WEB.. ele vai usar o arquivo local..
-    //Se estiver tudo ok.. ele esta PRONTO
-    if ( GlobalCEFApp.PathJsOverdue = False) and (FileExists(GlobalCEFApp.PathJs)) Then
-    Begin
-      Result      := AtualizarInternamente(Tup_Local);
-    End
-    else
-    Begin
-      Result      := AtualizarInternamente(Tup_Web);
-      If not Result Then
-         Result      := AtualizarInternamente(Tup_Local);  //Se nao consegui ele pega o arquivo Local
-    end;
-  End
-  else
-  Begin
-    //Usando via ARQUIVO
-    Result      := AtualizarInternamente(Tup_Local);
-  end;
+
+    // script pré pronto para inclusão futura de diretório central para update's
+
+    if (StrUtils.ContainsText(LowerCase(FJSURL),'http')) then
+      Result := UpdateExec( Tup_Web );
+
+    if not(Result) then
+      Result := UpdateExec( Tup_Local );
+
+  End;
 
   FReady        := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
-  //FReady        := TRUE;
+
 end;
 
 function TWPPConnectJS.ValidaJs(const TValor: Tstrings): Boolean;
