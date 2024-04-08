@@ -228,32 +228,32 @@ type
     procedure SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
     procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '');
 
-
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
-
 
     procedure getList(options: string); //Add Marcelo 25/10/2022
 
 
     //Adicionado Por Marcelo 18/05/2022
     procedure sendRawMessage(phoneNumber, rawMessage, options: string; etapa: string = '');
+
     procedure markIsComposing(phoneNumber, duration: string; etapa: string = '');
-
     procedure markIsUnread(phoneNumber: string);
-
     procedure markPlayed(phoneNumber: string); //Adicionado Por Marcelo 14/03/2023
 
     //Adicionado Por Marcelo 13/06/2022
-    procedure markmarkIsRecording(phoneNumber, duration: string; etapa: string = '');
+    procedure markIsRecording(phoneNumber, duration: string; etapa: string = '');
     procedure setKeepAlive(Ativo: string);
+
+    procedure markIsComposingNew(phoneNumber, duration: string; vSeuID: string = '');
+    procedure markIsRecordingNew(phoneNumber, duration: string; vSeuID: string = '');
+    procedure markPlayedNew(phoneNumber: string; vSeuID: string = '');
 
     //Marcelo 09/10/2023
     procedure CreateNewsLetter(Content, Options: string);
 
-    procedure sendTextStatus(Content, Options: string);
-
     //MARCELO 28/06/2022
+    procedure sendTextStatus(Content, Options: string);
     procedure sendImageStatus(Content, Options: string);
     procedure sendVideoStatus(Content, Options: string);
     procedure sendRawStatus(Content, Options: string);
@@ -278,6 +278,8 @@ type
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
 
+    procedure deleteMessageByIdNew(PNumberPhone, UniqueIDs : string);
+
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
 
@@ -288,6 +290,17 @@ type
     procedure DesbloquearContato(vContato: string);
     procedure ArquivarChat(vContato: string);
     procedure DesarquivarChat(vContato:String);
+    procedure FixarChat(vContato:String);
+    procedure DesfixarChat(vContato:String);
+
+    //Adicionado por Marcelo 07/04/2024
+    procedure BloquearContatoNew(vContato: string; vSeuID: string = '');
+    procedure DesbloquearContatoNew(vContato: string; vSeuID: string = '');
+    procedure ArquivarChatNew(vContato: string; vSeuID: string = '');
+    procedure DesarquivarChatNew(vContato: string; vSeuID: string = '');
+    procedure FixarChatNew(vContato: string; vSeuID: string = '');
+    procedure DesfixarChatNew(vContato: string; vSeuID: string = '');
+
     procedure ArquivarTodosOsChats;
     procedure DeletarTodosOsChats;
     procedure DeletarTodosOsChatsUsers;
@@ -295,8 +308,7 @@ type
     procedure MarkIsReadChats(NumberChatsIsRead: string);
     procedure MarkIsUnreadChats(NumberChatsUnread: string);
 
-    procedure FixarChat(vContato:String);
-    procedure DesfixarChat(vContato:String);
+
     //Daniel - 13/06/2022
     procedure GetProductCatalog;
 
@@ -324,6 +336,7 @@ type
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
     procedure PoolCreate(vID, vDescription, vChoices, vOptions: string);
     procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+    procedure PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
     procedure SetGroupPicture(vIDGroup, vBase64:string);
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
@@ -337,6 +350,7 @@ type
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure getStatus(vTelefone: string);
     procedure CleanChat(vTelefone: string);
+    procedure CleanChatNew(vTelefone: string; vSeuID: string = '');
     procedure fGetMe;
     procedure NewCheckIsValidNumber(vNumber:String);
     procedure CheckNumberExists(vNumber:String);
@@ -360,6 +374,8 @@ type
 
     //Para monitorar o qrcode via REST
     procedure ReadMessages(vID: string);
+    procedure markIsReadNew(vID: string; vSeuID: string = '');
+    procedure markIsUnReadNew(vID: string; vSeuID: string = '');
     procedure DeleteMessages(vID: string);
     procedure ReadMessagesAndDelete(vID: string);
 
@@ -510,6 +526,19 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.ArquivarChatNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_ArchiveChatNew;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.ArquivarTodosOsChats;
 var
   Ljs: string;
@@ -564,6 +593,19 @@ begin
 
   LJS   := FrmConsole_JS_VAR_BlockContact;
   FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.BloquearContatoNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_BlockContactNew;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',    Trim(vSeuID));
   ExecuteJS(LJS, true);
 end;
 
@@ -779,6 +821,26 @@ begin
   vDescription := CaractersWeb(vDescription);
 
   LJS   := FrmConsole_JS_VAR_CreatePoolMessageEx;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
+  FrmConsole_JS_AlterVar(LJS, '#CHOICES#',            Trim(vChoices));
+  FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',          Trim(vSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',         Trim(vSeuID2));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  vDescription := CaractersWeb(vDescription);
+
+  LJS   := FrmConsole_JS_VAR_CreatePoolMessageNew;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',        Trim(vDescription));
   FrmConsole_JS_AlterVar(LJS, '#CHOICES#',            Trim(vChoices));
@@ -1295,6 +1357,19 @@ begin
   ExecuteJS(LJS, True);
 end;
 
+procedure TFrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_deleteMessageNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(PNumberPhone));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#', Trim(UniqueIDs));
+  ExecuteJS(LJS, True);
+end;
+
 procedure TFrmConsole.DeleteMessages(vID: string);
 var
   LJS: String;
@@ -1318,6 +1393,19 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.DesarquivarChatNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_UnarchiveChatNew;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.DesbloquearContato(vContato: string);
 var
   Ljs: string;
@@ -1330,6 +1418,19 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.DesbloquearContatoNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_unBlockContactNew ;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.DesfixarChat(vContato: String);
 var
   Ljs: string;
@@ -1339,6 +1440,19 @@ begin
 
   LJS   := FrmConsole_JS_VAR_UnPinChat;
   FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.DesfixarChatNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_UnPinChatNew;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
   ExecuteJS(LJS, true);
 end;
 
@@ -3465,6 +3579,19 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.FixarChatNew(vContato, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_PinChatNew;
+  FrmConsole_JS_AlterVar(LJS, '#CTT_NAME#', Trim(vContato));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -4025,6 +4152,16 @@ begin
 end;
 
 
+procedure TFrmConsole.CleanChatNew(vTelefone, vSeuID: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_ClearChat;
+  FrmConsole_JS_AlterVar(LJS, '#PHONE#', Trim(vTelefone));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#', Trim(vSeuID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.Logout;
 var
   Ljs: string;
@@ -4056,6 +4193,27 @@ begin
   ExecuteJS(LJS, true);
 end;
 
+procedure TFrmConsole.markIsComposingNew(phoneNumber, duration, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  try
+    duration := IntToStr(StrToInt(duration));
+  except
+    duration := '5000';
+  end;
+
+  LJS   := FrmConsole_JS_VAR_markIsComposingNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#', duration);
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.MarkIsReadChats(NumberChatsIsRead: string);
 var
   Ljs: string;
@@ -4065,6 +4223,41 @@ begin
 
   LJS   := FrmConsole_JS_VAR_MarkIsReadChats;
   FrmConsole_JS_AlterVar(LJS, '#NumberChatsIsRead#', Trim(NumberChatsIsRead));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markIsReadNew(vID, vSeuID: string);
+var
+  LJS: String;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markIsReadNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',      Trim(vSeuID));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markIsRecordingNew(phoneNumber, duration, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  try
+    duration := IntToStr(StrToInt(duration));
+  except
+    duration := '5000';
+  end;
+
+  LJS   := FrmConsole_JS_VAR_markIsRecordingNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_DURATION#', duration);
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',        Trim(vSeuID));
+
   ExecuteJS(LJS, true);
 end;
 
@@ -4092,7 +4285,21 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.markmarkIsRecording(phoneNumber, duration, etapa: string);
+procedure TFrmConsole.markIsUnReadNew(vID, vSeuID: string);
+var
+  LJS: String;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markIsUnReadNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(vID));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',      Trim(vSeuID));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markIsRecording(phoneNumber, duration, etapa: string);
 var
   Ljs: string;
 begin
@@ -4121,6 +4328,20 @@ begin
 
   LJS   := FrmConsole_JS_VAR_markPlayed;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.markPlayedNew(phoneNumber, vSeuID: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_markPlayedNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',  Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',      Trim(vSeuID));
+
   ExecuteJS(LJS, true);
 end;
 

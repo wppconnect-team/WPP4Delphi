@@ -406,6 +406,7 @@ begin
 
       //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
       frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+      frDemo.TWPPConnect1.markIsRecording(ed_num.Text, '5000'); //Gravando Audio 5 Segundos
       Sleep(5000);
 
       //Audio
@@ -639,7 +640,8 @@ begin
   end;
 
    if not frDemo.TWPPConnect1.Auth then
-      Exit;
+     Exit;
+
   frDemo.TWPPConnect1.FixarChat(ed_num.text);
 end;
 
@@ -1105,6 +1107,7 @@ begin
 
     //frDemo.TWPPConnect1.SendLocationMessage(ed_num.text, options, '');
     //Marcelo 17/09/2022
+    //frDemo.TWPPConnect1.SendLocationMessageEx(ed_num.text, options, '123');
     frDemo.TWPPConnect1.SendLocationMessageNew(ed_num.text, options, '123');
 
   finally

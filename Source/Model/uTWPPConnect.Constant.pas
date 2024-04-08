@@ -191,6 +191,7 @@ Const
   FrmConsole_JS_VAR_setMyStatus             = 'window.WAPI.setMyStatus("<#NEW_STATUS#>");';
   FrmConsole_JS_VAR_getStatus               = 'window.WAPI.getStatus("<#PHONE#>");';
   FrmConsole_JS_VAR_ClearChat               = 'WPP.chat.clear("<#PHONE#>");';
+  FrmConsole_JS_VAR_ClearChatNew            = 'window.WPP.clearNew("<#PHONE#>");';
   FrmConsole_JS_VAR_getMe                   = 'window.WAPI.getMe();';
 
   FrmConsole_JS_VAR_genLinkDeviceCodeForPhoneNumber = 'window.WAPI.genLinkDeviceCodeForPhoneNumber2("<#PHONE#>");';
@@ -223,6 +224,13 @@ Const
   FrmConsole_JS_VAR_markIsRecording     = 'WPP.chat.markIsRecording("<#MSG_PHONE#>", <#MSG_DURATION#>);';
   FrmConsole_JS_VAR_markIsUnread        = 'WPP.chat.markIsUnread("<#MSG_PHONE#>");';
 
+  //Marcelo 07/04/2024
+  FrmConsole_JS_VAR_markIsComposingNew  = 'window.WPP.markIsComposingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<SEUID>");';
+  FrmConsole_JS_VAR_markIsReadNew       = 'window.WPP.markIsReadNew("<#MSG_PHONE#>", "<SEUID>");';
+  FrmConsole_JS_VAR_markIsRecordingNew  = 'window.WPP.markIsRecordingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<SEUID>");';
+  FrmConsole_JS_VAR_markIsUnreadNew     = 'window.WPP.markIsUnreadNew("<#MSG_PHONE#>", "<SEUID>");';
+  FrmConsole_JS_VAR_markPlayedNew     = 'window.WPP.markPlayedNew("<#MSG_PHONE#>", "<SEUID>");';
+
   //Adicionado Por Marcelo 14/03/2023
   FrmConsole_JS_VAR_markPlayed          = 'WPP.chat.markPlayed("<#MSG_PHONE#>");';
 
@@ -234,6 +242,8 @@ Const
 
   //Marcelo 24/10/2022
   FrmConsole_JS_VAR_deleteMessageById   = 'WPP.chat.deleteMessage("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true);';
+
+  FrmConsole_JS_VAR_deleteMessageNew   = 'window.WPP.deleteMessageNew("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true);';
 
   FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
 
@@ -277,6 +287,16 @@ Const
   FrmConsole_JS_VAR_unBlockContact      = 'WPP.blocklist.unblockContact("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_ArchiveChat         = 'WPP.chat.archive("<#CTT_NAME#>");';
   FrmConsole_JS_VAR_UnarchiveChat       = 'WPP.chat.unarchive("<#CTT_NAME#>");';
+
+  //Marcelo 07/04/2024
+  FrmConsole_JS_VAR_BlockContactNew     = 'window.WPP.blockContactNew("<#CTT_NAME#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_unBlockContactNew   = 'window.WPP.unblockContactNew("<#CTT_NAME#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_ArchiveChatNew      = 'window.WPP.archiveNew("<#CTT_NAME#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_UnarchiveChatNew    = 'window.WPP.unarchiveNew("<#CTT_NAME#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_PinChatNew          = 'window.WPP.pin("<#CTT_NAME#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_UnPinChatNew        = 'window.WPP.unpin("<#CTT_NAME#>", "<#SEUID#>");';
+
+
   FrmConsole_JS_VAR_ArchiveAllChats     = 'archiveAllChats()';
   FrmConsole_JS_VAR_DeleteAllChats      = 'deleteAllChats()';
   FrmConsole_JS_VAR_DeleteAllChatsUsers = 'deleteAllChatsUsers()';
@@ -294,6 +314,7 @@ Const
 
   FrmConsole_JS_VAR_CreatePoolMessage   = 'WPP.chat.sendCreatePollMessage("<#GROUP_ID#>","<#MSG_CONTENT#>",<#CHOICES#>, {<#OPTIONS#>} ); ';
   FrmConsole_JS_VAR_CreatePoolMessageEx = 'window.WAPI.sendCreatePollMessage2Ex("<#GROUP_ID#>","<#MSG_CONTENT#>",<#CHOICES#>, {<#OPTIONS#>}, "<#MSG_SEUID#>", "<#MSG_SEUID2#>" ); ';
+  FrmConsole_JS_VAR_CreatePoolMessageNew = 'window.WPP.sendCreatePollMessageNew("<#GROUP_ID#>","<#MSG_CONTENT#>",<#CHOICES#>, {<#OPTIONS#>}, "<#MSG_SEUID#>", "<#MSG_SEUID2#>" ); ';
 
   //Marcelo 07/07/2023
   FrmConsole_JS_VAR_GetVotes           = 'window.WAPI.getVotes("<#MSG_UNIQUE_ID#>");';
