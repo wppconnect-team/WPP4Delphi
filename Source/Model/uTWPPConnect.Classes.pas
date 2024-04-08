@@ -2043,6 +2043,7 @@ private
   FHydratedButtons: TArray<THydratedButtonsClass2>;
   FstreamingSidecar: TstreamingSidecarClass;
   FWaveform: TWaveformClass;
+    Frecipients: TArray<String>;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2066,6 +2067,7 @@ public
   property lastPlaybackProgress: Extended read FLastPlaybackProgress write FLastPlaybackProgress;
   property lastUpdateFromServerTs: Extended read FLastUpdateFromServerTs write FLastUpdateFromServerTs;
   property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
+  property recipients: TArray<String> read Frecipients write Frecipients;
   property notifyName: String read FNotifyName write FNotifyName;
   property formattedTitle: String read FformattedTitle write FformattedTitle;
   property pollInvalidated: Boolean read FPollInvalidated write FPollInvalidated;

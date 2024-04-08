@@ -332,7 +332,7 @@ Const
   FrmConsole_JS_VAR_SendFileMessageNew   = 'window.WPP.SendFileMessageNew("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>");';
   FrmConsole_JS_VAR_SendListMessageNew   = 'window.WPP.SendListMessageNew("<#MSG_PHONE#>",{<#MSG_MENU#>},"<#MSG_SEUID#>");';
   FrmConsole_JS_VAR_SendVCardContactMessageNew  = 'window.WPP.sendVCardContactMessageNew("<#MSG_PHONE_DEST#>","<#MSG_PHONE#>", {} ,"<#MSG_SEUID#>" )';
-  FrmConsole_JS_VAR_SendLocationMessageNew   = 'window.WPP.sendLocationMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
+  FrmConsole_JS_VAR_SendLocationMessageNew   = 'window.WPP.SendLocationMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>" );';
 
   //TEMIS 03-06-2022 Obtendo Retorno do Envio com SeuID
   FrmConsole_JS_VAR_SendTextMessageEx   = 'window.WAPI.sendTextMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>");';
