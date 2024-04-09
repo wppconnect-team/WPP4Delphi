@@ -85,7 +85,11 @@ type
     Procedure ProcessPhoneBook(PCommand: string);
     procedure ProcessGroupBook(PCommand: string);
     procedure FormShow(Sender: TObject);
+    // minimize form    
     procedure App_EventMinimize(Sender: TObject);
+    procedure App_EventFormShow(Sender: TObject);
+    // alternate view form
+    procedure App_EventFormAlternaShow(Sender: TObject);
     procedure Chromium1BeforeDownload(Sender: TObject;
       const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
       const suggestedName: ustring; const callback: ICefBeforeDownloadCallback);
@@ -507,6 +511,20 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#COMMUNITY#', Trim(PCommunity));
   FrmConsole_JS_AlterVar(LJS, '#GROUP_NUMBERS#', Trim(PGroupNumbers));
   ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.App_EventFormAlternaShow(Sender: TObject);
+begin
+  if (not Self.Showing) then
+    Show
+  else
+    Hide;
+end;
+
+procedure TFrmConsole.App_EventFormShow(Sender: TObject);
+begin
+  if (not Self.Showing) then
+    Show;
 end;
 
 procedure TFrmConsole.App_EventMinimize(Sender: TObject);
