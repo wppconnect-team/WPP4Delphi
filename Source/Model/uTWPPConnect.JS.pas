@@ -86,6 +86,8 @@ type
     function   PegarLocalJS_Designer: String;
     function   PegarLocalJS_Web: String;
     Function   UpdateExec(PForma: TFormaUpdate):Boolean;
+    // Seleciona e Carrega o arquivo indicado para o JS Class
+    Function   LoadAndValidJSFromFile(const Source: string): Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
     procedure SetSecondsWaitInject(const Value: integer);
 
@@ -189,20 +191,9 @@ begin
     if Ltmp = '' then
        Exit;
 
-    if FileExists(Ltmp) then
-    Begin
-      //Valida a versao
-      FJSScript.LoadFromFile(Ltmp);
-      if not ValidaJs(FJSScript) then
-      Begin
-        FJSScript.Clear;
-      End else
-      Begin
-        FJSVersion   := FInjectJSDefine.FVersion_JS;
-        if FJSVersion = '' then
-           FJSScript.Clear;
-      End;
-    End;
+    // loading file selected to atribute class
+    LoadAndValidJSFromFile(Ltmp);
+
   finally
     Result := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
     if Result then
@@ -250,7 +241,7 @@ begin
   Result := False;
 
   if FAutoUpdate  Then
-  Begin
+  begin
 
     // script pré pronto para inclusão futura de diretório central para update's
 
@@ -260,9 +251,13 @@ begin
     if not(Result) then
       Result := UpdateExec( Tup_Local );
 
-  End;
+  end else
+  begin
 
-  FReady        := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+    // carrega o arquivo padrão indicado
+    LoadAndValidJSFromFile( GlobalCEFApp.PathJs )
+
+  end;
 
 end;
 
@@ -516,6 +511,38 @@ begin
   ZerarTudo;
   FStringList.Text := PConteudo;
   Result           := ProcessarCriacaoCSV;
+end;
+
+function TWPPConnectJS.LoadAndValidJSFromFile(const Source: string): Boolean;
+begin
+
+  Result := False;
+
+  if FileExists(Source) then
+  begin
+
+    FJSScript.LoadFromFile(Source);
+
+    if not ValidaJs(FJSScript) then
+    begin
+
+      FJSScript.Clear;
+
+    end else
+    begin
+
+      FJSVersion   := FInjectJSDefine.FVersion_JS;
+      if FJSVersion = '' then
+         FJSScript.Clear;
+
+      FReady := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+
+      Result := FReady;
+
+    end;
+
+  end;
+
 end;
 
 function TWPPConnectJS.ProcessarCriacaoCSV: Boolean;
