@@ -63,13 +63,9 @@ Instalação:
   - No Delphi adicione em Tools > Options > Library Path a pasta sources do CEF4Delphi "...\CEF4Delphi\source"
   - Abra o arquivo "...CEF4Delphi\packages\CEF4Delphi.dpk" no Delphi e então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
   - Após instalar, feche o projeto. 
-  - Adicione em Tools > Options > Library Path as pastas source do WPP4Delphi "...WPP4Delphi\Source\Model", "...WPP4Delphi\Source\Services", "...WPP4Delphi\Source\View", "...WPP4Delphi\Packages\Compilados"
-  - Dentro da pasta Packages\Compilados, existem subpastas D23, D24, D25, D26 e D27, adicione no library path a pasta correta conforme a sua versão do delphi 
-    D27: Delphi 10.4 Sydney
-	D26: Delphi 10.3 Rio 
-	D25: Delphi 10.2 Tokyo 
-	D24: Delphi 10.1 Berlin 
-	D23: Delphi 10 Seattle
+  - Adicione em Tools > Options > Library Path as pastas source do WPP4Delphi "...WPP4Delphi\Source\Model", "...WPP4Delphi\Source\Services", "...WPP4Delphi\Source\View", "...WPP4Delphi\Packages\Compilados", "...WPP4Delphi\Source\Other"
+  - Dentro da pasta Packages\Compilados, existem subpastas D23, D24, D25, D26, D27 e D28, adicione no library path a pasta correta conforme a sua versão do delphi 
+        Consulte em: https://delphidabbler.com/notes/version-numbers ou http://docwiki.embarcadero.com/RADStudio/Sydney/en/Compiler_Versions
   - Abra o arquivo "...WPP4Delphi\Packages\TWPP4DelphiCollection.dpk"
   - Então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
   - Abra o DEMO que está junto dos fontes do WPP4Delphi. 
