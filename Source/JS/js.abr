@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.21;1.0.0.9;78.3.0
+//2.1.0.22;1.0.0.9;78.3.0
 //
 //
 
@@ -19461,7 +19461,12 @@ WPP.on("chat.new_message", async (msg) => {
         msg.isGroup = isGroup;        
         
         //Added Name Group
-        msg.formattedTitle = contacts.name;        
+        //msg.formattedTitle = contacts.name;        
+        if (contacts) {
+            msg.formattedTitle = contacts.name;
+        } else {
+            msg.formattedTitle = "";
+        }
         SetConsoleMessage("Getnew_message", JSON.stringify({msg}));
     }
 });
