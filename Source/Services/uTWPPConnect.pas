@@ -19,7 +19,7 @@
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
        Mike W. Lustosa;
-     
+
 ####################################################################################################################
                                   Evolução do Código
 ####################################################################################################################
@@ -357,8 +357,6 @@ type
 
     procedure CreateNewsLetter(Content, Options: string);
 
-
-
     //MARCELO 28/06/2022
     procedure sendImageStatus(Content, Options: string);
     procedure sendVideoStatus(Content, Options: string);
@@ -497,6 +495,7 @@ type
     procedure console_clear;
     procedure RebootWPP;
     procedure OnTimerWPPCrash(Sender: TObject);
+    procedure RebootWriteScreen;
   published
     { Published declarations }
     Property Version                     : String                     read Fversion;
@@ -3983,6 +3982,19 @@ begin
   frmConsole.RebootChromiumNew;
 end;
 
+procedure TWPPConnect.RebootWriteScreen;
+begin
+  //if Assigned(OnGetAllGroupContacts) then
+    //OnGetAllGroupContacts(TClassAllGroupContacts(PReturnClass));
+
+  FrmConsole.Disconnect;
+
+  SleepNoFreeze(2000);
+
+  //Start Services
+  FormQrCodeStart(True);
+end;
+
 procedure TWPPConnect.rejectCall(id: string);
 var
   lThread : TThread;
@@ -5817,7 +5829,7 @@ begin
   FDestruido := true;
   Ltime      := GetTickCount;
   if Assigned(FrmConsole) then
-  Begin
+  begin
     LForced:= False;
     PostMessage(FrmConsole.Handle, FrmConsole_Browser_Direto, 0, 0);
     Repeat

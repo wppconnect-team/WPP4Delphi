@@ -473,7 +473,6 @@ object FrmConsole: TFrmConsole
     ParentDoubleBuffered = False
     ShowCaption = False
     TabOrder = 1
-    ExplicitHeight = 412
     object CEFWindowParent1: TCEFWindowParent
       Left = 0
       Top = 0
@@ -763,6 +762,7 @@ object FrmConsole: TFrmConsole
     OnBeforeClose = Chromium1BeforeClose
     OnClose = Chromium1Close
     OnOpenUrlFromTab = Chromium1OpenUrlFromTab
+    OnRenderProcessTerminated = Chromium1RenderProcessTerminated
     Left = 56
     Top = 136
   end

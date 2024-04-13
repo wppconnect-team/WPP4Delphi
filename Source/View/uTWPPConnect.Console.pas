@@ -119,6 +119,9 @@ type
 
     procedure Chromium1BeforeResourceLoad(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const request: ICefRequest;
       const callback: ICefCallback; out Result: TCefReturnValue);
+    procedure Chromium1RenderProcessTerminated(Sender: TObject; const browser: ICefBrowser; status: TCefTerminationStatus);
+
+
 
   protected
     // You have to handle this two messages to call NotifyMoveOrResizeStarted or some page elements will be misaligned.
@@ -3391,13 +3394,98 @@ begin
 end;
 
 procedure TFrmConsole.Chromium1OpenUrlFromTab(Sender: TObject;
-  const browser: ICefBrowser; const frame: ICefFrame; const targetUrl: ustring;
+  const browser: ICefBrowser; const
+ frame: ICefFrame; const targetUrl: ustring;
   targetDisposition: TCefWindowOpenDisposition; userGesture: Boolean;
   out Result: Boolean);
 begin
  //Bloqueia popup do windows e novas abas
   //Result := (targetDisposition in [WOD_NEW_FOREGROUND_TAB, WOD_NEW_BACKGROUND_TAB, WOD_NEW_POPUP, WOD_NEW_WINDOW]);
   Result := (targetDisposition in [MyForegroundTabConstant, MyBackgroundTabConstant, MyPopupConstant, MyWindowConstant]);
+end;
+
+procedure TFrmConsole.Chromium1RenderProcessTerminated(Sender: TObject; const browser: ICefBrowser; status: TCefTerminationStatus);
+var
+  Ljs, vStatus: string;
+begin
+  //Tratar error Tela Branca/ White Screen problem Render
+  case status of
+    TS_ABNORMAL_TERMINATION :
+    begin
+      vStatus := 'ABNORMAL_TERMINATION';
+    end;
+
+    TS_PROCESS_WAS_KILLED :
+    begin
+      vStatus := 'PROCESS_WAS_KILLED';
+    end;
+
+    TS_PROCESS_CRASHED :
+    begin
+      vStatus := 'PROCESS_CRASHED';
+    end;
+
+    TS_PROCESS_OOM :
+    begin
+      vStatus := 'PROCESS_OOM';
+    end;
+  end;
+
+  try
+    LogAdd('White Screen problem Render', vStatus);
+    LJS   := 'Reboot Services - White Screen problem Render ' + vStatus + '...';
+    ExecuteJS(LJS, true);
+  except on E: Exception do
+  end;
+
+  Close;
+
+  //Reset Services
+  try
+    TWPPConnect(FOwner).RebootWriteScreen;
+  except on E: Exception do
+  end;
+
+
+  {LJS   := 'Reboot Services - White Screen problem Render ' + vStatus + '...';
+  ExecuteJS(LJS, true);
+
+  Disconnect;
+
+  SleepNoFreeze(2000);
+
+  Connect;
+
+  LJS   := 'Connect Services...';
+  ExecuteJS(LJS, true);}
+
+  (*Chromium1.StopLoad;
+  Chromium1.Browser.ReloadIgnoreCache;
+
+  localStorage_debug;
+
+  //Aguardar "X" Segundos Injetar JavaScript
+  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  SleepNoFreeze(500);
+
+  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+  //Auto monitorar mensagens não lidas
+  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+  //Ativar Eventos add Marcelo 28/09/2023
+  startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+  startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+  startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+  startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+  SleepNoFreeze(40);
+  SendNotificationCenterDirect(Th_Initialized);*)
 end;
 
 procedure TFrmConsole.Chromium1TitleChange(Sender: TObject;
@@ -4364,3 +4452,5 @@ begin
 end;
 
 end.
+
+

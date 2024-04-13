@@ -838,6 +838,7 @@ begin
       caption := frDemo.CaractersWeb(mem_message.Text);
 
       options :=
+        ' createchat: true, ' +
         ' type: "image", ' +
         ' caption: "' + caption + '",  ' +
         ' isViewOnce: false  '; //Temporaria Somente 1 Visualização
