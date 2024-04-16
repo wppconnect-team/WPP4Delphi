@@ -3438,13 +3438,15 @@ begin
   except on E: Exception do
   end;
 
-  Close;
-
   //Reset Services
   try
-    TWPPConnect(FOwner).RebootWriteScreen;
+    TWPPConnect(FOwner).RebootWhiteScreen('White Screen problem Render ' + vStatus);
   except on E: Exception do
   end;
+
+  //Close;
+
+
 
 
   {LJS   := 'Reboot Services - White Screen problem Render ' + vStatus + '...';

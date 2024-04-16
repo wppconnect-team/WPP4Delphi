@@ -465,8 +465,8 @@ begin
   if eChoicesPool.Text <> '' then
     LChoices := eChoicesPool.Text;
 
-  Options := 'createchat:true, selectableCount:1'; // Apenas 1 Escolha
-  //Options := 'createchat:true, selectableCount:0'; // Multipla Escolha
+  Options := 'createChat:true, selectableCount:1'; // Apenas 1 Escolha
+  //Options := 'createChat:true, selectableCount:0'; // Multipla Escolha
 
   //frDemo.TWPPConnect1.CreatePool(ed_num.Text, LDescricao, LChoices, Options);
   frDemo.TWPPConnect1.CreatePoolEx(ed_num.Text, LDescricao, LChoices, Options, '123', 'Enquete01');
@@ -838,7 +838,7 @@ begin
       caption := frDemo.CaractersWeb(mem_message.Text);
 
       options :=
-        ' createchat: true, ' +
+        ' createChat: true, ' +
         ' type: "image", ' +
         ' caption: "' + caption + '",  ' +
         ' isViewOnce: false  '; //Temporaria Somente 1 Visualização

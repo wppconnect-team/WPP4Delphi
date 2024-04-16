@@ -1695,6 +1695,12 @@ object frDemo: TfrDemo
             ExplicitHeight = 264
           end
         end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
+        end
       end
     end
     inherited gbAcoesBasicas: TGroupBox
@@ -5689,7 +5695,7 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
       's\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConn' +
-      'ectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
+      'ectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5728,6 +5734,7 @@ object frDemo: TfrDemo
     OnGetEnvIsOnline = TWPPConnect1GetEnvIsOnline
     OnGetListChat = TWPPConnect1GetListChat
     OnGetMessageACK = TWPPConnect1GetMessageACK
+    OnRetErrorWhiteScreen = TWPPConnect1RetErrorWhiteScreen
     OnGetCheckIsValidNumber = TWPPConnect1GetCheckIsValidNumber
     OnGetProfilePicThumb = TWPPConnect1GetProfilePicThumb
     OnGetMyNumber = TWPPConnect1GetMyNumber

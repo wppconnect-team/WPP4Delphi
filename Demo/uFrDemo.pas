@@ -158,6 +158,7 @@ type
     procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
     procedure Timer1Timer(Sender: TObject);
     procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
+    procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -173,6 +174,7 @@ type
     function GetAPIKey: string;
     function AskQuestion(const Question, phoneNumber: string): string;
     procedure LerConfiguracoes;
+    procedure gravar_log(linha: string);
     procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
     procedure DeleteFiles(const FileName: String);
     function ConvertUnicodeEscapeToUTF8(const input: string): UTF8String;
@@ -231,6 +233,31 @@ begin
       raise Exception.Create('API key not provided.');
   end;
   WriteLn(''); }
+end;
+
+procedure TfrDemo.gravar_log(linha: string);
+var
+  nomearq: string;
+  arq: TextFile;
+begin
+  try
+    nomearq := ExtractFilePath(ParamStr(0)) + 'Log' + '\Log' + FormatDateTime('YYYY-MM-DD',now) + '.log';
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, FormatDateTime('DD/MM/YYYY', Date) + ' ' +
+        FormatDateTime('HH:MM:SS:ZZ', time) + ' ' + linha);
+      Flush(arq);
+    finally
+      CloseFile(arq);
+    end;
+  except
+  end;
+
 end;
 
 procedure TfrDemo.DeleteFiles(const FileName: String);
@@ -620,7 +647,6 @@ begin
 end;
 procedure TfrDemo.FormCreate(Sender: TObject);
 begin
-
   {$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
   {$ENDIF}
@@ -631,6 +657,9 @@ begin
   SetLength(MensagensArray, 50);
   iPosicaoMsgArray := 0;
   LerConfiguracoes;
+
+  if not(DirectoryExists(ExtractFilePath(ParamStr(0)) + 'Log')) then
+    CreateDir(ExtractFilePath(ParamStr(0)) + 'Log');
 end;
 
 procedure TfrDemo.FormShow(Sender: TObject);
@@ -643,26 +672,25 @@ begin
   killtask('Gbpsv.exe');
   killtask('core.exe');
 end;
+
 procedure TfrDemo.frameCatalogo1Button1Click(Sender: TObject);
 begin
   frameCatalogo1.Button1Click(Sender);
 end;
+
 procedure TfrDemo.frameComunidades1btnCriarGrupoClick(Sender: TObject);
 begin
   frameComunidades1.btnCriarGrupoClick(Sender);
-
 end;
 
 procedure TfrDemo.frameComunidades1btnListarComunidadesClick(Sender: TObject);
 begin
   frameComunidades1.btnListarComunidadesClick(Sender);
-
 end;
 
 procedure TfrDemo.frameComunidades1btnMsgAllClick(Sender: TObject);
 begin
   frameComunidades1.btnMsgAllClick(Sender);
-
 end;
 
 procedure TfrDemo.frameLogin1SpeedButton1Click(Sender: TObject);
@@ -1757,6 +1785,12 @@ begin
   begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.add('status@broadcast');
 
+  end
+  else
+  if  (pos('@newsletter', NewMessageResponse.msg.id.remote) > 0) then
+  begin
+    //Canais
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('newsletter: ' + NewMessageResponse.msg.id.remote);
   end
   else
   begin
@@ -2909,6 +2943,29 @@ begin
   else
     ShowMessage(vCheckNumber.id + ' é um numero INVÁLIDO');
 end;
+procedure TfrDemo.TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
+var
+  caminho : string;
+  NomeAplicacao: string;
+begin
+  NomeAplicacao := ExtractFileName(Application.ExeName);
+  NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('RetErrorWhiteScreen: ' + Response);
+
+  gravar_log('RetErrorWhiteScreen: ' + Response);
+  gravar_log('Force Restart Application ' + #13#10);
+
+  if not (FileExists(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat')) then
+  begin
+    CriarArquivoBAT_ReiniciaAplicacao;
+    SleepNoFreeze(1000);
+  end;
+
+  //Forçar Reiniciar a Aplicação  / Force Restart the Application
+  ShellExecute(handle,'open',PChar(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat'), '','',SW_MINIMIZE);
+end;
+
 procedure TfrDemo.TWPPConnect1WPPMonitorCrash(Sender: TObject;
   const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
 begin

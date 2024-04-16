@@ -57,6 +57,8 @@ type
   TOnGetCheckIsConnected    = Procedure(Sender : TObject; Connected: Boolean) of object;
   TOnGetCheckIsValidNumber  = Procedure(Sender : TObject; Number: String;  IsValid: Boolean) of object;
 
+  TOnRetErrorWhiteScreen = Procedure(Sender : TObject; Response: string) of object;
+
   //TOnGetProfilePicThumb     = Procedure(Sender : TObject; Base64: String) of object;
   //Alterado Marcelo 01/06/2022
   TOnGetProfilePicThumb     = Procedure(Sender : TObject; ProfilePicThumb: TResponseGetProfilePicThumb) of object;
@@ -168,6 +170,7 @@ type
     FWAJS_Version           : String;
     FgenLinkDeviceCode      : string;
     FOnGet_ErrorResponse: TGet_ErrorResponse;
+    FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
 
 
     { Private  declarations }
@@ -495,7 +498,7 @@ type
     procedure console_clear;
     procedure RebootWPP;
     procedure OnTimerWPPCrash(Sender: TObject);
-    procedure RebootWriteScreen;
+    procedure RebootWhiteScreen(ErrorMessage: string);
   published
     { Published declarations }
     Property Version                     : String                     read Fversion;
@@ -563,6 +566,8 @@ type
 
     //Adicionado Por Marcelo 01/03/2022
     property OnIsBeta                    : TOnGetCheckIsBeta          read FOnGetCheckIsBeta               write FOnGetCheckIsBeta;
+
+    property OnRetErrorWhiteScreen       : TOnRetErrorWhiteScreen     read FOnRetErrorWhiteScreen          write FOnRetErrorWhiteScreen;
 
     property OnIsConnected               : TOnGetCheckIsConnected     read FOnGetCheckIsConnected          write FOnGetCheckIsConnected;
     property OnLowBattery                : TNotifyEvent               read FOnLowBattery                   write SetOnLowBattery;
@@ -3982,17 +3987,18 @@ begin
   frmConsole.RebootChromiumNew;
 end;
 
-procedure TWPPConnect.RebootWriteScreen;
+procedure TWPPConnect.RebootWhiteScreen(ErrorMessage: string);
 begin
-  //if Assigned(OnGetAllGroupContacts) then
-    //OnGetAllGroupContacts(TClassAllGroupContacts(PReturnClass));
+  //Marcelo 16/04/2024 criado evento para registrar a ocorrência da Tela Branca / event created to record the occurrence of the White Screen Crash TChromium
+  if Assigned(OnRetErrorWhiteScreen) then
+    OnRetErrorWhiteScreen(Self, ErrorMessage);
 
-  FrmConsole.Disconnect;
+  {FrmConsole.Disconnect;
 
   SleepNoFreeze(2000);
 
   //Start Services
-  FormQrCodeStart(True);
+  FormQrCodeStart(True);}
 end;
 
 procedure TWPPConnect.rejectCall(id: string);
