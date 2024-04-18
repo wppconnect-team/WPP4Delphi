@@ -3193,17 +3193,17 @@ begin
       DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Aurino 11/07/2022
-      //Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
+      Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
 
       //Joffas 24/01/2024
-      if DownLoadInternetFile(Purl, 'js.abr') then
-        FReturnUrl.LoadFromFile('js.abr');
+      {if DownLoadInternetFile(Purl, 'js.abr') then
+        FReturnUrl.LoadFromFile('js.abr');}
 
-    Except
+    except
       on E : Exception do
-      Begin
+      begin
         if FShowException then
-        Begin
+        begin
           DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
           DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
         	if pos(AnsiUpperCase('COULD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
@@ -3223,8 +3223,8 @@ begin
             raise exception.create('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"');
             {$ENDIF}
 
-        End;
-      End;
+        end;
+      end;
     end;
   finally
     FTImeOutIndy.Enabled  := False;

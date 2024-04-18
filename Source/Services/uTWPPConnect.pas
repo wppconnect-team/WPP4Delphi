@@ -396,6 +396,7 @@ type
     procedure CheckIsValidNumber(PNumberPhone: string);
     procedure NewCheckIsValidNumber(PNumberPhone : string);
     procedure CheckNumberExists(PNumberPhone : string);
+    procedure CheckNumberExistsNew(PNumberPhone : string);
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
     procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
 
@@ -806,6 +807,9 @@ begin
     Exit;
   end;
 
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
+
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then
   Begin
@@ -929,6 +933,9 @@ begin
     Exit;
   end;
 
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
+
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then
   Begin
@@ -1041,9 +1048,10 @@ var
 begin
   //Marcelo 18/07/2022
   If Application.Terminated Then
-     Exit;
+    Exit;
+
   if not Assigned(FrmConsole) then
-     Exit;
+    Exit;
 
   PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
   if pos('@', PNumberPhone) = 0 then
@@ -1051,6 +1059,43 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
     Exit;
   end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CheckNumberExists(PNumberPhone);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
+procedure TWPPConnect.CheckNumberExistsNew(PNumberPhone: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 18/07/2022
+  If Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', PNumberPhone) = 0 then
+    PNumberPhone := SomenteNumero(PNumberPhone);
+
+  {PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
+  if pos('@', PNumberPhone) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
+    Exit;
+  end;}
 
   lThread := TThread.CreateAnonymousThread(procedure
       begin
@@ -1699,6 +1744,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  if pos('@', PNumberPhone) = 0 then
+    PNumberPhone := SomenteNumero(PNumberPhone);
+
   {PNumberPhone := AjustNumber.FormatIn(PNumberPhone);
   if (pos('@', PNumberPhone) = 0) then
   Begin
@@ -1781,6 +1829,9 @@ begin
     Exit;
   end;
 
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
+
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then
   Begin
@@ -1861,6 +1912,9 @@ begin
     Exit;
   end;
 
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
+
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then
   Begin
@@ -1940,6 +1994,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vContato);
     Exit;
   end;
+
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
 
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then
@@ -2862,6 +2919,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  if pos('@', vTelefone) = 0 then
+    vTelefone := SomenteNumero(vTelefone);
+
   //Marcelo 17/08/2022
   {vTelefone := AjustNumber.FormatIn(vTelefone);
   if pos('@', vTelefone) = 0 then
@@ -3035,6 +3095,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
   {phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
   Begin
@@ -3105,6 +3168,9 @@ begin
 
   if not Assigned(FrmConsole) then
      Exit;
+
+  if pos('@', vID) = 0 then
+    vID := SomenteNumero(vID);
 
   //Marcelo 17/08/2022
   {vID := AjustNumber.FormatIn(vID);
@@ -3207,6 +3273,9 @@ begin
   if not Assigned(FrmConsole) then
      Exit;
 
+  if pos('@', vID) = 0 then
+    vID := SomenteNumero(vID);
+
   //Marcelo 17/08/2022
   {vID := AjustNumber.FormatIn(vID);
   if pos('@', vID) = 0 then
@@ -3268,8 +3337,12 @@ begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
+
   if not Assigned(FrmConsole) then
     Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
 
   {phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
@@ -3350,6 +3423,9 @@ begin
 
   if not Assigned(FrmConsole) then
     Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
 
   {phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
@@ -6232,6 +6308,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vContato);
     Exit;
   end;
+
+  if pos('@', vContato) = 0 then
+    vContato := SomenteNumero(vContato);
 
   {vContato := AjustNumber.FormatIn(vContato);
   if pos('@', vContato) = 0 then

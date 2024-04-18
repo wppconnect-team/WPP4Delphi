@@ -366,11 +366,11 @@ begin
     //Temis 03-06-2022
     if LHttp.GetUrl(JSURL) = true Then
     //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
-    Begin
+    begin
       LRet.LoadFromStream(LHttp.ReturnUrl);
       if not ValidaJs(LRet) Then
          LRet.Clear;
-    End;
+    end;
   finally
     FreeAndNil(LHttp);
     if LRet.Count > 1 then
@@ -528,7 +528,8 @@ begin
 
       FJSScript.Clear;
 
-    end else
+    end
+    else
     begin
 
       FJSVersion   := FInjectJSDefine.FVersion_JS;
