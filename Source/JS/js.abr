@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.22;1.0.0.9;78.3.0
+//2.1.0.23;1.0.0.9;78.3.0
 //
 //
 
@@ -36,32 +36,32 @@ function getAllGroupContacts(Contacts) {
 	SetConsoleMessage("GetAllGroupContacts", JSON.stringify(Contacts));	
 };
 
-function localStorageGetItem(item){
-	let aJson = localStorage.getItem(item);
-	SetConsoleMessage('getMyNumber', aJson.replace(/(?=:)(.*.?)(?=@)/g,''));
-};
+function localStorageGetItem(item) {
+    let aJson = localStorage.getItem(item);
+    if (aJson) {
+        let modifiedJson = aJson.replace(/(?=:)(.*.?)(?=@)/g, '');
+        SetConsoleMessage('getMyNumber', modifiedJson);
+    }
+}
 
-function localStorageGetItemID(item){
-	let aNumberID = localStorage.getItem(item);
-	return aNumberID;
-};
+function localStorageGetItemID(item) {
+    return localStorage.getItem(item);
+}
 
-function getMyNumber() {    
-	localStorage.getItem('last-wid-md') ? 
-		localStorageGetItem('last-wid-md') : 
-		localStorageGetItem('last-wid')
+function getMyNumber() {
+    let numberItem = localStorage.getItem('last-wid-md') || localStorage.getItem('last-wid');
+    if (numberItem) {
+        localStorageGetItem(numberItem);
+        return true;
+    }
+    return false; // Indica que o número não foi encontrado
+}
 
-	return true;
-};
+function getMyNumberID() {
+    let numberID = localStorage.getItem('last-wid-md') || localStorage.getItem('last-wid');
+    return numberID; // Retorna nulo se o item não existir, para ser tratado pelo chamador
+}
 
-function getMyNumberID() {    
-	let numberID =	
-		localStorage.getItem('last-wid-md') ? 
-		localStorageGetItemID('last-wid-md') : 
-		localStorageGetItemID('last-wid')
-
-	return numberID;
-};
 
 
 function convertImgToBase64URL(url, callback, outputFormat){
@@ -2357,52 +2357,52 @@ window.WAPI.getGroupInviteLink = async function (chatId) {
  * Returns an object with all of your host device details
  */
 
-window.WAPI.getMe = async function(){   		
-  /*var vMyNumber = getMyNumberID();
-  var vMe = WPP.whatsapp.Contact.getMeContact(vMyNumber);
-  SetConsoleMessage("GetMe", JSON.stringify(vMe));   
-  return vMe;*/
-  //let vMyNumber = await WPP.whatsapp.functions.getPushname(WPP.whatsapp.UserPrefs.assertGetMe().user);
-
-  var vMyNumber = ""; 
+window.WAPI.getMe = async function(){ 
+  var vMyNumber = "";
   var pushname = "";
 
   try {
     vMyNumber = getMyNumberID();    
   } catch (error) {
-       
+    console.error("Error getting my number:", error);
   }
   
-  if (vMyNumber == "") {
+  if (vMyNumber === "") {
     try {
-        vMyNumber = await WPP.whatsapp.UserPrefs.assertGetMe().user;  
+      const userPrefs = await WPP.whatsapp.UserPrefs.assertGetMe();
+      if (userPrefs && userPrefs.user) {
+        vMyNumber = userPrefs.user;
+      } else {
+        console.error("UserPrefs or user number not found.");
+      }
     } catch (error) {
-       
+      console.error("Error getting userPrefs:", error);
     }
   }
 
   try {
-    pushname = await WPP.whatsapp.functions.getPushname(vMyNumber);  
+    if (vMyNumber) {
+      pushname = await WPP.whatsapp.functions.getPushname(vMyNumber); 
+    } else {
+      console.error("User number not found.");
+    }
   } catch (error) {
-       
+    console.error("Error getting pushname:", error);
   }
-  let id = vMyNumber;
+  
+  let id = vMyNumber || null;
 
   var vMe = {
-    pushname: pushname,
+    pushname: pushname || "",
     id: id,
-    shortName: pushname,
-    name: pushname
+    shortName: pushname || "",
+    name: pushname || ""
   };
 
-//const rawMe = JSON.stringify(vMe);
-SetConsoleMessage("GetMe", JSON.stringify(vMe)); 
-return vMe; 
-
-//if (done !== undefined) done(rawMe.all);
-//return rawMe.all;
-//return rawMe;    
+  SetConsoleMessage("GetMe", JSON.stringify(vMe)); 
+  return vMe; 
 };
+
 
 window.WAPI.getStatus = async (id) => {
   try {
