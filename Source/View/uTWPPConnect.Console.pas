@@ -5,12 +5,12 @@
 ####################################################################################################################
     Owner.....: Marcelo           - marcelo.broz@hotmail.com   -
     Developer.: Marcelo           - marcelo.broz@hotmail.com   - +55 17 9.8138-8414
-            
+
 ####################################################################################################################
   Obs:
      - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
        Marcelo;
-     
+
 ####################################################################################################################
 }
 unit uTWPPConnect.Console;
@@ -2412,7 +2412,7 @@ var
   requestContext: ICefRequestContext;
 begin
   // Verifique se a solicitação é para a URL desejada
-  {
+  (*
   if SameText(request.Url, 'https://web.whatsapp.com') then
   begin
     // Carregue o conteúdo HTML fixo em vez de fazer a solicitação real
@@ -2420,10 +2420,10 @@ begin
     try
       // Carregue seu HTML fixo aqui
       htmlContent.LoadFromFile(ExtractFilePath(Application.ExeName) + 'wa-version/2.2405.4.html');
-      htmlString := htmlContent.Text;  }
+      htmlString := htmlContent.Text;
 
       // Crie uma resposta personalizada
-      {response := TCefResponseRef.New;
+      response := TCefResponseRef.New;
       response.Status := 200;
       response.StatusText := 'OK';
       response.MimeType := 'text/html';
@@ -2434,10 +2434,10 @@ begin
         TCefRequestRef.New('about:blank', RT_BROWSER),
         TCefWebURLRequestClientRef.New(nil),
         TCefResourceHandlerRef.New(TCefStreamReaderRef.New(TCefStreamResourceReaderRef.New(htmlString, 'text/html', htmlString.Length, false)), response, nil)
-      );}
+      );
 
 
- {   finally
+    finally
       htmlContent.Free;
     end;
 
@@ -2448,7 +2448,8 @@ begin
   begin
     // Continue com a solicitação padrão para outras URLs
     Result := RV_CONTINUE;
-  end; }
+  end;
+  *)
 end;
 
 procedure TFrmConsole.Chromium1Close(Sender: TObject;

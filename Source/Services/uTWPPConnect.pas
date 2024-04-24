@@ -460,6 +460,7 @@ type
     procedure GetGroupInviteLink(PIDGroup : string);
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
+    procedure GetMyNumber;
 
     procedure getWAVersion;
     procedure GetTotalChatsUserRead;
@@ -2191,6 +2192,17 @@ procedure TWPPConnect.GetMyContacts;
 begin
   if Assigned(FrmConsole) then
      FrmConsole.GetMyContacts;
+end;
+
+procedure TWPPConnect.GetMyNumber;
+begin
+  if Application.Terminated then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  FrmConsole.GetMyNumber;
 end;
 
 procedure TWPPConnect.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);

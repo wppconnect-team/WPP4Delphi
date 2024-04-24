@@ -1308,6 +1308,10 @@ begin
   ctbtn.Enabled := True;
   TimerProgress.Enabled := False;
 
+  TWPPConnect1.GetMyNumber;
+  TWPPConnect1.getWAVersion;
+  TWPPConnect1.GetMe;
+
   //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
@@ -1787,7 +1791,7 @@ begin
 
   end
   else
-  if  (pos('@newsletter', NewMessageResponse.msg.id.remote) > 0) then
+  if (pos('@newsletter', NewMessageResponse.msg.id.remote) > 0) then
   begin
     //Canais
     frameMensagensRecebidas1.memo_unReadMessage.Lines.add('newsletter: ' + NewMessageResponse.msg.id.remote);
@@ -2200,7 +2204,8 @@ begin
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+  //frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;

@@ -1694,6 +1694,9 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
         end
         inherited tsBase64: TTabSheet
           ExplicitLeft = 4
@@ -5695,7 +5698,8 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
       's\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConn' +
-      'ectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
+      'ectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\' +
+      'TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
