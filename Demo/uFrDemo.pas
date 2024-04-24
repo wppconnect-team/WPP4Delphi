@@ -2206,6 +2206,7 @@ begin
   // lblNumeroConectado.Visible := whatsOn.Visible;
   //frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
 
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
