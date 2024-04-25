@@ -2745,7 +2745,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 };
 
 
-//WPPCONNECT v3.1.1
+//WPPCONNECT v3.2.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
 (() => {
     var __webpack_modules__ = {
@@ -10479,14 +10479,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const n = (r = Object.assign(Object.assign({}, l.defaultSendMessageOptions), r)).createChat ? await (0, i.assertFindChat)(e) : (0, i.assertGetChat)(e);
                     t = await (0, d.prepareRawMessage)(n, t, r), r.markIsRead && (f("marking chat is read before send message"), await (0, d.markIsRead)(n.id).catch((() => null))), f(`sending message (${t.type}) with id ${t.id}`);
                     let o = null;
-                    if (null == n ? void 0 : n.isNewsletter) {
-                        if ("chat" !== t.type) throw new s.WPPError("type_not_valid_for_newsletter", 'Please, send a valid type for send message to newsletter. Valdi types: "chat", "image", "video"');
+                    if ((null == n ? void 0 : n.isNewsletter) && t.type) {
+                        if (!["chat", "image", "video", "poll_creation"].includes(t.type)) throw new s.WPPError("type_not_valid_for_newsletter", 'Please, send a valid type for send message to newsletter. Valid types: "chat", "image", "video", "poll_creation"');
                         const e = new a.MsgModel(t);
                         await (0, c.addNewsletterMsgsRecords)([await (0, c.msgDataFromMsgModel)(e)]);
                         const r = await (0, c.sendNewsletterMessageJob)({
+                            type: "chat" != t.type || t.editMsgType ? "poll_creation" == t.type ? "pollCreation" : "media" : "text",
                             msgData: t,
-                            newsletterJid: n.id.toString(),
-                            type: "chat" == t.type ? "text" : "media"
+                            msg: new a.MsgModel(t),
+                            newsletterJid: n.id.toString()
                         });
                         n.msgs.add(e), r.success && (e.t = r.ack.t, e.serverId = r.serverId), e.updateAck(u.ACK.SENT, !0), await (0, c.updateNewsletterMsgRecord)(e), o = [e, "OK"]
                     } else if ("protocol" === t.type && "message_edit" === t.subtype) {
@@ -13395,19 +13396,27 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.removeParticipants = void 0;
-                const s = r(62857),
-                    a = i(r(52757)),
-                    u = r(97944);
+                const s = r(41687),
+                    a = r(62857),
+                    u = i(r(52757)),
+                    c = r(23527),
+                    l = r(97944);
                 t.removeParticipants = async function(e, t) {
+                    Array.isArray(t) || (t = [t]);
+                    const r = await (0, c.ensureGroup)(e, !0),
+                        n = [];
+                    if (t.map(s.assertWid).map((e => {
+                            var t;
+                            (null === (t = r.groupMetadata) || void 0 === t ? void 0 : t.participants.get(e)) && n.push(e)
+                        })), 0 === n.length) throw new a.WPPError("not_valid_group_participants", `No valid participants found for the group ${e}`);
                     const {
-                        groupChat: r,
-                        participants: n
-                    } = await (0, u.ensureGroupAndParticipants)(e, t);
-                    if (n.some((e => {
+                        participants: o
+                    } = await (0, l.ensureGroupAndParticipants)(e, n);
+                    if (o.some((e => {
                             var t;
                             return !(null === (t = r.groupMetadata) || void 0 === t ? void 0 : t.participants.canRemove(e))
-                        }))) throw new s.WPPError("group_participant_is_not_a_group_member", `Group ${r.id._serialized}: Group participant is not a group member`);
-                    return a.removeParticipants(r, n)
+                        }))) throw new a.WPPError("group_participant_is_not_a_group_member", `Group ${r.id._serialized}: Group participant is not a group member`);
+                    return u.removeParticipants(r, o)
                 }
             },
             43930: (e, t, r) => {
@@ -13677,7 +13686,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.1.1";
+                s(r(26738), t), t.waVersion = "3.2.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-1FXKRH7KBH"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13916,7 +13925,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.1.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.2.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -14301,11 +14310,27 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return t
                 }
             },
+            37069: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), t.getSubscribers = void 0;
+                const n = r(62857),
+                    o = r(52757);
+                t.getSubscribers = async function(e) {
+                    if (!e || !e.includes("newsletter")) throw new n.WPPError("send_correctly_newsletter_id", "Please, send the correct newsletter ID.");
+                    try {
+                        return (await (0, o.getNewsletterSubscribers)(e, 9, "LIMITED")).subscribers
+                    } catch (e) {
+                        return !1
+                    }
+                }
+            },
             48812: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t.mute = t.edit = t.destroy = t.create = void 0;
+                }), t.mute = t.getSubscribers = t.edit = t.destroy = t.create = void 0;
                 var n = r(8686);
                 Object.defineProperty(t, "create", {
                     enumerable: !0,
@@ -14327,11 +14352,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return i.edit
                     }
                 });
-                var s = r(7071);
+                var s = r(37069);
+                Object.defineProperty(t, "getSubscribers", {
+                    enumerable: !0,
+                    get: function() {
+                        return s.getSubscribers
+                    }
+                });
+                var a = r(7071);
                 Object.defineProperty(t, "mute", {
                     enumerable: !0,
                     get: function() {
-                        return s.mute
+                        return a.mute
                     }
                 })
             },
@@ -15464,25 +15496,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.injectFallbackModule = t.loadModule = t.modules = t.search = t.searchId = t.isReactComponent = t.moduleSource = t.injectLoader = t.fallbackModules = t.webpackRequire = t.__debug = t.onFullReady = t.onReady = t.onInjected = t.isFullReady = t.isReady = t.isInjected = t.loaderType = void 0;
-                const o = r(38385),
-                    i = n(r(17833)),
-                    s = r(13691),
-                    a = (0, i.default)("WA-JS:webpack");
+                const o = n(r(17833)),
+                    i = r(13691),
+                    s = (0, o.default)("WA-JS:webpack");
                 t.loaderType = "unknown", t.isInjected = !1, t.isReady = !1, t.isFullReady = !1, t.onInjected = function(e, t = 0) {
-                    s.internalEv.on("webpack.injected", (() => {
+                    i.internalEv.on("webpack.injected", (() => {
                         setTimeout(e, t)
                     }))
                 }, t.onReady = function(e, t = 0) {
-                    s.internalEv.on("webpack.ready", (() => {
+                    i.internalEv.on("webpack.ready", (() => {
                         setTimeout(e, t)
                     }))
                 }, t.onFullReady = function(e, t = 0) {
-                    s.internalEv.on("webpack.full_ready", (() => {
+                    i.internalEv.on("webpack.full_ready", (() => {
                         setTimeout(e, t)
                     }))
                 }, t.__debug = () => (self || window).require("__debug"), t.fallbackModules = {};
-                const u = s.internalEv.waitFor("conn.main_init"),
-                    c = s.internalEv.waitFor("conn.main_ready");
+                const a = i.internalEv.waitFor("conn.main_init"),
+                    u = i.internalEv.waitFor("conn.main_ready");
                 t.injectLoader = function() {
                     if (t.isInjected) return;
                     const e = self || window,
@@ -15496,22 +15527,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 get: () => {
                                     var e;
                                     const r = (0, t.__debug)().modulesMap,
-                                        n = Object.keys(r).filter((e => /^(?:use)?WA/.test(e) && "WAWebEmojiPanelContentEmojiSearchEmpty.react" !== e)),
+                                        n = Object.keys(r).filter((e => /^(?:use)?WA/.test(e) && !["WAWebEmojiPanelContentEmojiSearchEmpty.react", "WAWebMoment-es-do"].includes(e))),
                                         o = {};
                                     for (const t of n) o[t] = null === (e = r[t]) || void 0 === e ? void 0 : e.factory;
                                     return o
                                 }
-                            }), t.isInjected = !0, a("injected"), await s.internalEv.emitAsync("webpack.injected").catch((() => null)), await u, await new Promise((e => setTimeout(e, 1e3))), t.isReady = !0, a("ready to use"), await s.internalEv.emitAsync("webpack.ready").catch((() => null)), window.wppForceMainLoad ? await new Promise((e => setTimeout(e, 5e3))) : await c, t.isFullReady = !0, a("full ready to use"), await s.internalEv.emitAsync("webpack.full_ready").catch((() => null))) : clearInterval(r)
+                            }), t.isInjected = !0, s("injected"), await i.internalEv.emitAsync("webpack.injected").catch((() => null)), await a, await new Promise((e => setTimeout(e, 1e3))), t.isReady = !0, s("ready to use"), await i.internalEv.emitAsync("webpack.ready").catch((() => null)), window.wppForceMainLoad ? await new Promise((e => setTimeout(e, 5e3))) : await u, t.isFullReady = !0, s("full ready to use"), await i.internalEv.emitAsync("webpack.full_ready").catch((() => null))) : clearInterval(r)
                         }), 1e3),
                         n = "webpackChunkwhatsapp_web_client",
-                        i = e[n] || [];
-                    (0, o.compare)(self.Debug.VERSION, "2.3000.0", ">=") ? Object.defineProperty(e, n, i): t.loaderType = "webpack";
-                    const l = Date.now();
-                    i.push([
-                        [l], {},
+                        o = e[n] || [];
+                    o && 0 !== (null == o ? void 0 : o.length) ? t.loaderType = "webpack" : Object.defineProperty(e, n, o);
+                    const c = Date.now();
+                    o.push([
+                        [c], {},
                         e => {
                             t.webpackRequire = e, queueMicrotask((() => (async e => {
-                                t.loaderType = "webpack", t.webpackRequire = e, t.isInjected = !0, a("injected"), await s.internalEv.emitAsync("webpack.injected").catch((() => null)), await new Promise((e => setTimeout(e, 500)));
+                                t.loaderType = "webpack", t.webpackRequire = e, t.isInjected = !0, s("injected"), await i.internalEv.emitAsync("webpack.injected").catch((() => null)), await new Promise((e => setTimeout(e, 500)));
                                 const r = new Array(1e4).fill(1).map(((e, t) => e + t)).filter((e => {
                                         const r = t.webpackRequire.u(e);
                                         return r.includes("locales") ? navigator.languages.some((e => r.includes(`locales/${e}`))) : !r.includes("undefined")
@@ -15523,80 +15554,80 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 for (const e of n) try {
                                     await t.webpackRequire.e(e)
                                 } catch (r) {
-                                    a("load file error", t.webpackRequire.u(e))
+                                    s("load file error", t.webpackRequire.u(e))
                                 }
-                                t.isReady = !0, a("ready to use"), await s.internalEv.emitAsync("webpack.ready").catch((() => null)), window.wppForceMainLoad ? await new Promise((e => setTimeout(e, 5e3))) : await c;
+                                t.isReady = !0, s("ready to use"), await i.internalEv.emitAsync("webpack.ready").catch((() => null)), window.wppForceMainLoad ? await new Promise((e => setTimeout(e, 5e3))) : await u;
                                 for (const e of r) try {
                                     await t.webpackRequire.e(e)
                                 } catch (r) {
-                                    a("load file error", t.webpackRequire.u(e))
+                                    s("load file error", t.webpackRequire.u(e))
                                 }
-                                t.isFullReady = !0, a("full ready to use"), await s.internalEv.emitAsync("webpack.full_ready").catch((() => null))
+                                t.isFullReady = !0, s("full ready to use"), await i.internalEv.emitAsync("webpack.full_ready").catch((() => null))
                             })(e)))
                         }
                     ])
                 };
-                const l = new Map;
+                const c = new Map;
 
-                function d(e) {
+                function l(e) {
                     if ("webpack" !== t.loaderType) return "";
                     if (!t.webpackRequire.m[e]) return "";
-                    if (l.has(e)) return l.get(e);
+                    if (c.has(e)) return c.get(e);
                     const r = t.webpackRequire.m[e].toString();
-                    return l.set(e, r), r
+                    return c.set(e, r), r
                 }
-                t.moduleSource = d;
-                const f = new Map;
+                t.moduleSource = l;
+                const d = new Map;
 
-                function p(e) {
-                    if (f.has(e)) return f.get(e);
-                    const t = d(e),
+                function f(e) {
+                    if (d.has(e)) return d.get(e);
+                    const t = l(e),
                         r = /\w+\.(Pure)?Component\s*\{/.test(t);
-                    return f.set(e, r), r
+                    return d.set(e, r), r
                 }
 
-                function g(e, r = !1) {
+                function p(e, r = !1) {
                     let n = Object.keys(t.webpackRequire.m);
                     r && (n = n.reverse());
                     const o = setTimeout((() => {
-                        a(`Searching for: ${e.toString()}`)
+                        s(`Searching for: ${e.toString()}`)
                     }), 500);
                     for (const r of n)
-                        if (!p(r)) try {
+                        if (!f(r)) try {
                             const n = (0, t.webpackRequire)(r);
-                            if (e(n, r)) return a(`Module found: ${r} - ${e.toString()}`), clearTimeout(o), r
+                            if (e(n, r)) return s(`Module found: ${r} - ${e.toString()}`), clearTimeout(o), r
                         } catch (e) {
                             continue
                         }
                     n = Object.keys(t.fallbackModules);
                     for (const r of n) try {
                         const n = t.fallbackModules[r];
-                        if (e(n, r)) return a(`Fallback Module found: ${r} - ${e.toString()}`), clearTimeout(o), r
+                        if (e(n, r)) return s(`Fallback Module found: ${r} - ${e.toString()}`), clearTimeout(o), r
                     } catch (e) {
                         continue
                     }
-                    return a(`Module not found: ${e.toString()}`), null
+                    return s(`Module not found: ${e.toString()}`), null
                 }
 
-                function m(e) {
+                function g(e) {
                     return /^fallback_/.test(e) ? t.fallbackModules[e] : (0, t.webpackRequire)(e)
                 }
-                t.isReactComponent = p, t.searchId = g, t.search = function(e, t = !1) {
-                    const r = g(e, t);
-                    return r ? m(r) : null
+                t.isReactComponent = f, t.searchId = p, t.search = function(e, t = !1) {
+                    const r = p(e, t);
+                    return r ? g(r) : null
                 }, t.modules = function(e, r = !1) {
                     const n = {};
                     let o = Object.keys(t.webpackRequire.m);
                     r && (o = o.reverse());
                     for (const t of o)
-                        if (!p(t)) try {
-                            const r = m(t);
+                        if (!f(t)) try {
+                            const r = g(t);
                             e && !e(r, t) || (n[t] = r)
                         } catch (e) {
                             continue
                         }
-                    return a(`${Object.keys(n).length} modules found with: ${null==e?void 0:e.toString()}`), n
-                }, t.loadModule = m, t.injectFallbackModule = function(e, r) {
+                    return s(`${Object.keys(n).length} modules found with: ${null==e?void 0:e.toString()}`), n
+                }, t.loadModule = g, t.injectFallbackModule = function(e, r) {
                     if (/^fallback_/.test(e += "")) throw new Error("Invalid fallback ID");
                     t.fallbackModules[`fallback_${e}`] = r
                 }
@@ -15988,8 +16019,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 const n = r(54993);
                 r(12105), (0, n.exportModule)(t, {
-                    StatusCollection: "StatusCollectionImpl"
-                }, (e => e.StatusCollectionImpl))
+                    StatusCollection: ["StatusCollectionImpl", "TextStatusCollectionImpl"]
+                }, (e => e.StatusCollectionImpl || e.TextStatusCollectionImpl))
             },
             23572: (e, t, r) => {
                 "use strict";
@@ -16848,6 +16879,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     getMembershipApprovalRequests: "getMembershipApprovalRequests"
                 }, (e => e.getMembershipApprovalRequests))
             },
+            78943: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                }), (0, r(54993).exportModule)(t, {
+                    getNewsletterSubscribers: "getNewsletterSubscribers"
+                }, (e => e.getNewsletterSubscribers))
+            },
             52385: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -17004,7 +17043,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(72116), t), o(r(19885), t), o(r(55889), t), o(r(50854), t), o(r(22328), t), o(r(77082), t), o(r(71274), t), o(r(4525), t), o(r(58652), t), o(r(71400), t), o(r(37300), t), o(r(95612), t), o(r(97718), t), o(r(7967), t), o(r(28940), t), o(r(48441), t), o(r(25882), t), o(r(51137), t), o(r(85882), t), o(r(82641), t), o(r(4375), t), o(r(16877), t), o(r(53008), t), o(r(32), t), o(r(34040), t), o(r(6357), t), o(r(34324), t), o(r(49035), t), o(r(95554), t), o(r(64538), t), o(r(43593), t), o(r(85541), t), o(r(47440), t), o(r(25602), t), o(r(95524), t), o(r(92538), t), o(r(42930), t), o(r(19553), t), o(r(79731), t), o(r(92787), t), o(r(86362), t), o(r(58084), t), o(r(66852), t), o(r(6281), t), o(r(54616), t), o(r(52385), t), o(r(21236), t), o(r(29473), t), o(r(55631), t), o(r(65130), t), o(r(21427), t), o(r(23749), t), o(r(73890), t), o(r(44804), t), o(r(22696), t), o(r(41968), t), o(r(11782), t), o(r(70772), t), o(r(2058), t), o(r(96954), t), o(r(89336), t), o(r(35454), t), o(r(28690), t), o(r(3318), t), o(r(1009), t), o(r(34601), t), o(r(27981), t), o(r(24369), t), o(r(33750), t), o(r(33750), t), o(r(87071), t), o(r(946), t), o(r(64119), t), o(r(43002), t), o(r(74323), t), o(r(92111), t), o(r(14877), t), o(r(6678), t), o(r(58625), t), o(r(65005), t), o(r(65512), t), o(r(35154), t), o(r(51262), t), o(r(9534), t), o(r(90087), t), o(r(33433), t), o(r(18827), t), o(r(1703), t), o(r(76030), t), o(r(72110), t), o(r(42556), t), o(r(99544), t), o(r(10200), t), o(r(11370), t), o(r(67047), t), o(r(7882), t), o(r(37008), t), o(r(2571), t), o(r(54649), t), o(r(63028), t), o(r(17472), t), o(r(40502), t), o(r(97920), t), o(r(98927), t), o(r(43410), t), o(r(59502), t), o(r(34910), t), o(r(35603), t), o(r(80214), t), o(r(958), t), o(r(54530), t), o(r(84236), t), o(r(50481), t), o(r(69758), t), o(r(21475), t), o(r(88570), t), o(r(26206), t), o(r(43068), t), o(r(76418), t), o(r(99481), t), o(r(42547), t)
+                }), o(r(72116), t), o(r(19885), t), o(r(55889), t), o(r(50854), t), o(r(22328), t), o(r(77082), t), o(r(71274), t), o(r(4525), t), o(r(58652), t), o(r(71400), t), o(r(37300), t), o(r(95612), t), o(r(97718), t), o(r(7967), t), o(r(28940), t), o(r(48441), t), o(r(25882), t), o(r(51137), t), o(r(85882), t), o(r(82641), t), o(r(4375), t), o(r(16877), t), o(r(53008), t), o(r(32), t), o(r(34040), t), o(r(6357), t), o(r(34324), t), o(r(49035), t), o(r(95554), t), o(r(64538), t), o(r(43593), t), o(r(85541), t), o(r(47440), t), o(r(25602), t), o(r(95524), t), o(r(92538), t), o(r(42930), t), o(r(19553), t), o(r(79731), t), o(r(92787), t), o(r(86362), t), o(r(58084), t), o(r(66852), t), o(r(6281), t), o(r(54616), t), o(r(78943), t), o(r(52385), t), o(r(21236), t), o(r(29473), t), o(r(55631), t), o(r(65130), t), o(r(21427), t), o(r(23749), t), o(r(73890), t), o(r(44804), t), o(r(22696), t), o(r(41968), t), o(r(11782), t), o(r(70772), t), o(r(2058), t), o(r(96954), t), o(r(89336), t), o(r(35454), t), o(r(28690), t), o(r(3318), t), o(r(1009), t), o(r(34601), t), o(r(27981), t), o(r(24369), t), o(r(33750), t), o(r(33750), t), o(r(87071), t), o(r(946), t), o(r(64119), t), o(r(43002), t), o(r(74323), t), o(r(92111), t), o(r(14877), t), o(r(6678), t), o(r(58625), t), o(r(65005), t), o(r(65512), t), o(r(35154), t), o(r(51262), t), o(r(9534), t), o(r(90087), t), o(r(33433), t), o(r(18827), t), o(r(1703), t), o(r(76030), t), o(r(72110), t), o(r(42556), t), o(r(99544), t), o(r(10200), t), o(r(11370), t), o(r(67047), t), o(r(7882), t), o(r(37008), t), o(r(2571), t), o(r(54649), t), o(r(63028), t), o(r(17472), t), o(r(40502), t), o(r(97920), t), o(r(98927), t), o(r(43410), t), o(r(59502), t), o(r(34910), t), o(r(35603), t), o(r(80214), t), o(r(958), t), o(r(54530), t), o(r(84236), t), o(r(50481), t), o(r(69758), t), o(r(21475), t), o(r(88570), t), o(r(26206), t), o(r(43068), t), o(r(76418), t), o(r(99481), t), o(r(42547), t)
             },
             89336: (e, t, r) => {
                 "use strict";
@@ -18605,7 +18644,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     StickerPackStore: ["default", "StickerPackCollectionMd", "StickerPackCollection"]
                 }, (e => e.StickerPackCollection)), (0, a.exportModule)(t, {
                     NewsletterStore: "default.NewsletterCollection"
-                }, (e => e.default.NewsletterCollection))
+                }, (e => e.default.NewsletterCollection)), (0, a.exportModule)(t, {
+                    StatusStore: ["StatusCollectionImpl", "TextStatusCollection"]
+                }, (e => e.StatusCollection || e.TextStatusCollection))
             },
             34439: (e, t, r) => {
                 "use strict";
@@ -18793,6 +18834,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
+
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
