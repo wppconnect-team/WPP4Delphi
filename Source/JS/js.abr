@@ -19023,7 +19023,7 @@ window.WAPI.sendLocation2 = async function(chatid, options) {
 };
 
 
-window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID)  {
+window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '')  {
     var result = "";
     try{
     	result = await WPP.chat.sendTextMessage(chatid, content, options);
@@ -19042,6 +19042,9 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID
         Obj = {
                chatid: chatid,
                Seuid: xSeuID,          
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                RetEvent: "sendTextMessageEx",
                statusCode: statusCode,
                Error: RetError
@@ -19055,6 +19058,9 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID
         try {
              Obj = {
                Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 
@@ -19070,7 +19076,7 @@ window.WAPI.sendTextMessage2Ex = async function(chatid, content, options, xSeuID
     }
 };
 
-window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID)  {
+window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '')  {
     var result = "";
     try{
     	result = await WPP.chat.sendFileMessage(chatid, content, options);
@@ -19080,7 +19086,10 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
 
         Obj = {
                chatid: chatid,
-               Seuid: xSeuID,          
+               Seuid: xSeuID, 
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                RetEvent: "sendFileMessageEx",
                statusCode: statusCode,
                Error: RetError
@@ -19094,6 +19103,9 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
         try {
              Obj = {
                Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 
@@ -19108,7 +19120,7 @@ window.WAPI.sendFileMessage2Ex = async function(chatid, content, options, xSeuID
     }
 };
 
-window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
+window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
     var result = "";
     try{
     	result = await WPP.chat.sendListMessage(chatid, options);
@@ -19118,7 +19130,10 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
 
         Obj = {
                chatid: chatid,
-               Seuid: xSeuID,          
+               Seuid: xSeuID,   
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                RetEvent: "sendListMessageEx",
                statusCode: statusCode,
                Error: RetError
@@ -19132,6 +19147,9 @@ window.WAPI.sendListMessage2Ex = async function(chatid, options, xSeuID) {
         try {
              Obj = {
                Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 	
@@ -19300,7 +19318,7 @@ window.WAPI.getMessages = async function(chatid, options) {
     }
 };
 
-window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
+window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '')  {
     var result = "";
     try{
     	result = await WPP.chat.sendLocationMessage(chatid, options);
@@ -19310,7 +19328,10 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
 
         Obj = {
                chatid: chatid,
-               Seuid: xSeuID,          
+               Seuid: xSeuID,   
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                RetEvent: "sendLocationMessageEx",
                statusCode: statusCode,
                Error: RetError
@@ -19324,6 +19345,9 @@ window.WAPI.sendLocationMessage2Ex = async function(chatid, options, xSeuID)  {
         try {
              Obj = {
                Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 
@@ -19382,7 +19406,7 @@ window.WAPI.getInviteCode2 = async function(GROUP_ID) {
 };
 
 //Marcelo 16/01/2023
-window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, options, xSeuID)  {
+window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '')  {
     var result = "";
     try{
     	result = await WPP.chat.sendVCardContactMessage(chatid, contacts, options);
@@ -19392,7 +19416,10 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
 
         Obj = {
                chatid: chatid,
-               Seuid: xSeuID,          
+               Seuid: xSeuID, 
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                RetEvent: "sendVCardContactMessageEx",
                statusCode: statusCode,
                Error: RetError
@@ -19406,6 +19433,9 @@ window.WAPI.sendVCardContactMessage2Ex = async function(chatid, contacts, option
         try {
              Obj = {
                Seuid: xSeuID,
+               Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 
@@ -19511,7 +19541,7 @@ WPP.on('chat.poll_response', (msg) => {
 });
 
 //Marcelo 25/07/2023
-window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, options, xSeuID, xSeuID2) {
+window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
     const result = await WPP.chat.sendCreatePollMessage(chatid, name, choices, options);
 
     if (result) {
@@ -19519,6 +19549,8 @@ window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, opt
              Obj = {
                Seuid: xSeuID,
                Seuid2: xSeuID2,
+               Seuid3: xSeuID3,
+               Seuid4: xSeuID4,
                JsonMessage: JSON.stringify(result)
              }
 	
@@ -19761,7 +19793,7 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 
 
 //Marcelo 06/04/2024
-window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
+window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
@@ -19778,6 +19810,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
         try {
           Obj = {
             Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -19792,6 +19827,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           RetEvent: "sendTextMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -19807,6 +19845,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendTextMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -19825,6 +19866,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendTextMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -19837,6 +19881,9 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendTextMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -19849,7 +19896,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID) {
 };
 
 //Marcelo 06/04/2024
-window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
+window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
@@ -19866,6 +19913,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
         try {
           Obj = {
             Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -19881,6 +19931,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           RetEvent: "sendFileMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -19896,6 +19949,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendFileMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -19914,6 +19970,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendFileMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -19926,6 +19985,9 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendFileMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -19938,7 +20000,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID) {
 };
 
 //Marcelo 06/04/2024
-window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
+window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
@@ -19955,6 +20017,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
         try {
           Obj = {
             Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -19970,6 +20035,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           RetEvent: "sendListMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -19985,6 +20053,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendListMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -20003,6 +20074,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendListMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -20015,6 +20089,9 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendListMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -20027,7 +20104,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID) {
 };
 
 //Marcelo 06/04/2024
-window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, options, xSeuID) {
+window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
@@ -20046,6 +20123,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         try {
           Obj = {
             Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -20061,6 +20141,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           RetEvent: "sendVCardContactMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -20077,6 +20160,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         chatid: wid,
         widContacts: widContacts,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendVCardContactMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -20102,6 +20188,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         chatid: wid,
         widContacts: widContacts,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendVCardContactMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -20115,6 +20204,9 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         chatid: wid,
         widContacts: widContacts,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendVCardContactMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -20127,7 +20219,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
 };
 
 //Marcelo 06/04/2024
-window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
+window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
@@ -20144,6 +20236,9 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
         try {
           Obj = {
             Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -20159,6 +20254,9 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           RetEvent: "sendLocationMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -20174,6 +20272,9 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendLocationMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -20192,6 +20293,9 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendLocationMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -20204,6 +20308,9 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendLocationMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -20217,26 +20324,16 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID) {
 
 
 //Marcelo 25/07/2023
-window.WAPI.sendCreatePollMessage2Ex = async function (
-  chatid,
-  name,
-  choices,
-  options,
-  xSeuID,
-  xSeuID2
-) {
-  const result = await WPP.chat.sendCreatePollMessage(
-    chatid,
-    name,
-    choices,
-    options
-  );
+window.WAPI.sendCreatePollMessage2Ex = async function (chatid, name, choices, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  const result = await WPP.chat.sendCreatePollMessage(chatid, name, choices, options);
 
   if (result) {
     try {
       Obj = {
         Seuid: xSeuID,
         Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         JsonMessage: JSON.stringify(result),
       };
 
@@ -20250,14 +20347,7 @@ window.WAPI.sendCreatePollMessage2Ex = async function (
 };
 
 //Marcelo 07/04/2024
-window.WPP.SendCreatePollMessageNew = async function (
-  wid,
-  name,
-  choices,
-  options,
-  xSeuID,
-  xSeuID2
-) {
+window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes("@g.us");
   try {
     const validar = isGroup ? true : await WPP.contact.queryExists(wid);
@@ -20273,12 +20363,7 @@ window.WPP.SendCreatePollMessageNew = async function (
         })
       );
 
-      result = await WPP.chat.sendCreatePollMessage(
-        validar.wid._serialized,
-        name,
-        choices,
-        options
-      );
+      result = await WPP.chat.sendCreatePollMessage(validar.wid._serialized, name, choices, options);
 
       if (result !== undefined && result !== null) {
         //return result;
@@ -20287,6 +20372,8 @@ window.WPP.SendCreatePollMessageNew = async function (
           Obj = {
             Seuid: xSeuID,
             Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -20302,6 +20389,8 @@ window.WPP.SendCreatePollMessageNew = async function (
           chatid: wid,
           Seuid: xSeuID,
           Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,          
           RetEvent: "sendCreatePollMessageNew",
           statusCode: 300,
           Error: RetError,
@@ -20318,6 +20407,8 @@ window.WPP.SendCreatePollMessageNew = async function (
         chatid: wid,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendCreatePollMessageNew",
         statusCode: 301,
         Error: RetError,
@@ -20340,6 +20431,8 @@ window.WPP.SendCreatePollMessageNew = async function (
         chatid: wid,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendCreatePollMessageNew",
         statusCode: 302,
         Error: RetError,
@@ -20355,6 +20448,8 @@ window.WPP.SendCreatePollMessageNew = async function (
         chatid: wid,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         RetEvent: "sendCreatePollMessageNew",
         statusCode: 303,
         Error: RetError,
@@ -20367,13 +20462,7 @@ window.WPP.SendCreatePollMessageNew = async function (
 };
 
 //Marcelo 07/04/2024
-window.WPP.deleteMessageNew = async function (
-  wid,
-  uniqueId,
-  deleteMediaInDevice,
-  revoke,
-  xSeuID
-) {
+window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice, revoke, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes("@g.us");
   try {
     const validar = isGroup ? true : await WPP.contact.queryExists(wid);
@@ -20402,6 +20491,9 @@ window.WPP.deleteMessageNew = async function (
         try {
           Obj = {
             Seuid: xSeuID,
+	    Seuid2: xSeuID2,
+	    Seuid3: xSeuID3,
+	    Seuid4: xSeuID4,
             wid: wid,
             uniqueId: uniqueId,
             JsonMessage: JSON.stringify(result),
@@ -20418,6 +20510,9 @@ window.WPP.deleteMessageNew = async function (
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
+	  Seuid2: xSeuID2,
+	  Seuid3: xSeuID3,
+	  Seuid4: xSeuID4,
           uniqueId: uniqueId,
           RetEvent: "deleteMessageNew",
           statusCode: 300,
@@ -20434,6 +20529,9 @@ window.WPP.deleteMessageNew = async function (
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+	Seuid2: xSeuID2,
+	Seuid3: xSeuID3,
+	Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 301,
@@ -20456,6 +20554,9 @@ window.WPP.deleteMessageNew = async function (
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+	Seuid2: xSeuID2,
+	Seuid3: xSeuID3,
+	Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 302,
@@ -20471,6 +20572,9 @@ window.WPP.deleteMessageNew = async function (
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
+	Seuid2: xSeuID2,
+	Seuid3: xSeuID3,
+	Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 303,
