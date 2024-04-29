@@ -1972,6 +1972,16 @@ public
   property v1: Extended read F1 write F1;
 end;
 
+TPrivacyModeWhenSentClass = class
+private
+  FActualActors: Extended;
+  FHostStorage: Extended;
+  FPrivacyModeTs: Extended;
+public
+  property actualActors: Extended read FActualActors write FActualActors;
+  property hostStorage: Extended read FHostStorage write FHostStorage;
+  property privacyModeTs: Extended read FPrivacyModeTs write FPrivacyModeTs;
+end;
 
 //Marcelo 25/07/2023
 TNewMsgClass = class(TClassPadrao)
@@ -2054,8 +2064,10 @@ private
   FstreamingSidecar: TstreamingSidecarClass;
   FWaveform: TWaveformClass;
   Frecipients: TArray<String>;
-    FselectedId: string;
-    FselectedIndex: integer;
+  FselectedId: string;
+  FselectedIndex: integer;
+  FPrivacyModeWhenSent: TPrivacyModeWhenSentClass;
+  FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2134,11 +2146,13 @@ public
   property list                  : TListClass             read FList                   write FList;
   property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
   property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
-  property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
-  property hydratedButtons: TArray<THydratedButtonsClass2> read FHydratedButtons        write FHydratedButtons;
-  property waveform              : TWaveformClass          read FWaveform               write FWaveform;
-  property selectedId            : string                  read FselectedId             write FselectedId;
-  property selectedIndex         : integer                 read FselectedIndex          write FselectedIndex;
+  property requiresDirectConnection   : Boolean           read FrequiresDirectConnection  write FrequiresDirectConnection;
+  property hydratedButtons: TArray<THydratedButtonsClass2>   read FHydratedButtons        write FHydratedButtons;
+  property waveform              : TWaveformClass            read FWaveform               write FWaveform;
+  property selectedId            : string                    read FselectedId             write FselectedId;
+  property selectedIndex         : integer                   read FselectedIndex          write FselectedIndex;
+  property privacyModeWhenSent   : TPrivacyModeWhenSentClass read FPrivacyModeWhenSent    write FPrivacyModeWhenSent;
+  property dynamicReplyButtons   : TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
 
   //property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
 
@@ -2177,10 +2191,14 @@ private
   FJsonMessage: String;
   FSeuid: String;
   FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
 public
   property JsonMessage: String read FJsonMessage write FJsonMessage;
   property Seuid: String read FSeuid write FSeuid;
   property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
 end;
 
 TRefIdClass = class(TClassPadrao)
@@ -2245,10 +2263,16 @@ private
   FSeuid: String;
   FChatid: String;
   FUniqueID: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
 public
   property Error: string read FError write FError;
   property RetEvent: String read FRetEvent write FRetEvent;
   property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
   property chatid: String read FChatid write FChatid;
   property UniqueID: String read FUniqueID write FUniqueID;
 end;
@@ -2371,12 +2395,18 @@ private
   fAck      : Extended;
   fJsonMessage: String;
   fMessageClass : TMessagesClass;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
 
 Public
   Property SeuID : String read FSeuID ;
   Property Telefone : String read FTelefone;
   Property Ack      : Extended read FAck;
   Property ID    : String read FID;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
 //    Property Mensagem : TMessagesClass   Read fMessageClass;
   constructor Create(pAJsonString: string);
   destructor  Destroy;       override;

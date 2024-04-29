@@ -222,18 +222,18 @@ type
     procedure SendFileMessage(phoneNumber, content, options: string; etapa: string = '');
     procedure SendLocationMessage(phoneNumber, options: string; etapa: string = '');
 
-    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendFileMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
-    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
-    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
+    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendFileMessageEx(phoneNumber, content, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID: string; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     //Marcelo 06/04/2024
-    procedure SendTextMessageNew(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendFileMessageNew(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendListMessageNew(phoneNumber, options: string; xSeuID: string = '');
-    procedure SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
-    procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '');
+    procedure SendTextMessageNew(phoneNumber, content, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendFileMessageNew(phoneNumber, content, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendListMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
@@ -1750,7 +1750,7 @@ begin
   END;
 end;
 
-procedure TFrmConsole.SendFileMessageEx(phoneNumber, content, options, xSeuID: string);
+procedure TFrmConsole.SendFileMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
   LLine: string;
@@ -1781,6 +1781,10 @@ begin
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
     FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
 
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
     //SalvaLog(LJS + #13#10, 'CONSOLE');
 
     //FrmConsole_JS_AlterVar(LJS, '#DELAY#',  '5000');
@@ -1792,7 +1796,7 @@ begin
   END;
 end;
 
-procedure TFrmConsole.SendFileMessageNew(phoneNumber, content, options, xSeuID: string);
+procedure TFrmConsole.SendFileMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
   LLine: string;
@@ -1821,7 +1825,11 @@ begin
     FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
-    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',    Trim(xSeuID));
+
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
 
     //SalvaLog(LJS + #13#10, 'CONSOLE');
 
@@ -1925,7 +1933,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID: string);
+procedure TFrmConsole.SendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1947,12 +1955,16 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        sections);
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',       Trim(xSeuID));
 
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
   //SalvaLog(LJS + #13#10, 'CONSOLE');
 
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendListMessageNew(phoneNumber, options, xSeuID: string);
+procedure TFrmConsole.SendListMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1968,6 +1980,10 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',       Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_MENU#',        options);
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',       Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
 
   //SalvaLog(LJS + #13#10, 'CONSOLE');
 
@@ -2006,7 +2022,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID: string);
+procedure TFrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -2020,10 +2036,15 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',   Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#', Trim(options));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',   Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID: string);
+procedure TFrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -2037,6 +2058,11 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',   Trim(phoneNumber));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#', Trim(options));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',   Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
   ExecuteJS(LJS, true);
 end;
 
@@ -2222,7 +2248,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID: string);
+procedure TFrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -2239,10 +2265,14 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
 
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',  Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',  Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',  Trim(xSeuID4));
+
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID: string);
+procedure TFrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -2261,6 +2291,10 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(content));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',  Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',  Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',  Trim(xSeuID4));
 
   ExecuteJS(LJS, true);
 end;
@@ -4126,7 +4160,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+procedure TFrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -4139,12 +4173,17 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',            Trim(vNum));
   FrmConsole_JS_AlterVar(LJS, '#MSG_NAMECONTACT#',      Trim(vNameContact));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
-  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(vSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
   ExecuteJS(LJS, true);
 
 end;
 
-procedure TFrmConsole.SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+procedure TFrmConsole.SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -4158,7 +4197,12 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',            Trim(vNum));
   FrmConsole_JS_AlterVar(LJS, '#MSG_NAMECONTACT#',      Trim(vNameContact));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(vOptions));
-  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(vSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
   ExecuteJS(LJS, true);
 
 end;

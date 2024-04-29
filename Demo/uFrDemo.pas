@@ -2665,6 +2665,16 @@ begin
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('chatid: ' + Response.chatid);
   if Response.Seuid <> '' then
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid: ' + Response.Seuid);
+
+  if Response.Seuid2 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid2: ' + Response.Seuid2);
+
+  if Response.Seuid3 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid3: ' + Response.Seuid3);
+
+  if Response.Seuid4 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid4: ' + Response.Seuid4);
+
   if Response.UniqueID <> '' then
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('UniqueID: ' + Response.UniqueID);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Error: ' + Response.Error);
@@ -2968,6 +2978,11 @@ begin
     StatusMensagem := 'Visualizada';
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID2: ' + RespMensagem.SeuID2);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID3: ' + RespMensagem.SeuID3);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID4: ' + RespMensagem.SeuID4);
+
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);

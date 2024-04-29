@@ -996,7 +996,8 @@ type
     const EightPointedBlackStar = '✴';
     const NegativeSquaredCrossMark = '❎';
     const WhiteHeavyCheckMark = '✅';
-
+    const ThinkingFace = '🤔';
+    const Pensador = '🤔';
   end;
 
 

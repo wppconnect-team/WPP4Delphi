@@ -36,10 +36,9 @@ unit uTWPPConnect;
 interface
 
 uses
-  uTWPPConnect.Classes, uTWPPConnect.constant, uTWPPConnect.Emoticons, uTWPPConnect.Config,
-  uTWPPConnect.JS, uTWPPConnect.Console,
-  uTWPPConnect.languages,
-  uTWPPConnect.AdjustNumber,
+  uTWPPConnect.Classes, uTWPPConnect.constant, uTWPPConnect.Emoticons,
+  uTWPPConnect.Config, uTWPPConnect.JS, uTWPPConnect.Console,
+  uTWPPConnect.languages, uTWPPConnect.AdjustNumber,
   //UBase64,
 
   System.SysUtils, System.Classes, Vcl.Forms, Vcl.Dialogs, System.MaskUtils,
@@ -316,20 +315,32 @@ type
     procedure SendFileMessage(phoneNumber, content, options: string; etapa: string = '');
     procedure SendLocationMessage(phoneNumber, options: string; etapa: string = '');
 
-    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendFileMessageEx(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String; pIsSticker : boolean);overload;
-    procedure SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
-    procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '');
-    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 16/01/2023
-    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '');
+    procedure SendTextMessageEx(phoneNumber, content, options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendFileMessageEx(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String;
+      pIsSticker: boolean; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');overload;
+    procedure SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');overload;
+    procedure SendListMessageEx(phoneNumber, buttonText, description, sections: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Marcelo 16/01/2023
+    procedure SendLocationMessageEx(phoneNumber, options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     //Marcelo 06/04/2024
-    procedure SendTextMessageNew(phoneNumber, content, options: string; xSeuID: string = '');
-    procedure SendFileMessageNew(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String; pIsSticker : boolean);overload;
-    procedure SendFileMessageNew(phoneNumber, pBase64, Options: string;  xSeuID: string = '');overload;
-    procedure SendListMessageNew(phoneNumber, options: string; xSeuID: string = '');
-    procedure sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string); //Marcelo 06/04/2024
-    procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '');
+    procedure SendTextMessageNew(phoneNumber, content, options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SendFileMessageNew(phoneNumber, PFileName: string;  xSeuID: string; pMessage : String;
+      pIsSticker : boolean; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');overload;
+    procedure SendFileMessageNew(phoneNumber, pBase64, Options: string;  xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');overload;
+    procedure SendListMessageNew(phoneNumber, options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Marcelo 06/04/2024
+    procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
@@ -4293,7 +4304,8 @@ begin
 end;
 
 //Temis 08-06-2022
-procedure TWPPConnect.SendFileMessageEx(phoneNumber, PFileName, xSeuID, pMessage : String; pIsSticker : boolean);
+procedure TWPPConnect.SendFileMessageEx(phoneNumber, PFileName, xSeuID, pMessage : String;
+  pIsSticker : boolean; xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   LStream     : TMemoryStream;
@@ -4416,7 +4428,7 @@ begin
 end;
 
 //temis 08-06-2022
-procedure TWPPConnect.SendFileMessageEx(phoneNumber, pBase64, Options: string;  xSeuID: string = '');
+procedure TWPPConnect.SendFileMessageEx(phoneNumber, pBase64, Options: string; xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 
@@ -4444,7 +4456,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendFileMessageEx(phoneNumber, pBase64, options, xSeuID);
+            FrmConsole.SendFileMessageEx(phoneNumber, pBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
 
@@ -4454,7 +4466,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendFileMessageNew(phoneNumber, pBase64, Options, xSeuID: string);
+procedure TWPPConnect.SendFileMessageNew(phoneNumber, pBase64, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 
@@ -4484,7 +4496,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendFileMessageNew(phoneNumber, pBase64, options, xSeuID);
+            FrmConsole.SendFileMessageNew(phoneNumber, pBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
 
@@ -4494,7 +4506,8 @@ begin
 
 end;
 
-procedure TWPPConnect.SendFileMessageNew(phoneNumber, PFileName, xSeuID, pMessage: String; pIsSticker: boolean);
+procedure TWPPConnect.SendFileMessageNew(phoneNumber, PFileName, xSeuID, pMessage: String; pIsSticker: boolean;
+  xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   LStream     : TMemoryStream;
@@ -4832,7 +4845,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID: string);
+procedure TWPPConnect.SendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -4865,7 +4878,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.sendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID);
+            FrmConsole.sendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             {if etapa <> '' then
             begin
               FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
@@ -4879,7 +4892,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendListMessageNew(phoneNumber, options, xSeuID: string);
+procedure TWPPConnect.SendListMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -4915,7 +4928,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.sendListMessageNew(phoneNumber, options, xSeuID);
+            FrmConsole.sendListMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             {if etapa <> '' then
             begin
               FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
@@ -5025,7 +5038,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendLocationMessageEx(phoneNumber, options, xSeuID: string);
+procedure TWPPConnect.SendLocationMessageEx(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -5053,7 +5066,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID);
+            FrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
 
@@ -5066,7 +5079,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendLocationMessageNew(phoneNumber, options, xSeuID: string);
+procedure TWPPConnect.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -5097,7 +5110,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID);
+            FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);
@@ -5310,7 +5323,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendTextMessageEx(phoneNumber, content, options, xSeuID: string);
+procedure TWPPConnect.SendTextMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -5345,7 +5358,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID);
+            FrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4 );
 
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
 
@@ -5358,7 +5371,7 @@ begin
 
 end;
 
-procedure TWPPConnect.SendTextMessageNew(phoneNumber, content, options, xSeuID: string);
+procedure TWPPConnect.SendTextMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -5396,7 +5409,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID);
+            FrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);
@@ -5436,7 +5449,7 @@ begin
 
 end;
 
-procedure TWPPConnect.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+procedure TWPPConnect.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -5470,7 +5483,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, vSeuID);
+            FrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
 
@@ -5481,14 +5494,15 @@ begin
 
 end;
 
-procedure TWPPConnect.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID: string);
+procedure TWPPConnect.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
   if Application.Terminated Then
-     Exit;
+    Exit;
+
   if not Assigned(FrmConsole) then
-     Exit;
+    Exit;
 
   if pos('@', vNum) = 0 then
     vNum := SomenteNumero(vNum);
@@ -5521,7 +5535,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, vSeuID);
+            FrmConsole.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
 

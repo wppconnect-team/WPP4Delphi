@@ -182,6 +182,8 @@ end;
     FFooter: String;
     FgifAttribution: Extended;
     FisGif: Boolean;
+    FselectedId: string;
+    FselectedIndex: integer;
   public
     property ack: Extended read FAck write FAck;
     property author: String read FAuthor write FAuthor;
@@ -252,7 +254,8 @@ end;
     property quotedStanzaID: String read FQuotedStanzaID write FQuotedStanzaID;
     property richPreviewType: Extended read FRichPreviewType write FRichPreviewType;
     property thumbnail: String read FThumbnail write FThumbnail;
-
+    property selectedId            : string                  read FselectedId             write FselectedId;
+    property selectedIndex         : integer                 read FselectedIndex          write FselectedIndex;
 
     constructor Create(pAJsonString: string);
     destructor Destroy; override;

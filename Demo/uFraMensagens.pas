@@ -1429,11 +1429,12 @@ begin
     options := 'createChat: true';
 
     //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
-    frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
-    frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
+    //frDemo.TWPPConnect1.setKeepAlive('true'); //Marca como Online
+    //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
-    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
+    //Optional Parameters SeuID, SeuID2, SeuID3 and SeuID4
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123', 'SEUID2', 'SEUID3', 'SEUID4');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
@@ -1800,7 +1801,8 @@ begin
     //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
-    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, '123');
+    //Optional Parameters SeuID, SeuID2, SeuID3 and SeuID4
+    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, '123', 'SEUID2', 'SEUID3', 'SEUID4');
 
   finally
     ed_num.SelectAll;
