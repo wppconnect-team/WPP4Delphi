@@ -1689,6 +1689,9 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
@@ -5699,7 +5702,7 @@ object frDemo: TfrDemo
       'C:\Executaveis\WPPConnectDemo\TWPPConnectAnexos\TWPPConnectAnexo' +
       's\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConn' +
       'ectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\' +
-      'TWPPConnectAnexos\'
+      'TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5767,6 +5770,7 @@ object frDemo: TfrDemo
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
+    OnGet_deleteMessageNewResponse = TWPPConnect1Get_deleteMessageNewResponse
     Left = 288
     Top = 472
   end

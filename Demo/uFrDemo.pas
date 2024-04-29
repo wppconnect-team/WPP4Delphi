@@ -159,6 +159,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
     procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
+    procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -2602,6 +2603,58 @@ end;
 procedure TfrDemo.TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
 begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('WhatsAppWebVersion: ' + WhatsAppWebVersion.WAVersion);
+end;
+
+procedure TfrDemo.TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO, S_messageSendResult : string;
+  jsonString, jsonSendMsgResult: string;
+  jsonObject, jsonObjectMsgResult: TJSONObject;
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Event deleteMessageNewResponse');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  wid: ' + Response.wid);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  uniqueId: ' + Response.uniqueId);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JsonMessage: ' + Response.JsonMessage);
+
+  wlo_Json := Response.JsonMessage;
+  jsonString := Response.JsonMessage;
+
+  jsonObject := TJSONObject.ParseJSONValue(jsonString) as TJSONObject;
+
+  try
+    if jsonObject <> nil then
+    begin
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('isDeleted: ' + jsonObject.GetValue('isDeleted').Value);
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+      jsonSendMsgResult := jsonObject.GetValue('sendMsgResult').ToString;
+
+      jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
+
+      try
+        if jsonObjectMsgResult <> nil then
+        begin
+          S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
+        end
+        else
+        begin
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+        end;
+
+      finally
+        jsonObjectMsgResult.Free;
+      end;
+
+    end
+    else
+    begin
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON inválido.');
+    end;
+  finally
+    jsonObject.Free;
+  end;
+
 end;
 
 procedure TfrDemo.TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);

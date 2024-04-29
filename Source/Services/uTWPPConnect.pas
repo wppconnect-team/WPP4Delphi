@@ -131,6 +131,9 @@ type
   //Marcelo 14/03/2024
   TGet_ErrorResponse       = procedure(Const Response: TErrorResponseClass) of object;
 
+  //Marcelo 26/04/2024
+  TGet_deleteMessageNewResponse = procedure(Const Response: TdeleteMessageNewResponseClass) of object;
+
   TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
@@ -169,7 +172,8 @@ type
     FTotalChatsUserRead     : Integer;
     FWAJS_Version           : String;
     FgenLinkDeviceCode      : string;
-    FOnGet_ErrorResponse: TGet_ErrorResponse;
+    FOnGet_ErrorResponse    : TGet_ErrorResponse;
+    FOnGet_deleteMessageNewResponse: TGet_deleteMessageNewResponse;
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
 
 
@@ -612,6 +616,8 @@ type
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
 
     property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
+
+    property OnGet_deleteMessageNewResponse   : TGet_deleteMessageNewResponse     read FOnGet_deleteMessageNewResponse   write FOnGet_deleteMessageNewResponse;
 
   end;
 
@@ -3936,6 +3942,12 @@ begin
   begin
     if Assigned(FOnGet_ErrorResponse) then
       FOnGet_ErrorResponse(TErrorResponseClass(PReturnClass));
+  end;
+
+  if PTypeHeader = Th_deleteMessageNew  then //Add Marcelo 26/04/2024
+  begin
+    if Assigned(FOnGet_deleteMessageNewResponse) then
+      FOnGet_deleteMessageNewResponse(TdeleteMessageNewResponseClass(PReturnClass));
   end;
 
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022

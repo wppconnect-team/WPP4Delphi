@@ -752,19 +752,31 @@ type
     FheaderType: integer;
     FList: TListClass;
     FId: TIdClass;
+    Ftitle: string;
+    Ffilename: String;
+    Fmimetype: String;
+    FdeprecatedMms3Url: String;
+    Fmediakey: String;
+    FisViewOnce: Boolean;
   public
-    property    &type           : string     read Ftype            write Ftype;
-    property    isFromTemplate  : Boolean    read FisFromTemplate  write FisFromTemplate;
+    property    &type           : string     read Ftype               write Ftype;
+    property    isFromTemplate  : Boolean    read FisFromTemplate     write FisFromTemplate;
+    property    isViewOnce      : Boolean    read FisViewOnce         write FisViewOnce;
     property    hydratedButtons : TArray<ThydratedButtonsClass> read FhydratedButtons write FhydratedButtons;
-    property    body            : string     read Fbody            write Fbody;
-    property    caption         : string     read Fcaption         write Fcaption;
-    property    footer          : string     read Ffooter          write Ffooter;
+    property    body            : string     read Fbody               write Fbody;
+    property    caption         : string     read Fcaption            write Fcaption;
+    property    title           : string     read Ftitle              write Ftitle;
+    property    footer          : string     read Ffooter             write Ffooter;
     //Marcelo 09/08/2022
     property    dynamicReplyButtons: TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
     property    isDynamicReplyButtonsMsg : boolean  read FisDynamicReplyButtonsMsg write FisDynamicReplyButtonsMsg;
-    property    headerType      : integer    read FheaderType      write FheaderType;
-    property    list            : TListClass read FList            write FList;
-    property    id              : TIdClass   read FId              write FId;
+    property    headerType      : integer    read FheaderType         write FheaderType;
+    property    list            : TListClass read FList               write FList;
+    property    id              : TIdClass   read FId                 write FId;
+    property    mediakey        : String     read Fmediakey           Write Fmediakey;
+    property    mimetype        : String     read Fmimetype           Write Fmimetype;
+    property    filename        : String     read Ffilename           Write Ffilename;
+    property    deprecatedMms3Url  : String  read FdeprecatedMms3Url  Write FdeprecatedMms3Url;
   end;
 
   TstreamingSidecarClass = class(TClassPadrao)
@@ -986,6 +998,7 @@ type
     Frecipients: TArray<String>;
     Floc: String;
     FtemplateParams: TArray<String>;
+
     //FLastReceivedKey: TLastReceivedKeyClass;
     //FUnreadMentionsOfMe: TArray<String>;
   public
@@ -1088,10 +1101,7 @@ type
     //Marcelo 18/06/2022
     property listResponse                : TlistResponseClass     read FlistResponse       write FlistResponse;
     property recipients                  : TArray<String>         read Frecipients         write Frecipients;
-    //property lastReceivedKey             : TLastReceivedKeyClass  read FLastReceivedKey    write FLastReceivedKey;
-    //property unreadMentionsOfMe          : TArray<String>         read FUnreadMentionsOfMe write FUnreadMentionsOfMe;
-    //TLastReceivedKeyClass
-    //encFilehash
+
   end;
   //Marcelo 27/04/2022
   TtcTokenClass = class(TClassPadrao)
@@ -2043,7 +2053,9 @@ private
   FHydratedButtons: TArray<THydratedButtonsClass2>;
   FstreamingSidecar: TstreamingSidecarClass;
   FWaveform: TWaveformClass;
-    Frecipients: TArray<String>;
+  Frecipients: TArray<String>;
+    FselectedId: string;
+    FselectedIndex: integer;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2125,6 +2137,9 @@ public
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection   write FrequiresDirectConnection;
   property hydratedButtons: TArray<THydratedButtonsClass2> read FHydratedButtons        write FHydratedButtons;
   property waveform              : TWaveformClass          read FWaveform               write FWaveform;
+  property selectedId            : string                  read FselectedId             write FselectedId;
+  property selectedIndex         : integer                 read FselectedIndex          write FselectedIndex;
+
   //property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
 
 end;
@@ -2236,6 +2251,18 @@ public
   property Seuid: String read FSeuid write FSeuid;
   property chatid: String read FChatid write FChatid;
   property UniqueID: String read FUniqueID write FUniqueID;
+end;
+
+
+TdeleteMessageNewResponseClass = class(TClassPadrao)
+private
+  FJsonMessage: String;
+  FUniqueId: String;
+  FWid: String;
+public
+  property JsonMessage: String read FJsonMessage write FJsonMessage;
+  property uniqueId: String read FUniqueId write FUniqueId;
+  property wid: String read FWid write FWid;
 end;
 
 TIdsClass = class(TClassPadrao)
