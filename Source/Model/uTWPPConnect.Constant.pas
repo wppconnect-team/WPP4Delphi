@@ -243,7 +243,7 @@ Const
   //Marcelo 24/10/2022
   FrmConsole_JS_VAR_deleteMessageById   = 'WPP.chat.deleteMessage("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true);';
 
-  FrmConsole_JS_VAR_deleteMessageNew   = 'window.WPP.deleteMessageNew("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true);';
+  FrmConsole_JS_VAR_deleteMessageNew   = 'window.WPP.deleteMessageNew("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>",true,true, "<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
 
   FrmConsole_JS_VAR_getMessage          = 'window.WAPI.getMessages("<#MSG_PHONE#>",{<#MSG_OPTIONS#>} ); ';
 
