@@ -285,7 +285,7 @@ type
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string);  //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
 
-    procedure deleteMessageByIdNew(PNumberPhone, UniqueIDs : string);
+    procedure deleteMessageByIdNew(PNumberPhone, UniqueIDs : string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     //Adicionado Por Marcelo 01/03/2022
     procedure isBeta();
@@ -342,8 +342,8 @@ type
     procedure sendScheduledCallMessage(vID, vOptions: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
     procedure PoolCreate(vID, vDescription, vChoices, vOptions: string);
-    procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
-    procedure PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+    procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string; vSeuID3: string = ''; vSeuID4: string = '');
+    procedure PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string; vSeuID3: string = ''; vSeuID4: string = '');
     procedure SetGroupPicture(vIDGroup, vBase64:string);
     procedure GroupMsgAdminOnly(vIDGroup: string);
     procedure GroupMsgAll(vIDGroup: string);
@@ -832,7 +832,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+procedure TFrmConsole.PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2, vSeuID3, vSeuID4: string);
 var
   Ljs: string;
 begin
@@ -848,11 +848,13 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',          Trim(vSeuID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',         Trim(vSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',         Trim(vSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',         Trim(vSeuID4));
 
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string);
+procedure TFrmConsole.PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2, vSeuID3, vSeuID4: string);
 var
   Ljs: string;
 begin
@@ -868,6 +870,8 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#OPTIONS#',            Trim(vOptions));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',          Trim(vSeuID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',         Trim(vSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',         Trim(vSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',         Trim(vSeuID4));
 
   ExecuteJS(LJS, true);
 end;
@@ -1378,7 +1382,7 @@ begin
   ExecuteJS(LJS, True);
 end;
 
-procedure TFrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs: string);
+procedure TFrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1388,6 +1392,12 @@ begin
   LJS   := FrmConsole_JS_VAR_deleteMessageNew;
   FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(PNumberPhone));
   FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#', Trim(UniqueIDs));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',   Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',  Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',  Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',  Trim(xSeuID4));
+
   ExecuteJS(LJS, True);
 end;
 

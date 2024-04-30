@@ -2392,6 +2392,7 @@ private
   fSeuID : String;
   fID : String;
   fTelefone : String;
+  Fchatid : String;
   fAck      : Extended;
   fJsonMessage: String;
   fMessageClass : TMessagesClass;
@@ -2402,6 +2403,7 @@ private
 Public
   Property SeuID : String read FSeuID ;
   Property Telefone : String read FTelefone;
+  Property chatid : String read Fchatid;
   Property Ack      : Extended read FAck;
   Property ID    : String read FID;
   property Seuid2: String read FSeuid2 write FSeuid2;
@@ -3595,15 +3597,18 @@ constructor TResponsesendTextMessage.Create(pAJsonString: string);
 var
   v : String;
 begin
-
   v := copy(pAJsonString, 11, length(pAJsonString) - 11);
   inherited Create(v);
   fMessageClass := TMessagesClass.Create(FJsonMessage);
   //true_1234434@us
+
   if pos('@g.us', FMessageclass.FId) > 0 then
     FTelefone := Copy(FMessageclass.FId,6, Pos('@g.us',FMessageclass.FId)-6) + '@g.us'
   else
     FTelefone := Copy(FMessageclass.FId,6,Pos('@',FMessageclass.FId)-6);
+
+  Fchatid := FMessageclass.FId;
+
   FAck      := FMessageClass.ack;
   FID    := FMessageClass.id;
   //FMessageClass.DisposeOf;

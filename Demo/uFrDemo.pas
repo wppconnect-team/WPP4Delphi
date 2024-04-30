@@ -2629,23 +2629,32 @@ begin
       //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
       jsonSendMsgResult := jsonObject.GetValue('sendMsgResult').ToString;
 
-      jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
-
       try
-        if jsonObjectMsgResult <> nil then
+        jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
+
+        try
+          if jsonObjectMsgResult <> nil then
+          begin
+            S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
+          end
+          else
+          begin
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+          end;
+
+        finally
+          jsonObjectMsgResult.Free;
+        end;
+      except
+        on E: Exception do
         begin
-          S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
-        end
-        else
-        begin
-          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+          S_messageSendResult := jsonObjectMsgResult.GetValue('sendMsgResult').Value; //sendMsgResult
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  sendMsgResult: ' + S_messageSendResult + #13#10);
+
         end;
 
-      finally
-        jsonObjectMsgResult.Free;
       end;
-
     end
     else
     begin

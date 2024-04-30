@@ -395,7 +395,7 @@ type
 
     procedure getPlatformFromMessage(UniqueIDs, PNumberPhone: string); //Add Marcelo 20/09/2022
     procedure deleteMessageById(PNumberPhone, UniqueIDs : string);  //Add Marcelo 20/09/2022
-    procedure deleteMessageByIdNew(PNumberPhone, UniqueIDs : string);  //Add Marcelo 07/04/2024
+    procedure deleteMessageByIdNew(PNumberPhone, UniqueIDs : string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');  //Add Marcelo 07/04/2024
 
 
     procedure DeleteChat(PNumberPhone: string);
@@ -432,8 +432,8 @@ type
     procedure GroupDelete(PIDGroup: string);
     procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
     procedure CreatePool(PID, PDescription, PChoices, POptions: string);
-    procedure CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
-    procedure CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
+    procedure CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string; PSeuID3: string = ''; PSeuID4: string = '');
+    procedure CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string; PSeuID3: string = ''; PSeuID4: string = '');
     procedure SetGroupPicture(PIDGroup, PFileName: string);
     procedure GroupMsgAdminOnly(PIDGroup: string);
     procedure GroupMsgAll(PIDGroup: string);
@@ -1470,7 +1470,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
+procedure TWPPConnect.CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -1511,7 +1511,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2);
+            FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4);
           end;
         end);
 
@@ -1521,7 +1521,7 @@ begin
   lThread.Start;
 end;
 
-procedure TWPPConnect.CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string);
+procedure TWPPConnect.CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -1565,7 +1565,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.PoolCreateNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2);
+            FrmConsole.PoolCreateNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4);
           end;
         end);
 
@@ -1751,7 +1751,7 @@ begin
 
 end;
 
-procedure TWPPConnect.deleteMessageByIdNew(PNumberPhone, UniqueIDs: string);
+procedure TWPPConnect.deleteMessageByIdNew(PNumberPhone, UniqueIDs, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
 begin
@@ -1782,7 +1782,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
-            FrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs);
+            FrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
 
