@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.24;1.0.0.9;78.3.0
+//2.1.0.25;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,7 +2748,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.2.3
+//WPPCONNECT v3.2.4
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
 (() => {
     var __webpack_modules__ = {
@@ -13738,9 +13738,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.2.3";
+                s(r(26738), t), t.waVersion = "3.2.4";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
-                    f = new l.Tracker("G-1FXKRH7KBH"),
+                    f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
                 c.internalEv.on("webpack.injected", (() => {
                     f.documentTitle = d.join("");
@@ -13977,7 +13977,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.2.3", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.2.4", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -17994,16 +17994,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     MsgKey: "default"
                 }, (e => e.default.toString().includes("MsgKey error: obj is null/undefined")))
             },
-            66680: (e, t, r) => {
+            36061: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), r(12105);
                 const n = r(54993);
                 r(51990), (0, n.exportModule)(t, {
-                    MsgLoadState: "MsgLoadState",
                     MsgLoad: "ChatMsgsCollection"
-                }, (e => e.MsgLoadState))
+                }, (e => e.ChatMsgsCollection))
             },
             19424: (e, t, r) => {
                 "use strict";
@@ -18118,7 +18117,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(84513), t), o(r(48212), t), o(r(91033), t), o(r(35276), t), o(r(19336), t), o(r(42865), t), o(r(26740), t), o(r(33216), t), o(r(47868), t), o(r(4749), t), o(r(32974), t), o(r(78959), t), o(r(69675), t), o(r(91911), t), o(r(33115), t), o(r(18358), t), o(r(66680), t), o(r(19424), t), o(r(84229), t), o(r(74070), t), o(r(65931), t), o(r(82183), t), o(r(40302), t), o(r(43871), t), o(r(32122), t), o(r(59659), t), o(r(70924), t), o(r(94484), t), o(r(43996), t)
+                }), o(r(84513), t), o(r(48212), t), o(r(91033), t), o(r(35276), t), o(r(19336), t), o(r(42865), t), o(r(26740), t), o(r(33216), t), o(r(47868), t), o(r(4749), t), o(r(32974), t), o(r(78959), t), o(r(69675), t), o(r(91911), t), o(r(33115), t), o(r(18358), t), o(r(36061), t), o(r(19424), t), o(r(84229), t), o(r(74070), t), o(r(65931), t), o(r(82183), t), o(r(40302), t), o(r(43871), t), o(r(32122), t), o(r(59659), t), o(r(70924), t), o(r(94484), t), o(r(43996), t)
             },
             10298: (e, t, r) => {
                 "use strict";
@@ -18914,7 +18913,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
-
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
