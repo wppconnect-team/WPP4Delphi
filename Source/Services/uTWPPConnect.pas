@@ -3579,7 +3579,8 @@ begin
   Th_sendTextMessageEx,Th_sendFileMessageEx, Th_sendListMessageEx, //temis 03-06-2022
   Th_sendLocationMessageEx, //Add Marcelo 17/09/2022
   Th_sendVCardContactMessageEx, //Add Marcelo 16/01/2023
-  Th_IncomingiCall]) then //Adicionado por Marcelo 17/06/2022
+  Th_IncomingiCall, //Adicionado por Marcelo 17/06/2022
+  Th_sendCreatePollMessageEx]) then //Add por Marcelo 03/05/2024
   Begin
     if not Assigned(PReturnClass) then
       raise Exception.Create(MSG_ExceptMisc + ' in Int_OnNotificationCenter' );

@@ -148,7 +148,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 12
       OnClick = btnLocalizacaoBotaoClick
-      ExplicitTop = 454
     end
     object btnLink: TButton
       AlignWithMargins = True
@@ -162,7 +161,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 7
       OnClick = btnLinkClick
-      ExplicitTop = 237
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
@@ -176,7 +174,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 6
       OnClick = btnImagemBotaoClick
-      ExplicitTop = 485
     end
     object btnImagem: TButton
       AlignWithMargins = True
@@ -271,7 +268,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 8
       OnClick = btnAudioClick
-      ExplicitTop = 268
     end
     object btnContato: TButton
       AlignWithMargins = True
@@ -285,7 +281,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 10
       OnClick = btnContatoClick
-      ExplicitTop = 330
     end
     object btnSticker: TButton
       AlignWithMargins = True
@@ -299,7 +294,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 9
       OnClick = btnStickerClick
-      ExplicitTop = 299
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
@@ -313,8 +307,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 11
       OnClick = btnLocalizacaoClick
-      ExplicitLeft = 0
-      ExplicitTop = 361
     end
     object btnArquivo: TButton
       AlignWithMargins = True
@@ -328,7 +320,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 13
       OnClick = btnArquivoClick
-      ExplicitTop = 423
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
@@ -342,7 +333,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 14
       OnClick = btnStatusTextoClick
-      ExplicitTop = 516
     end
     object btnStatusImagem: TButton
       AlignWithMargins = True
@@ -356,7 +346,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 15
       OnClick = btnStatusImagemClick
-      ExplicitTop = 547
     end
     object btnVideoStatus: TButton
       AlignWithMargins = True
@@ -370,7 +359,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 16
       OnClick = btnVideoStatusClick
-      ExplicitTop = 578
     end
     object Button2: TButton
       AlignWithMargins = True
@@ -384,7 +372,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 17
       OnClick = Button2Click
-      ExplicitTop = 609
     end
     object bTextoMarcandoTodosGrupo: TButton
       AlignWithMargins = True
@@ -398,7 +385,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 18
       OnClick = bTextoMarcandoTodosGrupoClick
-      ExplicitTop = 640
     end
     object btnLigar: TButton
       AlignWithMargins = True
@@ -412,7 +398,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 19
       OnClick = btnLigarClick
-      ExplicitTop = 671
     end
     object btnEncerrarChamada: TButton
       AlignWithMargins = True
@@ -426,7 +411,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 20
       OnClick = btnEncerrarChamadaClick
-      ExplicitTop = 702
     end
     object btnSendSimpleTextNew: TButton
       AlignWithMargins = True
@@ -453,7 +437,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 22
       OnClick = Button5Click
-      ExplicitTop = 392
     end
     object btnPoolMessage: TButton
       AlignWithMargins = True
@@ -468,8 +451,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 23
       OnClick = btnPoolMessageClick
-      ExplicitLeft = 3
-      ExplicitTop = 392
     end
     object btnImageButton: TButton
       AlignWithMargins = True
@@ -483,7 +464,6 @@ object frameMensagem: TframeMensagem
       Images = ImageList1
       TabOrder = 24
       OnClick = btnImageButtonClick
-      ExplicitLeft = 15
     end
   end
   object GroupBox2: TGroupBox
@@ -823,7 +803,6 @@ object frameMensagem: TframeMensagem
     Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = 'Diverse Functions'
     TabOrder = 3
-    ExplicitWidth = 231
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
@@ -833,7 +812,6 @@ object frameMensagem: TframeMensagem
       Align = alTop
       Caption = 'List Contacts'
       TabOrder = 0
-      ExplicitWidth = 221
       object Panel4: TPanel
         Left = 2
         Top = 17
@@ -844,7 +822,6 @@ object frameMensagem: TframeMensagem
         Caption = 'Panel4'
         ShowCaption = False
         TabOrder = 0
-        ExplicitWidth = 217
         object btnListarCOntatos: TButton
           AlignWithMargins = True
           Left = 2
@@ -861,7 +838,6 @@ object frameMensagem: TframeMensagem
           Images = ImageList1
           TabOrder = 0
           OnClick = btnListarCOntatosClick
-          ExplicitWidth = 213
         end
       end
       object listaContatos: TListView
@@ -880,7 +856,6 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaContatosDblClick
-        ExplicitWidth = 211
       end
     end
     object groupListaChats: TGroupBox
@@ -897,7 +872,6 @@ object frameMensagem: TframeMensagem
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitWidth = 227
       object btnListarChats: TButton
         AlignWithMargins = True
         Left = 5
@@ -916,7 +890,6 @@ object frameMensagem: TframeMensagem
         ParentFont = False
         TabOrder = 0
         OnClick = btnListarChatsClick
-        ExplicitWidth = 217
       end
       object listaChats: TListView
         AlignWithMargins = True
@@ -934,7 +907,6 @@ object frameMensagem: TframeMensagem
         TabOrder = 1
         ViewStyle = vsSmallIcon
         OnDblClick = listaChatsDblClick
-        ExplicitWidth = 217
       end
     end
   end
