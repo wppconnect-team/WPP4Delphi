@@ -21865,3 +21865,7 @@ window.WPP.markPlayedNew = async function (wid, xSeuID) {
   }
 };
 
+WPP.on('conn.logout', () => {
+    //console.log("conn logout");
+    SetConsoleMessage("isLogout", Json.stringfy({isLogout: true}));
+});
