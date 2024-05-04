@@ -38,7 +38,10 @@ begin
 
 
   {file ini}
-  arqIni  := Tinifile.Create(ExtractFilePath(Application.ExeName)+ 'ConfTWPPConnect.ini');
+  try
+    arqIni  := Tinifile.Create(ExtractFilePath(Application.ExeName)+ 'ConfTWPPConnect.ini');
+  except on E: Exception do
+  end;
 
  case pathcustom of
    true : //path custom
@@ -65,38 +68,44 @@ begin
       end;
 
       {create file ini}
-      arqIni.WriteString('Path Defines', 'Binary', pathapp + pathcef);
-      arqIni.WriteString('Path Defines', 'FrameWork', pathapp + pathcef);
-      arqIni.WriteString('Path Defines', 'Resources', pathapp + pathcef);
-      arqIni.WriteString('Path Defines', 'Locales', pathapp + pathcef + 'locales');
-      arqIni.WriteString('Path Defines', 'Cache', pathapp + pathcef + 'cache');
-      arqIni.WriteString('Path Defines', 'Data User', pathapp + pathcef + 'User Data');
-      arqIni.WriteString('Path Defines', 'Log File', pathapp + pathcef + 'logs\Log File');
-      arqIni.WriteString('Path Defines', 'Log Console', pathapp + pathcef + 'logs\Log Console');
+      try
+        arqIni.WriteString('Path Defines', 'Binary', pathapp + pathcef);
+        arqIni.WriteString('Path Defines', 'FrameWork', pathapp + pathcef);
+        arqIni.WriteString('Path Defines', 'Resources', pathapp + pathcef);
+        arqIni.WriteString('Path Defines', 'Locales', pathapp + pathcef + 'locales');
+        arqIni.WriteString('Path Defines', 'Cache', pathapp + pathcef + 'cache');
+        arqIni.WriteString('Path Defines', 'Data User', pathapp + pathcef + 'User Data');
+        arqIni.WriteString('Path Defines', 'Log File', pathapp + pathcef + 'logs\Log File');
+        arqIni.WriteString('Path Defines', 'Log Console', pathapp + pathcef + 'logs\Log Console');
 
-      {read file ini}
-      GlobalCEFApp.PathLogFile          := pathapp + pathcef + 'logs\';
-      GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FrameWork', '');
-      GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'Resources', '');
-      GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'Locales', '');
-      GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'Cache', '');
-      GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'Data User', '');
+        {read file ini}
+        GlobalCEFApp.PathLogFile          := pathapp + pathcef + 'logs\';
+        GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FrameWork', '');
+        GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'Resources', '');
+        GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'Locales', '');
+        GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'Cache', '');
+        GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'Data User', '');
+      except on E: Exception do
+      end;
     end;
 
     false: {example default demo}
     begin
       {read file ini}
-      GlobalCEFApp.PathLogFile          := '';
-      GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FRAMEWORK', '');
-      GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'RESOURCES', '');
-      GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
-      GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
-      GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
+      try
+        GlobalCEFApp.PathLogFile          := '';
+        GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FRAMEWORK', '');
+        GlobalCEFApp.PathResourcesDirPath := arqIni.ReadString('Path Defines', 'RESOURCES', '');
+        GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
+        GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
+        GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
+      except on E: Exception do
+      end;
     end;
   end;
 
   GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
- 
+
   {start service cef4delphi chromium}
   If not GlobalCEFApp.StartMainProcess then Exit;
 
