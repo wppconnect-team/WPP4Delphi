@@ -12,7 +12,6 @@ object FrmConsole: TFrmConsole
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   ShowHint = True
   OnClose = FormClose
@@ -21,7 +20,6 @@ object FrmConsole: TFrmConsole
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Pnl_Top: TPanel
     AlignWithMargins = True
@@ -619,7 +617,7 @@ object FrmConsole: TFrmConsole
       OnClick = bDeleteAllChatClick
     end
     object bFinish: TBitBtn
-      Left = 732
+      Left = 730
       Top = 68
       Width = 145
       Height = 25
@@ -660,6 +658,7 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 3
       OnClick = bFinishClick
+      ExplicitLeft = 732
     end
     object bMarkIsReadChats: TBitBtn
       Left = 189

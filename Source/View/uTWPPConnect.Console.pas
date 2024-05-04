@@ -76,8 +76,16 @@ type
       const title: ustring);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+
+{$IFDEF CEFCurrentVersion}
+    procedure Chromium1ConsoleMessage(Sender: TObject;
+      const browser: ICefBrowser; level: TCefLogSeverity; const message,
+      source: ustring; line: Integer; out Result: Boolean);
+{$ELSE}
     procedure Chromium1ConsoleMessage(Sender: TObject;   const browser: ICefBrowser; level: Cardinal; const message,
       source: ustring; line: Integer; out Result: Boolean);
+{$ENDIF}
+
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     Procedure ProcessQrCode(Var pClass: TObject);
@@ -3248,7 +3256,140 @@ begin
 end;
 
 
+{$IFDEF CEFCurrentVersion}
+procedure TFrmConsole.Chromium1ConsoleMessage(Sender: TObject;
+  const browser: ICefBrowser; level: TCefLogSeverity; const message,
+  source: ustring; line: Integer; out Result: Boolean);
+var
+  AResponse  : TResponseConsoleMessage;
+begin
+  //if POS('getUnreadMessages', message) = 0 then
+    //LogAdd(message, 'CONSOLE GERAL');
 
+  //testa se e um JSON de forma RAPIDA!
+
+  if (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
+  begin
+    LogAdd('"WPP IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
+
+    Chromium1.StopLoad;
+    Chromium1.Browser.ReloadIgnoreCache;
+
+    localStorage_debug;
+
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    SleepNoFreeze(500);
+
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+    //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
+  end
+  else
+  if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
+  begin
+    //Injeta o JS.ABR de novo
+    LogAdd('"WAPI IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
+
+    Chromium1.StopLoad;
+    Chromium1.Browser.ReloadIgnoreCache;
+
+    localStorage_debug;
+
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    SleepNoFreeze(500);
+
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+    //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
+  end;
+
+  if (Copy(message, 0, 2) <> '{"') then
+  begin
+    LogAdd(message, 'CONSOLE IGNORADO');
+
+    //Desconexão do QrCode, Tratamento após desconectado Add Marcelo 06/02/2023
+    //'Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.'
+    if (Pos('ANOTHER CONNECTION WANTS TO DELETE DATABASE', UpperCase(message)) > 0)
+    or (Pos('CLOSING DB NOW TO RESUME THE DELETE REQUEST.', UpperCase(message)) > 0)  then
+    begin
+      LogAdd('DESCONECTOU QRCODE, ARQUIVO CORROMPIDO PASTA CACHE, NECESSÁRIO RESTAURAR A PASTA DO CACHE ORIGINAL OU REALIZAR A LIMPEZA E NOVA LEITURA DE UM NOVO QRCODE');
+      AResponse := TResponseConsoleMessage.Create( '{"name":"QrCodeDesconectouErroCache","result":"{\"result\":\"Another connection wants to delete database wawc. Closing db now to resume the delete request.\"}"}');
+      //{"name":"getMyNumber","result":"{\"result\":\"5517@c.us\"}"}
+      try
+        if AResponse = nil then
+          Exit;
+        ExecuteCommandConsole(AResponse);
+      finally
+        FreeAndNil(AResponse);
+      end;
+    end;
+
+    Exit;
+  end
+  else
+  Begin
+    if (message = FrmConsole_JS_Ignorar) or (message = FrmConsole_JS_RetornoVazio) or (message = FrmConsole_JS_Ignorar2) then
+    begin
+      {if POS('getUnreadMessages', message) = 0 then
+        LogAdd(message, 'CONSOLE VAZIO');  }
+      Exit;
+    end
+    else
+    if (Pos('Error with Permissions-Policy header', message ) > 0) then
+    begin
+
+      Exit;
+    end;
+  end;
+
+  LogAdd(message, 'CONSOLE');
+
+  if message <> 'Uncaught (in promise) TypeError: output.update is not a function' then
+    AResponse := TResponseConsoleMessage.Create( message );
+  try
+    if AResponse = nil then
+       Exit;
+
+    ExecuteCommandConsole(AResponse);
+//    if Assigned(FControlSend) then
+//       FControlSend.Release;
+  finally
+    FreeAndNil(AResponse);
+  end;
+end;
+{$ELSE}
 procedure TFrmConsole.Chromium1ConsoleMessage(Sender: TObject;
   const browser: ICefBrowser; level: Cardinal; const message, source: ustring;
   line: Integer; out Result: Boolean);
@@ -3381,7 +3522,7 @@ begin
     FreeAndNil(AResponse);
   end;
 end;
-
+{$ENDIF}
 
 procedure TFrmConsole.Chromium1DownloadUpdated(Sender: TObject;
   const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
