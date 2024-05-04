@@ -143,7 +143,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Enviar Agendamento de Liga'#231#227'o'
+      Caption = 'Send Scheduled Event'
       ImageIndex = 11
       Images = ImageList1
       TabOrder = 12
@@ -315,7 +315,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Enviar Arquivo Selecionado Pasta'
+      Caption = 'Send File Folder New'
       ImageIndex = 6
       Images = ImageList1
       TabOrder = 13
@@ -380,7 +380,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Texto Simples Marcando Todos'
+      Caption = 'Simple Text Marking All Group'
       ImageIndex = 0
       Images = ImageList1
       TabOrder = 18
@@ -393,7 +393,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Realizar uma Liga'#231#227'o'
+      Caption = 'Make a Call'
       ImageIndex = 19
       Images = ImageList1
       TabOrder = 19
@@ -406,7 +406,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Finalizar uma Liga'#231#227'o'
+      Caption = 'End a Call'
       ImageIndex = 19
       Images = ImageList1
       TabOrder = 20
@@ -677,7 +677,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Visto por '#218'ltimo'
+      Caption = 'Visto por '#218'ltimo / Last Seen'
       ImageIndex = 18
       Images = ImageList1
       TabOrder = 15
@@ -691,7 +691,7 @@ object frameMensagem: TframeMensagem
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Validar Lista de N'#250'meros'
+      Caption = 'Validate List of Numbers'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 16
@@ -705,7 +705,7 @@ object frameMensagem: TframeMensagem
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Get Plataforma'
+      Caption = 'Get Platform'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 17
@@ -733,7 +733,7 @@ object frameMensagem: TframeMensagem
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Marcar Audio como Escutado'
+      Caption = 'Mark Audio as Listened'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 19
@@ -833,7 +833,7 @@ object frameMensagem: TframeMensagem
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alTop
-          Caption = 'Listar Contatos'
+          Caption = 'Listar Contatos / List Contacts'
           ImageIndex = 9
           Images = ImageList1
           TabOrder = 0

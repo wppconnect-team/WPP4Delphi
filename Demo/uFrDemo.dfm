@@ -52,37 +52,37 @@ object frDemo: TfrDemo
               OnClick = ctbtnCategories0Items0Click
             end
             item
-              Caption = 'Mensagens'
+              Caption = 'Messages'
               ImageIndex = 2
               OnClick = ctbtnCategories0Items1Click
             end
             item
-              Caption = 'Grupos'
+              Caption = 'Groups'
               ImageIndex = 3
               OnClick = ctbtnCategories0Items2Click
             end
             item
-              Caption = 'Mensagens Enviadas'
+              Caption = 'Messages Sent'
               ImageIndex = 4
               OnClick = ctbtnCategories0Items3Click
             end
             item
-              Caption = 'Mensagens Recebidas'
+              Caption = 'Received Messages'
               ImageIndex = 5
               OnClick = ctbtnCategories0Items4Click
             end
             item
-              Caption = 'Cat'#225'logo'
+              Caption = 'Catalog'
               ImageIndex = 6
               OnClick = ctbtnCategories0Items5Click
             end
             item
-              Caption = 'Outros'
+              Caption = 'Others'
               ImageIndex = 7
               OnClick = ctbtnCategories0Items6Click
             end
             item
-              Caption = 'Comunidades'
+              Caption = 'Communities'
               ImageIndex = 8
               OnClick = ctbtnCategories0Items7Click
             end>
@@ -1530,9 +1530,9 @@ object frDemo: TfrDemo
     object lblMeuNumero: TLabel
       Left = 128
       Top = 22
-      Width = 141
+      Width = 131
       Height = 29
-      Caption = 'Meu n'#250'mero:'
+      Caption = 'My Number:'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
       Font.Height = -24
@@ -1590,7 +1590,7 @@ object frDemo: TfrDemo
       Top = 82
       Width = 150
       Height = 25
-      Caption = 'Abrir WhatsApp Web'
+      Caption = 'Open WhatsApp Web'
       TabOrder = 0
       OnClick = btnAbrirZapClick
     end
@@ -1599,7 +1599,7 @@ object frDemo: TfrDemo
       Top = 82
       Width = 150
       Height = 25
-      Caption = 'Progresso WhatsApp'
+      Caption = 'Progress WhatsApp'
       TabOrder = 1
       OnClick = BitBtn2Click
     end
@@ -1609,7 +1609,7 @@ object frDemo: TfrDemo
       Width = 134
       Height = 25
       BiDiMode = bdRightToLeft
-      Caption = 'Iniciar ChatGPT'
+      Caption = 'Start ChatGPT'
       ParentBiDiMode = False
       TabOrder = 2
       OnClick = BitBtn3Click
@@ -1694,15 +1694,6 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
@@ -2003,7 +1994,7 @@ object frDemo: TfrDemo
     Top = 82
     Width = 150
     Height = 25
-    Caption = 'Reiniciar WhatsApp Web'
+    Caption = 'Reboot WhatsApp Web'
     TabOrder = 10
     OnClick = BitBtn1Click
   end
@@ -2058,8 +2049,8 @@ object frDemo: TfrDemo
           end
         end
         inherited Memo1: TMemo
-          Left = 92
-          ExplicitLeft = 92
+          Top = 368
+          ExplicitTop = 368
         end
       end
       inherited pnlGruposParticipantes: TPanel
@@ -2108,14 +2099,22 @@ object frDemo: TfrDemo
         end
       end
     end
+    inherited ImageList1: TImageList
+      Left = 848
+      Top = 7
+    end
+    inherited OpenPictureDialog1: TOpenPictureDialog
+      Left = 748
+      Top = 6
+    end
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
     DrawingStyle = dsTransparent
     Height = 48
     Width = 48
-    Left = 488
-    Top = 104
+    Left = 1096
+    Top = 8
     Bitmap = {
       494C010109001800040030003000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000C000000090000000010020000000000000B0
@@ -5765,52 +5764,52 @@ object frDemo: TfrDemo
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     OnGet_deleteMessageNewResponse = TWPPConnect1Get_deleteMessageNewResponse
-    Left = 288
-    Top = 472
+    Left = 360
+    Top = 8
   end
   object timerStatus: TTimer
     Enabled = False
     Interval = 500
     OnTimer = timerStatusTimer
-    Left = 440
-    Top = 32
+    Left = 452
+    Top = 8
   end
   object TimerVerificaConexao: TTimer
     Interval = 40000
     OnTimer = TimerVerificaConexaoTimer
-    Left = 528
-    Top = 32
+    Left = 544
+    Top = 8
   end
   object TimerCheckOnline: TTimer
     Interval = 60000
     OnTimer = TimerCheckOnlineTimer
-    Left = 632
-    Top = 32
+    Left = 636
+    Top = 8
   end
   object TimerCopiarPastaCache: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCopiarPastaCacheTimer
-    Left = 736
-    Top = 16
+    Left = 728
+    Top = 8
   end
   object TimerRestauraPastaCache: TTimer
     Enabled = False
     Interval = 30000
     OnTimer = TimerRestauraPastaCacheTimer
-    Left = 872
+    Left = 820
     Top = 8
   end
   object TimerProgress: TTimer
     Enabled = False
     OnTimer = TimerProgressTimer
-    Left = 848
-    Top = 168
+    Left = 1004
+    Top = 8
   end
   object Timer1: TTimer
     Interval = 7000
     OnTimer = Timer1Timer
-    Left = 592
-    Top = 240
+    Left = 912
+    Top = 8
   end
 end
