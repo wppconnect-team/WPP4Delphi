@@ -12,6 +12,7 @@ object FrmConsole: TFrmConsole
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
+  OldCreateOrder = True
   Position = poOwnerFormCenter
   ShowHint = True
   OnClose = FormClose
@@ -20,6 +21,7 @@ object FrmConsole: TFrmConsole
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
+  PixelsPerInch = 96
   TextHeight = 13
   object Pnl_Top: TPanel
     AlignWithMargins = True

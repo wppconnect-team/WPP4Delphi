@@ -160,6 +160,7 @@ type
     procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
     procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
     procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
+    procedure TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1267,6 +1268,18 @@ begin
   frameLogin1.lblStatus.Caption := 'Carregando...';
   Label3.Caption := 'Carregando Conversas Aguarde...';
   //TimerProgress.Enabled := True;
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
+begin
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+
+  ShowMessage('Conexão foi finalizada / Connection has been closed!  ');
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsOnline(Response: TIsOnline);

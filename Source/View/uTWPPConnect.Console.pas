@@ -2888,6 +2888,19 @@ begin
                          end;
                        end;
 
+    //Marcelo 04/05/2024
+    Th_IsLogout :
+                       begin
+                         //FOnNotificationCenter(Th_ForceDisconnect, '');
+
+                         LOutClass2 := TIsLogout.Create(PResponse.JsonString);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
     Th_getMessages: begin
                       //LOutClass2 := TRootClass.Create(LResultStr); //03/09/2022
                       //LOutClass2 := TRootClass.Create(PResponse.JsonString); //03/09/2022
@@ -3339,10 +3352,29 @@ begin
   begin
     LogAdd(message, 'CONSOLE IGNORADO');
 
+    if (pos('NOTINITIALIZEDERROR', AnsiUpperCase(Trim(message))) > 0)
+    or (pos('NotInitializedError',  Trim(message)) > 0) then
+    begin
+      FOnNotificationCenter(Th_ForceDisconnect, '');
+      //FOnNotificationCenter(Th_IsLogout, '');
+
+      LogAdd('DESCONECTOU QRCODE, REALIZAR A LIMPEZA CACHE E NOVA LEITURA DE UM NOVO QRCODE');
+      AResponse := TResponseConsoleMessage.Create( '{"name":"QrCodeDesconectouErroCache","result":"{\"result\":\"Another connection wants to delete database wawc. Closing db now to resume the delete request.\"}"}');
+      //{"name":"getMyNumber","result":"{\"result\":\"5517@c.us\"}"}
+      try
+        if AResponse = nil then
+          Exit;
+        ExecuteCommandConsole(AResponse);
+      finally
+        FreeAndNil(AResponse);
+      end;
+    end
+    else
+
     //Desconexão do QrCode, Tratamento após desconectado Add Marcelo 06/02/2023
     //'Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.'
     if (Pos('ANOTHER CONNECTION WANTS TO DELETE DATABASE', UpperCase(message)) > 0)
-    or (Pos('CLOSING DB NOW TO RESUME THE DELETE REQUEST.', UpperCase(message)) > 0)  then
+    or (Pos('CLOSING DB NOW TO RESUME THE DELETE REQUEST.', UpperCase(message)) > 0) then
     begin
       LogAdd('DESCONECTOU QRCODE, ARQUIVO CORROMPIDO PASTA CACHE, NECESSÁRIO RESTAURAR A PASTA DO CACHE ORIGINAL OU REALIZAR A LIMPEZA E NOVA LEITURA DE UM NOVO QRCODE');
       AResponse := TResponseConsoleMessage.Create( '{"name":"QrCodeDesconectouErroCache","result":"{\"result\":\"Another connection wants to delete database wawc. Closing db now to resume the delete request.\"}"}');
@@ -3472,6 +3504,24 @@ begin
   begin
     LogAdd(message, 'CONSOLE IGNORADO');
 
+    if (pos('NOTINITIALIZEDERROR', AnsiUpperCase(Trim(message))) > 0)
+    or (pos('NotInitializedError',  Trim(message)) > 0) then
+    begin
+      FOnNotificationCenter(Th_ForceDisconnect, '');
+      //FOnNotificationCenter(Th_IsLogout, '');
+
+      LogAdd('DESCONECTOU QRCODE, REALIZAR A LIMPEZA CACHE E NOVA LEITURA DE UM NOVO QRCODE');
+      AResponse := TResponseConsoleMessage.Create( '{"name":"QrCodeDesconectouErroCache","result":"{\"result\":\"Another connection wants to delete database wawc. Closing db now to resume the delete request.\"}"}');
+      //{"name":"getMyNumber","result":"{\"result\":\"5517@c.us\"}"}
+      try
+        if AResponse = nil then
+          Exit;
+        ExecuteCommandConsole(AResponse);
+      finally
+        FreeAndNil(AResponse);
+      end;
+    end
+    else
     //Desconexão do QrCode, Tratamento após desconectado Add Marcelo 06/02/2023
     //'Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.'
     if (Pos('ANOTHER CONNECTION WANTS TO DELETE DATABASE', UpperCase(message)) > 0)

@@ -1689,11 +1689,23 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
@@ -5695,7 +5707,7 @@ object frDemo: TfrDemo
     InjectJS.SecondsWaitInject = 4
     Config.AutoDelay = 500
     Config.ReceiveAttachmentAuto = False
-    Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\'
+    Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5730,6 +5742,7 @@ object frDemo: TfrDemo
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated
+    OnGetIsLogout = TWPPConnect1GetIsLogout
     OnGetIsOnline = TWPPConnect1GetIsOnline
     OnGetEnvIsOnline = TWPPConnect1GetEnvIsOnline
     OnGetListChat = TWPPConnect1GetListChat

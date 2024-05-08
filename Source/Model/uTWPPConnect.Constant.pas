@@ -557,6 +557,7 @@ type
                    , Th_Getmsg_edited=80 //Marcelo 29/01/2024
                    , Th_ErrorResponse=81 //Marcelo 14/03/2024
                    , Th_deleteMessageNew=82 //Marcelo 26/04/2024
+                   , Th_IsLogout=83 //Marcelo 04/05/2024
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -694,7 +695,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 82; //Marcelo 26/04/2024
+const LmaxCount = 83; //Marcelo 04/05/2024
 var
   I: Integer;
   LNome: String;

@@ -140,6 +140,7 @@ type
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
+  TGetIsLogout               = Procedure(Sender : TObject; IsLogout: Boolean) of object; //Marcelo 18/08/2022
   TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
   TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
   TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
@@ -174,6 +175,7 @@ type
     FOnGet_ErrorResponse    : TGet_ErrorResponse;
     FOnGet_deleteMessageNewResponse: TGet_deleteMessageNewResponse;
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
+    FOnGetIsLogout: TGetIsLogout;
 
 
     { Private  declarations }
@@ -573,6 +575,7 @@ type
 
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
+    property OnGetIsLogout               : TGetIsLogout               read FOnGetIsLogout                  write FOnGetIsLogout;
 
     //Marcelo 03/05/2023
     property OnGetIsOnline               : TGetIsOnline               read FOnGetIsOnline                  write FOnGetIsOnline;
@@ -3557,6 +3560,12 @@ begin
   Begin
     if Assigned(OnGetIsAuthenticated) then
       OnGetIsAuthenticated( TIsAuthenticated(PReturnClass), True);
+  end;
+
+  if PTypeHeader = Th_IsLogout then
+  Begin
+    if Assigned(OnGetIsLogout) then
+      OnGetIsLogout( TIsLogout(PReturnClass), True);
   end;
 
   if PTypeHeader = Th_getIsOnline then

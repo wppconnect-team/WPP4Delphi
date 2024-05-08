@@ -1757,6 +1757,15 @@ public
   destructor  Destroy;
 end;
 
+TIsLogout = class(TClassPadrao)
+private
+  FIsLogout: Boolean;
+public
+  property IsLogout:      Boolean    read FIsLogout     write FIsLogout;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
 TIsOnline = class(TClassPadrao)
 private
   FIsOnline: Boolean;
@@ -4027,6 +4036,18 @@ end;
 
 { TErrorResponseClass }
 
+
+{ TIsLogout }
+
+constructor TIsLogout.Create(pAJsonString: string);
+begin
+  FIsLogout := True;
+end;
+
+destructor TIsLogout.Destroy;
+begin
+  inherited;
+end;
 
 end.
 
