@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.25;1.0.0.9;78.3.0
+//2.1.0.26;1.0.0.9;78.3.0
 //
 //
 
@@ -1917,7 +1917,7 @@ window.WAPI.getBufferedNewMessages = function(done) {
 /** End new messages observable functions **/
 
 window.WAPI.sendImage = async function(imgBase64, chatid, filename, caption) {    
-    let = {
+    let options = {
         createChat: true, 
         caption: caption, 
         filename: filename
