@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.26;1.0.0.9;78.3.0
+//2.1.0.27;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,7 +2748,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.2.4
+//WPPCONNECT v3.2.5
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
 (() => {
     var __webpack_modules__ = {
@@ -9761,13 +9761,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.onFullReady((() => {
                     (0, c.wrapModuleFunction)(l.getABPropConfigValue, ((e, ...t) => {
                         const [r] = t;
-                        switch (r) {
-                            case "high_quality_link_preview_enabled":
-                                return !0;
-                            case "link_preview_wait_time":
-                                return 1
-                        }
-                        return e(...t)
+                        return "link_preview_wait_time" === r ? 7 : e(...t)
                     })), (0, c.wrapModuleFunction)(l.genMinimalLinkPreview, (async (e, ...t) => {
                         const [r] = t, n = "string" == typeof r ? r : r.url;
                         return new Promise((async r => {
@@ -9783,7 +9777,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     data: Object.assign(Object.assign({}, o), i)
                                 })
                             } catch (n) {
-                                r(e(...t))
+                                r(await e(...t))
                             }
                         }))
                     }))
@@ -13738,7 +13732,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.2.4";
+                s(r(26738), t), t.waVersion = "3.2.5";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13977,7 +13971,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.2.4", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.2.5", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -15416,16 +15410,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(97016),
                     c = r(24298),
                     l = (0, o.default)("WA-JS:link-preview"),
-                    d = i.config.linkPreviewApiServers || ["https://wajs-server.calixto.shop", "https://wajsapi.titanchat.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
+                    d = i.config.linkPreviewApiServers || ["https://cobrancas.uppermesh.com.br:8000", "https://wajsapi.titanchat.com.br", "https://wppc-linkpreview.cloudtrix.com.br"],
                     f = 140,
-                    p = {};
+                    p = {},
+                    g = {};
                 ! function(e) {
                     for (let t = e.length - 1; t > 0; t--) {
                         const r = Math.floor(Math.random() * (t + 1));
                         [e[t], e[r]] = [e[r], e[t]]
                     }
                 }(d), t.fetchRemoteLinkPreviewData = async function(e) {
-                    if (p[e]) return void l("Link preview found in the cache", e);
+                    if (p[e]) return l("Link preview found in the cache", e), p[e];
                     const t = new TextDecoder;
                     for (let r = d.length - 1; r >= 0; r--) {
                         const n = d[r];
@@ -15453,6 +15448,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return null
                 }, t.generateThumbnailLinkPreviewData = async function(e) {
+                    if (g[e]) return l("Thumb for link preview found in cache.", e), g[e];
                     if (!d[0]) return null;
                     const t = d[0];
                     l(`Downloading the preview image using ${t}`, e);
@@ -15478,30 +15474,32 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 }
                             }
                         }))
-                    }(n.data), i = n.data.replace("data:image/jpeg;base64,", ""), c = await s.OpaqueData.createFromBase64Jpeg(i), p = new Uint8Array(32), g = (window.crypto.getRandomValues(p), {
+                    }(n.data), i = n.data.replace("data:image/jpeg;base64,", ""), c = await s.OpaqueData.createFromBase64Jpeg(i), p = new Uint8Array(32), m = (window.crypto.getRandomValues(p), {
                         key: s.Base64.encodeB64(p),
                         timestamp: (0, a.unixTime)()
-                    }), m = new AbortController, y = await (0, a.uploadThumbnail)({
+                    }), y = new AbortController, b = await (0, a.uploadThumbnail)({
                         thumbnail: c,
                         mediaType: "thumbnail-link",
-                        mediaKeyInfo: g,
+                        mediaKeyInfo: m,
                         uploadOrigin: 1,
                         forwardedFromWeb: !1,
-                        signal: m.signal,
+                        signal: y.signal,
                         timeout: 3e3,
                         isViewOnce: !1
-                    }), b = y.mediaEntry;
-                    return {
+                    }), h = b.mediaEntry, v = {
                         thumbnail: o,
                         thumbnailHQ: i,
-                        mediaKey: b.mediaKey,
-                        mediaKeyTimestamp: b.mediaKeyTimestamp,
-                        thumbnailDirectPath: b.directPath,
-                        thumbnailSha256: y.filehash,
-                        thumbnailEncSha256: b.encFilehash,
+                        mediaKey: h.mediaKey,
+                        mediaKeyTimestamp: h.mediaKeyTimestamp,
+                        thumbnailDirectPath: h.directPath,
+                        thumbnailSha256: b.filehash,
+                        thumbnailEncSha256: h.encFilehash,
                         thumbnailWidth: n.width,
                         thumbnailHeight: n.height
-                    }
+                    };
+                    return g[e] = v, setTimeout((() => {
+                        delete g[e]
+                    }), 3e5), v
                 }
             },
             12040: function(e, t, r) {
@@ -16081,8 +16079,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 const n = r(54993);
                 r(12105), (0, n.exportModule)(t, {
-                    StatusV3Collection: "StatusV3CollectionImpl"
-                }, (e => e.StatusV3CollectionImpl || e.StatusV3Collection))
+                    StatusV3Collection: ["StatusV3CollectionImpl", "StatusCollectionImpl"]
+                }, (e => e.StatusV3CollectionImpl || e.StatusV3Collection || e.StatusCollectionImpl || e.StatusCollection))
             },
             87210: (e, t, r) => {
                 "use strict";
@@ -18559,7 +18557,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 const n = r(54993);
-                r(8375), (0, n.exportProxyModel)(t, "StatusModel")
+                r(8375), (0, n.exportModule)(t, {
+                    StatusModel: ["default"]
+                }, (e => {
+                    var t;
+                    return null === (t = e.default) || void 0 === t ? void 0 : t.prototype.__props.includes("status")
+                }))
             },
             77104: (e, t, r) => {
                 "use strict";
@@ -18567,7 +18570,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 const n = r(54993);
-                r(29836), (0, n.exportProxyModel)(t, "StatusV3Model")
+                r(29836), (0, n.exportModule)(t, {
+                    StatusV3Model: ["default"]
+                }, (e => {
+                    var t;
+                    return null === (t = e.default) || void 0 === t ? void 0 : t.prototype.sendReadStatus
+                }))
             },
             4268: (e, t, r) => {
                 "use strict";
@@ -18725,7 +18733,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     NewsletterStore: "default.NewsletterCollection"
                 }, (e => e.default.NewsletterCollection)), (0, a.exportModule)(t, {
                     StatusStore: ["StatusCollectionImpl", "TextStatusCollection"]
-                }, (e => e.StatusCollection || e.TextStatusCollection))
+                }, (e => e.StatusCollection || e.TextStatusCollection)), (0, a.exportModule)(t, {
+                    StatusV3Store: ["StatusV3CollectionImpl", "StatusCollection"]
+                }, (e => e.StatusV3CollectionImpl || e.StatusCollection))
             },
             34439: (e, t, r) => {
                 "use strict";
@@ -18913,6 +18923,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
+
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
