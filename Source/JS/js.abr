@@ -2748,7 +2748,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.2.5
+//WPPCONNECT v3.2.6
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
 (() => {
     var __webpack_modules__ = {
@@ -13732,7 +13732,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.2.5";
+                s(r(26738), t), t.waVersion = "3.2.6";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -13971,7 +13971,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.2.5", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.2.6", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -17226,7 +17226,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), (0, r(54993).exportModule)(t, {
                     msgFindQuery: "msgFindQuery"
-                }, (e => e.msgFindQuery && e.msgFindByIds || e.msgFindQuery && e.getMsgsByMsgKey))
+                }, (e => e.msgFindQuery && e.getMsgsByMsgKey || e.msgFindQuery && e.queryMessageType))
             },
             92111: (e, t, r) => {
                 "use strict";
@@ -18734,7 +18734,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, (e => e.default.NewsletterCollection)), (0, a.exportModule)(t, {
                     StatusStore: ["StatusCollectionImpl", "TextStatusCollection"]
                 }, (e => e.StatusCollection || e.TextStatusCollection)), (0, a.exportModule)(t, {
-                    StatusV3Store: ["StatusV3CollectionImpl", "StatusCollection"]
+                    StatusV3Store: ["StatusV3Collection", "StatusCollection"]
                 }, (e => e.StatusV3CollectionImpl || e.StatusCollection))
             },
             34439: (e, t, r) => {
