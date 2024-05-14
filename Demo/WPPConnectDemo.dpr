@@ -85,6 +85,9 @@ begin
         GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'Locales', '');
         GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'Cache', '');
         GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'Data User', '');
+
+        GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
+
       except on E: Exception do
       end;
     end;
@@ -99,6 +102,9 @@ begin
         GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
         GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
         GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
+
+        GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
+
       except on E: Exception do
       end;
     end;

@@ -976,7 +976,7 @@ begin
     title?: string;}*)
 
     //frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
-    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.text, edtUrl.text, options, '123');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.text, edtUrl.text, options, '123', '', '', '');
 
   finally
     ed_num.SelectAll;
