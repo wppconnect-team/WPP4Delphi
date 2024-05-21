@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.27;1.0.0.9;78.3.0
+//2.1.0.28;1.0.0.9;78.3.0
 //
 //
 
@@ -8566,7 +8566,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         const c = e.isSentByMe;
                         if (e.type === i.MSG_TYPE.REVOKED && a) t = i.SendMsgResult.ERROR_UNKNOWN, n = !0;
                         else if (a) {
-                            if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, [e], {
+                            /*Bug last version if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, [e], {*/
+                            if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, {type: "message", list: l}, {
                                     clearMedia: r
                                 }), u.promises.sendRevokeMsgs) {
                                 const e = await u.promises.sendRevokeMsgs;
