@@ -1689,6 +1689,7 @@ begin
     begin
 
       frDemo.TWPPConnect1.deleteMessageByIdNew(ed_num.Text, IdMensagem);
+      //frDemo.TWPPConnect1.deleteMessageById(ed_num.Text, IdMensagem);
     end;
 
 
@@ -1802,7 +1803,7 @@ begin
     //Sleep(5000);
 
     //Optional Parameters SeuID, SeuID2, SeuID3 and SeuID4
-    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, '123', 'SEUID2', 'SEUID3', 'SEUID4');
+    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, 'SEUID1', 'SEUID2', 'SEUID3', 'SEUID4');
 
   finally
     ed_num.SelectAll;

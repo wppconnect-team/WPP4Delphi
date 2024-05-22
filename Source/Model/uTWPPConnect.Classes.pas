@@ -2275,6 +2275,8 @@ private
   FSeuid2: String;
   FSeuid3: String;
   FSeuid4: String;
+  FstatusCode: Integer;
+  FwidContacts: String;
 public
   property Error: string read FError write FError;
   property RetEvent: String read FRetEvent write FRetEvent;
@@ -2284,6 +2286,8 @@ public
   property Seuid4: String read FSeuid4 write FSeuid4;
   property chatid: String read FChatid write FChatid;
   property UniqueID: String read FUniqueID write FUniqueID;
+  property statusCode: Integer read FstatusCode write FstatusCode;
+  property widContacts: String read FwidContacts write FwidContacts;
 end;
 
 
