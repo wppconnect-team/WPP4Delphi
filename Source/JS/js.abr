@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.28;1.0.0.9;78.3.0
+//2.1.0.29;1.0.0.9;78.3.0
 //
 //
 
@@ -8638,12 +8638,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     var a;
                     r = Object.assign(Object.assign({}, i.defaultSendMessageOptions), r);
                     const u = await (0, s.getMessageById)(e);
-                    if (!(0, o.canEditMsg)(u)) throw new n.WPPError("edit_message_error", "Cannot edit this message");
+                    /*if (!(0, o.canEditMsg)(u)) throw new n.WPPError("edit_message_error", "Cannot edit this message");*/
                     let c = {
                         type: "protocol",
                         subtype: "message_edit",
                         protocolMessageKey: u.id,
                         body: t.trim(),
+                        caption: t.trim(),
                         editMsgType: u.type
                     };
                     return c = await (0, s.prepareRawMessage)(u.chat, c, r), c.latestEditMsgKey = c.id, c.latestEditSenderTimestampMs = c.t, await (0, s.sendRawMessage)(null === (a = u.chat) || void 0 === a ? void 0 : a.id, c, r)
