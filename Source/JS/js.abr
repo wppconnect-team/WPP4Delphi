@@ -21882,3 +21882,50 @@ WPP.on('conn.logout', () => {
     //console.log("conn logout");
     SetConsoleMessage("isLogout", Json.stringfy({isLogout: true}));
 });
+
+
+
+//Marcelo 23/05/2024
+window.WPP.editMessageNew = async function (uniqueId, newmessage, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  result = await WPP.chat.editMessage(        
+    uniqueId,
+    newmessage,
+    options
+  );
+
+  if (result !== undefined && result !== null) {    
+    try {
+      Obj = {
+        Seuid: xSeuID,
+	Seuid2: xSeuID2,
+	Seuid3: xSeuID3,
+	Seuid4: xSeuID4,
+        statusCode: 200,
+        newmessage: newmessage,
+        uniqueId: uniqueId,
+        JsonMessage: JSON.stringify(result),
+      };
+
+      SetConsoleMessage("editMessageNew", JSON.stringify(Obj));
+    } catch (err) {
+      console.log(err);
+    }
+    return result;
+  } else {        
+      var RetError = "A mensagem não pôde ser editada.";
+      Obj = {          
+        Seuid: xSeuID,
+	Seuid2: xSeuID2,
+	Seuid3: xSeuID3,
+	Seuid4: xSeuID4,
+        newmessage: newmessage,
+        uniqueId: uniqueId,
+        RetEvent: "editMessageNew",
+        statusCode: 300,
+        Error: RetError,
+      };
+
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+      return null;      
+  }
+};
