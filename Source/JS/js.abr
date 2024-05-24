@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.29;1.0.0.9;78.3.0
+//2.1.0.30;1.0.0.9;78.3.0
 //
 //
 
@@ -21929,3 +21929,48 @@ window.WPP.editMessageNew = async function (uniqueId, newmessage, options, xSeuI
       return null;      
   }
 };
+
+//Marcelo 23/05/2024
+window.WAPI.GetneedsUpdate2 = async function() {
+    const result = await WPP.conn.needsUpdate();
+    
+    try {
+        SetConsoleMessage("GetneedsUpdate", JSON.stringify(result));
+
+    } catch (err) {
+        console.log(err);
+    };    
+};
+
+//Marcelo 23/05/2024
+WPP.on('conn.needs_update', () => {
+    SetConsoleMessage("GetEnvneedsUpdate", JSON.stringify({needsUpdate: true}));  
+});
+
+//Marcelo 23/05/2024
+WPP.on('conn.require_auth', () => {
+    SetConsoleMessage("GetEnvrequire_auth", JSON.stringify({require_auth: true}));  
+});
+
+//Marcelo 23/05/2024
+WPP.on('conn.qrcode_idle', () => {
+    SetConsoleMessage("GetEnvqrcode_idle", JSON.stringify({qrcode_idle: true}));  
+});
+
+//Marcelo 23/05/2024
+WPP.on('chat.presence_change', (msg) => {
+    //console.log(msg);
+    //SetConsoleMessage("Getpresence_change", JSON.stringify({msg}));
+});
+
+//Marcelo 23/05/2024
+WPP.on('chat.update_label', (msg) => {
+    //console.log(msg);
+    //SetConsoleMessage("Getupdate_label", JSON.stringify({msg}));
+});
+
+//Marcelo 23/05/2024
+WPP.on('chat.active_chat', (msg) => {
+    //console.log(msg);
+    //SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
+});
