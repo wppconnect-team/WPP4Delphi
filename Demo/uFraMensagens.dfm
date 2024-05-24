@@ -106,6 +106,10 @@ object frameMensagem: TframeMensagem
       object tsBase64: TTabSheet
         Caption = 'Base64'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Memo1: TMemo
           Left = 0
           Top = 0

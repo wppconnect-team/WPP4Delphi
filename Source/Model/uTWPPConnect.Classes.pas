@@ -2290,16 +2290,44 @@ public
   property widContacts: String read FwidContacts write FwidContacts;
 end;
 
-
 TdeleteMessageNewResponseClass = class(TClassPadrao)
 private
   FJsonMessage: String;
   FUniqueId: String;
   FWid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FSeuid: String;
 public
   property JsonMessage: String read FJsonMessage write FJsonMessage;
   property uniqueId: String read FUniqueId write FUniqueId;
   property wid: String read FWid write FWid;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+end;
+
+TeditMessageNewResponseClass = class(TClassPadrao)
+private
+  FJsonMessage: String;
+  FUniqueId: String;
+  Fnewmessage: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FSeuid: String;
+  FstatusCode: Integer;
+public
+  property JsonMessage: String read FJsonMessage write FJsonMessage;
+  property uniqueId: String read FUniqueId write FUniqueId;
+  property newmessage: String read Fnewmessage write Fnewmessage;
+  property statusCode: Integer read FstatusCode write FstatusCode;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
 end;
 
 TIdsClass = class(TClassPadrao)

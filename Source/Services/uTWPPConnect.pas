@@ -133,6 +133,9 @@ type
   //Marcelo 26/04/2024
   TGet_deleteMessageNewResponse = procedure(Const Response: TdeleteMessageNewResponseClass) of object;
 
+  //Marcelo 23/05/2024
+  TGet_editMessageNewResponse = procedure(Const Response: TeditMessageNewResponseClass) of object;
+
   TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
@@ -174,6 +177,7 @@ type
     FgenLinkDeviceCode      : string;
     FOnGet_ErrorResponse    : TGet_ErrorResponse;
     FOnGet_deleteMessageNewResponse: TGet_deleteMessageNewResponse;
+    FOnGet_editMessageNewResponse: TGet_editMessageNewResponse;
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
     FOnGetIsLogout: TGetIsLogout;
 
@@ -345,6 +349,8 @@ type
       xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+    procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = '';
+      xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Add Marcelo 23/05/2024
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
 
     procedure getList(options: string); //Add Marcelo 25/10/2022
@@ -632,6 +638,7 @@ type
     property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
 
     property OnGet_deleteMessageNewResponse   : TGet_deleteMessageNewResponse     read FOnGet_deleteMessageNewResponse   write FOnGet_deleteMessageNewResponse;
+    property OnGet_editMessageNewResponse     : TGet_editMessageNewResponse       read FOnGet_editMessageNewResponse     write FOnGet_editMessageNewResponse;
 
   end;
 
@@ -3975,6 +3982,12 @@ begin
       FOnGet_deleteMessageNewResponse(TdeleteMessageNewResponseClass(PReturnClass));
   end;
 
+  if PTypeHeader = Th_editMessageNew  then //Add Marcelo 23/05/2024
+  begin
+    if Assigned(FOnGet_editMessageNewResponse) then
+      FOnGet_editMessageNewResponse(TeditMessageNewResponseClass(PReturnClass));
+  end;
+
   if PTypeHeader = Th_getList  then //Add Marcelo 26/10/2022
   begin
     if Assigned(FOngetListChat) then
@@ -6019,6 +6032,49 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.editMessage(UniqueID, NewMessage, options);
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.editMessageNew(UniqueID, NewMessage, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  lThread : TThread;
+begin
+  //Marcelo 15/08/2023
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(UniqueID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, UniqueID);
+    Exit;
+  end;
+
+  if Trim(NewMessage) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, NewMessage);
+    Exit;
+  end;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.editMessageNew(UniqueID, NewMessage, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
        end);
 

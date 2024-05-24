@@ -345,6 +345,8 @@ Const
 
   FrmConsole_JS_VAR_editMessage         = 'WPP.chat.editMessage("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>} );';
 
+  FrmConsole_JS_VAR_editMessageNew      = 'window.WPP.editMessageNew("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>"  );';
+
   //WPP.chat.forwardMessage("91xxxxxx@c.us","true_91xxxxxxxx@c.us_3EB0B2E90C7D0xxxxxx6");
   FrmConsole_JS_VAR_forwardMessage      =  'WPP.chat.forwardMessage("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>" );';
 
@@ -558,6 +560,7 @@ type
                    , Th_ErrorResponse=81 //Marcelo 14/03/2024
                    , Th_deleteMessageNew=82 //Marcelo 26/04/2024
                    , Th_IsLogout=83 //Marcelo 04/05/2024
+                   , Th_editMessageNew=84 //Marcelo 23/05/2024
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -695,7 +698,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 83; //Marcelo 04/05/2024
+const LmaxCount = 84; //Marcelo 23/05/2024
 var
   I: Integer;
   LNome: String;

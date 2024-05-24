@@ -1689,16 +1689,10 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
-          end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
           end
         end
         inherited tsBase64: TTabSheet
@@ -5704,10 +5698,11 @@ object frDemo: TfrDemo
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
-    InjectJS.SecondsWaitInject = 4
     Config.AutoDelay = 500
     Config.ReceiveAttachmentAuto = False
-    Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\'
+    Config.ReceiveAttachmentPath = 
+      'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
+      'exos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5777,6 +5772,7 @@ object frDemo: TfrDemo
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
     OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     OnGet_deleteMessageNewResponse = TWPPConnect1Get_deleteMessageNewResponse
+    OnGet_editMessageNewResponse = TWPPConnect1Get_editMessageNewResponse
     Left = 360
     Top = 8
   end

@@ -161,6 +161,7 @@ type
     procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
     procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
     procedure TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
+    procedure TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -2668,6 +2669,82 @@ begin
         end;
 
       end;
+    end
+    else
+    begin
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON inválido.');
+    end;
+  finally
+    jsonObject.Free;
+  end;
+
+end;
+
+procedure TfrDemo.TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO, S_messageSendResult, wlo_ack , wlo_uniqueid_edit: string;
+  jsonString, jsonSendMsgResult: string;
+  jsonObject, jsonObjectMsgResult: TJSONObject;
+  JsonValue: TJSONValue;
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Event editMessageNewResponse');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  newmessage: ' + Response.newmessage);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  uniqueId: ' + Response.uniqueId);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  Seuid: ' + Response.Seuid);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  Seuid2: ' + Response.Seuid2);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JsonMessage: ' + Response.JsonMessage);
+
+  wlo_Json := Response.JsonMessage;
+  jsonString := Response.JsonMessage;
+
+  jsonObject := TJSONObject.ParseJSONValue(jsonString) as TJSONObject;
+
+  try
+    if Assigned(jsonObject) then
+    begin
+      wlo_uniqueid_edit := jsonObject.ToJSON; //'';
+      JsonValue := jsonObject.GetValue('id');
+      if Assigned(JsonValue) then
+        wlo_uniqueid_edit := JsonValue.Value;
+
+      //if jsonObject.TryGetValue('id', jsonObject) then
+        //wlo_uniqueid_edit := jsonObject.GetValue('id').ToString;
+
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit: ' + wlo_uniqueid_edit);
+
+
+      //wlo_ack := jsonObject.GetValue('ack').Value;
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+
+
+      {try
+        jsonSendMsgResult := jsonObject.GetValue('sendMsgResult').ToString;
+        jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
+
+        try
+          if jsonObjectMsgResult <> nil then
+          begin
+            S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
+          end
+          else
+          begin
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+          end;
+
+        finally
+          jsonObjectMsgResult.Free;
+        end;
+      except
+        on E: Exception do
+        begin
+          S_messageSendResult := jsonObjectMsgResult.GetValue('sendMsgResult').Value; //sendMsgResult
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  sendMsgResult: ' + S_messageSendResult + #13#10);
+
+        end;
+
+      end;}
     end
     else
     begin

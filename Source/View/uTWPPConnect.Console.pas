@@ -244,6 +244,9 @@ type
     procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
+
+    procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Add Marcelo 23/05/2024
+
     procedure forwardMessage(phoneNumber, UniqueID: string); //Add Marcelo 30/08/2023
 
     procedure getList(options: string); //Add Marcelo 25/10/2022
@@ -1544,6 +1547,29 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#',    Trim(UniqueID));
   FrmConsole_JS_AlterVar(LJS, '#MSG_NEW_MESSAGE#',  Trim(NewMessage));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(Options));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.editMessageNew(UniqueID, NewMessage, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  NewMessage := CaractersWeb(NewMessage);
+  options := CaractersQuebraLinha(options);
+
+  LJS   := FrmConsole_JS_VAR_editMessageNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_UNIQUE_ID#',    Trim(UniqueID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_NEW_MESSAGE#',  Trim(NewMessage));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(Options));
+
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',  Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',  Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',  Trim(xSeuID4));
 
   ExecuteJS(LJS, true);
 end;
@@ -3228,6 +3254,18 @@ begin
                      end;
 
     Th_deleteMessageNew :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TdeleteMessageNewResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_editMessageNew :
                      begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }

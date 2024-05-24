@@ -212,7 +212,8 @@ begin
   begin
     if InputQuery('Informe a Nova Mensagem.', 'New Message: ', content) then
     begin
-      frDemo.TWPPConnect1.editMessage(IdMensagem, content, option);
+      //frDemo.TWPPConnect1.editMessage(IdMensagem, content, option);
+      frDemo.TWPPConnect1.editMessageNew(IdMensagem, content, option, IdMensagem, 'SEUID2', 'SEUID3', 'SEUID4');
     end;
   end;
 
