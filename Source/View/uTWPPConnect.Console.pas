@@ -3269,7 +3269,7 @@ begin
                      begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                              LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
-                             LOutClass := TdeleteMessageNewResponseClass.Create(LResultStr);
+                             LOutClass := TeditMessageNewResponseClass.Create(LResultStr);
                              try
                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                              finally

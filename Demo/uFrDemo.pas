@@ -2684,8 +2684,8 @@ procedure TfrDemo.TWPPConnect1Get_editMessageNewResponse(const Response: TeditMe
 var
   StatusMensagem, wlo_Json, S_NUMERO, S_messageSendResult, wlo_ack , wlo_uniqueid_edit: string;
   jsonString, jsonSendMsgResult: string;
-  jsonObject, jsonObjectMsgResult: TJSONObject;
-  JsonValue: TJSONValue;
+  jsonObject, jsonObjectMsgResult, jsonlatestEditMsgKeyObject: TJSONObject;
+  JsonValue, JsonValueAck: TJSONValue;
 begin
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Event editMessageNewResponse');
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  newmessage: ' + Response.newmessage);
@@ -2707,15 +2707,26 @@ begin
       if Assigned(JsonValue) then
         wlo_uniqueid_edit := JsonValue.Value;
 
+      JsonValueAck := jsonObject.GetValue('ack');
+      if Assigned(JsonValueAck) then
+        wlo_ack := JsonValueAck.Value;
+
       //if jsonObject.TryGetValue('id', jsonObject) then
         //wlo_uniqueid_edit := jsonObject.GetValue('id').ToString;
 
       //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
-      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit: ' + wlo_uniqueid_edit);
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit origem: ' + wlo_uniqueid_edit);
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ack: ' + wlo_ack);
 
+
+      if jsonObject.TryGetValue('latestEditMsgKey', jsonlatestEditMsgKeyObject) then
+        wlo_uniqueid_edit := jsonlatestEditMsgKeyObject.GetValue('_serialized').Value;
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit new: ' + wlo_uniqueid_edit);
 
       //wlo_ack := jsonObject.GetValue('ack').Value;
       //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+
+
 
 
       {try
