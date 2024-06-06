@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.31;1.0.0.9;78.3.0
+//2.1.0.32;1.0.0.9;78.3.0
 //
 //
 
@@ -22353,3 +22353,105 @@ WPP.on('chat.active_chat', (msg) => {
     //console.log(msg);
     //SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
 });
+
+//Marcelo 05/06/2024
+window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode = '', xSeuID = '') {
+  var isGroup = wid.includes('@g.us');
+  try {
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+
+    if (validar !== null && validar !== undefined) {
+      let result;   
+      //SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
+
+      const vInviteCode = inviteCode;
+      if (vInviteCode === ""){
+        vInviteCode = await WPP.group.getInviteCode(groupId);
+      }
+      
+      result = await WPP.chat.sendGroupInviteMessage(validar.wid._serialized, {
+        inviteCode: vInviteCode,
+        groupId: groupId
+      });
+
+      if (result !== undefined && result !== null) {
+        //return result;
+
+        try {
+          Obj = {
+            Seuid: xSeuID,            
+            groupId: groupId,
+            inviteCode: inviteCode,
+            JsonMessage: JSON.stringify(result),
+          };
+
+          SetConsoleMessage("sendGroupInviteMessageNew", JSON.stringify(Obj));
+        } catch (err) {
+          console.log(err);
+        }
+        return result;
+      } else {
+        //console.error("A mensagem nÃ£o pÃ´de ser enviada.");        
+        var RetError = "A mensagem nÃ£o pÃ´de ser enviada.";
+        Obj = {
+          chatid: wid,
+          groupId: groupId,
+          Seuid: xSeuID,          
+          RetEvent: "sendGroupInviteMessageNew",
+          statusCode: 300,
+          Error: RetError,
+        };
+        SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+        //return error;
+
+        return null;
+      }
+    } else {
+      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
+      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      Obj = {
+        chatid: wid,
+        groupId: groupId,
+        Seuid: xSeuID,        
+        RetEvent: "sendGroupInviteMessageNew",
+        statusCode: 301,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+
+      return null;
+    }
+  } catch (error) {
+    // Verificar se o erro Ã© causado pelo contato bloqueado
+    if (error.name === "ContactBlocked") {
+      //console.log("Contato estÃ¡ bloqueado:", error.contact);
+      // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
+      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      Obj = {
+        chatid: wid,
+        groupId: groupId,
+        Seuid: xSeuID,        
+        RetEvent: "sendGroupInviteMessageNew",
+        statusCode: 302,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+    } else {
+      // Lidar com outros erros que podem ocorrer
+      //console.error("Erro desconhecido:", error);
+      var RetError = error.message ? error.message : (error.stack || "Unknown Error");
+      Obj = {
+        chatid: wid,
+        groupId: groupId,
+        Seuid: xSeuID,
+        RetEvent: "sendGroupInviteMessageNew",
+        statusCode: 303,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+    }
+    // Retorne um valor padrÃ£o ou null para evitar que a aplicaÃ§Ã£o quebre
+    return null;
+  }
+};
