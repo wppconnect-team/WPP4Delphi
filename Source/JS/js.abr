@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.32;1.0.0.9;78.3.0
+//2.1.0.33;1.0.0.9;78.3.0
 //
 //
 
@@ -22364,7 +22364,7 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
       let result;   
       //SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
 
-      const vInviteCode = inviteCode;
+      var vInviteCode = inviteCode;
       if (vInviteCode === ""){
         vInviteCode = await WPP.group.getInviteCode(groupId);
       }
@@ -22391,11 +22391,11 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
         }
         return result;
       } else {
-        //console.error("A mensagem nÃ£o pÃ´de ser enviada.");        
-        var RetError = "A mensagem nÃ£o pÃ´de ser enviada.";
+        var RetError = "A mensagem não pode ser enviada.";
         Obj = {
           chatid: wid,
           groupId: groupId,
+          inviteCode: vInviteCode,
           Seuid: xSeuID,          
           RetEvent: "sendGroupInviteMessageNew",
           statusCode: 300,
@@ -22407,11 +22407,12 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      
+      var RetError = "O contato não existe ou é inválido.";
       Obj = {
         chatid: wid,
         groupId: groupId,
+        inviteCode: vInviteCode,
         Seuid: xSeuID,        
         RetEvent: "sendGroupInviteMessageNew",
         statusCode: 301,
@@ -22423,14 +22424,14 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
       return null;
     }
   } catch (error) {
-    // Verificar se o erro Ã© causado pelo contato bloqueado
+    
     if (error.name === "ContactBlocked") {
-      //console.log("Contato estÃ¡ bloqueado:", error.contact);
-      // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      
+      var RetError = "O contato não existe ou é inválido.";
       Obj = {
         chatid: wid,
         groupId: groupId,
+        inviteCode: vInviteCode,
         Seuid: xSeuID,        
         RetEvent: "sendGroupInviteMessageNew",
         statusCode: 302,
@@ -22438,12 +22439,12 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
+      
       var RetError = error.message ? error.message : (error.stack || "Unknown Error");
       Obj = {
         chatid: wid,
         groupId: groupId,
+        inviteCode: vInviteCode,
         Seuid: xSeuID,
         RetEvent: "sendGroupInviteMessageNew",
         statusCode: 303,
@@ -22451,7 +22452,7 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
     }
-    // Retorne um valor padrÃ£o ou null para evitar que a aplicaÃ§Ã£o quebre
+    
     return null;
   }
 };
