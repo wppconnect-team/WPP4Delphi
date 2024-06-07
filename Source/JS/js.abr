@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.33;1.0.0.9;78.3.0
+//2.1.0.34;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,9 +2748,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.2.7-alpha
+//WPPCONNECT v3.3.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.2.7-alpha.0 */
+/*! wppconnect-team/wa-js v3.3.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -8628,47 +8628,59 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.deleteMessage = void 0;
-                const n = r(41687),
-                    o = r(14647),
-                    i = r(20514),
-                    s = r(97829);
-                t.deleteMessage = async function(e, t, r = !1, a = !1) {
-                    const u = (0, n.assertGetChat)(e);
-                    let c = !1;
-                    Array.isArray(t) || (c = !0, t = [t]);
-                    const l = await (0, s.getMessageById)(t),
-                        d = [];
-                    for (const e of l) {
-                        let t = i.SendMsgResult.ERROR_UNKNOWN,
-                            n = !1,
-                            s = !1;
-                        const c = e.isSentByMe;
-                        if (e.type === i.MSG_TYPE.REVOKED && a) t = i.SendMsgResult.ERROR_UNKNOWN, n = !0;
-                        else if (a) {
-                            /*Bug last version if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, [e], {*/
-							if ("list" === e.type && (e.__x_isUserCreatedType = !0), o.Cmd.sendRevokeMsgs(u, {type: "message", list: l}, {
+                const n = r(38385),
+                    o = r(41687),
+                    i = r(14647),
+                    s = r(20514),
+                    a = r(97829);
+                t.deleteMessage = async function(e, t, r = !1, u = !1) {
+                    const c = (0, o.assertGetChat)(e);
+                    let l = !1;
+                    Array.isArray(t) || (l = !0, t = [t]);
+                    const d = await (0, a.getMessageById)(t),
+                        f = [];
+                    for (const e of d) {
+                        let t = s.SendMsgResult.ERROR_UNKNOWN,
+                            o = !1,
+                            a = !1;
+                        const l = e.senderObj.isMe;
+                        if (e.type === s.MSG_TYPE.REVOKED && u) t = s.SendMsgResult.ERROR_UNKNOWN, o = !0;
+                        else if (u) {
+                            if ("list" === e.type && (e.__x_isUserCreatedType = !0), (0, n.compare)(self.Debug.VERSION, "2.3000.0", ">=") ? i.Cmd.sendRevokeMsgs(c, {
+                                    type: "message",
+                                    list: [e]
+                                }, {
                                     clearMedia: r
-                                }), u.promises.sendRevokeMsgs) {
-                                const e = await u.promises.sendRevokeMsgs;
+                                }) : i.Cmd.sendRevokeMsgs(c, [e], {
+                                    clearMedia: r
+                                }), c.promises.sendRevokeMsgs) {
+                                const e = await c.promises.sendRevokeMsgs;
                                 Array.isArray(e) && (t = e[0])
                             }
-                            n = e.isRevokedByMe
+                            o = "revoked" == e.type
                         } else {
-                            if (o.Cmd.sendDeleteMsgs(u, [e], r), u.promises.sendDeleteMsgs) {
-                                const e = await u.promises.sendDeleteMsgs;
+                            if ((0, n.compare)(self.Debug.VERSION, "2.3000.0", ">=") ? i.Cmd.sendDeleteMsgs(c, {
+                                    type: "message",
+                                    list: [e]
+                                }, {
+                                    clearMedia: r
+                                }) : i.Cmd.sendDeleteMsgs(c, [e], {
+                                    clearMedia: r
+                                }), c.promises.sendDeleteMsgs) {
+                                const e = await c.promises.sendDeleteMsgs;
                                 Array.isArray(e) && (t = e[0])
                             }
-                            s = Boolean(u.msgs.get(e.id))
+                            a = Boolean(c.msgs.get(e.id))
                         }
-                        d.push({
+                        f.push({
                             id: e.id.toString(),
                             sendMsgResult: t,
-                            isRevoked: n,
-                            isDeleted: s,
-                            isSentByMe: c
+                            isRevoked: o,
+                            isDeleted: a,
+                            isSentByMe: l
                         })
                     }
-                    return c ? d[0] : d
+                    return l ? f[0] : f
                 }
             },
             48157: (e, t, r) => {
@@ -10353,16 +10365,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             t.jpegThumbnail = r.data.split(",", 2)[1]
                         } catch (e) {}
                     }
-                    const r = {
-                        type: "groups_v4_invite",
-                        inviteGrpJpegThum: t.jpegThumbnail,
-                        inviteCode: t.inviteCode,
-                        inviteCodeExp: t.inviteCodeExpiration,
-                        inviteGrp: t.groupId,
-                        inviteGrpName: t.groupName,
-                        comment: t.caption
-                    };
-                    return await (0, a.sendRawMessage)(e, r, t)
+                    const r = `https://chat.whatsapp.com/${t.inviteCode}`,
+                        u = {
+                            type: "chat",
+                            subtype: "url",
+                            thumbnail: t.jpegThumbnail,
+                            thumbnailHeight: t.jpegThumbnail ? 100 : void 0,
+                            thumbnailWidth: t.jpegThumbnail ? 100 : void 0,
+                            title: t.groupName,
+                            inviteGrpType: "DEFAULT",
+                            canonicalUrl: `https://chat.whatsapp.com/${t.inviteCode}`,
+                            description: t.caption ? `${t.caption}\n${r}` : r,
+                            body: t.caption ? `${t.caption}\n${r}` : r,
+                            matchedText: `https://chat.whatsapp.com/${t.inviteCode}`,
+                            richPreviewType: 0
+                        };
+                    return await (0, a.sendRawMessage)(e, u, t)
                 }
             },
             35184: function(e, t, r) {
@@ -12752,7 +12770,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     a = {
                         200: "OK",
                         403: "Can't join this group because the number was restricted it.",
-                        409: "Can't join this group because the number is already a member of it."
+                        409: "Can't join this group because the number is already a member of it.",
+                        421: "Member not added, awaiting approval!"
                     };
                 t.addParticipants = async function(e, t) {
                     var r, u;
@@ -13022,7 +13041,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 t.ensureGroup = async function(e, t = !1) {
                     const r = (0, n.assertGetChat)(e);
                     if (!r.isGroup) throw new o.WPPError("not_a_group", `Chat ${r.id._serialized} is not a group`);
-                    if (await i.GroupMetadataStore.find(r.id), t && !await (0, s.iAmAdmin)(e)) throw new o.WPPError("group_you_are_not_admin", `You are not admin in ${r.id._serialized}`);
+                    const a = await i.GroupMetadataStore.find(r.id);
+                    if (t && !await (0, s.iAmAdmin)(e) && "all_member_add" !== a.memberAddMode) throw new o.WPPError("group_you_are_not_admin", `You are not admin in ${r.id._serialized}`);
                     return r
                 }
             },
@@ -13844,7 +13864,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.2.7-alpha.0";
+                s(r(26738), t), t.waVersion = "3.3.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -14083,7 +14103,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.2.7-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.3.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
