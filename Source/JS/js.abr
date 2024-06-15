@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.34;1.0.0.9;78.3.0
+//2.1.0.35;1.0.0.9;78.3.0
 //
 //
 
@@ -19672,6 +19672,15 @@ WPP.on("call.incoming_call", (call) => {
         console.log('{"name":"IncomingiCall",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
 	    //SetConsoleMessage("IncomingiCall", Json.stringfy(call);
 	    
+});
+
+//Evento Realizando Ligação
+WPP.on("call.outcoming_call", (call) => {    
+    result = call;
+    if (call !== undefined)        
+    	//WPP.call.end(call.id);
+        //console.log(JSON.stringify(call) );
+        console.log('{"name":"OutcomingCall",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
 });
 
 //Checar se Número Existe e caso Tenha Digito Nove Retorna com o Número acrescido do Digito 9 
