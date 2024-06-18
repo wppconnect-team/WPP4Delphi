@@ -19739,7 +19739,7 @@ WPP.on("call.outgoing_call", (call) => {
     if (call !== undefined)        
     	//WPP.call.end(call.id);
         //console.log(JSON.stringify(call) );
-        console.log('{"name":"Outgoing_call",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
+        console.log('{"name":"OutgoingCall",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
 });
 
 //Checar se Número Existe e caso Tenha Digito Nove Retorna com o Número acrescido do Digito 9 
