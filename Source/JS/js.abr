@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.36;1.0.0.9;78.3.0
+//2.1.0.37;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,9 +2748,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.3.2-alpha
+//WPPCONNECT v3.3.2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.3.2-alpha.0 */
+/*! wppconnect-team/wa-js v3.3.2 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -7169,7 +7169,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), r(75848), r(85250)
+                }), r(75848)
             },
             75848: function(e, t, r) {
                 "use strict";
@@ -7218,62 +7218,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     })
                 })), void u.CallStore.on("change", (e => {
                     e.getState() === c.CALL_STATES.INCOMING_RING && s.internalEv.emit("call.incoming_call", {
-                        id: e.id,
-                        isGroup: e.isGroup,
-                        isVideo: e.isVideo,
-                        offerTime: e.offerTime,
-                        sender: u.WidFactory.toChatWid(e.peerJid),
-                        peerJid: e.peerJid
-                    })
-                })))))
-            },
-            85250: function(e, t, r) {
-                "use strict";
-                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
-                        void 0 === n && (n = r);
-                        var o = Object.getOwnPropertyDescriptor(t, r);
-                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
-                            enumerable: !0,
-                            get: function() {
-                                return t[r]
-                            }
-                        }), Object.defineProperty(e, n, o)
-                    } : function(e, t, r, n) {
-                        void 0 === n && (n = r), e[n] = t[r]
-                    }),
-                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
-                        Object.defineProperty(e, "default", {
-                            enumerable: !0,
-                            value: t
-                        })
-                    } : function(e, t) {
-                        e.default = t
-                    }),
-                    i = this && this.__importStar || function(e) {
-                        if (e && e.__esModule) return e;
-                        var t = {};
-                        if (null != e)
-                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
-                        return o(t, e), t
-                    };
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                });
-                const s = r(13691),
-                    a = i(r(1132)),
-                    u = r(14647),
-                    c = r(20514);
-                a.onInjected((() => (u.CallStore.on("add", (e => {
-                    e.isGroup && s.internalEv.emit("call.outgoing_call", {
-                        id: e.id,
-                        isGroup: e.isGroup,
-                        isVideo: e.isVideo,
-                        offerTime: e.offerTime,
-                        sender: u.WidFactory.toChatWid(e.peerJid),
-                        peerJid: e.peerJid
-                    })
-                })), void u.CallStore.on("change", (e => {
-                    e.getState() === c.CALL_STATES.OUTGOING_RING && s.internalEv.emit("call.outgoing_call", {
                         id: e.id,
                         isGroup: e.isGroup,
                         isVideo: e.isVideo,
@@ -7348,7 +7292,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r = e ? o.CallStore.get(e) : o.CallStore.findFirst((e => t.includes(e.getState()) || e.isGroup)), !r) throw new n.WPPError("call_not_found", `Call ${e||"<empty>"} not found`, {
                         callId: e
                     });
-                    if (!t.includes(r.getState()) && !r.isGroup) throw new n.WPPError("call_is_not_outgoing_calling", `Call ${e||"<empty>"} is not outgoing calling`, {
+                    if (!t.includes(r.getState()) && !r.isGroup) throw new n.WPPError("call_is_not_outcoming_calling", `Call ${e||"<empty>"} is not incoming calling`, {
                         callId: e,
                         state: r.getState()
                     });
@@ -8495,24 +8439,41 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     d = r(52757);
                 u.onFullReady((function() {
                     (0, l.wrapModuleFunction)(d.createOrUpdateReactions, ((e, ...t) => {
-                        const [r] = t;
-                        for (const e of r) try {
-                            if (e.timestamp < f) continue;
-                            s.internalEv.emitAsync("chat.new_reaction", {
-                                id: c.MsgKey.fromString(e.msgKey),
-                                orphan: e.orphan,
-                                orphanReason: e.orphanReason,
-                                msgId: c.MsgKey.fromString(e.parentMsgKey),
-                                reactionText: e.reactionText,
-                                read: e.read,
-                                sender: (0, a.createWid)(e.senderUserJid),
-                                timestamp: e.timestamp
-                            })
-                        } catch (e) {}
+                        const [r] = t, n = Date.now();
+                        if (Array.isArray(r))
+                            for (const e of r) try {
+                                if (e.t < n) continue;
+                                s.internalEv.emitAsync("chat.new_reaction", {
+                                    id: c.MsgKey.fromString(e.id),
+                                    orphan: e.orphan,
+                                    orphanReason: e.orphanReason,
+                                    msgId: c.MsgKey.fromString(e.reactionParentKey),
+                                    reactionText: e.reactionText,
+                                    read: e.read,
+                                    sender: (0, a.createWid)(e.from),
+                                    timestamp: e.t
+                                })
+                            } catch (e) {} else try {
+                                if (t[1]) {
+                                    if (f[r.msgKey]) return e(...t);
+                                    f[r.msgKey] = r, s.internalEv.emitAsync("chat.new_reaction", {
+                                        id: c.MsgKey.fromString(r.msgKey),
+                                        orphan: r.orphan,
+                                        orphanReason: null,
+                                        msgId: c.MsgKey.fromString(r.parentMsgKey),
+                                        reactionText: r.reactionText,
+                                        read: r.read,
+                                        sender: (0, a.createWid)(r.senderUserJid),
+                                        timestamp: r.t
+                                    }), setTimeout((() => {
+                                        delete f[r.msgKey]
+                                    }), 1e4)
+                                }
+                            } catch (e) {}
                         return e(...t)
                     }))
                 }));
-                const f = Date.now()
+                const f = []
             },
             67147: function(e, t, r) {
                 "use strict";
@@ -13918,7 +13879,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                s(r(26738), t), t.waVersion = "3.3.2-alpha.0";
+                s(r(26738), t), t.waVersion = "3.3.2";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = a.config.googleAnalyticsId ? new l.Tracker(a.config.googleAnalyticsId) : null;
@@ -14157,7 +14118,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.3.2-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.3.2", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -16922,8 +16883,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    createOrUpdateReactions: "createOrUpdateReactions"
-                }, (e => e.createOrUpdateReactions))
+                    createOrUpdateReactions: ["addOrUpdateReactionsModelCollection"]
+                }, (e => e.addOrUpdateReactionsModelCollection))
             },
             25882: (e, t, r) => {
                 "use strict";
@@ -19382,7 +19343,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
-
 
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
