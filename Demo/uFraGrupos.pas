@@ -75,6 +75,8 @@ type
     Label2: TLabel;
     edtIdGrupo: TEdit;
     Label3: TLabel;
+    Button1: TButton;
+    Lbl_InviteCode: TLabel;
     procedure btnCriarGrupoClick(Sender: TObject);
     procedure btnEntrarLinkClick(Sender: TObject);
     procedure btnListarGruposClick(Sender: TObject);
@@ -95,6 +97,7 @@ type
     procedure btnAdminOnlyClick(Sender: TObject);
     procedure btnMsgAllClick(Sender: TObject);
     procedure btnDescricaoGrupoClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -119,6 +122,33 @@ begin
   end;
 
   frDemo.TWPPConnect1.groupLeave(lbl_idGroup.Caption);
+end;
+
+procedure TframeGrupos.Button1Click(Sender: TObject);
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  //edtNovoParticipante
+  if edtNovoParticipante.Text = '' then
+  begin
+    ShowMessage('Informe o ChatID de Destino');
+    Abort;
+  end;
+
+  if lbl_idgroup.caption = '' then
+  begin
+    ShowMessage('Selecione um grupo na lista');
+    Abort;
+  end;
+
+  if Trim(lbl_idGroup.Caption) = '' then
+  begin
+    ShowMessage('Gere o Invite Code do Grupo');
+    Abort;
+  end;
+
+  frDemo.TWPPConnect1.sendGroupInviteMessage(edtNovoParticipante.Text, lbl_idGroup.Caption, Lbl_InviteCode.Caption, '123');
 end;
 
 procedure TframeGrupos.btnMsgAllClick(Sender: TObject);

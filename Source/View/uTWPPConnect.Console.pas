@@ -243,6 +243,8 @@ type
     procedure SendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
+    procedure sendPixKeyMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
 
     procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Add Marcelo 23/05/2024
@@ -361,6 +363,7 @@ type
 
     procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure getGroupInviteLink(vIDGroup: string);
+    procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
     procedure revokeGroupInviteLink(vIDGroup: string);
     procedure setNewName(newName: string);
     procedure setNewStatus(newStatus: string);
@@ -1886,6 +1889,20 @@ begin
   END;
 end;
 
+procedure TFrmConsole.sendGroupInviteMessage(vChatID, vIDGroup, vInviteCode, xSeuID: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_sendGroupInviteMessageNew;
+
+  FrmConsole_JS_AlterVar(LJS, '#CHAT_ID#', Trim(vChatID));
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#INVITE_CODE#', Trim(vInviteCode));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#', Trim(xSeuID));
+
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.sendImageStatus(Content, Options: string);
 var
   Ljs: string;
@@ -2205,6 +2222,32 @@ begin
   If Assigned(OnNotificationCenter) then
      OnNotificationCenter(PValor, '', PSender);
   Application.ProcessMessages;
+end;
+
+procedure TFrmConsole.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  //Adicionado Por Marcelo 06/04/2024
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+
+  options := CaractersQuebraLinha(options);
+
+  if Trim(options) = '' then
+    options := 'createChat: true';
+
+  LJS   := FrmConsole_JS_VAR_sendPixKeyMessageNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',    Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
+  ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.sendRawMessage(phoneNumber, rawMessage, options, etapa: string);
@@ -2871,6 +2914,19 @@ begin
                             //LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
                             //LOutClass2 := TIncomingiCall.Create(LResultStr);
                             LOutClass2 := TIncomingiCall.Create(PResponse.JsonString);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                       end;
+
+    //Marcelo 17/06/2024
+    Th_OutgoingCall :
+                       begin
+                            //LOutClass2 := TResponsesendTextMessage.Create(LResultStr);
+                            //LOutClass2 := TIncomingiCall.Create(LResultStr);
+                            LOutClass2 := TOutgoingCall.Create(PResponse.JsonString);
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally

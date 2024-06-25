@@ -140,6 +140,10 @@ type
   TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
   TGetIncomingiCall          = procedure(Const IncomingiCall: TIncomingiCall) of object;
+
+  //Adicionado por Marcelo 17/06/2024
+  TGetOutgoingCall           = procedure(Const OutgoingCall: TOutgoingCall) of object;
+
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
@@ -282,6 +286,7 @@ type
 
     //Adicionado Por Marcelo 17/06/2022
     FOnGetIncomingiCall    : TGetIncomingiCall;
+    FOnGetOutgoingCall     : TGetOutgoingCall;
 
     FOnGetIsReady: TGetIsReady; //Marcelo 17/09/2022
     FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
@@ -347,6 +352,8 @@ type
       xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Marcelo 06/04/2024
     procedure SendLocationMessageNew(phoneNumber, options: string; xSeuID: string = '';
       xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+
+    procedure sendPixKeyMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = '';
@@ -481,6 +488,7 @@ type
     procedure GetStatusContact(PNumber: String);
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure GetGroupInviteLink(PIDGroup : string);
+    procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
     procedure GetMyNumber;
@@ -574,6 +582,8 @@ type
     property OnWPPMonitorCrash           : TWPPMonitorCrash           read FOnWPPMonitorCrash              write FOnWPPMonitorCrash;
     //Adicionado Por Marcelo 17/06/2022
     property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
+
+    property OnGetOutgoingCall           : TGetOutgoingCall           read FOnGetOutgoingCall              write FOnGetOutgoingCall;
 
     //Marcelo 17/09/2022
     property OnGetIsReady                : TGetIsReady                read FOnGetIsReady                   write FOnGetIsReady;
@@ -3600,6 +3610,7 @@ begin
   Th_sendLocationMessageEx, //Add Marcelo 17/09/2022
   Th_sendVCardContactMessageEx, //Add Marcelo 16/01/2023
   Th_IncomingiCall, //Adicionado por Marcelo 17/06/2022
+  Th_OutgoingCall, //Adicionado por Marcelo 17/06/2024
   Th_sendCreatePollMessageEx]) then //Add por Marcelo 03/05/2024
   Begin
     if not Assigned(PReturnClass) then
@@ -3697,6 +3708,13 @@ begin
     Begin
       if Assigned(OnGetIncomingiCall) then
         OnGetIncomingiCall(TIncomingiCall(PReturnClass));
+    end;
+
+    //Marcelo 17/06/2024
+    If PTypeHeader = Th_OutgoingCall Then
+    Begin
+      if Assigned(OnGetOutgoingCall) then
+        OnGetOutgoingCall(TOutgoingCall(PReturnClass));
     end;
     Exit;
   end;
@@ -4450,7 +4468,7 @@ begin
        '  mimetype: "application/'+LExtension+'"';
   end;
 
-  SendFileMessageEx( phoneNumber, lBase64, options, xSeuID);
+  SendFileMessageEx( phoneNumber, lBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 
 end;
 
@@ -4654,6 +4672,29 @@ begin
 
   SendFileMessageNew( phoneNumber, lBase64, options, xSeuID);
 
+end;
+
+procedure TWPPConnect.sendGroupInviteMessage(vChatID, vIDGroup, vInviteCode, xSeuID: string);
+begin
+  If Application.Terminated Then
+     Exit;
+
+  if not Assigned(FrmConsole) then
+     Exit;
+
+  if Trim(vChatID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vChatID);
+    Exit;
+  end;
+
+  if Trim(vIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    Exit;
+  end;
+
+  FrmConsole.sendGroupInviteMessage(vChatID, vIDGroup, vInviteCode, xSeuID);
 end;
 
 procedure TWPPConnect.sendImageStatus(Content, Options: string);
@@ -4877,14 +4918,14 @@ var
   lThread : TThread;
 begin
   //Adicionado Por Marcelo 01/03/2022
-  If Application.Terminated Then
-     Exit;
+  if Application.Terminated Then
+    Exit;
   if not Assigned(FrmConsole) then
-     Exit;
+    Exit;
 
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
-  Begin
+  begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
@@ -5138,6 +5179,48 @@ begin
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);
@@ -5402,7 +5485,6 @@ procedure TWPPConnect.SendTextMessageNew(phoneNumber, content, options, xSeuID, 
 var
   lThread : TThread;
 begin
-  //temis 03-06-2022
   if Application.Terminated Then
     Exit;
 

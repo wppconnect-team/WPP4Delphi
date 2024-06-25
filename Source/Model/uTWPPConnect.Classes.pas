@@ -1829,6 +1829,28 @@ public
   class function FromJsonString(AJsonString: string): TIncomingiCall;
 end;
 
+TOutgoingCall = class(TClassPadrao)
+private
+  FId: String;
+  FIsGroup: Boolean;
+  FIsVideo: Boolean;
+  FOfferTime: Int64;
+  FPeerJid: String;
+  FSender: String;
+public
+  property id:           String     read FId          write FId;
+  property isGroup:      Boolean    read FIsGroup     write FIsGroup;
+  property isVideo:      Boolean    read FIsVideo     write FIsVideo;
+  property offerTime:    Int64      read FOfferTime   write FOfferTime;
+  property peerJid:      String     read FPeerJid     write FPeerJid;
+  property sender:       String     read FSender      write FSender;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TOutgoingCall;
+end;
+
+
 TQrCodeDesconectouErroCache = class(TClassPadrao)
   private
     FIsErroCache: Boolean;
@@ -3274,6 +3296,8 @@ begin
 end;
 
 function TUrlIndy.GetUrl(const Purl: String): Boolean;
+var
+  LMsg: string;
 begin
   FTImeOutIndy.Interval      := FTimeOut * 1000;
   FTImeOutIndy.Enabled       := False;
@@ -3290,10 +3314,11 @@ begin
       // Added by Aurino 21/01/2023 11:41:35
       //DownLoadInternetFile(TPPConnectJS_ssleay32, 'ssleay32.dll');
       //DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
-      DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Aurino 11/07/2022
       Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
+
+      DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Joffas 24/01/2024
       {if DownLoadInternetFile(Purl, 'js.abr') then
@@ -3302,11 +3327,23 @@ begin
     except
       on E : Exception do
       begin
-        if FShowException then
-        begin
+        LMsg := e.Message;
+        // retentar
+        try
+          LMsg := '';
+
           DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
           DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
-        	if pos(AnsiUpperCase('COULD NOT LOAD SSL'), AnsiUpperCase(e.Message)) > 0 then
+        except
+           on E : Exception do
+           begin
+              LMsg := E.Message;
+           end;
+        end;
+
+        if FShowException and (LMsg <> '') then
+        begin
+        	if pos(AnsiUpperCase('COULD NOT LOAD SSL'), AnsiUpperCase(LMsg)) > 0 then
           begin
              // Aurino 03/03/2023
             {$IFNDEF STANDALONE}
@@ -3318,9 +3355,9 @@ begin
           end
           else
             {$IFNDEF STANDALONE}
-	          Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"'), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
+	          Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + LMsg+'"'), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
             {$ELSE}
-            raise exception.create('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"');
+            raise exception.create('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + LMsg+'"');
             {$ENDIF}
 
         end;
@@ -4079,6 +4116,47 @@ end;
 destructor TIsLogout.Destroy;
 begin
   inherited;
+end;
+
+{ TOutgoingCall }
+
+constructor TOutgoingCall.Create(pAJsonString: string);
+var
+  vJson : string;
+  lAJsonObj: TJSONValue;
+  lAJsonObj2: TJSONValue;
+  lAJsonObj3: TJSONValue;
+  myarr: TJSONArray;
+begin
+  vJson := pAJsonString;
+  lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
+
+  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+  begin
+    vJson := lAJsonObj2.ToJSON;
+    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+    if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+    begin
+      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+      inherited Create(vJson);
+    end;
+  end;
+
+end;
+
+destructor TOutgoingCall.Destroy;
+begin
+  inherited;
+end;
+
+class function TOutgoingCall.FromJsonString(AJsonString: string): TOutgoingCall;
+begin
+  result := TJson.JsonToObject<TOutgoingCall>(AJsonString)
+end;
+
+function TOutgoingCall.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);  result := TJson.ObjectToJsonString(self);
 end;
 
 end.

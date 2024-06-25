@@ -1689,10 +1689,16 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
+          end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
           end
         end
         inherited tsBase64: TTabSheet
@@ -1942,6 +1948,9 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
+          inherited btnDescricaoGrupo: TButton
+            ExplicitTop = 416
+          end
         end
       end
       inherited pnlEsquerda: TPanel
@@ -5702,7 +5711,7 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentAuto = False
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
-      'exos\'
+      'exos\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5734,6 +5743,7 @@ object frDemo: TfrDemo
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
+    OnGetOutgoingCall = TWPPConnect1GetOutgoingCall
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated

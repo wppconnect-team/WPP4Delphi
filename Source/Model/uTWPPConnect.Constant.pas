@@ -199,6 +199,8 @@ Const
   //FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
   FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getInviteCode2("<#GROUP_ID#>");';
 
+  FrmConsole_JS_VAR_sendGroupInviteMessageNew  = 'window.WPP.sendGroupInviteMessageNew("<#CHAT_ID#>","<#GROUP_ID#>","<#INVITE_CODE#>","<#SEUID#>");';
+
   //FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");'; deprecated
   FrmConsole_JS_VAR_removeGroupInviteLink   = 'WPP.group.revokeInviteCode("<#GROUP_ID#>");';
 
@@ -342,6 +344,9 @@ Const
 
   //Marcelo 17/09/2022
   FrmConsole_JS_VAR_sendLocationMessageEx   = 'window.WAPI.sendLocationMessage2Ex("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
+
+  //Marcelo 25/06/2024
+  FrmConsole_JS_VAR_sendPixKeyMessageNew   = 'window.WPP.sendPixKeyMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
 
   FrmConsole_JS_VAR_editMessage         = 'WPP.chat.editMessage("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>} );';
 
@@ -561,6 +566,8 @@ type
                    , Th_deleteMessageNew=82 //Marcelo 26/04/2024
                    , Th_IsLogout=83 //Marcelo 04/05/2024
                    , Th_editMessageNew=84 //Marcelo 23/05/2024
+                   , Th_outgoingCall=85 //Marcelo 17/06/2024
+
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -698,7 +705,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 84; //Marcelo 23/05/2024
+const LmaxCount = 85; //Marcelo 17/06/2024
 var
   I: Integer;
   LNome: String;

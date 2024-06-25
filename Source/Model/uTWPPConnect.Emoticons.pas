@@ -998,6 +998,7 @@ type
     const WhiteHeavyCheckMark = '✅';
     const ThinkingFace = '🤔';
     const Pensador = '🤔';
+    const Gestor = '👨🏻‍💼';
   end;
 
 

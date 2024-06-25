@@ -162,6 +162,7 @@ type
     procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
     procedure TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
     procedure TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
+    procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1253,6 +1254,7 @@ end;
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
   Clipboard.AsText := 'https://chat.whatsapp.com/' + Invite;
+  frameGrupos1.Lbl_InviteCode.Caption := Invite;
   ShowMessage('Link do grupo copiado: ' + 'https://chat.whatsapp.com/' + Invite);
 end;
 procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
@@ -2054,6 +2056,22 @@ begin
 
 
 
+end;
+
+procedure TfrDemo.TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
+begin
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Efetuando Ligação: ' + OutgoingCall.sender;
+  Application.ProcessMessages;
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Efetuando Ligação: sender: ' + OutgoingCall.sender + ' peerJid: ' + OutgoingCall.peerJid + ' isGroup: ' + OutgoingCall.isGroup.ToString() + ' isVideo: ' + OutgoingCall.isVideo.ToString()+
+    ' offerTime: ' + DateTimeToStr(UnixToDateTime(OutgoingCall.offerTime, False)) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  SleepNoFreeze(2000);
+  TWPPConnect1.EndCall(OutgoingCall.id);
+  ShowMessage('Efetuando Ligação: ' + OutgoingCall.sender);
+  TWPPConnect1.SendTextMessageEx(OutgoingCall.sender,'Este Número Não Efetua Ligações!','','Ligação');
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team';
+  Application.ProcessMessages;
 end;
 
 procedure TfrDemo.TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);

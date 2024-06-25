@@ -100,6 +100,7 @@ type
     Button5: TButton;
     btnPoolMessage: TButton;
     btnImageButton: TButton;
+    SendPix: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -154,6 +155,7 @@ type
     procedure Button5Click(Sender: TObject);
     procedure btnPoolMessageClick(Sender: TObject);
     procedure btnImageButtonClick(Sender: TObject);
+    procedure SendPixClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -652,14 +654,8 @@ var
   content, options, options_Figurinha, options_Imagem, options_Audio,
     description, buttontext, menu, menu2, menu3 : string;
   LBase64 : TStringList;
+  S_RETORNO : wideString;
 begin
-  try
-    if Trim(ed_num.Text) = '' then
-    begin
-      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
-      ed_num.SetFocus;
-      Exit;
-    end;
 
     if not frDemo.TWPPConnect1.Auth then
       Exit;
@@ -714,11 +710,6 @@ begin
     finally
       freeAndNil(LBase64);
     end;
-
-  finally
-    ed_num.SelectAll;
-    ed_num.SetFocus;
-  end;
 
 end;
 
@@ -1830,7 +1821,6 @@ begin
     options := '';
     //options := 'isVideo: true'; //Chamada de Video
 
-    //frDemo.TWPPConnect1.sendLinkPreview(ed_num.text, edtUrl.text, options);
     frDemo.TWPPConnect1.SendCall(ed_num.text, options);
 
   finally
@@ -2023,6 +2013,42 @@ begin
     LInput.Free;
     LOutput.Free;
     Imagetxt.Free;
+  end;
+end;
+
+procedure TframeMensagem.SendPixClick(Sender: TObject);
+var
+  options : wideString;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+    //Exemplo Mudar o KeyType para o Tipo de Chave desejado, só enviar em Chat de Usuário, Grupos não vai funcionar
+    options :=
+      'createChat: true, ' +
+      'keyType: "PHONE", ' +{
+          | "CNPJ"
+          | "CPF"
+          | "PHONE"
+          | "EMAIL"
+          | "EVP"}
+      'name: "WPPCONNECT-TEAM", ' +
+      'key: "5517981388414", ' +
+      'instructions: "Pay text for instructions here" ';
+
+    frDemo.TWPPConnect1.sendPixKeyMessageNew(ed_num.Text, options, '123');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
   end;
 end;
 
