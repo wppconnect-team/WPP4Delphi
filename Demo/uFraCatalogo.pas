@@ -8,7 +8,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
   Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.DBCtrls,
-  Vcl.DBCGrids, Vcl.Imaging.pngimage;
+  Vcl.DBCGrids, Vcl.Imaging.pngimage, System.ImageList, Vcl.ImgList;
 
 type
   TframeCatalogo = class(TFrame)
@@ -49,8 +49,14 @@ type
     cdsCatalogot: TStringField;
     cdsCatalogoimagemProduto: TBlobField;
     Image1: TImage;
+    ed_num: TLabeledEdit;
+    btnSendOrder: TButton;
+    ImageList1: TImageList;
+    bChargeOrder: TButton;
     procedure Button1Click(Sender: TObject);
     procedure cdsCatalogoAfterScroll(DataSet: TDataSet);
+    procedure btnSendOrderClick(Sender: TObject);
+    procedure bChargeOrderClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -134,6 +140,75 @@ begin
     end;
   except
     // pra evitar jpeg error por causa do componente do delphi
+  end;
+end;
+
+procedure TframeCatalogo.bChargeOrderClick(Sender: TObject);
+var
+  options, items : wideString;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+
+    items :=
+      'type: "custom", name: "Item de cost test", price: 120000, qnt: 2';
+      //'type: "product", id: "' + cdsCatalogoid.AsString + '", qnt: 1';
+
+    options :=
+      '';
+      //'type: "custom", name: "Item de cost test", price: 120000, qnt: 2';
+
+
+    // Send Order with custom options
+    frDemo.TWPPConnect1.sendOrderMessageNew(ed_num.Text, items, options, '123');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeCatalogo.btnSendOrderClick(Sender: TObject);
+var
+  options, items : wideString;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth then
+      Exit;
+
+
+    items :=
+      //'type: "custom", name: "Item de cost test", price: 120000, qnt: 2';
+      //'type: "product", id: "' + cdsCatalogoid.AsString + '", qnt: 1';
+      'type: "custom", id: "' + cdsCatalogoid.AsString + '", name: "Item test", qnt: 1';
+
+    options :=
+      '';
+      //'type: "custom", name: "Item de cost test", price: 120000, qnt: 2';
+
+
+    // Send Order with custom options
+    frDemo.TWPPConnect1.sendOrderMessageNew(ed_num.Text, items, options, '123');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
   end;
 end;
 

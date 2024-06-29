@@ -354,6 +354,7 @@ type
       xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure sendPixKeyMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendOrderMessageNew(phoneNumber, items, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
     procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = '';
@@ -5179,6 +5180,48 @@ begin
           begin
             //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
             FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+       end);
+
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+
+end;
+
+procedure TWPPConnect.sendOrderMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if pos('@', phoneNumber) = 0 then
+    phoneNumber := SomenteNumero(phoneNumber);
+
+  {phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
+  if pos('@', phoneNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
+    Exit;
+  end;}
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendOrderMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
             //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
           end;
        end);

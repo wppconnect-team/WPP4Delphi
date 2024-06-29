@@ -245,6 +245,8 @@ type
 
     procedure sendPixKeyMessageNew(phoneNumber, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
+    procedure sendOrderMessageNew(phoneNumber, items, options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+
     procedure editMessage(UniqueID, NewMessage, Options: string); //Add Marcelo 15/08/2023
 
     procedure editMessageNew(UniqueID, NewMessage, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Add Marcelo 23/05/2024
@@ -2222,6 +2224,33 @@ begin
   If Assigned(OnNotificationCenter) then
      OnNotificationCenter(PValor, '', PSender);
   Application.ProcessMessages;
+end;
+
+procedure TFrmConsole.sendOrderMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  //Adicionado Por Marcelo 06/04/2024
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+
+  options := CaractersQuebraLinha(options);
+
+  //if Trim(options) = '' then
+    //options := 'createChat: true';
+
+  LJS   := FrmConsole_JS_VAR_sendOrderMessageNew;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',    Trim(phoneNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_ITEMS#',    Trim(items));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',    Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#',   Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',   Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',   Trim(xSeuID4));
+
+  ExecuteJS(LJS, true);
+
 end;
 
 procedure TFrmConsole.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);

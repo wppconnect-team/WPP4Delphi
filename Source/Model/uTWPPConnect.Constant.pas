@@ -348,11 +348,13 @@ Const
   //Marcelo 25/06/2024
   FrmConsole_JS_VAR_sendPixKeyMessageNew   = 'window.WPP.sendPixKeyMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
 
+  //Marcelo 29/06/2024
+  FrmConsole_JS_VAR_sendOrderMessageNew    = 'window.WPP.sendOrderMessageNew("<#MSG_PHONE#>",[{<#MSG_ITEMS#>}], {<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
+
   FrmConsole_JS_VAR_editMessage         = 'WPP.chat.editMessage("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>} );';
 
   FrmConsole_JS_VAR_editMessageNew      = 'window.WPP.editMessageNew("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>"  );';
 
-  //WPP.chat.forwardMessage("91xxxxxx@c.us","true_91xxxxxxxx@c.us_3EB0B2E90C7D0xxxxxx6");
   FrmConsole_JS_VAR_forwardMessage      =  'WPP.chat.forwardMessage("<#MSG_PHONE#>","<#MSG_UNIQUE_ID#>" );';
 
   //Marcelo 25/10/2022
