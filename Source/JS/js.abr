@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.38;1.0.0.9;78.3.0
+//2.1.0.40;1.0.0.9;78.3.0
 //
 //
 
@@ -8860,29 +8860,35 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.getMessageById = async function(e) {
-                    let t = !1;
-                    Array.isArray(e) || (t = !0, e = [e]);
-                    const r = e.map((e => s.MsgKey.fromString(e.toString())));
-                    let n = [];
-                    for (const e of r) {
-                        let t = s.MsgStore.get(e);
-                        if (!t)
-                            if (e.remote.isStatusV3()) t = s.StatusV3Store.getMyStatus().msgs.get(e);
-                            else {
-                                const r = (0, i.assertGetChat)(e.remote);
-                                if (t = r.msgs.get(e), !t) {
-                                    c(`searching remote message with id ${e.toString()}`);
-                                    const n = (0, u.getSearchContext)(r, e);
-                                    await n.collection.loadAroundPromise, t = r.msgs.get(e) || n.collection.get(e)
-                                }
-                            } if (!t) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
-                            id: e.toString()
-                        });
-                        n.push(t)
-                    }
-                    if (n = n.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), t) return n[0];
-                    return n
-                };
+    let t = !1;
+    Array.isArray(e) || (t = !0, e = [e]);
+    const r = e.map((e => s.MsgKey.fromString(e.toString())));
+    let n = [];
+    for (const e of r) {
+        let t = s.MsgStore.get(e);
+        if (!t) {
+            // Verificação alternativa para identificar se é Status V3
+            const isStatusV3 = e.remote.type === "status"; // ajuste conforme a lógica que você definir
+
+            if (isStatusV3) {
+                t = s.StatusV3Store.getMyStatus().msgs.get(e);
+            } else {
+                const r = (0, i.assertGetChat)(e.remote);
+                if (t = r.msgs.get(e), !t) {
+                    c(`searching remote message with id ${e.toString()}`);
+                    const n = (0, u.getSearchContext)(r, e);
+                    await n.collection.loadAroundPromise, t = r.msgs.get(e) || n.collection.get(e);
+                }
+            }
+        } 
+        if (!t) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
+            id: e.toString()
+        });
+        n.push(t);
+    }
+    if (n = n.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), t) return n[0];
+    return n;
+};
                 const o = n(r(17833)),
                     i = r(41687),
                     a = r(62857),
@@ -8979,7 +8985,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         id: e.quotedStanzaID,
                         fromMe: a,
                         remote: r,
-                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || i.Wid.isStatusV3(r) ? e.quotedParticipant : void 0
+                        //participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || i.Wid.isStatusV3(r) ? e.quotedParticipant : void 0
+                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || (i.Wid.isStatusV3 ? i.Wid.isStatusV3(r) : undefined) ? e.quotedParticipant : void 0
                     })
                 };
                 const n = r(72927),
@@ -22395,6 +22402,107 @@ window.WPP.sendPixKeyMessageNew = async function (wid, params, xSeuID = '', xSeu
         Seuid3: xSeuID3,
         Seuid4: xSeuID4,
         RetEvent: "sendPixKeyMessageNew",
+        statusCode: 303,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+    }
+    
+    return null;
+  }
+};
+
+//Marcelo 29/06/2024
+window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  var isGroup = wid.includes('@g.us');
+  try {
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+
+    if (validar !== null && validar !== undefined) {
+      let result;   
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
+
+      result = await WPP.chat.sendOrderMessage(validar.wid._serialized, items, options);
+
+      if (result !== undefined && result !== null) {
+        //return result;
+
+        try {
+          Obj = {
+            Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
+            JsonMessage: JSON.stringify(result),
+          };
+
+          SetConsoleMessage("sendTextMessageEx", JSON.stringify(Obj));
+        } catch (err) {
+          console.log(err);
+        }
+        return result;
+      } else {
+        //console.error("A mensagem não pode ser enviada.");        
+        var RetError = "A mensagem não pode ser enviada.";
+        Obj = {
+          chatid: wid,
+          Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
+          RetEvent: "sendOrderMessageNew",
+          statusCode: 300,
+          Error: RetError,
+        };
+        SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+        //return error;
+
+        return null;
+      }
+    } else {
+      //console.error("O contato não existe ou é inválido.");
+      var RetError = "O contato não existe ou é inválido.";
+      Obj = {
+        chatid: wid,
+        Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
+        RetEvent: "sendOrderMessageNew",
+        statusCode: 301,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+
+      return null;
+    }
+  } catch (error) {
+    // Verificar se o erro Ã© causado pelo contato bloqueado
+    if (error.name === "ContactBlocked") {
+      //console.log("Contato está bloqueado");      
+      var RetError = "Contato está bloqueado.";
+      Obj = {
+        chatid: wid,
+        Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
+        RetEvent: "sendOrderMessageNew",
+        statusCode: 302,
+        Error: RetError,
+      };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+    } else {
+      
+      var RetError = error.message ? error.message : (error.stack || "Unknown Error");
+      Obj = {
+        chatid: wid,
+        Seuid: xSeuID,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
+        RetEvent: "sendOrderMessageNew",
         statusCode: 303,
         Error: RetError,
       };
