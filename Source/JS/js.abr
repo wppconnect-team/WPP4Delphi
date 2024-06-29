@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.38;1.0.0.9;78.3.0
+//2.1.0.39;1.0.0.9;78.3.0
 //
 //
 
@@ -8860,29 +8860,35 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.getMessageById = async function(e) {
-                    let t = !1;
-                    Array.isArray(e) || (t = !0, e = [e]);
-                    const r = e.map((e => s.MsgKey.fromString(e.toString())));
-                    let n = [];
-                    for (const e of r) {
-                        let t = s.MsgStore.get(e);
-                        if (!t)
-                            if (e.remote.isStatusV3()) t = s.StatusV3Store.getMyStatus().msgs.get(e);
-                            else {
-                                const r = (0, i.assertGetChat)(e.remote);
-                                if (t = r.msgs.get(e), !t) {
-                                    c(`searching remote message with id ${e.toString()}`);
-                                    const n = (0, u.getSearchContext)(r, e);
-                                    await n.collection.loadAroundPromise, t = r.msgs.get(e) || n.collection.get(e)
-                                }
-                            } if (!t) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
-                            id: e.toString()
-                        });
-                        n.push(t)
-                    }
-                    if (n = n.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), t) return n[0];
-                    return n
-                };
+    let t = !1;
+    Array.isArray(e) || (t = !0, e = [e]);
+    const r = e.map((e => s.MsgKey.fromString(e.toString())));
+    let n = [];
+    for (const e of r) {
+        let t = s.MsgStore.get(e);
+        if (!t) {
+            // Verificação alternativa para identificar se é Status V3
+            const isStatusV3 = e.remote.type === "status"; // ajuste conforme a lógica que você definir
+
+            if (isStatusV3) {
+                t = s.StatusV3Store.getMyStatus().msgs.get(e);
+            } else {
+                const r = (0, i.assertGetChat)(e.remote);
+                if (t = r.msgs.get(e), !t) {
+                    c(`searching remote message with id ${e.toString()}`);
+                    const n = (0, u.getSearchContext)(r, e);
+                    await n.collection.loadAroundPromise, t = r.msgs.get(e) || n.collection.get(e);
+                }
+            }
+        } 
+        if (!t) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
+            id: e.toString()
+        });
+        n.push(t);
+    }
+    if (n = n.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), t) return n[0];
+    return n;
+};
                 const o = n(r(17833)),
                     i = r(41687),
                     a = r(62857),
@@ -8979,7 +8985,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         id: e.quotedStanzaID,
                         fromMe: a,
                         remote: r,
-                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || i.Wid.isStatusV3(r) ? e.quotedParticipant : void 0
+                        //participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || i.Wid.isStatusV3(r) ? e.quotedParticipant : void 0
+                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || (i.Wid.isStatusV3 ? i.Wid.isStatusV3(r) : undefined) ? e.quotedParticipant : void 0
                     })
                 };
                 const n = r(72927),
