@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.40;1.0.0.9;78.3.0
+//2.1.0.41;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,9 +2748,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.4.1
+//WPPCONNECT v3.4.2 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.4.1 */
+/*! wppconnect-team/wa-js v3.4.2-alpha.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -2895,7 +2895,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return r;
                         case "utf8":
                         case "utf-8":
-                            return V(e).length;
+                            return $(e).length;
                         case "ucs2":
                         case "ucs-2":
                         case "utf16le":
@@ -2906,7 +2906,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "base64":
                             return K(e).length;
                         default:
-                            if (o) return n ? -1 : V(e).length;
+                            if (o) return n ? -1 : $(e).length;
                             t = ("" + t).toLowerCase(), o = !0
                     }
                 }
@@ -3004,7 +3004,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function M(e, t, r, n) {
-                    return J(V(t, e.length - r), e, r, n)
+                    return J($(t, e.length - r), e, r, n)
                 }
 
                 function P(e, t, r, n) {
@@ -3564,9 +3564,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         o = r;
                     return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = W(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = W(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
                 }), RangeError);
-                const $ = /[^+/0-9A-Za-z-_]/g;
+                const V = /[^+/0-9A-Za-z-_]/g;
 
-                function V(e, t) {
+                function $(e, t) {
                     let r;
                     t = t || 1 / 0;
                     const n = e.length;
@@ -3612,7 +3612,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function K(e) {
                     return n.toByteArray(function(e) {
-                        if ((e = (e = e.split("=")[0]).trim().replace($, "")).length < 2) return "";
+                        if ((e = (e = e.split("=")[0]).trim().replace(V, "")).length < 2) return "";
                         for (; e.length % 4 != 0;) e += "=";
                         return e
                     }(e))
@@ -4159,9 +4159,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     G = -(I = Math.floor(x(Math.min(Math.max(I, O), M)))) / 2,
                                     q = S,
                                     z = I,
-                                    $ = [];
+                                    V = [];
                                 if (v) {
-                                    var V = 0,
+                                    var $ = 0,
                                         K = 0,
                                         J = r,
                                         H = n,
@@ -4173,9 +4173,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             contain: "cover",
                                             cover: "contain"
                                         } [p.resize]);
-                                    J = Q.width, H = Q.height, V = (r - J) / 2, K = (n - H) / 2, $.push(V, K, J, H)
+                                    J = Q.width, H = Q.height, $ = (r - J) / 2, K = (n - H) / 2, V.push($, K, J, H)
                                 }
-                                if ($.push(W, G, q, z), b) {
+                                if (V.push(W, G, q, z), b) {
                                     var Y = [I, S];
                                     S = Y[0], I = Y[1]
                                 }
@@ -4183,7 +4183,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 var Z = "transparent";
                                 d.size > p.convertSize && p.convertTypes.indexOf(p.mimeType) >= 0 && (p.mimeType = "image/jpeg");
                                 var X = "image/jpeg" === p.mimeType;
-                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, S, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(S / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat($)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
+                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, S, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(S / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat(V)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
                                     var ee = function(e) {
                                         if (!t.aborted) {
                                             var o = function(e) {
@@ -8860,35 +8860,31 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.getMessageById = async function(e) {
-    let t = !1;
-    Array.isArray(e) || (t = !0, e = [e]);
-    const r = e.map((e => s.MsgKey.fromString(e.toString())));
-    let n = [];
-    for (const e of r) {
-        let t = s.MsgStore.get(e);
-        if (!t) {
-            // Verificação alternativa para identificar se é Status V3
-            const isStatusV3 = e.remote.type === "status"; // ajuste conforme a lógica que você definir
-
-            if (isStatusV3) {
-                t = s.StatusV3Store.getMyStatus().msgs.get(e);
-            } else {
-                const r = (0, i.assertGetChat)(e.remote);
-                if (t = r.msgs.get(e), !t) {
-                    c(`searching remote message with id ${e.toString()}`);
-                    const n = (0, u.getSearchContext)(r, e);
-                    await n.collection.loadAroundPromise, t = r.msgs.get(e) || n.collection.get(e);
-                }
-            }
-        } 
-        if (!t) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
-            id: e.toString()
-        });
-        n.push(t);
-    }
-    if (n = n.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), t) return n[0];
-    return n;
-};
+                    var t, r, n, o;
+                    let l = !1;
+                    Array.isArray(e) || (l = !0, e = [e]);
+                    const d = e.map((e => s.MsgKey.fromString(e.toString())));
+                    let f = [];
+                    for (const e of d) {
+                        let l = s.MsgStore.get(e);
+                        const d = "function" == typeof(null === (t = e.remote) || void 0 === t ? void 0 : t.isStatusV3) ? null === (r = e.remote) || void 0 === r ? void 0 : r.isStatusV3() : null === (o = null === (n = e.remote) || void 0 === n ? void 0 : n.toString()) || void 0 === o ? void 0 : o.includes("status@broadcast");
+                        if (!l)
+                            if (d) l = s.StatusV3Store.getMyStatus().msgs.get(e);
+                            else {
+                                const t = (0, i.assertGetChat)(e.remote);
+                                if (l = t.msgs.get(e), !l) {
+                                    c(`searching remote message with id ${e.toString()}`);
+                                    const r = (0, u.getSearchContext)(t, e);
+                                    await r.collection.loadAroundPromise, l = t.msgs.get(e) || r.collection.get(e)
+                                }
+                            } if (!l) throw c(`message id ${e.toString()} not found`), new a.WPPError("msg_not_found", `Message ${e.toString()} not found`, {
+                            id: e.toString()
+                        });
+                        f.push(l)
+                    }
+                    if (f = f.map((e => e instanceof s.MsgModel ? e : s.MsgStore.get(e) || new s.MsgModel(e))), l) return f[0];
+                    return f
+                };
                 const o = n(r(17833)),
                     i = r(41687),
                     a = r(62857),
@@ -8980,13 +8976,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         id: e.id
                     });
                     const r = e.quotedRemoteJid ? e.quotedRemoteJid : e.id.remote,
-                        a = (null === (t = (0, n.getMyUserId)()) || void 0 === t ? void 0 : t.equals(e.quotedParticipant)) || !1;
+                        a = (null === (t = (0, n.getMyUserId)()) || void 0 === t ? void 0 : t.equals(e.quotedParticipant)) || !1,
+                        s = "function" == typeof i.Wid.isStatusV3 ? i.Wid.isStatusV3(r) : i.Wid.isStatus(r);
                     return new i.MsgKey({
                         id: e.quotedStanzaID,
                         fromMe: a,
                         remote: r,
-                        //participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || i.Wid.isStatusV3(r) ? e.quotedParticipant : void 0
-                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || (i.Wid.isStatusV3 ? i.Wid.isStatusV3(r) : undefined) ? e.quotedParticipant : void 0
+                        participant: i.Wid.isGroup(e.from) || i.Wid.isGroup(e.to) || s ? e.quotedParticipant : void 0
                     })
                 };
                 const n = r(72927),
@@ -9379,18 +9375,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return z.sendCreatePollMessage
                     }
                 });
-                var $ = r(24654);
+                var V = r(24654);
                 Object.defineProperty(t, "sendFileMessage", {
                     enumerable: !0,
                     get: function() {
-                        return $.sendFileMessage
+                        return V.sendFileMessage
                     }
                 });
-                var V = r(40954);
+                var $ = r(40954);
                 Object.defineProperty(t, "sendGroupInviteMessage", {
                     enumerable: !0,
                     get: function() {
-                        return V.sendGroupInviteMessage
+                        return $.sendGroupInviteMessage
                     }
                 });
                 var K = r(35184);
@@ -13894,7 +13890,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.4.1";
+                a(r(26738), t), t.waVersion = "3.4.2-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14125,7 +14121,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.4.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.4.2-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -17612,13 +17608,30 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                const a = i(r(1132)),
-                    s = r(54993),
-                    u = r(97718);
-                (0, s.exportModule)(t, {
+                const a = r(38385),
+                    s = i(r(1132)),
+                    u = r(54993),
+                    c = r(97718);
+                (0, u.exportModule)(t, {
                     sendCreateGroup: "sendCreateGroup"
-                }, (e => e.sendCreateGroup)), a.injectFallbackModule("sendCreateGroup", {
-                    sendCreateGroup: async (e, t, r, n) => await (0, u.createGroup)(e, t, r, n).then((e => ({
+                }, (e => e.sendCreateGroup)), s.injectFallbackModule("sendCreateGroup", {
+                    sendCreateGroup: async (e, t, r, n) => (0, a.compare)(self.Debug.VERSION, "2.3000.1014489107", ">=") ? await (0, c.createGroup)({
+                        title: e,
+                        ephemeralDuration: r || 0,
+                        restrict: !0,
+                        announce: !0,
+                        membershipApprovalMode: !1,
+                        memberAddMode: !0,
+                        parentGroupId: n
+                    }, t).then((e => ({
+                        gid: e.wid,
+                        participants: e.participants.map((e => ({
+                            userWid: e.wid,
+                            code: null != e.error ? e.error.toString() : "200",
+                            invite_code: e.invite_code,
+                            invite_code_exp: e.invite_code_exp
+                        })))
+                    }))) : await (0, c.createGroup)(e, t, r, n).then((e => ({
                         gid: e.wid,
                         participants: e.participants.map((e => ({
                             userWid: e.wid,
