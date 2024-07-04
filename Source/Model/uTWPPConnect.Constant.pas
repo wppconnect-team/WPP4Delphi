@@ -569,6 +569,7 @@ type
                    , Th_IsLogout=83 //Marcelo 04/05/2024
                    , Th_editMessageNew=84 //Marcelo 23/05/2024
                    , Th_outgoingCall=85 //Marcelo 17/06/2024
+                   , Th_GetEnvneedsUpdate=86 //Marcelo 03/07/2024
 
                    );
 
@@ -707,7 +708,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 85; //Marcelo 17/06/2024
+const LmaxCount = 86; //Marcelo 03/07/2024
 var
   I: Integer;
   LNome: String;

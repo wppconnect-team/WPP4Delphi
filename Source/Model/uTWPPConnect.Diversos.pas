@@ -189,7 +189,7 @@ function CaractersWeb(vText: string): string;
 begin
   vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
   vText  := StringReplace(vText, '\n', sLineBreak, [rfReplaceAll] );
-  vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
+  //vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
   vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br />'  ,' \n' , [rfReplaceAll] );
@@ -206,7 +206,7 @@ function CaractersQuebraLinha(vText: string): string;
 begin
   vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
   vText  := StringReplace(vText, '\n', sLineBreak, [rfReplaceAll] );
-  vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
+  //vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
   vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br />'  ,' \n' , [rfReplaceAll] );

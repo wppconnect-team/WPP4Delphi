@@ -1784,6 +1784,15 @@ public
   destructor  Destroy;
 end;
 
+TEnvneedsUpdate = class(TClassPadrao)
+private
+  FneedsUpdate: Boolean;
+public
+  property needsUpdate:      Boolean    read FneedsUpdate     write FneedsUpdate;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
 TTotalChatsUserRead = class(TClassPadrao)
 private
   Ftotalchats: Integer;
@@ -4157,6 +4166,20 @@ end;
 function TOutgoingCall.ToJsonString: string;
 begin
   result := TJson.ObjectToJsonString(self);  result := TJson.ObjectToJsonString(self);
+end;
+
+{ EnvneedsUpdate }
+
+constructor TEnvneedsUpdate.Create(pAJsonString: string);
+begin
+  if pos('true', pAJsonString) > 0 then
+    FneedsUpdate := True else
+    FneedsUpdate := False;
+end;
+
+destructor TEnvneedsUpdate.Destroy;
+begin
+  inherited;
 end;
 
 end.

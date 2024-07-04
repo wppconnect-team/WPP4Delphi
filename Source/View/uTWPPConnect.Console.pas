@@ -2776,6 +2776,16 @@ begin
                             end;
                          end;
 
+    //Marcelo 03/07/2024
+    Th_GetEnvneedsUpdate   : begin
+                            LOutClass2 := TEnvneedsUpdate.Create(LResultStr);
+                            try
+                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                            finally
+                              FreeAndNil(LOutClass2);
+                            end;
+                         end;
+
     //Marcelo 22/10/2023
     Th_GetTotalChatsUserRead   : begin
                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT

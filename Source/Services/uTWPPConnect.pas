@@ -150,6 +150,7 @@ type
   TGetIsLogout               = Procedure(Sender : TObject; IsLogout: Boolean) of object; //Marcelo 18/08/2022
   TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
   TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
+  TGetEnvneedsUpdate         = Procedure(Response : TEnvneedsUpdate) of object; //Marcelo 03/05/2023
   TGetList                   = Procedure(Sender : TObject; ChatsList: TGetChatList) of object;  //Daniel 26/10/2022
 
   TWPPConnect = class(TComponent)
@@ -294,6 +295,7 @@ type
 
     FOnGetIsOnline: TGetIsOnline; //Marcelo 03/05/2023
     FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
+    FOnGetEnvneedsUpdate: TGetEnvneedsUpdate; //Marcelo 03/07/2024
     FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
@@ -597,6 +599,9 @@ type
     //Marcelo 03/05/2023
     property OnGetIsOnline               : TGetIsOnline               read FOnGetIsOnline                  write FOnGetIsOnline;
     property OnGetEnvIsOnline            : TGetEnvIsOnline            read FOnGetEnvIsOnline               write FOnGetEnvIsOnline;
+
+    //Marcelo 03/07/2024
+    property OnGetEnvneedsUpdate         : TGetEnvneedsUpdate         read FOnGetEnvneedsUpdate            write FOnGetEnvneedsUpdate;
 
     property OnGetListChat               : TGetList                   read FOnGetListChat                  write FOnGetListChat;
     property OnGetMessageACK             : TOnGetMessageACK           read FOnGetMessageACK                write FOnGetMessageACK; //Marcelo 19/03/2023
@@ -3598,6 +3603,11 @@ begin
       OnGetEnvIsOnline( TEnvIsOnline(PReturnClass));
   end;
 
+  if PTypeHeader = Th_getEnvneedsUpdate then
+  Begin
+    if Assigned(OnGetEnvneedsUpdate) then
+      OnGetEnvneedsUpdate( TEnvneedsUpdate(PReturnClass));
+  end;
 
   if PTypeHeader = Th_getMessageACK then
   begin
