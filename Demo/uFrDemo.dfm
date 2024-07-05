@@ -5711,7 +5711,7 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentAuto = False
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
-      'exos\TWPPConnectAnexos\TWPPConnectAnexos\'
+      'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5750,6 +5750,7 @@ object frDemo: TfrDemo
     OnGetIsLogout = TWPPConnect1GetIsLogout
     OnGetIsOnline = TWPPConnect1GetIsOnline
     OnGetEnvIsOnline = TWPPConnect1GetEnvIsOnline
+    OnGetEnvneedsUpdate = TWPPConnect1GetEnvneedsUpdate
     OnGetListChat = TWPPConnect1GetListChat
     OnGetMessageACK = TWPPConnect1GetMessageACK
     OnRetErrorWhiteScreen = TWPPConnect1RetErrorWhiteScreen

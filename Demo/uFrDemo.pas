@@ -163,6 +163,7 @@ type
     procedure TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
     procedure TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
     procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
+    procedure TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -378,7 +379,6 @@ procedure TfrDemo.BitBtn1Click(Sender: TObject);
 begin
   try
     TWPPConnect1.RebootWPP;
-    //FrmConsole.RebootChromium;
   except on E: Exception do
   end;
 end;
@@ -1214,6 +1214,23 @@ begin
     frameLogin1.SpeedButton3.Enabled := True;
     StatusBar1.Panels[1].Text := 'Offline';
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
+begin
+  if Response.needsUpdate then
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Needs Update"');
+
+    ShowMessage('"Needs Update" Reiniciar para Obter a Versão Nova do WhatsAppWeb');
+
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reiniciar para Obter a Versão Nova');
+    try
+      TWPPConnect1.RebootWPP;
+    except on E: Exception do
+    end;
+  end;
+
 end;
 
 procedure TfrDemo.TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
