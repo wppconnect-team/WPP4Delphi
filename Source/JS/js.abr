@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.43;1.0.0.9;78.3.0
+//2.1.0.44;1.0.0.9;78.3.0
 //
 //
 
@@ -22691,7 +22691,10 @@ window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '
 };
 
 //Marcelo 10/07/2024
-WPP.on('conn.logout_reason', (data) => {    
-    SetConsoleMessage("logout_reason", Json.stringfy(data));
-    //console.log(data);
+WPP.on('conn.logout_reason', (data) => {
+    if (data !== undefined) {
+		var obj = data; //{return_logout_reason:data};
+		console.log(data);
+		SetConsoleMessage("logout_reason", Json.stringfy(obj));
+    }
 });
