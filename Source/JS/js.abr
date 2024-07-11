@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.42;1.0.0.9;78.3.0
+//2.1.0.43;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,9 +2748,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.4.2 alphax1
+//WPPCONNECT v3.4.2*
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.4.1 */
+/*! wppconnect-team/wa-js v3.4.2 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -11358,7 +11358,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), r(21899), r(87589), r(75676), r(77679), r(26), r(28952), r(19516), r(80739), r(96498), r(17459)
+                }), r(21899), r(87589), r(75676), r(83400), r(77679), r(26), r(28952), r(19516), r(80739), r(96498), r(17459)
             },
             21899: function(e, t, r) {
                 "use strict";
@@ -11488,6 +11488,49 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(14647);
                 s.onInjected((function() {
                     u.Cmd.on("logout", (() => a.internalEv.emit("conn.logout")))
+                }))
+            },
+            83400: function(e, t, r) {
+                "use strict";
+                var n = this && this.__createBinding || (Object.create ? function(e, t, r, n) {
+                        void 0 === n && (n = r);
+                        var o = Object.getOwnPropertyDescriptor(t, r);
+                        o && !("get" in o ? !t.__esModule : o.writable || o.configurable) || (o = {
+                            enumerable: !0,
+                            get: function() {
+                                return t[r]
+                            }
+                        }), Object.defineProperty(e, n, o)
+                    } : function(e, t, r, n) {
+                        void 0 === n && (n = r), e[n] = t[r]
+                    }),
+                    o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                        Object.defineProperty(e, "default", {
+                            enumerable: !0,
+                            value: t
+                        })
+                    } : function(e, t) {
+                        e.default = t
+                    }),
+                    i = this && this.__importStar || function(e) {
+                        if (e && e.__esModule) return e;
+                        var t = {};
+                        if (null != e)
+                            for (var r in e) "default" !== r && Object.prototype.hasOwnProperty.call(e, r) && n(t, e, r);
+                        return o(t, e), t
+                    };
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                const a = r(13691),
+                    s = i(r(1132)),
+                    u = r(54993),
+                    c = r(52757);
+                s.onInjected((function() {
+                    (0, u.wrapModuleFunction)(c.getErrorCodeFromLogoutReason, ((e, ...t) => {
+                        const [r] = t;
+                        return a.internalEv.emit("conn.logout_reason", r), e(...t)
+                    }))
                 }))
             },
             77679: function(e, t, r) {
@@ -13926,7 +13969,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.4.1";
+                a(r(26738), t), t.waVersion = "3.4.2";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14157,7 +14200,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.4.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.4.2", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -16399,8 +16442,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    LogoutReason: "LogoutReason"
-                }, (e => e.LogoutReason))
+                    LogoutReason: "LogoutReason",
+                    LOGOUT_REASON_CODE: "LOGOUT_REASON_CODE"
+                }, (e => e.LogoutReason && e.LOGOUT_REASON_CODE))
             },
             48486: (e, t, r) => {
                 "use strict";
@@ -17137,6 +17181,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     getEphemeralFields: "getEphemeralFields"
                 }, (e => e.getEphemeralFields))
             },
+            89168: (e, t, r) => {
+                "use strict";
+                Object.defineProperty(t, "__esModule", {
+                    value: !0
+                });
+                (0, r(54993).exportModule)(t, {
+                    getErrorCodeFromLogoutReason: "getErrorCodeFromLogoutReason"
+                }, (e => e.getErrorCodeFromLogoutReason))
+            },
             86362: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -17360,7 +17413,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(72116), t), o(r(19885), t), o(r(55889), t), o(r(50854), t), o(r(22328), t), o(r(29697), t), o(r(77082), t), o(r(71274), t), o(r(4525), t), o(r(58652), t), o(r(71400), t), o(r(37300), t), o(r(95612), t), o(r(97718), t), o(r(7967), t), o(r(28940), t), o(r(48441), t), o(r(25882), t), o(r(51137), t), o(r(85882), t), o(r(82641), t), o(r(4375), t), o(r(16877), t), o(r(53008), t), o(r(32), t), o(r(61158), t), o(r(34040), t), o(r(6357), t), o(r(34324), t), o(r(49035), t), o(r(95554), t), o(r(64538), t), o(r(43593), t), o(r(85541), t), o(r(47440), t), o(r(25602), t), o(r(95524), t), o(r(92538), t), o(r(42930), t), o(r(19553), t), o(r(79731), t), o(r(92787), t), o(r(86362), t), o(r(58084), t), o(r(66852), t), o(r(6281), t), o(r(54616), t), o(r(78943), t), o(r(52385), t), o(r(21236), t), o(r(29473), t), o(r(55631), t), o(r(65130), t), o(r(21427), t), o(r(23749), t), o(r(73890), t), o(r(44804), t), o(r(22696), t), o(r(41968), t), o(r(11782), t), o(r(70772), t), o(r(2058), t), o(r(96954), t), o(r(89336), t), o(r(35454), t), o(r(28690), t), o(r(3318), t), o(r(1009), t), o(r(34601), t), o(r(97153), t), o(r(27981), t), o(r(24369), t), o(r(33750), t), o(r(33750), t), o(r(87071), t), o(r(946), t), o(r(64119), t), o(r(43002), t), o(r(74323), t), o(r(92111), t), o(r(14877), t), o(r(6678), t), o(r(58625), t), o(r(65005), t), o(r(65512), t), o(r(35154), t), o(r(51262), t), o(r(9534), t), o(r(90087), t), o(r(40469), t), o(r(33433), t), o(r(18827), t), o(r(1703), t), o(r(28081), t), o(r(76030), t), o(r(72110), t), o(r(42556), t), o(r(99544), t), o(r(10200), t), o(r(11370), t), o(r(67047), t), o(r(7882), t), o(r(37008), t), o(r(2571), t), o(r(54649), t), o(r(63028), t), o(r(17472), t), o(r(40502), t), o(r(97920), t), o(r(98927), t), o(r(43410), t), o(r(59502), t), o(r(34910), t), o(r(35603), t), o(r(83019), t), o(r(3424), t), o(r(80214), t), o(r(958), t), o(r(54530), t), o(r(84236), t), o(r(50481), t), o(r(69758), t), o(r(21475), t), o(r(88570), t), o(r(26206), t), o(r(43068), t), o(r(76418), t), o(r(99481), t), o(r(42547), t)
+                }), o(r(72116), t), o(r(19885), t), o(r(55889), t), o(r(50854), t), o(r(22328), t), o(r(29697), t), o(r(77082), t), o(r(71274), t), o(r(4525), t), o(r(58652), t), o(r(71400), t), o(r(37300), t), o(r(95612), t), o(r(97718), t), o(r(7967), t), o(r(28940), t), o(r(48441), t), o(r(25882), t), o(r(51137), t), o(r(85882), t), o(r(82641), t), o(r(4375), t), o(r(16877), t), o(r(53008), t), o(r(32), t), o(r(61158), t), o(r(34040), t), o(r(6357), t), o(r(34324), t), o(r(49035), t), o(r(95554), t), o(r(64538), t), o(r(43593), t), o(r(85541), t), o(r(47440), t), o(r(25602), t), o(r(95524), t), o(r(92538), t), o(r(42930), t), o(r(19553), t), o(r(79731), t), o(r(92787), t), o(r(89168), t), o(r(86362), t), o(r(58084), t), o(r(66852), t), o(r(6281), t), o(r(54616), t), o(r(78943), t), o(r(52385), t), o(r(21236), t), o(r(29473), t), o(r(55631), t), o(r(65130), t), o(r(21427), t), o(r(23749), t), o(r(73890), t), o(r(44804), t), o(r(22696), t), o(r(41968), t), o(r(11782), t), o(r(70772), t), o(r(2058), t), o(r(96954), t), o(r(89336), t), o(r(35454), t), o(r(28690), t), o(r(3318), t), o(r(1009), t), o(r(34601), t), o(r(97153), t), o(r(27981), t), o(r(24369), t), o(r(33750), t), o(r(33750), t), o(r(87071), t), o(r(946), t), o(r(64119), t), o(r(43002), t), o(r(74323), t), o(r(92111), t), o(r(14877), t), o(r(6678), t), o(r(58625), t), o(r(65005), t), o(r(65512), t), o(r(35154), t), o(r(51262), t), o(r(9534), t), o(r(90087), t), o(r(40469), t), o(r(33433), t), o(r(18827), t), o(r(1703), t), o(r(28081), t), o(r(76030), t), o(r(72110), t), o(r(42556), t), o(r(99544), t), o(r(10200), t), o(r(11370), t), o(r(67047), t), o(r(7882), t), o(r(37008), t), o(r(2571), t), o(r(54649), t), o(r(63028), t), o(r(17472), t), o(r(40502), t), o(r(97920), t), o(r(98927), t), o(r(43410), t), o(r(59502), t), o(r(34910), t), o(r(35603), t), o(r(83019), t), o(r(3424), t), o(r(80214), t), o(r(958), t), o(r(54530), t), o(r(84236), t), o(r(50481), t), o(r(69758), t), o(r(21475), t), o(r(88570), t), o(r(26206), t), o(r(43068), t), o(r(76418), t), o(r(99481), t), o(r(42547), t)
             },
             89336: (e, t, r) => {
                 "use strict";
@@ -22636,3 +22689,9 @@ window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '
     return null;
   }
 };
+
+//Marcelo 10/07/2024
+WPP.on('conn.logout_reason', (data) => {    
+    SetConsoleMessage("logout_reason", Json.stringfy(data));
+    //console.log(data);
+});
