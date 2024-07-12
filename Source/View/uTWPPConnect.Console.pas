@@ -2812,6 +2812,19 @@ begin
                             end;
                         end;
 
+    //Marcelo 11/07/2024
+    Th_logout_reason   : begin
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                           LOutClass := Tlogout_reason.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;
+                         end;
+
     //Marcelo 30/10/2023
     Th_GetgenLinkDeviceCodeForPhoneNumber   :
                         begin

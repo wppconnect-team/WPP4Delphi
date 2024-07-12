@@ -164,6 +164,7 @@ type
     procedure TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
     procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
     procedure TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
+    procedure TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1356,7 +1357,6 @@ begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
     lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
   end;
-
 end;
 
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
@@ -1530,6 +1530,21 @@ begin
 
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('logout_reason: ' + logout_reason.response);
+
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+
+  ShowMessage('Conexão foi finalizada / Connection has been closed!' + #13#10#13#10 + logout_reason.response);
 end;
 
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);

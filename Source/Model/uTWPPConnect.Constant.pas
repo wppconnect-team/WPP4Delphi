@@ -331,7 +331,7 @@ Const
   FrmConsole_JS_VAR_SendFileMessageNew   = 'window.WPP.SendFileMessageNew("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>");';
   FrmConsole_JS_VAR_SendListMessageNew   = 'window.WPP.SendListMessageNew("<#MSG_PHONE#>",{<#MSG_MENU#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>");';
   FrmConsole_JS_VAR_SendVCardContactMessageNew  = 'window.WPP.sendVCardContactMessageNew("<#MSG_PHONE_DEST#>","<#MSG_PHONE#>", {} ,"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>");';
-  FrmConsole_JS_VAR_SendLocationMessageNew   = 'window.WPP.SendLocationMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>,"<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_SendLocationMessageNew   = 'window.WPP.SendLocationMessageNew("<#MSG_PHONE#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
   //TEMIS 03-06-2022 Obtendo Retorno do Envio com SeuID
   FrmConsole_JS_VAR_SendTextMessageEx   = 'window.WAPI.sendTextMessage2Ex("<#MSG_PHONE#>","<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>");';
@@ -570,6 +570,7 @@ type
                    , Th_editMessageNew=84 //Marcelo 23/05/2024
                    , Th_outgoingCall=85 //Marcelo 17/06/2024
                    , Th_GetEnvneedsUpdate=86 //Marcelo 03/07/2024
+                   , Th_logout_reason=87 //Marcelo 11/07/2024
 
                    );
 
@@ -708,7 +709,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 86; //Marcelo 03/07/2024
+const LmaxCount = 87; //Marcelo 11/07/2024
 var
   I: Integer;
   LNome: String;

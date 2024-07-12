@@ -5711,7 +5711,8 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentAuto = False
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
-      'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
+      'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPC' +
+      'onnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5778,6 +5779,7 @@ object frDemo: TfrDemo
     OnGetmsg_EditedEvento = TWPPConnect1Getmsg_EditedEvento
     OnGetTotalChatsUserRead = TWPPConnect1GetTotalChatsUserRead
     OnGetWAVersion = TWPPConnect1GetWAVersion
+    OnGetlogout_reason = TWPPConnect1Getlogout_reason
     OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache

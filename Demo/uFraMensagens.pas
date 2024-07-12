@@ -1143,7 +1143,6 @@ begin
       'lat: -22.95201, ' +
       'lng: -43.2102601, ' +
       'name: "Cristo Rendentor", ' +
-      'createChat: true, ' +
       'title: "Cristo Rendentor",  ' +
       'footer: "Pacote de Viagem",  ' +
       'address: "Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ"';

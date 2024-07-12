@@ -1800,6 +1800,13 @@ public
   property totalchats:      Integer    read Ftotalchats     write Ftotalchats;
 end;
 
+Tlogout_reason = class(TClassPadrao)
+  private
+    Fresponse: string;
+  public
+    property response:      string    read Fresponse     write Fresponse;
+end;
+
 TWAVersion = class(TClassPadrao)
 private
   FWAVersion: string;

@@ -96,6 +96,8 @@ type
   TOnGetTotalChatsUserRead = procedure(Const TotalChatsUserRead: TTotalChatsUserRead) of object; //Marcelo 22/10/2023
   TOnGetWAVersion = procedure(Const WhatsAppWebVersion: TWAVersion) of object; //Marcelo 22/10/2023
 
+  TOnGetlogout_reason = procedure(Const logout_reason: Tlogout_reason) of object; //Marcelo 11/07/2024
+
   TOnGetgenLinkDeviceCodeForPhoneNumber = procedure(Const Response: TGenLinkDeviceCodeForPhoneNumber) of object; //Marcelo 30/10/2023
 
 
@@ -259,6 +261,8 @@ type
 
     FOnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead; //Marcelo 22/10/2023
     FOnGetWAVersion             : TOnGetWAVersion; //Marcelo 22/10/2023
+
+    FOnGetlogout_reason         : TOnGetlogout_reason; //Marcelo 11/07/2024
 
     FOnGetHistorySyncProgress   : TOnGetHistorySyncProgress; //Marcelo 17/01/2023
     FOnGetQrCodeDesconectouErroCache   : TOnGetQrCodeDesconectouErroCache; //Marcelo 06/02/2023
@@ -645,6 +649,8 @@ type
 
     property OnGetTotalChatsUserRead    : TOnGetTotalChatsUserRead     read FOnGetTotalChatsUserRead     write FOnGetTotalChatsUserRead;
     property OnGetWAVersion             : TOnGetWAVersion              read FOnGetWAVersion              write FOnGetWAVersion;
+
+    property OnGetlogout_reason         : TOnGetlogout_reason          read FOnGetlogout_reason          write FOnGetlogout_reason;
 
     property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
 
@@ -3997,6 +4003,13 @@ begin
   begin
     if Assigned(FOnGetQrCodeDesconectouErroCache) then
       FOnGetQrCodeDesconectouErroCache(TQrCodeDesconectouErroCache(PReturnClass));
+  end;
+
+  //Marcelo 11/07/2024
+  if PTypeHeader = Th_logout_reason  then
+  begin
+    if Assigned(FOnGetlogout_reason) then
+      FOnGetlogout_reason(Tlogout_reason(PReturnClass));
   end;
 
   if PTypeHeader = Th_ErrorResponse  then
