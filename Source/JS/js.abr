@@ -22691,10 +22691,10 @@ window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '
 };
 
 //Marcelo 10/07/2024
-WPP.on('conn.logout_reason', (data) => {
-    if (data !== undefined) {
-		var obj = data; //{return_logout_reason:data};
-		console.log(data);
-		SetConsoleMessage("logout_reason", Json.stringfy(obj));
-    }
+WPP.on('conn.logout_reason', (data) => {    
+    //console.log('teste_logout_reason: ' + data);
+    obj = {
+        response: data
+    };
+    SetConsoleMessage("logout_reason", Json.stringfy(obj));    
 });
