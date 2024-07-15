@@ -148,6 +148,37 @@ type
 //    Property status : integer  Read FStatus  Write FStatus;
 //    Property StatusDelivered : string  Read FStatusDelivered  Write FStatusDelivered;
 //  end;
+
+  //Marcelo 27/04/2022
+  TinteractiveAnnotationsClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
+  TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
+  private
+    //Necessário Implementar, no meus testes está sempre vazio este ARRAY
+  public
+  end;
+
+  //Marcelo 27/04/2022
+  TpollOptionsClass = class(TClassPadrao)
+  private
+    FLocalId: Integer;
+    FName: string;
+  published
+    property LocalId: Integer read FLocalId write FLocalId;
+    property Name: string read FName write FName;
+  end;
+
+  //Marcelo 27/04/2022
+  TscansSidecarClass = class(TClassPadrao)
+  private
+    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+  public
+  end;
+
   TResponseCheckIsConnected = class(TClassPadrao)
   private
     FResult: Boolean;
@@ -758,6 +789,11 @@ type
     FdeprecatedMms3Url: String;
     Fmediakey: String;
     FisViewOnce: Boolean;
+    FinteractiveAnnotations: TArray<TinteractiveAnnotationsClass>;
+    FmsgRowOpaqueData: TmsgRowOpaqueDataClass;
+    FpollOptions: TArray<TpollOptionsClass>;
+    FscansSidecar: TscansSidecarClass;
+    FscanLengths: TArray<Extended>;
   public
     property    &type           : string     read Ftype               write Ftype;
     property    isFromTemplate  : Boolean    read FisFromTemplate     write FisFromTemplate;
@@ -777,6 +813,11 @@ type
     property    mimetype        : String     read Fmimetype           Write Fmimetype;
     property    filename        : String     read Ffilename           Write Ffilename;
     property    deprecatedMms3Url  : String  read FdeprecatedMms3Url  Write FdeprecatedMms3Url;
+    property    interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
+    property    msgRowOpaqueData   : TmsgRowOpaqueDataClass            read FmsgRowOpaqueData       write FmsgRowOpaqueData;
+    property    pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
+    property    scansSidecar                : TscansSidecarClass read FscansSidecar       write FscansSidecar; //NOT IMPLEMENT
+    property    scanLengths                 : TArray<Extended>   read FscanLengths        write FscanLengths;
   end;
 
   TstreamingSidecarClass = class(TClassPadrao)
@@ -785,28 +826,6 @@ type
   public
   end;
 
-  //Marcelo 27/04/2022
-  TscansSidecarClass = class(TClassPadrao)
-  private
-    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
-  public
-  end;
-
-  //Marcelo 27/04/2022
-  TpollOptionsClass = class(TClassPadrao)
-  private
-    FLocalId: Integer;
-    FName: string;
-  published
-    property LocalId: Integer read FLocalId write FLocalId;
-    property Name: string read FName write FName;
-  end;
-  //Marcelo 27/04/2022
-  TinteractiveAnnotationsClass = class(TClassPadrao)
-  private
-    //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
-  public
-  end;
   //Marcelo 18/06/2022
   TSingleSelectReplyClass = class(TClassPadrao)
   private
@@ -1105,11 +1124,6 @@ type
   end;
   //Marcelo 27/04/2022
   TtcTokenClass = class(TClassPadrao)
-  private
-    //Necessário Implementar, no meus testes está sempre vazio este ARRAY
-  public
-  end;
-  TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
   private
     //Necessário Implementar, no meus testes está sempre vazio este ARRAY
   public
