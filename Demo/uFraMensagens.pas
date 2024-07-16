@@ -469,29 +469,43 @@ begin
     options :=
       //'useTemplateButtons: undefined,' + //deprecated
       //'useTemplateButtons: true,' +  //deprecated
-      'useInteractiveMesssage: true,' + //Is Working Android and iOS
-      'createChat: true,' +
-      'title: "Bom dia Marcelo", ' +
-      'buttons:' +
-      '['+
-        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"},' +
-        '{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
+      'createChat: true, ' +
+      'useInteractiveMesssage: true, ' + //Is Working Android and iOS
+      'type: "text", ' +
+      'buttons: ' +
+      '[ ' +
+        //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"}, ' +
+        //'{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
         //'{url: "https://apoia.se/wppconnect", text: "🌐️ APOIA.se"},' + //Crash iOS
         //'{url: "https://www.whatsapp.com/otp/copy/text%20here", text: "Copy Chave Pix" }, ' +
         //'{url: "https://www.whatsapp.com/otp/copy/8e3fda51-2c8f-4134-a154-24cd02e07890", text: "Copy Chave Pix" }, ' +  //8e3fda51-2c8f-4134-a154-24cd02e07890
-        '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' + //Crash iOS
+        //'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"}, ' +
+        '{id: "001", text: "Sim"}, ' +
+        '{id: "002", text: "Não"}, ' +
 
-        '{id: "idVISITASIM", text: "Sim"},' +
-        '{id: "idVISITANAO", text: "Não"}' +
-      ']' +
-      ',footer: "Escolha uma Opção"';
+        '{ ' +
+        '    raw: { ' +
+        '        name: "cta_copy", ' +
+        '        buttonParamsJson: JSON.stringify({ ' +
+        '            display_text: "Copiar Chave Pix", ' +
+        '            copy_code: "17981388414", ' +
+        '        }) ' +
+        '    } ' +
+        '} ' +
+
+      '] ' +
+      ',title: "Bom dia Marcelo", ' +
+      'footer: "Escolha uma Opção" ' +
+      ' ';
+
       //'';
 
-    S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
+    //S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
+    S_RETORNO := '*Confirma Visita do Nosso Técnico?*';
     //S_RETORNO := TWPPConnectEmoticons.robot + ' *Teste Botão com Função Copy* ' + '\n';
 
-    //frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, '123');
-    frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, S_RETORNO, options, '123');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, 'SEUID1','SEUID2','SEUID3','SEUID4');
+    //frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, S_RETORNO, options, '123');
 
   finally
     ed_num.SelectAll;
@@ -684,7 +698,6 @@ begin
         ///'useTemplateButtons: undefined, ' + //deprecated
         //'useTemplateButtons: true, ' + //deprecated
         'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
-        //'title: "Novidades",  ' +
         'footer: "Image With Button",  ' +
         'caption: "My image", ' +
         'type: "image", ' +
@@ -694,7 +707,6 @@ begin
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
-
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
@@ -702,7 +714,16 @@ begin
         '  {  ' +
         '    id: "002",  ' +
         '    text: "Curti"  ' +
-        '  }  ' +
+        '  },  ' +
+        '  { ' +
+        '    raw: { ' +
+        '        name: "cta_copy", ' +
+        '        buttonParamsJson: JSON.stringify({ ' +
+        '            display_text: "Copiar Chave Pix", ' +
+        '            copy_code: "17981388414", ' +
+        '        }) ' +
+        '    } ' +
+        '  } ' +
         ']  ';
 
       frDemo.TWPPConnect1.SendFileMessageNew(ed_num.text, LBase64.Text, options, '123');
