@@ -22,9 +22,9 @@ uses
 {$R *.res}
 
 var
-arqIni: TInifile;
-pathapp, pathcef : string ;
-pathcustom : boolean;
+  arqIni: TInifile;
+  pathapp, pathcef, language, AcceptLanguageList : string ;
+  pathcustom : boolean;
 begin
   {##########################################################################################
   Place CEFLib files next to the application's executable path (Do not set or pass empty)
@@ -78,6 +78,13 @@ begin
         arqIni.WriteString('Path Defines', 'Log File', pathapp + pathcef + 'logs\Log File');
         arqIni.WriteString('Path Defines', 'Log Console', pathapp + pathcef + 'logs\Log Console');
 
+        //Config Values Default Language
+        if not(arqIni.ValueExists('Config', 'language')) then
+          arqIni.WriteString('Path Defines', 'language', 'pt-BR');
+
+        if not(arqIni.ValueExists('Config', 'AcceptLanguageList')) then
+          arqIni.WriteString('Config', 'AcceptLanguageList', 'pt-BR,pt-BR;q=0.9,en-US;q=0.8,en;q=0.7');
+
         {read file ini}
         GlobalCEFApp.PathLogFile          := pathapp + pathcef + 'logs\';
         GlobalCEFApp.PathFrameworkDirPath := arqIni.ReadString('Path Defines', 'FrameWork', '');
@@ -102,8 +109,15 @@ begin
         GlobalCEFApp.PathLocalesDirPath   := arqIni.ReadString('Path Defines', 'LOCALES', '');
         GlobalCEFApp.Pathcache            := arqIni.ReadString('Path Defines', 'CACHE', '');
         GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
-
         GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
+
+        //Config Read Default Language
+        language := arqIni.ReadString('Config', 'language', 'pt-BR');
+        AcceptLanguageList := arqIni.ReadString('Config', 'AcceptLanguageList', 'pt-BR,pt-BR;q=0.9,en-US;q=0.8,en;q=0.7');
+
+        //Config Default Language
+        GlobalCEFApp.Locale := language;
+        GlobalCEFApp.AcceptLanguageList   := AcceptLanguageList;
 
       except on E: Exception do
       end;

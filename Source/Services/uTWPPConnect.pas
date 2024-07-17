@@ -914,7 +914,7 @@ begin
   Result := authenticated;
 
   if (not Result) and  (PRaise) then
-     raise Exception.Create(Text_Status_Serv_Disconnected);
+    raise Exception.Create(Text_Status_Serv_Disconnected);
 end;
 
 //funcao experimental para configuracao de proxy de rede(Ainda nao foi testada)

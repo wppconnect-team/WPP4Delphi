@@ -101,6 +101,7 @@ type
     btnPoolMessage: TButton;
     btnImageButton: TButton;
     SendPix: TButton;
+    SendDocumentButton: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -156,6 +157,7 @@ type
     procedure btnPoolMessageClick(Sender: TObject);
     procedure btnImageButtonClick(Sender: TObject);
     procedure SendPixClick(Sender: TObject);
+    procedure SendDocumentButtonClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -1783,6 +1785,72 @@ begin
     ed_num.SelectAll;
     ed_num.SetFocus;
   end;
+end;
+
+procedure TframeMensagem.SendDocumentButtonClick(Sender: TObject);
+var
+  content, options : string;
+  LBase64 : TStringList;
+begin
+  if not frDemo.TWPPConnect1.Auth then
+    Exit;
+
+  LBase64 := TStringList.Create;
+  try
+    if FileExists('C:\Executaveis\WPPConnectDemo\Base64Document.txt') then
+      LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Document.txt')
+    else
+    begin
+      {inicio - capturando file e convertendo em base 64}
+      OpenDialog1.Execute;
+      lblCaminhoImagem.Caption := OpenDialog1.FileName;
+      LBase64.text  := FileToBase64( OpenDialog1.FileName, 'file_' + FormatDateTime('YYYYMMDDhhmmsszzz', now) ) ;  //FileToBase64
+      LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+      memo1.clear;
+      memo1.Text    := LBase64.text ;
+      {final - capturando imagem e convertendo em base 64}
+    end;
+
+    content := mem_message.Text;
+
+    options :=
+      'createChat: true, ' +
+      'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
+      'caption: "My Document", ' +
+      'footer: "Document With Button",  ' +
+      'filename: "' + ExtractFileName(OpenDialog1.FileName) + '", ' +
+      'type: "document", ' +
+      'buttons: [ ' +
+      (*'  { ' +
+      '    url: "https://wppconnect-team.github.io/", ' +
+      '    text: "Acesse Nosso Site" ' +
+      '  }, ' +
+      '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
+      '  { ' +
+      '    id: "001",  ' +
+      '    text: "Show de Bola"  ' +
+      '  },  ' +
+      '  {  ' +
+      '    id: "002",  ' +
+      '    text: "Curti"  ' +
+      '  },  ' + *)
+      '  { ' +
+      '    raw: { ' +
+      '        name: "cta_copy", ' +
+      '        buttonParamsJson: JSON.stringify({ ' +
+      '            display_text: "Copy BarCode", ' +
+      '            copy_code: "123456789", ' +
+      '        }) ' +
+      '    } ' +
+      '  } ' +
+      ']  ';
+
+    frDemo.TWPPConnect1.SendFileMessageNew(ed_num.text, LBase64.Text, options, '123');
+
+  finally
+    freeAndNil(LBase64);
+  end;
+
 end;
 
 procedure TframeMensagem.btnSendSimpleTextNewClick(Sender: TObject);
