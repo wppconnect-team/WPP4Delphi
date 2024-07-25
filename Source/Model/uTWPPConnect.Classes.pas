@@ -678,7 +678,10 @@ type
     property    quickReplyButton : TArray<TquickReplyButtonClass> read FquickReplyButton write FquickReplyButton;
     property    urlButton        : TArray<TurlButtonClass>        read FurlButton        write FurlButton;
     property    callButton       : TArray<TcallButtonClass>       read FcallButton       write FcallButton;
+    function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): ThydratedButtonsClass;
   end;
+
   //Marcelo 09/08/2022
   TButtonTextClass = class
   private
@@ -700,7 +703,10 @@ type
     property buttonId: String read FButtonId write FButtonId;
     property buttonText: TButtonTextClass read FButtonText write FButtonText;
     property &type: Extended read FType write FType;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TDynamicReplyButtonsClass;
   end;
+
   TReplyButtonsClass = class
   private
     //F$$unknownFieldCount: Extended;
@@ -710,7 +716,10 @@ type
     //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property Id: String read FId write FId;
     property DisplayText: string read FDisplayText write FDisplayText;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TReplyButtonsClass;
   end;
+
   //Marcelo 09/08/2022
   TRowsClass = class
   private
@@ -750,6 +759,8 @@ type
     property description: String read FDescription write FDescription;
     property listType: Extended read FListType write FListType;
     property sections: TArray<TSectionsClass> read FSections write FSections;
+    function ToJsonString: string;
+    class function FromJsonString(AJsonString: string): TListClass;
   end;
 
   //Marcelo 27/04/2022
@@ -2208,7 +2219,7 @@ public
   property listResponse          : TlistResponseClass     read FlistResponse           write FlistResponse;
   property LatestEditMsgKey      : TLatestEditMsgKeyClass read FLatestEditMsgKey       write FLatestEditMsgKey;
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection  write FrequiresDirectConnection;
-  property hydratedButtons: TArray<THydratedButtonsClass2>   read FHydratedButtons        write FHydratedButtons;
+  property hydratedButtons       : TArray<THydratedButtonsClass2>   read FHydratedButtons write FHydratedButtons;
   property waveform              : TWaveformClass            read FWaveform               write FWaveform;
   property selectedId            : string                    read FselectedId             write FselectedId;
   property selectedIndex         : integer                   read FselectedIndex          write FselectedIndex;
@@ -4201,6 +4212,65 @@ end;
 destructor TEnvneedsUpdate.Destroy;
 begin
   inherited;
+end;
+
+{ TDynamicReplyButtonsClass }
+
+class function TDynamicReplyButtonsClass.FromJsonString(AJsonString: string): TDynamicReplyButtonsClass;
+begin
+  result := TJson.JsonToObject<TDynamicReplyButtonsClass>(AJsonString)
+end;
+
+function TDynamicReplyButtonsClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+{ TReplyButtonsClass }
+
+class function TReplyButtonsClass.FromJsonString(AJsonString: string): TReplyButtonsClass;
+begin
+  result := TJson.JsonToObject<TReplyButtonsClass>(AJsonString)
+end;
+
+function TReplyButtonsClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
+end;
+
+{ TListClass }
+
+class function TListClass.FromJsonString(AJsonString: string): TListClass;
+begin
+  result := TJson.JsonToObject<TListClass>(AJsonString)
+end;
+
+function TListClass.ToJsonString: string;
+var
+  JSON: TJSONObject;
+  JSONString: TStringStream;
+begin
+  JSON := TJson.ObjectToJsonObject(self);//TJson.ObjectToJsonObject(AObject);
+  try
+    JSONString := TStringStream.Create('', TEncoding.UTF8);
+    try
+      JSONString.WriteString(JSON.ToString);
+      Result := JSONString.DataString;
+    finally
+      JSONString.Free;
+    end;
+  finally
+    JSON.Free;
+  end;
+
+  //result := TJson.ObjectToJsonString(self);
+end;
+
+{ ThydratedButtonsClass }
+
+function ThydratedButtonsClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 end.

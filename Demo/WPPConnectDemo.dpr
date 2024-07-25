@@ -111,6 +111,14 @@ begin
         GlobalCEFApp.PathUserDataPath     := arqIni.ReadString('Path Defines', 'USERDATA', '');
         GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
 
+       //Config Values Default Language
+        if not(arqIni.ValueExists('Config', 'language')) then
+          arqIni.WriteString('Path Defines', 'language', 'pt-BR');
+
+        if not(arqIni.ValueExists('Config', 'AcceptLanguageList')) then
+          arqIni.WriteString('Config', 'AcceptLanguageList', 'pt-BR,pt-BR;q=0.9,en-US;q=0.8,en;q=0.7');
+
+
         //Config Read Default Language
         language := arqIni.ReadString('Config', 'language', 'pt-BR');
         AcceptLanguageList := arqIni.ReadString('Config', 'AcceptLanguageList', 'pt-BR,pt-BR;q=0.9,en-US;q=0.8,en;q=0.7');
