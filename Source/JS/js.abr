@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.50;1.0.0.9;78.3.0
+//2.1.0.51;1.0.0.9;78.3.0
 //
 //
 
@@ -2748,9 +2748,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.8.0
+//WPPCONNECT v3.8.1 apla
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.8.0 */
+/*! wppconnect-team/wa-js v3.8.1 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -2895,7 +2895,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return r;
                         case "utf8":
                         case "utf-8":
-                            return V(e).length;
+                            return $(e).length;
                         case "ucs2":
                         case "ucs-2":
                         case "utf16le":
@@ -2906,7 +2906,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "base64":
                             return K(e).length;
                         default:
-                            if (o) return n ? -1 : V(e).length;
+                            if (o) return n ? -1 : $(e).length;
                             t = ("" + t).toLowerCase(), o = !0
                     }
                 }
@@ -3004,7 +3004,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function M(e, t, r, n) {
-                    return J(V(t, e.length - r), e, r, n)
+                    return J($(t, e.length - r), e, r, n)
                 }
 
                 function P(e, t, r, n) {
@@ -3564,9 +3564,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         o = r;
                     return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = W(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = W(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
                 }), RangeError);
-                const $ = /[^+/0-9A-Za-z-_]/g;
+                const V = /[^+/0-9A-Za-z-_]/g;
 
-                function V(e, t) {
+                function $(e, t) {
                     let r;
                     t = t || 1 / 0;
                     const n = e.length;
@@ -3612,7 +3612,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function K(e) {
                     return n.toByteArray(function(e) {
-                        if ((e = (e = e.split("=")[0]).trim().replace($, "")).length < 2) return "";
+                        if ((e = (e = e.split("=")[0]).trim().replace(V, "")).length < 2) return "";
                         for (; e.length % 4 != 0;) e += "=";
                         return e
                     }(e))
@@ -4159,9 +4159,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     G = -(I = Math.floor(C(Math.min(Math.max(I, O), M)))) / 2,
                                     q = S,
                                     z = I,
-                                    $ = [];
+                                    V = [];
                                 if (v) {
-                                    var V = 0,
+                                    var $ = 0,
                                         K = 0,
                                         J = r,
                                         H = n,
@@ -4173,9 +4173,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             contain: "cover",
                                             cover: "contain"
                                         } [p.resize]);
-                                    J = Q.width, H = Q.height, V = (r - J) / 2, K = (n - H) / 2, $.push(V, K, J, H)
+                                    J = Q.width, H = Q.height, $ = (r - J) / 2, K = (n - H) / 2, V.push($, K, J, H)
                                 }
-                                if ($.push(W, G, q, z), b) {
+                                if (V.push(W, G, q, z), b) {
                                     var Y = [I, S];
                                     S = Y[0], I = Y[1]
                                 }
@@ -4183,7 +4183,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 var Z = "transparent";
                                 d.size > p.convertSize && p.convertTypes.indexOf(p.mimeType) >= 0 && (p.mimeType = "image/jpeg");
                                 var X = "image/jpeg" === p.mimeType;
-                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, S, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(S / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat($)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
+                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, S, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(S / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat(V)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
                                     var ee = function(e) {
                                         if (!t.aborted) {
                                             var o = function(e) {
@@ -4286,7 +4286,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, t.useColors = function() {
                     if ("undefined" != typeof window && window.process && ("renderer" === window.process.type || window.process.__nwjs)) return !0;
                     if ("undefined" != typeof navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) return !1;
-                    return "undefined" != typeof document && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || "undefined" != typeof window && window.console && (window.console.firebug || window.console.exception && window.console.table) || "undefined" != typeof navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || "undefined" != typeof navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/)
+                    let e;
+                    return "undefined" != typeof document && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || "undefined" != typeof window && window.console && (window.console.firebug || window.console.exception && window.console.table) || "undefined" != typeof navigator && navigator.userAgent && (e = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(e[1], 10) >= 31 || "undefined" != typeof navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/)
                 }, t.storage = function() {
                     try {
                         return localStorage
@@ -9618,18 +9619,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return z.requestPhoneNumber
                     }
                 });
-                var $ = r(82028);
+                var V = r(82028);
                 Object.defineProperty(t, "sendChargeMessage", {
                     enumerable: !0,
                     get: function() {
-                        return $.sendChargeMessage
+                        return V.sendChargeMessage
                     }
                 });
-                var V = r(68011);
+                var $ = r(68011);
                 Object.defineProperty(t, "sendCreatePollMessage", {
                     enumerable: !0,
                     get: function() {
-                        return V.sendCreatePollMessage
+                        return $.sendCreatePollMessage
                     }
                 });
                 var K = r(24654);
@@ -12718,14 +12719,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 const a = i(r(1132)),
-                    s = r(14647),
-                    u = r(54993),
-                    c = r(52757);
+                    s = r(14647);
                 a.onInjected((() => {
                     s.IsOfficialClient.isOfficialClient = !0
-                })), a.onFullReady((() => {
-                    (0, u.wrapModuleFunction)(c.isLegitErrorStack, (() => !0))
-                }), 1e3)
+                }))
             },
             14282: (e, t) => {
                 "use strict";
@@ -14261,7 +14258,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.8.0";
+                a(r(26738), t), t.waVersion = "3.8.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14492,7 +14489,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.8.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.8.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -16518,6 +16515,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                     ])
                 }, t.moduleSource = l, t.isReactComponent = f, t.searchId = p, t.search = function(e, t = !1) {
+                    console.log(e);
                     const r = p(e, t);
                     if (!r) return null;
                     return g(r)
@@ -16613,8 +16611,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    BlocklistCollection: "BlocklistCollectionImpl"
-                }, (e => e.BlocklistCollectionImpl))
+                    BlocklistCollection: ["BlocklistCollectionImpl", "BlocklistCollection"]
+                }, (e => e.BlocklistCollectionImpl || e.BlocklistCollection))
             },
             51150: (e, t, r) => {
                 "use strict";
@@ -16631,8 +16629,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    BusinessProfileCollection: "BusinessProfileCollectionImpl"
-                }, (e => e.BusinessProfileCollectionImpl))
+                    BusinessProfileCollection: ["BusinessProfileCollectionImpl", "BusinessProfileCollection"]
+                }, (e => e.BusinessProfileCollectionImpl || e.BusinessProfileCollection))
             },
             83573: (e, t, r) => {
                 "use strict";
@@ -16658,8 +16656,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    CartCollection: "CartCollectionImpl"
-                }, (e => e.CartCollectionImpl))
+                    CartCollection: ["CartCollectionImpl", "CartCollection"]
+                }, (e => e.CartCollectionImpl || e.CartCollection))
             },
             25716: (e, t, r) => {
                 "use strict";
@@ -16676,7 +16674,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    CatalogCollection: "CatalogCollectionImpl"
+                    CatalogCollection: ["CatalogCollectionImpl", "CatalogCollection"]
                 }, (e => e.CatalogCollectionImpl || e.CatalogCollection))
             },
             29683: (e, t, r) => {
@@ -16694,8 +16692,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    ChatstateCollection: ["ChatstateCollectionImpl", "ChatstateCollection"]
-                }, (e => e.ChatstateCollectionImpl || e.ChatstateCollection))
+                    ChatstateCollection: ["ChatstateCollectionImpl", "Chatstate"]
+                }, (e => e.ChatstateCollectionImpl || e.Chatstate))
             },
             60193: (e, t, r) => {
                 "use strict";
@@ -16721,8 +16719,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    EmojiVariantCollection: "EmojiVariantCollectionImpl"
-                }, (e => e.EmojiVariantCollectionImpl))
+                    EmojiVariantCollection: ["EmojiVariantCollectionImpl", "EmojiVariantCollection"]
+                }, (e => e.EmojiVariantCollectionImpl || e.EmojiVariantCollection))
             },
             58699: (e, t, r) => {
                 "use strict";
@@ -16739,8 +16737,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    LabelCollection: "LabelCollectionImpl"
-                }, (e => e.LabelCollectionImpl))
+                    LabelCollection: ["LabelCollectionImpl", "LabelCollection"]
+                }, (e => e.LabelCollectionImpl || e.LabelCollection))
             },
             35052: (e, t, r) => {
                 "use strict";
@@ -16766,8 +16764,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    MsgInfoCollection: "MsgInfoCollectionImpl"
-                }, (e => e.MsgInfoCollectionImpl))
+                    MsgInfoCollection: ["MsgInfoCollectionImpl", "MsgInfoCollection"]
+                }, (e => e.MsgInfoCollectionImpl || e.MsgInfoCollection))
             },
             58383: (e, t, r) => {
                 "use strict";
@@ -16784,8 +16782,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    MuteCollection: "MuteCollectionImpl"
-                }, (e => e.MuteCollectionImpl))
+                    MuteCollection: ["MuteCollectionImpl", "MuteCollection"]
+                }, (e => e.MuteCollectionImpl || e.MuteCollection))
             },
             21865: (e, t, r) => {
                 "use strict";
@@ -16793,8 +16791,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    OrderCollection: "OrderCollectionImpl"
-                }, (e => e.OrderCollectionImpl))
+                    OrderCollection: ["OrderCollectionImpl", "OrderCollection"]
+                }, (e => e.OrderCollectionImpl || e.OrderCollection))
             },
             27082: (e, t, r) => {
                 "use strict";
@@ -16820,8 +16818,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    PinInChatCollection: "PinInChatCollectionImpl"
-                }, (e => e.PinInChatCollectionImpl))
+                    PinInChatCollection: ["PinInChatCollectionImpl", "PinInChatCollection"]
+                }, (e => e.PinInChatCollectionImpl || e.PinInChatCollection))
             },
             74308: (e, t, r) => {
                 "use strict";
@@ -16829,7 +16827,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    PresenceCollection: "PresenceCollectionImpl"
+                    PresenceCollection: ["PresenceCollectionImpl", "PresenceCollection"]
                 }, (e => e.PresenceCollectionImpl || e.PresenceCollection))
             },
             6384: (e, t, r) => {
@@ -16865,8 +16863,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    ProductMessageListCollection: "ProductMessageListCollectionImpl"
-                }, (e => e.ProductMessageListCollectionImpl))
+                    ProductMessageListCollection: ["ProductMessageListCollectionImpl", "ProductMessageListCollection"]
+                }, (e => e.ProductMessageListCollectionImpl || e.ProductMessageListCollection))
             },
             39240: (e, t, r) => {
                 "use strict";
@@ -16910,8 +16908,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    RecentEmojiCollection: "RecentEmojiCollectionImpl"
-                }, (e => e.RecentEmojiCollectionImpl))
+                    RecentEmojiCollection: ["RecentEmojiCollectionImpl", "RecentEmojiCollection"]
+                }, (e => e.RecentEmojiCollectionImpl || e.RecentEmojiCollection))
             },
             17987: (e, t, r) => {
                 "use strict";
@@ -16919,8 +16917,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    RecentStickerCollection: "RecentStickerCollectionImpl"
-                }, (e => e.RecentStickerCollectionImpl))
+                    RecentStickerCollection: ["RecentStickerCollectionImpl", "RecentStickerCollection"]
+                }, (e => e.RecentStickerCollectionImpl || e.RecentStickerCollection))
             },
             18393: (e, t, r) => {
                 "use strict";
@@ -16937,8 +16935,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    StatusCollection: "TextStatusCollectionImpl"
-                }, (e => e.TextStatusCollectionImpl))
+                    StatusCollection: ["TextStatusCollectionImpl", "TextStatusCollection"]
+                }, (e => e.TextStatusCollectionImpl || e.TextStatusCollection))
             },
             23572: (e, t, r) => {
                 "use strict";
@@ -16964,8 +16962,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    StickerPackCollection: "StickerPackCollectionImpl"
-                }, (e => e.StickerPackCollectionImpl))
+                    StickerPackCollection: ["StickerPackCollectionImpl", "StickerPackCollection"]
+                }, (e => e.StickerPackCollectionImpl || e.StickerPackCollection))
             },
             69634: (e, t, r) => {
                 "use strict";
@@ -16973,8 +16971,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    StickerSearchCollection: "StickerSearchCollectionImpl"
-                }, (e => e.StickerSearchCollectionImpl))
+                    StickerSearchCollection: ["StickerSearchCollectionImpl", "StickerSearchCollection"]
+                }, (e => e.StickerSearchCollectionImpl || e.StickerSearchCollection))
             },
             40999: (e, t, r) => {
                 "use strict";
@@ -18153,8 +18151,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    isLegitErrorStack: "isLegitErrorStack"
-                }, (e => e.isLegitErrorStack))
+                    isLegitErrorStack: ["isLegitErrorStack", "isOfficialClient"]
+                }, (e => e.isLegitErrorStack || e.isOfficialClient))
             },
             1009: (e, t, r) => {
                 "use strict";
@@ -19040,7 +19038,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     Conn: "Conn"
-                }, (e => e.Conn && e.ConnImpl))
+                }, (e => e.Conn && e.ConnImpl || e.Conn))
             },
             42865: (e, t, r) => {
                 "use strict";
@@ -19381,7 +19379,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     ChatstateModel: "Chatstate"
-                }, (e => e.Chatstate && e.ChatstateCollection))
+                }, (e => e.Chatstate && e.ChatstateCollection || e.Chatstate))
             },
             27961: (e, t, r) => {
                 "use strict";
@@ -19389,8 +19387,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    ConnModel: "ConnImpl"
-                }, (e => e.ConnImpl))
+                    ConnModel: ["ConnImpl", "Conn"]
+                }, (e => e.ConnImpl || e.Conn && !e.ConnImpl))
             },
             89853: (e, t, r) => {
                 "use strict";
@@ -19576,7 +19574,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     PresenceModel: "Presence"
-                }, (e => e.Presence && e.ChatstateCollection))
+                }, (e => e.Presence && e.ChatstateCollection || e.Presence && e.Chatstate))
             },
             62078: (e, t, r) => {
                 "use strict";
@@ -19858,7 +19856,35 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     StatusStore: "TextStatusCollection"
                 }, (e => e.TextStatusCollection)), (0, s.exportModule)(t, {
                     StatusV3Store: ["StatusV3Collection", "StatusCollection"]
-                }, (e => e.StatusV3CollectionImpl || e.StatusCollection))
+                }, (e => e.StatusV3CollectionImpl || e.StatusCollection)), (0, s.exportModule)(t, {
+                    BlocklistStore: ["default", "BlocklistCollection"]
+                }, (e => e.BlocklistCollection)), (0, s.exportModule)(t, {
+                    PresenceStore: ["PresenceCollectionImpl", "PresenceCollection"]
+                }, (e => e.PresenceCollectionImpl || e.PresenceCollection)), (0, s.exportModule)(t, {
+                    CartStore: ["CartCollectionImpl", "CartCollection"]
+                }, (e => e.CartCollectionImpl || e.CartCollection)), (0, s.exportModule)(t, {
+                    CatalogStore: ["CatalogCollectionImpl", "CatalogCollection"]
+                }, (e => e.CatalogCollectionImpl || e.CatalogCollection)), (0, s.exportModule)(t, {
+                    EmojiVariantStore: ["EmojiVariantCollectionImpl", "EmojiVariantCollection"]
+                }, (e => e.EmojiVariantCollectionImpl || e.EmojiVariantCollection)), (0, s.exportModule)(t, {
+                    LabelStore: ["LabelCollectionImpl", "LabelCollection"]
+                }, (e => e.LabelCollectionImpl || e.LabelCollection)), (0, s.exportModule)(t, {
+                    MsgInfoStore: ["MsgInfoCollectionImpl", "MsgInfoCollection"]
+                }, (e => e.MsgInfoCollectionImpl || e.MsgInfoCollection)), (0, s.exportModule)(t, {
+                    MuteStore: ["MuteCollectionImpl", "MuteCollection"]
+                }, (e => e.MuteCollectionImpl || e.MuteCollection)), (0, s.exportModule)(t, {
+                    OrderStore: ["OrderCollectionImpl", "OrderCollection"]
+                }, (e => e.OrderCollectionImpl || e.OrderCollection)), (0, s.exportModule)(t, {
+                    PinInChatStore: ["PinInChatCollectionImpl", "PinInChatCollection"]
+                }, (e => e.PinInChatCollectionImpl || e.PinInChatCollection)), (0, s.exportModule)(t, {
+                    ProductMessageListStore: ["ProductMessageListCollectionImpl", "ProductMessageListCollection"]
+                }, (e => e.ProductMessageListCollectionImpl || e.ProductMessageListCollection)), (0, s.exportModule)(t, {
+                    RecentEmojiStore: ["RecentEmojiCollectionImpl", "RecentEmojiCollection"]
+                }, (e => e.RecentEmojiCollectionImpl || e.RecentEmojiCollection)), (0, s.exportModule)(t, {
+                    StickerSearchStore: ["StickerSearchCollectionImpl", "StickerSearchCollection"]
+                }, (e => e.StickerSearchCollectionImpl || e.StickerSearchCollection)), (0, s.exportModule)(t, {
+                    BusinessProfileStore: ["BusinessProfileCollectionImpl", "BusinessProfileCollection"]
+                }, (e => e.BusinessProfileCollectionImpl || e.BusinessProfileCollection))
             },
             34439: (e, t, r) => {
                 "use strict";
