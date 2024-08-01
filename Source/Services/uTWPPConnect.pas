@@ -165,6 +165,8 @@ type
     FDestroyTmr             : Ttimer;
     FFormQrCodeType         : TFormQrCodeType;
     FMyNumber               : string;
+    FLastMyNumber           : string;
+    FNickNameAcount         : string;
     FMyPushName             : string;
 
     FIsDelivered            : string;
@@ -303,6 +305,7 @@ type
     FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
+    procedure saveInfoConfTWPPConnect(SectionName, key, value: string);
 
     procedure Loaded; override;
 
@@ -516,6 +519,8 @@ type
     Property  BatteryLevel       : Integer              Read FGetBatteryLevel; //deprecated;
     Property  IsConnected        : Boolean              Read FGetIsConnected;
     Property  MyNumber           : String               Read FMyNumber;
+    Property  LastMyNumber       : String               Read FLastMyNumber     write FLastMyNumber;
+    Property  NickNameAcount     : String               Read FNickNameAcount   write FNickNameAcount;
     Property  MyPushName         : String               Read FMyPushName;
     Property  WAJS_Version       : String               Read FWAJS_Version;
     Property  genLinkDeviceCode  : String               Read FgenLinkDeviceCode;
@@ -913,8 +918,8 @@ function TWPPConnect.Auth(PRaise: Boolean): Boolean;
 begin
   Result := authenticated;
 
-  if (not Result) and  (PRaise) then
-    raise Exception.Create(Text_Status_Serv_Disconnected);
+  {if (not Result) and  (PRaise) then
+    raise Exception.Create(Text_Status_Serv_Disconnected);}
 end;
 
 //funcao experimental para configuracao de proxy de rede(Ainda nao foi testada)
@@ -1204,14 +1209,18 @@ begin
     if Assigned(GlobalCEFApp) then
     Begin
       if GlobalCEFApp.ErrorInt Then
-         Exit;
+        Exit;
     end;
 
-    if not Assigned(FrmConsole) Then
-    Begin
+    if not Assigned(FrmConsole) then
+    begin
+      save_log('ConsolePronto ');
+
       InjectJS.UpdateNow();
       if InjectJS.Ready then //Read? Get random key....
-      Begin
+      begin
+        save_log('InjectJS.Ready ');
+
         FDestruido                      := False;
         FrmConsole                      := TFrmConsole.Create(nil);
         FrmConsole.OwnerForm            := Self;
@@ -1219,12 +1228,14 @@ begin
         FrmConsole.MonitorLowBattry     := Assigned(FOnLowBattery);
         FrmConsole.OnErrorInternal      := Int_OnErroInterno;
         FrmConsole.Connect;
-      end;
+      end
+      else
+        save_log('InjectJS.Ready: false ');
     end;
     Result := Assigned(FrmConsole);
   except
     Result := False;
-  end
+  end;
 end;
 
 procedure TWPPConnect.Console_Clear;
@@ -1273,7 +1284,7 @@ begin
   DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
 
   try
-    MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
+    MyIniFIle          := TIniFile.create(DirApp + NomeArquivoIni);
 
     HabEvento_msg_ack_change := MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '1') = '1';
     HabEvento_msg_revoke := MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '1') = '1';
@@ -1281,6 +1292,7 @@ begin
     HabEvento_new_reaction  := MyIniFIle.ReadString('Config', 'Evento_new_reaction', '1') = '1';
     vSecondsMonitor := MyIniFIle.ReadString('Config', 'SecondsMonitor', '0');
     vSecondsMonitorNew := MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '0');
+    FLastMyNumber := MyIniFIle.ReadString('INFO', 'LastMyNumber', '');
 
    //CONFIGURAÇÃO A PARTIR DE ARQUIVO INI / CONFIGURATION FROM THE INI FILE
     if MyIniFIle.ReadString('Config', 'Evento_msg_ack_change', '') <> '' then
@@ -3519,7 +3531,12 @@ begin
 end;
 
 procedure TWPPConnect.Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject);
+var
+  ExeName: string;
 begin
+  ExeName := ExtractFileName(Application.ExeName);
+  ExeName := Copy(ExeName, 1, pos('.exe', ExeName) - 1);
+
   {###########################  ###########################}
   if (PTypeHeader In [Th_AlterConfig]) then
   Begin
@@ -3759,15 +3776,21 @@ begin
   if PTypeHeader = Th_Initialized then
   Begin
     FStatus := Inject_Initialized;
+    TestConnect;
+
     if Assigned(FOnAfterInitialize) then
       FOnAfterInitialize(Self);
 
     if Assigned(fOnGetStatus ) then
       fOnGetStatus(Self);
 
-    FrmConsole.GetMyNumber;
+    if Assigned(FrmConsole) then
+      FrmConsole.Caption := ExeName + ' - LastNumber: ' + FLastMyNumber;
+
+
+    {FrmConsole.GetMyNumber;
     FrmConsole.fGetMe();
-    FrmConsole.getWAVersion;
+    FrmConsole.getWAVersion;}
     //FrmConsole.GetTotalChatsUserRead;
   end;
 
@@ -3777,14 +3800,17 @@ begin
     if not Assigned(FrmConsole) then
       Exit;
 
+    if Assigned(FrmConsole) then
+      FrmConsole.Caption := ExeName + ' - LastNumber: ' + FLastMyNumber;
     FrmConsole.GetMyNumber;
-    //FrmConsole.getWAVersion;
+    FrmConsole.getWAVersion;
+
     //FrmConsole.GetTotalChatsUserRead;
 
     SleepNoFreeze(40);
 
 
-    FrmConsole.GetAllContacts(true);
+    //FrmConsole.GetAllContacts(true);
     if Assigned(fOnGetStatus ) then
       fOnGetStatus(Self);
     Exit;
@@ -3829,10 +3855,16 @@ begin
     if Assigned(FOnGetMyNumber) then
       FOnGetMyNumber(Self);
 
+    if Trim(FMyNumber) <> '' then
+    begin
+      FLastMyNumber := FMyNumber;
+      saveInfoConfTWPPConnect('INFO', 'LastMyNumber', FMyNumber);
+    end;
+
     try
       if Trim(FMyPushName) <> '' then
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName else
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber;
+        FrmConsole.Caption := ExeName + ' Number: ' + FLastMyNumber + ' - ' + FMyPushName else
+        FrmConsole.Caption := ExeName + ' Number: ' + FLastMyNumber;
       //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
       FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
     except on E: Exception do
@@ -3863,7 +3895,9 @@ begin
     end;
 
     try
-      FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb Number: ' + FMyNumber + ' - ' + FMyPushName;
+      if Trim(FMyPushName) <> '' then
+        FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber + ' - ' + FMyPushName else
+        FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber;
       //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber;
       FrmConsole.lblNumber.Caption := ' Number: ' + FMyNumber;
     except on E: Exception do
@@ -3953,7 +3987,16 @@ begin
       FOnGetTotalChatsUserRead(TTotalChatsUserRead(PReturnClass));
       try
         FTotalChatsUserRead := TTotalChatsUserRead(PReturnClass).totalchats;
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
+
+        if (Trim(FMyPushName) <> '') and (Trim(FWhatsAppWebVersion) <> '') then
+          FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber + ' - ' + FMyPushName + ' WhatsAppWeb v' + FWhatsAppWebVersion + ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')'
+        else
+        if (Trim(FMyPushName) <> '') and (Trim(FWhatsAppWebVersion) = '') then
+          FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber + ' - ' + FMyPushName + ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')'
+        else
+          FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber + ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')';
+
+        //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
         FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
       except on E: Exception do
       end;
@@ -3969,7 +4012,8 @@ begin
       FOnGetWAVersion(TWAVersion(PReturnClass));
       try
         FWhatsAppWebVersion := TWAVersion(PReturnClass).WAVersion;
-        FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
+        FrmConsole.Caption := ExeName + ' Number: ' + FMyNumber + ' - ' + FMyPushName + ' WhatsAppWeb v' + FWhatsAppWebVersion;
+        //FrmConsole.Caption := 'WPPConnect Team - WPP4Delphi - WhatsAppWeb v' + FWhatsAppWebVersion +  ' - Conversas Lidas(' + FTotalChatsUserRead.ToString + ')  Number: ' + FMyNumber + ' - ' + FMyPushName;
         FrmConsole.lblNumber.Caption := 'Number: ' + FMyNumber;
       except on E: Exception do
       end;
@@ -4079,9 +4123,7 @@ begin
     if not Assigned(FOnGetCheckIsBeta) then
        Exit;
 
-    FOnGetCheckIsBeta(Self,
-                             TResponseCheckIsBeta(PReturnClass).result
-                             );
+    FOnGetCheckIsBeta(Self, TResponseCheckIsBeta(PReturnClass).result);
     exit;
   end;
 
@@ -4092,12 +4134,17 @@ begin
        SetAuth(True) else
        SetAuth(False);
     LimparQrCodeInterno;
+
+    if Assigned(FrmConsole) then
+      FrmConsole.Caption := ExeName + ' - LastNumber: ' + FLastMyNumber;
+
     Exit;
   end;
 
 
   if PTypeHeader in [Th_Abort]  then
   Begin
+    save_log('PTypeHeader in [Th_Abort] Server_Disconnected');
     Fstatus     := Server_Disconnected;
     if Assigned(fOnGetStatus) then
        fOnGetStatus(Self);
@@ -4163,8 +4210,8 @@ end;
 
 procedure TWPPConnect.RebootWPP;
 begin
-  //frmConsole.RebootChromium;
-  frmConsole.RebootChromiumNew;
+  frmConsole.RebootChromium;
+  //frmConsole.RebootChromiumNew;
 end;
 
 procedure TWPPConnect.RebootWhiteScreen(ErrorMessage: string);
@@ -4209,6 +4256,21 @@ begin
   lThread.Start;
 
 
+end;
+
+procedure TWPPConnect.saveInfoConfTWPPConnect(SectionName, key, value: string);
+var
+  MyIniFIle: TIniFile;
+  DirApp: string;
+begin
+  try
+    DirApp     := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+    MyIniFIle  := TIniFile.create(DirApp + NomeArquivoIni);
+    MyIniFIle.writeString(SectionName, key, value);
+    MyIniFIle.Free;
+
+  except on E: Exception do
+  end;
 end;
 
 procedure TWPPConnect.send(PNumberPhone, PMessage: string; PEtapa: string = '');
@@ -5951,6 +6013,7 @@ begin
 
   if ((Fstatus = Server_Connected)) and (not Value) then
   Begin
+    save_log('((Fstatus = Server_Connected)) and (not Value) Server_Disconnected');
     Fstatus := Server_Disconnected;
     if Assigned(FrmConsole) then
        FrmConsole.DisConnect;
@@ -6105,8 +6168,9 @@ begin
     if Assigned(FrmConsole) then
        FrmConsole.StopWebBrowser;
   finally
+    save_log('(SetQrCodeStyle Server_Disconnected');
     FFormQrCodeType := Value;
-    Fstatus      := Server_Disconnected;
+    //Fstatus      := Server_Disconnected;
   end;
 end;
 
@@ -6334,6 +6398,7 @@ begin
       if Assigned(FOnWPPMonitorCrash) then
       begin
         LogAdd('Acionado evento OnWPPMonitorCrash','WPPCrash');
+        save_log('Acionado evento OnWPPMonitorCrash Server_Disconnected');
         Self.SetNewStatus(Server_Disconnected);
         FOnWPPMonitorCrash(Sender, Nil, True);
       end;

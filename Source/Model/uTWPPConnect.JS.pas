@@ -131,7 +131,7 @@ implementation
 
 uses uTWPPConnect.Constant, System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
      IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-     Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs;
+     Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs, uTWPPConnect;
 
 { TWPPConnectAutoUpdate }
 
@@ -178,34 +178,51 @@ begin
   try
     case pforma  of
       Tup_Local:Begin
+                  save_log('TWPPConnectJS.UpdateExec(Tup_Local)');
                   Ltmp := GlobalCEFApp.PathJs;
                 End;
 
       Tup_Web:  Begin
                   if (csDesigning in Owner.ComponentState) then
-                     Ltmp := PegarLocalJS_Designer  Else   //Em modo Desenvolvimento
-                     Ltmp := PegarLocalJS_Web;             //Rodando.. Pega na WEB
+                  begin
+                    save_log('TWPPConnectJS.UpdateExec(Tup_Web) ---> PegarLocalJS_Designer');
+                    Ltmp := PegarLocalJS_Designer;
+                  end
+                  else   //Em modo Desenvolvimento
+                  begin
+                    save_log('TWPPConnectJS.UpdateExec(Tup_Web) ---> PegarLocalJS_Web');
+                    Ltmp := PegarLocalJS_Web;             //Rodando.. Pega na WEB
+                  end;   
                 end;
     end;
 
     if Ltmp = '' then
-       Exit;
+    begin
+      save_log('  Ltmp IsEmpty Exit');
+      Exit;
+    end;
 
     // loading file selected to atribute class
     LoadAndValidJSFromFile(Ltmp);
 
-  finally
+  finally  
     Result := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
     if Result then
     begin
+      save_log('  TWPPConnectJS.UpdateExec Result = True');
       //Atualzia o arquivo interno
       GlobalCEFApp.UpdateDateIniFile;
       if UpperCase(GlobalCEFApp.PathJs) <> UpperCase(Ltmp) then
-         FJSScript.SaveToFile(GlobalCEFApp.PathJs, TEncoding.UTF8);
+      begin
+        FJSScript.SaveToFile(GlobalCEFApp.PathJs, TEncoding.UTF8);
+        save_log('  FJSScript.SaveToFile('+GlobalCEFApp.PathJs+');');
+      end;
       if Assigned(FOnUpdateJS) Then
          FOnUpdateJS(Self);
-    end else
+    end
+    else
     begin
+      save_log('  TWPPConnectJS.UpdateExec Result = False');
       FJSScript.Clear;
       FJSVersion := '';
     end;
@@ -237,26 +254,27 @@ end;
 
 function TWPPConnectJS.UpdateNow: Boolean;
 begin
-
   Result := False;
 
   if FAutoUpdate  Then
   begin
+    save_log('TWPPConnectJS.UpdateNow FAutoUpdate: true');
 
     // script pré pronto para inclusão futura de diretório central para update's
-
     if (StrUtils.ContainsText(LowerCase(FJSURL),'http')) then
       Result := UpdateExec( Tup_Web );
 
     if not(Result) then
       Result := UpdateExec( Tup_Local );
 
-  end else
+    if Result then
+      save_log('TWPPConnectJS.UpdateNow Result: true') else  
+      save_log('TWPPConnectJS.UpdateNow Result: false');
+  end
+  else
   begin
-
     // carrega o arquivo padrão indicado
     LoadAndValidJSFromFile( GlobalCEFApp.PathJs )
-
   end;
 
 end;
@@ -353,6 +371,7 @@ var
   LRet         : TStringList;
 begin
   LSalvamento   := IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp';
+  save_log('TWPPConnectJS.PegarLocalJS_Web');
 
   LRet          := TStringList.Create;
   LHttp         := TUrlIndy.Create;
@@ -364,23 +383,34 @@ begin
 
     LHttp.TimeOut     := AutoUpdateTimeOut;
     //Temis 03-06-2022
+    save_log('antes LHttp.GetUrl(' + JSURL + ')');
+    
     if LHttp.GetUrl(JSURL) = true Then
     //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
     begin
       LRet.LoadFromStream(LHttp.ReturnUrl);
       if not ValidaJs(LRet) Then
-         LRet.Clear;
-    end;
+         LRet.Clear
+      else
+        save_log('PegarLocalJS_Web OK');
+    end
+    else
+      save_log('PegarLocalJS_Web Failed');
   finally
     FreeAndNil(LHttp);
     if LRet.Count > 1 then
-    Begin
+    begin
+      save_log('antes LSalvamento: Caminho: ' + LSalvamento);
       if not FileExists(LSalvamento) then
-      Begin
-        LRet.SaveToFile(LSalvamento, TEncoding.UTF8);
+      begin
+        save_log('LSalvamento: ' + LSalvamento);
+        LRet.SaveToFile(LSalvamento, TEncoding.UTF8);        
         Result := LSalvamento;
-      End;
-    End;
+      end;
+    end
+    else
+      save_log('LRet.Count = 0');
+      
     FreeAndNil(LRet);
   end;
 end;
@@ -515,31 +545,31 @@ end;
 
 function TWPPConnectJS.LoadAndValidJSFromFile(const Source: string): Boolean;
 begin
-
   Result := False;
+
+  save_log('TWPPConnectJS.LoadAndValidJSFromFile(' + Source + ')');
 
   if FileExists(Source) then
   begin
-
     FJSScript.LoadFromFile(Source);
 
     if not ValidaJs(FJSScript) then
     begin
-
       FJSScript.Clear;
-
+      save_log('  ValidaJs --> inválido');
     end
     else
     begin
-
       FJSVersion   := FInjectJSDefine.FVersion_JS;
+      save_log('  FJSVersion: ' + FJSVersion);
+
       if FJSVersion = '' then
          FJSScript.Clear;
 
       FReady := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+      save_log('  FJSScript.Count: ' + IntToStr(FJSScript.Count));
 
       Result := FReady;
-
     end;
 
   end;

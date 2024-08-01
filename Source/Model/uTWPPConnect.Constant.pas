@@ -45,13 +45,13 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '3.5.0.0'; //  17/05/2022
+  TWPPConnectVersion              = '3.6.0.0'; //  01/08/2024
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
   NomeArquivoInject               = 'js.abr';//'wppconnect-wa.js';
   NomeArquivoIni                  = 'ConfTWPPConnect.ini';
-  MsMaxFindJSinDesigner           = 15000;
+  MsMaxFindJSinDesigner           = 6123;//15000;
   VersaoMinima_CF4_Major          = 78;
   VersaoMinima_CF4_Minor          = 3;
   VersaoMinima_CF4_Release        = 0;
@@ -103,16 +103,22 @@ Const
   //FrmConsole_JS_WEBmonitorQRCode        = 'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCodeWEB","result":{AQrCode}}));';
 
   //Marcelo 05/05/2023
-  FrmConsole_JS_WEBmonitorQRCode        = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+  FrmConsole_JS_WEBmonitorQRCode         = ' var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' +
+                                               'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {}';
+                                               //'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+
   //FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function(){new Promise((resolve, reject)=>{let all = []; all = document.querySelectorAll("button"); if(all[0]){ all[0].click() }})},60000)';
   //FrmConsole_JS_refreshOnlyQRCode       = ' interval = window.setInterval(async function() {new Promise((resolve, reject) =>{let all = []; all = document.querySelector("button"); if (all) { if (all.text.includes("recarregar")) { all.click() } } })}, 60000);';
 
   //Marcelo 05/05/2023
-  FrmConsole_JS_refreshOnlyQRCode       = 'interval = window.setInterval(async function() { await new Promise((resolve, reject) => {let all = Array.from(document.querySelectorAll("button")); if (all[0]) {if (all.some(btn => btn.textContent.includes("recarregar")))' + ' {all[0].click();}}resolve();});}, 60000);';
+  FrmConsole_JS_refreshOnlyQRCode        = 'interval = window.setInterval(async function() { await new Promise((resolve, reject) => {let all = Array.from(document.querySelectorAll("button")); if (all[0]) {if (all.some(btn => btn.textContent.includes("recarregar")))' + ' {all[0].click();}}resolve();});}, 60000);';
   //FrmConsole_JS_monitorQRCode           = ''; //'var AQrCode = document.getElementsByTagName("canvas")[0].toDataURL("image/png");console.log(JSON.stringify({"name":"getQrCode","result":{AQrCode}}));';
 
   //Marcelo 05/05/2023
-  FrmConsole_JS_monitorQRCode            = 'var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' + 'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+  FrmConsole_JS_monitorQRCode            = ' var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' +
+                                               'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {}';
+                                               //'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+
   FrmConsole_JS_StopMonitor              = 'stopMonitor();';
   FrmConsole_JS_StopMonitorNew           = 'stopMonitorNew();'; //Add Marcelo 25/08/2023
   FrmConsole_JS_IsLoggedIn               = 'WAPI.isLoggedIn();';
@@ -579,6 +585,7 @@ type
     function   StrToTypeHeader(PText: string): TTypeHeader;
     Procedure  SleepNoFreeze(PTimeOut:Integer);
     Function   StrExtFile_Base64Type(PFileName: String): String;
+    procedure  save_log(line: string);
 
 implementation
 
@@ -744,6 +751,32 @@ Begin
   End;
 End;
 
+
+procedure save_log(line: string);
+var
+  nomearq: string;
+  arq: TextFile;
+begin
+  try
+    nomearq := ExtractFilePath(ParamStr(0)) + 'LogTWppConnect' + '\LogInit' +
+      FormatDateTime('YYYY-MM-DD', now) + '.log';
+
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, FormatDateTime('DD/MM/YYYY', Date) + ' ' +
+        FormatDateTime('HH:MM:SS:ZZ', time) + ' ' + line);
+      Flush(arq);
+    finally
+      CloseFile(arq);
+    end;
+  except
+  end;
+end;
 
 
 end.

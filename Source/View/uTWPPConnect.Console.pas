@@ -740,9 +740,13 @@ begin
   lNovoStatus            := True;
   FTimerConnect.Enabled  := False;
   try
-    If TWPPConnect(FOwner).Status = Server_Connected then
-    Begin
+    if TWPPConnect(FOwner).Status = Server_Connected then
+    begin
       localStorage_debug;
+
+      save_log('Server_Connected TFrmConsole.OnTimerConnect');
+
+      save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
       //Marcelo 12/08/2022
       //Aguardar "X" Segundos Injetar JavaScript
@@ -750,19 +754,11 @@ begin
         SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
       ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-
-      {vWAJS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text, pos('//WPPCONNECT', TWPPConnect(FOwner).InjectJS.JSScript.Text) + 12 );
-      vWAJS := 'wa-js:' + Copy(vWAJS, 1, pos('/*', TWPPConnect(FOwner).InjectJS.JSScript.Text) -2);
-      lbl_Versao.Caption := vWAJS;
-
-      Version_JS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text,53,200);
-      Version_JS := Copy(Version_JS,1,pos(';', Version_JS) -1);
-      lbl_Versao.Caption := lbl_Versao.Caption + ' / ' + Version_JS;
-      }
-
       SleepNoFreeze(40);
 
-      If Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      save_log('Inject js.ABR');
+
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
         TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
       //Auto monitorar mensagens não lidas
@@ -779,9 +775,12 @@ begin
       SleepNoFreeze(40);
 
       lNovoStatus    := False;
+      save_log('SendNotificationCenterDirect(Th_Initializing)');
       SendNotificationCenterDirect(Th_Initializing);
-    End else if TWPPConnect(FOwner).Config.AutoStart then
-      lNovoStatus:= true;
+    end
+    else
+    if TWPPConnect(FOwner).Config.AutoStart then
+      lNovoStatus := true;
   finally
     FTimerConnect.Enabled := lNovoStatus;
   end;
@@ -1025,7 +1024,10 @@ end;
 
 procedure TFrmConsole.GetMyNumber;
 begin
-  ExecuteJS(FrmConsole_JS_GetMyNumber, False);
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  ExecuteJS(FrmConsole_JS_GetMyNumber, True);
 end;
 
 procedure TFrmConsole.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
@@ -1322,7 +1324,8 @@ begin
   Chromium1.StopLoad;
   Chromium1.Browser.StopLoad;
 
-  SendNotificationCenterDirect(Th_Abort);
+  //01/08/2024 Estava entrando aqui e Fechando a Conexão
+  //SendNotificationCenterDirect(Th_Abort);
   LPaginaId := 0;
 end;
 
@@ -1599,12 +1602,15 @@ begin
   Chromium1.Browser.ReloadIgnoreCache;
 
   localStorage_debug;
+  save_log('RebootChromiumNew');
 
   //Aguardar "X" Segundos Injetar JavaScript
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
     SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
   ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-  SleepNoFreeze(500);
+  SleepNoFreeze(40);
+
+  save_log('  Inject js.ABR');
 
   if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
     TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -2496,6 +2502,7 @@ begin
   { Agora que o navegador está totalmente inicializado, podemos enviar uma mensagem para
     o formulário principal para carregar a página inicial da web.}
   //PostMessage(Handle, CEFBROWSER_CREATED, 0, 0);
+  save_log('TFrmConsole.Chromium1AfterCreated');
   FTimerConnect.Enabled  := True;
   PostMessage(Handle, CEF_AFTERCREATED, 0, 0);
 end;
@@ -3440,7 +3447,9 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(500);
+    SleepNoFreeze(40);
+
+    save_log('  Inject js.ABR again');
 
     if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -3474,7 +3483,9 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(500);
+    SleepNoFreeze(40);
+
+    save_log('  Inject js.ABR again');
 
     if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -3592,7 +3603,9 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(500);
+    SleepNoFreeze(40);
+
+    save_log('  Inject js.ABR again');
 
     if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -3626,7 +3639,9 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(500);
+    SleepNoFreeze(40);
+
+    save_log('  Inject js.ABR again');
 
     if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -3756,16 +3771,24 @@ end;
 procedure TFrmConsole.Chromium1LoadEnd(Sender: TObject;
   const browser: ICefBrowser; const frame: ICefFrame; httpStatusCode: Integer);
 begin
-  if TWPPConnect(FOwner).Status = Server_Rebooting then
+  if (TWPPConnect(FOwner).Status = Server_Rebooting)
+  //or (TWPPConnect(FOwner).Status = Server_Connected)
+  then
   begin
     localStorage_debug;
+
+    save_log('TFrmConsole.Chromium1LoadEnd');
+
+    save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
     //Marcelo 12/08/2022
     //Aguardar "X" Segundos Injetar JavaScript
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-    SleepNoFreeze(500);
+    SleepNoFreeze(40);
+
+    save_log('  Inject js.ABR LoadEnd');
 
     if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -3785,6 +3808,7 @@ begin
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
   end;
+
 end;
 
 procedure TFrmConsole.Chromium1OpenUrlFromTab(Sender: TObject;
@@ -3888,14 +3912,19 @@ procedure TFrmConsole.Chromium1TitleChange(Sender: TObject;
   const browser: ICefBrowser; const title: ustring);
 begin
   LPaginaId := LPaginaId + 1;
+
   if (LPaginaId > 3) and (LPaginaId < 10) then
   begin
     Form_Normal;
-    If Assigned(OnNotificationCenter) then
-       SendNotificationCenterDirect(Th_Connected);
+    if Assigned(OnNotificationCenter) then
+    begin
+      save_log('  Chromium1TitleChange SendNotificationCenterDirect(Th_Connected)');
+      SendNotificationCenterDirect(Th_Connected);
+    end;
     if (TWPPConnect(FOwner).Config.AutoStart) and (not FTimerConnect.Enabled) then
-      FTimerConnect.Enabled:= True;
+      FTimerConnect.Enabled := True;
   end;
+
   if (LPaginaId <= 3) and (FFormType = Ft_Http) then
     SetZoom(-2);
 
@@ -3985,8 +4014,11 @@ begin
     if FConectado then
        Exit;
 
+    save_log('TFrmConsole.Connect');
+
     Form_Start;
     SendNotificationCenterDirect(Th_Connecting);
+
     LInicio    := GetTickCount;
     FConectado := Chromium1.CreateBrowser(CEFWindowParent1);
     Repeat
@@ -4005,11 +4037,14 @@ begin
     //FTimerMonitoring.Enabled  := FConectado;
     if not FConectado then
     begin
+      save_log('  FConectado: false');
       SendNotificationCenterDirect(Th_Disconnected);
       raise Exception.Create(MSG_ConfigCEF_ExceptBrowse);
     end
     else
     begin
+      save_log('  FConectado: true');
+      SendNotificationCenterDirect(Th_Connected);
       Chromium1.OnConsoleMessage        := Chromium1ConsoleMessage;
       Chromium1.OnOpenUrlFromTab        := Chromium1OpenUrlFromTab;
       Chromium1.OnTitleChange           := Chromium1TitleChange;
@@ -4276,8 +4311,10 @@ end;
 
 procedure TFrmConsole.Img_LogoInjectClick(Sender: TObject);
 begin
+  RebootChromium;
+
   //Marcelo 19/04/2023
-  Chromium1.StopLoad;
+  (*Chromium1.StopLoad;
   Chromium1.Browser.ReloadIgnoreCache;
 
   localStorage_debug;
@@ -4286,7 +4323,9 @@ begin
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
     SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
   ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
-  SleepNoFreeze(500);
+  SleepNoFreeze(40);
+
+  save_log('  Inject js.ABR Img_LogoInjectClick');
 
   if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
     TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
@@ -4304,7 +4343,7 @@ begin
 
 
   SleepNoFreeze(40);
-  SendNotificationCenterDirect(Th_Initialized);
+  SendNotificationCenterDirect(Th_Initialized);*)
 end;
 
 procedure TFrmConsole.Int_FrmQRCodeClose(Sender: TObject);
@@ -4641,6 +4680,9 @@ procedure TFrmConsole.fGetMe();
 var
   Ljs: string;
 begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
   LJS   := FrmConsole_JS_VAR_getMe;
   ExecuteJS(LJS, true);
 end;

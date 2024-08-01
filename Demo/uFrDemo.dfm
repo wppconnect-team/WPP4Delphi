@@ -5712,7 +5712,7 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
       'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPC' +
-      'onnectAnexos\TWPPConnectAnexos\'
+      'onnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5726,6 +5726,7 @@ object frDemo: TfrDemo
     OnGetAllGroupList = TWPPConnect1GetAllGroupList
     OnGetAllCommunitys = TWPPConnect1GetAllCommunitys
     OnGetAllGroupAdmins = TWPPConnect1GetAllGroupAdmins
+    OnAfterInjectJS = TWPPConnect1AfterInjectJS
     OnGetQrCode = TWPPConnect1GetQrCode
     OnGetChatList = TWPPConnect1GetChatList
     OnGetUnReadMessages = TWPPConnect1GetUnReadMessages
@@ -5786,7 +5787,7 @@ object frDemo: TfrDemo
     OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     OnGet_deleteMessageNewResponse = TWPPConnect1Get_deleteMessageNewResponse
     OnGet_editMessageNewResponse = TWPPConnect1Get_editMessageNewResponse
-    Left = 360
+    Left = 298
     Top = 8
   end
   object timerStatus: TTimer
@@ -5832,6 +5833,13 @@ object frDemo: TfrDemo
     Interval = 7000
     OnTimer = Timer1Timer
     Left = 912
+    Top = 8
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 4000
+    OnTimer = Timer2Timer
+    Left = 388
     Top = 8
   end
 end

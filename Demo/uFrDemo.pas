@@ -64,6 +64,7 @@ type
     TimerProgress: TTimer;
     lblNomeConta: TLabel;
     Timer1: TTimer;
+    Timer2: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -165,6 +166,8 @@ type
     procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
     procedure TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
     procedure TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
+    procedure Timer2Timer(Sender: TObject);
+    procedure TWPPConnect1AfterInjectJS(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -673,6 +676,8 @@ begin
   frameLogin1.lblCodeLinkDevice.Caption := '';
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
   timerStatus.Enabled := True;
+  Timer2.Enabled := True;
+
   //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
   killtask('Gbpsv.exe');
   killtask('core.exe');
@@ -811,6 +816,18 @@ begin
 
   except on E: Exception do
   end;
+end;
+
+procedure TfrDemo.Timer2Timer(Sender: TObject);
+begin
+  Timer2.Enabled := False;
+
+  if not TWPPConnect1.auth then
+    exit;
+
+  TWPPConnect1.IsOnline;
+
+  Timer2.Enabled := True;
 end;
 
 procedure TfrDemo.TimerCheckOnlineTimer(Sender: TObject);
@@ -959,7 +976,7 @@ begin
     Server_Disconnecting:
       Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Server_Connected:
-      Label3.Caption := '';
+      Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Server_Connecting:
       Label3.Caption := TWPPConnect(Sender).StatusToStr;
     Inject_Initializing:
@@ -980,6 +997,11 @@ begin
       Label3.Caption := TWppConnect(Sender).StatusToStr;
   end;
 end;
+procedure TfrDemo.TWPPConnect1AfterInjectJS(Sender: TObject);
+begin
+  TWPPConnect1.GetMyNumber;
+end;
+
 procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
 var
   vStatus : Boolean;

@@ -3357,9 +3357,16 @@ begin
       //DownLoadInternetFile(TPPConnectJS_libeay32, 'libeay32.dll');
 
       //Aurino 11/07/2022
+      
+      save_log('antes GetUrl: js.abr ');
       Get(Purl, FReturnUrl); // arquivo js.abr in wa.js by wppconnect
+      save_log('depois GetUrl: js.abr ');
+      
+      if FReturnUrl.size = 0 then
+        save_log('FReturnUrl Vazio');
 
-      DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+      //save_log('antes DownLoadInternetFile: decryptFile.dll ');
+      //DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
 
       //Joffas 24/01/2024
       {if DownLoadInternetFile(Purl, 'js.abr') then
@@ -3369,16 +3376,19 @@ begin
       on E : Exception do
       begin
         LMsg := e.Message;
+        save_log('GetUrl ' + E.Message);
         // retentar
         try
           LMsg := '';
 
-          DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
           DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+          DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+
         except
            on E : Exception do
            begin
               LMsg := E.Message;
+              save_log('retry GetUrl ' + E.Message);
            end;
         end;
 
