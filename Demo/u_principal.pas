@@ -390,7 +390,7 @@ end;
 
 procedure TfrmPrincipal.btCheckNumberClick(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   //TWPPConnect1.CheckIsValidNumber(ed_num.Text); deprecated
@@ -414,7 +414,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
     //               Dest                    Contact
     //               ex: 558199301443@c.us   558187576958@c.us
@@ -428,7 +428,7 @@ end;
 procedure TfrmPrincipal.btSendLinkWithPreviewClick(Sender: TObject);
 begin
   try
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.sendLinkPreview(ed_num.Text, ed_videoLink.Text, mem_message.Text);
@@ -451,7 +451,7 @@ Begin
     Exit;
 
   try
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        exit;
 
     TWPPConnect1.SendFile(ed_num.Text, openDialog1.FileName,  mem_message.Text);
@@ -463,7 +463,7 @@ end;
 
 procedure TfrmPrincipal.btIsConnectedClick(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.CheckIsConnected();
@@ -515,7 +515,7 @@ end;}
 
 procedure TfrmPrincipal.Button10Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupJoinViaLink(edt_groupInviteLink.Text);
@@ -523,7 +523,7 @@ end;
 
 procedure TfrmPrincipal.Button11Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupLeave(lbl_idGroup.Caption);
@@ -531,7 +531,7 @@ end;
 
 procedure TfrmPrincipal.Button12Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupDelete(lbl_idGroup.Caption);
@@ -549,7 +549,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
 
@@ -588,7 +588,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     titleText := 'Forma de Pagamento';
@@ -665,7 +665,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
     LBase64 := TStringList.Create;
     TRY
@@ -744,7 +744,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -824,7 +824,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -904,7 +904,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
     LBase64 := TStringList.Create;
     TRY
@@ -972,7 +972,7 @@ procedure TfrmPrincipal.btGetSeveralStatusClick(Sender: TObject);
 begin
   try
     FStatus := false;
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.GetStatusContact('558196988474@c.us');
@@ -985,7 +985,7 @@ end;
 procedure TfrmPrincipal.btGetMeClick(Sender: TObject);
 begin
   try
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.GetMe();
@@ -996,7 +996,7 @@ end;
 
 procedure TfrmPrincipal.Button19Click(Sender: TObject);
 begin
-   if not TWPPConnect1.Auth then
+   if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);//  '558192317066-1592044430@g.us'
@@ -1004,7 +1004,7 @@ end;
 
 procedure TfrmPrincipal.btCleanChatClick(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.CleanALLChat(ed_num.Text);
@@ -1014,7 +1014,7 @@ procedure TfrmPrincipal.btGetStatusClick(Sender: TObject);
 begin
   try
     FStatus := true;
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.GetStatusContact(ed_num.Text);
@@ -1026,7 +1026,7 @@ end;
 procedure TfrmPrincipal.btnRemoveGroupLinkClick(Sender: TObject);
 begin   try
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.GroupRemoveInviteLink(lbl_idGroup.Caption);
@@ -1038,7 +1038,7 @@ end;
 procedure TfrmPrincipal.btSetProfileNameClick(Sender: TObject);
 begin
   try
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.SetProfileName(ed_profileData.Text);
@@ -1050,7 +1050,7 @@ end;
 procedure TfrmPrincipal.btSetProfileStatusClick(Sender: TObject);
 begin
    try
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     TWPPConnect1.SetStatus(ed_profileData.Text);
@@ -1061,7 +1061,7 @@ end;
 
 procedure TfrmPrincipal.btnTestCheckNumberClick(Sender: TObject);
 begin
- if not TWPPConnect1.Auth then   Exit;
+ if not TWPPConnect1.Auth(False) then   Exit;
 
   TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
 end;
@@ -1070,7 +1070,7 @@ procedure TfrmPrincipal.Button1Click(Sender: TObject);
 var
   JS: string;
 begin
-  if (not TWPPConnect1.Auth)  then
+  if (not TWPPConnect1.Auth(False))  then
     Exit;
 
   TWPPConnect1.getProfilePicThumb(FChatID);
@@ -1088,7 +1088,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     options :=
@@ -1116,7 +1116,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     options :=
@@ -1172,7 +1172,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     options := '';
@@ -1238,7 +1238,7 @@ begin
       Exit;
     end;
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
        Exit;
 
     rawMessage := mem_message.Text;
@@ -1277,7 +1277,7 @@ end;
 
 procedure TfrmPrincipal.Button4Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
     Exit;
 
   TWPPConnect1.createGroup(edt_nomeGrupo.Text, edt_foneParticipante.Text);
@@ -1287,7 +1287,7 @@ end;
 
 procedure TfrmPrincipal.Button5Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.getAllGroups;
@@ -1295,7 +1295,7 @@ end;
 
 procedure TfrmPrincipal.Button6Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
@@ -1303,7 +1303,7 @@ end;
 
 procedure TfrmPrincipal.btStatusBatClick(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.GetBatteryStatus;
@@ -1311,7 +1311,7 @@ end;
 
 procedure TfrmPrincipal.Button7Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
@@ -1319,7 +1319,7 @@ end;
 
 procedure TfrmPrincipal.Button8Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupPromoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
@@ -1327,7 +1327,7 @@ end;
 
 procedure TfrmPrincipal.Button9Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth then
+  if not TWPPConnect1.Auth(False) then
      Exit;
 
   TWPPConnect1.groupDemoteParticipant(lbl_idGroup.Caption, ed_idParticipant.text);
@@ -1905,7 +1905,7 @@ begin
     lbl_idGroup.Caption :=  Copy(listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1], 0,
       Pos('@', listaGrupos.Items[listaGrupos.Selected.Index].SubItems[1]))+'g.us';
 
-    if not TWPPConnect1.Auth then
+    if not TWPPConnect1.Auth(False) then
       Exit;
 
     TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
@@ -1928,7 +1928,7 @@ end;
 
 procedure TfrmPrincipal.SpeedButton1Click(Sender: TObject);
 begin
-  if not TWPPConnect1.Auth(false) then
+  if not TWPPConnect1.Auth(False) then
   Begin
     TWPPConnect1.FormQrCodeType := TFormQrCodeType(Rdb_FormaConexao.ItemIndex);
     TWPPConnect1.FormQrCodeStart;
@@ -1946,7 +1946,7 @@ end;
 
 procedure TfrmPrincipal.SpeedButton3Click(Sender: TObject);
 begin
-  if not TWPPConnect1.auth then
+  if not TWPPConnect1.Auth(False) then
     exit;
 
    TWPPConnect1.Logout;

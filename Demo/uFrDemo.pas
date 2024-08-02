@@ -410,7 +410,7 @@ begin
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
 
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   //Créditos --> https://github.com/landgraf-dev/openai-delphi
@@ -433,7 +433,7 @@ end;
 
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
   FrmConsole.StartQrCode(Ft_Http, True);
 end;
@@ -822,7 +822,7 @@ procedure TfrDemo.Timer2Timer(Sender: TObject);
 begin
   Timer2.Enabled := False;
 
-  if not TWPPConnect1.auth then
+  if not TWPPConnect1.auth(False) then
     exit;
 
   TWPPConnect1.IsOnline;
@@ -968,34 +968,43 @@ Begin
 End;
 procedure TfrDemo.timerStatusTimer(Sender: TObject);
 begin
-  case TWPPConnect(Sender).status of
-    Server_ConnectedDown:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Disconnected:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Disconnecting:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Connected:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Connecting:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Initializing:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Initialized:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_ConnectingNoPhone:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_ConnectingReaderCode:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_TimeOut:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Destroying:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Destroy:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Rebooting:
-      Label3.Caption := TWppConnect(Sender).StatusToStr;
+  timerStatus.enabled := False;
+
+  try
+    case TWPPConnect(Sender).status of
+      Server_ConnectedDown:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Disconnected:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Disconnecting:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Connected:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Connecting:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Initializing:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Initialized:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_ConnectingNoPhone:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_ConnectingReaderCode:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_TimeOut:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Destroying:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Destroy:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Rebooting:
+        Label3.Caption := TWppConnect(Sender).StatusToStr;
+
+    end;
+
+  except on E: Exception do
   end;
+
+  timerStatus.enabled := True;
 end;
 procedure TfrDemo.TWPPConnect1AfterInjectJS(Sender: TObject);
 begin

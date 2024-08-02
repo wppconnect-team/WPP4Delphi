@@ -6,7 +6,6 @@ uses
   uTWPPConnect.ConfigCEF,
   iniFiles,
   SysUtils,
-  u_principal in 'u_principal.pas' {frmPrincipal},
   u_Messagem in 'u_Messagem.pas',
   uFraLogin in 'uFraLogin.pas' {frameLogin: TFrame},
   uFraMensagens in 'uFraMensagens.pas' {frameMensagem: TFrame},

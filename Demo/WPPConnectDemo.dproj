@@ -146,37 +146,28 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="u_principal.pas">
-            <Form>frmPrincipal</Form>
-        </DCCReference>
         <DCCReference Include="u_Messagem.pas"/>
         <DCCReference Include="uFraLogin.pas">
             <Form>frameLogin</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="uFraMensagens.pas">
             <Form>frameMensagem</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="uFrDemo.pas">
             <Form>frDemo</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uFraGrupos.pas">
             <Form>frameGrupos</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="uFraMEnsagensRecebidas.pas">
             <Form>frameMensagensRecebidas</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="uFraMensagensEnviadas.pas">
             <Form>frameMensagensEnviadas</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="u_Retorno_SendFileMensagem.pas"/>
@@ -190,7 +181,6 @@
         </DCCReference>
         <DCCReference Include="uFraComunidades.pas">
             <Form>frameComunidades</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Debug">

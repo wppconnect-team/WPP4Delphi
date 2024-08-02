@@ -81,6 +81,10 @@ object frameMensagem: TframeMensagem
       TabOrder = 3
       object tsImage: TTabSheet
         Caption = 'Image Preview'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Image1: TImage
           Left = 0
           Top = 15
@@ -97,15 +101,18 @@ object frameMensagem: TframeMensagem
         object lblCaminhoImagem: TLabel
           Left = 0
           Top = 0
-          Width = 229
+          Width = 3
           Height = 15
           Align = alTop
-          ExplicitWidth = 3
         end
       end
       object tsBase64: TTabSheet
         Caption = 'Base64'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Memo1: TMemo
           Left = 0
           Top = 0

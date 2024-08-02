@@ -754,6 +754,13 @@ begin
         SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
       ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
+
       SleepNoFreeze(40);
 
       save_log('Inject js.ABR');
@@ -1608,6 +1615,13 @@ begin
   if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
     SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
   ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+  ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+               '  const jsonObject = {   ' +
+               '    dateTime: dataAtual, ' +
+               '    Inject: true   ' +
+               '  };   ' +
+               '  console.log(JSON.stringify(jsonObject)); ');
   SleepNoFreeze(40);
 
   save_log('  Inject js.ABR');
@@ -3447,6 +3461,13 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
     SleepNoFreeze(40);
 
     save_log('  Inject js.ABR again');
@@ -3483,6 +3504,13 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
     SleepNoFreeze(40);
 
     save_log('  Inject js.ABR again');
@@ -3603,6 +3631,13 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
     SleepNoFreeze(40);
 
     save_log('  Inject js.ABR again');
@@ -3639,6 +3674,14 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
+
     SleepNoFreeze(40);
 
     save_log('  Inject js.ABR again');
@@ -3786,6 +3829,14 @@ begin
     if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
       SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
     ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
+
     SleepNoFreeze(40);
 
     save_log('  Inject js.ABR LoadEnd');

@@ -226,7 +226,7 @@ end;
 procedure TframeMensagem.bGetMeClick(Sender: TObject);
 begin
   try
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
     frDemo.TWPPConnect1.GetMe;
@@ -248,7 +248,7 @@ begin
     end;
   end;
 
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   //https://wppconnect.io/wa-js/functions/chat.getMessages.html
@@ -269,7 +269,7 @@ begin
     end;
   end;
 
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
   frDemo.TWPPConnect1.DesarquivarChat(ed_num.text);
 end;
@@ -307,7 +307,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     options := 'createChat: true';
@@ -359,14 +359,14 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
   frDemo.TWPPConnect1.ArquivarChat(ed_num.text);
 end;
 
 procedure TframeMensagem.btnArquivarTodosChatsClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
    frDemo.TWPPConnect1.ArquivarTodosOsChats;
@@ -387,7 +387,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -443,7 +443,7 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
   frDemo.TWPPConnect1.BloquearContato(ed_num.text);
 end;
@@ -460,7 +460,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     //Opicional Não Utilizar para primeira mensagem, somente para contatos que já houve alguma interação
@@ -532,7 +532,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
     //               Dest                    Contact
     //               ex: 558199301443@c.us   558187576958@c.us
@@ -549,7 +549,7 @@ end;
 
 procedure TframeMensagem.btnDeletarTodosChatsClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   //frDemo.TWPPConnect1.DeletarTodosOsChats;
@@ -568,7 +568,7 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
   frDemo.TWPPConnect1.DesbloquearContato(ed_num.text);
 end;
@@ -585,7 +585,7 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
   frDemo.TWPPConnect1.DesfixarCHat(ed_num.text);
 end;
@@ -595,7 +595,7 @@ var
   idMensagem: string;
 begin
   try
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     if ed_Num.Text = '' then
@@ -633,7 +633,7 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   frDemo.TWPPConnect1.FixarChat(ed_num.text);
@@ -653,7 +653,7 @@ begin
     end;
   end;
 
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
 
@@ -673,7 +673,7 @@ var
   S_RETORNO : wideString;
 begin
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -745,7 +745,7 @@ var
   content, options : string;
   LBase64 : TStringList;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if Trim(mem_message.Text) = '' then
@@ -791,7 +791,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -877,7 +877,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -921,7 +921,7 @@ end;
 
 procedure TframeMensagem.btnLimparConversaClick(Sender: TObject);
 begin
- if not frDemo.TWPPConnect1.Auth then
+ if not frDemo.TWPPConnect1.Auth(False) then
 
      Exit;
 
@@ -942,7 +942,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     LBase64 := TStringList.Create;
@@ -1012,7 +1012,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     titleText := 'Forma de Pagamento';
@@ -1092,7 +1092,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     horarioAgendamento := '';
@@ -1158,7 +1158,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     options :=
@@ -1186,7 +1186,7 @@ var
   LDescricao: String;
   LChoices, Options: String;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   LDescricao:= InputBox('Informe a descrição da votação','Descrição','Votação WPPConnect');
@@ -1217,7 +1217,7 @@ end;
 
 procedure TframeMensagem.btnDeletarOldChatClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   frDemo.TWPPConnect1.DeletarOldChats('2'); //Exemplo Apagando os 2 Últimos Chats mais antigos da sua lista de conversa
@@ -1261,7 +1261,7 @@ procedure TframeMensagem.btnStatusClick(Sender: TObject);
 begin
   try
     FStatus := true;
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     frDemo.TWPPConnect1.GetStatusContact(ed_num.Text);
@@ -1276,7 +1276,7 @@ var
   LBase64 : TStringList;
 begin
   try
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     LBase64 := TStringList.Create;
@@ -1308,7 +1308,7 @@ var
   options, content : string;
 begin
   try
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     content := mem_message.Text;
@@ -1341,7 +1341,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
     LBase64 := TStringList.Create;
     TRY
@@ -1437,7 +1437,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     options := 'createChat: true';
@@ -1507,7 +1507,7 @@ end;
 
 procedure TframeMensagem.btnVerificarNumeroClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if Trim(ed_num.Text) = '' then
@@ -1539,7 +1539,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
     LBase64 := TStringList.Create;
     TRY
@@ -1593,7 +1593,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
     LBase64 := TStringList.Create;
 
@@ -1637,7 +1637,7 @@ var
   LBase64 : TStringList;
 begin
   try
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
        Exit;
 
     LBase64 := TStringList.Create;
@@ -1666,7 +1666,7 @@ end;
 
 procedure TframeMensagem.Button1Click(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if Trim(ed_num.Text) = '' then
@@ -1688,7 +1688,7 @@ var
 begin
 
   try
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     if Trim(ed_num.Text) = '' then
@@ -1716,7 +1716,7 @@ procedure TframeMensagem.Button3Click(Sender: TObject);
 var
   IdMensagem : string;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
@@ -1731,7 +1731,7 @@ procedure TframeMensagem.Button4Click(Sender: TObject);
 var
   IdMensagem : string;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if InputQuery('Informe a ID da Mensagem.', 'Unique ID: ', IdMensagem) then
@@ -1757,7 +1757,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     caption := frDemo.CaractersWeb(mem_message.Text);
@@ -1792,7 +1792,7 @@ var
   content, options : string;
   LBase64 : TStringList;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   LBase64 := TStringList.Create;
@@ -1872,7 +1872,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     options := 'createChat: true';
@@ -1903,7 +1903,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     options := '';
@@ -1927,7 +1927,7 @@ begin
       Exit;
     end;}
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     //frDemo.TWPPConnect1.EndCall(ed_num.text);
@@ -1954,7 +1954,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     caption := frDemo.CaractersWeb(mem_message.Text);
@@ -2116,7 +2116,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     //Exemplo Mudar o KeyType para o Tipo de Chave desejado, só enviar em Chat de Usuário, Grupos não vai funcionar

@@ -5712,7 +5712,8 @@ object frDemo: TfrDemo
     Config.ReceiveAttachmentPath = 
       'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
       'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPC' +
-      'onnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\'
+      'onnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnex' +
+      'os\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
@@ -5792,7 +5793,6 @@ object frDemo: TfrDemo
   end
   object timerStatus: TTimer
     Enabled = False
-    Interval = 500
     OnTimer = timerStatusTimer
     Left = 452
     Top = 8
