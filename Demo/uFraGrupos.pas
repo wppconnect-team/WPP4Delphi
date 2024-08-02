@@ -112,7 +112,7 @@ uses uFrDemo;
 
 procedure TframeGrupos.btnSairGrupoClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -126,7 +126,7 @@ end;
 
 procedure TframeGrupos.Button1Click(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   //edtNovoParticipante
@@ -153,7 +153,7 @@ end;
 
 procedure TframeGrupos.btnMsgAllClick(Sender: TObject);
 begin
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -169,7 +169,7 @@ procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
 var
   LNomeArquivo: String;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   if lbl_idGroup.Caption = ''  then
@@ -191,7 +191,7 @@ end;
 
 procedure TframeGrupos.btnDeletarGrupoClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -205,7 +205,7 @@ end;
 
 procedure TframeGrupos.btnAddPArticiClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -226,7 +226,7 @@ end;
 
 procedure TframeGrupos.btnAdminOnlyClick(Sender: TObject);
 begin
-   if not frDemo.TWPPConnect1.Auth then
+   if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   if lbl_idgroup.caption = '' then
@@ -239,7 +239,7 @@ begin
 
 procedure TframeGrupos.btnCancelaLinkClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -253,7 +253,7 @@ end;
 
 procedure TframeGrupos.btnCriarGrupoClick(Sender: TObject);
 begin
- if not frDemo.TWPPConnect1.Auth then
+ if not frDemo.TWPPConnect1.Auth(False) then
    Exit;
 
   if edtnomeGrupo.Text = '' then
@@ -277,7 +277,7 @@ end;
 
 procedure TframeGrupos.btnDescricaoGrupoClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -297,7 +297,7 @@ end;
 
 procedure TframeGrupos.btnDespromoverClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -311,7 +311,7 @@ end;
 
 procedure TframeGrupos.btnEntrarLinkClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   frDemo.TWPPConnect1.groupJoinViaLink(edtLinkConvite.Text);
@@ -319,7 +319,7 @@ end;
 
 procedure TframeGrupos.btnGerarLinkConviteClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then    Exit;
+  if not frDemo.TWPPConnect1.Auth(False) then    Exit;
 
   if lbl_idGroup.caption = '' then
   begin
@@ -332,7 +332,7 @@ end;
 
 procedure TframeGrupos.btnListarGruposClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   frDemo.TWPPConnect1.getAllGroups;
@@ -340,7 +340,7 @@ end;
 
 procedure TframeGrupos.btnPromoverClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -354,7 +354,7 @@ end;
 
 procedure TframeGrupos.btnRemoveParticiClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   if lbl_idgroup.caption = '' then
@@ -371,7 +371,7 @@ var
   LDescricao: String;
   LOpcoes, Options: String;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
   LDescricao:= InputBox('Informe a descrição da votação','Descrição','Votação WPPConnect');
@@ -416,7 +416,7 @@ begin
 
     edtIdGrupo.Text := lbl_idGroup.Caption;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
     frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);

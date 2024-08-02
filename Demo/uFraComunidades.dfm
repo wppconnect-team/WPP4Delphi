@@ -437,10 +437,9 @@ object frameComunidades: TframeComunidades
             AlignWithMargins = True
             Left = 5
             Top = 67
-            Width = 374
+            Width = 3
             Height = 15
             Align = alTop
-            ExplicitWidth = 3
           end
           object listaParticipantes: TListView
             AlignWithMargins = True

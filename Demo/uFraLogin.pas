@@ -80,7 +80,7 @@ begin
      frDemo.TWPPConnect1.FormQrCodeShowing := True;
   }
 
-  if frDemo.TWPPConnect1.Auth then
+  if frDemo.TWPPConnect1.Auth(False) then
     frDemo.TWPPConnect1.getgenLinkDeviceCodeForPhoneNumber(eNumberWhats.Text);
 end;
 
@@ -115,7 +115,7 @@ end;
 
 procedure TframeLogin.SpeedButton3Click(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     exit;
 
    frDemo.TWPPConnect1.Logout;
@@ -124,7 +124,7 @@ end;
 
 procedure TframeLogin.whatsOffClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     exit;
 
   frDemo.TWPPConnect1.IsOnline;
@@ -132,7 +132,7 @@ end;
 
 procedure TframeLogin.whatsOnClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     exit;
 
   frDemo.TWPPConnect1.IsOnline;

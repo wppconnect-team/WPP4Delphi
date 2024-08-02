@@ -155,7 +155,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
 
@@ -189,7 +189,7 @@ begin
       Exit;
     end;
 
-    if not frDemo.TWPPConnect1.Auth then
+    if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
 

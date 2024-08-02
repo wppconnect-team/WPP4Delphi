@@ -189,6 +189,7 @@ type
     FOnGet_editMessageNewResponse: TGet_editMessageNewResponse;
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
     FOnGetIsLogout: TGetIsLogout;
+    FAuthenticated: boolean;
 
 
     { Private  declarations }
@@ -530,7 +531,8 @@ type
 
     Property  IsDelivered        : String               Read FIsDelivered;
 
-    property  Authenticated      : boolean              read TestConnect;
+    //property  Authenticated      : boolean              read TestConnect;
+    property  Authenticated      : boolean              read FAuthenticated    write FAuthenticated default false;
     property  Status             : TStatusType          read FStatus;
     Function  StatusToStr        : String;
     Property  Emoticons          : TWPPConnectEmoticons     Read FEmoticons                     Write FEmoticons;
@@ -918,8 +920,8 @@ function TWPPConnect.Auth(PRaise: Boolean): Boolean;
 begin
   Result := authenticated;
 
-  {if (not Result) and  (PRaise) then
-    raise Exception.Create(Text_Status_Serv_Disconnected);}
+  if (not Result) and  (PRaise) then
+    raise Exception.Create(Text_Status_Serv_Disconnected);
 end;
 
 //funcao experimental para configuracao de proxy de rede(Ainda nao foi testada)
@@ -3760,6 +3762,7 @@ begin
     if Assigned(fOnGetStatus ) then
       fOnGetStatus(Self);
     Disconnect;
+    FAuthenticated := False;
     exit;
   end;
 
@@ -3769,6 +3772,7 @@ begin
     if Assigned(FOnDisconnectedBrute) then
       FOnDisconnectedBrute(Self);
     Disconnect;
+    FAuthenticated := False;
     exit;
   end;
 
@@ -3776,7 +3780,8 @@ begin
   if PTypeHeader = Th_Initialized then
   Begin
     FStatus := Inject_Initialized;
-    TestConnect;
+    FAuthenticated := True;
+    //TestConnect;
 
     if Assigned(FOnAfterInitialize) then
       FOnAfterInitialize(Self);
@@ -3786,7 +3791,6 @@ begin
 
     if Assigned(FrmConsole) then
       FrmConsole.Caption := ExeName + ' - LastNumber: ' + FLastMyNumber;
-
 
     {FrmConsole.GetMyNumber;
     FrmConsole.fGetMe();
@@ -3804,6 +3808,8 @@ begin
       FrmConsole.Caption := ExeName + ' - LastNumber: ' + FLastMyNumber;
     FrmConsole.GetMyNumber;
     FrmConsole.getWAVersion;
+
+    //SetAuth(True);
 
     //FrmConsole.GetTotalChatsUserRead;
 
@@ -3851,6 +3857,8 @@ begin
 
   if PTypeHeader = Th_getMyNumber then
   Begin
+    //SetAuth(True);
+
     FMyNumber := FAdjustNumber.FormatOut(PValue);
     if Assigned(FOnGetMyNumber) then
       FOnGetMyNumber(Self);
@@ -4131,8 +4139,16 @@ begin
   if PTypeHeader in [Th_Connected, Th_Disconnected]  then
   Begin
     if PTypeHeader = Th_Connected then
-       SetAuth(True) else
-       SetAuth(False);
+    begin
+      SetAuth(True);
+      FAuthenticated := True;
+    end
+    else
+    begin
+      SetAuth(False);
+      FAuthenticated := False;
+    end;
+
     LimparQrCodeInterno;
 
     if Assigned(FrmConsole) then
@@ -4146,6 +4162,8 @@ begin
   Begin
     save_log('PTypeHeader in [Th_Abort] Server_Disconnected');
     Fstatus     := Server_Disconnected;
+    FAuthenticated := False;
+
     if Assigned(fOnGetStatus) then
        fOnGetStatus(Self);
     Exit;
@@ -4219,6 +4237,7 @@ begin
   //Marcelo 16/04/2024 criado evento para registrar a ocorrência da Tela Branca / event created to record the occurrence of the White Screen Crash TChromium
   if Assigned(OnRetErrorWhiteScreen) then
     OnRetErrorWhiteScreen(Self, ErrorMessage);
+  FAuthenticated := False;
 
   {FrmConsole.Disconnect;
 
@@ -5988,7 +6007,7 @@ procedure TWPPConnect.SetAuth(const Value: boolean);
 begin
   if Value then
   Begin
-    If (Fstatus = Server_Connected) = Value Then
+    if (Fstatus = Server_Connected) = Value then
        Exit;
   end;
 
@@ -6365,6 +6384,7 @@ end;
 function TWPPConnect.TestConnect: Boolean;
 begin
   Result := (Fstatus in [Inject_Initialized]);
+
 end;
 
 function TWPPConnect.GetAppShowing: Boolean;
