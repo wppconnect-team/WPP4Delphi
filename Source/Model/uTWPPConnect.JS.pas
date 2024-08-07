@@ -42,7 +42,7 @@ interface
 uses
   System.Classes, IniFiles, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
   Vcl.ExtCtrls, StrUtils,
-  IdHTTP, uTWPPConnect.Diversos,
+  IdHTTP, uTWPPConnect.Diversos, uTWPPConnect.constant,
 
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
@@ -68,6 +68,7 @@ type
     FAutoUpdate     : Boolean;
     FJSScript       : TstringList;
     FJSURL          : String;
+    FDownloadJSType : TDownloadJSType;
     FJSVersion      : String;
     FReady          : Boolean;
     FOnUpdateJS     : TNotifyEvent;
@@ -117,19 +118,20 @@ type
   {$ENDREGION}
 
  published
-    property   AutoUpdate         : Boolean        read FAutoUpdate           write FAutoUpdate          default True;
-    property   AutoUpdateTimeOut  : Integer        Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
-    property   OnUpdateJS         : TNotifyEvent   Read FOnUpdateJS           Write FOnUpdateJS;
-    property   Ready              : Boolean        read FReady;
-    property   JSURL              : String         read FJSURL                write FJSURL;
-    property   JSScript           : TstringList    read FJSScript             Write SeTWPPConnectScript;
-    property   SecondsWaitInject  : Integer        read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
+    property   AutoUpdate         : Boolean         read FAutoUpdate           write FAutoUpdate          default True;
+    property   AutoUpdateTimeOut  : Integer         Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
+    property   OnUpdateJS         : TNotifyEvent    Read FOnUpdateJS           Write FOnUpdateJS;
+    property   Ready              : Boolean         read FReady;
+    property   JSURL              : String          read FJSURL                write FJSURL;
+    property   DownloadJSType     : TDownloadJSType read FDownloadJSType       write FDownloadJSType;
+    property   JSScript           : TstringList     read FJSScript             Write SeTWPPConnectScript;
+    property   SecondsWaitInject  : Integer         read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
   end;
 
 
 implementation
 
-uses uTWPPConnect.Constant, System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
+uses System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
      IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
      Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs, uTWPPConnect;
 
@@ -166,6 +168,7 @@ begin
   FAutoUpdate                := True;
   //FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
   FJSURL                     := TWPPConnectJS_JSUrlPadrao;
+  FDownloadJSType            := DT_Indy;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
   FSecondsWaitInject         := 6;
@@ -367,6 +370,7 @@ end;
 function TWPPConnectJS.PegarLocalJS_Web: String;
 var
   LHttp        : TUrlIndy;
+  LRest        : TUrlREST;
   LSalvamento  : String;
   LRet         : TStringList;
 begin
@@ -375,29 +379,45 @@ begin
 
   LRet          := TStringList.Create;
   LHttp         := TUrlIndy.Create;
+  LRest         := TUrlREST.Create(nil);
   try
     DeleteFile(PwideChar(LSalvamento));
-    LHttp.HTTPOptions := LHttp.HTTPOptions + [hoForceEncodeParams] ;
-    LHttp.Request.Accept          := 'text/html, */*';
-    LHttp.Request.ContentEncoding := 'raw';
 
-    LHttp.TimeOut     := AutoUpdateTimeOut;
-    //Temis 03-06-2022
-    save_log('antes LHttp.GetUrl(' + JSURL + ')');
-    
-    if LHttp.GetUrl(JSURL) = true Then
-    //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
-    begin
-      LRet.LoadFromStream(LHttp.ReturnUrl);
-      if not ValidaJs(LRet) Then
-         LRet.Clear
-      else
-        save_log('PegarLocalJS_Web OK');
-    end
+    case FDownloadJSType of
+      DT_Indy:
+      begin
+        LHttp.HTTPOptions := LHttp.HTTPOptions + [hoForceEncodeParams] ;
+        LHttp.Request.Accept          := 'text/html, */*';
+        LHttp.Request.ContentEncoding := 'raw';
+
+        LHttp.TimeOut     := AutoUpdateTimeOut;
+        //Temis 03-06-2022
+        save_log('antes LHttp.GetUrl(' + JSURL + ')');
+        if (LHttp.GetUrl(JSURL)) Then
+          LRet.LoadFromStream(LHttp.ReturnUrl)
+        else
+          save_log('PegarLocalJS_Web Failed');
+      end;
+
+      //Dejorgenes - Buscar arquivo js via Rest 05-08-2024
+      DT_Rest:
+      begin
+        LRest.TimeOut := AutoUpdateTimeOut;
+        save_log('antes LRest.GetUrl(' + JSURL + ')');
+        if (LRest.GetUrl(JSURL)) then
+          LRet.LoadFromStream(LRest.ReturnUrl)
+        else
+          save_log('PegarLocalJS_Web Failed');
+      end;
+    end;
+
+    if not ValidaJs(LRet) Then
+      LRet.Clear
     else
-      save_log('PegarLocalJS_Web Failed');
+      save_log('PegarLocalJS_Web OK');
   finally
     FreeAndNil(LHttp);
+    FreeAndNil(LRest);
     if LRet.Count > 1 then
     begin
       save_log('antes LSalvamento: Caminho: ' + LSalvamento);

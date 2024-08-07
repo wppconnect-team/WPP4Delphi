@@ -39,7 +39,7 @@ uses Generics.Collections, Rest.Json, uTWPPConnect.FrmQRCode, Vcl.Graphics, Syst
     Vcl.IdAntiFreeze,
   {$ENDIF}
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, Vcl.Imaging.jpeg,
-  IdSSLOpenSSL, UrlMon, ShellApi, Activex;
+  IdSSLOpenSSL, UrlMon, ShellApi, Activex, REST.Types, REST.Client;
 type
   TQrCodeRet   = (TQR_Http, TQR_Img, TQR_Data);
   TQrCodeRets  = set of TQrCodeRet;
@@ -72,6 +72,23 @@ type
 
     Property    TimeOut : Integer         Read FTimeOut        Write FTimeOut;
     Property    ShowException: Boolean    Read FShowException  Write FShowException;
+  end;
+
+  //Dejorgenes - Adicionado classe REST para fazer download do js.abr - 05/08/2024
+  TUrlREST = class(TRESTRequest)
+  private
+    FTimeOut       : Integer;
+    FReturnUrl     : TMemoryStream;
+    FShowException : Boolean;
+    RESTClient     : TRESTClient;
+    function DownLoadInternetFile(Source, Dest: String): Boolean;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    function    GetUrl(Const Purl: String): Boolean;
+    property    ReturnUrl: TMemoryStream read FReturnUrl;
+    property    TimeOut: Integer         read FTimeOut       write FTimeOut;
+    property    ShowException: Boolean   read FShowException write FShowException;
   end;
 
   TClassPadrao = class
@@ -4281,6 +4298,78 @@ end;
 function ThydratedButtonsClass.ToJsonString: string;
 begin
   result := TJson.ObjectToJsonString(self);
+end;
+
+{ TUrlREST }
+
+constructor TUrlREST.Create(AOwner: TComponent);
+begin
+  inherited;
+  FTimeOut           := 10;
+  FShowException     := True;
+  FReturnUrl         := TMemoryStream.Create;
+  Self.Accept        := 'application/json, text/plain; q=0.9, text/html;q=0.8,';
+  Self.AcceptCharset := 'utf-8, *;q=0.8';
+
+  RESTClient           := TRESTClient.Create(nil);
+  RESTClient.UserAgent := 'Mozilla/5.0 (compatible; Test)';
+  Self.Client          := RESTClient;
+end;
+
+destructor TUrlREST.Destroy;
+begin
+  FreeandNil(FReturnUrl);
+  FreeandNil(RESTClient);
+  inherited;
+end;
+
+function TUrlREST.DownLoadInternetFile(Source, Dest: String): Boolean;
+begin
+  try
+    Result := URLDownloadToFile(nil, PChar(Source), PChar(Dest), 0, nil) = 0
+  except
+    Result := False;
+  end;
+end;
+
+function TUrlREST.GetUrl(const Purl: String): Boolean;
+var
+  jsSL: TStringList;
+begin
+  try
+    FReturnUrl.DisposeOf;
+    FReturnUrl := TMemoryStream.Create;
+    jsSL := TStringList.Create;
+    try
+      DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+
+      RESTClient.BaseURL := Purl;
+      Self.Execute;
+      if (Response.StatusCode = 200) then
+      begin
+        jsSL.Text := Response.Content;
+        jsSL.SaveToStream(FReturnUrl);
+      end;
+    except
+      on E : Exception do
+      begin
+        if FShowException then
+        begin
+          DownLoadInternetFile(TPPConnectJS_decryptFile, 'decryptFile.dll');
+          DownLoadInternetFile(TWPPConnectJS_JSUrlPadrao, 'js.abr');
+          {$IFNDEF STANDALONE}
+          Application.MessageBox(Pwidechar('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"'), PWideChar(Application.Title), MB_ICONWARNING + mb_ok);
+          {$ELSE}
+          raise exception.create('Erro HTTP GET (js.abr).' + #10#13+'FAQ request in default browser about "' + e.Message+'"');
+          {$ENDIF}
+        end;
+      end;
+    end;
+  finally
+    jsSL.Free;
+    FReturnUrl.position   := 0;
+    Result                := FReturnUrl.size > 0;
+  end;
 end;
 
 end.
