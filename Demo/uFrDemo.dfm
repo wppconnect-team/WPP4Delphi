@@ -1712,8 +1712,66 @@ object frDemo: TfrDemo
     inherited gbAcoesBasicas: TGroupBox
       Height = 589
       ExplicitHeight = 589
+      inherited btnLocalizacaoBotao: TButton
+        ExplicitTop = 578
+      end
+      inherited btnLink: TButton
+        ExplicitTop = 330
+      end
+      inherited btnImagemBotao: TButton
+        ExplicitTop = 609
+      end
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
+      end
+      inherited btnAudio: TButton
+        ExplicitTop = 361
+      end
+      inherited btnContato: TButton
+        ExplicitTop = 423
+      end
+      inherited btnSticker: TButton
+        ExplicitTop = 392
+      end
+      inherited btnLocalizacao: TButton
+        ExplicitTop = 454
+      end
+      inherited btnArquivo: TButton
+        ExplicitTop = 547
+      end
+      inherited btnStatusTexto: TButton
+        ExplicitTop = 640
+      end
+      inherited btnStatusImagem: TButton
+        ExplicitTop = 671
+      end
+      inherited btnVideoStatus: TButton
+        ExplicitTop = 702
+      end
+      inherited Button2: TButton
+        ExplicitTop = 733
+      end
+      inherited bTextoMarcandoTodosGrupo: TButton
+        ExplicitTop = 764
+      end
+      inherited btnLigar: TButton
+        ExplicitTop = 795
+      end
+      inherited btnEncerrarChamada: TButton
+        ExplicitTop = 826
+      end
+      inherited Button5: TButton
+        ExplicitTop = 516
+      end
+      inherited btnPoolMessage: TButton
+        ExplicitTop = 485
+      end
+      inherited btnImageButton: TButton
+        ExplicitTop = 299
+      end
+      inherited SendDocumentButton: TButton
+        ExplicitLeft = 5
+        ExplicitTop = 268
       end
     end
     inherited GroupBox2: TGroupBox
@@ -5709,11 +5767,7 @@ object frDemo: TfrDemo
       'n/Source/JS/js.abr'
     Config.AutoDelay = 500
     Config.ReceiveAttachmentAuto = False
-    Config.ReceiveAttachmentPath = 
-      'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAn' +
-      'exos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPC' +
-      'onnectAnexos\TWPPConnectAnexos\TWPPConnectAnexos\TWPPConnectAnex' +
-      'os\'
+    Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\'
     Config.SecondsMonitor = 40
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
