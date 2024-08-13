@@ -79,7 +79,7 @@ type
     Owner: TComponent;
   {$REGION 'uCSV.Import'}
     FStringList: TStringList;
-    FRegistros       : TFDMemTable;
+    FRegistros : TFDMemTable;
     FSeparador : Char;
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
@@ -145,6 +145,11 @@ begin
   DelFileTemp;
   FreeAndNil(FInjectJSDefine);
   FreeAndNil(FJSScript);
+
+  FreeAndNil(FRegistros);
+  FreeAndNil(FDownloadJSType);
+  FreeAndNil(FOnUpdateJS);
+  FreeAndNil(FOnErrorInternal);
   inherited;
 end;
 

@@ -5765,6 +5765,7 @@ object frDemo: TfrDemo
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
+    InjectJS.DownloadJSType = DT_Indy
     Config.AutoDelay = 500
     Config.ReceiveAttachmentAuto = False
     Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\TWPPConnectAnexos\'
