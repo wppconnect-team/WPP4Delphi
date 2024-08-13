@@ -98,9 +98,17 @@ type
     procedure App_EventFormShow(Sender: TObject);
     // alternate view form
     procedure App_EventFormAlternaShow(Sender: TObject);
+{$IFDEF CEFCurrentVersion}
+    procedure Chromium1BeforeDownload(Sender: TObject;
+      const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
+      const suggestedName: ustring; const callback: ICefBeforeDownloadCallback;
+      var aResult: Boolean);
+{$ELSE}
     procedure Chromium1BeforeDownload(Sender: TObject;
       const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
       const suggestedName: ustring; const callback: ICefBeforeDownloadCallback);
+{$ENDIF}
+
     procedure Chromium1DownloadUpdated(Sender: TObject;
       const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
       const callback: ICefDownloadItemCallback);
@@ -127,7 +135,19 @@ type
 
     procedure Chromium1BeforeResourceLoad(Sender: TObject; const browser: ICefBrowser; const frame: ICefFrame; const request: ICefRequest;
       const callback: ICefCallback; out Result: TCefReturnValue);
-    procedure Chromium1RenderProcessTerminated(Sender: TObject; const browser: ICefBrowser; status: TCefTerminationStatus);
+
+
+{$IFDEF CEFCurrentVersion}
+    procedure Chromium1RenderProcessTerminated(Sender: TObject;
+      const browser: ICefBrowser; status: TCefTerminationStatus;
+      error_code: Integer; const error_string: ustring);
+{$ELSE}
+    procedure Chromium1RenderProcessTerminated(Sender: TObject;
+      const browser: ICefBrowser;
+      status: TCefTerminationStatus);
+{$ENDIF}
+
+
 
 
 
@@ -2534,27 +2554,25 @@ begin
   Model.Clear;
 end;
 
+{$IFDEF CEFCurrentVersion}
+procedure TFrmConsole.Chromium1BeforeDownload(Sender: TObject;
+  const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
+  const suggestedName: ustring; const callback: ICefBeforeDownloadCallback;
+  var aResult: Boolean);
+begin
+
+end;
+
+{$ELSE}
 procedure TFrmConsole.Chromium1BeforeDownload(Sender: TObject;
   const browser: ICefBrowser; const downloadItem: ICefDownloadItem;
   const suggestedName: ustring; const callback: ICefBeforeDownloadCallback);
-//Var
-//  LNameFile : String;
 begin
-{
-  if not(Chromium1.IsSameBrowser(browser)) or (downloadItem = nil) or not(downloadItem.IsValid) then
-     Exit;
 
-   LNameFile := FDownloadFila.SetNewStatus(downloadItem.OriginalUrl, TDw_Start);
-   if LNameFile = '' Then
-   Begin
-     Chromium1.StopLoad;
-     browser.StopLoad;
-     exit;
-   End;
-
-   callback.cont(LNameFile, False);
-}
 end;
+
+{$ENDIF}
+
 
 procedure TFrmConsole.Chromium1BeforePopup(Sender: TObject;
   const browser: ICefBrowser; const frame: ICefFrame; const targetUrl,
@@ -3873,6 +3891,53 @@ begin
   Result := (targetDisposition in [MyForegroundTabConstant, MyBackgroundTabConstant, MyPopupConstant, MyWindowConstant]);
 end;
 
+
+{$IFDEF CEFCurrentVersion}
+procedure TFrmConsole.Chromium1RenderProcessTerminated(Sender: TObject;
+  const browser: ICefBrowser; status: TCefTerminationStatus;
+  error_code: Integer; const error_string: ustring);
+var
+  Ljs, vStatus: string;
+begin
+  //Tratar error Tela Branca/ White Screen problem Render
+  case status of
+    TS_ABNORMAL_TERMINATION :
+    begin
+      vStatus := 'ABNORMAL_TERMINATION';
+    end;
+
+    TS_PROCESS_WAS_KILLED :
+    begin
+      vStatus := 'PROCESS_WAS_KILLED';
+    end;
+
+    TS_PROCESS_CRASHED :
+    begin
+      vStatus := 'PROCESS_CRASHED';
+    end;
+
+    TS_PROCESS_OOM :
+    begin
+      vStatus := 'PROCESS_OOM';
+    end;
+  end;
+
+  try
+    LogAdd('White Screen problem Render', vStatus);
+    LJS   := 'Reboot Services - White Screen problem Render ' + vStatus + '...';
+    ExecuteJS(LJS, true);
+  except on E: Exception do
+  end;
+
+  //Reset Services
+  try
+    TWPPConnect(FOwner).RebootWhiteScreen('White Screen problem Render ' + vStatus);
+  except on E: Exception do
+  end;
+end;
+
+{$ELSE}
+
 procedure TFrmConsole.Chromium1RenderProcessTerminated(Sender: TObject; const browser: ICefBrowser; status: TCefTerminationStatus);
 var
   Ljs, vStatus: string;
@@ -3958,6 +4023,10 @@ begin
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);*)
 end;
+
+{$ENDIF}
+
+
 
 procedure TFrmConsole.Chromium1TitleChange(Sender: TObject;
   const browser: ICefBrowser; const title: ustring);
