@@ -1849,6 +1849,48 @@ Tlogout_reason = class(TClassPadrao)
     property response:      string    read Fresponse     write Fresponse;
 end;
 
+TMsgPresence_change = class(TClassPadrao)
+private
+  FId: String;
+  FIsContact: Boolean;
+  FIsGroup: Boolean;
+  FIsOnline: Boolean;
+  FIsUser: Boolean;
+  FShortName: String;
+  FState: String;
+  FT: Extended;
+public
+  property id: String read FId write FId;
+  property isContact: Boolean read FIsContact write FIsContact;
+  property isGroup: Boolean read FIsGroup write FIsGroup;
+  property isOnline: Boolean read FIsOnline write FIsOnline;
+  property isUser: Boolean read FIsUser write FIsUser;
+  property shortName: String read FShortName write FShortName;
+  property state: String read FState write FState;
+  property t: Extended read FT write FT;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TMsgPresence_change;
+end;
+
+TGroupParticipantChangedClass = class(TClassPadrao)
+private
+  FAction: String;
+  FAuthor: String;
+  FAuthorPushName: String;
+  FGroupId: String;
+  FGroup_participant_changed: String;
+  FParticipants: TArray<String>;
+public
+  property action: String read FAction write FAction;
+  property author: String read FAuthor write FAuthor;
+  property authorPushName: String read FAuthorPushName write FAuthorPushName;
+  property groupId: String read FGroupId write FGroupId;
+  property group_participant_changed: String read FGroup_participant_changed write FGroup_participant_changed;
+  property participants: TArray<String> read FParticipants write FParticipants;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TEventClass;
+end;
+
 TWAVersion = class(TClassPadrao)
 private
   FWAVersion: string;
@@ -2267,6 +2309,56 @@ public
   property Msgs: TArray<TNewMsgClass> read FMsgs write FMsgs;
 end;
 
+TGetActiveChatClass = class(TClassPadrao)
+private
+    FLabels: TArray<String>;
+    FMsgs: TArray<TNewMsgClass>;
+    FHasChatBeenOpened: Boolean;
+    FEphemeralDuration: Extended;
+    FTcTokenSenderTimestamp: Extended;
+    FUnreadMentionCount: Extended;
+    FNotSpam: Boolean;
+    FUnreadCount: Extended;
+    FTcTokenTimestamp: Extended;
+    FPendingInitialLoading: Boolean;
+    FId: String;
+    FArchiveAtMentionViewedInDrawer: Boolean;
+    FMuteExpiration: Extended;
+    FDisappearingModeInitiator: String;
+    FEndOfHistoryTransferType: Extended;
+    FIsReadOnly: Boolean;
+    FUnreadMentionsOfMe: TArray<String>;
+    FTcToken: TTcTokenClass;
+    FLastReceivedKey: TLastReceivedKeyClass;
+    FT: Extended;
+    FHasUnreadMention: Boolean;
+  //Fid: String;
+  //FMsgs: TArray<TNewMsgClass>;
+public
+  //property id: String read Fid write Fid;
+  //
+    property archiveAtMentionViewedInDrawer: Boolean read FArchiveAtMentionViewedInDrawer write FArchiveAtMentionViewedInDrawer;
+    property disappearingModeInitiator: String read FDisappearingModeInitiator write FDisappearingModeInitiator;
+    property endOfHistoryTransferType: Extended read FEndOfHistoryTransferType write FEndOfHistoryTransferType;
+    property ephemeralDuration: Extended read FEphemeralDuration write FEphemeralDuration;
+    property hasChatBeenOpened: Boolean read FHasChatBeenOpened write FHasChatBeenOpened;
+    property hasUnreadMention: Boolean read FHasUnreadMention write FHasUnreadMention;
+    property id: String read FId write FId;
+    property isReadOnly: Boolean read FIsReadOnly write FIsReadOnly;
+    property lastReceivedKey: TLastReceivedKeyClass read FLastReceivedKey write FLastReceivedKey;
+    property msgs: TArray<TNewMsgClass> read FMsgs write FMsgs;
+    property muteExpiration: Extended read FMuteExpiration write FMuteExpiration;
+    property notSpam: Boolean read FNotSpam write FNotSpam;
+    property pendingInitialLoading: Boolean read FPendingInitialLoading write FPendingInitialLoading;
+    property t: Extended read FT write FT;
+    property tcToken: TTcTokenClass read FTcToken write FTcToken;
+    property tcTokenSenderTimestamp: Extended read FTcTokenSenderTimestamp write FTcTokenSenderTimestamp;
+    property tcTokenTimestamp: Extended read FTcTokenTimestamp write FTcTokenTimestamp;
+    property unreadCount: Extended read FUnreadCount write FUnreadCount;
+    property unreadMentionCount: Extended read FUnreadMentionCount write FUnreadMentionCount;
+    property unreadMentionsOfMe: TArray<String> read FUnreadMentionsOfMe write FUnreadMentionsOfMe;
+    property Labels: TArray<String> read FLabels write FLabels;
+end;
 
 {TGetMessageClass = class(TClassPadrao)
 private

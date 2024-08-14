@@ -579,6 +579,12 @@ type
                    , Th_outgoingCall=85 //Marcelo 17/06/2024
                    , Th_GetEnvneedsUpdate=86 //Marcelo 03/07/2024
                    , Th_logout_reason=87 //Marcelo 11/07/2024
+                   , Th_Getactive_chat=88 //Marcelo 13/08/2024
+                   , Th_Getpresence_change=89 //Marcelo 13/08/2024
+                   , Th_Getupdate_label=90 //Marcelo 13/08/2024
+                   , Th_Getgroup_participant_changed=91 //Marcelo 13/08/2024
+                   , Th_Getorder_payment_status=92 //Marcelo 13/08/2024
+                   , Th_Getlive_location_start=93 //Marcelo 13/08/2024
 
                    );
 
@@ -718,7 +724,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 87; //Marcelo 11/07/2024
+const LmaxCount = 93; //Marcelo 13/08/2024
 var
   I: Integer;
   LNome: String;

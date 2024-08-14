@@ -2864,6 +2864,85 @@ begin
                            end;
                          end;
 
+    //Marcelo 13/08/2024
+    Th_Getactive_chat   : begin
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := TGetActiveChatClass.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;
+                         end;
+
+    //Marcelo 13/08/2024
+    Th_Getpresence_change   : begin
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := TMsgPresence_change.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;
+                         end;
+
+    //Marcelo 13/08/2024
+    Th_Getupdate_label   : begin
+                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := Tlogout_reason.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;}
+                         end;
+
+    //Marcelo 13/08/2024
+    Th_Getgroup_participant_changed   : begin
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := TGroupParticipantChangedClass.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;
+                         end;
+
+    //Marcelo 13/08/2024
+    Th_Getorder_payment_status   : begin
+                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := Tlogout_reason.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;}
+                         end;
+
+    //Marcelo 13/08/2024
+    Th_Getlive_location_start   : begin
+                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
+                           LOutClass := Tlogout_reason.Create(LResultStr);
+
+                           try
+                             SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                           finally
+                             FreeAndNil(LOutClass);
+                           end;}
+                         end;
+
+
     //Marcelo 30/10/2023
     Th_GetgenLinkDeviceCodeForPhoneNumber   :
                         begin
