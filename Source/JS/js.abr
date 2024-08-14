@@ -23124,19 +23124,34 @@ WPP.on('conn.qrcode_idle', () => {
 //Marcelo 23/05/2024
 WPP.on('chat.presence_change', (msg) => {
     //console.log(msg);
-    //SetConsoleMessage("Getpresence_change", JSON.stringify({msg}));
+    SetConsoleMessage("Getpresence_change", JSON.stringify({msg}));
 });
 
 //Marcelo 23/05/2024
 WPP.on('chat.update_label', (msg) => {
     //console.log(msg);
-    //SetConsoleMessage("Getupdate_label", JSON.stringify({msg}));
+    SetConsoleMessage("Getupdate_label", JSON.stringify({msg}));
 });
 
 //Marcelo 23/05/2024
 WPP.on('chat.active_chat', (msg) => {
     //console.log(msg);
-    //SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
+    SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
+});
+
+//Marcelo 13/08/2024
+WPP.on('chat.live_location_start', (live) => {
+    SetConsoleMessage("Getlive_location_start", JSON.stringify({live}));
+});
+
+//Marcelo 13/08/2024
+WPP.on('group.participant_changed', (event) => {
+    SetConsoleMessage("Getgroup_participant_changed", JSON.stringify({event}));
+});
+
+//Marcelo 13/08/2024
+WPP.on('order.payment_status', (order) => {
+    SetConsoleMessage("Getorder_payment_status", JSON.stringify({order}));
 });
 
 //Marcelo 05/06/2024
