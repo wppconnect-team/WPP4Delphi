@@ -147,9 +147,10 @@ begin
   FreeAndNil(FJSScript);
 
   FreeAndNil(FRegistros);
-  FreeAndNil(FDownloadJSType);
+
+  {FreeAndNil(FDownloadJSType);
   FreeAndNil(FOnUpdateJS);
-  FreeAndNil(FOnErrorInternal);
+  FreeAndNil(FOnErrorInternal);}
 
   inherited;
 end;
