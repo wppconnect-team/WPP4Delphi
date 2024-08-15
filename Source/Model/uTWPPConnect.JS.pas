@@ -150,6 +150,7 @@ begin
   FreeAndNil(FDownloadJSType);
   FreeAndNil(FOnUpdateJS);
   FreeAndNil(FOnErrorInternal);
+
   inherited;
 end;
 

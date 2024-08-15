@@ -98,6 +98,13 @@ type
 
   TOnGetlogout_reason = procedure(Const logout_reason: Tlogout_reason) of object; //Marcelo 11/07/2024
 
+  TOnGetactive_chat = procedure(Const response: TGetActiveChatClass) of object; //Marcelo 14/08/2024
+  TOnGetpresence_change = procedure(Const response: TMsgPresence_change) of object; //Marcelo 14/08/2024
+  TOnGetupdate_label = procedure(Const response: TupdateLabelClass) of object; //Marcelo 14/08/2024
+  TOnGetgroup_participant_changed = procedure(Const response: TGroupParticipantChangedClass) of object; //Marcelo 14/08/2024
+  TOnGetorder_payment_status = procedure(Const response: Torder_payment_statusClass) of object; //Marcelo 14/08/2024
+  TOnGetlive_location_start = procedure(Const response: Tlive_location_startClass) of object; //Marcelo 14/08/2024
+
   TOnGetgenLinkDeviceCodeForPhoneNumber = procedure(Const Response: TGenLinkDeviceCodeForPhoneNumber) of object; //Marcelo 30/10/2023
 
 
@@ -190,6 +197,8 @@ type
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
     FOnGetIsLogout: TGetIsLogout;
     FAuthenticated: boolean;
+
+
 
 
     { Private  declarations }
@@ -304,6 +313,13 @@ type
     FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
     FOnGetEnvneedsUpdate: TGetEnvneedsUpdate; //Marcelo 03/07/2024
     FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
+
+    FOnGetgroup_participant_changed: TOnGetgroup_participant_changed; //Marcelo 14/08/2024
+    FOnGetlive_location_start: TOnGetlive_location_start; //Marcelo 14/08/2024
+    FOnGetorder_payment_status: TOnGetorder_payment_status; //Marcelo 14/08/2024
+    FOnGetupdate_label: TOnGetupdate_label; //Marcelo 14/08/2024
+    FOnGetactive_chat: TOnGetactive_chat; //Marcelo 14/08/2024
+    FOnGetpresence_change: TOnGetpresence_change; //Marcelo 14/08/2024
 
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
     procedure saveInfoConfTWPPConnect(SectionName, key, value: string);
@@ -658,6 +674,13 @@ type
     property OnGetWAVersion             : TOnGetWAVersion              read FOnGetWAVersion              write FOnGetWAVersion;
 
     property OnGetlogout_reason         : TOnGetlogout_reason          read FOnGetlogout_reason          write FOnGetlogout_reason;
+
+    property OnGetactive_chat               : TOnGetactive_chat               read FOnGetactive_chat                write FOnGetactive_chat;
+    property OnGetpresence_change           : TOnGetpresence_change           read FOnGetpresence_change            write FOnGetpresence_change;
+    property OnGetupdate_label              : TOnGetupdate_label              read FOnGetupdate_label               write FOnGetupdate_label;
+    property OnGetgroup_participant_changed : TOnGetgroup_participant_changed read FOnGetgroup_participant_changed  write FOnGetgroup_participant_changed;
+    property OnGetorder_payment_status      : TOnGetorder_payment_status      read FOnGetorder_payment_status       write FOnGetorder_payment_status;
+    property OnGetlive_location_start       : TOnGetlive_location_start       read FOnGetlive_location_start        write FOnGetlive_location_start;
 
     property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
 
@@ -4063,6 +4086,59 @@ begin
     if Assigned(FOnGetlogout_reason) then
       FOnGetlogout_reason(Tlogout_reason(PReturnClass));
   end;
+
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getgroup_participant_changed  then
+  begin
+    if Assigned(FOnGetgroup_participant_changed) then
+      FOnGetgroup_participant_changed(TGroupParticipantChangedClass(PReturnClass));
+  end;
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getactive_chat  then
+  begin
+    if Assigned(FOnGetactive_chat) then
+      FOnGetactive_chat(TGetActiveChatClass(PReturnClass));
+  end;
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getupdate_label  then
+  begin
+    if Assigned(FOnGetupdate_label) then
+      FOnGetupdate_label(TupdateLabelClass(PReturnClass));
+  end;
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getpresence_change  then
+  begin
+    if Assigned(FOnGetpresence_change) then
+      FOnGetpresence_change(TMsgPresence_change(PReturnClass));
+  end;
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getorder_payment_status  then
+  begin
+    if Assigned(FOnGetorder_payment_status) then
+      FOnGetorder_payment_status(Torder_payment_statusClass(PReturnClass));
+  end;
+
+  //Marcelo 14/08/2024
+  if PTypeHeader = Th_Getlive_location_start  then
+  begin
+    if Assigned(FOnGetlive_location_start) then
+      FOnGetlive_location_start(Tlive_location_startClass(PReturnClass));
+  end;
+
+{
+    FOnGetgroup_participant_changed: TOnGetgroup_participant_changed; //Marcelo 14/08/2024
+    FOnGetlive_location_start: TOnGetlive_location_start; //Marcelo 14/08/2024
+    FOnGetorder_payment_status: TOnGetorder_payment_status; //Marcelo 14/08/2024
+    FOnGetupdate_label: TOnGetupdate_label; //Marcelo 14/08/2024
+    FOnGetactive_chat: TOnGetactive_chat; //Marcelo 14/08/2024
+    FOnGetpresence_change: TOnGetpresence_change; //Marcelo 14/08/2024
+}
+
 
   if PTypeHeader = Th_ErrorResponse  then
   begin

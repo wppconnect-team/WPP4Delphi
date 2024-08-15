@@ -2892,15 +2892,15 @@ begin
 
     //Marcelo 13/08/2024
     Th_Getupdate_label   : begin
-                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
-                           LOutClass := Tlogout_reason.Create(LResultStr);
+                           LOutClass := TupdateLabelClass.Create(LResultStr);
 
                            try
                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                            finally
                              FreeAndNil(LOutClass);
-                           end;}
+                           end;
                          end;
 
     //Marcelo 13/08/2024
@@ -2918,28 +2918,28 @@ begin
 
     //Marcelo 13/08/2024
     Th_Getorder_payment_status   : begin
-                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
-                           LOutClass := Tlogout_reason.Create(LResultStr);
+                           LOutClass := Torder_payment_statusClass.Create(LResultStr);
 
                            try
                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                            finally
                              FreeAndNil(LOutClass);
-                           end;}
+                           end;
                          end;
 
     //Marcelo 13/08/2024
     Th_Getlive_location_start   : begin
-                           {LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                           LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                            LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO
-                           LOutClass := Tlogout_reason.Create(LResultStr);
+                           LOutClass := Tlive_location_startClass.Create(LResultStr);
 
                            try
                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
                            finally
                              FreeAndNil(LOutClass);
-                           end;}
+                           end;
                          end;
 
 

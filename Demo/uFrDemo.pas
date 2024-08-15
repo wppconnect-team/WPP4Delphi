@@ -168,6 +168,12 @@ type
     procedure TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
     procedure Timer2Timer(Sender: TObject);
     procedure TWPPConnect1AfterInjectJS(Sender: TObject);
+    procedure TWPPConnect1Getactive_chat(const response: TGetActiveChatClass);
+    procedure TWPPConnect1Getgroup_participant_changed(const response: TGroupParticipantChangedClass);
+    procedure TWPPConnect1Getlive_location_start(const response: Tlive_location_startClass);
+    procedure TWPPConnect1Getorder_payment_status(const response: Torder_payment_statusClass);
+    procedure TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
+    procedure TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -188,6 +194,7 @@ type
     procedure DeleteFiles(const FileName: String);
     function ConvertUnicodeEscapeToUTF8(const input: string): UTF8String;
     function IsValidUnicodeCodePoint(value: Word): Boolean;
+    function BooleanToStr(Operador: Boolean): String;
   public
     FChatID: string;
     { Public declarations }
@@ -429,6 +436,14 @@ begin
   options := 'createChat: true';
 
   frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Pergunta?', options, '123');
+end;
+
+function TfrDemo.BooleanToStr(Operador: Boolean): String;
+begin
+  if Operador then
+    Result := 'True'
+  else
+    Result := 'False';
 end;
 
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
@@ -1103,6 +1118,15 @@ begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
+procedure TfrDemo.TWPPConnect1Getactive_chat(const response: TGetActiveChatClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('GetActiveChat');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' from:' + response.msg.msgs[0].from);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' to:' + response.msg.msgs[0].&to);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' NotifyName:' + response.msg.msgs[0].NotifyName);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
 procedure TfrDemo.TWPPConnect1GetAllCommunitys(const AllCommunitys: TRetornoAllCommunitys);
 var
   i: integer;
@@ -1269,6 +1293,25 @@ procedure TfrDemo.TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response:
 begin
   frameLogin1.lblCodeLinkDevice.Caption := Response.code;
   Update;
+end;
+
+procedure TfrDemo.TWPPConnect1Getgroup_participant_changed(const response: TGroupParticipantChangedClass);
+var
+  i: Integer;
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('GroupParticipantChanged');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' author: ' + response.event.author);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' groupId: ' + response.event.groupId);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' authorPushName: ' + response.event.authorPushName);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' Action: ' + response.event.Action);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' group_participant_changed: ' + response.event.group_participant_changed);
+
+  for i := 0 to Length(response.event.participants) - 1 do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Participant: ' + response.event.participants[i]);
+  end;
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
@@ -1561,6 +1604,18 @@ begin
 
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Getlive_location_start(const response: Tlive_location_startClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getlive_location_start');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' chat: ' + response.live.chat);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' latitude: ' + FloatToStr(response.live.lat) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' longitude: ' + FloatToStr(response.live.lng));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' remote: ' + response.live.msgId.remote);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' _serialized: ' + response.live.msgId._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
 end;
 
 procedure TfrDemo.TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
@@ -2121,6 +2176,17 @@ begin
 
 end;
 
+procedure TfrDemo.TWPPConnect1Getorder_payment_status(const response: Torder_payment_statusClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getorder_payment_status');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' method: ' + response.msg.method);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' reference_id: ' + response.msg.reference_id);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' remote: ' + response.msg.msgId.remote);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' _serialized: ' + response.msg.msgId._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
 procedure TfrDemo.TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
 begin
   Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Efetuando Ligação: ' + OutgoingCall.sender;
@@ -2189,6 +2255,20 @@ begin
     except on E: Exception do
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getpresence_change');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.id);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' shortName: ' + response.msg.shortName);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' state: ' + response.msg.state);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isContact: ' + BooleanToStr(response.msg.isContact));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isOnline: ' + BooleanToStr(response.msg.isOnline));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isGroup: ' + BooleanToStr(response.msg.isGroup));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isUser: ' + BooleanToStr(response.msg.isUser));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
 procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
@@ -2695,6 +2775,30 @@ begin
     end;
   end;
 end;
+procedure TfrDemo.TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
+var
+  i: Integer;
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getupdate_label');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.chat.id);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' type: ' + response.msg.&type);
+  //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' formattedName: ' + response.chat.contact.formattedName);
+
+  for i := 0 to Length(response.msg.labels) - 1 do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' name: ' + response.msg.labels[i].name);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' hexColor: ' + response.msg.labels[i].hexColor);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.labels[i].id);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' colorIndex: ' + FloatToStr(response.msg.labels[i].colorIndex));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' count: ' + FloatToStr(response.msg.labels[i].count));
+  end;
+
+
+
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
 procedure TfrDemo.TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
 begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('WhatsAppWebVersion: ' + WhatsAppWebVersion.WAVersion);

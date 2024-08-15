@@ -88,7 +88,8 @@ Type
     property AutoDelay     : integer          read FAutoDelay             write FAutoDelay                 default 2500;
     property AutoDelete    : Boolean          read FAutoDelete            write FAutoDelete                default false;
     property ReceiveAttachmentAuto : Boolean  read FReceiveAttachmentAuto write SetReceiveAttachmentAuto   default True;
-    property ReceiveAttachmentPath : String   read FReceiveAttachmentPath write SetReceiveAttachmentPath;
+    //property ReceiveAttachmentPath : String   read FReceiveAttachmentPath write SetReceiveAttachmentPath;
+    property ReceiveAttachmentPath : String   read FReceiveAttachmentPath write FReceiveAttachmentPath;
     property Zoom : SmallInt                  read FZoom                  write SetZoom                    default -1;
 
     property LowBatteryIs      : SmallInt         read FLowBattery             write SetLowBattery              default 30;

@@ -5837,6 +5837,12 @@ object frDemo: TfrDemo
     OnGetTotalChatsUserRead = TWPPConnect1GetTotalChatsUserRead
     OnGetWAVersion = TWPPConnect1GetWAVersion
     OnGetlogout_reason = TWPPConnect1Getlogout_reason
+    OnGetactive_chat = TWPPConnect1Getactive_chat
+    OnGetpresence_change = TWPPConnect1Getpresence_change
+    OnGetupdate_label = TWPPConnect1Getupdate_label
+    OnGetgroup_participant_changed = TWPPConnect1Getgroup_participant_changed
+    OnGetorder_payment_status = TWPPConnect1Getorder_payment_status
+    OnGetlive_location_start = TWPPConnect1Getlive_location_start
     OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache
