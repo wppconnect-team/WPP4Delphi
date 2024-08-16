@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.54;1.0.0.9;78.3.0
+//2.1.0.55;1.0.0.9;78.3.0
 //
 //
 
@@ -103,12 +103,12 @@ var habilitaEvento_new_message;
 var habilitaEvento_new_reaction;
 
 //Add Marcelo 16/08/2024 opcao de habilitar esses Eventos, Disparado no Console
-var habilitaEvento_active_chat: Boolean;
-var habilitaEvento_update_label: Boolean;
-var habilitaEvento_presence_change: Boolean;
-var habilitaEvento_group_participant_changed: Boolean;
-var habilitaEvento_live_location_start: Boolean;
-var habilitaEvento_order_payment_status: Boolean;
+var habilitaEvento_active_chat;
+var habilitaEvento_update_label;
+var habilitaEvento_presence_change;
+var habilitaEvento_group_participant_changed;
+var habilitaEvento_live_location_start;
+var habilitaEvento_order_payment_status;
 
 function startEvento_msg_ack_change(hab_msg_ack_change = false){
     habilitaEvento_msg_ack_change = hab_msg_ack_change;
