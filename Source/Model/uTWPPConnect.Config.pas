@@ -68,6 +68,12 @@ Type
     FEvento_new_reaction: Boolean;
     FEvento_new_message: Boolean;
     FEvento_msg_revoke: Boolean;
+    FEvento_active_chat: Boolean;
+    FEvento_update_label: Boolean;
+    FEvento_presence_change: Boolean;
+    FEvento_group_participant_changed: Boolean;
+    FEvento_live_location_start: Boolean;
+    FEvento_order_payment_status: Boolean;
 
     procedure SetSecondsMonitor(const Value: integer);
     procedure SetLowBattery(const Value: SmallInt);
@@ -104,6 +110,15 @@ Type
     property Evento_msg_revoke       : Boolean    read FEvento_msg_revoke      write FEvento_msg_revoke         default false;
     property Evento_new_message      : Boolean    read FEvento_new_message     write FEvento_new_message        default false;
     property Evento_new_reaction     : Boolean    read FEvento_new_reaction    write FEvento_new_reaction       default false;
+
+    //Add Marcelo 16/08/2024
+    property Evento_active_chat      : Boolean    read FEvento_active_chat     write FEvento_active_chat        default false;
+    property Evento_presence_change  : Boolean    read FEvento_presence_change write FEvento_presence_change    default false;
+    property Evento_update_label     : Boolean    read FEvento_update_label    write FEvento_update_label       default false;
+    property Evento_group_participant_changed  : Boolean  read FEvento_group_participant_changed  write FEvento_group_participant_changed   default false;
+    property Evento_order_payment_status       : Boolean  read FEvento_order_payment_status       write FEvento_order_payment_status        default false;
+    property Evento_live_location_start        : Boolean  read FEvento_live_location_start        write FEvento_live_location_start         default false;
+
   end;
 
 implementation

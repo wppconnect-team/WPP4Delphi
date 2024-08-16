@@ -5774,6 +5774,12 @@ object frDemo: TfrDemo
     Config.Evento_msg_revoke = True
     Config.Evento_new_message = True
     Config.Evento_new_reaction = True
+    Config.Evento_active_chat = True
+    Config.Evento_presence_change = True
+    Config.Evento_update_label = True
+    Config.Evento_group_participant_changed = True
+    Config.Evento_order_payment_status = True
+    Config.Evento_live_location_start = True
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http

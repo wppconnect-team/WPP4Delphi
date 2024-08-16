@@ -1273,6 +1273,9 @@ var
   MyIniFIle: TIniFile;
   DirApp, Caminho_JS, vSecondsMonitor, vSecondsMonitorNew: string;
   HabEvento_msg_ack_change, HabEvento_msg_revoke, HabEvento_new_message, HabEvento_new_reaction : Boolean;
+  HabEvento_active_chat, HabEvento_update_label, HabEvento_presence_change,
+  HabEvento_group_participant_changed, HabEvento_live_location_start,
+  HabEvento_order_payment_status : Boolean;
 begin
   inherited;
   FDestroyTmr                         := Ttimer.Create(nil);
@@ -1315,6 +1318,15 @@ begin
     HabEvento_msg_revoke := MyIniFIle.ReadString('Config', 'Evento_msg_revoke', '1') = '1';
     HabEvento_new_message  := MyIniFIle.ReadString('Config', 'Evento_new_message', '1') = '1';
     HabEvento_new_reaction  := MyIniFIle.ReadString('Config', 'Evento_new_reaction', '1') = '1';
+
+    //Add Marcelo 16/08/2024
+    HabEvento_active_chat := MyIniFIle.ReadString('Config', 'Evento_active_chat', '1') = '1';
+    HabEvento_update_label := MyIniFIle.ReadString('Config', 'Evento_update_label', '1') = '1';
+    HabEvento_presence_change := MyIniFIle.ReadString('Config', 'Evento_presence_change', '1') = '1';
+    HabEvento_group_participant_changed := MyIniFIle.ReadString('Config', 'Evento_group_participant_changed', '1') = '1';
+    HabEvento_live_location_start := MyIniFIle.ReadString('Config', 'Evento_live_location_start', '1') = '1';
+    HabEvento_order_payment_status := MyIniFIle.ReadString('Config', 'Evento_order_payment_status', '1') = '1';
+
     vSecondsMonitor := MyIniFIle.ReadString('Config', 'SecondsMonitor', '0');
     vSecondsMonitorNew := MyIniFIle.ReadString('Config', 'SecondsMonitorNew', '0');
     FLastMyNumber := MyIniFIle.ReadString('INFO', 'LastMyNumber', '');
@@ -1328,6 +1340,21 @@ begin
       FInjectConfig.Evento_new_message := HabEvento_new_message;
     if MyIniFIle.ReadString('Config', 'Evento_new_reaction', '') <> '' then
       FInjectConfig.Evento_new_reaction := HabEvento_new_reaction;
+
+    //Add Marcelo 16/08/2024
+    if MyIniFIle.ReadString('Config', 'Evento_active_chat', '') <> '' then
+      FInjectConfig.Evento_active_chat := HabEvento_active_chat;
+    if MyIniFIle.ReadString('Config', 'Evento_update_label', '') <> '' then
+      FInjectConfig.Evento_update_label := HabEvento_update_label;
+    if MyIniFIle.ReadString('Config', 'Evento_presence_change', '') <> '' then
+      FInjectConfig.Evento_presence_change := HabEvento_presence_change;
+    if MyIniFIle.ReadString('Config', 'Evento_group_participant_changed', '') <> '' then
+      FInjectConfig.Evento_group_participant_changed := HabEvento_group_participant_changed;
+    if MyIniFIle.ReadString('Config', 'Evento_live_location_start', '') <> '' then
+      FInjectConfig.Evento_live_location_start := HabEvento_live_location_start;
+    if MyIniFIle.ReadString('Config', 'Evento_order_payment_status', '') <> '' then
+      FInjectConfig.Evento_order_payment_status := HabEvento_order_payment_status;
+
 
     if MyIniFIle.ReadString('Config', 'SecondsMonitor', '') <> '' then
       FInjectConfig.SecondsMonitor := StrToIntDef(vSecondsMonitor,0);
@@ -1353,6 +1380,26 @@ begin
 
     if not(MyIniFIle.ValueExists('Config', 'Evento_new_reaction')) then
       MyIniFIle.writeString('Config', 'Evento_new_reaction', '');
+
+
+    //Add Marcelo 16/08/2024
+    if not(MyIniFIle.ValueExists('Config', 'Evento_active_chat')) then
+      MyIniFIle.writeString('Config', 'Evento_active_chat', '');
+
+    if not(MyIniFIle.ValueExists('Config', 'Evento_update_label')) then
+      MyIniFIle.writeString('Config', 'Evento_update_label', '');
+
+    if not(MyIniFIle.ValueExists('Config', 'Evento_presence_change')) then
+      MyIniFIle.writeString('Config', 'Evento_presence_change', '');
+
+    if not(MyIniFIle.ValueExists('Config', 'Evento_group_participant_changed')) then
+      MyIniFIle.writeString('Config', 'Evento_group_participant_changed', '');
+
+    if not(MyIniFIle.ValueExists('Config', 'Evento_live_location_start')) then
+      MyIniFIle.writeString('Config', 'Evento_live_location_start', '');
+
+    if not(MyIniFIle.ValueExists('Config', 'Evento_order_payment_status')) then
+      MyIniFIle.writeString('Config', 'Evento_order_payment_status', '');
 
     MyIniFIle.Free;
   except on E: Exception do

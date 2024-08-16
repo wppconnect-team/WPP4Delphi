@@ -131,6 +131,15 @@ Const
   FrmConsole_JS_VAR_StartEvento_new_message = 'startEvento_new_message(hab_new_message=<#ACTIVE#>)';
   FrmConsole_JS_VAR_StartEvento_new_reaction = 'startEvento_new_reaction(hab_new_reaction=<#ACTIVE#>)';
 
+  //Add Marcelo 16/08/2024
+  FrmConsole_JS_VAR_StartEvento_active_chat =               'startEvento_active_chat(hab_active_chat=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_update_label =              'startEvento_update_label(hab_update_label=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_presence_change =           'startEvento_presence_change(hab_presence_change=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_group_participant_changed = 'startEvento_group_participant_changed(hab_group_participant_changed=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_live_location_start =       'startEvento_live_location_start(hab_live_location_start=<#ACTIVE#>)';
+  FrmConsole_JS_VAR_StartEvento_order_payment_status =      'startEvento_order_payment_status(hab_order_payment_status=<#ACTIVE#>)';
+
+
   //Marcelo 21/06/2022
   //FrmConsole_JS_VAR_ReadMessages        = 'window.WAPI.sendSeen("<#MSG_PHONE#>")';
   FrmConsole_JS_VAR_ReadMessages        = 'WPP.chat.markIsRead("<#MSG_PHONE#>");';

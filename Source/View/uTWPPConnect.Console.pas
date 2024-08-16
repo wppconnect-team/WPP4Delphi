@@ -433,6 +433,14 @@ type
     procedure startEvento_msg_revoke(active: Boolean);
     procedure startEvento_new_message(active: Boolean);
     procedure startEvento_new_reaction(active: Boolean);
+
+    procedure startEvento_active_chat(active: Boolean);
+    procedure startEvento_update_label(active: Boolean);
+    procedure startEvento_presence_change(active: Boolean);
+    procedure startEvento_group_participant_changed(active: Boolean);
+    procedure startEvento_live_location_start(active: Boolean);
+    procedure startEvento_order_payment_status(active: Boolean);
+
     procedure StopMonitor;
     procedure StopMonitorNew;
   end;
@@ -798,6 +806,14 @@ begin
       startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
       startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
       startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
       SleepNoFreeze(40);
 
@@ -1660,6 +1676,14 @@ begin
   startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
   startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
+  //Ativar New Eventos add Marcelo 16/08/2024
+  startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+  startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+  startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+  startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+  startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+  startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);
 end;
@@ -2216,6 +2240,36 @@ begin
     Chromium1.DecZoomStep;
 end;
 
+procedure TFrmConsole.startEvento_active_chat(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_active_chat;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_group_participant_changed(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_group_participant_changed;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_live_location_start(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_live_location_start;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
 procedure TFrmConsole.startEvento_msg_ack_change(active: Boolean);
 var
   LJS: String;
@@ -2256,6 +2310,36 @@ begin
     ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
     ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
 
+end;
+
+procedure TFrmConsole.startEvento_order_payment_status(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_order_payment_status;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_presence_change(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_presence_change;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
+end;
+
+procedure TFrmConsole.startEvento_update_label(active: Boolean);
+var
+  LJS: String;
+begin
+  LJS := FrmConsole_JS_VAR_StartEvento_update_label;
+  if active then
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'true')) else
+    ExecuteJSDir(FrmConsole_JS_AlterVar(LJS, '#ACTIVE#' , 'false'));
 end;
 
 procedure TFrmConsole.SendNotificationCenterDirect(PValor: TTypeHeader; Const PSender : TObject);
@@ -3583,6 +3667,14 @@ begin
     startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
     startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
   end
@@ -3625,6 +3717,14 @@ begin
     startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
     startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
     startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
@@ -3753,6 +3853,14 @@ begin
     startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
     startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
   end
@@ -3796,6 +3904,14 @@ begin
     startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
     startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
     startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
@@ -3952,6 +4068,14 @@ begin
     startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
     startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
 
     SleepNoFreeze(40);
     SendNotificationCenterDirect(Th_Initialized);
@@ -4098,6 +4222,14 @@ begin
   startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
   startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
   startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+  //Ativar New Eventos add Marcelo 16/08/2024
+  startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+  startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+  startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+  startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+  startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+  startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);*)
@@ -4539,6 +4671,14 @@ begin
   startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
   startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
   startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+  //Ativar New Eventos add Marcelo 16/08/2024
+  startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+  startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+  startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+  startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+  startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+  startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
 
   SleepNoFreeze(40);
