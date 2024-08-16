@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.53;1.0.0.9;78.3.0
+//2.1.0.54;1.0.0.9;78.3.0
 //
 //
 
@@ -102,6 +102,14 @@ var habilitaEvento_msg_revoke;
 var habilitaEvento_new_message;
 var habilitaEvento_new_reaction;
 
+//Add Marcelo 16/08/2024 opcao de habilitar esses Eventos, Disparado no Console
+var habilitaEvento_active_chat: Boolean;
+var habilitaEvento_update_label: Boolean;
+var habilitaEvento_presence_change: Boolean;
+var habilitaEvento_group_participant_changed: Boolean;
+var habilitaEvento_live_location_start: Boolean;
+var habilitaEvento_order_payment_status: Boolean;
+
 function startEvento_msg_ack_change(hab_msg_ack_change = false){
     habilitaEvento_msg_ack_change = hab_msg_ack_change;
     console.log("**habilitaEvento_msg_ack_change=" + habilitaEvento_msg_ack_change);
@@ -121,6 +129,44 @@ function startEvento_new_reaction(hab_new_reaction = false){
     habilitaEvento_new_reaction = hab_new_reaction;
     console.log("**habilitaEvento_new_reaction=" + habilitaEvento_new_reaction);
 };
+
+
+//Add Marcelo 16/08/2024
+function startEvento_active_chat(hab_active_chat = false){
+    habilitaEvento_active_chat = hab_active_chat;
+    console.log("**habilitaEvento_active_chat=" + habilitaEvento_active_chat);
+};
+
+//Add Marcelo 16/08/2024
+function startEvento_update_label(hab_update_label = false){
+    habilitaEvento_update_label = hab_update_label;
+    console.log("**habilitaEvento_update_label=" + habilitaEvento_update_label);
+};
+
+//Add Marcelo 16/08/2024
+function startEvento_presence_change(hab_presence_change = false){
+    habilitaEvento_presence_change = hab_presence_change;
+    console.log("**habilitaEvento_presence_change=" + habilitaEvento_presence_change);
+};
+
+//Add Marcelo 16/08/2024
+function startEvento_group_participant_changed(hab_group_participant_changed = false){
+    habilitaEvento_group_participant_changed = hab_group_participant_changed;
+    console.log("**habilitaEvento_group_participant_changed=" + habilitaEvento_group_participant_changed);
+};
+
+//Add Marcelo 16/08/2024
+function startEvento_live_location_start(hab_live_location_start = false){
+    habilitaEvento_live_location_start = hab_live_location_start;
+    console.log("**habilitaEvento_live_location_start=" + habilitaEvento_live_location_start);
+};
+
+//Add Marcelo 16/08/2024
+function startEvento_order_payment_status(hab_order_payment_status = false){
+    habilitaEvento_order_payment_status = hab_order_payment_status;
+    console.log("**habilitaEvento_order_payment_status=" + habilitaEvento_order_payment_status);
+};
+
 
 function startMonitor(intervalSeconds = 0) {
     isLoggedStatus = WAPI.isLoggedIn();
@@ -23116,35 +23162,44 @@ WPP.on('conn.qrcode_idle', () => {
 
 //Marcelo 23/05/2024
 WPP.on('chat.presence_change', (msg) => {
-    //console.log(msg);
-    SetConsoleMessage("Getpresence_change", JSON.stringify({msg}));
+    if (habilitaEvento_presence_change){
+    	SetConsoleMessage("Getpresence_change", JSON.stringify({msg}));
+    }
 });
 
 //Marcelo 23/05/2024
 WPP.on('chat.update_label', (msg) => {
-    //console.log(msg);
-    SetConsoleMessage("Getupdate_label", JSON.stringify({msg}));
+    if (habilitaEvento_update_label){
+        SetConsoleMessage("Getupdate_label", JSON.stringify({msg}));
+    }
 });
 
 //Marcelo 23/05/2024
 WPP.on('chat.active_chat', (msg) => {
-    //console.log(msg);
-    SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
+    if (habilitaEvento_active_chat){
+    	SetConsoleMessage("Getactive_chat", JSON.stringify({msg}));
+    }
 });
 
 //Marcelo 13/08/2024
 WPP.on('chat.live_location_start', (live) => {
-    SetConsoleMessage("Getlive_location_start", JSON.stringify({live}));
+    if (habilitaEvento_live_location_start){
+    	SetConsoleMessage("Getlive_location_start", JSON.stringify({live}));
+    }
 });
 
 //Marcelo 13/08/2024
 WPP.on('group.participant_changed', (event) => {
-    SetConsoleMessage("Getgroup_participant_changed", JSON.stringify({event}));
+    if (habilitaEvento_group_participant_changed){
+        SetConsoleMessage("Getgroup_participant_changed", JSON.stringify({event}));
+    }
 });
 
 //Marcelo 13/08/2024
 WPP.on('order.payment_status', (order) => {
-    SetConsoleMessage("Getorder_payment_status", JSON.stringify({order}));
+    if (habilitaEvento_order_payment_status){
+    	SetConsoleMessage("Getorder_payment_status", JSON.stringify({order}));
+    }
 });
 
 //Marcelo 05/06/2024
