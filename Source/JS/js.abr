@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.8.2 alpla
+//WPPCONNECT v3.8.4 alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.8.2-alpha.0 */
+/*! wppconnect-team/wa-js v3.8.4-alpha.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -14305,7 +14305,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.8.2-alpha.0";
+                a(r(26738), t), t.waVersion = "3.8.4-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14536,7 +14536,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.8.2-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.8.4-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -19922,8 +19922,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, (e => e.StickerSearchCollectionImpl || e.StickerSearchCollection)), (0, s.exportModule)(t, {
                     BusinessProfileStore: ["BusinessProfileCollectionImpl", "BusinessProfileCollection"]
                 }, (e => e.BusinessProfileCollectionImpl || e.BusinessProfileCollection)), (0, s.exportModule)(t, {
-                    ProfilePicThumbStore: ["ProfilePicThumbCollectionImpl", "ProfilePicThumbCollection"]
-                }, (e => e.ProfilePicThumbCollectionImpl || e.ProfilePicThumbCollection))
+                    ProfilePicThumbStore: ["ProfilePicThumbCollection", "ProfilePicThumbCollectionImpl"]
+                }, (e => e.ProfilePicThumbCollection || e.ProfilePicThumbCollectionImpl))
             },
             34439: (e, t, r) => {
                 "use strict";
