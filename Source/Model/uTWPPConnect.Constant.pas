@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '3.6.0.0'; //  01/08/2024
+  TWPPConnectVersion              = '3.7.0.0'; //  22/08/2024
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -594,6 +594,7 @@ type
                    , Th_Getgroup_participant_changed=91 //Marcelo 13/08/2024
                    , Th_Getorder_payment_status=92 //Marcelo 13/08/2024
                    , Th_Getlive_location_start=93 //Marcelo 13/08/2024
+                   , Th_GetEnvrequire_auth=94 //Marcelo 21/08/2024
 
                    );
 
@@ -607,7 +608,7 @@ type
 implementation
 
 uses
-  System.JSON, System.Classes, Vcl.Dialogs, Vcl.Forms, Winapi.Windows;
+  System.JSON, System.Classes, Vcl.Dialogs, Vcl.Forms, Winapi.Windows, uTWPPConnect.ConfigCEF;
 
 
 Function VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -733,7 +734,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 93; //Marcelo 13/08/2024
+const LmaxCount = 94; //Marcelo 21/08/2024
 var
   I: Integer;
   LNome: String;
@@ -775,22 +776,32 @@ var
   arq: TextFile;
 begin
   try
-    nomearq := ExtractFilePath(ParamStr(0)) + 'LogTWppConnect' + '\LogInit' +
-      FormatDateTime('YYYY-MM-DD', now) + '.log';
+    if Assigned(GlobalCEFApp) then
+    begin
+      if (not GlobalCEFApp.LogConsoleActive) or (GlobalCEFApp.LogConsole = '') Then
+        Exit;
 
-    AssignFile(arq, nomearq);
-    try
-      if FileExists(nomearq) then
-        Append(arq)
-      else
-        Rewrite(arq);
+      if not(DirectoryExists(ExtractFilePath(ParamStr(0)) + 'LogTWppConnect')) then
+        CreateDir(ExtractFilePath(ParamStr(0)) + 'LogTWppConnect');
 
-      Writeln(arq, FormatDateTime('DD/MM/YYYY', Date) + ' ' +
-        FormatDateTime('HH:MM:SS:ZZ', time) + ' ' + line);
-      Flush(arq);
-    finally
-      CloseFile(arq);
+      nomearq := ExtractFilePath(ParamStr(0)) + 'LogTWppConnect' + '\LogInit' +
+        FormatDateTime('YYYY-MM-DD', now) + '.log';
+
+      AssignFile(arq, nomearq);
+      try
+        if FileExists(nomearq) then
+          Append(arq)
+        else
+          Rewrite(arq);
+
+        Writeln(arq, FormatDateTime('DD/MM/YYYY', Date) + ' ' +
+          FormatDateTime('HH:MM:SS:ZZ', time) + ' ' + line);
+        Flush(arq);
+      finally
+        CloseFile(arq);
+      end;
     end;
+
   except
   end;
 end;

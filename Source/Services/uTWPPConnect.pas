@@ -157,6 +157,7 @@ type
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
   TGetIsLogout               = Procedure(Sender : TObject; IsLogout: Boolean) of object; //Marcelo 18/08/2022
+  TGetEnvrequire_auth        = Procedure(Response : TIsRequire_auth) of object; //Marcelo 21/08/2023
   TGetIsOnline               = Procedure(Response : TIsOnline) of object; //Marcelo 03/05/2023
   TGetEnvIsOnline            = Procedure(Response : TEnvIsOnline) of object; //Marcelo 03/05/2023
   TGetEnvneedsUpdate         = Procedure(Response : TEnvneedsUpdate) of object; //Marcelo 03/05/2023
@@ -310,6 +311,7 @@ type
     FOnGetIsAuthenticated: TGetIsAuthenticated; //Marcelo 17/09/2022
 
     FOnGetIsOnline: TGetIsOnline; //Marcelo 03/05/2023
+    FOnGetEnvrequire_auth: TGetEnvrequire_auth; //Marcelo 03/05/2023
     FOnGetEnvIsOnline: TGetEnvIsOnline; //Marcelo 03/05/2023
     FOnGetEnvneedsUpdate: TGetEnvneedsUpdate; //Marcelo 03/07/2024
     FOnGetgenLinkDeviceCodeForPhoneNumber: TOnGetgenLinkDeviceCodeForPhoneNumber;
@@ -622,6 +624,10 @@ type
     //Marcelo 18/09/2022
     property OnGetIsAuthenticated        : TGetIsAuthenticated        read FOnGetIsAuthenticated           write FOnGetIsAuthenticated;
     property OnGetIsLogout               : TGetIsLogout               read FOnGetIsLogout                  write FOnGetIsLogout;
+
+    //Marcelo 21/08/2024
+    property OnGetEnvrequire_auth        : TGetEnvrequire_auth        read FOnGetEnvrequire_auth           write FOnGetEnvrequire_auth;
+
 
     //Marcelo 03/05/2023
     property OnGetIsOnline               : TGetIsOnline               read FOnGetIsOnline                  write FOnGetIsOnline;
@@ -3684,6 +3690,13 @@ begin
   Begin
     if Assigned(OnGetIsLogout) then
       OnGetIsLogout( TIsLogout(PReturnClass), True);
+  end;
+
+  //Add Marcelo 21/08/2024
+  if PTypeHeader = Th_GetEnvrequire_auth then
+  Begin
+    if Assigned(OnGetEnvrequire_auth) then
+      OnGetEnvrequire_auth( TIsRequire_auth(PReturnClass));
   end;
 
   if PTypeHeader = Th_getIsOnline then

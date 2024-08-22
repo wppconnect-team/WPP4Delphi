@@ -166,6 +166,54 @@ type
 //    Property StatusDelivered : string  Read FStatusDelivered  Write FStatusDelivered;
 //  end;
 
+  TchatlistPreviewClass = class(TClassPadrao)
+  private
+    Ftype: String;
+    FmsgKey: String;
+    FparentMsgKey: String;
+    FreactionText: String;
+    Fsender: String;
+    Ftimestamp: Int64;
+
+  public
+    property &type              : String           read Ftype                     write Ftype;
+    property msgKey             : String           read FmsgKey                   write FmsgKey;
+    property parentMsgKey       : String           read FparentMsgKey             write FparentMsgKey;
+    property reactionText       : String           read FreactionText             write FreactionText;
+    property sender             : String           read Fsender                   write Fsender;
+    property timestamp          : Int64            read Ftimestamp                write Ftimestamp;
+  end;
+
+  //Marcelo 27/04/2022
+  TpollOptionsClass = class(TClassPadrao)
+  private
+    FLocalId: Integer;
+    FName: string;
+  published
+    property LocalId: Integer read FLocalId write FLocalId;
+    property Name: string read FName write FName;
+  end;
+
+  TReportingTagClass = class
+  private
+  public
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TReportingTagClass;
+  end;
+
+  TReportingTokenInfoClass = class
+  private
+    FReportingTag: TReportingTagClass;
+    FVersion: Extended;
+  public
+    property reportingTag: TReportingTagClass read FReportingTag write FReportingTag;
+    property version: Extended read FVersion write FVersion;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TReportingTokenInfoClass;
+  end;
+
   TProtocolMessageKeyClass = class(TClassPadrao)
   private
     F_serialized: String;
@@ -190,20 +238,16 @@ type
   public
   end;
 
+  TmessageSecretClass = class(TClassPadrao)
+    private
+      //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
+    public
+  end;
+
   TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
   private
     //Necessário Implementar, no meus testes está sempre vazio este ARRAY
   public
-  end;
-
-  //Marcelo 27/04/2022
-  TpollOptionsClass = class(TClassPadrao)
-  private
-    FLocalId: Integer;
-    FName: string;
-  published
-    property LocalId: Integer read FLocalId write FLocalId;
-    property Name: string read FName write FName;
   end;
 
   //Marcelo 27/04/2022
@@ -915,6 +959,22 @@ type
   public
   end;
 
+  //Marcelo 07/07/2023
+  TLatestEditMsgKeyClass = class(TClassPadrao)
+  private
+    F_serialized: String;
+    FFromMe: Boolean;
+    FId: String;
+    FRemote: String;
+  public
+    property _serialized: String read F_serialized write F_serialized;
+    property fromMe: Boolean read FFromMe write FFromMe;
+    property id: String read FId write FId;
+    property remote: String read FRemote write FRemote;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TMsgIdClass;
+  end;
+
   //Marcelo 18/06/2022
   TSingleSelectReplyClass = class(TClassPadrao)
   private
@@ -924,6 +984,7 @@ type
     //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property selectedRowId: String read FSelectedRowId write FSelectedRowId;
   end;
+
   //Temis 03/10/2022
   TCardClass = class(TClassPadrao)
   private
@@ -933,6 +994,7 @@ type
     property displayName: String read FDisplayName write FDisplayName;
     property vCard: String read FVCard write FVCard;
   end;
+
   //Marcelo 18/06/2022
   TlistResponseClass = class(TClassPadrao)
   private
@@ -948,6 +1010,7 @@ type
     property singleSelectReply: TSingleSelectReplyClass read FSingleSelectReply write FSingleSelectReply;
     property title: String                              read FTitle             write FTitle;
   end;
+
   //Marcelo 06/07/2022
   TQuotedMsgObjClass = class
   private
@@ -1183,6 +1246,10 @@ type
     FProtocolMessageKey: TProtocolMessageKeyClass;
     FInteractivePayload: TInteractivePayloadClass;
     FInteractiveHeader: TInteractiveHeaderClass;
+    FReportingTokenInfo: TReportingTokenInfoClass;
+    FLatestEditMsgKey: TLatestEditMsgKeyClass;
+    FchatlistPreview: TchatlistPreviewClass;
+    FpollOptions: TArray<TpollOptionsClass>;
   public
     //constructor Create(pAJsonString: string);
     //destructor  Destroy;       override;
@@ -1277,12 +1344,16 @@ type
     //Marcelo 18/06/2022
     property listResponse                : TlistResponseClass  read FlistResponse      write FlistResponse;
 
-    property recipients                  : TArray<String>         read Frecipients         write Frecipients; //Marcelo 14/08/2024
-    property groupMentions: TArray<String>                        read FgroupMentions      write FgroupMentions; //Marcelo 14/08/2024
-    property templateParams: TArray<String>                       read FtemplateParams     write FtemplateParams; //Marcelo 14/08/2024
-    property protocolMessageKey: TProtocolMessageKeyClass         read FProtocolMessageKey write FProtocolMessageKey; //Marcelo 14/08/2024
-    property interactivePayload: TInteractivePayloadClass         read FInteractivePayload write FInteractivePayload;
-    property interactiveHeader: TInteractiveHeaderClass           read FInteractiveHeader  write FInteractiveHeader;
+    property recipients                  : TArray<String>         read Frecipients          write Frecipients; //Marcelo 14/08/2024
+    property groupMentions       : TArray<String>                 read FgroupMentions       write FgroupMentions; //Marcelo 14/08/2024
+    property templateParams      : TArray<String>                 read FtemplateParams      write FtemplateParams; //Marcelo 14/08/2024
+    property protocolMessageKey  : TProtocolMessageKeyClass       read FProtocolMessageKey  write FProtocolMessageKey; //Marcelo 14/08/2024
+    property interactivePayload  : TInteractivePayloadClass       read FInteractivePayload  write FInteractivePayload;
+    property interactiveHeader   : TInteractiveHeaderClass        read FInteractiveHeader   write FInteractiveHeader;
+    property reportingTokenInfo  : TReportingTokenInfoClass       read FReportingTokenInfo  write FReportingTokenInfo;
+    property LatestEditMsgKey    : TLatestEditMsgKeyClass         read FLatestEditMsgKey    write FLatestEditMsgKey;
+    property chatlistPreview     : TchatlistPreviewClass          read FchatlistPreview     write FchatlistPreview;
+    property pollOptions         : TArray<TpollOptionsClass>      read FpollOptions         write FpollOptions;
   end;
 
   TItemClass = class(TClassPadrao)
@@ -1343,24 +1414,6 @@ type
     //destructor Destroy; override;
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TRootClass;
-  end;
-
-  TchatlistPreviewClass = class(TClassPadrao)
-  private
-    Ftype: String;
-    FmsgKey: String;
-    FparentMsgKey: String;
-    FreactionText: String;
-    Fsender: String;
-    Ftimestamp: Int64;
-
-  public
-    property &type              : String           read Ftype                     write Ftype;
-    property msgKey             : String           read FmsgKey                   write FmsgKey;
-    property parentMsgKey       : String           read FparentMsgKey             write FparentMsgKey;
-    property reactionText       : String           read FreactionText             write FreactionText;
-    property sender             : String           read Fsender                   write Fsender;
-    property timestamp          : Int64            read Ftimestamp                write Ftimestamp;
   end;
 
   TMessagesClass = class(TClassPadrao)
@@ -1566,6 +1619,7 @@ type
     property interactiveHeader           : TInteractiveHeaderClass  read FInteractiveHeader  write FInteractiveHeader;
   end;
 
+
   TChatClass = class(TClassPadraoList<TMessagesClass>)
   private
     FId             : String;
@@ -1608,7 +1662,6 @@ type
     FtcToken: TtcTokenClass; //Não Implementada, não sei o que vem no JSON }
     FmsgRowOpaqueData: TmsgRowOpaqueDataClass; //Não Implementada, não sei o que vem no JSON }
     FListClass: TArray<TListClass>;
-    FpollOptions: TpollOptionsClass;
     FmessageRangeIndex: String;
     FhydratedButtonsClass: TArray<ThydratedButtonsClass>;
     FvcardWAids: TArray<String>;
@@ -1625,6 +1678,16 @@ type
     F_headerPhoneNumbers: TArray<String>;
     F_footerPhoneNumbers: TArray<String>;
     FchatlistPreview: TchatlistPreviewClass;
+    {FReportingTokenInfo: TReportingTokenInfoClass;
+    FgroupMentions: TArray<String>;
+    FmessageSecret: TmessageSecretClass;}
+    //FpollOptions: TArray<TpollOptionsClass>;
+    FpollOptions: TpollOptionsClass;
+
+    {FInteractiveHeader: TInteractiveHeaderClass;
+    FInteractivePayload: TInteractivePayloadClass;
+    FLatestEditMsgKey: TLatestEditMsgKeyClass;
+    FlistResponse: TlistResponseClass;}
 
   public
     constructor Create(pAJsonString: string);
@@ -1673,7 +1736,7 @@ type
     //Marcelo 14/08/2022
     property msgRowOpaqueData   : TmsgRowOpaqueDataClass            read FmsgRowOpaqueData       write FmsgRowOpaqueData;
     property List               : TArray<TListClass>                read FListClass              write FListClass;
-    property pollOptions        : TpollOptionsClass                 read FpollOptions            write FpollOptions;
+
     property messageRangeIndex  : String                            Read FmessageRangeIndex      Write FmessageRangeIndex;
     property hydratedButtons    : TArray<ThydratedButtonsClass>     read FhydratedButtonsClass   write FhydratedButtonsClass;
     property vcardWAids         : TArray<String>                    read FvcardWAids             write FvcardWAids;
@@ -1691,9 +1754,20 @@ type
     property _footerPhoneNumbers: TArray<String>                    read F_footerPhoneNumbers    write F_footerPhoneNumbers;
 
     property chatlistPreview    : TchatlistPreviewClass             read FchatlistPreview        write FchatlistPreview;
+    property pollOptions        : TpollOptionsClass                 read FpollOptions            write FpollOptions;
+    //property pollOptions        : TArray<TpollOptionsClass>         read FpollOptions            write FpollOptions;
 
-    //property lastReceivedKey             : TLastReceivedKeyClass  read FLastReceivedKey    write FLastReceivedKey;
-    //property unreadMentionsOfMe          : TArray<String>         read FUnreadMentionsOfMe write FUnreadMentionsOfMe;
+    {property reportingTokenInfo : TReportingTokenInfoClass          read FReportingTokenInfo     write FReportingTokenInfo;
+    property groupMentions      : TArray<String>                    read FgroupMentions          write FgroupMentions;} //Marcelo 14/08/2024
+
+
+    {property messageSecret      : TmessageSecretClass               read FmessageSecret          write FmessageSecret;
+    property interactivePayload : TInteractivePayloadClass          read FInteractivePayload     write FInteractivePayload;
+    property interactiveHeader  : TInteractiveHeaderClass           read FInteractiveHeader      write FInteractiveHeader;
+    property LatestEditMsgKey   : TLatestEditMsgKeyClass            read FLatestEditMsgKey       write FLatestEditMsgKey;
+    property listResponse       : TlistResponseClass                read FlistResponse           write FlistResponse;}
+
+
   end;
 
   //14/08/2024
@@ -1943,6 +2017,15 @@ public
   destructor  Destroy;
 end;
 
+TIsRequire_auth = class(TClassPadrao)
+private
+  FIsRequire_auth: Boolean;
+public
+  property IsRequire_auth:      Boolean    read FIsRequire_auth     write FIsRequire_auth;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
 TIsOnline = class(TClassPadrao)
 private
   FIsOnline: Boolean;
@@ -2126,21 +2209,7 @@ public
   //class function FromJsonString(AJsonString: string): TSelectedOptionsClass;
 end;
 
-//Marcelo 07/07/2023
-TLatestEditMsgKeyClass = class(TClassPadrao)
-private
-  F_serialized: String;
-  FFromMe: Boolean;
-  FId: String;
-  FRemote: String;
-public
-  property _serialized: String read F_serialized write F_serialized;
-  property fromMe: Boolean read FFromMe write FFromMe;
-  property id: String read FId write FId;
-  property remote: String read FRemote write FRemote;
-  //function ToJsonString: string;
-  //class function FromJsonString(AJsonString: string): TMsgIdClass;
-end;
+
 
   //Marcelo 07/07/2023
   TMsgIdClass = class(TClassPadrao)
@@ -4676,6 +4745,18 @@ begin
     FReturnUrl.position   := 0;
     Result                := FReturnUrl.size > 0;
   end;
+end;
+
+{ TIsRequire_auth }
+
+constructor TIsRequire_auth.Create(pAJsonString: string);
+begin
+  FIsRequire_auth := True;
+end;
+
+destructor TIsRequire_auth.Destroy;
+begin
+  inherited;
 end;
 
 end.

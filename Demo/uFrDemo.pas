@@ -64,7 +64,7 @@ type
     TimerProgress: TTimer;
     lblNomeConta: TLabel;
     Timer1: TTimer;
-    Timer2: TTimer;
+    TimerIsOnline: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -166,7 +166,7 @@ type
     procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
     procedure TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
     procedure TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
-    procedure Timer2Timer(Sender: TObject);
+    procedure TimerIsOnlineTimer(Sender: TObject);
     procedure TWPPConnect1AfterInjectJS(Sender: TObject);
     procedure TWPPConnect1Getactive_chat(const response: TGetActiveChatClass);
     procedure TWPPConnect1Getgroup_participant_changed(const response: TGroupParticipantChangedClass);
@@ -174,6 +174,7 @@ type
     procedure TWPPConnect1Getorder_payment_status(const response: Torder_payment_statusClass);
     procedure TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
     procedure TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
+    procedure TWPPConnect1GetEnvrequire_auth(Response: TIsRequire_auth);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -691,7 +692,7 @@ begin
   frameLogin1.lblCodeLinkDevice.Caption := '';
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
   timerStatus.Enabled := True;
-  Timer2.Enabled := True;
+  //Timer2.Enabled := True;
 
   //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
   killtask('Gbpsv.exe');
@@ -833,16 +834,22 @@ begin
   end;
 end;
 
-procedure TfrDemo.Timer2Timer(Sender: TObject);
+procedure TfrDemo.TimerIsOnlineTimer(Sender: TObject);
 begin
-  Timer2.Enabled := False;
+  try
+    TimerIsOnline.Enabled := False;
 
-  if not TWPPConnect1.auth(False) then
-    exit;
+    try
+      if not TWPPConnect1.auth(False) then
+        exit;
 
-  TWPPConnect1.IsOnline;
+      TWPPConnect1.IsOnline;
+    except on E: Exception do
+    end;
 
-  Timer2.Enabled := True;
+  finally
+    TimerIsOnline.Enabled := True;
+  end;
 end;
 
 procedure TfrDemo.TimerCheckOnlineTimer(Sender: TObject);
@@ -953,6 +960,7 @@ Begin
       if whatsappsms = 0 then
       Begin
         frameLogin1.lblStatus.Caption := 'Offline';
+        Label3.Caption := 'Offline Test GetMyNumber';
         frameLogin1.lblStatus.Font.Color := $002894FF;
         frameLogin1.lblStatus.Font.Color := clGrayText;
         frameLogin1.whatsOff.Visible := True;
@@ -1060,11 +1068,13 @@ end;
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
 begin
   timerStatus.Enabled := False;
-  lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+  lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
 end;
 procedure TfrDemo.TWPPConnect1Disconnected(Sender: TObject);
 begin
   ShowMessage('Conexão foi finalizada');
+
+  TimerIsOnline.Enabled := False;
 end;
 procedure TfrDemo.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
@@ -1075,7 +1085,11 @@ begin
   frameLogin1.whatsOn.Visible := False;
   frameLogin1.SpeedButton3.Enabled := True;
 
-  ShowMessage('Conexão foi finalizada pelo celular');
+  TimerIsOnline.Enabled := False;
+
+  ShowMessage('Conexão foi finalizada');
+
+  //Timer1.Enabled := True;
 end;
 
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -1244,7 +1258,7 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
 begin
-  if Response.IsOnline then
+  {if Response.IsOnline then
   begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Online"');
 
@@ -1269,7 +1283,8 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
     StatusBar1.Panels[1].Text := 'Offline';
-  end;
+    //ShowMessage('Conexão está Offline');
+  end;}
 end;
 
 procedure TfrDemo.TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
@@ -1287,6 +1302,24 @@ begin
     end;
   end;
 
+end;
+
+procedure TfrDemo.TWPPConnect1GetEnvRequire_auth(Response: TIsRequire_auth);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento Require_auth "Offline"');
+
+  Label3.Caption := 'Offline';
+  frameLogin1.lblStatus.Caption := 'Offline Require Auth';
+  lblMeuNumero.Caption := 'My Number: ';
+  lblNomeConta.Caption := '';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+  StatusBar1.Panels[1].Text := 'Offline';
+
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
@@ -1360,8 +1393,8 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
 begin
-  frameLogin1.lblStatus.Caption := 'Carregando...';
-  Label3.Caption := 'Carregando Conversas Aguarde...';
+  frameLogin1.lblStatus.Caption := 'Loading...';
+  Label3.Caption := 'Loading Conversations Please wait...';
   //TimerProgress.Enabled := True;
 end;
 
@@ -1375,6 +1408,7 @@ begin
   frameLogin1.SpeedButton3.Enabled := True;
 
   ShowMessage('Conexão foi finalizada / Connection has been closed!  ');
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsOnline(Response: TIsOnline);
@@ -1402,12 +1436,13 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
     StatusBar1.Panels[1].Text := 'Offline';
+    ShowMessage('Connection is Offline');
   end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
 begin
-  Label3.Caption := 'Online Pronto para Uso';
+  Label3.Caption := 'Online Is Ready';
   frameLogin1.lblStatus.Caption := 'Online';
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
@@ -1425,11 +1460,13 @@ begin
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
+  TimerIsOnline.Enabled := True;
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
 end;
 
@@ -1631,6 +1668,7 @@ begin
   frameLogin1.SpeedButton3.Enabled := True;
 
   ShowMessage('Conexão foi finalizada / Connection has been closed!' + #13#10#13#10 + logout_reason.response);
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);
@@ -1881,7 +1919,7 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
-  lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect(Sender).MyNumber;
+  lblMeuNumero.Caption := 'My Number: ' + TWPPConnect(Sender).MyNumber;
   frameLogin1.lblStatus.Caption := 'Online';
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
@@ -1898,11 +1936,11 @@ begin
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
 end;
 procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
@@ -2340,6 +2378,7 @@ begin
       Label3.Caption := 'Desconectou Erro na Pasta Cache';
       ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');
       TimerRestauraPastaCache.Enabled := True;
+      TimerIsOnline.Enabled := False;
     end;
 
   end;
@@ -2386,7 +2425,7 @@ begin
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
   Label3.Visible := False;
   case TWPPConnect(Sender).status of
