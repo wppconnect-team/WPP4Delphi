@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.55;1.0.0.9;78.3.0
+//2.1.0.56;1.0.0.9;78.3.0
 //
 //
 
@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.8.4 alpha
+//WPPCONNECT v3.8.4 alpha2
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.8.4-alpha.0 */
+/*! wppconnect-team/wa-js v3.8.3 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -11981,7 +11981,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const e = async () => {
                         a.internalEv.emit("conn.main_ready")
                     };
-                    "MAIN" === u.Stream.mode ? e() : u.Cmd.on("main_stream_mode_ready_legacy", e)
+                    if ("MAIN" === u.Stream.mode) e();
+                    else {
+                        var t = !1;
+                        try {
+                            u.Cmd.on("main_stream_mode_ready", e), t = !0
+                        } catch (e) {
+                            console.warn("Erro ao registrar main_stream_mode_ready:", e)
+                        }
+                        if (!t) try {
+                            u.Cmd.on("main_stream_mode_ready_legacy", e)
+                        } catch (e) {
+                            console.error("Erro ao registrar main_stream_mode_ready_legacy:", e)
+                        }
+                    }
                 }))
             },
             19516: function(e, t, r) {
@@ -14305,7 +14318,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.8.4-alpha.0";
+                a(r(26738), t), t.waVersion = "3.8.3";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14536,7 +14549,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.8.4-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.8.3", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
