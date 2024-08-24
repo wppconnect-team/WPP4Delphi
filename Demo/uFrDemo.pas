@@ -63,7 +63,7 @@ type
     frameComunidades1: TframeComunidades;
     TimerProgress: TTimer;
     lblNomeConta: TLabel;
-    Timer1: TTimer;
+    TimerBegin: TTimer;
     TimerIsOnline: TTimer;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
@@ -157,7 +157,7 @@ type
     procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
     procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
     procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
-    procedure Timer1Timer(Sender: TObject);
+    procedure TimerBeginTimer(Sender: TObject);
     procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
     procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
     procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
@@ -816,9 +816,9 @@ begin
   TimerVerificaConexao.Enabled := True;
 end;
 
-procedure TfrDemo.Timer1Timer(Sender: TObject);
+procedure TfrDemo.TimerBeginTimer(Sender: TObject);
 begin
-  Timer1.Enabled := False;
+  TimerBegin.Enabled := False;
 
   try
     if not TWPPConnect1.Auth(False) then
@@ -959,13 +959,16 @@ Begin
     Begin
       if whatsappsms = 0 then
       Begin
-        frameLogin1.lblStatus.Caption := 'Offline';
-        Label3.Caption := 'Offline Test GetMyNumber';
-        frameLogin1.lblStatus.Font.Color := $002894FF;
-        frameLogin1.lblStatus.Font.Color := clGrayText;
-        frameLogin1.whatsOff.Visible := True;
-        frameLogin1.whatsOn.Visible := False;
-        frameLogin1.SpeedButton3.Enabled := True;
+        if TentativaConexao >= 2 then
+        begin
+          frameLogin1.lblStatus.Caption := 'Offline';
+          Label3.Caption := 'Offline Test CheckNumber';
+          frameLogin1.lblStatus.Font.Color := $002894FF;
+          frameLogin1.lblStatus.Font.Color := clGrayText;
+          frameLogin1.whatsOff.Visible := True;
+          frameLogin1.whatsOn.Visible := False;
+          frameLogin1.SpeedButton3.Enabled := True;
+        end;
 
         if TentativaConexao >= 2 then
         begin
@@ -1086,10 +1089,12 @@ begin
   frameLogin1.SpeedButton3.Enabled := True;
 
   TimerIsOnline.Enabled := False;
+  TimerVerificaConexao.Enabled := False;
 
   ShowMessage('Conexão foi finalizada');
 
   //Timer1.Enabled := True;
+  TimerBegin.Enabled := True;
 end;
 
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -1415,7 +1420,7 @@ procedure TfrDemo.TWPPConnect1GetIsOnline(Response: TIsOnline);
 begin
   if Response.IsOnline then
   begin
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Online');
+    //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Online');
 
     frameLogin1.lblStatus.Caption := 'Online';
     frameLogin1.lblStatus.Font.Color := $0000AE11;

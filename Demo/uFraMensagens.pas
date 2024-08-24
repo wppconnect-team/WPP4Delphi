@@ -102,6 +102,7 @@ type
     btnImageButton: TButton;
     SendPix: TButton;
     SendDocumentButton: TButton;
+    btnSendVideoButton: TButton;
     procedure edtURLDblClick(Sender: TObject);
     procedure btnTextoSimplesClick(Sender: TObject);
     procedure btnBotaoSimplesClick(Sender: TObject);
@@ -158,6 +159,7 @@ type
     procedure btnImageButtonClick(Sender: TObject);
     procedure SendPixClick(Sender: TObject);
     procedure SendDocumentButtonClick(Sender: TObject);
+    procedure btnSendVideoButtonClick(Sender: TObject);
   private
     { Private declarations }
      FStatus: Boolean;
@@ -473,18 +475,24 @@ begin
       //'useTemplateButtons: true,' +  //deprecated
       'createChat: true, ' +
       'useInteractiveMesssage: true, ' + //Is Working Android and iOS
-      'type: "text", ' +
+
       'buttons: ' +
       '[ ' +
         //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"}, ' +
         //'{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
-        //'{url: "https://apoia.se/wppconnect", text: "🌐️ APOIA.se"},' + //Crash iOS
-        //'{url: "https://www.whatsapp.com/otp/copy/text%20here", text: "Copy Chave Pix" }, ' +
-        //'{url: "https://www.whatsapp.com/otp/copy/8e3fda51-2c8f-4134-a154-24cd02e07890", text: "Copy Chave Pix" }, ' +  //8e3fda51-2c8f-4134-a154-24cd02e07890
         //'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"}, ' +
-        '{id: "001", text: "Sim"}, ' +
-        '{id: "002", text: "Não"}, ' +
 
+        //Reply Button
+        '  {  ' +
+        '    id: "001",  ' +
+        '    text: "SIM"  ' +
+        '  },  ' +
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "NÃO"  ' +
+        '  },  ' +
+
+        //Copy Button
         '{ ' +
         '    raw: { ' +
         '        name: "cta_copy", ' +
@@ -1885,6 +1893,92 @@ begin
     //Optional Parameters SeuID, SeuID2, SeuID3 and SeuID4
     frDemo.TWPPConnect1.SendTextMessageNew(ed_num.Text, mem_message.Text, options, 'SEUID1', 'SEUID2', 'SEUID3', 'SEUID4');
 
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
+end;
+
+procedure TframeMensagem.btnSendVideoButtonClick(Sender: TObject);
+var
+  content, options, caption : string;
+  LBase64 : TStringList;
+begin
+
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth(False) then
+      Exit;
+
+    LBase64 := TStringList.Create;
+    TRY
+      //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\base64Videos2.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt')
+      else
+      begin
+        {inicio - capturando imagem e convertendo em base 64}
+        OpenDialog1.Execute;
+        lblCaminhoImagem.Caption := OpenDialog1.FileName;
+        LBase64.text  := FileToBase64( OpenDialog1.FileName, 'video' ) ;  //FileToBase64
+        LBase64.text := StrExtFile_Base64Type( ExtractFileName(OpenDialog1.FileName) ) + LBase64.text; //add DataURI
+        memo1.clear;
+        memo1.Text    := LBase64.text ;
+        {final - capturando imagem e convertendo em base 64}
+      end;
+
+      content := frDemo.CaractersWeb(mem_message.Text);
+
+      caption := frDemo.CaractersWeb(mem_message.Text);
+
+      options :=
+        'createChat: true, ' +
+        ///'useTemplateButtons: undefined, ' + //deprecated
+        //'useTemplateButtons: true, ' + //deprecated
+        'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
+        'footer: "Video With Button",  ' +
+        'caption: "My Video", ' +
+        'type: "video", ' +
+        'buttons: [ ' +
+        '  { ' +
+        '    url: "https://wppconnect-team.github.io/", ' +
+        '    text: "Acesse Nosso Site" ' +
+        '  }, ' +
+        '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
+
+        (*
+        '  { ' +
+        '    id: "001",  ' +
+        '    text: "Show de Bola"  ' +
+        '  },  ' +*)
+        '  {  ' +
+        '    id: "002",  ' +
+        '    text: "Curti"  ' +
+        '  },  ' +
+
+
+        '  { ' +
+        '    raw: { ' +
+        '        name: "cta_copy", ' +
+        '        buttonParamsJson: JSON.stringify({ ' +
+        '            display_text: "Copiar Chave Pix", ' +
+        '            copy_code: "17981388414", ' +
+        '        }) ' +
+        '    } ' +
+        '  } ' +
+        ']  ';
+
+      frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');
+
+    FINALLY
+      freeAndNil(LBase64);
+    END;
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;

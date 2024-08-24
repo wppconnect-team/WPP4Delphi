@@ -2067,6 +2067,18 @@ Tlogout_reason = class(TClassPadrao)
     property response:      string    read Fresponse     write Fresponse;
 end;
 
+TParticipantsPresenceClass = class
+private
+  FId: String;
+  FShortName: String;
+  FState: String;
+public
+  property id: String read FId write FId;
+  property shortName: String read FShortName write FShortName;
+  property state: String read FState write FState;
+end;
+
+
 TMsgPresence_changeClass = class(TClassPadrao)
 private
   FId: String;
@@ -2077,6 +2089,7 @@ private
   FShortName: String;
   FState: String;
   FT: Extended;
+  FParticipants: TArray<TMsgPresence_changeClass>;
 public
   property id: String read FId write FId;
   property isContact: Boolean read FIsContact write FIsContact;
@@ -2086,6 +2099,7 @@ public
   property shortName: String read FShortName write FShortName;
   property state: String read FState write FState;
   property t: Extended read FT write FT;
+  property participants: TArray<TMsgPresence_changeClass> read FParticipants write FParticipants;
   //function ToJsonString: string;
   //class function FromJsonString(AJsonString: string): TMsgPresence_change;
 end;

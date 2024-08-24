@@ -5897,9 +5897,9 @@ object frDemo: TfrDemo
     Left = 1004
     Top = 8
   end
-  object Timer1: TTimer
+  object TimerBegin: TTimer
     Interval = 7000
-    OnTimer = Timer1Timer
+    OnTimer = TimerBeginTimer
     Left = 912
     Top = 8
   end
