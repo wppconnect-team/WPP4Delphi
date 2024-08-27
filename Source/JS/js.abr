@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.56;1.0.0.9;78.3.0
+//2.1.0.57;1.0.0.9;78.3.0
 //
 //
 
@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.8.4 alpha2
+//WPPCONNECT v3.9.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.8.3 */
+/*! wppconnect-team/wa-js v3.9.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -3345,7 +3345,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function U(e, t, r, n, i) {
+                function D(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3511,9 +3511,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeFloatBE = function(e, t, r) {
                     return F(this, e, t, !1, r)
                 }, u.prototype.writeDoubleLE = function(e, t, r) {
-                    return U(this, e, t, !0, r)
+                    return D(this, e, t, !0, r)
                 }, u.prototype.writeDoubleBE = function(e, t, r) {
-                    return U(this, e, t, !1, r)
+                    return D(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3546,10 +3546,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return this
                 };
-                const D = {};
+                const U = {};
 
                 function N(e, t, r) {
-                    D[e] = class extends r {
+                    U[e] = class extends r {
                         constructor() {
                             super(), Object.defineProperty(this, "message", {
                                 value: t.apply(this, arguments),
@@ -3586,20 +3586,20 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (e > r || e < t) {
                         const n = "bigint" == typeof t ? "n" : "";
                         let o;
-                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new D.ERR_OUT_OF_RANGE("value", o, e)
+                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new U.ERR_OUT_OF_RANGE("value", o, e)
                     }! function(e, t, r) {
                         q(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || z(t, e.length - (r + 1))
                     }(n, o, i)
                 }
 
                 function q(e, t) {
-                    if ("number" != typeof e) throw new D.ERR_INVALID_ARG_TYPE(t, "number", e)
+                    if ("number" != typeof e) throw new U.ERR_INVALID_ARG_TYPE(t, "number", e)
                 }
 
                 function z(e, t, r) {
-                    if (Math.floor(e) !== e) throw q(e, r), new D.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
-                    if (t < 0) throw new D.ERR_BUFFER_OUT_OF_BOUNDS;
-                    throw new D.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
+                    if (Math.floor(e) !== e) throw q(e, r), new U.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
+                    if (t < 0) throw new U.ERR_BUFFER_OUT_OF_BOUNDS;
+                    throw new U.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
                 }
                 N("ERR_BUFFER_OUT_OF_BOUNDS", (function(e) {
                     return e ? `${e} is outside of buffer bounds` : "Attempt to access memory outside buffer bounds"
@@ -4191,14 +4191,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     }, p.resize);
                                     S = F.width, I = F.height
                                 } else {
-                                    var U = x({
+                                    var D = x({
                                             aspectRatio: j,
                                             width: S,
                                             height: I
                                         }),
-                                        D = U.width;
-                                    S = void 0 === D ? r : D;
-                                    var N = U.height;
+                                        U = D.width;
+                                    S = void 0 === U ? r : U;
+                                    var N = D.height;
                                     I = void 0 === N ? n : N
                                 }
                                 var W = -(S = Math.floor(C(Math.min(Math.max(S, P), _)))) / 2,
@@ -9607,23 +9607,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return F.openChatBottom
                     }
                 });
-                var U = r(51464);
+                var D = r(51464);
                 Object.defineProperty(t, "openChatFromUnread", {
                     enumerable: !0,
                     get: function() {
-                        return U.openChatFromUnread
+                        return D.openChatFromUnread
                     }
                 });
-                var D = r(61278);
+                var U = r(61278);
                 Object.defineProperty(t, "pin", {
                     enumerable: !0,
                     get: function() {
-                        return D.pin
+                        return U.pin
                     }
                 }), Object.defineProperty(t, "unpin", {
                     enumerable: !0,
                     get: function() {
-                        return D.unpin
+                        return U.unpin
                     }
                 });
                 var N = r(6993);
@@ -10214,11 +10214,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }), t.prepareMessageButtons = function(e, t) {
                     if (!t.buttons) return e;
                     if (!Array.isArray(t.buttons)) throw "Buttons options is not a array";
-                    (void 0 === t.useTemplateButtons && void 0 === t.useInteractiveMesssage || null === t.useTemplateButtons && null === t.useInteractiveMesssage) && (t.useInteractiveMesssage = t.buttons.some((e => "phoneNumber" in e || "url" in e)));
-                    if (t.useTemplateButtons || t.useInteractiveMesssage) {
+                    (void 0 === t.useTemplateButtons && void 0 === t.useInteractiveMessage || null === t.useTemplateButtons && null === t.useInteractiveMessage) && (t.useInteractiveMessage = t.buttons.some((e => "phoneNumber" in e || "url" in e)));
+                    if (t.useTemplateButtons || t.useInteractiveMessage) {
                         if (0 === t.buttons.length || t.buttons.length > 5) throw "Buttons options must have between 1 and 5 options"
                     } else if (0 === t.buttons.length || t.buttons.length > 3) throw "Buttons options must have between 1 and 3 options";
-                    e.title = t.title, e.footer = t.footer, t.useInteractiveMesssage ? e.interactiveMessage = {
+                    e.title = t.title, e.footer = t.footer, t.useInteractiveMessage ? e.interactiveMessage = {
                         header: {
                             title: t.title || " ",
                             hasMediaAttachment: !1
@@ -10342,7 +10342,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                         hasMediaAttachment: !0
                                     }), delete u[e];
                                     break
-                                } delete u.extendedTextMessage, u.viewOnceMessage = {
+                                } void 0 !== u.extendedTextMessage && delete u.extendedTextMessage, void 0 !== u.conversation && delete u.conversation, u.viewOnceMessage = {
                                 message: {
                                     interactiveMessage: s.interactiveMessage
                                 }
@@ -10535,6 +10535,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 value: f,
                                 offset: Number(r.offset) || 1e3
                             },
+                            order_type: "ORDER",
                             order: {
                                 status: "pending",
                                 items: u,
@@ -10554,7 +10555,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     value: null == r ? void 0 : r.discount,
                                     offset: Number(r.offset) || 1e3
                                 } : null
-                            }
+                            },
+                            payment_settings: void 0 !== r.pix ? [{
+                                pix_static_code: {
+                                    key: r.pix.key,
+                                    key_type: r.pix.keyType,
+                                    merchant_name: r.pix.name
+                                },
+                                type: "pix_static_code"
+                            }, {
+                                cards: {
+                                    enabled: !0
+                                },
+                                type: "cards"
+                            }] : void 0,
+                            external_payment_configurations: r.payment_instruction ? [{
+                                type: "payment_instruction",
+                                payment_instruction: r.payment_instruction
+                            }] : void 0
                         },
                         g = {
                             type: "interactive",
@@ -10804,21 +10822,30 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             t.jpegThumbnail = r.data.split(",", 2)[1]
                         } catch (e) {}
                     }
-                    const r = `https://chat.whatsapp.com/${t.inviteCode}`,
-                        u = {
-                            type: "chat",
-                            subtype: "url",
-                            thumbnail: t.jpegThumbnail,
-                            thumbnailHeight: t.jpegThumbnail ? 100 : void 0,
-                            thumbnailWidth: t.jpegThumbnail ? 100 : void 0,
-                            title: t.groupName,
-                            inviteGrpType: "DEFAULT",
-                            canonicalUrl: `https://chat.whatsapp.com/${t.inviteCode}`,
-                            description: t.caption ? `${t.caption}\n${r}` : r,
-                            body: t.caption ? `${t.caption}\n${r}` : r,
-                            matchedText: `https://chat.whatsapp.com/${t.inviteCode}`,
-                            richPreviewType: 0
-                        };
+                    const r = `https://chat.whatsapp.com/${t.inviteCode}`;
+                    let u = {};
+                    u = t.inviteCodeExpiration ? {
+                        type: "groups_v4_invite",
+                        inviteGrpJpegThum: t.jpegThumbnail,
+                        inviteCode: t.inviteCode,
+                        inviteCodeExp: t.inviteCodeExpiration || "",
+                        inviteGrp: t.groupId,
+                        inviteGrpName: t.groupName,
+                        comment: t.caption
+                    } : {
+                        type: "chat",
+                        subtype: "url",
+                        thumbnail: t.jpegThumbnail,
+                        thumbnailHeight: t.jpegThumbnail ? 100 : void 0,
+                        thumbnailWidth: t.jpegThumbnail ? 100 : void 0,
+                        title: t.groupName,
+                        inviteGrpType: "DEFAULT",
+                        canonicalUrl: `https://chat.whatsapp.com/${t.inviteCode}`,
+                        description: t.caption ? `${t.caption}\n${r}` : r,
+                        body: t.caption ? `${t.caption}\n${r}` : r,
+                        matchedText: `https://chat.whatsapp.com/${t.inviteCode}`,
+                        richPreviewType: 0
+                    };
                     return await (0, s.sendRawMessage)(e, u, t)
                 };
                 const n = r(56191),
@@ -11979,23 +12006,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = r(14647);
                 s.onInjected((function() {
                     const e = async () => {
-                        a.internalEv.emit("conn.main_ready")
+                        c || (c = !0, setTimeout((() => c = !1), 1e3), a.internalEv.emit("conn.main_ready"))
                     };
-                    if ("MAIN" === u.Stream.mode) e();
-                    else {
-                        var t = !1;
-                        try {
-                            u.Cmd.on("main_stream_mode_ready", e), t = !0
-                        } catch (e) {
-                            console.warn("Erro ao registrar main_stream_mode_ready:", e)
-                        }
-                        if (!t) try {
-                            u.Cmd.on("main_stream_mode_ready_legacy", e)
-                        } catch (e) {
-                            console.error("Erro ao registrar main_stream_mode_ready_legacy:", e)
-                        }
-                    }
-                }))
+                    "MAIN" === u.Stream.mode ? e() : (u.Cmd.on("main_stream_mode_ready", e), u.Cmd.on("main_stream_mode_ready_legacy", e))
+                }));
+                let c = !1
             },
             19516: function(e, t, r) {
                 "use strict";
@@ -14318,7 +14333,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.8.3";
+                a(r(26738), t), t.waVersion = "3.9.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14549,7 +14564,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.8.3", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.9.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -16940,8 +16955,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 });
                 (0, r(54993).exportModule)(t, {
-                    QuickReplyCollection: "QuickReplyCollectionImpl"
-                }, (e => e.QuickReplyCollectionImpl))
+                    QuickReplyCollection: ["QuickReplyCollectionImpl", "QuickReplyCollection"]
+                }, (e => e.QuickReplyCollectionImpl || e.QuickReplyCollection))
             },
             9601: (e, t, r) => {
                 "use strict";
@@ -19936,7 +19951,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     BusinessProfileStore: ["BusinessProfileCollectionImpl", "BusinessProfileCollection"]
                 }, (e => e.BusinessProfileCollectionImpl || e.BusinessProfileCollection)), (0, s.exportModule)(t, {
                     ProfilePicThumbStore: ["ProfilePicThumbCollection", "ProfilePicThumbCollectionImpl"]
-                }, (e => e.ProfilePicThumbCollection || e.ProfilePicThumbCollectionImpl))
+                }, (e => e.ProfilePicThumbCollection || e.ProfilePicThumbCollectionImpl)), (0, s.exportModule)(t, {
+                    QuickReplyStore: ["QuickReplyCollectionImpl", "QuickReplyCollection"]
+                }, (e => e.QuickReplyCollectionImpl || e.QuickReplyCollection))
             },
             34439: (e, t, r) => {
                 "use strict";
