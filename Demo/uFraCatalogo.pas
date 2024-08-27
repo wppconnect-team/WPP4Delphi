@@ -53,10 +53,12 @@ type
     btnSendOrder: TButton;
     ImageList1: TImageList;
     bChargeOrder: TButton;
+    Button2: TButton;
     procedure Button1Click(Sender: TObject);
     procedure cdsCatalogoAfterScroll(DataSet: TDataSet);
     procedure btnSendOrderClick(Sender: TObject);
     procedure bChargeOrderClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -215,6 +217,49 @@ end;
 procedure TframeCatalogo.Button1Click(Sender: TObject);
 begin
   frDemo.TWPPConnect1.GetProductCatalog;
+end;
+
+procedure TframeCatalogo.Button2Click(Sender: TObject);
+var
+  options, items : wideString;
+begin
+  try
+    if Trim(ed_num.Text) = '' then
+    begin
+      messageDlg('Informe o Celular para Continuar', mtWarning, [mbOk], 0);
+      ed_num.SetFocus;
+      Exit;
+    end;
+
+    if not frDemo.TWPPConnect1.Auth(False) then
+      Exit;
+
+
+    items :=
+      '  type: "custom", ' +
+      '  name: "Item de cost test", ' +
+      '  price: 120000, ' +
+      '  qnt: 2';
+      //'type: "product", id: "' + cdsCatalogoid.AsString + '", qnt: 1';
+
+    options :=
+      '  tax: 1000, ' +
+      '  shipping: 4000, ' +
+      '  discount: 1000, ' +
+      '  pix: { ' +
+      '    keyType: "CPF", ' +
+      '    key: "12345678928", ' +
+      '    name: "WPPCONNECT-TEAM"} ';
+      //'type: "custom", name: "Item de cost test", price: 120000, qnt: 2';
+
+
+    // Send Order with custom options
+    frDemo.TWPPConnect1.sendChargeMessageNew(ed_num.Text, items, options, '123');
+
+  finally
+    ed_num.SelectAll;
+    ed_num.SetFocus;
+  end;
 end;
 
 procedure TframeCatalogo.cdsCatalogoAfterScroll(DataSet: TDataSet);

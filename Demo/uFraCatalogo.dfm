@@ -1989,12 +1989,25 @@ object frameCatalogo: TframeCatalogo
     Top = 242
     Width = 262
     Height = 25
-    Caption = 'Enviar Cobran'#231'a / Send Charge Order'
+    Caption = 'Enviar Cobran'#231'a / Send Tax Order'
     HotImageIndex = 2
     ImageIndex = 1
     Images = ImageList1
     TabOrder = 5
     OnClick = bChargeOrderClick
+  end
+  object Button2: TButton
+    AlignWithMargins = True
+    Left = 291
+    Top = 273
+    Width = 262
+    Height = 25
+    Caption = 'Enviar Cobran'#231'a PIX / Send Charge '
+    HotImageIndex = 2
+    ImageIndex = 1
+    Images = ImageList1
+    TabOrder = 6
+    OnClick = Button2Click
   end
   object dsCatalogo: TDataSource
     DataSet = cdsCatalogo
@@ -2143,8 +2156,8 @@ object frameCatalogo: TframeCatalogo
     Params = <>
     StoreDefs = True
     AfterScroll = cdsCatalogoAfterScroll
-    Left = 464
-    Top = 264
+    Left = 504
+    Top = 344
     object cdsCatalogoid: TStringField
       FieldName = 'id'
     end
