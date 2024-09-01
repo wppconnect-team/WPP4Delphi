@@ -17,7 +17,6 @@ object frameGrupos: TframeGrupos
     Height = 649
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 600
     object gbGrupos: TGroupBox
       AlignWithMargins = True
       Left = 258
@@ -27,7 +26,6 @@ object frameGrupos: TframeGrupos
       Align = alLeft
       Caption = 'Grupos'
       TabOrder = 0
-      ExplicitHeight = 590
       object listaGrupos: TListView
         AlignWithMargins = True
         Left = 5
@@ -74,7 +72,6 @@ object frameGrupos: TframeGrupos
         Align = alClient
         Caption = 'A'#231#245'es para Grupos'
         TabOrder = 2
-        ExplicitHeight = 416
         object btnCriarVotacao: TButton
           AlignWithMargins = True
           Left = 5
@@ -211,7 +208,6 @@ object frameGrupos: TframeGrupos
           Caption = 'Descri'#231#227'o do Grupo'
           TabOrder = 10
           OnClick = btnDescricaoGrupoClick
-          ExplicitTop = 380
         end
         object Button1: TButton
           AlignWithMargins = True
@@ -235,7 +231,6 @@ object frameGrupos: TframeGrupos
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitHeight = 590
       object lbl_idParticipant: TLabel
         Left = 3
         Top = 284
@@ -404,7 +399,6 @@ object frameGrupos: TframeGrupos
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitHeight = 590
       object GroupBox1: TGroupBox
         AlignWithMargins = True
         Left = 3
@@ -413,7 +407,6 @@ object frameGrupos: TframeGrupos
         Height = 633
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 584
         object gbAdmin: TGroupBox
           AlignWithMargins = True
           Left = 5
@@ -450,14 +443,14 @@ object frameGrupos: TframeGrupos
           Align = alClient
           Caption = 'Participantes'
           TabOrder = 1
-          ExplicitHeight = 425
           object lblIdParticipante: TLabel
             AlignWithMargins = True
             Left = 5
             Top = 67
-            Width = 3
+            Width = 374
             Height = 15
             Align = alTop
+            ExplicitWidth = 3
           end
           object listaParticipantes: TListView
             AlignWithMargins = True
@@ -475,7 +468,6 @@ object frameGrupos: TframeGrupos
             TabOrder = 0
             ViewStyle = vsSmallIcon
             OnClick = listaParticipantesClick
-            ExplicitHeight = 332
           end
           object pnlParticipantesBotoes: TPanel
             Left = 348
@@ -484,7 +476,6 @@ object frameGrupos: TframeGrupos
             Height = 387
             Align = alRight
             TabOrder = 2
-            ExplicitHeight = 338
             object btnRemovePartici: TButton
               Left = 1
               Top = 1

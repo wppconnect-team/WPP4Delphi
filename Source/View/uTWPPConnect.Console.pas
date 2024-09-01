@@ -413,6 +413,8 @@ type
     procedure CreateGroup(vGroupName, PParticipantNumber: string);
     procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
     procedure addSubgroups(PCommunity, PGroupNumbers: string);
+
+    procedure GetAllParticipantsGroup(PIDGroup: string);
     procedure listGroupContacts(vIDGroup: string);
     procedure listGroupAdmins(vIDGroup: string);
 
@@ -1032,6 +1034,15 @@ begin
 
   FgettingGroups := True;
   FrmConsole.ExecuteJS(FrmConsole_JS_GetAllGroups, False);
+end;
+
+procedure TFrmConsole.GetAllParticipantsGroup(PIDGroup: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_GetAllParticipantsGroup;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(PIDGroup));
+  ExecuteJS(LJS, true);
 end;
 
 function TFrmConsole.GetAutoBatteryLeveL: Boolean;
@@ -3332,6 +3343,18 @@ begin
                               end;
                             end;
 
+    Th_GetAllParticipantsGroup : begin
+                              //LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                              //LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+
+                              LOutClass := TParticipantsGroupClass.Create(LResultStr);
+                              try
+                                SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                              finally
+                                FreeAndNil(LOutClass);
+                              end;
+                            end;
+
     Th_getQrCodeWEB,
     Th_getQrCodeForm :    Begin
                             LOutClass := TQrCodeClass.Create(PResponse.JsonString, [], []);
@@ -3461,6 +3484,7 @@ begin
                                 FreeAndNil(LOutClass);
                               end;
                             end;
+
     Th_NewCheckIsValidNumber : begin
                               LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
                               LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }

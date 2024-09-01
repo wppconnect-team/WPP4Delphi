@@ -175,6 +175,7 @@ type
     procedure TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
     procedure TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
     procedure TWPPConnect1GetEnvrequire_auth(Response: TIsRequire_auth);
+    procedure TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -1229,6 +1230,36 @@ begin
     AddGroupList(TextGroup);
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
+var
+  NomeContato, Contato : string;
+  i: Integer;
+begin
+  frameGrupos1.listaParticipantes.Clear;
+  frameComunidades1.listaParticipantes.Clear;
+
+  frameGrupos1.listaAdministradores.Clear;
+  frameComunidades1.listaAdministradores.Clear;
+
+  for i := 0 to Length(response.result) - 1 do
+  begin
+    //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('ChatID: ' + response.result[i].id);
+    NomeContato := response.result[i].name;
+    if NomeContato = '' then
+      NomeContato := response.result[i].pushname;
+
+    if Trim(NomeContato) <> '' then
+      Contato := response.result[i].id + ' - ' + NomeContato else
+      Contato := response.result[i].id;
+
+    AddGroupContacts(Contato);
+
+    if response.result[i].isAdmin then
+      AddGroupAdmins(Contato);
+  end;
+
+end;
+
 procedure TfrDemo.TWPPConnect1GetChatList(const Chats: TChatList);
 var
   AChat: TChatClass;

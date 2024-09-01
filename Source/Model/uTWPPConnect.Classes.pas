@@ -2966,6 +2966,36 @@ end;
 //  constructor Create(pAJsonString: string);
 //end;
 //Marcelo 06/05/2022
+
+
+//Marcelo 01/09/2024
+TAllParticipantsClass = class(TClassPadrao)
+private
+  FId: String;
+  FIsAdmin: Boolean;
+  FIsSuperAdmin: Boolean;
+  FName: String;
+  FPushname: String;
+public
+  property id: String read FId write FId;
+  property isAdmin: Boolean read FIsAdmin write FIsAdmin;
+  property isSuperAdmin: Boolean read FIsSuperAdmin write FIsSuperAdmin;
+  property name: String read FName write FName;
+  property pushname: String read FPushname write FPushname;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TResultClass;
+end;
+
+TParticipantsGroupClass = class(TClassPadrao)
+private
+  FResult: TArray<TAllParticipantsClass>;
+public
+  property result: TArray<TAllParticipantsClass> read FResult write FResult;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TParticipantsClass;
+end;
+
 TMessagesList = class(TClassPadraoList<TMessagesClass>)
 end;
 TChatList = class(TClassPadraoList<TChatClass>)
@@ -2997,6 +3027,7 @@ public
   property  AImageDif:  Boolean                read FAImageDif;
   Function  AQrCodeQuestion: Boolean;
 end;
+
 TQrCodeClass = class(TClassPadrao)
 private
   FResult: TResultQRCodeClass;
@@ -3093,6 +3124,7 @@ end;
     class function FromJsonString(AJsonString: string): TProductList;
     function ToJsonString: string;
   end;
+
   TProductsList = class(TClassPadraoList<TProductList>)
    private
     FResult: TArray<TProductList>;

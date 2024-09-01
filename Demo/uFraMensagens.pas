@@ -478,9 +478,11 @@ begin
 
       'buttons: ' +
       '[ ' +
-        //'{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"}, ' +
+        //Action Button
+        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"}, ' +
         //'{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
         //'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"}, ' +
+
 
         //Reply Button
         '  {  ' +
@@ -502,6 +504,7 @@ begin
         '        }) ' +
         '    } ' +
         '} ' +
+
 
       '] ' +
       ',title: "Bom dia Marcelo", ' +

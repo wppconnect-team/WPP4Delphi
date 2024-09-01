@@ -1713,65 +1713,75 @@ object frDemo: TfrDemo
       Height = 589
       ExplicitHeight = 589
       inherited btnLocalizacaoBotao: TButton
-        ExplicitTop = 578
+        ExplicitTop = 609
       end
       inherited btnLink: TButton
-        ExplicitTop = 330
+        ExplicitTop = 361
       end
       inherited btnImagemBotao: TButton
-        ExplicitTop = 609
+        ExplicitTop = 640
       end
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
+        ExplicitTop = 237
+      end
+      inherited btnInstantVideo: TButton
+        ExplicitTop = 206
       end
       inherited btnAudio: TButton
-        ExplicitTop = 361
-      end
-      inherited btnContato: TButton
-        ExplicitTop = 423
-      end
-      inherited btnSticker: TButton
         ExplicitTop = 392
       end
-      inherited btnLocalizacao: TButton
+      inherited btnContato: TButton
         ExplicitTop = 454
       end
-      inherited btnArquivo: TButton
-        ExplicitTop = 547
+      inherited btnSticker: TButton
+        ExplicitTop = 423
       end
-      inherited btnStatusTexto: TButton
-        ExplicitTop = 640
-      end
-      inherited btnStatusImagem: TButton
-        ExplicitTop = 671
-      end
-      inherited btnVideoStatus: TButton
-        ExplicitTop = 702
-      end
-      inherited Button2: TButton
-        ExplicitTop = 733
-      end
-      inherited bTextoMarcandoTodosGrupo: TButton
-        ExplicitTop = 764
-      end
-      inherited btnLigar: TButton
-        ExplicitTop = 795
-      end
-      inherited btnEncerrarChamada: TButton
-        ExplicitTop = 826
-      end
-      inherited Button5: TButton
-        ExplicitTop = 516
-      end
-      inherited btnPoolMessage: TButton
+      inherited btnLocalizacao: TButton
         ExplicitTop = 485
       end
+      inherited btnArquivo: TButton
+        ExplicitTop = 578
+      end
+      inherited btnStatusTexto: TButton
+        ExplicitTop = 671
+      end
+      inherited btnStatusImagem: TButton
+        ExplicitTop = 702
+      end
+      inherited btnVideoStatus: TButton
+        ExplicitTop = 733
+      end
+      inherited Button2: TButton
+        ExplicitTop = 764
+      end
+      inherited bTextoMarcandoTodosGrupo: TButton
+        ExplicitTop = 795
+      end
+      inherited btnLigar: TButton
+        ExplicitTop = 826
+      end
+      inherited btnEncerrarChamada: TButton
+        ExplicitTop = 857
+      end
+      inherited Button5: TButton
+        ExplicitTop = 547
+      end
+      inherited btnPoolMessage: TButton
+        ExplicitTop = 516
+      end
       inherited btnImageButton: TButton
-        ExplicitTop = 299
+        ExplicitTop = 330
+      end
+      inherited SendPix: TButton
+        ExplicitTop = 268
       end
       inherited SendDocumentButton: TButton
+        ExplicitTop = 299
+      end
+      inherited btnSendVideoButton: TButton
         ExplicitLeft = 5
-        ExplicitTop = 268
+        ExplicitTop = 175
       end
     end
     inherited GroupBox2: TGroupBox
@@ -2006,9 +2016,6 @@ object frDemo: TfrDemo
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
-          inherited btnDescricaoGrupo: TButton
-            ExplicitTop = 416
-          end
         end
       end
       inherited pnlEsquerda: TPanel
@@ -5850,6 +5857,7 @@ object frDemo: TfrDemo
     OnGetgroup_participant_changed = TWPPConnect1Getgroup_participant_changed
     OnGetorder_payment_status = TWPPConnect1Getorder_payment_status
     OnGetlive_location_start = TWPPConnect1Getlive_location_start
+    OnGetAllParticipantsGroup = TWPPConnect1GetAllParticipantsGroup
     OnGetgenLinkDeviceCodeForPhoneNumber = TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber
     OnGetHistorySyncProgress = TWPPConnect1GetHistorySyncProgress
     OnGetQrCodeDesconectouErroCache = TWPPConnect1GetQrCodeDesconectouErroCache

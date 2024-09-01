@@ -105,6 +105,8 @@ type
   TOnGetorder_payment_status = procedure(Const response: Torder_payment_statusClass) of object; //Marcelo 14/08/2024
   TOnGetlive_location_start = procedure(Const response: Tlive_location_startClass) of object; //Marcelo 14/08/2024
 
+  TOnGetAllParticipantsGroup = procedure(Const response: TParticipantsGroupClass) of object; //Marcelo 01/09/2024
+
   TOnGetgenLinkDeviceCodeForPhoneNumber = procedure(Const Response: TGenLinkDeviceCodeForPhoneNumber) of object; //Marcelo 30/10/2023
 
 
@@ -323,6 +325,8 @@ type
     FOnGetactive_chat: TOnGetactive_chat; //Marcelo 14/08/2024
     FOnGetpresence_change: TOnGetpresence_change; //Marcelo 14/08/2024
 
+    FOnGetAllParticipantsGroup: TOnGetAllParticipantsGroup;
+
     procedure Int_OnNotificationCenter(PTypeHeader: TTypeHeader; PValue: String; Const PReturnClass : TObject= nil);
     procedure saveInfoConfTWPPConnect(SectionName, key, value: string);
 
@@ -536,6 +540,8 @@ type
     procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
     procedure addSubgroups(PCommunity, PGroupNumbers: string);
     procedure listGroupContacts(PIDGroup: string);
+    procedure GetAllParticipantsGroup(PIDGroup: string);
+
     Property  BatteryLevel       : Integer              Read FGetBatteryLevel; //deprecated;
     Property  IsConnected        : Boolean              Read FGetIsConnected;
     Property  MyNumber           : String               Read FMyNumber;
@@ -688,6 +694,8 @@ type
     property OnGetgroup_participant_changed : TOnGetgroup_participant_changed read FOnGetgroup_participant_changed  write FOnGetgroup_participant_changed;
     property OnGetorder_payment_status      : TOnGetorder_payment_status      read FOnGetorder_payment_status       write FOnGetorder_payment_status;
     property OnGetlive_location_start       : TOnGetlive_location_start       read FOnGetlive_location_start        write FOnGetlive_location_start;
+
+    property OnGetAllParticipantsGroup      : TOnGetAllParticipantsGroup      read FOnGetAllParticipantsGroup       write FOnGetAllParticipantsGroup;
 
     property OnGetgenLinkDeviceCodeForPhoneNumber : TOnGetgenLinkDeviceCodeForPhoneNumber read FOnGetgenLinkDeviceCodeForPhoneNumber write FOnGetgenLinkDeviceCodeForPhoneNumber;
 
@@ -2196,6 +2204,39 @@ procedure TWPPConnect.GetAllGroups;
 begin
   if Assigned(FrmConsole) then
      FrmConsole.GetAllGroups;
+end;
+
+procedure TWPPConnect.GetAllParticipantsGroup(PIDGroup: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetAllParticipantsGroup(PIDGroup);
+            FrmConsole.listGroupAdmins(PIDGroup);
+          end;
+        end);
+
+      end);
+
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
 end;
 
 function TWPPConnect.GetChat(Pindex: Integer): TChatClass;
@@ -4191,14 +4232,12 @@ begin
       FOnGetlive_location_start(Tlive_location_startClass(PReturnClass));
   end;
 
-{
-    FOnGetgroup_participant_changed: TOnGetgroup_participant_changed; //Marcelo 14/08/2024
-    FOnGetlive_location_start: TOnGetlive_location_start; //Marcelo 14/08/2024
-    FOnGetorder_payment_status: TOnGetorder_payment_status; //Marcelo 14/08/2024
-    FOnGetupdate_label: TOnGetupdate_label; //Marcelo 14/08/2024
-    FOnGetactive_chat: TOnGetactive_chat; //Marcelo 14/08/2024
-    FOnGetpresence_change: TOnGetpresence_change; //Marcelo 14/08/2024
-}
+  //Marcelo 01/09/2024
+  if PTypeHeader = Th_GetAllParticipantsGroup  then
+  begin
+    if Assigned(FOnGetAllParticipantsGroup) then
+      FOnGetAllParticipantsGroup(TParticipantsGroupClass(PReturnClass));
+  end;
 
 
   if PTypeHeader = Th_ErrorResponse  then
