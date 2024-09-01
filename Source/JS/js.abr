@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.58;1.0.0.9;78.3.0
+//2.1.0.59;1.0.0.9;78.3.0
 //
 //
 
@@ -23646,3 +23646,28 @@ WPP.on('conn.logout_reason', (data) => {
     };
     SetConsoleMessage("logout_reason", Json.stringfy(obj));    
 });
+
+//Marcelo 01/09/2024
+window.WAPI.getAllParticipantsGroup = async function(groupID) {    
+	var participants = await WPP.group.getParticipants(groupID);
+
+	if (participants) {  	
+	    participants = await Promise.all(participants.map(async (participant) => {
+	
+	    participant = participant.toJSON();
+	    participant.pushname = '';
+		participant.name = '';
+	
+	        var contacts = await WPP.contact.get(participant.id._serialized) || undefined;
+	        
+	        if (contacts?.pushname) {
+	            participant.pushname = contacts.pushname;
+                participant.name = contacts.name || '';
+	        }
+	        
+	        return participant;
+	    }));
+		    
+        SetConsoleMessage("GetAllParticipantsGroup", JSON.stringify(participants));	
+	}
+};
