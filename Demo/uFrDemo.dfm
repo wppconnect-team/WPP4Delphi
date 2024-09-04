@@ -1689,99 +1689,19 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
-    inherited gbAcoesBasicas: TGroupBox
+    inherited gbAcoesBasicas: TScrollBox
       Height = 589
       ExplicitHeight = 589
-      inherited btnLocalizacaoBotao: TButton
-        ExplicitTop = 609
-      end
-      inherited btnLink: TButton
-        ExplicitTop = 361
-      end
-      inherited btnImagemBotao: TButton
-        ExplicitTop = 640
-      end
       inherited btnImagem: TButton
         OnClick = frameMensagem1btnImagemClick
-        ExplicitTop = 237
-      end
-      inherited btnInstantVideo: TButton
-        ExplicitTop = 206
-      end
-      inherited btnAudio: TButton
-        ExplicitTop = 392
-      end
-      inherited btnContato: TButton
-        ExplicitTop = 454
-      end
-      inherited btnSticker: TButton
-        ExplicitTop = 423
-      end
-      inherited btnLocalizacao: TButton
-        ExplicitTop = 485
-      end
-      inherited btnArquivo: TButton
-        ExplicitTop = 578
-      end
-      inherited btnStatusTexto: TButton
-        ExplicitTop = 671
-      end
-      inherited btnStatusImagem: TButton
-        ExplicitTop = 702
-      end
-      inherited btnVideoStatus: TButton
-        ExplicitTop = 733
-      end
-      inherited Button2: TButton
-        ExplicitTop = 764
-      end
-      inherited bTextoMarcandoTodosGrupo: TButton
-        ExplicitTop = 795
-      end
-      inherited btnLigar: TButton
-        ExplicitTop = 826
-      end
-      inherited btnEncerrarChamada: TButton
-        ExplicitTop = 857
-      end
-      inherited Button5: TButton
-        ExplicitTop = 547
-      end
-      inherited btnPoolMessage: TButton
-        ExplicitTop = 516
-      end
-      inherited btnImageButton: TButton
-        ExplicitTop = 330
-      end
-      inherited SendPix: TButton
-        ExplicitTop = 268
-      end
-      inherited SendDocumentButton: TButton
-        ExplicitTop = 299
-      end
-      inherited btnSendVideoButton: TButton
-        ExplicitLeft = 5
-        ExplicitTop = 175
       end
     end
     inherited GroupBox2: TGroupBox

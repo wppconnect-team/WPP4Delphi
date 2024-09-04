@@ -31,7 +31,7 @@ type
     mem_message: TMemo;
     Label1: TLabel;
     edtURL: TLabeledEdit;
-    gbAcoesBasicas: TGroupBox;
+    gbAcoesBasicas: TScrollBox;
     btnLocalizacaoBotao: TButton;
     btnLink: TButton;
     btnImagemBotao: TButton;
@@ -41,7 +41,7 @@ type
     btnListaMenu: TButton;
     btnBotaoSimples: TButton;
     btnTextoSimples: TButton;
-    GroupBox2: TGroupBox;
+    gbAcoesChats: TScrollBox;
     GroupBox3: TGroupBox;
     btnAudio: TButton;
     btnContato: TButton;

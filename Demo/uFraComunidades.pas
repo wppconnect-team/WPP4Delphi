@@ -214,6 +214,7 @@ begin
   end;
 
   frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtNovoParticipante.text);
+  frDemo.TWPPConnect1.GetAllParticipantsGroup(lbl_idGroup.Caption);
 end;
 
 procedure TframeComunidades.btnAdminOnlyClick(Sender: TObject);
@@ -365,6 +366,7 @@ begin
   end;
 
   frDemo.TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
+  frDemo.TWPPConnect1.GetAllParticipantsGroup(lbl_idGroup.Caption);
 end;
 
 procedure TframeComunidades.btnCriarVotacaoClick(Sender: TObject);
@@ -418,7 +420,9 @@ begin
     if not frDemo.TWPPConnect1.Auth(False) then
       Exit;
 
-    frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
+    //frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
+
+    frDemo.TWPPConnect1.GetAllParticipantsGroup(lbl_idGroup.Caption);
 
     //frDemo.TWPPConnect1.listGroupContacts(lbl_idGroup.Caption);
   end;

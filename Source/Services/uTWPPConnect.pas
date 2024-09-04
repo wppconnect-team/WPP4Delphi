@@ -2229,7 +2229,7 @@ begin
           if Assigned(FrmConsole) then
           begin
             FrmConsole.GetAllParticipantsGroup(PIDGroup);
-            FrmConsole.listGroupAdmins(PIDGroup);
+            //FrmConsole.listGroupAdmins(PIDGroup);
           end;
         end);
 

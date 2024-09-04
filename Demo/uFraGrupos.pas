@@ -222,6 +222,7 @@ begin
   end;
 
   frDemo.TWPPConnect1.groupAddParticipant(lbl_idGroup.Caption, edtNovoParticipante.text);
+  frDemo.TWPPConnect1.GetAllParticipantsGroup(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnAdminOnlyClick(Sender: TObject);
@@ -364,6 +365,7 @@ begin
   end;
 
   frDemo.TWPPConnect1.groupRemoveParticipant(lbl_idGroup.Caption, lblidparticipante.caption);
+  frDemo.TWPPConnect1.GetAllParticipantsGroup(lbl_idGroup.Caption);
 end;
 
 procedure TframeGrupos.btnCriarVotacaoClick(Sender: TObject);
