@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.59;1.0.0.9;78.3.0
+//2.1.0.60;1.0.0.9;78.3.0
 //
 //
 
@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.9.0
+//WPPCONNECT v3.10.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.9.0 */
+/*! wppconnect-team/wa-js v3.10.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -2872,15 +2872,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return n
                     }(e, t);
                     if (ArrayBuffer.isView(e)) return function(e) {
-                        if (H(e, Uint8Array)) {
+                        if (J(e, Uint8Array)) {
                             const t = new Uint8Array(e);
                             return p(t.buffer, t.byteOffset, t.byteLength)
                         }
                         return f(e)
                     }(e);
                     if (null == e) throw new TypeError("The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof e);
-                    if (H(e, ArrayBuffer) || e && H(e.buffer, ArrayBuffer)) return p(e, t, r);
-                    if ("undefined" != typeof SharedArrayBuffer && (H(e, SharedArrayBuffer) || e && H(e.buffer, SharedArrayBuffer))) return p(e, t, r);
+                    if (J(e, ArrayBuffer) || e && J(e.buffer, ArrayBuffer)) return p(e, t, r);
+                    if ("undefined" != typeof SharedArrayBuffer && (J(e, SharedArrayBuffer) || e && J(e.buffer, SharedArrayBuffer))) return p(e, t, r);
                     if ("number" == typeof e) throw new TypeError('The "value" argument must not be of type number. Received type number');
                     const n = e.valueOf && e.valueOf();
                     if (null != n && n !== e) return u.from(n, t, r);
@@ -2928,7 +2928,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function m(e, t) {
                     if (u.isBuffer(e)) return e.length;
-                    if (ArrayBuffer.isView(e) || H(e, ArrayBuffer)) return e.byteLength;
+                    if (ArrayBuffer.isView(e) || J(e, ArrayBuffer)) return e.byteLength;
                     if ("string" != typeof e) throw new TypeError('The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof e);
                     const r = e.length,
                         n = arguments.length > 2 && !0 === arguments[2];
@@ -2967,9 +2967,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return E(this, t, r);
                         case "utf8":
                         case "utf-8":
-                            return S(this, t, r);
-                        case "ascii":
                             return x(this, t, r);
+                        case "ascii":
+                            return S(this, t, r);
                         case "latin1":
                         case "binary":
                             return I(this, t, r);
@@ -2979,7 +2979,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "ucs-2":
                         case "utf16le":
                         case "utf-16le":
-                            return T(this, t, r);
+                            return A(this, t, r);
                         default:
                             if (n) throw new TypeError("Unknown encoding: " + e);
                             e = (e + "").toLowerCase(), n = !0
@@ -3050,11 +3050,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function M(e, t, r, n) {
-                    return J($(t, e.length - r), e, r, n)
+                    return H($(t, e.length - r), e, r, n)
                 }
 
                 function P(e, t, r, n) {
-                    return J(function(e) {
+                    return H(function(e) {
                         const t = [];
                         for (let r = 0; r < e.length; ++r) t.push(255 & e.charCodeAt(r));
                         return t
@@ -3062,11 +3062,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }
 
                 function w(e, t, r, n) {
-                    return J(K(t), e, r, n)
+                    return H(K(t), e, r, n)
                 }
 
                 function O(e, t, r, n) {
-                    return J(function(e, t) {
+                    return H(function(e, t) {
                         let r, n, o;
                         const i = [];
                         for (let a = 0; a < e.length && !((t -= 2) < 0); ++a) r = e.charCodeAt(a), n = r >> 8, o = r % 256, i.push(o), i.push(n);
@@ -3078,7 +3078,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return 0 === t && r === e.length ? n.fromByteArray(e) : n.fromByteArray(e.slice(t, r))
                 }
 
-                function S(e, t, r) {
+                function x(e, t, r) {
                     r = Math.min(e.length, r);
                     const n = [];
                     let o = t;
@@ -3148,7 +3148,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.isBuffer = function(e) {
                     return null != e && !0 === e._isBuffer && e !== u.prototype
                 }, u.compare = function(e, t) {
-                    if (H(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), H(t, Uint8Array) && (t = u.from(t, t.offset, t.byteLength)), !u.isBuffer(e) || !u.isBuffer(t)) throw new TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
+                    if (J(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), J(t, Uint8Array) && (t = u.from(t, t.offset, t.byteLength)), !u.isBuffer(e) || !u.isBuffer(t)) throw new TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
                     if (e === t) return 0;
                     let r = e.length,
                         n = t.length;
@@ -3184,7 +3184,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     let o = 0;
                     for (r = 0; r < e.length; ++r) {
                         let t = e[r];
-                        if (H(t, Uint8Array)) o + t.length > n.length ? (u.isBuffer(t) || (t = u.from(t)), t.copy(n, o)) : Uint8Array.prototype.set.call(n, t, o);
+                        if (J(t, Uint8Array)) o + t.length > n.length ? (u.isBuffer(t) || (t = u.from(t)), t.copy(n, o)) : Uint8Array.prototype.set.call(n, t, o);
                         else {
                             if (!u.isBuffer(t)) throw new TypeError('"list" argument must be an Array of Buffers');
                             t.copy(n, o)
@@ -3209,7 +3209,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return this
                 }, u.prototype.toString = function() {
                     const e = this.length;
-                    return 0 === e ? "" : 0 === arguments.length ? S(this, 0, e) : y.apply(this, arguments)
+                    return 0 === e ? "" : 0 === arguments.length ? x(this, 0, e) : y.apply(this, arguments)
                 }, u.prototype.toLocaleString = u.prototype.toString, u.prototype.equals = function(e) {
                     if (!u.isBuffer(e)) throw new TypeError("Argument must be a Buffer");
                     return this === e || 0 === u.compare(this, e)
@@ -3218,7 +3218,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const r = t.IS;
                     return e = this.toString("hex", 0, r).replace(/(.{2})/g, "$1 ").trim(), this.length > r && (e += " ... "), "<Buffer " + e + ">"
                 }, i && (u.prototype[i] = u.prototype.inspect), u.prototype.compare = function(e, t, r, n, o) {
-                    if (H(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), !u.isBuffer(e)) throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof e);
+                    if (J(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), !u.isBuffer(e)) throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof e);
                     if (void 0 === t && (t = 0), void 0 === r && (r = e ? e.length : 0), void 0 === n && (n = 0), void 0 === o && (o = this.length), t < 0 || r > e.length || n < 0 || o > this.length) throw new RangeError("out of range index");
                     if (n >= o && t >= r) return 0;
                     if (n >= o) return -1;
@@ -3280,7 +3280,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 };
                 const C = 4096;
 
-                function x(e, t, r) {
+                function S(e, t, r) {
                     let n = "";
                     r = Math.min(e.length, r);
                     for (let o = t; o < r; ++o) n += String.fromCharCode(127 & e[o]);
@@ -3302,14 +3302,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
 
-                function T(e, t, r) {
+                function A(e, t, r) {
                     const n = e.slice(t, r);
                     let o = "";
                     for (let e = 0; e < n.length - 1; e += 2) o += String.fromCharCode(n[e] + 256 * n[e + 1]);
                     return o
                 }
 
-                function A(e, t, r) {
+                function T(e, t, r) {
                     if (e % 1 != 0 || e < 0) throw new RangeError("offset is not uint");
                     if (e + t > r) throw new RangeError("Trying to access beyond buffer length")
                 }
@@ -3341,11 +3341,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (r < 0) throw new RangeError("Index out of range")
                 }
 
-                function F(e, t, r, n, i) {
+                function D(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 4), o.write(e, t, r, n, 23, 4), r + 4
                 }
 
-                function D(e, t, r, n, i) {
+                function N(e, t, r, n, i) {
                     return t = +t, r >>>= 0, i || R(e, 0, r, 8), o.write(e, t, r, n, 52, 8), r + 8
                 }
                 u.prototype.slice = function(e, t) {
@@ -3354,28 +3354,28 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const n = this.subarray(e, t);
                     return Object.setPrototypeOf(n, u.prototype), n
                 }, u.prototype.readUintLE = u.prototype.readUIntLE = function(e, t, r) {
-                    e >>>= 0, t >>>= 0, r || A(e, t, this.length);
+                    e >>>= 0, t >>>= 0, r || T(e, t, this.length);
                     let n = this[e],
                         o = 1,
                         i = 0;
                     for (; ++i < t && (o *= 256);) n += this[e + i] * o;
                     return n
                 }, u.prototype.readUintBE = u.prototype.readUIntBE = function(e, t, r) {
-                    e >>>= 0, t >>>= 0, r || A(e, t, this.length);
+                    e >>>= 0, t >>>= 0, r || T(e, t, this.length);
                     let n = this[e + --t],
                         o = 1;
                     for (; t > 0 && (o *= 256);) n += this[e + --t] * o;
                     return n
                 }, u.prototype.readUint8 = u.prototype.readUInt8 = function(e, t) {
-                    return e >>>= 0, t || A(e, 1, this.length), this[e]
+                    return e >>>= 0, t || T(e, 1, this.length), this[e]
                 }, u.prototype.readUint16LE = u.prototype.readUInt16LE = function(e, t) {
-                    return e >>>= 0, t || A(e, 2, this.length), this[e] | this[e + 1] << 8
+                    return e >>>= 0, t || T(e, 2, this.length), this[e] | this[e + 1] << 8
                 }, u.prototype.readUint16BE = u.prototype.readUInt16BE = function(e, t) {
-                    return e >>>= 0, t || A(e, 2, this.length), this[e] << 8 | this[e + 1]
+                    return e >>>= 0, t || T(e, 2, this.length), this[e] << 8 | this[e + 1]
                 }, u.prototype.readUint32LE = u.prototype.readUInt32LE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + 16777216 * this[e + 3]
+                    return e >>>= 0, t || T(e, 4, this.length), (this[e] | this[e + 1] << 8 | this[e + 2] << 16) + 16777216 * this[e + 3]
                 }, u.prototype.readUint32BE = u.prototype.readUInt32BE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), 16777216 * this[e] + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3])
+                    return e >>>= 0, t || T(e, 4, this.length), 16777216 * this[e] + (this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3])
                 }, u.prototype.readBigUInt64LE = Z((function(e) {
                     q(e >>>= 0, "offset");
                     const t = this[e],
@@ -3393,33 +3393,33 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         o = this[++e] * 2 ** 24 + 65536 * this[++e] + 256 * this[++e] + r;
                     return (BigInt(n) << BigInt(32)) + BigInt(o)
                 })), u.prototype.readIntLE = function(e, t, r) {
-                    e >>>= 0, t >>>= 0, r || A(e, t, this.length);
+                    e >>>= 0, t >>>= 0, r || T(e, t, this.length);
                     let n = this[e],
                         o = 1,
                         i = 0;
                     for (; ++i < t && (o *= 256);) n += this[e + i] * o;
                     return o *= 128, n >= o && (n -= Math.pow(2, 8 * t)), n
                 }, u.prototype.readIntBE = function(e, t, r) {
-                    e >>>= 0, t >>>= 0, r || A(e, t, this.length);
+                    e >>>= 0, t >>>= 0, r || T(e, t, this.length);
                     let n = t,
                         o = 1,
                         i = this[e + --n];
                     for (; n > 0 && (o *= 256);) i += this[e + --n] * o;
                     return o *= 128, i >= o && (i -= Math.pow(2, 8 * t)), i
                 }, u.prototype.readInt8 = function(e, t) {
-                    return e >>>= 0, t || A(e, 1, this.length), 128 & this[e] ? -1 * (255 - this[e] + 1) : this[e]
+                    return e >>>= 0, t || T(e, 1, this.length), 128 & this[e] ? -1 * (255 - this[e] + 1) : this[e]
                 }, u.prototype.readInt16LE = function(e, t) {
-                    e >>>= 0, t || A(e, 2, this.length);
+                    e >>>= 0, t || T(e, 2, this.length);
                     const r = this[e] | this[e + 1] << 8;
                     return 32768 & r ? 4294901760 | r : r
                 }, u.prototype.readInt16BE = function(e, t) {
-                    e >>>= 0, t || A(e, 2, this.length);
+                    e >>>= 0, t || T(e, 2, this.length);
                     const r = this[e + 1] | this[e] << 8;
                     return 32768 & r ? 4294901760 | r : r
                 }, u.prototype.readInt32LE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24
+                    return e >>>= 0, t || T(e, 4, this.length), this[e] | this[e + 1] << 8 | this[e + 2] << 16 | this[e + 3] << 24
                 }, u.prototype.readInt32BE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]
+                    return e >>>= 0, t || T(e, 4, this.length), this[e] << 24 | this[e + 1] << 16 | this[e + 2] << 8 | this[e + 3]
                 }, u.prototype.readBigInt64LE = Z((function(e) {
                     q(e >>>= 0, "offset");
                     const t = this[e],
@@ -3435,13 +3435,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const n = (t << 24) + 65536 * this[++e] + 256 * this[++e] + this[++e];
                     return (BigInt(n) << BigInt(32)) + BigInt(this[++e] * 2 ** 24 + 65536 * this[++e] + 256 * this[++e] + r)
                 })), u.prototype.readFloatLE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), o.read(this, e, !0, 23, 4)
+                    return e >>>= 0, t || T(e, 4, this.length), o.read(this, e, !0, 23, 4)
                 }, u.prototype.readFloatBE = function(e, t) {
-                    return e >>>= 0, t || A(e, 4, this.length), o.read(this, e, !1, 23, 4)
+                    return e >>>= 0, t || T(e, 4, this.length), o.read(this, e, !1, 23, 4)
                 }, u.prototype.readDoubleLE = function(e, t) {
-                    return e >>>= 0, t || A(e, 8, this.length), o.read(this, e, !0, 52, 8)
+                    return e >>>= 0, t || T(e, 8, this.length), o.read(this, e, !0, 52, 8)
                 }, u.prototype.readDoubleBE = function(e, t) {
-                    return e >>>= 0, t || A(e, 8, this.length), o.read(this, e, !1, 52, 8)
+                    return e >>>= 0, t || T(e, 8, this.length), o.read(this, e, !1, 52, 8)
                 }, u.prototype.writeUintLE = u.prototype.writeUIntLE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, r >>>= 0, !n) {
                         k(this, e, t, r, Math.pow(2, 8 * r) - 1, 0)
@@ -3507,13 +3507,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
                     return L(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeFloatLE = function(e, t, r) {
-                    return F(this, e, t, !0, r)
-                }, u.prototype.writeFloatBE = function(e, t, r) {
-                    return F(this, e, t, !1, r)
-                }, u.prototype.writeDoubleLE = function(e, t, r) {
                     return D(this, e, t, !0, r)
-                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                }, u.prototype.writeFloatBE = function(e, t, r) {
                     return D(this, e, t, !1, r)
+                }, u.prototype.writeDoubleLE = function(e, t, r) {
+                    return N(this, e, t, !0, r)
+                }, u.prototype.writeDoubleBE = function(e, t, r) {
+                    return N(this, e, t, !1, r)
                 }, u.prototype.copy = function(e, t, r, n) {
                     if (!u.isBuffer(e)) throw new TypeError("argument should be a Buffer");
                     if (r || (r = 0), n || 0 === n || (n = this.length), t >= e.length && (t = e.length), t || (t = 0), n > 0 && n < r && (n = r), n === r) return 0;
@@ -3546,10 +3546,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return this
                 };
-                const U = {};
+                const F = {};
 
-                function N(e, t, r) {
-                    U[e] = class extends r {
+                function U(e, t, r) {
+                    F[e] = class extends r {
                         constructor() {
                             super(), Object.defineProperty(this, "message", {
                                 value: t.apply(this, arguments),
@@ -3586,26 +3586,26 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (e > r || e < t) {
                         const n = "bigint" == typeof t ? "n" : "";
                         let o;
-                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new U.ERR_OUT_OF_RANGE("value", o, e)
+                        throw o = i > 3 ? 0 === t || t === BigInt(0) ? `>= 0${n} and < 2${n} ** ${8*(i+1)}${n}` : `>= -(2${n} ** ${8*(i+1)-1}${n}) and < 2 ** ${8*(i+1)-1}${n}` : `>= ${t}${n} and <= ${r}${n}`, new F.ERR_OUT_OF_RANGE("value", o, e)
                     }! function(e, t, r) {
                         q(t, "offset"), void 0 !== e[t] && void 0 !== e[t + r] || z(t, e.length - (r + 1))
                     }(n, o, i)
                 }
 
                 function q(e, t) {
-                    if ("number" != typeof e) throw new U.ERR_INVALID_ARG_TYPE(t, "number", e)
+                    if ("number" != typeof e) throw new F.ERR_INVALID_ARG_TYPE(t, "number", e)
                 }
 
                 function z(e, t, r) {
-                    if (Math.floor(e) !== e) throw q(e, r), new U.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
-                    if (t < 0) throw new U.ERR_BUFFER_OUT_OF_BOUNDS;
-                    throw new U.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
+                    if (Math.floor(e) !== e) throw q(e, r), new F.ERR_OUT_OF_RANGE(r || "offset", "an integer", e);
+                    if (t < 0) throw new F.ERR_BUFFER_OUT_OF_BOUNDS;
+                    throw new F.ERR_OUT_OF_RANGE(r || "offset", `>= ${r?1:0} and <= ${t}`, e)
                 }
-                N("ERR_BUFFER_OUT_OF_BOUNDS", (function(e) {
+                U("ERR_BUFFER_OUT_OF_BOUNDS", (function(e) {
                     return e ? `${e} is outside of buffer bounds` : "Attempt to access memory outside buffer bounds"
-                }), RangeError), N("ERR_INVALID_ARG_TYPE", (function(e, t) {
+                }), RangeError), U("ERR_INVALID_ARG_TYPE", (function(e, t) {
                     return `The "${e}" argument must be of type number. Received type ${typeof t}`
-                }), TypeError), N("ERR_OUT_OF_RANGE", (function(e, t, r) {
+                }), TypeError), U("ERR_OUT_OF_RANGE", (function(e, t, r) {
                     let n = `The value of "${e}" is out of range.`,
                         o = r;
                     return Number.isInteger(r) && Math.abs(r) > 2 ** 32 ? o = W(String(r)) : "bigint" == typeof r && (o = String(r), (r > BigInt(2) ** BigInt(32) || r < -(BigInt(2) ** BigInt(32))) && (o = W(o)), o += "n"), n += ` It must be ${t}. Received ${o}`, n
@@ -3664,13 +3664,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }(e))
                 }
 
-                function J(e, t, r, n) {
+                function H(e, t, r, n) {
                     let o;
                     for (o = 0; o < n && !(o + r >= t.length || o >= e.length); ++o) t[o + r] = e[o];
                     return o
                 }
 
-                function H(e, t) {
+                function J(e, t) {
                     return e instanceof t || null != e && null != e.constructor && null != e.constructor.name && e.constructor.name === t.name
                 }
 
@@ -4028,14 +4028,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             scaleY: n
                         }
                     }
-                    var S = /\.\d*(?:0|9){12}\d*$/;
+                    var x = /\.\d*(?:0|9){12}\d*$/;
 
                     function C(e) {
                         var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1e11;
-                        return S.test(e) ? Math.round(e * t) / t : e
+                        return x.test(e) ? Math.round(e * t) / t : e
                     }
 
-                    function x(e) {
+                    function S(e) {
                         var t = e.aspectRatio,
                             r = e.height,
                             n = e.width,
@@ -4076,8 +4076,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             o = [255, 216].concat(t, r.slice(4 + n));
                         return new Uint8Array(o)
                     }
-                    var T = p.ArrayBuffer,
-                        A = p.FileReader,
+                    var A = p.ArrayBuffer,
+                        T = p.FileReader,
                         k = p.URL || p.webkitURL,
                         B = /\.\w+$/,
                         L = p.Compressor;
@@ -4094,13 +4094,13 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 if (d(t)) {
                                     var n = t.type;
                                     if (h(n))
-                                        if (k && A) {
-                                            T || (r.checkOrientation = !1, r.retainExif = !1);
+                                        if (k && T) {
+                                            A || (r.checkOrientation = !1, r.retainExif = !1);
                                             var o = "image/jpeg" === n,
                                                 i = o && r.checkOrientation,
                                                 s = o && r.retainExif;
                                             if (!k || i || s) {
-                                                var u = new A;
+                                                var u = new T;
                                                 this.reader = u, u.onload = function(r) {
                                                     var o = r.target.result,
                                                         u = {},
@@ -4161,57 +4161,57 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     P = Math.max(p.minWidth, 0) || 0,
                                     O = Math.max(p.minHeight, 0) || 0,
                                     j = r / n,
-                                    S = p.width,
+                                    x = p.width,
                                     I = p.height;
                                 if (b) {
-                                    var T = [M, _];
-                                    _ = T[0], M = T[1];
+                                    var A = [M, _];
+                                    _ = A[0], M = A[1];
                                     var k = [O, P];
                                     P = k[0], O = k[1];
-                                    var B = [I, S];
-                                    S = B[0], I = B[1]
+                                    var B = [I, x];
+                                    x = B[0], I = B[1]
                                 }
-                                v && (j = S / I);
-                                var L = x({
+                                v && (j = x / I);
+                                var L = S({
                                     aspectRatio: j,
                                     width: _,
                                     height: M
                                 }, "contain");
                                 _ = L.width, M = L.height;
-                                var R = x({
+                                var R = S({
                                     aspectRatio: j,
                                     width: P,
                                     height: O
                                 }, "cover");
                                 if (P = R.width, O = R.height, v) {
-                                    var F = x({
+                                    var D = S({
                                         aspectRatio: j,
-                                        width: S,
+                                        width: x,
                                         height: I
                                     }, p.resize);
-                                    S = F.width, I = F.height
+                                    x = D.width, I = D.height
                                 } else {
-                                    var D = x({
+                                    var N = S({
                                             aspectRatio: j,
-                                            width: S,
+                                            width: x,
                                             height: I
                                         }),
-                                        U = D.width;
-                                    S = void 0 === U ? r : U;
-                                    var N = D.height;
-                                    I = void 0 === N ? n : N
+                                        F = N.width;
+                                    x = void 0 === F ? r : F;
+                                    var U = N.height;
+                                    I = void 0 === U ? n : U
                                 }
-                                var W = -(S = Math.floor(C(Math.min(Math.max(S, P), _)))) / 2,
+                                var W = -(x = Math.floor(C(Math.min(Math.max(x, P), _)))) / 2,
                                     G = -(I = Math.floor(C(Math.min(Math.max(I, O), M)))) / 2,
-                                    q = S,
+                                    q = x,
                                     z = I,
                                     V = [];
                                 if (v) {
                                     var $ = 0,
                                         K = 0,
-                                        J = r,
-                                        H = n,
-                                        Q = x({
+                                        H = r,
+                                        J = n,
+                                        Q = S({
                                             aspectRatio: j,
                                             width: r,
                                             height: n
@@ -4219,17 +4219,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             contain: "cover",
                                             cover: "contain"
                                         } [p.resize]);
-                                    J = Q.width, H = Q.height, $ = (r - J) / 2, K = (n - H) / 2, V.push($, K, J, H)
+                                    H = Q.width, J = Q.height, $ = (r - H) / 2, K = (n - J) / 2, V.push($, K, H, J)
                                 }
                                 if (V.push(W, G, q, z), b) {
-                                    var Y = [I, S];
-                                    S = Y[0], I = Y[1]
+                                    var Y = [I, x];
+                                    x = Y[0], I = Y[1]
                                 }
-                                m.width = S, m.height = I, h(p.mimeType) || (p.mimeType = d.type);
+                                m.width = x, m.height = I, h(p.mimeType) || (p.mimeType = d.type);
                                 var Z = "transparent";
                                 d.size > p.convertSize && p.convertTypes.indexOf(p.mimeType) >= 0 && (p.mimeType = "image/jpeg");
                                 var X = "image/jpeg" === p.mimeType;
-                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, S, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(S / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat(V)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
+                                if (X && (Z = "#fff"), y.fillStyle = Z, y.fillRect(0, 0, x, I), p.beforeDraw && p.beforeDraw.call(this, y, m), !this.aborted && (y.save(), y.translate(x / 2, I / 2), y.rotate(i * Math.PI / 180), y.scale(s, c), y.drawImage.apply(y, [f].concat(V)), y.restore(), p.drew && p.drew.call(this, y, m), !this.aborted)) {
                                     var ee = function(e) {
                                         if (!t.aborted) {
                                             var o = function(e) {
@@ -4247,7 +4247,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                                     t.fail(new Error("Failed to read the compressed image with Blob.arrayBuffer()."))
                                                 }));
                                                 else {
-                                                    var a = new A;
+                                                    var a = new T;
                                                     t.reader = a, a.onload = function(e) {
                                                         var t = e.target;
                                                         i(t.result)
@@ -4666,7 +4666,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return _
                     }
 
-                    function S(e, t, r) {
+                    function x(e, t, r) {
                         var n, o, i = 0,
                             a = 0,
                             s = this.delimiter,
@@ -4694,8 +4694,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return t
                     }
 
-                    function x(e) {
-                        for (var t, r, n, o = d(e), i = o.length; i-- > 0;)(t = e[r = o[i]]) && (n = !0, "_listeners" === r || x(t) || delete e[r]);
+                    function S(e) {
+                        for (var t, r, n, o = d(e), i = o.length; i-- > 0;)(t = e[r = o[i]]) && (n = !0, "_listeners" === r || S(t) || delete e[r]);
                         return n
                     }
 
@@ -4733,12 +4733,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return [t, u ? new I(this, e, t) : this]
                     }
 
-                    function T(e) {
+                    function A(e) {
                         this._events = {}, this._newListener = !1, this._removeListener = !1, this.verboseMemoryLeak = !1, p.call(this, e)
                     }
                     I.prototype.off = function() {
                         return this.emitter.off(this.event, this.listener), this
-                    }, T.EventEmitter2 = T, T.prototype.listenTo = function(e, t, r) {
+                    }, A.EventEmitter2 = A, A.prototype.listenTo = function(e, t, r) {
                         if ("object" != typeof e) throw TypeError("target musts be an object");
                         var n = this;
 
@@ -4758,7 +4758,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             off: M,
                             reducers: P
                         }), a(t) ? i(y(t)) : i("string" == typeof t ? y(t.split(/\s+/)) : t), this
-                    }, T.prototype.stopListeningTo = function(e, t) {
+                    }, A.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
                         if (!r) return !1;
                         var n, o = r.length,
@@ -4766,21 +4766,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (e && "object" != typeof e) throw TypeError("target should be an object");
                         for (; o-- > 0;) n = r[o], e && n._target !== e || (n.unsubscribe(t), i = !0);
                         return i
-                    }, T.prototype.delimiter = ".", T.prototype.setMaxListeners = function(e) {
+                    }, A.prototype.delimiter = ".", A.prototype.setMaxListeners = function(e) {
                         e !== o && (this._maxListeners = e, this._conf || (this._conf = {}), this._conf.maxListeners = e)
-                    }, T.prototype.getMaxListeners = function() {
+                    }, A.prototype.getMaxListeners = function() {
                         return this._maxListeners
-                    }, T.prototype.event = "", T.prototype.once = function(e, t, r) {
+                    }, A.prototype.event = "", A.prototype.once = function(e, t, r) {
                         return this._once(e, t, !1, r)
-                    }, T.prototype.prependOnceListener = function(e, t, r) {
+                    }, A.prototype.prependOnceListener = function(e, t, r) {
                         return this._once(e, t, !0, r)
-                    }, T.prototype._once = function(e, t, r, n) {
+                    }, A.prototype._once = function(e, t, r, n) {
                         return this._many(e, 1, t, r, n)
-                    }, T.prototype.many = function(e, t, r, n) {
+                    }, A.prototype.many = function(e, t, r, n) {
                         return this._many(e, t, r, !1, n)
-                    }, T.prototype.prependMany = function(e, t, r, n) {
+                    }, A.prototype.prependMany = function(e, t, r, n) {
                         return this._many(e, t, r, !0, n)
-                    }, T.prototype._many = function(e, t, r, n, o) {
+                    }, A.prototype._many = function(e, t, r, n, o) {
                         var i = this;
                         if ("function" != typeof r) throw new Error("many only accepts instances of Function");
 
@@ -4788,7 +4788,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return 0 == --t && i.off(e, a), r.apply(this, arguments)
                         }
                         return a._origin = r, this._on(e, a, n, o)
-                    }, T.prototype.emit = function() {
+                    }, A.prototype.emit = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4858,7 +4858,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         if (!this.ignoreErrors && !this._all && "error" === a) throw arguments[1] instanceof Error ? arguments[1] : new Error("Uncaught, unspecified 'error' event.");
                         return !!this._all
-                    }, T.prototype.emitAsync = function() {
+                    }, A.prototype.emitAsync = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4919,24 +4919,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         } else if (!this.ignoreErrors && !this._all && "error" === a) return arguments[1] instanceof Error ? Promise.reject(arguments[1]) : Promise.reject("Uncaught, unspecified 'error' event.");
                         return Promise.all(l)
-                    }, T.prototype.on = function(e, t, r) {
+                    }, A.prototype.on = function(e, t, r) {
                         return this._on(e, t, !1, r)
-                    }, T.prototype.prependListener = function(e, t, r) {
+                    }, A.prototype.prependListener = function(e, t, r) {
                         return this._on(e, t, !0, r)
-                    }, T.prototype.onAny = function(e) {
+                    }, A.prototype.onAny = function(e) {
                         return this._onAny(e, !1)
-                    }, T.prototype.prependAny = function(e) {
+                    }, A.prototype.prependAny = function(e) {
                         return this._onAny(e, !0)
-                    }, T.prototype.addListener = T.prototype.on, T.prototype._onAny = function(e, t) {
+                    }, A.prototype.addListener = A.prototype.on, A.prototype._onAny = function(e, t) {
                         if ("function" != typeof e) throw new Error("onAny only accepts instances of Function");
                         return this._all || (this._all = []), t ? this._all.unshift(e) : this._all.push(e), this
-                    }, T.prototype._on = function(e, t, r, n) {
+                    }, A.prototype._on = function(e, t, r, n) {
                         if ("function" == typeof e) return this._onAny(e, t), this;
                         if ("function" != typeof t) throw new Error("on only accepts instances of Function");
                         this._events || f.call(this);
                         var i, a = this;
-                        return n !== o && (t = (i = E.call(this, e, t, n))[0], a = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (S.call(this, e, t, r), a) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, g.call(this, this._events[e].length, e))) : this._events[e] = t, a)
-                    }, T.prototype.off = function(e, t) {
+                        return n !== o && (t = (i = E.call(this, e, t, n))[0], a = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (x.call(this, e, t, r), a) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, g.call(this, this._events[e].length, e))) : this._events[e] = t, a)
+                    }, A.prototype.off = function(e, t) {
                         if ("function" != typeof t) throw new Error("removeListener only takes instances of Function");
                         var r, n = [];
                         if (this.wildcard) {
@@ -4959,8 +4959,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 return this.wildcard ? s._listeners.splice(u, 1) : this._events[e].splice(u, 1), 0 === r.length && (this.wildcard ? delete s._listeners : delete this._events[e]), this._removeListener && this.emit("removeListener", e, t), this
                             }(r === t || r.listener && r.listener === t || r._origin && r._origin === t) && (this.wildcard ? delete s._listeners : delete this._events[e], this._removeListener && this.emit("removeListener", e, t))
                         }
-                        return this.listenerTree && x(this.listenerTree), this
-                    }, T.prototype.offAny = function(e) {
+                        return this.listenerTree && S(this.listenerTree), this
+                    }, A.prototype.offAny = function(e) {
                         var t, r = 0,
                             n = 0;
                         if (e && this._all && this._all.length > 0) {
@@ -4972,16 +4972,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this._all = []
                         }
                         return this
-                    }, T.prototype.removeListener = T.prototype.off, T.prototype.removeAllListeners = function(e) {
+                    }, A.prototype.removeListener = A.prototype.off, A.prototype.removeAllListeners = function(e) {
                         if (e === o) return !this._events || f.call(this), this;
                         if (this.wildcard) {
                             var t, r = j.call(this, null, e, this.listenerTree, 0);
                             if (!r) return this;
                             for (t = 0; t < r.length; t++) r[t]._listeners = null;
-                            this.listenerTree && x(this.listenerTree)
+                            this.listenerTree && S(this.listenerTree)
                         } else this._events && (this._events[e] = null);
                         return this
-                    }, T.prototype.listeners = function(e) {
+                    }, A.prototype.listeners = function(e) {
                         var t, r, n, i, a, s = this._events;
                         if (e === o) {
                             if (this.wildcard) throw Error("event name required for wildcard emitter");
@@ -4996,12 +4996,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return j.call(this, u, c, a, 0), u
                         }
                         return s && (r = s[e]) ? "function" == typeof r ? [r] : r : []
-                    }, T.prototype.eventNames = function(e) {
+                    }, A.prototype.eventNames = function(e) {
                         var t = this._events;
                         return this.wildcard ? C.call(this, this.listenerTree, [], null, e) : t ? d(t) : []
-                    }, T.prototype.listenerCount = function(e) {
+                    }, A.prototype.listenerCount = function(e) {
                         return this.listeners(e).length
-                    }, T.prototype.hasListeners = function(e) {
+                    }, A.prototype.hasListeners = function(e) {
                         if (this.wildcard) {
                             var t = [],
                                 r = "string" == typeof e ? e.split(this.delimiter) : e.slice();
@@ -5010,9 +5010,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var n = this._events,
                             i = this._all;
                         return !!(i && i.length || n && (e === o ? d(n).length : n[e]))
-                    }, T.prototype.listenersAny = function() {
+                    }, A.prototype.listenersAny = function() {
                         return this._all ? this._all : []
-                    }, T.prototype.waitFor = function(e, t) {
+                    }, A.prototype.waitFor = function(e, t) {
                         var r = this,
                             n = typeof t;
                         return "number" === n ? t = {
@@ -5045,15 +5045,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             overload: t.overload
                         })
                     };
-                    var A = T.prototype;
-                    Object.defineProperties(T, {
+                    var T = A.prototype;
+                    Object.defineProperties(A, {
                         defaultMaxListeners: {
                             get: function() {
-                                return A._maxListeners
+                                return T._maxListeners
                             },
                             set: function(e) {
                                 if ("number" != typeof e || e < 0 || Number.isNaN(e)) throw TypeError("n must be a non-negative number");
-                                A._maxListeners = e
+                                T._maxListeners = e
                             },
                             enumerable: !0
                         },
@@ -5090,7 +5090,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             writable: !0,
                             configurable: !0
                         }
-                    }), Object.defineProperties(A, {
+                    }), Object.defineProperties(T, {
                         _maxListeners: {
                             value: 10,
                             writable: !0,
@@ -5102,7 +5102,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             configurable: !0
                         }
                     }), (n = function() {
-                        return T
+                        return A
                     }.call(t, r, t, e)) === o || (e.exports = n)
                 }()
             },
@@ -9523,11 +9523,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return j.getReactions
                     }
                 });
-                var S = r(39128);
+                var x = r(39128);
                 Object.defineProperty(t, "getVotes", {
                     enumerable: !0,
                     get: function() {
-                        return S.getVotes
+                        return x.getVotes
                     }
                 });
                 var C = r(33985);
@@ -9537,11 +9537,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return C.keepMessage
                     }
                 });
-                var x = r(88241);
+                var S = r(88241);
                 Object.defineProperty(t, "list", {
                     enumerable: !0,
                     get: function() {
-                        return x.list
+                        return S.list
                     }
                 });
                 var I = r(28921);
@@ -9558,18 +9558,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return E.markIsPaused
                     }
                 });
-                var T = r(59680);
+                var A = r(59680);
                 Object.defineProperty(t, "markIsRead", {
                     enumerable: !0,
                     get: function() {
-                        return T.markIsRead
+                        return A.markIsRead
                     }
                 });
-                var A = r(19345);
+                var T = r(19345);
                 Object.defineProperty(t, "markIsRecording", {
                     enumerable: !0,
                     get: function() {
-                        return A.markIsRecording
+                        return T.markIsRecording
                     }
                 });
                 var k = r(93119);
@@ -9600,42 +9600,42 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return R.openChatAt
                     }
                 });
-                var F = r(74212);
+                var D = r(74212);
                 Object.defineProperty(t, "openChatBottom", {
                     enumerable: !0,
                     get: function() {
-                        return F.openChatBottom
+                        return D.openChatBottom
                     }
                 });
-                var D = r(51464);
+                var N = r(51464);
                 Object.defineProperty(t, "openChatFromUnread", {
                     enumerable: !0,
                     get: function() {
-                        return D.openChatFromUnread
+                        return N.openChatFromUnread
                     }
                 });
-                var U = r(61278);
+                var F = r(61278);
                 Object.defineProperty(t, "pin", {
                     enumerable: !0,
                     get: function() {
-                        return U.pin
+                        return F.pin
                     }
                 }), Object.defineProperty(t, "unpin", {
                     enumerable: !0,
                     get: function() {
-                        return U.unpin
+                        return F.unpin
                     }
                 });
-                var N = r(6993);
+                var U = r(6993);
                 Object.defineProperty(t, "pinMsg", {
                     enumerable: !0,
                     get: function() {
-                        return N.pinMsg
+                        return U.pinMsg
                     }
                 }), Object.defineProperty(t, "unpinMsg", {
                     enumerable: !0,
                     get: function() {
-                        return N.unpinMsg
+                        return U.unpinMsg
                     }
                 });
                 var W = r(15952);
@@ -9687,18 +9687,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return K.sendFileMessage
                     }
                 });
-                var J = r(40954);
+                var H = r(40954);
                 Object.defineProperty(t, "sendGroupInviteMessage", {
                     enumerable: !0,
                     get: function() {
-                        return J.sendGroupInviteMessage
+                        return H.sendGroupInviteMessage
                     }
                 });
-                var H = r(35184);
+                var J = r(35184);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return H.sendListMessage
+                        return J.sendListMessage
                     }
                 });
                 var Q = r(39453);
@@ -10213,12 +10213,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), t.prepareMessageButtons = function(e, t) {
                     if (!t.buttons) return e;
-                    if (!Array.isArray(t.buttons)) throw "Buttons options is not a array";
-                    (void 0 === t.useTemplateButtons && void 0 === t.useInteractiveMessage || null === t.useTemplateButtons && null === t.useInteractiveMessage) && (t.useInteractiveMessage = t.buttons.some((e => "phoneNumber" in e || "url" in e)));
-                    if (t.useTemplateButtons || t.useInteractiveMessage) {
-                        if (0 === t.buttons.length || t.buttons.length > 5) throw "Buttons options must have between 1 and 5 options"
-                    } else if (0 === t.buttons.length || t.buttons.length > 3) throw "Buttons options must have between 1 and 3 options";
-                    e.title = t.title, e.footer = t.footer, t.useInteractiveMessage ? e.interactiveMessage = {
+                    if (!Array.isArray(t.buttons)) throw new a.WPPError("buttons_not_a_array", "Buttons options is not a array");
+                    if ("chat" !== e.type && t.buttons.length > 2) throw new a.WPPError("not_alowed_more_then_three_buttons", "Not allowed more then three buttons in file messages");
+                    if (0 === t.buttons.length || t.buttons.length > 3) throw new a.WPPError("buttons_must_between_1_and_3_options", "Buttons options must have between 1 and 3 options");
+                    if (t.buttons.find((e => e.phoneNumber || e.url)) && t.buttons.find((e => e.id && e.text))) throw new a.WPPError("reply_and_cta_btn_not_allowed", "It is not possible to send reply buttons and action buttons togetherButtons options must have between 1 and 3 options");
+                    return e.title = t.title, e.footer = t.footer, e.interactiveMessage = {
                         header: {
                             title: t.title || " ",
                             hasMediaAttachment: !1
@@ -10243,6 +10242,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     url: e.url,
                                     merchant_url: e.url
                                 })
+                            } : "code" in e ? {
+                                name: "cta_copy",
+                                buttonParamsJson: JSON.stringify({
+                                    display_text: e.text,
+                                    copy_code: e.code
+                                })
                             } : "raw" in e ? e.raw : {
                                 name: "quick_reply",
                                 buttonParamsJson: JSON.stringify({
@@ -10251,7 +10256,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 })
                             }))
                         }
-                    } : t.useTemplateButtons ? (e.isFromTemplate = !0, e.buttons = new s.TemplateButtonCollection, e.hydratedButtons = t.buttons.map(((e, t) => "phoneNumber" in e ? {
+                    }, e.isFromTemplate = !0, e.buttons = new u.TemplateButtonCollection, e.hydratedButtons = t.buttons.map(((e, t) => "phoneNumber" in e ? {
                         index: t,
                         callButton: {
                             displayText: e.text,
@@ -10263,6 +10268,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             displayText: e.text,
                             url: e.url
                         }
+                    } : "code" in e ? {
+                        index: t,
+                        urlButton: {
+                            displayText: e.text,
+                            url: `https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp${e.code}`
+                        }
                     } : {
                         index: t,
                         quickReplyButton: {
@@ -10272,121 +10283,91 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     })), e.buttons.add(e.hydratedButtons.map(((e, t) => {
                         var r, n, o, i;
                         const a = `${null!=e.index?e.index:t}`;
-                        return e.urlButton ? new s.TemplateButtonModel({
+                        return e.urlButton ? new u.TemplateButtonModel({
                             id: a,
                             displayText: null === (r = e.urlButton) || void 0 === r ? void 0 : r.displayText,
                             url: null === (n = e.urlButton) || void 0 === n ? void 0 : n.url,
                             subtype: "url"
-                        }) : e.callButton ? new s.TemplateButtonModel({
+                        }) : e.callButton ? new u.TemplateButtonModel({
                             id: a,
                             displayText: e.callButton.displayText,
                             phoneNumber: e.callButton.phoneNumber,
                             subtype: "call"
-                        }) : new s.TemplateButtonModel({
+                        }) : new u.TemplateButtonModel({
                             id: a,
                             displayText: null === (o = e.quickReplyButton) || void 0 === o ? void 0 : o.displayText,
                             selectionId: null === (i = e.quickReplyButton) || void 0 === i ? void 0 : i.id,
                             subtype: "quick_reply"
                         })
-                    })))) : (e.isDynamicReplyButtonsMsg = !0, e.dynamicReplyButtons = t.buttons.map(((e, t) => ({
-                        buttonId: e.id || `${t}`,
-                        buttonText: {
-                            displayText: e.text
-                        },
-                        type: 1
-                    }))), e.replyButtons = new s.ButtonCollection, e.replyButtons.add(e.dynamicReplyButtons.map((e => {
-                        var t;
-                        return new s.ReplyButtonModel({
-                            id: e.buttonId,
-                            displayText: (null === (t = e.buttonText) || void 0 === t ? void 0 : t.displayText) || void 0
-                        })
-                    }))));
-                    return e
+                    }))), e
                 };
-                const a = i(r(1132)),
-                    s = r(14647),
-                    u = r(19198),
-                    c = r(54993),
-                    l = r(52757);
-                a.onFullReady((() => {
-                    (0, c.wrapModuleFunction)(l.createMsgProtobuf, ((e, ...t) => {
-                        var r, n, o, i, a;
-                        const [s] = t, u = e(...t);
-                        if (s.hydratedButtons) {
-                            const e = {
-                                hydratedButtons: s.hydratedButtons
-                            };
-                            if (s.footer && (e.hydratedFooterText = s.footer), s.caption && (e.hydratedContentText = s.caption), s.title && (e.hydratedTitleText = s.title), u.conversation) e.hydratedContentText = u.conversation, delete u.conversation;
-                            else if (null === (r = u.extendedTextMessage) || void 0 === r ? void 0 : r.text) e.hydratedContentText = u.extendedTextMessage.text, delete u.extendedTextMessage;
-                            else {
-                                let t;
-                                const r = ["documentMessage", "imageMessage", "locationMessage", "videoMessage"];
-                                for (const e of r)
-                                    if (e in u) {
-                                        t = e;
-                                        break
-                                    } if (!t) return u;
-                                e[t] = u[t], e.hydratedTitleText && !e.hydratedContentText && (e.hydratedContentText = e.hydratedTitleText), delete e.hydratedTitleText, "locationMessage" === t && (e.hydratedContentText || !u[t].name && !u[t].address || (e.hydratedContentText = u[t].name && u[t].address ? `${u[t].name}\n${u[t].address}` : u[t].name || u[t].address || "")), e.hydratedContentText = e.hydratedContentText || " ", delete u[t]
-                            }
-                            u.templateMessage = {
-                                hydratedTemplate: e
-                            }
-                        }
-                        if (void 0 !== (null === (o = null === (n = s.interactiveMessage) || void 0 === n ? void 0 : n.nativeFlowMessage) || void 0 === o ? void 0 : o.buttons)) {
+                const a = r(62857),
+                    s = i(r(1132)),
+                    u = r(14647),
+                    c = r(19198),
+                    l = r(54993),
+                    d = r(52757),
+                    f = r(97155);
+                s.onFullReady((() => {
+                    (0, l.wrapModuleFunction)(d.createMsgProtobuf, ((e, ...t) => {
+                        var r, n, o, i;
+                        const [a] = t, s = e(...t);
+                        if (void 0 !== (null === (n = null === (r = a.interactiveMessage) || void 0 === r ? void 0 : r.nativeFlowMessage) || void 0 === n ? void 0 : n.buttons)) {
                             const e = ["documentMessage", "documentWithCaptionMessage", "imageMessage", "locationMessage", "videoMessage"];
                             for (let t of e)
-                                if (t in u) {
+                                if (t in s) {
                                     const e = t;
-                                    "documentWithCaptionMessage" === t && (t = "documentMessage"), s.interactiveMessage.header = Object.assign(Object.assign({}, s.interactiveMessage.header), {
-                                        [`${t}`]: (null === (a = null === (i = u[e]) || void 0 === i ? void 0 : i.message) || void 0 === a ? void 0 : a.documentMessage) || u[e],
+                                    "documentWithCaptionMessage" === t && (t = "documentMessage"), a.interactiveMessage.header = Object.assign(Object.assign({}, a.interactiveMessage.header), {
+                                        [`${t}`]: (null === (i = null === (o = s[e]) || void 0 === o ? void 0 : o.message) || void 0 === i ? void 0 : i.documentMessage) || s[e],
                                         hasMediaAttachment: !0
-                                    }), delete u[e];
+                                    }), delete s[e];
                                     break
-                                } void 0 !== u.extendedTextMessage && delete u.extendedTextMessage, void 0 !== u.conversation && delete u.conversation, u.viewOnceMessage = {
+                                } void 0 !== s.extendedTextMessage && delete s.extendedTextMessage, void 0 !== s.conversation && delete s.conversation, s.viewOnceMessage = {
                                 message: {
-                                    interactiveMessage: s.interactiveMessage
+                                    interactiveMessage: a.interactiveMessage
                                 }
                             }
                         }
-                        return u
-                    })), (0, c.wrapModuleFunction)(l.encodeMaybeMediaType, ((e, ...t) => {
+                        return s
+                    })), (0, l.wrapModuleFunction)(d.encodeMaybeMediaType, ((e, ...t) => {
                         const [r] = t;
-                        return "button" === r ? u.DROP_ATTR : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.mediaTypeFromProtobuf, ((e, ...t) => {
-                        var r;
-                        const [n] = t;
-                        return (null === (r = n.templateMessage) || void 0 === r ? void 0 : r.hydratedTemplate) ? e(n.templateMessage.hydratedTemplate) : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.typeAttributeFromProtobuf, ((e, ...t) => {
+                        return "button" === r ? c.DROP_ATTR : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.mediaTypeFromProtobuf, ((e, ...t) => {
                         var r, n, o, i, a, s;
                         const [u] = t;
-                        if (null === (r = u.viewOnceMessage) || void 0 === r ? void 0 : r.interactiveMessage) {
-                            const e = Object.keys(null === (n = u.templateMessage) || void 0 === n ? void 0 : n.hydratedTemplate);
+                        return (null === (o = null === (n = null === (r = u.documentWithCaptionMessage) || void 0 === r ? void 0 : r.message) || void 0 === n ? void 0 : n.templateMessage) || void 0 === o ? void 0 : o.hydratedTemplate) ? e(null === (s = null === (a = null === (i = u.documentWithCaptionMessage) || void 0 === i ? void 0 : i.message) || void 0 === a ? void 0 : a.templateMessage) || void 0 === s ? void 0 : s.hydratedTemplate) : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.typeAttributeFromProtobuf, ((e, ...t) => {
+                        var r, n, o, i, a, s, u, c, l, d;
+                        const [f] = t;
+                        if (null === (r = null == f ? void 0 : f.viewOnceMessage) || void 0 === r ? void 0 : r.interactiveMessage) {
+                            const e = Object.keys(null === (n = null == f ? void 0 : f.viewOnceMessage) || void 0 === n ? void 0 : n.interactiveMessage);
                             return ["documentMessage", "documentWithCaptionMessage", "imageMessage", "locationMessage", "videoMessage"].some((t => e.includes(t))) ? "media" : "text"
                         }
-                        if (null === (o = u.templateMessage) || void 0 === o ? void 0 : o.hydratedTemplate) {
-                            const e = Object.keys(null === (i = u.templateMessage) || void 0 === i ? void 0 : i.hydratedTemplate);
+                        if (null === (a = null === (i = null === (o = null == f ? void 0 : f.documentWithCaptionMessage) || void 0 === o ? void 0 : o.message) || void 0 === i ? void 0 : i.templateMessage) || void 0 === a ? void 0 : a.hydratedTemplate) {
+                            const e = Object.keys(null === (c = null === (u = null === (s = null == f ? void 0 : f.documentWithCaptionMessage) || void 0 === s ? void 0 : s.message) || void 0 === u ? void 0 : u.templateMessage) || void 0 === c ? void 0 : c.hydratedTemplate);
                             return ["documentMessage", "imageMessage", "locationMessage", "videoMessage"].some((t => e.includes(t))) ? "media" : "text"
                         }
-                        return 1 === (null === (a = u.buttonsMessage) || void 0 === a ? void 0 : a.headerType) || 2 === (null === (s = u.buttonsMessage) || void 0 === s ? void 0 : s.headerType) ? "text" : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.createFanoutMsgStanza, (async (e, ...t) => {
-                        let r = null;
-                        const n = t[1].id ? t[2] : t[1];
-                        if (n.buttonsMessage) r = s.websocket.smax("buttons");
-                        else if (n.listMessage) {
+                        return 1 === (null === (l = null == f ? void 0 : f.buttonsMessage) || void 0 === l ? void 0 : l.headerType) || 2 === (null === (d = null == f ? void 0 : f.buttonsMessage) || void 0 === d ? void 0 : d.headerType) ? "text" : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.createFanoutMsgStanza, (async (e, ...t) => {
+                        var r, n;
+                        let o = null;
+                        const i = t[1].id ? t[2] : t[1];
+                        if (i.buttonsMessage) o = u.websocket.smax("buttons");
+                        else if (i.listMessage) {
                             const e = 2,
                                 t = ["unknown", "single_select", "product_list"];
-                            r = s.websocket.smax("list", {
+                            o = u.websocket.smax("list", {
                                 v: "2",
                                 type: t[e]
                             })
                         }
-                        const o = await e(...t);
-                        if (!r) return o;
-                        const i = o.content || o.stanza.content;
-                        let a = i.find((e => "biz" === e.tag));
-                        a || (a = s.websocket.smax("biz", {}, null), i.push(a));
-                        let u = !1;
-                        return Array.isArray(a.content) ? u = !!a.content.find((e => e.tag === (null == r ? void 0 : r.tag))) : a.content = [], u || a.content.push(r), o
+                        let a = await e(...t);
+                        if ((null === (n = null === (r = null == i ? void 0 : i.viewOnceMessage) || void 0 === r ? void 0 : r.message) || void 0 === n ? void 0 : n.interactiveMessage) && (a = await (0, f.encryptAndParserMsgButtons)(...t, e)), !o) return a;
+                        const s = a.content || a.stanza.content;
+                        let c = s.find((e => "biz" === e.tag));
+                        c || (c = u.websocket.smax("biz", {}, null), s.push(c));
+                        let l = !1;
+                        return Array.isArray(c.content) ? l = !!c.content.find((e => e.tag === (null == o ? void 0 : o.tag))) : c.content = [], l || c.content.push(o), a
                     }))
                 }))
             },
@@ -10709,11 +10690,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }))
                     }));
 
-                    function S(e, t) {
+                    function x(e, t) {
                         v(`message file ${j.id} is ${t}`)
                     }
-                    if (v(`message file ${j.id} queued`), j.on("change:mediaData.mediaStage", S), O.finally((() => {
-                            j.off("change:mediaData.mediaStage", S)
+                    if (v(`message file ${j.id} queued`), j.on("change:mediaData.mediaStage", x), O.finally((() => {
+                            j.off("change:mediaData.mediaStage", x)
                         })), "status@broadcast" !== e) {
                         if (r.waitForAck) {
                             v(`waiting ack for ${j.id}`);
@@ -13840,11 +13821,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return j.leave
                     }
                 });
-                var S = r(10964);
+                var x = r(10964);
                 Object.defineProperty(t, "promoteParticipants", {
                     enumerable: !0,
                     get: function() {
-                        return S.promoteParticipants
+                        return x.promoteParticipants
                     }
                 });
                 var C = r(28703);
@@ -13854,11 +13835,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return C.reject
                     }
                 });
-                var x = r(34697);
+                var S = r(34697);
                 Object.defineProperty(t, "removeIcon", {
                     enumerable: !0,
                     get: function() {
-                        return x.removeIcon
+                        return S.removeIcon
                     }
                 });
                 var I = r(84054);
@@ -13875,18 +13856,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return E.revokeInviteCode
                     }
                 });
-                var T = r(29166);
+                var A = r(29166);
                 Object.defineProperty(t, "setDescription", {
                     enumerable: !0,
                     get: function() {
-                        return T.setDescription
+                        return A.setDescription
                     }
                 });
-                var A = r(99403);
+                var T = r(99403);
                 Object.defineProperty(t, "setIcon", {
                     enumerable: !0,
                     get: function() {
-                        return A.setIcon
+                        return T.setIcon
                     }
                 });
                 var k = r(76131);
@@ -14333,7 +14314,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.9.0";
+                a(r(26738), t), t.waVersion = "3.10.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14564,7 +14545,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.9.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.10.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -17521,12 +17502,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                (0, r(54993).exportModule)(t, {
-                    createCollection: "createCollection",
+                const n = r(54993);
+                (0, n.exportModule)(t, {
+                    createCollection: "createCollection"
+                }, (e => e.createCollection)), (0, n.exportModule)(t, {
                     deleteCollection: "deleteCollection",
                     editCollection: "editCollection",
                     queryCollectionsIQ: "queryCollectionsIQ"
-                }, (e => e.createCollection))
+                }, (e => e.deleteCollection && e.editCollection && e.queryCollectionsIQ))
             },
             71400: (e, t, r) => {
                 "use strict";
@@ -20122,6 +20105,1294 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return e.regex = /^data:([a-z]+\/[a-z0-9-+.]+(;[a-z0-9-.!#$%*+.{}|~`]+=[a-z0-9-.!#$%*+.{}()_|~`]+)*)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s<>]*?)$/i, e
                 }) ? r.apply(t, n) : r) || (e.exports = o)
             },
+            97155: function(e, t) {
+                ! function(e) {
+                    const t = 462,
+                        r = 374,
+                        n = 467,
+                        o = 431,
+                        i = 153,
+                        a = 126,
+                        s = 420,
+                        u = 167,
+                        l = 192,
+                        d = 429,
+                        f = 480,
+                        p = 511,
+                        g = 537,
+                        m = 117,
+                        y = 146,
+                        b = 33,
+                        h = 557,
+                        v = e();
+
+                    function _(e, t, r, n) {
+                        return c(n - -h, r)
+                    }
+
+                    function M(e, t, r, n) {
+                        return c(e - b, t)
+                    }
+                    for (;;) try {
+                        if (269048 === -parseInt(M(t, r)) / 1 + parseInt(M(n, o)) / 2 * (-parseInt(_(0, 0, -i, -a)) / 3) + -parseInt(M(s, 376)) / 4 + parseInt(_(0, 0, -u, -l)) / 5 + -parseInt(_(0, 0, -223, -174)) / 6 + -parseInt(M(d, f)) / 7 * (parseInt(M(p, g)) / 8) + parseInt(_(0, 0, -m, -y)) / 9) break;
+                        v.push(v.shift())
+                    } catch (e) {
+                        v.push(v.shift())
+                    }
+                }(o);
+                const r = function() {
+                        const e = 429,
+                            t = 359,
+                            r = 394,
+                            n = 404,
+                            o = 517,
+                            i = 608,
+                            a = 529,
+                            s = 934,
+                            u = 920,
+                            l = 1062,
+                            d = 1017,
+                            f = 1031,
+                            p = 260,
+                            g = 320,
+                            m = 221,
+                            y = 294,
+                            b = 334,
+                            h = 385,
+                            v = 355,
+                            _ = 387,
+                            M = 253,
+                            P = 317,
+                            w = 636,
+                            O = 704,
+                            j = 298,
+                            x = 354,
+                            C = 601,
+                            S = 4,
+                            I = {};
+
+                        function E(e, t, r, n) {
+                            return c(e - -S, n)
+                        }
+
+                        function A(e, t, r, n) {
+                            return c(t - C, n)
+                        }
+                        I[E(380, 303, 338, 399)] = function(e, t) {
+                            return e === t
+                        }, I[E(e, t, r, n)] = function(e, t) {
+                            return e === t
+                        }, I[E(o, i, 470, a)] = "bFttX", I[A(s, 969, u, 964)] = "OBvlU", I[A(l, d, f, 1046)] = "fyYZN";
+                        const T = I;
+                        let k = !0;
+                        return function(e, t) {
+                            const r = 40,
+                                n = 101,
+                                o = 649,
+                                i = 784;
+
+                            function a(e, t, r, n) {
+                                return E(n - -i, 0, 0, t)
+                            }
+                            const s = {
+                                ydosz: function(e, t) {
+                                    return e === t
+                                },
+                                MHqZV: function(e, t) {
+                                    return T[(r = 347, o = 283, c(o - -n, r))](e, t);
+                                    var r, o
+                                },
+                                ZyVNf: function(e, t) {
+                                    return T.vzuZr(e, t)
+                                },
+                                ABvVV: T[a(0, -p, 0, -267)],
+                                vQDYD: T[(u = 360, l = g, A(0, l - -o, 0, u))]
+                            };
+                            var u, l;
+                            if ("fyYZN" === T.rMGqe) {
+                                const n = k ? function() {
+                                    function n(e, t, r, n) {
+                                        return a(0, t, 0, n - 1064)
+                                    }
+
+                                    function o(e, t, n, o) {
+                                        return a(0, e, 0, t - -r)
+                                    }
+                                    if (s[o(-m, -y)](s.ABvVV, s[o(-b, -h)])) return {
+                                        index: _0x518e06,
+                                        callButton: {
+                                            displayText: (null === (_0xe81ec7 = _0x561a31[o(-v, -_)](_0xbb928c["buttonPara" + n(0, 767, 0, 750)])) || s[o(-M, -P)](_0x421bf0, void 0) ? void 0 : _0xacda3[n(0, w, 0, O) + "xt"]) || " ",
+                                            phoneNumber: s.MHqZV(_0x57c4ca = _0x3fad27.parse(_0x453e84[o(-300, -j) + o(-350, -x)]), null) || s.MHqZV(_0x4b05cb, void 0) ? void 0 : _0x773ce4.phone_number
+                                        }
+                                    };
+                                    if (t) {
+                                        const r = t.apply(e, arguments);
+                                        return t = null, r
+                                    }
+                                } : function() {};
+                                return k = !1, n
+                            }
+                            _0x3b75c5 = _0x5b6ab8
+                        }
+                    }(),
+                    n = r(this, (function() {
+                        const e = 1317,
+                            t = 1359,
+                            r = 1422,
+                            o = 1334,
+                            i = 973,
+                            a = 1215,
+                            s = 1263,
+                            u = 987,
+                            l = 843,
+                            d = 578;
+
+                        function f(e, t, r, n) {
+                            return c(t - d, n)
+                        }
+                        const p = {};
+
+                        function g(e, t, r, n) {
+                            return c(n - l, t)
+                        }
+                        p[g(0, 1176, 0, 1252)] = g(0, e, 0, t) + "+$";
+                        const m = p;
+                        return n[g(0, r, 0, o)]()[f(0, 998, 0, i)](m.DMjBS).toString()[f(0, 955, 0, 1020) + "r"](n)[g(0, a, 0, s)](m[f(0, u, 0, 1055)])
+                    }));
+
+                function o() {
+                    const e = ["CM4GDgHPCYiPka", "DM14vKC", "q1bxrLe", "yxnZAwDU", "zM9VDgvY", "Dg9tDhjPBMC", "qK55Ceq", "zxHPALO", "rvPssgq", "rvHWquG", "DhjHy2u", "ENrZBwu", "yMLUza", "Aw5MBW", "A2TluuS", "vNvdvfO", "zKjQweG", "txH5v0W", "z3DjEfi", "EeX2B00", "rwzju2K", "A21Uq2C", "DxjAvNa", "yNv0Dg9UCW", "DxjS", "EwrVC3O", "y3rVCIGICMv0Dq", "vwX5t1y", "BwfW", "sxvnr0W", "kcGOlISPkYKRkq", "zg9JDw1LBNq", "BwvZC2fNzq", "tNvxsfq", "zw5JCNLWDefUza", "ENPhBhy", "zuXrrwu", "sxnJt3m", "DMXKtvK", "zg9JDw1LBNrxAq", "twvZC2fNzq", "DY53Agf0C2fWCa", "zxjYB3i", "C3rHBNPH", "yNv0Dg9UugfYyq", "BeLhtxu", "zMLSDgvY", "t2X2vgS", "wNLwtMy", "DMLKzw9nzxnZyq", "BMf0AxzLrMXVDW", "CxvPy2TFCMvWBa", "zgv2AwnL", "yvzLrgm", "BeDIALi", "y29hqLe", "DgHdyxb0Aw9Utq", "s0D1Dgu", "DxffD0m", "shHfr2i", "wfjbqwG", "Dgv4Da", "DMLLD09Uy2vnzq", "mtGZntKYnuLHqMf2qq", "y3rHx3vYBa", "y29WEv9JB2rL", "u1noz3O", "CLHqsLa", "s0zXqK4", "Bg9N", "ref0C2O", "DgfIBgu", "zgv2AwnLCW", "txvcqLe", "BwvZC2fNzunVBG", "y29UC3rYDwn0BW", "ww1rrK4", "z0TuwNO", "yxbWBhK", "y29UDgvUDa", "Dgv4DeLUzM8", "oduWodi0rvDNvejp", "yMXysuW", "vwjItwS", "CMv0DxjUicHMDq", "nti3nJeYAfj0BwnK", "AgvHzgvY", "ExbLpunpufLFqW", "C3nHz2u", "uhbwr3e", "DgL0Bgu", "CxLVtfG", "zNvUy3rPB24", "y3rHx2nHBgW", "mJm4vgTxwwLv", "teTXALi", "BMv4Da", "BMfTzq", "BurktgC", "BMn0Aw9UkcKG", "DMfSDwu", "vgv3BxO", "C1rlugq", "BuLWCLm", "AhHctM0", "A0r6whu", "vM1LB2C", "re1QqLm", "AfPevwS", "otK4mZuYmgPAu1jwza", "E30Uy29UC3rYDq", "AKjIDgW", "Dg9Iq0S", "ENrKsuq", "CK1hCwu", "zxnZywDL", "x19WCM90B19F", "yM9KEq", "C2vHCMnO", "ALr6u1y", "BNDVu3y", "D2fYBG", "zgvMAw5LuhjVCa", "tfDLC1a", "veTVwwm", "EvLLDeu", "zgLZCgXHEv90zq", "ndG3mdyWzKj4z2TH", "Cu9rCNG", "mta3nZu3sLjnuKrV", "v2zPte0", "DNP1wNi", "oefyCe54zq", "svPQwe0", "DKTPyvu", "t2r6qLu", "zenRzxG", "rMjeyM0", "x19HD2fPDgvY", "CgfYC2u", "ugD0qwO", "DLfewuq", "ugfYC2vYtxnNqG", "zg9Uzq", "ug9YyKe", "C0fWAuG", "s0vIzxq", "B3zoqwW", "Ahr0Chm6lY93DW", "DhvrD2S", "AKXvy3q", "y1L3wvO", "zMDcuLC", "uNHHre4", "zeXxwLq", "Aw1Hz2vnzxnZyq", "Aw5JBhvKzxm", "uK5iuKW", "BgvUz3rO", "Aw50zxjHy3rPDG", "D01AuMm", "Dxr0B25Z", "wuXUq3C", "yxLwu3y", "y29UC29Szq", "CgHVBMvFBNvTyG", "zg9JDw1LBNrnzq", "terkzxm", "zu1LC3nHz2u", "zxj0Eq", "ChjVDg90ExbL", "twn6wxG", "BxnkC29U", "CNzkzNy", "zxbztNG", "uK92tgW", "nZeYodHtCgT3v0O", "svflEwS", "rNPnzvm", "ve5oELq", "BeDhz0O", "A2f4Eha", "DgHYB3C", "ChjVDg8"];
+                    return (o = function() {
+                        return e
+                    })()
+                }
+                n();
+                const i = function() {
+                        const e = 156,
+                            t = 77,
+                            r = 139,
+                            n = 194,
+                            o = 112,
+                            i = 200,
+                            a = 284,
+                            s = 691,
+                            u = 675,
+                            l = {
+                                IZjXM: function(e, t) {
+                                    return e(t)
+                                },
+                                Tewmz: function(e, t) {
+                                    return e !== t
+                                },
+                                gKTZz: d(381, 373, 380, 371)
+                            };
+
+                        function d(e, t, r, n) {
+                            return c(e - -106, r)
+                        }
+                        let f = !0;
+                        return function(p, g) {
+                            const m = 67,
+                                y = 832,
+                                b = 924,
+                                h = 141;
+
+                            function v(e, t, r, n) {
+                                return d(e - -196, 0, r)
+                            }
+
+                            function _(e, t, r, n) {
+                                return d(r - -h, 0, t)
+                            }
+                            if (l[_(0, 73, e)](l[v(t, 0, 143)], l[v(77, 0, r)])) {
+                                const e = _0x1066ee ? function() {
+                                    if (_0x59a5bc) {
+                                        const r = _0x23f3ef[(e = y, t = b, v(t - 846, 0, e))](_0x38b9df, arguments);
+                                        return _0x2fc932 = null, r
+                                    }
+                                    var e, t
+                                } : function() {};
+                                return _0x24a514 = !1, e
+                            } {
+                                const e = f ? function() {
+                                    const e = 839,
+                                        t = 423,
+                                        r = {
+                                            YLnCw: function(r, n) {
+                                                return l[(o = e, i = 858, c(i - t, o))](r, n);
+                                                var o, i
+                                            }
+                                        };
+
+                                    function d(e, t, r, n) {
+                                        return _(0, r, n - m)
+                                    }
+                                    if (g) {
+                                        if ("sTVkO" !== d(0, 0, n, 246)) {
+                                            const e = g[d(0, 0, o, i)](p, arguments);
+                                            return g = null, e
+                                        }
+                                        try {
+                                            r[d(0, 0, 290, a)](_0xf43b19, _0x23e47f.next(_0x4794ff))
+                                        } catch (e) {
+                                            r[(f = s, y = u, _(0, f, y - 458))](_0xaf3063, e)
+                                        }
+                                    }
+                                    var f, y
+                                } : function() {};
+                                return f = !1, e
+                            }
+                        }
+                    }(),
+                    a = i(this, (function() {
+                        const e = 314,
+                            t = 327,
+                            r = 313,
+                            n = 316,
+                            o = 148,
+                            a = 216,
+                            s = 236,
+                            u = 322,
+                            l = 242,
+                            d = 177,
+                            f = 140,
+                            p = 196,
+                            g = 91,
+                            m = 289,
+                            y = 273,
+                            b = 161,
+                            h = 174,
+                            v = 89,
+                            _ = 92,
+                            M = 350,
+                            P = 355,
+                            w = 164,
+                            O = 79,
+                            j = 78,
+                            x = 245,
+                            C = 234,
+                            S = 194,
+                            I = 134,
+                            E = 212,
+                            A = 197,
+                            T = 237,
+                            k = 201,
+                            B = 119,
+                            L = 200,
+                            R = 283,
+                            D = 188,
+                            N = 170,
+                            F = 162,
+                            U = 160,
+                            W = 279,
+                            G = 169,
+                            q = 203,
+                            z = 660,
+                            V = 558,
+                            $ = 546,
+                            K = 631,
+                            H = 595,
+                            J = 152,
+                            Q = 185,
+                            Y = 165,
+                            Z = 104,
+                            X = 615,
+                            ee = 562,
+                            te = 592,
+                            re = 573,
+                            ne = 646,
+                            oe = 608,
+                            ie = 642,
+                            ae = 664,
+                            se = 556,
+                            ue = 601,
+                            ce = 93,
+                            le = 10,
+                            de = 84,
+                            fe = 36,
+                            pe = 511,
+                            ge = 542,
+                            me = 214,
+                            ye = 132,
+                            be = 169,
+                            he = 161,
+                            ve = 242,
+                            _e = 99,
+                            Me = 728;
+
+                        function Pe(e, t, r, n) {
+                            return c(n - -Me, e)
+                        }
+                        const we = {
+                            RNHRL: function(e, t) {
+                                return e === t
+                            },
+                            FbDbm: "uROmi",
+                            kmnCg: function(e, t) {
+                                return e + t
+                            },
+                            sTKPd: function(e, t) {
+                                return e + t
+                            },
+                            EfISi: Pe(-396, 0, 0, -342) + Pe(-e, 0, 0, -t),
+                            ayVSv: Pe(-r, 0, 0, -n) + Oe(-o, -a, -a, -s) + Pe(-u, 0, 0, -l) + " )",
+                            nwoSv: function(e, t) {
+                                return e !== t
+                            },
+                            dLWZT: Oe(-d, -f, -p, -g),
+                            EZRHd: function(e) {
+                                return e()
+                            },
+                            KEbet: Oe(-m, -y, -355, -207),
+                            hFiTZ: Oe(-b, -h, -v, -_),
+                            ztsme: "exception",
+                            JFCTe: Pe(-M, 0, 0, -P),
+                            HxEGb: Oe(-w, -O, -j, -163)
+                        };
+
+                        function Oe(e, t, r, n) {
+                            return c(e - -z, r)
+                        }
+                        const je = we[Pe(-x, 0, 0, -C)]((function() {
+                                const e = 864;
+                                let t;
+                                try {
+                                    if (we[n(V, $, K, H)]("uROmi", we[r(J, Q, Y, Z)])) t = Function(we[n(X, ee, 732, 643)](we[n(te, re, 453, 540)](we[n(ne, 579, oe, ie)], we[n(ae, se, 608, ue)]), ");"))();
+                                    else if (_0x1b5a4c) {
+                                        const e = _0x103ccb[r(ce, le, de, fe)](_0x314201, arguments);
+                                        return _0x609d0 = null, e
+                                    }
+                                } catch (e) {
+                                    we[n(570, pe, ge, 558)](we[r(169, me, 140, ye)], we[r(be, 256, 146, he)]) ? _0x24afc6(_0x2025d0) : t = window
+                                }
+
+                                function r(e, t, r, n) {
+                                    return Oe(e - 373, t - ve, t, n - _e)
+                                }
+
+                                function n(t, r, n, o) {
+                                    return Pe(r, 0, 0, o - e)
+                                }
+                                return t
+                            })),
+                            xe = je[Oe(-S, 0, -I)] = je.console || {},
+                            Ce = [we[Oe(-E, 0, -A)], Oe(-T, 0, -221), we.hFiTZ, Oe(-132, 0, -k), we[Pe(-174, 0, 0, -231)], we.JFCTe, we[Oe(-115, 0, -B)]];
+                        for (let e = 0; e < Ce[Oe(-L, 0, -115)]; e++) {
+                            const t = i[Oe(-R, 0, -285) + "r"][Oe(-D, 0, -N)][Oe(-F, 0, -U)](i),
+                                r = Ce[e],
+                                n = xe[r] || t;
+                            t[Oe(-242, 0, -W)] = i[Pe(-182, 0, 0, -230)](i), t[Oe(-G, 0, -q)] = n.toString.bind(n), xe[r] = t
+                        }
+                    }));
+                a();
+                var s = this && this[l(1246, 1319, 1245, 1256)] || function(e, t, r, n) {
+                    const o = 827,
+                        i = 840,
+                        a = 892,
+                        s = 803,
+                        u = 826,
+                        l = 757,
+                        d = 727,
+                        f = 688,
+                        p = 699,
+                        g = 748,
+                        m = 722,
+                        y = 319,
+                        b = 529,
+                        h = 423,
+                        v = 193,
+                        _ = 269,
+                        M = 519,
+                        P = 476,
+                        w = 422,
+                        O = 364,
+                        j = 343,
+                        x = 255,
+                        C = 279,
+                        S = 280,
+                        I = 203,
+                        E = 270,
+                        A = 119,
+                        T = 369,
+                        k = 450,
+                        B = 494,
+                        L = 396,
+                        R = 448,
+                        D = 471,
+                        N = 100,
+                        F = 156,
+                        U = 250,
+                        W = 920,
+                        G = 940,
+                        q = 180,
+                        z = 205,
+                        V = 123,
+                        $ = 37,
+                        K = 195,
+                        H = 130,
+                        J = 612,
+                        Q = {
+                            mIprS: function(e, t) {
+                                return e === t
+                            },
+                            TNNzT: "epYNx",
+                            LDJes: function(e, t) {
+                                return e instanceof t
+                            },
+                            IQKyk: function(e, t) {
+                                return e(t)
+                            },
+                            OlvTk: function(e, t) {
+                                return e(t)
+                            }
+                        };
+
+                    function Y(e) {
+                        const t = 599;
+
+                        function n(e, r, n, o) {
+                            return c(o - -t, r)
+                        }
+                        return Q[(o = -q, i = -207, c(i - -J, o))](n(0, -z, 0, -V), Q[n(0, -$, 0, -118)]) ? Q[n(0, -K, 0, -H)](e, r) ? e : new r((function(t) {
+                            t(e)
+                        })) : null;
+                        var o, i
+                    }
+                    return new(r || (r = Promise))((function(r, q) {
+                        const z = {
+                                _0x529cc5: 1108,
+                                _0x1b1257: 1256,
+                                _0xe3dd21: 1232,
+                                _0x3e91fd: 335,
+                                _0x139b50: 281,
+                                _0x5dafe2: 275,
+                                _0x270043: 142,
+                                _0x2b4343: 312,
+                                _0x3ad396: 183,
+                                _0x377417: 221,
+                                _0x54017a: 301,
+                                _0x764ba2: 265,
+                                _0x1edc84: 429
+                            },
+                            V = {
+                                _0x317629: 427,
+                                _0x45603e: 321
+                            },
+                            $ = {
+                                _0x4574ba: 307,
+                                _0x4f126c: 942,
+                                _0x107e62: 422
+                            },
+                            K = 33,
+                            H = 125,
+                            J = 733,
+                            Z = 407,
+                            X = {
+                                _0x2744ac: 324
+                            };
+
+                        function ee(e, t, r, n) {
+                            return c(r - X._0x2744ac, e)
+                        }
+                        const te = {
+                            CPWFQ: function(e, t) {
+                                return Q[(r = W, n = G, c(n - Z, r))](e, t);
+                                var r, n
+                            },
+                            exijZ: ee(o, 0, i) + "+$",
+                            qOQrx: ie(a, s, 844, u),
+                            NuWHT: function(e, t) {
+                                return e !== t
+                            },
+                            rXPJP: ie(l, d, 663, f),
+                            IscOs: function(e, t) {
+                                return Q[(r = K, n = 65, ie(r - H, n - -J, n - 245, r))](e, t);
+                                var r, n
+                            }
+                        };
+
+                        function re(e) {
+                            try {
+                                te.CPWFQ(oe, n[(t = 228, r = U, ee(t, 0, r - -472))](e))
+                            } catch (e) {
+                                te.CPWFQ(q, e)
+                            }
+                            var t, r
+                        }
+
+                        function ne(e) {
+                            const t = 384;
+
+                            function r(e, r, n, o) {
+                                return ie(e - 195, r - -362, n - t, o)
+                            }
+
+                            function o(e, t, r, n) {
+                                return ie(e - $._0x4574ba, e - -$._0x4f126c, r - $._0x107e62, n)
+                            }
+                            try {
+                                te[r(b, 445, 517, h)](oe, n[te[o(-v, 0, -121, -_)]](e))
+                            } catch (e) {
+                                if (te[r(M, P, 435, w)](te[r(O, 326, j, x)], te[o(-254, 0, -C, -S)])) return _0xcaf9f.toString()[o(-I, 0, -E, -A)](XHmCgr[r(T, k, B, L)])[r(523, R, 429, D)]().constructor(_0x4cddf6).search(XHmCgr.exijZ);
+                                te[o(-N, 0, -28, -F)](q, e)
+                            }
+                        }
+
+                        function oe(e) {
+                            const t = 88,
+                                n = 1073,
+                                o = 24;
+
+                            function i(e, r, i, a) {
+                                return ie(e - t, a - -n, i - o, e)
+                            }
+                            var a, s;
+                            e[(a = 1196, z._0x529cc5, z._0x1b1257, s = z._0xe3dd21, ee(s, 0, a - V._0x317629, V._0x45603e))] ? Q[i(-318, z._0x3e91fd, -z._0x139b50, -z._0x5dafe2)](r, e.value) : Q[i(-z._0x270043, z._0x2b4343, -z._0x3ad396, -z._0x377417)](Y, e[i(-z._0x54017a, z._0x764ba2, -z._0x1edc84, -352)]).then(re, ne)
+                        }
+
+                        function ie(e, t, r, n) {
+                            return c(t - y, n)
+                        }
+                        oe((n = n[ie(0, p, 0, g)](e, t || []))[ee(684, 0, m)]())
+                    }))
+                };
+                const u = {};
+
+                function c(e, t) {
+                    const r = o();
+                    return c = function(t, n) {
+                        let o = r[t -= 363];
+                        if (void 0 === c.KdQviO) {
+                            var i = function(e) {
+                                let t = "",
+                                    r = "",
+                                    n = t + i;
+                                for (let r, o, i = 0, a = 0; o = e.charAt(a++); ~o && (r = i % 4 ? 64 * r + o : o, i++ % 4) ? t += n.charCodeAt(a + 10) - 10 != 0 ? String.fromCharCode(255 & r >> (-2 * i & 6)) : i : 0) o = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=".indexOf(o);
+                                for (let e = 0, n = t.length; e < n; e++) r += "%" + ("00" + t.charCodeAt(e).toString(16)).slice(-2);
+                                return decodeURIComponent(r)
+                            };
+                            c.osTPif = i, e = arguments, c.KdQviO = !0
+                        }
+                        const a = t + r[0],
+                            s = e[a];
+                        if (s) o = s;
+                        else {
+                            const t = function(e) {
+                                this.LjcRBz = e, this.TSbcwd = [1, 0, 0], this.QQjYSe = function() {
+                                    return "newState"
+                                }, this.RIHNyo = "\\w+ *\\(\\) *{\\w+ *", this.VGnVCI = "['|\"].+['|\"];? *}"
+                            };
+                            t.prototype.pPpqoz = function() {
+                                const e = new RegExp(this.RIHNyo + this.VGnVCI).test(this.QQjYSe.toString()) ? --this.TSbcwd[1] : --this.TSbcwd[0];
+                                return this.dbLPie(e)
+                            }, t.prototype.dbLPie = function(e) {
+                                return Boolean(~e) ? this.QzqYFe(this.LjcRBz) : e
+                            }, t.prototype.QzqYFe = function(e) {
+                                for (let e = 0, t = this.TSbcwd.length; e < t; e++) this.TSbcwd.push(Math.round(Math.random())), t = this.TSbcwd.length;
+                                return e(this.TSbcwd[0])
+                            }, new t(c).pPpqoz(), o = c.osTPif(o), e[a] = o
+                        }
+                        return o
+                    }, c(e, t)
+                }
+
+                function l(e, t, r, n) {
+                    return c(n - 816, e)
+                }
+                var d, f;
+
+                function p(e, t) {
+                    const r = 940,
+                        n = 979,
+                        o = 1015,
+                        i = 772,
+                        a = 776,
+                        s = 823,
+                        u = 960,
+                        c = 962,
+                        d = 890,
+                        f = 911,
+                        p = 829,
+                        g = 835,
+                        m = 920,
+                        y = 213,
+                        b = 196,
+                        h = 229,
+                        v = 250,
+                        _ = 167,
+                        M = 246,
+                        P = 318,
+                        w = 867,
+                        O = 800,
+                        j = 874,
+                        x = 134,
+                        C = 111,
+                        S = 149,
+                        I = 221,
+                        E = 172,
+                        A = 154,
+                        T = 94,
+                        k = 184,
+                        B = 1027,
+                        L = 901,
+                        R = 974,
+                        D = 999,
+                        N = 314,
+                        F = 193,
+                        U = 236,
+                        W = 251,
+                        G = 307,
+                        q = 145,
+                        z = 882,
+                        V = 166,
+                        $ = 153,
+                        K = 883,
+                        H = 930,
+                        J = 273,
+                        Q = 222,
+                        Y = 208,
+                        Z = 280,
+                        X = 296,
+                        ee = 987,
+                        te = 918,
+                        re = 927,
+                        ne = 151,
+                        oe = 95,
+                        ie = 20,
+                        ae = 953,
+                        se = 234,
+                        ue = 931,
+                        ce = 894,
+                        le = 885,
+                        de = 269,
+                        fe = 867,
+                        pe = 33,
+                        ge = 104,
+                        me = 241,
+                        ye = 239,
+                        be = 256,
+                        he = 760,
+                        ve = 842,
+                        _e = 209,
+                        Me = 145,
+                        Pe = 178,
+                        we = 241,
+                        Oe = 147,
+                        je = 132,
+                        xe = 155,
+                        Ce = 324,
+                        Se = 258,
+                        Ie = 923,
+                        Ee = 870,
+                        Ae = 1071,
+                        Te = 857,
+                        ke = 893,
+                        Be = 967,
+                        Le = 915,
+                        Re = 994,
+                        De = 981,
+                        Ne = 1010,
+                        Fe = 970,
+                        Ue = 164,
+                        We = 255,
+                        Ge = 89,
+                        qe = 126,
+                        ze = 248,
+                        Ve = 181,
+                        $e = 123,
+                        Ke = 909,
+                        He = 67,
+                        Je = 84,
+                        Qe = 932,
+                        Ye = 158,
+                        Ze = 907,
+                        Xe = 947,
+                        et = 977,
+                        tt = 949,
+                        rt = 849,
+                        nt = 820,
+                        ot = 771,
+                        it = 854,
+                        at = 993,
+                        st = 230,
+                        ut = 155,
+                        ct = 214,
+                        lt = 213,
+                        dt = 218,
+                        ft = 204,
+                        pt = 925,
+                        gt = 989,
+                        mt = 881,
+                        yt = 193,
+                        bt = 220,
+                        ht = 193,
+                        vt = 146,
+                        _t = 236,
+                        Mt = 270,
+                        Pt = 824,
+                        wt = 892,
+                        Ot = 912,
+                        jt = 138,
+                        xt = 244,
+                        Ct = 305,
+                        St = 913,
+                        It = 842,
+                        Et = 811,
+                        At = 895,
+                        Tt = 67,
+                        kt = 247,
+                        Bt = 300,
+                        Lt = 194,
+                        Rt = 45,
+                        Dt = 80,
+                        Nt = 68,
+                        Ft = 41,
+                        Ut = 1066,
+                        Wt = 999,
+                        Gt = 874,
+                        qt = 107,
+                        zt = 782,
+                        Vt = 839,
+                        $t = 87,
+                        Kt = 861,
+                        Ht = 839,
+                        Jt = 974,
+                        Qt = 942,
+                        Yt = 78,
+                        Zt = 120,
+                        Xt = 189,
+                        er = 743,
+                        tr = 748,
+                        rr = 759,
+                        nr = 698,
+                        or = 758,
+                        ir = 601,
+                        ar = 543,
+                        sr = 474,
+                        ur = 496,
+                        cr = 496,
+                        lr = 816,
+                        dr = 874,
+                        fr = 927,
+                        pr = 569,
+                        gr = 832,
+                        mr = 852,
+                        yr = 846,
+                        br = 839,
+                        hr = 908,
+                        vr = 518,
+                        _r = 564,
+                        Mr = 785,
+                        Pr = 737,
+                        wr = 818,
+                        Or = 411,
+                        jr = 497,
+                        xr = 874,
+                        Cr = 959,
+                        Sr = 527,
+                        Ir = 613,
+                        Er = 604,
+                        Ar = 574,
+                        Tr = 821,
+                        kr = 782,
+                        Br = 812,
+                        Lr = 573,
+                        Rr = 599,
+                        Dr = 455,
+                        Nr = 890,
+                        Fr = 803,
+                        Ur = 782,
+                        Wr = 543,
+                        Gr = 519,
+                        qr = 871,
+                        zr = 900,
+                        Vr = 733,
+                        $r = 550,
+                        Kr = 818,
+                        Hr = 808,
+                        Jr = 836,
+                        Qr = 443,
+                        Yr = 436,
+                        Zr = 750,
+                        Xr = 441,
+                        en = 468,
+                        tn = 434,
+                        rn = 464,
+                        nn = 793,
+                        on = 847,
+                        an = 797,
+                        sn = 842,
+                        un = 875,
+                        cn = 835,
+                        ln = 785,
+                        dn = 791,
+                        fn = 530,
+                        pn = 571,
+                        gn = 772,
+                        mn = 570,
+                        yn = 769,
+                        bn = 818,
+                        hn = 861,
+                        vn = 374,
+                        _n = 483,
+                        Mn = 536,
+                        Pn = 113,
+                        wn = 141,
+                        On = 226,
+                        jn = 1099,
+                        xn = 1015,
+                        Cn = 1188,
+                        Sn = 1246,
+                        In = 1049,
+                        En = 176,
+                        An = 1117,
+                        Tn = 209,
+                        kn = 159,
+                        Bn = 1079,
+                        Ln = 1131,
+                        Rn = 163,
+                        Dn = 954,
+                        Nn = 1112,
+                        Fn = {
+                            PpVGq: function(e, t) {
+                                return e === t
+                            },
+                            yYetE: function(e, t) {
+                                return e === t
+                            },
+                            hxBNm: function(e, t) {
+                                return e == t
+                            },
+                            ztdID: Yn(r, n, 994, o) + "y",
+                            jTzSV: function(e, t) {
+                                return e === t
+                            },
+                            xLvoM: function(e, t) {
+                                return e(t)
+                            },
+                            qyoLX: function(e, t) {
+                                return e == t
+                            },
+                            MczYx: function(e, t) {
+                                return e === t
+                            },
+                            kkKQK: function(e, t) {
+                                return e === t
+                            },
+                            urZVp: Yn(i, a, s, 771),
+                            AANCb: function(e, t) {
+                                return e === t
+                            },
+                            EXpAH: Yn(u, c, 959, d),
+                            MuBBQ: function(e, t) {
+                                return e === t
+                            },
+                            uqEwC: function(e, t) {
+                                return e === t
+                            },
+                            ROvLl: "cta_copy",
+                            XRAAh: function(e, t) {
+                                return e === t
+                            },
+                            WfiLM: function(e, t) {
+                                return e === t
+                            },
+                            ovNAl: function(e, t) {
+                                return e !== t
+                            },
+                            KGute: function(e, t) {
+                                return e === t
+                            },
+                            VuCTZ: function(e, t) {
+                                return e === t
+                            },
+                            coGBQ: function(e, t) {
+                                return e === t
+                            },
+                            sApiH: Yn(f, p, g, m),
+                            mDJLg: to(y, b, h, 149) + to(v, _, M, P) + Yn(w, O, j, 899),
+                            gwIxR: to(93, x, 161, C) + "ge",
+                            UbbMk: function(e, t) {
+                                return e === t
+                            },
+                            znWav: "Aencw",
+                            FzMeS: function(e, t) {
+                                return e in t
+                            },
+                            jBbtl: function(e, t) {
+                                return e === t
+                            },
+                            vKiaU: to(S, I, E, A) + to(163, 150, T, k),
+                            vldMY: Yn(B, L, R, D),
+                            UlyOV: function(e, t) {
+                                return e == t
+                            },
+                            jLUct: function(e, t) {
+                                return e === t
+                            },
+                            rvJfv: function(e, t) {
+                                return e === t
+                            },
+                            kDzXu: function(e, t) {
+                                return e === t
+                            },
+                            fgBRW: function(e, t) {
+                                return e === t
+                            },
+                            BNypD: function(e, t) {
+                                return e === t
+                            },
+                            LWesP: function(e, t) {
+                                return e === t
+                            },
+                            LKqjR: function(e, t) {
+                                return e === t
+                            },
+                            tuQwk: function(e, t) {
+                                return e === t
+                            },
+                            OdzBU: function(e, t) {
+                                return e === t
+                            },
+                            RxaDN: function(e, t) {
+                                return e === t
+                            },
+                            lGbjR: function(e, t) {
+                                return e === t
+                            },
+                            IuMGL: function(e, t) {
+                                return e === t
+                            },
+                            dCkex: function(e, t) {
+                                return e === t
+                            },
+                            njkyg: function(e, t) {
+                                return e === t
+                            }
+                        };
+                    var Un, Wn, Gn, qn, zn, Vn, $n, Kn, Hn;
+                    const Jn = t[to(N, F, U, W)]((e => !e[Yn(986, 1035, 995, 948)])),
+                        Qn = t[to(G, b, 236, q)]((e => e.device));
+
+                    function Yn(e, t, r, n) {
+                        return l(e, 0, 0, r - -359)
+                    }
+                    const Zn = Fn[Yn(921, 0, 884)](Wn = Fn.uqEwC(Un = e[Yn(i, 0, 821) + to(84, V, 94, $)], null) || Fn[Yn(K, 0, H)](Un, void 0) ? void 0 : Un[to(196, J, Q, Y)], null) || Fn[to(A, Z, 245, X)](Wn, void 0) ? void 0 : Wn[Yn(ee, 0, te) + Yn(862, 0, re)];
+                    let Xn = !1;
+                    const eo = JSON[Yn(934, 0, 898)](JSON.stringify(e));
+
+                    function to(e, t, r, n) {
+                        return l(n, 0, 0, r - -Nn)
+                    }
+                    if (Zn) {
+                        if (Fn[Yn(839, 0, 904)] !== Fn[to(0, 0, ne, q)]) return {
+                            index: _0x24a4e3,
+                            urlButton: {
+                                displayText: (Fn[to(0, 0, oe, ie)](_0x411f33 = _0x1ea42d[Yn(ae, 0, 898)](_0x2107a7[to(0, 0, se, 147) + Yn(980, 0, ue)]), null) || void 0 === _0x371e1a ? void 0 : _0x5457f4[Yn(827, 0, le) + "xt"]) || " ",
+                                url: null === (_0x1bfa53 = _0x3d054d.parse(_0x4b3d82[to(0, 0, 234, de) + "msJson"])) || void 0 === _0x2846e5 ? void 0 : _0x264316.url
+                            }
+                        };
+                        {
+                            const t = [Yn(fe, 0, 925) + to(0, 0, T, pe), Fn[to(0, 0, ge, 196)], Fn[to(0, 0, 208, me)], to(0, 0, ye, be) + "ge"];
+                            let r, n = 1;
+                            for (let e of t) {
+                                if (Fn[Yn(he, 0, ve)](Yn(917, 0, fe), Fn.znWav)) return {
+                                    index: _0x15443c,
+                                    quickReplyButton: {
+                                        displayText: (Fn.PpVGq(_0x1d52b2 = _0x57692b[to(0, 0, Me, 200)](_0xeb3be1[Yn(901, 0, 987) + to(0, 0, Pe, we)]), null) || Fn[to(0, 0, 131, Oe)](_0x1bbb35, void 0) ? void 0 : _0x3f68c9[to(0, 0, je, xe) + "xt"]) || " ",
+                                        id: (null === (_0x162fc7 = _0x35c899.parse(_0x32f2c8[to(0, 0, se, Ce) + to(0, 0, 178, Se)])) || void 0 === _0x4307e8 ? void 0 : _0x112f8d.id) || "" + _0x582db0
+                                    }
+                                };
+                                if (Fn[to(0, 0, 184, F)](e, Zn.header)) {
+                                    const t = e;
+                                    Fn[Yn(Ie, 0, Ee)](e, to(0, 0, 229, 199) + Yn(Ae, 0, D) + "essage") && (e = Fn[Yn(Te, 0, ke)]);
+                                    const o = {};
+                                    o[t] = Zn.header[t], r = o, n = t == Yn(883, 0, 914) + "ge" ? 4 : t[Yn(Be, 0, Le)](Fn[Yn(Re, 0, De)]) ? 3 : Fn[Yn(Ne, 0, Fe)](t, to(0, 0, 239, Ue) + "ge") ? 5 : 1;
+                                    break
+                                }
+                            }
+                            const o = {
+                                    message: {
+                                        buttonsMessage: Object[to(0, 0, F, We)](Object.assign({
+                                            headerType: n,
+                                            contentText: (null === (Gn = Fn[to(0, 0, Ge, qe)](Zn, null) || Fn[to(0, 0, ze, Ve)](Zn, void 0) ? void 0 : Zn[to(0, 0, $e, 125)]) || Fn[Yn(Fe, 0, Ke)](Gn, void 0) ? void 0 : Gn[to(0, 0, He, Je)]) || " ",
+                                            footerText: (Fn[Yn(930, 0, Qe)](qn = Fn[to(0, 0, 111, 188)](Zn, null) || Fn[to(0, 0, Ye, 213)](Zn, void 0) ? void 0 : Zn[Yn(Ze, 0, Xe)], null) || Fn[Yn(et, 0, tt)](qn, void 0) ? void 0 : qn[Yn(rt, 0, nt)]) || " "
+                                        }, r), {
+                                            buttons: Fn.LWesP(zn = null === Zn || Fn[Yn(ot, 0, it)](Zn, void 0) ? void 0 : Zn[Yn(970, 0, at) + to(0, 0, st, 177)], null) || Fn[to(0, 0, ut, ct)](zn, void 0) ? void 0 : zn[to(0, 0, y, lt)][to(0, 0, dt, ft)](((e, t) => {
+                                                const r = 31;
+                                                var n, o;
+
+                                                function i(e, t, n, o) {
+                                                    return to(0, 0, t - r, o)
+                                                }
+
+                                                function a(e, t, r, n) {
+                                                    return to(0, 0, t - Dn, n)
+                                                }
+                                                return Fn[i(0, wn, 0, On)](e.name, Fn.ztdID) ? {
+                                                    type: 1,
+                                                    buttonId: (null === (n = JSON[a(0, jn, 0, xn)](e[a(0, Cn, 0, Sn) + "msJson"])) || Fn[a(0, In, 0, 1042)](n, void 0) ? void 0 : n.id) || "" + t,
+                                                    buttonText: {
+                                                        displayText: (null === (o = JSON[i(0, En, 0, 147)](e[a(0, 1188, 0, An) + i(0, Tn, 0, kn)])) || Fn[a(0, Bn, 0, Ln)](o, void 0) ? void 0 : o[i(0, Rn, 0, 215) + "xt"]) || " "
+                                                    }
+                                                } : (Xn = !0, null)
+                                            }))[Yn(pt, 0, gt)]((e => null != e))
+                                        })
+                                    }
+                                },
+                                i = {
+                                    message: {
+                                        templateMessage: {
+                                            hydratedTemplate: Object[Yn(mt, 0, 946)](Object[to(0, 0, yt, bt)](Object[to(0, 0, ht, 279)]({
+                                                hydratedButtons: null === (Vn = Fn[Yn(937, 0, ce)](Zn, null) || Fn.LKqjR(Zn, void 0) ? void 0 : Zn.nativeFlowMessage) || void 0 === Vn ? void 0 : Vn[to(0, 0, 213, ft)][to(0, 0, dt, vt)](((e, t) => {
+                                                    var r, n, o, i, a, s, u, c;
+
+                                                    function l(e, t, r, n) {
+                                                        return Yn(t, 0, e - -Pn)
+                                                    }
+
+                                                    function d(e, t, r, n) {
+                                                        return Yn(t, 0, n - -388)
+                                                    }
+                                                    if (Fn.qyoLX(e[l(er, tr)], Fn[l(rr, nr)])) return {
+                                                        index: t,
+                                                        quickReplyButton: {
+                                                            displayText: (Fn.MczYx(r = JSON[l(785, or)](e["buttonPara" + d(0, ir, 0, ar)]), null) || Fn[d(0, sr, 0, ur)](r, void 0) ? void 0 : r.display_text) || " ",
+                                                            id: (Fn[d(0, 540, 0, cr)](n = JSON[l(785, lr)](e[l(dr, fr) + d(0, 510, 0, ar)]), null) || Fn[d(0, 641, 0, pr)](n, void 0) ? void 0 : n.id) || "" + t
+                                                        }
+                                                    };
+                                                    if (e[l(743, gr)] != Fn[l(mr, yr)]) {
+                                                        if (Fn.hxBNm(e.name, Fn[l(Tr, kr)])) return {
+                                                            index: t,
+                                                            urlButton: {
+                                                                displayText: (null === (a = JSON[l(Mr, Br)](e[d(0, Lr, 0, Rr) + d(0, Dr, 0, ar)])) || Fn[l(Nr, Fr)](a, void 0) ? void 0 : a[l(772, Ur) + "xt"]) || " ",
+                                                                url: d(0, Wr, 0, Gr) + l(qr, zr) + ".com/otp/code/?otp_t" + l(Vr, 824) + "ODE&code=otp" + (Fn.WfiLM(s = JSON[d(0, $r, 0, 510)](e["buttonPara" + l(Kr, Hr)]), null) || Fn[l(776, Jr)](s, void 0) ? void 0 : s[d(0, Qr, 0, Yr)])
+                                                            }
+                                                        };
+                                                        if (Fn[l(Pr, Zr)](e[d(0, Xr, 0, en)], d(0, tn, 0, rn))) {
+                                                            if (Fn[l(nn, on)](l(an, sn), l(un, cn))) return {
+                                                                index: t,
+                                                                callButton: {
+                                                                    displayText: (null === (u = JSON[l(ln, dn)](e[d(0, fn, 0, Rr) + "msJson"])) || Fn[d(0, pn, 0, 612)](u, void 0) ? void 0 : u[l(gn, 723) + "xt"]) || " ",
+                                                                    phoneNumber: Fn[d(0, 615, 0, mn)](c = JSON[l(ln, yn)](e["buttonPara" + l(bn, hn)]), null) || Fn[d(0, vn, 0, 444)](c, void 0) ? void 0 : c[d(0, _n, 0, Mn) + "er"]
+                                                                }
+                                                            };
+                                                            {
+                                                                const e = {
+                                                                        _0x31459b: 573,
+                                                                        _0x3530b8: 594
+                                                                    },
+                                                                    t = _0x7f0852 ? function() {
+                                                                        const t = 1043;
+                                                                        if (_0x271db7) {
+                                                                            const o = _0xd203c8[(e._0x31459b, r = -e._0x3530b8, n = -666, d(0, n, 0, r - -t))](_0x53ca0d, arguments);
+                                                                            return _0x92c80f = null, o
+                                                                        }
+                                                                        var r, n
+                                                                    } : function() {};
+                                                                return _0x83b4f9 = !1, t
+                                                            }
+                                                        }
+                                                        return null
+                                                    }
+                                                    if (Fn.AANCb(Fn[l(br, hr)], Fn[d(0, vr, 0, _r)])) return {
+                                                        index: t,
+                                                        urlButton: {
+                                                            displayText: (Fn.MuBBQ(o = JSON[l(Mr, 806)](e["buttonPara" + l(wr, 866)]), null) || Fn[l(719, 777)](o, void 0) ? void 0 : o[d(0, Or, 0, jr) + "xt"]) || " ",
+                                                            url: null === (i = JSON[l(Mr, 816)](e[l(xr, Cr) + d(0, 478, 0, ar)])) || Fn[d(0, Sr, 0, Ir)](i, void 0) ? void 0 : i[d(0, 500, 0, 579)]
+                                                        }
+                                                    };
+                                                    Fn[d(0, Er, 0, Ar)](_0x53da50, _0x487aff)
+                                                }))[to(0, 0, _t, Mt)]((e => null != e))
+                                            }, r), Fn[Yn(Pt, 0, 863)](n, 1) ? {
+                                                hydratedTitleText: (Fn[Yn(wt, 0, Ot)]($n = Zn[to(0, 0, 92, jt)], null) || Fn[Yn(899, 0, z)]($n, void 0) ? void 0 : $n[Yn(817, 0, rt)]) || " "
+                                            } : void 0), {
+                                                hydratedContentText: (Fn[to(0, 0, xt, Ct)](Kn = Fn[Yn(St, 0, 972)](Zn, null) || Fn[Yn(835, 0, It)](Zn, void 0) ? void 0 : Zn[Yn(Et, 0, 876)], null) || Fn[Yn(959, 0, At)](Kn, void 0) ? void 0 : Kn[to(0, 0, Tt, 136)]) || " ",
+                                                hydratedFooterText: (Fn.njkyg(Hn = Fn[to(0, 0, kt, Bt)](Zn, null) || Fn[Yn(816, 0, ce)](Zn, void 0) ? void 0 : Zn[to(0, 0, Lt, _e)], null) || void 0 === Hn ? void 0 : Hn[to(0, 0, Tt, Rt)]) || " "
+                                            })
+                                        }
+                                    }
+                                };
+                            delete eo[to(0, 0, Nt, 154) + to(0, 0, 94, Ft)], eo["documentWi" + Yn(Ut, 0, Wt) + Yn(918, 0, Gt)] = Xn ? i : o, eo[to(0, 0, 80, qt) + Yn(zt, 0, Vt)] = e[to(0, 0, Dt, $t) + Yn(Kt, 0, Ht)]
+                        }
+                    }
+                    const ro = {};
+                    ro[Yn(Jt, 0, Qt)] = e, ro[to(0, 0, Yt, Zt)] = Jn;
+                    const no = {};
+                    return no[to(0, 0, Xt, 183)] = eo, no[Yn(it, 0, 831)] = Qn, [ro, no]
+                }
+                u[l(1230, 1180, 1282, 1218)] = !0, Object[(d = 1164, f = 1255, c(d - 740, f) + l(1234, 0, 0, 1287))](t, "__esModule", u), t[l(1406, 0, 0, 1336) + l(1306, 0, 0, 1260) + l(1253, 0, 0, 1279)] = function(e, t, r, n, o, i, a) {
+                    const u = {
+                            _0xa9abe4: 791,
+                            _0x67bb68: 794,
+                            _0x57c77c: 847,
+                            _0x449739: 854
+                        },
+                        d = {
+                            _0x3a27b2: 1231,
+                            _0x383062: 1300,
+                            _0x5b1328: 1274,
+                            _0x4ef20e: 1265,
+                            _0x3b7a5b: 1308,
+                            _0x235fe1: 1329,
+                            _0x50b643: 1370,
+                            _0x3dba1b: 1275,
+                            _0x137c7a: 1204,
+                            _0x3c317e: 1280,
+                            _0x382cde: 1329,
+                            _0xb79764: 1333,
+                            _0x2f2a9a: 1083,
+                            _0x40d481: 1229,
+                            _0x15e127: 1162,
+                            _0xb60d87: 1212,
+                            _0x93d86a: 1272,
+                            _0x5a3d8c: 1276,
+                            _0x10833d: 1373,
+                            _0x1b7297: 1429,
+                            _0x118ec8: 1376,
+                            _0x46da05: 1450,
+                            _0x2a1537: 1179,
+                            _0xbcca13: 1136,
+                            _0x4b6c81: 1180,
+                            _0x210dd3: 1268,
+                            _0x3c9ec1: 1430,
+                            _0x2b7772: 1415,
+                            _0x273415: 1497,
+                            _0x77ba02: 1418,
+                            _0x20e44a: 1430,
+                            _0x2052f2: 1359,
+                            _0x5386e8: 1511,
+                            _0x4937e8: 1352,
+                            _0x461a98: 1366,
+                            _0x3525d4: 1374,
+                            _0x191c72: 1278,
+                            _0x1c62fe: 1328,
+                            _0x33f56e: 1182,
+                            _0x2afd54: 1294,
+                            _0x44348d: 1236,
+                            _0x3ba009: 1154,
+                            _0x388622: 1235,
+                            _0x25ca3: 1343,
+                            _0x25161f: 1304,
+                            _0x3652a6: 1413,
+                            _0x560782: 1505,
+                            _0x13a866: 1427,
+                            _0x21949a: 1219,
+                            _0x45e2e1: 1177,
+                            _0x30f0db: 1394,
+                            _0x18a28d: 1318,
+                            _0x26c57b: 1392,
+                            _0x58e5bc: 1344,
+                            _0xab3159: 1420,
+                            _0x412181: 1471,
+                            _0x4ac68d: 1338,
+                            _0x41751f: 1346,
+                            _0x203c73: 1303,
+                            _0xa163e3: 1334
+                        },
+                        f = {
+                            _0x1a2ac6: 1379,
+                            _0x3cd254: 1357,
+                            _0x4438a0: 1250,
+                            _0x31abb4: 511,
+                            _0x5f143d: 604,
+                            _0x16bd71: 555,
+                            _0x37fb72: 1509,
+                            _0x19fb2a: 1475,
+                            _0x22cbd4: 1573,
+                            _0x3e435f: 1500,
+                            _0x5c1f62: 1299,
+                            _0x1d4f03: 1411,
+                            _0xadadfa: 1355,
+                            _0x477f85: 1352,
+                            _0x471dd3: 1423,
+                            _0x5b416b: 1352,
+                            _0x4cb0e8: 1372,
+                            _0x523255: 1352
+                        },
+                        g = {
+                            _0x568aca: 365,
+                            _0x327329: 438
+                        },
+                        m = {
+                            _0xfe9eec: 517,
+                            _0x1fce79: 613,
+                            _0x21b56c: 591,
+                            _0x44e72b: 502
+                        },
+                        y = {
+                            _0x3d4e1a: 474,
+                            _0x30a1d0: 363
+                        };
+
+                    function b(e, t, r, n) {
+                        return l(t, 0, 0, r - -y._0x30a1d0)
+                    }
+                    const h = {
+                        KFqBN: function(e, t, r, n, o, i, a) {
+                            return e(t, r, n, o, i, a)
+                        },
+                        tobCK: b(0, u._0x67bb68, u._0x57c77c),
+                        wMZRc: function(e, t) {
+                            return e(t)
+                        },
+                        aVeDc: function(e, t) {
+                            return e === t
+                        },
+                        IJAQx: "rPeei",
+                        lGGgJ: function(e, t) {
+                            return e === t
+                        },
+                        Zijhx: function(e, t) {
+                            return e === t
+                        },
+                        PorbA: function(e, t, r) {
+                            return e(t, r)
+                        },
+                        eLQEe: function(e, t) {
+                            return e !== t
+                        },
+                        MxyWL: function(e, t) {
+                            return e > t
+                        }
+                    };
+                    return s(this, void 0, void 0, (function*() {
+                        const u = 181,
+                            l = {
+                                ZLwOq: function(e, t) {
+                                    return h[(r = m._0xfe9eec, n = m._0x21b56c, c(n - 129, r))](e, t);
+                                    var r, n
+                                },
+                                DAtsj: P(d._0x3a27b2, d._0x383062, d._0x5b1328, d._0x4ef20e)
+                            };
+
+                        function y(e, t, r, n) {
+                            return b(0, n, e - g._0x327329)
+                        }
+                        var v, _;
+                        h[P(d._0x3b7a5b, 1345, d._0x235fe1, d._0x50b643)](typeof i, h[P(1195, d._0x3dba1b, d._0x137c7a, 1203)]) && (h[P(d._0x3c317e, 1385, d._0x382cde, 1392)](h.IJAQx, y(d._0xb79764, 0, 0, 1260)) ? l.ZLwOq(_0x4e6562, _0x289988[l[P(d._0x2f2a9a, d._0x40d481, d._0x15e127, 1171)]](_0x264be3)) : a = i);
+                        const M = [];
+
+                        function P(e, t, r, n) {
+                            return b(0, e, r - 337)
+                        }
+                        if (h[P(1225, 0, d._0x93d86a)](_ = null === (v = h.Zijhx(t, null) || h[y(d._0x10833d, 0, 0, d._0x46da05)](t, void 0) ? void 0 : t[y(1255, 0, 0, 1282) + P(d._0xbcca13, 0, d._0x4b6c81)]) || h[y(d._0x3c9ec1, 0, 0, d._0x77ba02)](v, void 0) ? void 0 : v.message, null) || h[y(d._0x20e44a, 0, 0, 1420)](_, void 0) ? void 0 : _[y(d._0x4937e8, 0, 0, d._0x191c72) + P(d._0x1c62fe, 0, 1260)]) {
+                            h[P(d._0x33f56e, 0, d._0x44348d)](p, t, r)[P(d._0x388622, 0, d._0x25161f)]((t => s(this, void 0, void 0, (function*() {
+                                const r = 720,
+                                    s = yield h[d(f._0x1a2ac6, f._0x3cd254, f._0x4438a0, 1341)](a, e, t[(c = f._0x31abb4, l = f._0x16bd71, P(c, 0, l - -r))], t.devices, n, o, typeof i !== h.tobCK ? i : void 0);
+                                var c, l;
+
+                                function d(e, t, r, n) {
+                                    return P(e, 0, n - u)
+                                }
+                                M.push(...s[d(f._0x37fb72, 0, 0, f._0x3e435f)][d(f._0x5c1f62, 0, 0, f._0x477f85)][0][d(f._0x471dd3, 0, 0, f._0x523255)])
+                            }))))
+                        }
+                        const w = yield a(e, t, r, n, o, h[y(d._0x3652a6, 0, 0, d._0x13a866)](typeof i, h[P(1288, 0, d._0x137c7a)]) ? i : void 0);
+                        return h[y(d._0x30f0db, 0, 0, d._0x58e5bc)](M.length, 0) && (w[y(d._0xab3159, 0, 0, d._0x41751f)][y(d._0x93d86a, 0, 0, 1276)][0].content = M), w
+                    }))
+                }
+            },
             54428: () => {}
         },
         __webpack_module_cache__ = {};
@@ -20149,7 +21420,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
-
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
 
