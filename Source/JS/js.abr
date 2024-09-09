@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.59;1.0.0.9;78.3.0
+//2.1.0.66;1.0.0.9;78.3.0
 //
 //
 
@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.9.0
+//WPPCONNECT v3.10.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.9.0 */
+/*! wppconnect-team/wa-js v3.10.1 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -2872,15 +2872,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return n
                     }(e, t);
                     if (ArrayBuffer.isView(e)) return function(e) {
-                        if (H(e, Uint8Array)) {
+                        if (Q(e, Uint8Array)) {
                             const t = new Uint8Array(e);
                             return p(t.buffer, t.byteOffset, t.byteLength)
                         }
                         return f(e)
                     }(e);
                     if (null == e) throw new TypeError("The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof e);
-                    if (H(e, ArrayBuffer) || e && H(e.buffer, ArrayBuffer)) return p(e, t, r);
-                    if ("undefined" != typeof SharedArrayBuffer && (H(e, SharedArrayBuffer) || e && H(e.buffer, SharedArrayBuffer))) return p(e, t, r);
+                    if (Q(e, ArrayBuffer) || e && Q(e.buffer, ArrayBuffer)) return p(e, t, r);
+                    if ("undefined" != typeof SharedArrayBuffer && (Q(e, SharedArrayBuffer) || e && Q(e.buffer, SharedArrayBuffer))) return p(e, t, r);
                     if ("number" == typeof e) throw new TypeError('The "value" argument must not be of type number. Received type number');
                     const n = e.valueOf && e.valueOf();
                     if (null != n && n !== e) return u.from(n, t, r);
@@ -2890,7 +2890,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 r = s(t);
                             return 0 === r.length || e.copy(r, 0, 0, t), r
                         }
-                        if (void 0 !== e.length) return "number" != typeof e.length || Q(e.length) ? s(0) : f(e);
+                        if (void 0 !== e.length) return "number" != typeof e.length || H(e.length) ? s(0) : f(e);
                         if ("Buffer" === e.type && Array.isArray(e.data)) return f(e.data)
                     }(e);
                     if (o) return o;
@@ -2928,7 +2928,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function m(e, t) {
                     if (u.isBuffer(e)) return e.length;
-                    if (ArrayBuffer.isView(e) || H(e, ArrayBuffer)) return e.byteLength;
+                    if (ArrayBuffer.isView(e) || Q(e, ArrayBuffer)) return e.byteLength;
                     if ("string" != typeof e) throw new TypeError('The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof e);
                     const r = e.length,
                         n = arguments.length > 2 && !0 === arguments[2];
@@ -2979,7 +2979,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         case "ucs-2":
                         case "utf16le":
                         case "utf-16le":
-                            return T(this, t, r);
+                            return k(this, t, r);
                         default:
                             if (n) throw new TypeError("Unknown encoding: " + e);
                             e = (e + "").toLowerCase(), n = !0
@@ -2993,7 +2993,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 
                 function h(e, t, r, n, o) {
                     if (0 === e.length) return -1;
-                    if ("string" == typeof r ? (n = r, r = 0) : r > 2147483647 ? r = 2147483647 : r < -2147483648 && (r = -2147483648), Q(r = +r) && (r = o ? 0 : e.length - 1), r < 0 && (r = e.length + r), r >= e.length) {
+                    if ("string" == typeof r ? (n = r, r = 0) : r > 2147483647 ? r = 2147483647 : r < -2147483648 && (r = -2147483648), H(r = +r) && (r = o ? 0 : e.length - 1), r < 0 && (r = e.length + r), r >= e.length) {
                         if (o) return -1;
                         r = e.length - 1
                     } else if (r < 0) {
@@ -3043,7 +3043,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     let a;
                     for (n > i / 2 && (n = i / 2), a = 0; a < n; ++a) {
                         const n = parseInt(t.substr(2 * a, 2), 16);
-                        if (Q(n)) return a;
+                        if (H(n)) return a;
                         e[r + a] = n
                     }
                     return a
@@ -3148,7 +3148,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.isBuffer = function(e) {
                     return null != e && !0 === e._isBuffer && e !== u.prototype
                 }, u.compare = function(e, t) {
-                    if (H(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), H(t, Uint8Array) && (t = u.from(t, t.offset, t.byteLength)), !u.isBuffer(e) || !u.isBuffer(t)) throw new TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
+                    if (Q(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), Q(t, Uint8Array) && (t = u.from(t, t.offset, t.byteLength)), !u.isBuffer(e) || !u.isBuffer(t)) throw new TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
                     if (e === t) return 0;
                     let r = e.length,
                         n = t.length;
@@ -3184,7 +3184,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     let o = 0;
                     for (r = 0; r < e.length; ++r) {
                         let t = e[r];
-                        if (H(t, Uint8Array)) o + t.length > n.length ? (u.isBuffer(t) || (t = u.from(t)), t.copy(n, o)) : Uint8Array.prototype.set.call(n, t, o);
+                        if (Q(t, Uint8Array)) o + t.length > n.length ? (u.isBuffer(t) || (t = u.from(t)), t.copy(n, o)) : Uint8Array.prototype.set.call(n, t, o);
                         else {
                             if (!u.isBuffer(t)) throw new TypeError('"list" argument must be an Array of Buffers');
                             t.copy(n, o)
@@ -3218,7 +3218,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const r = t.IS;
                     return e = this.toString("hex", 0, r).replace(/(.{2})/g, "$1 ").trim(), this.length > r && (e += " ... "), "<Buffer " + e + ">"
                 }, i && (u.prototype[i] = u.prototype.inspect), u.prototype.compare = function(e, t, r, n, o) {
-                    if (H(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), !u.isBuffer(e)) throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof e);
+                    if (Q(e, Uint8Array) && (e = u.from(e, e.offset, e.byteLength)), !u.isBuffer(e)) throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof e);
                     if (void 0 === t && (t = 0), void 0 === r && (r = e ? e.length : 0), void 0 === n && (n = 0), void 0 === o && (o = this.length), t < 0 || r > e.length || n < 0 || o > this.length) throw new RangeError("out of range index");
                     if (n >= o && t >= r) return 0;
                     if (n >= o) return -1;
@@ -3302,7 +3302,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
 
-                function T(e, t, r) {
+                function k(e, t, r) {
                     const n = e.slice(t, r);
                     let o = "";
                     for (let e = 0; e < n.length - 1; e += 2) o += String.fromCharCode(n[e] + 256 * n[e + 1]);
@@ -3314,7 +3314,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     if (e + t > r) throw new RangeError("Trying to access beyond buffer length")
                 }
 
-                function k(e, t, r, n, o, i) {
+                function T(e, t, r, n, o, i) {
                     if (!u.isBuffer(e)) throw new TypeError('"buffer" argument must be a Buffer instance');
                     if (t > o || t < i) throw new RangeError('"value" argument is out of bounds');
                     if (r + n > e.length) throw new RangeError("Index out of range")
@@ -3444,7 +3444,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return e >>>= 0, t || A(e, 8, this.length), o.read(this, e, !1, 52, 8)
                 }, u.prototype.writeUintLE = u.prototype.writeUIntLE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, r >>>= 0, !n) {
-                        k(this, e, t, r, Math.pow(2, 8 * r) - 1, 0)
+                        T(this, e, t, r, Math.pow(2, 8 * r) - 1, 0)
                     }
                     let o = 1,
                         i = 0;
@@ -3452,22 +3452,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return t + r
                 }, u.prototype.writeUintBE = u.prototype.writeUIntBE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, r >>>= 0, !n) {
-                        k(this, e, t, r, Math.pow(2, 8 * r) - 1, 0)
+                        T(this, e, t, r, Math.pow(2, 8 * r) - 1, 0)
                     }
                     let o = r - 1,
                         i = 1;
                     for (this[t + o] = 255 & e; --o >= 0 && (i *= 256);) this[t + o] = e / i & 255;
                     return t + r
                 }, u.prototype.writeUint8 = u.prototype.writeUInt8 = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 1, 255, 0), this[t] = 255 & e, t + 1
+                    return e = +e, t >>>= 0, r || T(this, e, t, 1, 255, 0), this[t] = 255 & e, t + 1
                 }, u.prototype.writeUint16LE = u.prototype.writeUInt16LE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 2, 65535, 0), this[t] = 255 & e, this[t + 1] = e >>> 8, t + 2
+                    return e = +e, t >>>= 0, r || T(this, e, t, 2, 65535, 0), this[t] = 255 & e, this[t + 1] = e >>> 8, t + 2
                 }, u.prototype.writeUint16BE = u.prototype.writeUInt16BE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 2, 65535, 0), this[t] = e >>> 8, this[t + 1] = 255 & e, t + 2
+                    return e = +e, t >>>= 0, r || T(this, e, t, 2, 65535, 0), this[t] = e >>> 8, this[t + 1] = 255 & e, t + 2
                 }, u.prototype.writeUint32LE = u.prototype.writeUInt32LE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 4, 4294967295, 0), this[t + 3] = e >>> 24, this[t + 2] = e >>> 16, this[t + 1] = e >>> 8, this[t] = 255 & e, t + 4
+                    return e = +e, t >>>= 0, r || T(this, e, t, 4, 4294967295, 0), this[t + 3] = e >>> 24, this[t + 2] = e >>> 16, this[t + 1] = e >>> 8, this[t] = 255 & e, t + 4
                 }, u.prototype.writeUint32BE = u.prototype.writeUInt32BE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 4, 4294967295, 0), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
+                    return e = +e, t >>>= 0, r || T(this, e, t, 4, 4294967295, 0), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
                 }, u.prototype.writeBigUInt64LE = Z((function(e, t = 0) {
                     return B(this, e, t, BigInt(0), BigInt("0xffffffffffffffff"))
                 })), u.prototype.writeBigUInt64BE = Z((function(e, t = 0) {
@@ -3475,7 +3475,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 })), u.prototype.writeIntLE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, !n) {
                         const n = Math.pow(2, 8 * r - 1);
-                        k(this, e, t, r, n - 1, -n)
+                        T(this, e, t, r, n - 1, -n)
                     }
                     let o = 0,
                         i = 1,
@@ -3485,7 +3485,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 }, u.prototype.writeIntBE = function(e, t, r, n) {
                     if (e = +e, t >>>= 0, !n) {
                         const n = Math.pow(2, 8 * r - 1);
-                        k(this, e, t, r, n - 1, -n)
+                        T(this, e, t, r, n - 1, -n)
                     }
                     let o = r - 1,
                         i = 1,
@@ -3493,15 +3493,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     for (this[t + o] = 255 & e; --o >= 0 && (i *= 256);) e < 0 && 0 === a && 0 !== this[t + o + 1] && (a = 1), this[t + o] = (e / i | 0) - a & 255;
                     return t + r
                 }, u.prototype.writeInt8 = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 1, 127, -128), e < 0 && (e = 255 + e + 1), this[t] = 255 & e, t + 1
+                    return e = +e, t >>>= 0, r || T(this, e, t, 1, 127, -128), e < 0 && (e = 255 + e + 1), this[t] = 255 & e, t + 1
                 }, u.prototype.writeInt16LE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 2, 32767, -32768), this[t] = 255 & e, this[t + 1] = e >>> 8, t + 2
+                    return e = +e, t >>>= 0, r || T(this, e, t, 2, 32767, -32768), this[t] = 255 & e, this[t + 1] = e >>> 8, t + 2
                 }, u.prototype.writeInt16BE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 2, 32767, -32768), this[t] = e >>> 8, this[t + 1] = 255 & e, t + 2
+                    return e = +e, t >>>= 0, r || T(this, e, t, 2, 32767, -32768), this[t] = e >>> 8, this[t + 1] = 255 & e, t + 2
                 }, u.prototype.writeInt32LE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 4, 2147483647, -2147483648), this[t] = 255 & e, this[t + 1] = e >>> 8, this[t + 2] = e >>> 16, this[t + 3] = e >>> 24, t + 4
+                    return e = +e, t >>>= 0, r || T(this, e, t, 4, 2147483647, -2147483648), this[t] = 255 & e, this[t + 1] = e >>> 8, this[t + 2] = e >>> 16, this[t + 3] = e >>> 24, t + 4
                 }, u.prototype.writeInt32BE = function(e, t, r) {
-                    return e = +e, t >>>= 0, r || k(this, e, t, 4, 2147483647, -2147483648), e < 0 && (e = 4294967295 + e + 1), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
+                    return e = +e, t >>>= 0, r || T(this, e, t, 4, 2147483647, -2147483648), e < 0 && (e = 4294967295 + e + 1), this[t] = e >>> 24, this[t + 1] = e >>> 16, this[t + 2] = e >>> 8, this[t + 3] = 255 & e, t + 4
                 }, u.prototype.writeBigInt64LE = Z((function(e, t = 0) {
                     return B(this, e, t, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"))
                 })), u.prototype.writeBigInt64BE = Z((function(e, t = 0) {
@@ -3670,11 +3670,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return o
                 }
 
-                function H(e, t) {
+                function Q(e, t) {
                     return e instanceof t || null != e && null != e.constructor && null != e.constructor.name && e.constructor.name === t.name
                 }
 
-                function Q(e) {
+                function H(e) {
                     return e != e
                 }
                 const Y = function() {
@@ -4076,9 +4076,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             o = [255, 216].concat(t, r.slice(4 + n));
                         return new Uint8Array(o)
                     }
-                    var T = p.ArrayBuffer,
+                    var k = p.ArrayBuffer,
                         A = p.FileReader,
-                        k = p.URL || p.webkitURL,
+                        T = p.URL || p.webkitURL,
                         B = /\.\w+$/,
                         L = p.Compressor;
                     return function() {
@@ -4094,18 +4094,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 if (d(t)) {
                                     var n = t.type;
                                     if (h(n))
-                                        if (k && A) {
-                                            T || (r.checkOrientation = !1, r.retainExif = !1);
+                                        if (T && A) {
+                                            k || (r.checkOrientation = !1, r.retainExif = !1);
                                             var o = "image/jpeg" === n,
                                                 i = o && r.checkOrientation,
                                                 s = o && r.retainExif;
-                                            if (!k || i || s) {
+                                            if (!T || i || s) {
                                                 var u = new A;
                                                 this.reader = u, u.onload = function(r) {
                                                     var o = r.target.result,
                                                         u = {},
                                                         c = 1;
-                                                    i && (c = O(o)) > 1 && a(u, j(c)), s && (e.exif = I(o)), u.url = i || s ? !k || c > 1 ? w(o, n) : k.createObjectURL(t) : o, e.load(u)
+                                                    i && (c = O(o)) > 1 && a(u, j(c)), s && (e.exif = I(o)), u.url = i || s ? !T || c > 1 ? w(o, n) : T.createObjectURL(t) : o, e.load(u)
                                                 }, u.onabort = function() {
                                                     e.fail(new Error("Aborted to read the image with FileReader."))
                                                 }, u.onerror = function() {
@@ -4114,7 +4114,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                                     e.reader = null
                                                 }, i || s ? u.readAsArrayBuffer(t) : u.readAsDataURL(t)
                                             } else this.load({
-                                                url: k.createObjectURL(t)
+                                                url: T.createObjectURL(t)
                                             })
                                         } else this.fail(new Error("The current browser does not support image compression."));
                                     else this.fail(new Error("The first argument must be an image File or Blob object."))
@@ -4164,10 +4164,10 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     S = p.width,
                                     I = p.height;
                                 if (b) {
-                                    var T = [M, _];
-                                    _ = T[0], M = T[1];
-                                    var k = [O, P];
-                                    P = k[0], O = k[1];
+                                    var k = [M, _];
+                                    _ = k[0], M = k[1];
+                                    var T = [O, P];
+                                    P = T[0], O = T[1];
                                     var B = [I, S];
                                     S = B[0], I = B[1]
                                 }
@@ -4210,8 +4210,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     var $ = 0,
                                         K = 0,
                                         J = r,
-                                        H = n,
-                                        Q = x({
+                                        Q = n,
+                                        H = x({
                                             aspectRatio: j,
                                             width: r,
                                             height: n
@@ -4219,7 +4219,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                             contain: "cover",
                                             cover: "contain"
                                         } [p.resize]);
-                                    J = Q.width, H = Q.height, $ = (r - J) / 2, K = (n - H) / 2, V.push($, K, J, H)
+                                    J = H.width, Q = H.height, $ = (r - J) / 2, K = (n - Q) / 2, V.push($, K, J, Q)
                                 }
                                 if (V.push(W, G, q, z), b) {
                                     var Y = [I, S];
@@ -4274,7 +4274,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     o = this.file,
                                     i = this.image,
                                     a = this.options;
-                                if (k && 0 === i.src.indexOf("blob:") && k.revokeObjectURL(i.src), n)
+                                if (T && 0 === i.src.indexOf("blob:") && T.revokeObjectURL(i.src), n)
                                     if (a.strict && !a.retainExif && n.size > o.size && a.mimeType === o.type && !(a.width > t || a.height > r || a.minWidth > t || a.minHeight > r || a.maxWidth < t || a.maxHeight < r)) n = o;
                                     else {
                                         var s = new Date;
@@ -4733,12 +4733,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return [t, u ? new I(this, e, t) : this]
                     }
 
-                    function T(e) {
+                    function k(e) {
                         this._events = {}, this._newListener = !1, this._removeListener = !1, this.verboseMemoryLeak = !1, p.call(this, e)
                     }
                     I.prototype.off = function() {
                         return this.emitter.off(this.event, this.listener), this
-                    }, T.EventEmitter2 = T, T.prototype.listenTo = function(e, t, r) {
+                    }, k.EventEmitter2 = k, k.prototype.listenTo = function(e, t, r) {
                         if ("object" != typeof e) throw TypeError("target musts be an object");
                         var n = this;
 
@@ -4758,7 +4758,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             off: M,
                             reducers: P
                         }), a(t) ? i(y(t)) : i("string" == typeof t ? y(t.split(/\s+/)) : t), this
-                    }, T.prototype.stopListeningTo = function(e, t) {
+                    }, k.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
                         if (!r) return !1;
                         var n, o = r.length,
@@ -4766,21 +4766,21 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         if (e && "object" != typeof e) throw TypeError("target should be an object");
                         for (; o-- > 0;) n = r[o], e && n._target !== e || (n.unsubscribe(t), i = !0);
                         return i
-                    }, T.prototype.delimiter = ".", T.prototype.setMaxListeners = function(e) {
+                    }, k.prototype.delimiter = ".", k.prototype.setMaxListeners = function(e) {
                         e !== o && (this._maxListeners = e, this._conf || (this._conf = {}), this._conf.maxListeners = e)
-                    }, T.prototype.getMaxListeners = function() {
+                    }, k.prototype.getMaxListeners = function() {
                         return this._maxListeners
-                    }, T.prototype.event = "", T.prototype.once = function(e, t, r) {
+                    }, k.prototype.event = "", k.prototype.once = function(e, t, r) {
                         return this._once(e, t, !1, r)
-                    }, T.prototype.prependOnceListener = function(e, t, r) {
+                    }, k.prototype.prependOnceListener = function(e, t, r) {
                         return this._once(e, t, !0, r)
-                    }, T.prototype._once = function(e, t, r, n) {
+                    }, k.prototype._once = function(e, t, r, n) {
                         return this._many(e, 1, t, r, n)
-                    }, T.prototype.many = function(e, t, r, n) {
+                    }, k.prototype.many = function(e, t, r, n) {
                         return this._many(e, t, r, !1, n)
-                    }, T.prototype.prependMany = function(e, t, r, n) {
+                    }, k.prototype.prependMany = function(e, t, r, n) {
                         return this._many(e, t, r, !0, n)
-                    }, T.prototype._many = function(e, t, r, n, o) {
+                    }, k.prototype._many = function(e, t, r, n, o) {
                         var i = this;
                         if ("function" != typeof r) throw new Error("many only accepts instances of Function");
 
@@ -4788,7 +4788,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return 0 == --t && i.off(e, a), r.apply(this, arguments)
                         }
                         return a._origin = r, this._on(e, a, n, o)
-                    }, T.prototype.emit = function() {
+                    }, k.prototype.emit = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4858,7 +4858,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         }
                         if (!this.ignoreErrors && !this._all && "error" === a) throw arguments[1] instanceof Error ? arguments[1] : new Error("Uncaught, unspecified 'error' event.");
                         return !!this._all
-                    }, T.prototype.emitAsync = function() {
+                    }, k.prototype.emitAsync = function() {
                         if (!this._events && !this._all) return !1;
                         this._events || f.call(this);
                         var e, t, r, n, o, i, a = arguments[0],
@@ -4919,24 +4919,24 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         } else if (!this.ignoreErrors && !this._all && "error" === a) return arguments[1] instanceof Error ? Promise.reject(arguments[1]) : Promise.reject("Uncaught, unspecified 'error' event.");
                         return Promise.all(l)
-                    }, T.prototype.on = function(e, t, r) {
+                    }, k.prototype.on = function(e, t, r) {
                         return this._on(e, t, !1, r)
-                    }, T.prototype.prependListener = function(e, t, r) {
+                    }, k.prototype.prependListener = function(e, t, r) {
                         return this._on(e, t, !0, r)
-                    }, T.prototype.onAny = function(e) {
+                    }, k.prototype.onAny = function(e) {
                         return this._onAny(e, !1)
-                    }, T.prototype.prependAny = function(e) {
+                    }, k.prototype.prependAny = function(e) {
                         return this._onAny(e, !0)
-                    }, T.prototype.addListener = T.prototype.on, T.prototype._onAny = function(e, t) {
+                    }, k.prototype.addListener = k.prototype.on, k.prototype._onAny = function(e, t) {
                         if ("function" != typeof e) throw new Error("onAny only accepts instances of Function");
                         return this._all || (this._all = []), t ? this._all.unshift(e) : this._all.push(e), this
-                    }, T.prototype._on = function(e, t, r, n) {
+                    }, k.prototype._on = function(e, t, r, n) {
                         if ("function" == typeof e) return this._onAny(e, t), this;
                         if ("function" != typeof t) throw new Error("on only accepts instances of Function");
                         this._events || f.call(this);
                         var i, a = this;
                         return n !== o && (t = (i = E.call(this, e, t, n))[0], a = i[1]), this._newListener && this.emit("newListener", e, t), this.wildcard ? (S.call(this, e, t, r), a) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), r ? this._events[e].unshift(t) : this._events[e].push(t), !this._events[e].warned && this._maxListeners > 0 && this._events[e].length > this._maxListeners && (this._events[e].warned = !0, g.call(this, this._events[e].length, e))) : this._events[e] = t, a)
-                    }, T.prototype.off = function(e, t) {
+                    }, k.prototype.off = function(e, t) {
                         if ("function" != typeof t) throw new Error("removeListener only takes instances of Function");
                         var r, n = [];
                         if (this.wildcard) {
@@ -4960,7 +4960,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }(r === t || r.listener && r.listener === t || r._origin && r._origin === t) && (this.wildcard ? delete s._listeners : delete this._events[e], this._removeListener && this.emit("removeListener", e, t))
                         }
                         return this.listenerTree && x(this.listenerTree), this
-                    }, T.prototype.offAny = function(e) {
+                    }, k.prototype.offAny = function(e) {
                         var t, r = 0,
                             n = 0;
                         if (e && this._all && this._all.length > 0) {
@@ -4972,7 +4972,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this._all = []
                         }
                         return this
-                    }, T.prototype.removeListener = T.prototype.off, T.prototype.removeAllListeners = function(e) {
+                    }, k.prototype.removeListener = k.prototype.off, k.prototype.removeAllListeners = function(e) {
                         if (e === o) return !this._events || f.call(this), this;
                         if (this.wildcard) {
                             var t, r = j.call(this, null, e, this.listenerTree, 0);
@@ -4981,7 +4981,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             this.listenerTree && x(this.listenerTree)
                         } else this._events && (this._events[e] = null);
                         return this
-                    }, T.prototype.listeners = function(e) {
+                    }, k.prototype.listeners = function(e) {
                         var t, r, n, i, a, s = this._events;
                         if (e === o) {
                             if (this.wildcard) throw Error("event name required for wildcard emitter");
@@ -4996,12 +4996,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return j.call(this, u, c, a, 0), u
                         }
                         return s && (r = s[e]) ? "function" == typeof r ? [r] : r : []
-                    }, T.prototype.eventNames = function(e) {
+                    }, k.prototype.eventNames = function(e) {
                         var t = this._events;
                         return this.wildcard ? C.call(this, this.listenerTree, [], null, e) : t ? d(t) : []
-                    }, T.prototype.listenerCount = function(e) {
+                    }, k.prototype.listenerCount = function(e) {
                         return this.listeners(e).length
-                    }, T.prototype.hasListeners = function(e) {
+                    }, k.prototype.hasListeners = function(e) {
                         if (this.wildcard) {
                             var t = [],
                                 r = "string" == typeof e ? e.split(this.delimiter) : e.slice();
@@ -5010,9 +5010,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var n = this._events,
                             i = this._all;
                         return !!(i && i.length || n && (e === o ? d(n).length : n[e]))
-                    }, T.prototype.listenersAny = function() {
+                    }, k.prototype.listenersAny = function() {
                         return this._all ? this._all : []
-                    }, T.prototype.waitFor = function(e, t) {
+                    }, k.prototype.waitFor = function(e, t) {
                         var r = this,
                             n = typeof t;
                         return "number" === n ? t = {
@@ -5045,8 +5045,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             overload: t.overload
                         })
                     };
-                    var A = T.prototype;
-                    Object.defineProperties(T, {
+                    var A = k.prototype;
+                    Object.defineProperties(k, {
                         defaultMaxListeners: {
                             get: function() {
                                 return A._maxListeners
@@ -5102,7 +5102,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             configurable: !0
                         }
                     }), (n = function() {
-                        return T
+                        return k
                     }.call(t, r, t, e)) === o || (e.exports = n)
                 }()
             },
@@ -9558,11 +9558,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return E.markIsPaused
                     }
                 });
-                var T = r(59680);
+                var k = r(59680);
                 Object.defineProperty(t, "markIsRead", {
                     enumerable: !0,
                     get: function() {
-                        return T.markIsRead
+                        return k.markIsRead
                     }
                 });
                 var A = r(19345);
@@ -9572,11 +9572,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return A.markIsRecording
                     }
                 });
-                var k = r(93119);
+                var T = r(93119);
                 Object.defineProperty(t, "markIsUnread", {
                     enumerable: !0,
                     get: function() {
-                        return k.markIsUnread
+                        return T.markIsUnread
                     }
                 });
                 var B = r(45351);
@@ -9694,18 +9694,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return J.sendGroupInviteMessage
                     }
                 });
-                var H = r(35184);
+                var Q = r(35184);
                 Object.defineProperty(t, "sendListMessage", {
                     enumerable: !0,
                     get: function() {
-                        return H.sendListMessage
+                        return Q.sendListMessage
                     }
                 });
-                var Q = r(39453);
+                var H = r(39453);
                 Object.defineProperty(t, "sendLocationMessage", {
                     enumerable: !0,
                     get: function() {
-                        return Q.sendLocationMessage
+                        return H.sendLocationMessage
                     }
                 });
                 var Y = r(42992);
@@ -10213,12 +10213,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     value: !0
                 }), t.prepareMessageButtons = function(e, t) {
                     if (!t.buttons) return e;
-                    if (!Array.isArray(t.buttons)) throw "Buttons options is not a array";
-                    (void 0 === t.useTemplateButtons && void 0 === t.useInteractiveMessage || null === t.useTemplateButtons && null === t.useInteractiveMessage) && (t.useInteractiveMessage = t.buttons.some((e => "phoneNumber" in e || "url" in e)));
-                    if (t.useTemplateButtons || t.useInteractiveMessage) {
-                        if (0 === t.buttons.length || t.buttons.length > 5) throw "Buttons options must have between 1 and 5 options"
-                    } else if (0 === t.buttons.length || t.buttons.length > 3) throw "Buttons options must have between 1 and 3 options";
-                    e.title = t.title, e.footer = t.footer, t.useInteractiveMessage ? e.interactiveMessage = {
+                    if (!Array.isArray(t.buttons)) throw new a.WPPError("buttons_not_a_array", "Buttons options is not a array");
+                    if ("chat" !== e.type && t.buttons.length > 2) throw new a.WPPError("not_alowed_more_then_three_buttons", "Not allowed more then three buttons in file messages");
+                    if (0 === t.buttons.length || t.buttons.length > 3) throw new a.WPPError("buttons_must_between_1_and_3_options", "Buttons options must have between 1 and 3 options");
+                    if (t.buttons.find((e => e.phoneNumber || e.url)) && t.buttons.find((e => e.id && e.text))) throw new a.WPPError("reply_and_cta_btn_not_allowed", "It is not possible to send reply buttons and action buttons togetherButtons options must have between 1 and 3 options");
+                    return e.title = t.title, e.footer = t.footer, e.interactiveMessage = {
                         header: {
                             title: t.title || " ",
                             hasMediaAttachment: !1
@@ -10243,6 +10242,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     url: e.url,
                                     merchant_url: e.url
                                 })
+                            } : "code" in e ? {
+                                name: "cta_copy",
+                                buttonParamsJson: JSON.stringify({
+                                    display_text: e.text,
+                                    copy_code: e.code
+                                })
                             } : "raw" in e ? e.raw : {
                                 name: "quick_reply",
                                 buttonParamsJson: JSON.stringify({
@@ -10251,7 +10256,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 })
                             }))
                         }
-                    } : t.useTemplateButtons ? (e.isFromTemplate = !0, e.buttons = new s.TemplateButtonCollection, e.hydratedButtons = t.buttons.map(((e, t) => "phoneNumber" in e ? {
+                    }, e.isFromTemplate = !0, e.buttons = new u.TemplateButtonCollection, e.hydratedButtons = t.buttons.map(((e, t) => "phoneNumber" in e ? {
                         index: t,
                         callButton: {
                             displayText: e.text,
@@ -10263,6 +10268,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             displayText: e.text,
                             url: e.url
                         }
+                    } : "code" in e ? {
+                        index: t,
+                        urlButton: {
+                            displayText: e.text,
+                            url: `https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp${e.code}`
+                        }
                     } : {
                         index: t,
                         quickReplyButton: {
@@ -10272,121 +10283,94 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     })), e.buttons.add(e.hydratedButtons.map(((e, t) => {
                         var r, n, o, i;
                         const a = `${null!=e.index?e.index:t}`;
-                        return e.urlButton ? new s.TemplateButtonModel({
+                        return e.urlButton ? new u.TemplateButtonModel({
                             id: a,
                             displayText: null === (r = e.urlButton) || void 0 === r ? void 0 : r.displayText,
                             url: null === (n = e.urlButton) || void 0 === n ? void 0 : n.url,
                             subtype: "url"
-                        }) : e.callButton ? new s.TemplateButtonModel({
+                        }) : e.callButton ? new u.TemplateButtonModel({
                             id: a,
                             displayText: e.callButton.displayText,
                             phoneNumber: e.callButton.phoneNumber,
                             subtype: "call"
-                        }) : new s.TemplateButtonModel({
+                        }) : new u.TemplateButtonModel({
                             id: a,
                             displayText: null === (o = e.quickReplyButton) || void 0 === o ? void 0 : o.displayText,
                             selectionId: null === (i = e.quickReplyButton) || void 0 === i ? void 0 : i.id,
                             subtype: "quick_reply"
                         })
-                    })))) : (e.isDynamicReplyButtonsMsg = !0, e.dynamicReplyButtons = t.buttons.map(((e, t) => ({
-                        buttonId: e.id || `${t}`,
-                        buttonText: {
-                            displayText: e.text
-                        },
-                        type: 1
-                    }))), e.replyButtons = new s.ButtonCollection, e.replyButtons.add(e.dynamicReplyButtons.map((e => {
-                        var t;
-                        return new s.ReplyButtonModel({
-                            id: e.buttonId,
-                            displayText: (null === (t = e.buttonText) || void 0 === t ? void 0 : t.displayText) || void 0
-                        })
-                    }))));
-                    return e
+                    }))), e
                 };
-                const a = i(r(1132)),
-                    s = r(14647),
-                    u = r(19198),
-                    c = r(54993),
-                    l = r(52757);
-                a.onFullReady((() => {
-                    (0, c.wrapModuleFunction)(l.createMsgProtobuf, ((e, ...t) => {
-                        var r, n, o, i, a;
-                        const [s] = t, u = e(...t);
-                        if (s.hydratedButtons) {
-                            const e = {
-                                hydratedButtons: s.hydratedButtons
-                            };
-                            if (s.footer && (e.hydratedFooterText = s.footer), s.caption && (e.hydratedContentText = s.caption), s.title && (e.hydratedTitleText = s.title), u.conversation) e.hydratedContentText = u.conversation, delete u.conversation;
-                            else if (null === (r = u.extendedTextMessage) || void 0 === r ? void 0 : r.text) e.hydratedContentText = u.extendedTextMessage.text, delete u.extendedTextMessage;
-                            else {
-                                let t;
-                                const r = ["documentMessage", "imageMessage", "locationMessage", "videoMessage"];
-                                for (const e of r)
-                                    if (e in u) {
-                                        t = e;
-                                        break
-                                    } if (!t) return u;
-                                e[t] = u[t], e.hydratedTitleText && !e.hydratedContentText && (e.hydratedContentText = e.hydratedTitleText), delete e.hydratedTitleText, "locationMessage" === t && (e.hydratedContentText || !u[t].name && !u[t].address || (e.hydratedContentText = u[t].name && u[t].address ? `${u[t].name}\n${u[t].address}` : u[t].name || u[t].address || "")), e.hydratedContentText = e.hydratedContentText || " ", delete u[t]
-                            }
-                            u.templateMessage = {
-                                hydratedTemplate: e
-                            }
-                        }
-                        if (void 0 !== (null === (o = null === (n = s.interactiveMessage) || void 0 === n ? void 0 : n.nativeFlowMessage) || void 0 === o ? void 0 : o.buttons)) {
+                const a = r(62857),
+                    s = i(r(1132)),
+                    u = r(14647),
+                    c = r(19198),
+                    l = r(54993),
+                    d = r(52757),
+                    f = r(97155);
+                s.onFullReady((() => {
+                    (0, l.wrapModuleFunction)(d.createMsgProtobuf, ((e, ...t) => {
+                        var r, n, o, i;
+                        const [a] = t, s = e(...t);
+                        if (void 0 !== (null === (n = null === (r = a.interactiveMessage) || void 0 === r ? void 0 : r.nativeFlowMessage) || void 0 === n ? void 0 : n.buttons)) {
                             const e = ["documentMessage", "documentWithCaptionMessage", "imageMessage", "locationMessage", "videoMessage"];
                             for (let t of e)
-                                if (t in u) {
+                                if (t in s) {
                                     const e = t;
-                                    "documentWithCaptionMessage" === t && (t = "documentMessage"), s.interactiveMessage.header = Object.assign(Object.assign({}, s.interactiveMessage.header), {
-                                        [`${t}`]: (null === (a = null === (i = u[e]) || void 0 === i ? void 0 : i.message) || void 0 === a ? void 0 : a.documentMessage) || u[e],
+                                    "documentWithCaptionMessage" === t && (t = "documentMessage"), a.interactiveMessage.header = Object.assign(Object.assign({}, a.interactiveMessage.header), {
+                                        [`${t}`]: (null === (i = null === (o = s[e]) || void 0 === o ? void 0 : o.message) || void 0 === i ? void 0 : i.documentMessage) || s[e],
                                         hasMediaAttachment: !0
-                                    }), delete u[e];
+                                    }), delete s[e];
                                     break
-                                } void 0 !== u.extendedTextMessage && delete u.extendedTextMessage, void 0 !== u.conversation && delete u.conversation, u.viewOnceMessage = {
+                                } void 0 !== s.extendedTextMessage && delete s.extendedTextMessage, void 0 !== s.conversation && delete s.conversation, s.viewOnceMessage = {
                                 message: {
-                                    interactiveMessage: s.interactiveMessage
+                                    interactiveMessage: a.interactiveMessage
                                 }
                             }
                         }
-                        return u
-                    })), (0, c.wrapModuleFunction)(l.encodeMaybeMediaType, ((e, ...t) => {
+                        return s
+                    })), (0, l.wrapModuleFunction)(d.encodeMaybeMediaType, ((e, ...t) => {
                         const [r] = t;
-                        return "button" === r ? u.DROP_ATTR : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.mediaTypeFromProtobuf, ((e, ...t) => {
-                        var r;
-                        const [n] = t;
-                        return (null === (r = n.templateMessage) || void 0 === r ? void 0 : r.hydratedTemplate) ? e(n.templateMessage.hydratedTemplate) : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.typeAttributeFromProtobuf, ((e, ...t) => {
+                        return "button" === r ? c.DROP_ATTR : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.mediaTypeFromProtobuf, ((e, ...t) => {
                         var r, n, o, i, a, s;
                         const [u] = t;
-                        if (null === (r = u.viewOnceMessage) || void 0 === r ? void 0 : r.interactiveMessage) {
-                            const e = Object.keys(null === (n = u.templateMessage) || void 0 === n ? void 0 : n.hydratedTemplate);
+                        return (null === (o = null === (n = null === (r = u.documentWithCaptionMessage) || void 0 === r ? void 0 : r.message) || void 0 === n ? void 0 : n.templateMessage) || void 0 === o ? void 0 : o.hydratedTemplate) ? e(null === (s = null === (a = null === (i = u.documentWithCaptionMessage) || void 0 === i ? void 0 : i.message) || void 0 === a ? void 0 : a.templateMessage) || void 0 === s ? void 0 : s.hydratedTemplate) : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.typeAttributeFromProtobuf, ((e, ...t) => {
+                        var r, n, o, i, a, s, u, c, l, d;
+                        const [f] = t;
+                        if (null === (r = null == f ? void 0 : f.viewOnceMessage) || void 0 === r ? void 0 : r.interactiveMessage) {
+                            const e = Object.keys(null === (n = null == f ? void 0 : f.viewOnceMessage) || void 0 === n ? void 0 : n.interactiveMessage);
                             return ["documentMessage", "documentWithCaptionMessage", "imageMessage", "locationMessage", "videoMessage"].some((t => e.includes(t))) ? "media" : "text"
                         }
-                        if (null === (o = u.templateMessage) || void 0 === o ? void 0 : o.hydratedTemplate) {
-                            const e = Object.keys(null === (i = u.templateMessage) || void 0 === i ? void 0 : i.hydratedTemplate);
+                        if (null === (a = null === (i = null === (o = null == f ? void 0 : f.documentWithCaptionMessage) || void 0 === o ? void 0 : o.message) || void 0 === i ? void 0 : i.templateMessage) || void 0 === a ? void 0 : a.hydratedTemplate) {
+                            const e = Object.keys(null === (c = null === (u = null === (s = null == f ? void 0 : f.documentWithCaptionMessage) || void 0 === s ? void 0 : s.message) || void 0 === u ? void 0 : u.templateMessage) || void 0 === c ? void 0 : c.hydratedTemplate);
                             return ["documentMessage", "imageMessage", "locationMessage", "videoMessage"].some((t => e.includes(t))) ? "media" : "text"
                         }
-                        return 1 === (null === (a = u.buttonsMessage) || void 0 === a ? void 0 : a.headerType) || 2 === (null === (s = u.buttonsMessage) || void 0 === s ? void 0 : s.headerType) ? "text" : e(...t)
-                    })), (0, c.wrapModuleFunction)(l.createFanoutMsgStanza, (async (e, ...t) => {
-                        let r = null;
-                        const n = t[1].id ? t[2] : t[1];
-                        if (n.buttonsMessage) r = s.websocket.smax("buttons");
-                        else if (n.listMessage) {
+                        return 1 === (null === (l = null == f ? void 0 : f.buttonsMessage) || void 0 === l ? void 0 : l.headerType) || 2 === (null === (d = null == f ? void 0 : f.buttonsMessage) || void 0 === d ? void 0 : d.headerType) ? "text" : e(...t)
+                    })), (0, l.wrapModuleFunction)(d.createFanoutMsgStanza, (async (e, ...t) => {
+                        var r, n;
+                        let o = null;
+                        const i = t[1].id ? t[2] : t[1];
+                        if (i.buttonsMessage) o = u.websocket.smax("buttons");
+                        else if (i.listMessage) {
                             const e = 2,
                                 t = ["unknown", "single_select", "product_list"];
-                            r = s.websocket.smax("list", {
+                            o = u.websocket.smax("list", {
                                 v: "2",
                                 type: t[e]
                             })
                         }
-                        const o = await e(...t);
-                        if (!r) return o;
-                        const i = o.content || o.stanza.content;
-                        let a = i.find((e => "biz" === e.tag));
-                        a || (a = s.websocket.smax("biz", {}, null), i.push(a));
-                        let u = !1;
-                        return Array.isArray(a.content) ? u = !!a.content.find((e => e.tag === (null == r ? void 0 : r.tag))) : a.content = [], u || a.content.push(r), o
+                        let a = await e(...t);
+                        if ((null === (n = null === (r = null == i ? void 0 : i.viewOnceMessage) || void 0 === r ? void 0 : r.message) || void 0 === n ? void 0 : n.interactiveMessage) && (a = await (0, f.encryptAndParserMsgButtons)(...t, e)), !o) return a;
+                        const s = a.content || a.stanza.content;
+                        let c = s.find((e => "biz" === e.tag));
+                        c || (c = u.websocket.smax("biz", {}, null), s.push(c));
+                        let l = !1;
+                        return Array.isArray(c.content) ? l = !!c.content.find((e => e.tag === (null == o ? void 0 : o.tag))) : c.content = [], l || c.content.push(o), a
+                    })), (0, l.wrapModuleFunction)(d.getABPropConfigValue, ((e, ...t) => {
+                        const [r] = t;
+                        return "web_unwrap_message_for_stanza_attributes" !== r && e(...t)
                     }))
                 }))
             },
@@ -13875,11 +13859,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return E.revokeInviteCode
                     }
                 });
-                var T = r(29166);
+                var k = r(29166);
                 Object.defineProperty(t, "setDescription", {
                     enumerable: !0,
                     get: function() {
-                        return T.setDescription
+                        return k.setDescription
                     }
                 });
                 var A = r(99403);
@@ -13889,16 +13873,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return A.setIcon
                     }
                 });
-                var k = r(76131);
+                var T = r(76131);
                 Object.defineProperty(t, "GroupProperty", {
                     enumerable: !0,
                     get: function() {
-                        return k.GroupProperty
+                        return T.GroupProperty
                     }
                 }), Object.defineProperty(t, "setProperty", {
                     enumerable: !0,
                     get: function() {
-                        return k.setProperty
+                        return T.setProperty
                     }
                 });
                 var B = r(36520);
@@ -14333,7 +14317,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.9.0";
+                a(r(26738), t), t.waVersion = "3.10.1";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14564,7 +14548,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.9.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.10.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -17521,12 +17505,14 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                (0, r(54993).exportModule)(t, {
-                    createCollection: "createCollection",
+                const n = r(54993);
+                (0, n.exportModule)(t, {
+                    createCollection: "createCollection"
+                }, (e => e.createCollection)), (0, n.exportModule)(t, {
                     deleteCollection: "deleteCollection",
                     editCollection: "editCollection",
                     queryCollectionsIQ: "queryCollectionsIQ"
-                }, (e => e.createCollection))
+                }, (e => e.deleteCollection && e.editCollection && e.queryCollectionsIQ))
             },
             71400: (e, t, r) => {
                 "use strict";
@@ -20121,6 +20107,480 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     return e.regex = /^data:([a-z]+\/[a-z0-9-+.]+(;[a-z0-9-.!#$%*+.{}|~`]+=[a-z0-9-.!#$%*+.{}()_|~`]+)*)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s<>]*?)$/i, e
                 }) ? r.apply(t, n) : r) || (e.exports = o)
+            },
+            97155: function(e, t) {
+                "use strict";
+
+                function r(e, t) {
+                    const n = s();
+                    return (r = function(e, t) {
+                        return n[e -= 147]
+                    })(e, t)
+                }
+
+                function n(e, t, n, o) {
+                    return r(o - 686, t)
+                }
+
+                function o(e, t, n, o) {
+                    return r(n - -603, e)
+                }! function(e) {
+                    const t = e();
+
+                    function n(e, t, n, o) {
+                        return r(o - 930, e)
+                    }
+
+                    function o(e, t, n, o) {
+                        return r(t - -874, n)
+                    }
+                    for (;;) try {
+                        if (805693 === parseInt(o(0, -695, -644)) / 1 + parseInt(n(1100, 0, 0, 1119)) / 2 * (parseInt(n(1127, 0, 0, 1153)) / 3) + parseInt(n(1139, 0, 0, 1193)) / 4 + parseInt(o(0, -688, -725)) / 5 * (parseInt(o(0, -690, -672)) / 6) + -parseInt(o(0, -643, -602)) / 7 + parseInt(o(0, -709, -664)) / 8 + -parseInt(n(1025, 0, 0, 1080)) / 9 * (parseInt(o(0, -716, -691)) / 10)) break;
+                        t.push(t.shift())
+                    } catch (e) {
+                        t.push(t.shift())
+                    }
+                }(s);
+                var i = this && this.__awaiter || function(e, t, n, o) {
+                    const i = {
+                        HUwhf: function(e, t) {
+                            return e(t)
+                        },
+                        ErBJI: s(-264, -268, -258, -318),
+                        jCymm: s(-286, -182, -240, -229),
+                        TVKOI: function(e, t) {
+                            return e(t)
+                        },
+                        cXlRn: function(e, t) {
+                            return e(t)
+                        },
+                        YwPIQ: function(e, t) {
+                            return e === t
+                        },
+                        iiHrD: s(-324, -317, -305, -301),
+                        kdsiW: "ZienO",
+                        PVnlA: s(-321, -323, -283, -269),
+                        kTtdo: s(-258, -235, -236, -180)
+                    };
+
+                    function a(e) {
+                        const t = {
+                            UjoZu: function(e, t) {
+                                return i[(n = 800, o = 780, r(n - 568, o))](e, t);
+                                var n, o
+                            }
+                        };
+                        return e instanceof n ? e : new n((function(n) {
+                            var o, i;
+                            t[(o = 720, i = 697, r(i - 488, o))](n, e)
+                        }))
+                    }
+
+                    function s(e, t, n, o) {
+                        return r(n - -493, e)
+                    }
+                    return new(n || (n = Promise))((function(n, u) {
+                        const c = {
+                            aXOkl: function(e, t) {
+                                return i[(n = 671, o = 700, r(o - 468, n))](e, t);
+                                var n, o
+                            },
+                            KzVGG: function(e, t) {
+                                return e === t
+                            },
+                            CkIQm: i[l(454, 436, 435, 394)],
+                            lDgsu: i[l(462, 513, 436, 466)]
+                        };
+
+                        function l(e, t, r, n) {
+                            return s(t, 0, e - 722)
+                        }
+
+                        function d(e, t, n, o) {
+                            return r(t - -256 - -74, n)
+                        }
+
+                        function f(e) {
+                            try {
+                                c[(n = 657, i = 607, l(n - 162, i))](g, o.next(e))
+                            } catch (e) {
+                                if (c[(t = 24, r = -20, d(0, r - 148, t))](c.CkIQm, c.lDgsu)) return null;
+                                u(e)
+                            }
+                            var t, r, n, i
+                        }
+
+                        function p(e) {
+                            function t(e, t, r, n) {
+                                return d(0, t - -287, e)
+                            }
+                            try {
+                                i[t(-397, -373)] !== i.jCymm ? i[t(-299, -352)](g, o.throw(e)) : _0x7c3cb2 = _0x506a25
+                            } catch (e) {
+                                i.TVKOI(u, e)
+                            }
+                        }
+
+                        function g(e) {
+                            const t = {
+                                KdZKS: function(e, t) {
+                                    return i[(n = 935, o = 944, r(o - 780, n))](e, t);
+                                    var n, o
+                                }
+                            };
+
+                            function o(e, t, r, n) {
+                                return d(0, t - 883, e)
+                            }
+
+                            function s(e, t, r, n) {
+                                return l(r - -987, t)
+                            }
+                            i[s(0, -530, -513)](i[o(676, 719)], i[s(0, -569, -573)]) ? t[s(0, -541, -578)](_0x5000bf, _0xb6e317) : e.done ? i.cXlRn(n, e.value) : i[o(693, 717)](a, e[s(0, -538, -530)])[s(0, -614, -555)](f, p)
+                        }
+                        g((o = o[d(0, -138, -149)](e, t || []))[d(0, -83, -53)]())
+                    }))
+                };
+                const a = {};
+
+                function s() {
+                    const e = ["kkzAu", "178vvNalw", "LyWnr", "cta_copy", "apply", "documentWithCaptionMessage", "soakl", "display_text", "videoMessage", "kqEQM", "proto", "kxQFD", "WmyUc", "eemzo", "QeXrG", "then", "IjLbB", "PKEhk", "MMkRF", "fiwRr", "interactiveMessage", "UjoZu", "otUVB", "buttons", "rVnJZ", "xxLGO", "YSJjx", "title", "quick_reply", "hjCGI", "push", "device", "body", "assign", "ZVpbm", "29808ktJelH", "map", "PVnlA", "YlEtk", "JeQLu", "value", "DarEb", "ibUJy", "4252542qLeiNM", "HUwhf", "kTtdo", "yslUD", "HCiUt", "xBnmL", "message", "nativeFlowMessage", "imageMessage", "cta_url", "cta_call", "filter", "documentMessage", "ErBJI", "YwPIQ", "wwkAe", "next", "xGnEK", "buttonParamsJson", "rNZfW", "viewOnceMessage", "phone_number", "aZBRh", "header", "dDYJm", "url", "fMwjK", "ncSfr", "jzKzl", "text", "FNPIG", "BEMoA", "2996572eUDsAm", "copy_code", "TVKOI", "aXOkl", "devices", "UZnWQ", "rwFNb", "messageContextInfo", "KCXrj", "stanza", "defineProperty", "content", "14192874LhtJYh", "JDzYQ", "YgBYZ", "name", "rEdBf", "uBeUS", "TcdoX", "encryptAndParserMsgButtons", "10EmnsPn", "tQYcp", "nCFKI", "function", "KzVGG", "EeTNw", "cXlRn", "547336KtChcz", "iiHrD", "document", "NRYMD", "footer", "aWKGO", "GZEhR", "UohND", "SoUqC", "Mgtda", "parse", "iDZtC", "MrZqn", "pNzTv", "1207584zRqjAu", "KdZKS", "xCJpt", "https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp", "qDugR", "484422FMoChX", "kdsiW", "5Ohjmqu", "xkqXa"];
+                    return (s = function() {
+                        return e
+                    })()
+                }
+
+                function u(e, t) {
+                    const r = {
+                        MMkRF: function(e, t) {
+                            return e === t
+                        },
+                        jzKzl: function(e, t) {
+                            return e(t)
+                        },
+                        BkdVT: w(-501, -620, -507, -562),
+                        NRYMD: function(e, t) {
+                            return e === t
+                        },
+                        JDzYQ: w(-503, -594, -551, -556),
+                        JeQLu: function(e, t) {
+                            return e === t
+                        },
+                        ncSfr: function(e, t) {
+                            return e === t
+                        },
+                        hXmMF: function(e, t) {
+                            return e == t
+                        },
+                        BEMoA: function(e, t) {
+                            return e === t
+                        },
+                        PKEhk: function(e, t) {
+                            return e === t
+                        },
+                        pNzTv: function(e, t) {
+                            return e == t
+                        },
+                        DarEb: h(1174, 1171, 1204, 1179),
+                        qDugR: function(e, t) {
+                            return e === t
+                        },
+                        rNZfW: function(e, t) {
+                            return e === t
+                        },
+                        xxLGO: function(e, t) {
+                            return e == t
+                        },
+                        IjLbB: function(e, t) {
+                            return e === t
+                        },
+                        aWKGO: function(e, t) {
+                            return e === t
+                        },
+                        AENyZ: function(e, t) {
+                            return e === t
+                        },
+                        hjCGI: function(e, t) {
+                            return e == t
+                        },
+                        eemzo: w(-549, -487, -483, -537),
+                        yslUD: function(e, t) {
+                            return e !== t
+                        },
+                        udyYO: w(-515, -494, -584, -552),
+                        MrZqn: function(e, t) {
+                            return e === t
+                        },
+                        xGnEK: function(e, t) {
+                            return e === t
+                        },
+                        SoUqC: h(1219, 1186, 1133, 1136),
+                        TcdoX: w(-488, -530, -523, -535),
+                        UohND: w(-640, -527, -622, -585),
+                        tQYcp: h(1072, 1127, 1177, 1175),
+                        kqEQM: h(1069, 1098, 1143, 1119),
+                        VJJZh: function(e, t) {
+                            return e === t
+                        },
+                        Mgtda: function(e, t) {
+                            return e === t
+                        },
+                        nCFKI: function(e, t) {
+                            return e === t
+                        },
+                        QeXrG: function(e, t) {
+                            return e === t
+                        },
+                        uBeUS: function(e, t) {
+                            return e === t
+                        },
+                        LyWnr: function(e, t) {
+                            return e === t
+                        },
+                        sKpyS: function(e, t) {
+                            return e === t
+                        },
+                        xCJpt: function(e, t) {
+                            return e === t
+                        },
+                        WmyUc: function(e, t) {
+                            return e === t
+                        },
+                        iDZtC: function(e, t) {
+                            return e === t
+                        },
+                        YgBYZ: function(e, t) {
+                            return e === t
+                        },
+                        EeTNw: function(e, t) {
+                            return e === t
+                        }
+                    };
+                    var o, i, a, s, u, c, l, d, f;
+                    const p = t[w(-543, -590, -493, -536)]((e => !e.device)),
+                        g = t[h(1201, 1173, 1153, 1139)]((e => e[h(1098, 1150, 1144, 1185)])),
+                        m = null === (i = r[w(-571, -661, -557, -608)](o = e[h(1204, 1182, 1170, 1222)], null) || r[w(-507, -511, -513, -530)](o, void 0) ? void 0 : o[h(1189, 1168, 1214, 1145)]) || r[h(1133, 1108, 1146, 1136)](i, void 0) ? void 0 : i[w(-529, -618, -611, -570)];
+                    let y = !1;
+                    const b = JSON[w(-638, -599, -577, -603)](JSON.stringify(e));
+
+                    function h(e, t, r, o) {
+                        return n(0, e, 0, t - 245)
+                    }
+                    if (m) {
+                        var v, _;
+                        if (r[h(1156, 1165)](r[h(1093, 1104)], r[h(1044, 1104)])) return _0x35f6e2[h(1055, 1084)] == h(1115, 1147) ? {
+                            type: 1,
+                            buttonId: (null === (v = _0x418888[h(1102, 1106)](_0x1cf78f[w(-551, -493, -475, -529)])) || r.MMkRF(v, void 0) ? void 0 : v.id) || "" + _0x125595,
+                            buttonText: {
+                                displayText: (r.MMkRF(_ = _0x4f514d[w(-615, -608, -603, -603)](_0x5e545d.buttonParamsJson), null) || r[w(-602, -604, -520, -572)](_, void 0) ? void 0 : _[h(1114, 1126)]) || " "
+                            }
+                        } : (_0x5105db = !0, null);
+                        {
+                            const t = [r[h(1037, 1087)], r[w(-647, -543, -635, -606)], w(-532, -558, -584, -539), r[h(1041, 1090)]];
+                            let n, o = 1;
+                            for (let e of t)
+                                if (e in m[h(1233, 1185)]) {
+                                    const t = e;
+                                    "documentWithCaptionMessage" === e && (e = r[h(1084, 1087)]);
+                                    const i = {};
+                                    i[t] = m[h(1144, 1185)][t], n = i, o = t == h(1215, 1170) ? 4 : t.includes(r[w(-522, -523, -611, -581)]) ? 3 : r[w(-553, -573, -532, -561)](t, h(1090, 1127)) ? 5 : 1;
+                                    break
+                                } const i = {
+                                    message: {
+                                        buttonsMessage: Object[w(-589, -556, -608, -557)](Object[h(1165, 1152)]({
+                                            headerType: o,
+                                            contentText: (null === (a = null === m || r[w(-473, -564, -572, -516)](m, void 0) ? void 0 : m[h(1111, 1151)]) || r.VJJZh(a, void 0) ? void 0 : a[h(1150, 1191)]) || " ",
+                                            footerText: (r.NRYMD(s = null === m || r[h(1136, 1158)](m, void 0) ? void 0 : m[w(-662, -588, -604, -609)], null) || r.IjLbB(s, void 0) ? void 0 : s.text) || " "
+                                        }, n), {
+                                            buttons: r[w(-629, -563, -603, -604)](u = null === m || r[w(-626, -669, -603, -618)](m, void 0) ? void 0 : m[h(1184, 1169)], null) || void 0 === u ? void 0 : u.buttons[h(1217, 1155)](((e, t) => {
+                                                function n(e, t, r, n) {
+                                                    return w(e - 259, t - 135, t, r - 491)
+                                                }
+
+                                                function o(e, t, r, n) {
+                                                    return w(e - 442, t - 448, t, n - 945)
+                                                }
+                                                var i, a;
+                                                return e[o(293, 303, 0, 320)] != r.BkdVT ? (y = !0, null) : r[o(328, 290, 0, 335)](r[n(-160, -113, -136)], r.JDzYQ) ? {
+                                                    type: 1,
+                                                    buttonId: (null === (i = JSON.parse(e.buttonParamsJson)) || r[o(400, 359, 0, 373)](i, void 0) ? void 0 : i.id) || "" + t,
+                                                    buttonText: {
+                                                        displayText: (r[o(389, 337, 0, 373)](a = JSON.parse(e[n(-93, -86, -38)]), null) || r[n(-33, -92, -81)](a, void 0) ? void 0 : a[n(-76, -142, -92)]) || " "
+                                                    }
+                                                } : void r[o(482, 426, 0, 426)](_0x4822a0, _0x16a5e2)
+                                            }))[h(1234, 1173)]((e => null != e))
+                                        })
+                                    }
+                                },
+                                p = {
+                                    message: {
+                                        templateMessage: {
+                                            hydratedTemplate: Object[h(1122, 1152)](Object[w(-566, -608, -549, -557)](Object[w(-550, -526, -577, -557)]({
+                                                hydratedButtons: r[h(1113, 1133)](c = r[h(1083, 1086)](m, null) || r[w(-574, -668, -668, -623)](m, void 0) ? void 0 : m[h(1150, 1169)], null) || r[h(1153, 1121)](c, void 0) ? void 0 : c[h(1128, 1142)].map(((e, t) => {
+                                                    function n(e, t, r, n) {
+                                                        return h(r, n - -1841)
+                                                    }
+
+                                                    function o(e, t, r, n) {
+                                                        return h(e, n - -1776)
+                                                    }
+                                                    var i, a, s, u, c, l, d, f;
+                                                    return r.hXmMF(e[o(-704, 0, 0, -692)], "quick_reply") ? {
+                                                        index: t,
+                                                        quickReplyButton: {
+                                                            displayText: (r[o(-535, 0, 0, -583)](i = JSON[n(0, 0, -698, -735)](e[o(-624, 0, 0, -596)]), null) || r[n(0, 0, -664, -705)](i, void 0) ? void 0 : i.display_text) || " ",
+                                                            id: (null === (a = JSON[o(-647, 0, 0, -670)](e[o(-573, 0, 0, -596)])) || r[n(0, 0, -600, -652)](a, void 0) ? void 0 : a.id) || "" + t
+                                                        }
+                                                    } : r[n(0, 0, -763, -732)](e.name, r[o(-577, 0, 0, -616)]) ? {
+                                                        index: t,
+                                                        urlButton: {
+                                                            displayText: (r[o(-722, 0, 0, -662)](s = JSON[o(-707, 0, 0, -670)](e[n(0, 0, -633, -661)]), null) || r[o(-568, 0, 0, -595)](s, void 0) ? void 0 : s[o(-649, 0, 0, -650)]) || " ",
+                                                            url: r[n(0, 0, -714, -660)](u = JSON[n(0, 0, -703, -735)](e.buttonParamsJson), null) || r.PKEhk(u, void 0) ? void 0 : u[o(-602, 0, 0, -589)]
+                                                        }
+                                                    } : r[n(0, 0, -744, -697)](e.name, n(0, 0, -777, -719)) ? {
+                                                        index: t,
+                                                        urlButton: {
+                                                            displayText: (r[o(-598, 0, 0, -641)](c = JSON.parse(e.buttonParamsJson), null) || r[n(0, 0, -696, -648)](c, void 0) ? void 0 : c[n(0, 0, -773, -715)]) || " ",
+                                                            url: o(-665, 0, 0, -663) + (r[o(-681, 0, 0, -675)](l = JSON[o(-662, 0, 0, -670)](e[o(-618, 0, 0, -596)]), null) || r.AENyZ(l, void 0) ? void 0 : l[n(0, 0, -596, -646)])
+                                                        }
+                                                    } : r.hjCGI(e[n(0, 0, -806, -757)], r[o(-592, 0, 0, -644)]) ? r[o(-602, 0, 0, -611)](r.udyYO, "YlEtk") ? {
+                                                        index: _0xdabcd2,
+                                                        callButton: {
+                                                            displayText: (null === (_0x55a3cc = _0x2810c9[o(-623, 0, 0, -670)](_0x2aa594.buttonParamsJson)) || r.JeQLu(_0x2169a9, void 0) ? void 0 : _0x2fd763[o(-708, 0, 0, -650)]) || " ",
+                                                            phoneNumber: r[n(0, 0, -641, -652)](_0xd903d8 = _0x1abd2b[n(0, 0, -741, -735)](_0x483b55[o(-572, 0, 0, -596)]), null) || r[o(-657, 0, 0, -618)](_0x5b0fa6, void 0) ? void 0 : _0x2c00e5.phone_number
+                                                        }
+                                                    } : {
+                                                        index: t,
+                                                        callButton: {
+                                                            displayText: (null === (d = JSON[o(-695, 0, 0, -670)](e.buttonParamsJson)) || r[o(-594, 0, 0, -641)](d, void 0) ? void 0 : d[o(-599, 0, 0, -650)]) || " ",
+                                                            phoneNumber: r.BEMoA(f = JSON[n(0, 0, -690, -735)](e[o(-547, 0, 0, -596)]), null) || r[n(0, 0, -706, -733)](f, void 0) ? void 0 : f[n(0, 0, -642, -658)]
+                                                        }
+                                                    } : null
+                                                }))[h(1208, 1173)]((e => null != e))
+                                            }, n), r[h(1153, 1109)](o, 1) ? {
+                                                hydratedTitleText: (r.sKpyS(l = m.header, null) || r[h(1146, 1112)](l, void 0) ? void 0 : l[h(1101, 1146)]) || " "
+                                            } : void 0), {
+                                                hydratedContentText: (r[h(1070, 1131)](d = r[w(-551, -624, -657, -602)](m, null) || void 0 === m ? void 0 : m.body, null) || r[h(1163, 1189)](d, void 0) ? void 0 : d[w(-533, -566, -572, -518)]) || " ",
+                                                hydratedFooterText: (r[h(1069, 1101)](f = r[h(1115, 1083)](m, null) || r[w(-636, -604, -593, -615)](m, void 0) ? void 0 : m[h(1072, 1100)], null) || r[h(1167, 1114)](f, void 0) ? void 0 : f[h(1237, 1191)]) || " "
+                                            })
+                                        }
+                                    }
+                                };
+                            delete b[h(1231, 1182)], b[h(1067, 1124)] = y ? p : i, b[h(1151, 1201)] = e.messageContextInfo
+                        }
+                    }
+                    const M = {};
+                    M[w(-576, -617, -524, -580)] = e, M[w(-451, -542, -465, -511)] = p;
+                    const P = {};
+
+                    function w(e, t, r, o) {
+                        return n(0, r, 0, o - -1464)
+                    }
+                    return P[w(0, 0, -578, -580)] = b, P[w(0, 0, -497, -511)] = g, [M, P]
+                }
+                a[o(-388, 0, -375)] = !0, Object[o(-466, 0, -455)](t, "__esModule", a), t[o(-426, 0, -446)] = function(e, t, a, s, c, l, d) {
+                    const f = {
+                        ibUJy: function(e, t) {
+                            return e === t
+                        },
+                        pXeQx: function(e, t) {
+                            return e === t
+                        },
+                        kxQFD: function(e, t, r, n, o, i, a) {
+                            return e(t, r, n, o, i, a)
+                        },
+                        rwFNb: p(581, 553, 564, 560),
+                        geQhi: p(650, 641, 610, 637),
+                        GZEhR: g(-59, -79, -37, -17),
+                        rVnJZ: function(e, t) {
+                            return e === t
+                        },
+                        bAyLw: function(e, t) {
+                            return e === t
+                        },
+                        xkqXa: p(551, 637, 597, 657),
+                        AnFOx: p(501, 584, 557, 572),
+                        uZkAJ: function(e, t) {
+                            return e === t
+                        },
+                        BBAQx: function(e, t) {
+                            return e === t
+                        },
+                        KCXrj: function(e, t) {
+                            return e === t
+                        },
+                        FNPIG: function(e, t, r) {
+                            return e(t, r)
+                        },
+                        vEgSJ: function(e, t) {
+                            return e !== t
+                        },
+                        wwkAe: function(e, t) {
+                            return e > t
+                        },
+                        UZnWQ: function(e, t, r, n, o) {
+                            return e(t, r, n, o)
+                        }
+                    };
+
+                    function p(e, t, r, n) {
+                        return o(t, 0, r - 1006)
+                    }
+
+                    function g(e, t, r, o) {
+                        return n(0, r, 0, e - -959)
+                    }
+                    return f[g(-5, 0, -12)](i, this, void 0, void 0, (function*() {
+                        const n = {
+                            fdVCM: function(e, t, n, o, i, a, s) {
+                                return f[(u = 931, c = 905, r(c - 706, u))](e, t, n, o, i, a, s);
+                                var u, c
+                            },
+                            JQGHT: function(e, t) {
+                                return e !== t
+                            },
+                            xBnmL: f[m(-582, -563, -614, -616)]
+                        };
+
+                        function o(e, t, r, n) {
+                            return g(e - 536, 0, t)
+                        }
+
+                        function m(e, t, r, n) {
+                            return p(0, e, r - -1286)
+                        }
+                        if (f.geQhi === f[o(434, 400)]) return _0x48ea9e = !0, null;
+                        {
+                            var y, b;
+                            if (f[o(475, 500)](typeof l, f[m(-575, 0, -614)])) {
+                                if (f.bAyLw(f[o(450, 502)], f.AnFOx)) return {
+                                    index: _0x5b18c2,
+                                    quickReplyButton: {
+                                        displayText: (f.ibUJy(_0x37f602 = _0x386991[m(-705, 0, -708)](_0x24b82a.buttonParamsJson), null) || f.ibUJy(_0x3ef5d7, void 0) ? void 0 : _0x127b27[m(-706, 0, -688)]) || " ",
+                                        id: (f.pXeQx(_0x415e54 = _0x5cb496.parse(_0x42719a[o(512, 555)]), null) || void 0 === _0x4910db ? void 0 : _0x4ab8b6.id) || "" + _0x1dac73
+                                    }
+                                };
+                                d = l
+                            }
+                            const r = [];
+                            if (f.uZkAJ(b = f[m(-716, 0, -653)](y = null === t || f.BBAQx(t, void 0) ? void 0 : t.viewOnceMessage, null) || f.bAyLw(y, void 0) ? void 0 : y[m(-651, 0, -646)], null) || f[m(-613, 0, -612)](b, void 0) ? void 0 : b[m(-656, 0, -675)]) {
+                                f[m(-559, 0, -622)](u, t, a)[o(487, 515)]((t => i(this, void 0, void 0, (function*() {
+                                    function o(e, t, r, n) {
+                                        return m(r, 0, e - 1074)
+                                    }
+
+                                    function i(e, t, r, n) {
+                                        return m(t, 0, n - 1077)
+                                    }
+                                    const a = yield n.fdVCM(d, e, t.proto, t[i(0, 430, 0, 461)], s, c, n.JQGHT(typeof l, n[o(427, 0, 453)]) ? l : void 0);
+                                    r[o(409, 0, 436)](...a[i(0, 286, 0, 341)].content[0][o(340, 0, 304)])
+                                }))))
+                            }
+                            const p = yield f[m(-652, 0, -684)](d, e, t, a, s, c, f.vEgSJ(typeof l, f[o(532, 503)]) ? l : void 0);
+                            return f[m(-683, 0, -637)](r.length, 0) && (p[m(-741, 0, -736)][o(412, 406)][0][m(-787, 0, -734)] = r), p
+                        }
+                    }))
+                }
             },
             54428: () => {}
         },
