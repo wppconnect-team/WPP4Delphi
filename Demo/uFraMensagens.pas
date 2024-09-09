@@ -473,26 +473,29 @@ begin
     options :=
       //'useTemplateButtons: undefined,' + //deprecated
       //'useTemplateButtons: true,' +  //deprecated
-      'createChat: true, ' +
-      'useInteractiveMesssage: true, ' + //Is Working Android and iOS
+      //'createChat: true, ' +
+      //'useInteractiveMesssage: true, ' + //Is Working Android and iOS
 
-      'buttons: ' +
+      'buttons:' +
       '[ ' +
         //Action Button
-        '{url: "https://wppconnect-team.github.io/", text: "🌐️ Acesse Nosso Site"}, ' +
-        //'{url: "https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
+        (*'{url:"https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code_expiration_minutes=10&code=otp881320",' +
+        'text:"Copiar"},' +
+        '{url:"https://wppconnect-team.github.io/",text:"Acesse Nosso Site"},' +*)
+        //'{url:"https://wa.me/5517981388414", text: "Fale Conosco"}, ' +
         //'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"}, ' +
 
 
         //Reply Button
-        '  {  ' +
+        (*'  {  ' +
         '    id: "001",  ' +
         '    text: "SIM"  ' +
         '  },  ' +
         '  {  ' +
         '    id: "002",  ' +
         '    text: "NÃO"  ' +
-        '  },  ' +
+        '  },  ' + *)
+
 
         //Copy Button
         '{ ' +
@@ -514,7 +517,7 @@ begin
       //'';
 
     //S_RETORNO := TWPPConnectEmoticons.robot + ' *Confirma Visita do Nosso Técnico?* ' + '\n';
-    S_RETORNO := '*Confirma Visita do Nosso Técnico?*';
+    S_RETORNO := '*Hello*';
     //S_RETORNO := TWPPConnectEmoticons.robot + ' *Teste Botão com Função Copy* ' + '\n';
 
     frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, S_RETORNO, options, 'SEUID1','SEUID2','SEUID3','SEUID4');
@@ -710,16 +713,20 @@ begin
         'createChat: true, ' +
         ///'useTemplateButtons: undefined, ' + //deprecated
         //'useTemplateButtons: true, ' + //deprecated
-        'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
+        //'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
         'footer: "Image With Button",  ' +
         'caption: "My image", ' +
         'type: "image", ' +
         'buttons: [ ' +
+
         '  { ' +
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
-        '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
+        '{phoneNumber: "0800404", text: "Qualquer Dúvida Ligue"},' +
+        //'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
+
+        (*
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
@@ -736,7 +743,8 @@ begin
         '            copy_code: "17981388414", ' +
         '        }) ' +
         '    } ' +
-        '  } ' +
+        '  } ' +*)
+
         ']  ';
 
       frDemo.TWPPConnect1.SendFileMessageNew(ed_num.text, LBase64.Text, options, '123');
@@ -1922,6 +1930,9 @@ begin
     LBase64 := TStringList.Create;
     TRY
       //LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\Base64Imagem.txt');
+      if FileExists('C:\Executaveis\WPPConnectDemo\base64Videos3.txt') then
+        LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos3.txt')
+      else
       if FileExists('C:\Executaveis\WPPConnectDemo\base64Videos2.txt') then
         LBase64.LoadFromFile('C:\Executaveis\WPPConnectDemo\base64Videos2.txt')
       else
@@ -1944,7 +1955,7 @@ begin
         'createChat: true, ' +
         ///'useTemplateButtons: undefined, ' + //deprecated
         //'useTemplateButtons: true, ' + //deprecated
-        'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
+        //'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
         'footer: "Video With Button",  ' +
         'caption: "My Video", ' +
         'type: "video", ' +
@@ -1953,20 +1964,21 @@ begin
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
-        '{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
 
-        (*
+        (*'{phoneNumber: "0800404", text: "☎️ Qualquer Dúvida Ligue"},' +
+
+
         '  { ' +
         '    id: "001",  ' +
         '    text: "Show de Bola"  ' +
-        '  },  ' +*)
+        '  },  ' +
         '  {  ' +
         '    id: "002",  ' +
         '    text: "Curti"  ' +
         '  },  ' +
+        *)
 
-
-        '  { ' +
+        (*'  { ' +
         '    raw: { ' +
         '        name: "cta_copy", ' +
         '        buttonParamsJson: JSON.stringify({ ' +
@@ -1974,7 +1986,8 @@ begin
         '            copy_code: "17981388414", ' +
         '        }) ' +
         '    } ' +
-        '  } ' +
+        '  } ' +*)
+
         ']  ';
 
       frDemo.TWPPConnect1.SendFileMessageEx(ed_num.text, LBase64.Text, options, '123');

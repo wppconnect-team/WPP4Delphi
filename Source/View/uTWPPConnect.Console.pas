@@ -681,11 +681,11 @@ procedure TFrmConsole.BrowserDestroyMsg(var aMessage : TMessage);
 begin
   CEFWindowParent1.Free;
   SleepNoFreeze(10);
-  save_log('  Th_Disconnected');
+  save_log(' BrowserDestroyMsg Th_Disconnected');
   SendNotificationCenterDirect(Th_Disconnected);
   SleepNoFreeze(150);
 
-  save_log('  Th_Destroying');
+  save_log(' BrowserDestroyMsg Th_Destroying');
   SendNotificationCenterDirect(Th_Destroying);
   SleepNoFreeze(10);
 end;

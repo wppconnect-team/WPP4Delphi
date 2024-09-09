@@ -45,13 +45,13 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '3.8.0.0'; //  01/09/2024
+  TWPPConnectVersion              = '3.9.0.0'; //  01/09/2024
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
   NomeArquivoInject               = 'js.abr';//'wppconnect-wa.js';
   NomeArquivoIni                  = 'ConfTWPPConnect.ini';
-  MsMaxFindJSinDesigner           = 6123;//15000;
+  MsMaxFindJSinDesigner           = 15000;//15000;
   VersaoMinima_CF4_Major          = 78;
   VersaoMinima_CF4_Minor          = 3;
   VersaoMinima_CF4_Release        = 0;
@@ -78,7 +78,7 @@ Const
   TPPConnectJS_decryptFile              = 'https://github.com/wppconnect-team/WPP4Delphi/blob/main/Demo/BIN/decryptFile.dll?raw=true';
 
   //TWPPConnectJS_JSUrlPadrao             = '';
-  TWPPConnectJS_JSLinhasMInimas         = 17726; //2400; //17726; //1400;
+  TWPPConnectJS_JSLinhasMInimas         = 3000; //17726; //2400; //17726; //1400;
   FrmConsole_JS_RetornoVazio            = '{"result":[]}';
   FrmConsole_JS_Ignorar                 = '{"name":"getUnreadMessages","result":"{\"result\":[]}"}';
   FrmConsole_JS_Ignorar2                = '{"name":"getList","result":"{\"result\":[]}"}';

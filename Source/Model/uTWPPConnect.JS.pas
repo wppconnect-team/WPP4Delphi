@@ -164,7 +164,7 @@ begin
     DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
     MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
     Caminho_JS           := MyIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
-    //TWPPConnectJS_JSUrlPadrao := Caminho_JS;
+
     MyIniFIle.Free;
   except on E: Exception do
   end;
@@ -173,8 +173,8 @@ begin
   FAutoUpdateTimeOut         := 10;
   FJSScript                  := TstringList.create;
   FAutoUpdate                := True;
-  //FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
-  FJSURL                     := TWPPConnectJS_JSUrlPadrao;
+  FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
+  //FJSURL                     := TWPPConnectJS_JSUrlPadrao;
   FDownloadJSType            := DT_Indy;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
@@ -278,7 +278,7 @@ begin
       Result := UpdateExec( Tup_Local );
 
     if Result then
-      save_log('TWPPConnectJS.UpdateNow Result: true') else  
+      save_log('TWPPConnectJS.UpdateNow Result: true') else
       save_log('TWPPConnectJS.UpdateNow Result: false');
   end
   else
@@ -299,14 +299,24 @@ begin
     if GlobalCEFApp.ErrorInt Then
       Exit;
   end;
+
   if (TValor.Count < TWPPConnectJS_JSLinhasMInimas) then    //nao tem linhas suficiente
+  begin
+    save_log('  ValidaJs "nao tem linhas suficiente" Result = false');
     Exit;
+  end;
 
   If Pos(AnsiUpperCase(';'),  AnsiUpperCase(TValor.Strings[0])) <= 0 then   //Nao tem a variavel
+  begin
+    save_log('  ValidaJs "Nao tem a variavel" Result = false');
     Exit;
+  end;
 
   If not ReadCSV(TValor.Strings[0], TValor.Strings[1]) Then
+  begin
+    save_log('  ValidaJs "ReadCSV" Result = false');
     Exit;
+  end;
 
   If (Pos(AnsiUpperCase('!window.Store'),       AnsiUpperCase(TValor.text))     <= 0) or
      (Pos(AnsiUpperCase('window.WAPI'),         AnsiUpperCase(TValor.text))     <= 0) or
@@ -354,6 +364,8 @@ begin
     LogAdd('Versao  JS.ABR: ' + InjectJSDefine.FVersion_JS);
     LogAdd('Versao     CEF: ' + LVersaoCefFull);
     LogAdd(' ');
+    save_log('  ValidaJs Result = True');
+
     Result := true;
   End;
 end;
