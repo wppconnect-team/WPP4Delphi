@@ -487,18 +487,18 @@ begin
 
 
         //Reply Button
-        (*'  {  ' +
+        '  {  ' +
         '    id: "001",  ' +
         '    text: "SIM"  ' +
         '  },  ' +
         '  {  ' +
         '    id: "002",  ' +
         '    text: "NÃO"  ' +
-        '  },  ' + *)
+        '  },  ' +
 
 
         //Copy Button
-        '{ ' +
+        (*'{ ' +
         '    raw: { ' +
         '        name: "cta_copy", ' +
         '        buttonParamsJson: JSON.stringify({ ' +
@@ -506,7 +506,7 @@ begin
         '            copy_code: "17981388414", ' +
         '        }) ' +
         '    } ' +
-        '} ' +
+        '} ' +*)
 
 
       '] ' +
@@ -1834,7 +1834,7 @@ begin
 
     options :=
       'createChat: true, ' +
-      'useInteractiveMesssage: true, ' + //Android AND iOS WORKING
+      'useInteractiveMesssage: true, ' +
       'caption: "My Document", ' +
       'footer: "Document With Button",  ' +
       'filename: "' + ExtractFileName(OpenDialog1.FileName) + '", ' +
@@ -1853,6 +1853,13 @@ begin
       '    id: "002",  ' +
       '    text: "Curti"  ' +
       '  },  ' + *)
+
+      '  { ' +
+      '    code: "789890", ' +
+      '    text: "Copy" '+
+      '  }, ' +
+
+      (*
       '  { ' +
       '    raw: { ' +
       '        name: "cta_copy", ' +
@@ -1862,6 +1869,8 @@ begin
       '        }) ' +
       '    } ' +
       '  } ' +
+      *)
+
       ']  ';
 
     frDemo.TWPPConnect1.SendFileMessageNew(ed_num.text, LBase64.Text, options, '123');

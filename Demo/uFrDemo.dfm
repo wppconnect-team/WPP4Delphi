@@ -1706,77 +1706,102 @@ object frDemo: TfrDemo
     end
     inherited gbAcoesChats: TScrollBox
       Height = 589
+      ExplicitHeight = 589
       inherited btnLimparConversa: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnArquivar: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnResponder: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnReagir: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnVerificarNumero: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnStatus: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnDetalhe: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnBloquear: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnDesbloquear: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnFixarChat: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnDesfixarChat: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited BitBtn1: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited BitBtn2: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnArquivarTodosChats: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnDeletarTodosChats: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited Button1: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnValidarListarNumeros: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnGetMessage: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited Button3: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited Button4: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited bEditMessage: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited btnDeletarOldChat: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited bGetMe: TButton
         Width = 204
+        ExplicitWidth = 204
       end
       inherited bGetMensagem: TButton
         Width = 204
+        ExplicitWidth = 204
       end
     end
     inherited GroupBox3: TGroupBox
@@ -5904,7 +5929,7 @@ object frDemo: TfrDemo
   end
   object TimerIsOnline: TTimer
     Enabled = False
-    Interval = 4000
+    Interval = 40000
     OnTimer = TimerIsOnlineTimer
     Left = 388
     Top = 8

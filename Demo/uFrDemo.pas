@@ -845,6 +845,7 @@ begin
         exit;
 
       TWPPConnect1.IsOnline;
+
     except on E: Exception do
     end;
 

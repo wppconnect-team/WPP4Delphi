@@ -750,14 +750,14 @@ type
     Findex            : Extended;
     FquickReplyButton : TArray<TquickReplyButtonClass>;
     FurlButton        : TArray<TurlButtonClass>;
-    FcallButton      : TArray<TcallButtonClass>;
+    FcallButton       : TArray<TcallButtonClass>;
   public
     property    index            : Extended                       read Findex            write Findex;
     property    quickReplyButton : TArray<TquickReplyButtonClass> read FquickReplyButton write FquickReplyButton;
     property    urlButton        : TArray<TurlButtonClass>        read FurlButton        write FurlButton;
     property    callButton       : TArray<TcallButtonClass>       read FcallButton       write FcallButton;
     function ToJsonString: string;
-    //class function FromJsonString(AJsonString: string): ThydratedButtonsClass;
+    class function FromJsonString(AJsonString: string): ThydratedButtonsClass;
   end;
 
   //Marcelo 09/08/2022
@@ -831,10 +831,14 @@ type
     FDescription: String;
     FListType: Extended;
     FSections: TArray<TSectionsClass>;
+    FfooterText: String;
+    Ftitle: String;
   public
     //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property buttonText: String read FButtonText write FButtonText;
     property description: String read FDescription write FDescription;
+    property title: String read Ftitle write Ftitle;
+    property footerText: String read FfooterText write FfooterText;
     property listType: Extended read FListType write FListType;
     property sections: TArray<TSectionsClass> read FSections write FSections;
     function ToJsonString: string;
@@ -2345,13 +2349,24 @@ THydratedButtonsClass2 = class
 private
   //F$$unknownFieldCount: Extended;
   FUrlButton: TUrlButtonClass2;
+  //FcallButton: TArray<TcallButtonClass>;
+  //FquickReplyButton: TArray<TquickReplyButtonClass>;
+  Findex: Extended;
+  FcallButton: TcallButtonClass;
+  FquickReplyButton: TquickReplyButtonClass;
+
+
 public
   //property &$$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
-  property urlButton: TUrlButtonClass2 read FUrlButton write FUrlButton;
+  property    urlButton        : TUrlButtonClass2               read FUrlButton        write FUrlButton;
+  property    &index           : Extended                       read Findex            write Findex;
+  property    quickReplyButton : TquickReplyButtonClass         read FquickReplyButton write FquickReplyButton;
+  property    callButton       : TcallButtonClass               read FcallButton       write FcallButton;
+
   //constructor Create;
   //destructor Destroy; override;
-  //function ToJsonString: string;
-  //class function FromJsonString(AJsonString: string): THydratedButtonsClass;
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): THydratedButtonsClass2;
 end;
 
 TWaveformClass = class(TClassPadrao)
@@ -2461,6 +2476,7 @@ private
   FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
   FInteractivePayload: TInteractivePayloadClass;
   FInteractiveHeader: TInteractiveHeaderClass;
+    FselectedButtonId: string;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2542,6 +2558,8 @@ public
   property requiresDirectConnection   : Boolean           read FrequiresDirectConnection  write FrequiresDirectConnection;
   property hydratedButtons       : TArray<THydratedButtonsClass2>   read FHydratedButtons write FHydratedButtons;
   property waveform              : TWaveformClass            read FWaveform               write FWaveform;
+
+  property selectedButtonId      : string                    read FselectedButtonId       write FselectedButtonId;
   property selectedId            : string                    read FselectedId             write FselectedId;
   property selectedIndex         : integer                   read FselectedIndex          write FselectedIndex;
   property privacyModeWhenSent   : TPrivacyModeWhenSentClass read FPrivacyModeWhenSent    write FPrivacyModeWhenSent;
@@ -4666,7 +4684,7 @@ end;
 
 class function TDynamicReplyButtonsClass.FromJsonString(AJsonString: string): TDynamicReplyButtonsClass;
 begin
-  result := TJson.JsonToObject<TDynamicReplyButtonsClass>(AJsonString)
+  result := TJson.JsonToObject<TDynamicReplyButtonsClass>(AJsonString);
 end;
 
 function TDynamicReplyButtonsClass.ToJsonString: string;
@@ -4715,6 +4733,11 @@ begin
 end;
 
 { ThydratedButtonsClass }
+
+class function ThydratedButtonsClass.FromJsonString(AJsonString: string): ThydratedButtonsClass;
+begin
+  result := TJson.JsonToObject<ThydratedButtonsClass>(AJsonString);
+end;
 
 function ThydratedButtonsClass.ToJsonString: string;
 begin
@@ -4803,6 +4826,18 @@ end;
 destructor TIsRequire_auth.Destroy;
 begin
   inherited;
+end;
+
+{ THydratedButtonsClass2 }
+
+class function THydratedButtonsClass2.FromJsonString(AJsonString: string): THydratedButtonsClass2;
+begin
+  result := TJson.JsonToObject<ThydratedButtonsClass2>(AJsonString);
+end;
+
+function THydratedButtonsClass2.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 end.
