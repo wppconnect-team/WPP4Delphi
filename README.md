@@ -49,7 +49,8 @@ Dependências:
 - [`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> <br>
 - [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi/releases/tag/109.0.5414.120">CEF4Delphi</a> <br> 
 Atualmente utilizando o CEF Versão: 109.0.5414.120- Binários: 109.1.18, compatível com o Windows 7 e 8 e Sever 2012, as versões superiores do CEF perdeu o suporte para esses Sistemas Operacionais;
-Download: 
+
+## Download: 
 - [`CEF4Delphi`] <a href="https://github.com/salvadordf/CEF4Delphi/releases/tag/109.0.5414.120">CEF4Delphi-Fontes</a> <br>
 - [`CEF Binários 32bit`] <a href="https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows32.tar.bz2">CEF4Delphi-Binários</a> <br>
 - [`CEF Binários 64bit`] <a href="https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64.tar.bz2">CEF4Delphi-Binários</a> <br>
@@ -59,7 +60,7 @@ Tutorial de instalação em vídeo:
   
 Link do grupo WhatsApp: https://chat.whatsapp.com/HzLflMQVjOPK9bpjzlxcMO
 
-Instalação: 
+Instalação Passo a Passo: 
   - Extraia para uma pasta os arquivos do CEF4Delphi 
   - Extraia para uma pasta os binários do CEF 
   - No Delphi adicione em Tools > Options > Library Path a pasta sources do CEF4Delphi "...\CEF4Delphi\source"
