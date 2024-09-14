@@ -516,7 +516,9 @@ resourcestring
 
 type
 
-    TLanguageInject       = (TL_Portugues_BR=0,  TL_English=1, TL_Espanol=2, TL_Farsi=3);
+    TLanguageInject       = (TL_Portugues_BR=0, TL_English=1, TL_Espanol=2, TL_Farsi=3, TL_Italian=4, TL_German=5, TL_French=6,
+      TL_Russian=7, TL_Afrikaans=8, TL_Hindi=9, TL_Indonesian=10, TL_Turkish=11, TL_Urdu=12, TL_Bengali=13 );
+
     TConnectionDBType     = (TCon_None=0, TCon_Memory=1,  TCon_FireDAC=2, TCon_DBExpress=3, TCon_ADO=4);
 
     TFormQrCodeType       = (Ft_Desktop=0,       Ft_Http=1,    Ft_None=2);  //Form ou RestDataWare
