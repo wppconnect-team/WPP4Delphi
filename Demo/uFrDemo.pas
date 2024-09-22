@@ -300,7 +300,7 @@ begin
   try
     //Request.User := '17981388414'
     Request.Prompt := Question;
-    Request.Model := 'text-davinci-003';
+    Request.Model := 'gpt-4'; //'text-davinci-003';
     Request.User := phoneNumber;
     Request.MaxTokens := 2048; // Be careful as this can quickly consume your API quota.
 
@@ -2123,6 +2123,26 @@ begin
       TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
 
+
+      if NewMessageResponse.msg.id.fromMe = False then
+        if SwtChatGPT.IsOn then
+        begin
+          if Question <> '' then
+          begin
+            //Créditos --> https://github.com/landgraf-dev/openai-delphi
+            Answer := AskQuestion(Question, wlo_Celular);
+            phoneNumber := Copy(Answer, 1, pos('#', Answer)-1);
+            Answer := StringReplace(Answer, phoneNumber + '#', '',[]);
+
+            if Trim(Answer) <> '' then
+              frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + Answer, 'createChat: true', '123')
+              //frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123')
+            else
+              frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + 'Could not retrieve an answer.', 'createChat: true', '123');
+
+          end;
+        end;
+
       {ProcessaMsgNaoLida(FChatID, From, idMensagem, '', '', contato,
         body, S_Caption, Title, Footer, DescricaoLista,
         filename, S_Type, eh_arquivo,
@@ -2244,6 +2264,9 @@ begin
       end;
       TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+
+
     end;
   end;
 
