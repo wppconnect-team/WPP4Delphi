@@ -133,7 +133,7 @@ begin
 
   GlobalCEFApp.DisableBlinkFeatures := 'AutomationControlled';
   GlobalCEFApp.DisableWebSecurity := True;
-  GlobalCEFApp.DisableSafeBrowsing := True;
+  //GlobalCEFApp.DisableSafeBrowsing := True;
 
   {start service cef4delphi chromium}
   If not GlobalCEFApp.StartMainProcess then Exit;
