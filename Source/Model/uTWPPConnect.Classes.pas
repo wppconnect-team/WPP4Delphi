@@ -184,6 +184,16 @@ type
     property timestamp          : Int64            read Ftimestamp                write Ftimestamp;
   end;
 
+  TPollVotesSnapshotClass = class(TClassPadrao)
+  private
+    FPollVotes: TArray<String>;
+  public
+    property pollVotes: TArray<String> read FPollVotes write FPollVotes;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TPollVotesSnapshotClass;
+  end;
+
+
   //Marcelo 27/04/2022
   TpollOptionsClass = class(TClassPadrao)
   private
@@ -929,6 +939,7 @@ type
     FscanLengths: TArray<Extended>;
     FInteractivePayload: TInteractivePayloadClass;
     FInteractiveHeader: TInteractiveHeaderClass;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
   public
     property    &type           : string     read Ftype               write Ftype;
     property    isFromTemplate  : Boolean    read FisFromTemplate     write FisFromTemplate;
@@ -955,6 +966,8 @@ type
     property    scanLengths                 : TArray<Extended>   read FscanLengths        write FscanLengths;
     property    interactivePayload: TInteractivePayloadClass     read FInteractivePayload write FInteractivePayload;
     property    interactiveHeader:  TInteractiveHeaderClass      read FInteractiveHeader  write FInteractiveHeader;
+    property    pollVotesSnapshot: TPollVotesSnapshotClass       read FPollVotesSnapshot  write FPollVotesSnapshot;
+    //TPollVotesSnapshotClass
   end;
 
   TstreamingSidecarClass = class(TClassPadrao)
@@ -1254,6 +1267,7 @@ type
     FLatestEditMsgKey: TLatestEditMsgKeyClass;
     FchatlistPreview: TchatlistPreviewClass;
     FpollOptions: TArray<TpollOptionsClass>;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
   public
     //constructor Create(pAJsonString: string);
     //destructor  Destroy;       override;
@@ -1358,6 +1372,7 @@ type
     property LatestEditMsgKey    : TLatestEditMsgKeyClass         read FLatestEditMsgKey    write FLatestEditMsgKey;
     property chatlistPreview     : TchatlistPreviewClass          read FchatlistPreview     write FchatlistPreview;
     property pollOptions         : TArray<TpollOptionsClass>      read FpollOptions         write FpollOptions;
+    property pollVotesSnapshot   : TPollVotesSnapshotClass        read FPollVotesSnapshot   write FPollVotesSnapshot;
   end;
 
   TItemClass = class(TClassPadrao)
@@ -1514,6 +1529,7 @@ type
     FtemplateParams: TArray<String>;
     FInteractivePayload: TInteractivePayloadClass;
     FInteractiveHeader: TInteractiveHeaderClass;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
     //FMsgs: TArray<TMsgsClass>;
 
     //FLastReceivedKey: TLastReceivedKeyClass;
@@ -1621,6 +1637,7 @@ type
 
     property interactivePayload          : TInteractivePayloadClass read FInteractivePayload write FInteractivePayload;
     property interactiveHeader           : TInteractiveHeaderClass  read FInteractiveHeader  write FInteractiveHeader;
+    property pollVotesSnapshot           : TPollVotesSnapshotClass  read FPollVotesSnapshot  write FPollVotesSnapshot;
   end;
 
 
@@ -1687,6 +1704,7 @@ type
     FmessageSecret: TmessageSecretClass;}
     //FpollOptions: TArray<TpollOptionsClass>;
     FpollOptions: TpollOptionsClass;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
 
     {FInteractiveHeader: TInteractiveHeaderClass;
     FInteractivePayload: TInteractivePayloadClass;
@@ -1759,6 +1777,8 @@ type
 
     property chatlistPreview    : TchatlistPreviewClass             read FchatlistPreview        write FchatlistPreview;
     property pollOptions        : TpollOptionsClass                 read FpollOptions            write FpollOptions;
+    property pollVotesSnapshot  : TPollVotesSnapshotClass           read FPollVotesSnapshot      write FPollVotesSnapshot;
+
     //property pollOptions        : TArray<TpollOptionsClass>         read FpollOptions            write FpollOptions;
 
     {property reportingTokenInfo : TReportingTokenInfoClass          read FReportingTokenInfo     write FReportingTokenInfo;
@@ -1770,6 +1790,8 @@ type
     property interactiveHeader  : TInteractiveHeaderClass           read FInteractiveHeader      write FInteractiveHeader;
     property LatestEditMsgKey   : TLatestEditMsgKeyClass            read FLatestEditMsgKey       write FLatestEditMsgKey;
     property listResponse       : TlistResponseClass                read FlistResponse           write FlistResponse;}
+
+
 
 
   end;
@@ -1861,6 +1883,7 @@ type
     F_phoneNumbers: TArray<String>;
     F_headerPhoneNumbers: TArray<String>;
     F_footerPhoneNumbers: TArray<String>;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -1921,6 +1944,7 @@ type
     property _phoneNumbers: TArray<String> read F_phoneNumbers write F_phoneNumbers;
     property _headerPhoneNumbers: TArray<String> read F_headerPhoneNumbers write F_headerPhoneNumbers;
     property _footerPhoneNumbers: TArray<String> read F_footerPhoneNumbers write F_footerPhoneNumbers;
+    property pollVotesSnapshot: TPollVotesSnapshotClass   read FPollVotesSnapshot  write FPollVotesSnapshot;
   end;
 
   TResultClass = class //MARCELO 03/09/2022
@@ -2476,7 +2500,8 @@ private
   FDynamicReplyButtons: TArray<TDynamicReplyButtonsClass>;
   FInteractivePayload: TInteractivePayloadClass;
   FInteractiveHeader: TInteractiveHeaderClass;
-    FselectedButtonId: string;
+  FselectedButtonId: string;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2568,6 +2593,7 @@ public
   //property interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
   property interactivePayload    : TInteractivePayloadClass   read FInteractivePayload    write FInteractivePayload;
   property interactiveHeader     : TInteractiveHeaderClass    read FInteractiveHeader     write FInteractiveHeader;
+  property pollVotesSnapshot     : TPollVotesSnapshotClass    read FPollVotesSnapshot     write FPollVotesSnapshot;
 end;
 
 //Marcelo 25/07/2023

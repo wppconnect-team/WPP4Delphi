@@ -32,6 +32,16 @@ type
 
   end;
 
+
+TPollVotesSnapshotClass = class(TClassPadrao)
+private
+  FPollVotes: TArray<String>;
+public
+  property pollVotes: TArray<String> read FPollVotes write FPollVotes;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TPollVotesSnapshotClass;
+end;
+
 TUrlButtonClass = class(TClassPadrao)
 private
   FDisplayText: String;
@@ -184,6 +194,7 @@ end;
     FisGif: Boolean;
     FselectedId: string;
     FselectedIndex: integer;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
   public
     property ack: Extended read FAck write FAck;
     property author: String read FAuthor write FAuthor;
@@ -256,6 +267,7 @@ end;
     property thumbnail: String read FThumbnail write FThumbnail;
     property selectedId            : string                  read FselectedId             write FselectedId;
     property selectedIndex         : integer                 read FselectedIndex          write FselectedIndex;
+    property pollVotesSnapshot     : TPollVotesSnapshotClass read FPollVotesSnapshot      write FPollVotesSnapshot;
 
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
