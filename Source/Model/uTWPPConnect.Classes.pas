@@ -1096,6 +1096,7 @@ type
     property list       : TListClass read FList       write FList;
     property interactivePayload: TInteractivePayloadClass     read FInteractivePayload write FInteractivePayload;
     property interactiveHeader: TInteractiveHeaderClass       read FInteractiveHeader  write FInteractiveHeader;
+
   end;
 
   //Marcelo 27/04/2022
