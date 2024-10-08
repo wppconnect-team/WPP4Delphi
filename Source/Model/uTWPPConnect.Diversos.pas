@@ -193,7 +193,8 @@ function ContainsUnicodeSequence(const Input: string): Boolean;
 var
   RegEx: TRegEx;
 begin
-  RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}\\u[A-Fa-f0-9]{4}');
+  //RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}\\u[A-Fa-f0-9]{4}');
+  RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}');
   Result := RegEx.IsMatch(Input);
 end;
 
