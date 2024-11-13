@@ -323,11 +323,8 @@ begin
     end;
 
     for I := 0 to frDemo.frameGrupos1.listaParticipantes.Items.Count -1 do
-    begin
-      //listaParticipantes
-      //mentionedList := mentionedList + '"' + frDemo.frameGrupos1.listaParticipantes.Items[frDemo.frameGrupos1.listaParticipantes.Selected.Index].SubItems[1] + '"' + ',';
       mentionedList := mentionedList + '"' + Copy(frDemo.frameGrupos1.listaParticipantes.Items[I].SubItems[1],1,Pos('@', frDemo.frameGrupos1.listaParticipantes.Items[I].SubItems[1])) + 'c.us' + '"' + ',';
-    end;
+
 
     mentionedList := Copy(mentionedList,1,Length(mentionedList)-1);
     mentionedList := ',mentionedList: [' + mentionedList + ']';
@@ -339,10 +336,8 @@ begin
     //frDemo.TWPPConnect1.markIsComposing(ed_num.Text, '5000'); //Digitando 5 Segundos
     //Sleep(5000);
 
-    frDemo.TWPPConnect1.Send(ed_num.Text, mem_message.Text);
 
-    //frDemo.TWPPConnect1.SendTextMessage(ed_num.Text, mem_message.Text, options, '');
-    //frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
+    frDemo.TWPPConnect1.SendTextMessageEx(ed_num.Text, mem_message.Text, options, '123');
   finally
     ed_num.SelectAll;
     ed_num.SetFocus;
