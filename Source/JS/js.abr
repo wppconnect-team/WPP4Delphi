@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.73;1.0.0.9;78.3.0
+//2.1.0.74;1.0.0.9;78.3.0
 //
 //
 
@@ -434,8 +434,8 @@ window.WAPI._serializeContactObj = async (obj) => {
         //isMyContact: obj.isMyContact,
 		isMyContact: (obj.isAddressBookContact === 1) ? true : false,
 		isAddressBookContact: obj.isAddressBookContact,
-        isPSA: obj.isPSA,
-        isUser: obj.isUser,
+        //isPSA: obj.isPSA,
+        //isUser: obj.isUser,
         isVerified: obj.isVerified,
         isWAContact: obj.isWAContact,		
         
@@ -478,7 +478,7 @@ window.WAPI._serializeMessageObj = (obj) => {
         isMMS: obj.isMMS,
         isMedia: obj.isMedia,
         isNotification: obj.isNotification,
-        isPSA: obj.isPSA,
+        //isPSA: obj.isPSA,
         type: obj.type,
         chat: _chat,
         isOnline: _chat.isOnline,
