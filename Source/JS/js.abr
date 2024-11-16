@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.75;1.0.0.9;78.3.0
+//2.1.0.76;1.0.0.9;78.3.0
 //
 //
 
@@ -374,10 +374,13 @@ window.WAPI._serializeChatObj = async (obj) => {
     //console.log("_serializeChatObj: " + contactnew);
     //console.log(obj);
 
+    
+
     return Object.assign(window.WAPI._serializeRawObj(obj), {
         id: obj.id,
         //kind: obj.kind,
         //kind: "chat",
+        kind: obj.isGroup ? 'grupo' : 'chat',
         isGroup: obj.isGroup,
         //isGroup: false,
         formattedTitle: obj.formattedTitle,
