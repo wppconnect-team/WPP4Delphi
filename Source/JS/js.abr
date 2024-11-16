@@ -434,8 +434,8 @@ window.WAPI._serializeContactObj = async (obj) => {
         //isMyContact: obj.isMyContact,
 		isMyContact: (obj.isAddressBookContact === 1) ? true : false,
 		isAddressBookContact: obj.isAddressBookContact,
-        //isPSA: obj.isPSA,
-        //isUser: obj.isUser,
+        isPSA: obj.isPSA,
+        isUser: obj.isUser,
         isVerified: obj.isVerified,
         isWAContact: obj.isWAContact,		
         
@@ -478,7 +478,7 @@ window.WAPI._serializeMessageObj = (obj) => {
         isMMS: obj.isMMS,
         isMedia: obj.isMedia,
         isNotification: obj.isNotification,
-        //isPSA: obj.isPSA,
+        isPSA: obj.isPSA,
         type: obj.type,
         chat: _chat,
         isOnline: _chat.isOnline,
@@ -2794,9 +2794,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.14.2 custom Marcelo
+//WPPCONNECT v3.14.3-alpha
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.14.2 */
+/*! wppconnect-team/wa-js v3.14.3-alpha.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -3049,11 +3049,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     return a
                 }
 
-                function P(e, t, r, n) {
+                function M(e, t, r, n) {
                     return J(V(t, e.length - r), e, r, n)
                 }
 
-                function M(e, t, r, n) {
+                function P(e, t, r, n) {
                     return J(function(e) {
                         const t = [];
                         for (let r = 0; r < e.length; ++r) t.push(255 & e.charCodeAt(r));
@@ -3256,11 +3256,11 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             return _(this, e, t, r);
                         case "utf8":
                         case "utf-8":
-                            return P(this, e, t, r);
+                            return M(this, e, t, r);
                         case "ascii":
                         case "latin1":
                         case "binary":
-                            return M(this, e, t, r);
+                            return P(this, e, t, r);
                         case "base64":
                             return w(this, e, t, r);
                         case "ucs2":
@@ -3948,16 +3948,16 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     }
                     var _ = String.fromCharCode;
 
-                    function P(e, t, r) {
+                    function M(e, t, r) {
                         var n, o = "";
                         for (r += t, n = t; n < r; n += 1) o += _(e.getUint8(n));
                         return o
                     }
-                    var M = p.btoa;
+                    var P = p.btoa;
 
                     function w(e, t) {
                         for (var r = [], n = 8192, o = new Uint8Array(e); o.length > 0;) r.push(_.apply(null, y(o.subarray(0, n)))), o = o.subarray(n);
-                        return "data:".concat(t, ";base64,").concat(M(r.join("")))
+                        return "data:".concat(t, ";base64,").concat(P(r.join("")))
                     }
 
                     function O(e) {
@@ -3974,7 +3974,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 }
                             if (o) {
                                 var u = o + 10;
-                                if ("Exif" === P(r, o + 4, 4)) {
+                                if ("Exif" === M(r, o + 4, 4)) {
                                     var c = r.getUint16(u);
                                     if (((n = 18761 === c) || 19789 === c) && 42 === r.getUint16(u + 2, n)) {
                                         var l = r.getUint32(u + 4, n);
@@ -4157,17 +4157,17 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     b = Math.abs(i) % 180 == 90,
                                     v = ("contain" === p.resize || "cover" === p.resize) && g(p.width) && g(p.height),
                                     _ = Math.max(p.maxWidth, 0) || 1 / 0,
-                                    P = Math.max(p.maxHeight, 0) || 1 / 0,
-                                    M = Math.max(p.minWidth, 0) || 0,
+                                    M = Math.max(p.maxHeight, 0) || 1 / 0,
+                                    P = Math.max(p.minWidth, 0) || 0,
                                     O = Math.max(p.minHeight, 0) || 0,
                                     j = r / n,
                                     S = p.width,
                                     I = p.height;
                                 if (b) {
-                                    var A = [P, _];
-                                    _ = A[0], P = A[1];
-                                    var k = [O, M];
-                                    M = k[0], O = k[1];
+                                    var A = [M, _];
+                                    _ = A[0], M = A[1];
+                                    var k = [O, P];
+                                    P = k[0], O = k[1];
                                     var B = [I, S];
                                     S = B[0], I = B[1]
                                 }
@@ -4175,15 +4175,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 var L = x({
                                     aspectRatio: j,
                                     width: _,
-                                    height: P
+                                    height: M
                                 }, "contain");
-                                _ = L.width, P = L.height;
+                                _ = L.width, M = L.height;
                                 var R = x({
                                     aspectRatio: j,
-                                    width: M,
+                                    width: P,
                                     height: O
                                 }, "cover");
-                                if (M = R.width, O = R.height, v) {
+                                if (P = R.width, O = R.height, v) {
                                     var F = x({
                                         aspectRatio: j,
                                         width: S,
@@ -4201,8 +4201,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                     var D = N.height;
                                     I = void 0 === D ? n : D
                                 }
-                                var W = -(S = Math.floor(C(Math.min(Math.max(S, M), _)))) / 2,
-                                    G = -(I = Math.floor(C(Math.min(Math.max(I, O), P)))) / 2,
+                                var W = -(S = Math.floor(C(Math.min(Math.max(S, P), _)))) / 2,
+                                    G = -(I = Math.floor(C(Math.min(Math.max(I, O), M)))) / 2,
                                     q = S,
                                     z = I,
                                     $ = [];
@@ -4574,8 +4574,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             }
                         }
                     });
-                    var P = _(["function"]),
-                        M = _(["object", "function"]);
+                    var M = _(["function"]),
+                        P = _(["object", "function"]);
 
                     function w(e, t, r) {
                         var n, o, i, a = 0,
@@ -4643,23 +4643,23 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             } else "object" === i ? o = t.length : (t = [t], o = 1)
                         }
                         var p, g, m, y, b, h, v, _ = null,
-                            P = t[n],
-                            M = t[n + 1];
+                            M = t[n],
+                            P = t[n + 1];
                         if (n === o) r._listeners && ("function" == typeof r._listeners ? (e && e.push(r._listeners), _ = [r]) : (e && e.push.apply(e, r._listeners), _ = [r]));
                         else {
-                            if ("*" === P) {
+                            if ("*" === M) {
                                 for (s = (h = d(r)).length; s-- > 0;) "_listeners" !== (p = h[s]) && (v = j(e, t, r[p], n + 1, o)) && (_ ? _.push.apply(_, v) : _ = v);
                                 return _
                             }
-                            if ("**" === P) {
-                                for ((b = n + 1 === o || n + 2 === o && "*" === M) && r._listeners && (_ = j(e, t, r, o, o)), s = (h = d(r)).length; s-- > 0;) "_listeners" !== (p = h[s]) && ("*" === p || "**" === p ? (r[p]._listeners && !b && (v = j(e, t, r[p], o, o)) && (_ ? _.push.apply(_, v) : _ = v), v = j(e, t, r[p], n, o)) : v = j(e, t, r[p], p === M ? n + 2 : n, o), v && (_ ? _.push.apply(_, v) : _ = v));
+                            if ("**" === M) {
+                                for ((b = n + 1 === o || n + 2 === o && "*" === P) && r._listeners && (_ = j(e, t, r, o, o)), s = (h = d(r)).length; s-- > 0;) "_listeners" !== (p = h[s]) && ("*" === p || "**" === p ? (r[p]._listeners && !b && (v = j(e, t, r[p], o, o)) && (_ ? _.push.apply(_, v) : _ = v), v = j(e, t, r[p], n, o)) : v = j(e, t, r[p], p === P ? n + 2 : n, o), v && (_ ? _.push.apply(_, v) : _ = v));
                                 return _
                             }
-                            r[P] && (_ = j(e, t, r[P], n + 1, o))
+                            r[M] && (_ = j(e, t, r[M], n + 1, o))
                         }
                         if ((g = r["*"]) && j(e, t, g, n + 1, o), m = r["**"])
                             if (n < o)
-                                for (m._listeners && j(e, t, m, o, o), s = (h = d(m)).length; s-- > 0;) "_listeners" !== (p = h[s]) && (p === M ? j(e, t, m[p], n + 2, o) : p === P ? j(e, t, m[p], n + 1, o) : ((y = {})[p] = m[p], j(e, t, {
+                                for (m._listeners && j(e, t, m, o, o), s = (h = d(m)).length; s-- > 0;) "_listeners" !== (p = h[s]) && (p === P ? j(e, t, m[p], n + 2, o) : p === M ? j(e, t, m[p], n + 1, o) : ((y = {})[p] = m[p], j(e, t, {
                                     "**": y
                                 }, n + 1, o)));
                             else m._listeners ? j(e, t, m, o, o) : m["*"] && m["*"]._listeners && j(e, t, m["*"], o, o);
@@ -4754,9 +4754,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             off: o,
                             reducers: o
                         }, {
-                            on: P,
-                            off: P,
-                            reducers: M
+                            on: M,
+                            off: M,
+                            reducers: P
                         }), a(t) ? i(y(t)) : i("string" == typeof t ? y(t.split(/\s+/)) : t), this
                     }, A.prototype.stopListeningTo = function(e, t) {
                         var r = this._observers;
@@ -5026,7 +5026,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             Promise,
                             overload: !1
                         }, {
-                            filter: P,
+                            filter: M,
                             Promise: v
                         })).Promise, (function(n, o, i) {
                             function a() {
@@ -5815,12 +5815,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                             const v = await h();
                             let _ = v.size - 24;
                             if (_check(v.id, [145, 7, 220, 183, 183, 169, 207, 17, 142, 230, 0, 192, 12, 32, 83, 101])) {
-                                const P = Buffer.alloc(16);
-                                if (_ -= await e.readBuffer(P), _check(P, [64, 158, 105, 248, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
+                                const M = Buffer.alloc(16);
+                                if (_ -= await e.readBuffer(M), _check(M, [64, 158, 105, 248, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
                                     ext: "asf",
                                     mime: "audio/x-ms-asf"
                                 };
-                                if (_check(P, [192, 239, 25, 188, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
+                                if (_check(M, [192, 239, 25, 188, 77, 91, 207, 17, 168, 253, 0, 128, 95, 92, 68, 43])) return {
                                     ext: "asf",
                                     mime: "video/x-ms-asf"
                                 };
@@ -5926,9 +5926,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         mime: "audio/x-voc"
                     };
                     if (r([4, 0, 0, 0]) && t.length >= 16) {
-                        const M = t.readUInt32LE(12);
-                        if (M > 12 && t.length >= M + 16) try {
-                            const w = t.slice(16, M + 16).toString();
+                        const P = t.readUInt32LE(12);
+                        if (P > 12 && t.length >= P + 16) try {
+                            const w = t.slice(16, P + 16).toString();
                             if (JSON.parse(w).files) return {
                                 ext: "asar",
                                 mime: "application/x-asar"
@@ -9296,7 +9296,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const c = "after" === t.direction ? "after" : "before",
                         l = t.id || (null === (r = s.lastReceivedKey) || void 0 === r ? void 0 : r.toString());
                     if (t.onlyUnread) {
-                        if (0 == s.unreadCount) return [];
+                        if (!s.hasUnread) return [];
                         const e = s.unreadCount < 0 ? 2 : s.unreadCount;
                         u = u < 0 ? e : Math.min(u, e)
                     } - 1 === u && (0, o.isMultiDevice)() && (u = 1 / 0);
@@ -9605,18 +9605,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return _.getMessageById
                     }
                 });
-                var P = r(48769);
+                var M = r(48769);
                 Object.defineProperty(t, "getMessages", {
                     enumerable: !0,
                     get: function() {
-                        return P.getMessages
+                        return M.getMessages
                     }
                 });
-                var M = r(91520);
+                var P = r(91520);
                 Object.defineProperty(t, "getNotes", {
                     enumerable: !0,
                     get: function() {
-                        return M.getNotes
+                        return P.getNotes
                     }
                 });
                 var w = r(55595);
@@ -9944,7 +9944,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var t;
                         return e.isGroup && "COMMUNITY" === (null === (t = e.groupMetadata) || void 0 === t ? void 0 : t.groupType)
                     })));
-                    e.onlyWithUnreadMessage && (i = i.filter((e => e.unreadCount > 0)));
+                    e.onlyWithUnreadMessage && (i = i.filter((e => e.hasUnread)));
                     if (e.withLabels) {
                         const t = e.withLabels.map((e => {
                             const t = n.LabelStore.findFirst((t => t.name === e));
@@ -10831,9 +10831,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         d = s.name,
                         g = await f.OpaqueData.createFromData(s, s.type),
                         _ = {};
-                    let P;
-                    "audio" === r.type ? (_.isPtt = r.isPtt, r.isPtt && (P = r.isViewOnce), _.precomputedFields = await (0, h.prepareAudioWaveform)(r, s)) : "image" === r.type ? P = r.isViewOnce : "video" === r.type ? (P = r.isViewOnce, _.asGif = r.isGif) : "document" === r.type ? _.asDocument = !0 : "sticker" === r.type && (_.asSticker = !0);
-                    const M = f.MediaPrep.prepRawMedia(g, _);
+                    let M;
+                    "audio" === r.type ? (_.isPtt = r.isPtt, r.isPtt && (M = r.isViewOnce), _.precomputedFields = await (0, h.prepareAudioWaveform)(r, s)) : "image" === r.type ? M = r.isViewOnce : "video" === r.type ? (M = r.isViewOnce, _.asGif = r.isGif) : "document" === r.type ? _.asDocument = !0 : "sticker" === r.type && (_.asSticker = !0);
+                    const P = f.MediaPrep.prepRawMedia(g, _);
                     let w = await (0, b.prepareRawMessage)(a, {
                         caption: r.caption || d,
                         filename: d,
@@ -10841,12 +10841,12 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         isCaptionByUser: null != r.caption
                     }, r);
                     w = (0, b.prepareMessageButtons)(w, r), r.markIsRead && (v("marking chat is read before send file"), await (0, b.markIsRead)(a.id).catch((() => null)));
-                    await M.waitForPrep(), (null == r ? void 0 : r.isPtv) && (M._mediaData.type = "ptv", M._mediaData.fullHeight = 1128, M._mediaData.fullWidth = 1128);
+                    await P.waitForPrep(), (null == r ? void 0 : r.isPtv) && (P._mediaData.type = "ptv", P._mediaData.fullHeight = 1128, P._mediaData.fullWidth = 1128);
                     v(`sending message (${r.type}) with id ${w.id}`);
-                    const O = M.sendToChat(a, {
+                    const O = P.sendToChat(a, {
                         caption: r.caption,
                         footer: r.footer,
-                        isViewOnce: P,
+                        isViewOnce: M,
                         productMsgOptions: "status@broadcast" === e ? void 0 : w,
                         addEvenWhilePreparing: !1,
                         type: w.type
@@ -11565,7 +11565,8 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         isUser: s.functions.getIsUser,
                         isPSA: s.functions.getIsPSA,
                         previewMessage: s.functions.getPreviewMessage,
-                        showChangeNumberNotification: s.functions.getShowChangeNumberNotification
+                        showChangeNumberNotification: s.functions.getShowChangeNumberNotification,
+                        hasUnread: s.functions.getHasUnread
                     };
                     for (const t in e) {
                         const r = e[t];
@@ -12641,18 +12642,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return _.needsUpdate
                     }
                 });
-                var P = r(27573);
+                var M = r(27573);
                 Object.defineProperty(t, "refreshQR", {
                     enumerable: !0,
                     get: function() {
-                        return P.refreshQR
+                        return M.refreshQR
                     }
                 });
-                var M = r(22987);
+                var P = r(22987);
                 Object.defineProperty(t, "setKeepAlive", {
                     enumerable: !0,
                     get: function() {
-                        return M.setKeepAlive
+                        return P.setKeepAlive
                     }
                 });
                 var w = r(52122);
@@ -14067,18 +14068,18 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         return _.iAmAdmin
                     }
                 });
-                var P = r(60641);
+                var M = r(60641);
                 Object.defineProperty(t, "iAmMember", {
                     enumerable: !0,
                     get: function() {
-                        return P.iAmMember
+                        return M.iAmMember
                     }
                 });
-                var M = r(81484);
+                var P = r(81484);
                 Object.defineProperty(t, "iAmRestrictedMember", {
                     enumerable: !0,
                     get: function() {
-                        return M.iAmRestrictedMember
+                        return P.iAmRestrictedMember
                     }
                 });
                 var w = r(94173);
@@ -14595,7 +14596,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     u = i(r(72927)),
                     c = r(13691),
                     l = r(26738);
-                a(r(26738), t), t.waVersion = "3.14.2";
+                a(r(26738), t), t.waVersion = "3.14.3-alpha.0";
                 const d = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     f = new l.Tracker("G-MTQ4KY110F"),
                     p = s.config.googleAnalyticsId ? new l.Tracker(s.config.googleAnalyticsId) : null;
@@ -14826,7 +14827,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return c.waitFor
                     }
-                }), t.version = "3.14.2", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
+                }), t.version = "3.14.3-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", a.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -18415,17 +18416,22 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 });
-                const n = r(1132);
-                (0, r(54993).exportModule)(t, {
+                const n = r(1132),
+                    o = r(54993);
+                (0, o.exportModule)(t, {
                     getShouldAppearInList: "getShouldAppearInList",
                     getPreviewMessage: "getPreviewMessage",
                     getShowChangeNumberNotification: "getShowChangeNumberNotification",
                     getShouldShowUnreadDivider: "getShouldShowUnreadDivider"
-                }, (e => e.getShouldAppearInList && e.getPreviewMessage && e.getShowChangeNumberNotification && e.getShouldShowUnreadDivider)), (0, n.injectFallbackModule)("getShouldAppearInList", {
+                }, (e => e.getShouldAppearInList && e.getPreviewMessage && e.getShowChangeNumberNotification && e.getShouldShowUnreadDivider)), (0, o.exportModule)(t, {
+                    getHasUnread: "getHasUnread"
+                }, (e => e.getHasUnread)), (0, n.injectFallbackModule)("getShouldAppearInList", {
                     getShouldAppearInList: e => e.shouldAppearInList,
                     getPreviewMessage: e => e.previewMessage,
                     getShowChangeNumberNotification: e => e.showChangeNumberNotification,
                     getShouldShowUnreadDivider: e => e.shouldShowUnreadDivider
+                }), (0, n.injectFallbackModule)("getHasUnread", {
+                    getHasUnread: e => e.hasUnread
                 })
             },
             27027: (e, t, r) => {
@@ -20540,6 +20546,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
+
 
 
 
