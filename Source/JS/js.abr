@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.74;1.0.0.9;78.3.0
+//2.1.0.75;1.0.0.9;78.3.0
 //
 //
 
@@ -376,7 +376,7 @@ window.WAPI._serializeChatObj = async (obj) => {
 
     return Object.assign(window.WAPI._serializeRawObj(obj), {
         id: obj.id,
-        kind: obj.kind,
+        //kind: obj.kind,
         //kind: "chat",
         isGroup: obj.isGroup,
         //isGroup: false,
@@ -2794,7 +2794,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.14.2
+//WPPCONNECT v3.14.2 custom Marcelo
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
 /*! wppconnect-team/wa-js v3.14.2 */
 (() => {
@@ -9296,7 +9296,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     const c = "after" === t.direction ? "after" : "before",
                         l = t.id || (null === (r = s.lastReceivedKey) || void 0 === r ? void 0 : r.toString());
                     if (t.onlyUnread) {
-                        if (!s.hasUnread) return [];
+                        if (0 == s.unreadCount) return [];
                         const e = s.unreadCount < 0 ? 2 : s.unreadCount;
                         u = u < 0 ? e : Math.min(u, e)
                     } - 1 === u && (0, o.isMultiDevice)() && (u = 1 / 0);
@@ -9944,7 +9944,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         var t;
                         return e.isGroup && "COMMUNITY" === (null === (t = e.groupMetadata) || void 0 === t ? void 0 : t.groupType)
                     })));
-                    e.onlyWithUnreadMessage && (i = i.filter((e => e.hasUnread)));
+                    e.onlyWithUnreadMessage && (i = i.filter((e => e.unreadCount > 0)));
                     if (e.withLabels) {
                         const t = e.withLabels.map((e => {
                             const t = n.LabelStore.findFirst((t => t.name === e));
@@ -20540,6 +20540,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
+
 
 
 //MARCELO Adicionado estás funções para obter o retorno do comando de envio
