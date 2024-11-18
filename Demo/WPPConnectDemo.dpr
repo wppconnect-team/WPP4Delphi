@@ -6,6 +6,7 @@ uses
   uTWPPConnect.ConfigCEF,
   iniFiles,
   SysUtils,
+  uDM in 'uDM.pas' {dm: TDataModule},
   u_Messagem in 'u_Messagem.pas',
   uFraLogin in 'uFraLogin.pas' {frameLogin: TFrame},
   uFraMensagens in 'uFraMensagens.pas' {frameMensagem: TFrame},
@@ -17,6 +18,7 @@ uses
   uFraCatalogo in 'uFraCatalogo.pas' {frameCatalogo: TFrame},
   uFraOutros in 'uFraOutros.pas' {frameOutros: TFrame},
   uFraComunidades in 'uFraComunidades.pas' {frameComunidades: TFrame};
+
 
 {$R *.res}
 
@@ -140,7 +142,9 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrDemo, frDemo);
+
   Application.Run;
 
 end.

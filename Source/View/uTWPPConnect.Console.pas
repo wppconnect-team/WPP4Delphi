@@ -957,7 +957,7 @@ procedure TFrmConsole.ProcessPhoneBook(PCOmmand: String);
 var
   LAllContacts : TRetornoAllContacts;
 begin
-  LAllContacts        := TRetornoAllContacts.Create(PCommand);
+  LAllContacts := TRetornoAllContacts.Create(PCommand);
   try
     if Assigned(TWPPConnect(FOwner).OnGetAllContactList ) then
        TWPPConnect(FOwner).OnGetAllContactList(LAllContacts);

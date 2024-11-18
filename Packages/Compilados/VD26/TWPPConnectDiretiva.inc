@@ -19,11 +19,12 @@
 //Descomente a diretiva para o tipo de aplicação que for usar, se for uma aplicação que irá executar sozinha em um servidor, utilize STANDALONE, se é uma aplicação que vai ser operada por um usuário 
 //utilize APPWINDOWS. 
 //NAO USE AS DUAS DIRETIVAS AO MESMO TEMPO
-{$DEFINE APPWINDOWS}
-{.$DEFINE STANDALONE}
+{$DEFINE APPWINDOWS} 
+{.$DEFINE STANDALONE} 
 
 //CEF Version 120 or Current
 {.$DEFINE CEFCurrentVersion}
+{.$DEFINE Typebot}
 
 {$DEFINE DELPHI_VERSION_UNKNOW}
 

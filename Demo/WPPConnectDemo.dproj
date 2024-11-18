@@ -146,6 +146,10 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="uDM.pas">
+            <Form>dm</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <DCCReference Include="u_Messagem.pas"/>
         <DCCReference Include="uFraLogin.pas">
             <Form>frameLogin</Form>

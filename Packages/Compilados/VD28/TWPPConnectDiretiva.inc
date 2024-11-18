@@ -25,7 +25,7 @@
 
 //CEF Version 120 or Current
 {.$DEFINE CEFCurrentVersion}
-
+{.$DEFINE Typebot}
 
 {$DEFINE DELPHI_VERSION_UNKNOW}
 

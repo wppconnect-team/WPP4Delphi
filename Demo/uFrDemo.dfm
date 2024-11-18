@@ -1561,7 +1561,7 @@ object frDemo: TfrDemo
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 746
+      Left = 606
       Top = 63
       Width = 146
       Height = 19
@@ -1585,6 +1585,19 @@ object frDemo: TfrDemo
       Font.Style = []
       ParentFont = False
     end
+    object Label2: TLabel
+      Left = 851
+      Top = 63
+      Width = 93
+      Height = 19
+      Caption = 'Url Typebot::'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Roboto'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
@@ -1594,36 +1607,27 @@ object frDemo: TfrDemo
       TabOrder = 0
       OnClick = btnAbrirZapClick
     end
-    object BitBtn2: TBitBtn
-      Left = 447
-      Top = 82
-      Width = 150
-      Height = 25
-      Caption = 'Progress WhatsApp'
-      TabOrder = 1
-      OnClick = BitBtn2Click
-    end
     object BitBtn3: TBitBtn
-      Left = 603
+      Left = 463
       Top = 82
       Width = 134
       Height = 25
       BiDiMode = bdRightToLeft
       Caption = 'Start ChatGPT'
       ParentBiDiMode = False
-      TabOrder = 2
+      TabOrder = 1
       OnClick = BitBtn3Click
     end
     object edtApiKeyChatGPT: TEdit
-      Left = 746
+      Left = 606
       Top = 84
-      Width = 271
+      Width = 239
       Height = 23
-      TabOrder = 3
+      TabOrder = 2
     end
     object SwtChatGPT: TToggleSwitch
-      Left = 938
-      Top = 58
+      Left = 764
+      Top = 60
       Width = 79
       Height = 21
       Font.Charset = ANSI_CHARSET
@@ -1632,7 +1636,28 @@ object frDemo: TfrDemo
       Font.Name = 'Roboto'
       Font.Style = [fsBold]
       ParentFont = False
+      TabOrder = 3
+    end
+    object eUrlTypebot: TEdit
+      Left = 851
+      Top = 84
+      Width = 224
+      Height = 23
       TabOrder = 4
+    end
+    object SwtTypebot: TToggleSwitch
+      Left = 995
+      Top = 60
+      Width = 79
+      Height = 21
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Roboto'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 5
+      OnClick = SwtTypebotClick
     end
   end
   object pnlrodape: TPanel
@@ -1689,11 +1714,23 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
+        end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
         end
       end
     end
