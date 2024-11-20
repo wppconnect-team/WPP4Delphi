@@ -254,6 +254,27 @@ type
     public
   end;
 
+  TctwaContextClass = class(TClassPadrao)
+    private
+      FConversionData: string;
+      FConversionSource: string;
+      FDescription: string;
+      FMediaType: Integer;
+      FMediaUrl: string;
+      FSourceUrl: string;
+      FThumbnail: string;
+      FTitle: string;
+    public
+      property ConversionData     : string       read FConversionData     write FConversionData;
+      property ConversionSource   : string       read FConversionSource   write FConversionSource;
+      property Description        : string       read FDescription        write FDescription;
+      property MediaType          : Integer      read FMediaType          write FMediaType;
+      property MediaUrl           : string       read FMediaUrl           write FMediaUrl;
+      property SourceUrl          : string       read FSourceUrl          write FSourceUrl;
+      property Thumbnail          : string       read FThumbnail          write FThumbnail;
+      property Title              : string       read FTitle               write FTitle;
+  end;
+
   TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
   private
     //Necessário Implementar, no meus testes está sempre vazio este ARRAY
@@ -1612,6 +1633,7 @@ type
     FInteractiveHeader: TInteractiveHeaderClass;
     FPollVotesSnapshot: TPollVotesSnapshotClass;
     FmessageSecret: TmessageSecretClass;
+    FctwaContext: TctwaContextClass;
     FchatlistPreview: TchatlistPreviewClass;
     FunreadMentionCount: Extended;
     FarchiveAtMentionViewedInDrawer: Boolean;
@@ -1726,6 +1748,7 @@ type
     property interactiveHeader           : TInteractiveHeaderClass  read FInteractiveHeader  write FInteractiveHeader;
     property pollVotesSnapshot           : TPollVotesSnapshotClass  read FPollVotesSnapshot  write FPollVotesSnapshot;
     property messageSecret               : TmessageSecretClass      read FmessageSecret      write FmessageSecret;
+    property ctwaContext                 : TctwaContextClass        read FctwaContext        write FctwaContext;
     property chatlistPreview             : TchatlistPreviewClass    read FchatlistPreview    write FchatlistPreview;
 
     property unreadMentionsOfMe  : TArray<TunreadMentionsOfMeClass> read FunreadMentionsOfMe   write FunreadMentionsOfMe;
