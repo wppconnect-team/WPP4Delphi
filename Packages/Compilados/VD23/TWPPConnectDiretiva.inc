@@ -14,6 +14,14 @@
 ####################################################################################################################
 }
 
+//utilize APPWINDOWS. 
+//NAO USE AS DUAS DIRETIVAS AO MESMO TEMPO
+{$DEFINE APPWINDOWS} 
+{.$DEFINE STANDALONE} 
+
+//CEF Version 120 or Current
+{.$DEFINE CEFCurrentVersion}
+{.$DEFINE Typebot}
 
 {$DEFINE DELPHI_VERSION_UNKNOW}
 

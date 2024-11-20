@@ -47,36 +47,36 @@ boss install github.com/wppconnect-team/WPP4Delphi
 
 Dependências: 
 - [`WPPConnect/wa-js`] <a href="https://github.com/wppconnect-team/wa-js">wa-js</a> <br>
-- [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi">CEF4Delphi</a> <br> 
-Atualmente utilizando o CEF Versão: 109.0.5414.120- Binários: 109.1.18;
-Download: 
-- [`CEF4Delphi`] <a href="https://drive.google.com/file/d/1edG4vBw46xx68T08ln9hwSVTRYslyv-r/view?usp=sharing">CEF4Delphi-Fontes</a> <br>
-- [`CEF Binários`] <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> <br>
+- [`CEF4Delphi`]  <a href="https://github.com/salvadordf/CEF4Delphi/releases/tag/109.0.5414.120">CEF4Delphi</a> <br> 
+Atualmente utilizando o CEF Versão: 109.0.5414.120- Binários: 109.1.18, compatível com o Windows 7 e 8 e Sever 2012, as versões superiores do CEF perdeu o suporte para esses Sistemas Operacionais;
+
+## Download: 
+- [`CEF4Delphi`] <a href="https://github.com/salvadordf/CEF4Delphi/releases/tag/109.0.5414.120">CEF4Delphi-Fontes</a> <br>
+- [`CEF Binários 32bit`] <a href="https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows32.tar.bz2">CEF4Delphi-Binários</a> <br>
+- [`CEF Binários 64bit`] <a href="https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows64.tar.bz2">CEF4Delphi-Binários</a> <br>
 
 Tutorial de instalação em vídeo: 
 [`Youtube`]  
   
+Link do grupo WhatsApp: https://chat.whatsapp.com/HzLflMQVjOPK9bpjzlxcMO
 
-Instalação: 
+Instalação Passo a Passo: 
   - Extraia para uma pasta os arquivos do CEF4Delphi 
   - Extraia para uma pasta os binários do CEF 
   - No Delphi adicione em Tools > Options > Library Path a pasta sources do CEF4Delphi "...\CEF4Delphi\source"
   - Abra o arquivo "...CEF4Delphi\packages\CEF4Delphi.dpk" no Delphi e então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
   - Após instalar, feche o projeto. 
-  - Adicione em Tools > Options > Library Path as pastas source do WPP4Delphi "...WPP4Delphi\Source\Model", "...WPP4Delphi\Source\Services", "...WPP4Delphi\Source\View", "...WPP4Delphi\Packages\Compilados"
-  - Dentro da pasta Packages\Compilados, existem subpastas D23, D24, D25, D26 e D27, adicione no library path a pasta correta conforme a sua versão do delphi 
-    D27: Delphi 10.4 Sydney
-	D26: Delphi 10.3 Rio 
-	D25: Delphi 10.2 Tokyo 
-	D24: Delphi 10.1 Berlin 
-	D23: Delphi 10 Seattle
+  - Adicione em Tools > Options > Library Path as pastas source do WPP4Delphi "...WPP4Delphi\Source\Model", "...WPP4Delphi\Source\Services", "...WPP4Delphi\Source\View", "...WPP4Delphi\Packages\Compilados", "...WPP4Delphi\Source\Other"
+  - Dentro da pasta Packages\Compilados, existem subpastas D23, D24, D25, D26, D27 e D28, adicione no library path a pasta correta conforme a sua versão do delphi 
+        Consulte em: https://delphidabbler.com/notes/version-numbers ou http://docwiki.embarcadero.com/RADStudio/Sydney/en/Compiler_Versions
   - Abra o arquivo "...WPP4Delphi\Packages\TWPP4DelphiCollection.dpk"
+  - Na Instalação do CEF4Delphi Superior a versão "120" precisa ser adicionado na Diretiva de Compilação --> "CEFCurrentVersion" antes de dar o Build no DPK 
   - Então faça um Build (shift+F9) e então "Install" (botão direito do mouse no Project Manager)
   - Abra o DEMO que está junto dos fontes do WPP4Delphi. 
   - Compile o projeto DEMO uma única vez e será criada a Pasta: C:\Executáveis\WPPConnectDemo 
   - Cole dentro dessa pasta o arquivo ConfTWPPConnect.ini que está em "...WPP4Delphi\Demo\BIN"
-  - Cole dentro da pasta: "C:\Executáveis\WPPConnectDemo" os binários do CEF que estão disponíveis: <a href="https://drive.google.com/file/d/1hZ0gT-sAvwkrvxfoR_XbjIKLqH2uodx4/view?usp=sharing">CEF4Delphi-Binários</a> 
-  - Extraia todos eles e copie para junto do executável do DEMO ou da sua aplicação. 
+  - Cole dentro da pasta: "C:\Executáveis\WPPConnectDemo" os binários do CEF que estão disponíveis: <a href="https://cef-builds.spotifycdn.com/cef_binary_109.1.18%2Bgf1c41e4%2Bchromium-109.0.5414.120_windows32.tar.bz2">CEF4Delphi-Binários</a> 
+  - Extraia todos eles e copie para junto do executável do DEMO ou da sua aplicação, lembrar de copiar o binários, da mesma versão correspondente. 
   
 
 ## ⚡️ Quickstart Lazarus

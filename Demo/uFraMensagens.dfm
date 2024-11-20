@@ -1,7 +1,7 @@
 object frameMensagem: TframeMensagem
   Left = 0
   Top = 0
-  Width = 968
+  Width = 1000
   Height = 810
   Align = alClient
   Font.Charset = ANSI_CHARSET
@@ -22,9 +22,9 @@ object frameMensagem: TframeMensagem
     object Label1: TLabel
       Left = 11
       Top = 59
-      Width = 67
+      Width = 56
       Height = 15
-      Caption = 'Mensagem:'
+      Caption = 'Message:'
     end
     object Label2: TLabel
       Left = 12
@@ -38,9 +38,9 @@ object frameMensagem: TframeMensagem
       Top = 24
       Width = 214
       Height = 23
-      EditLabel.Width = 96
+      EditLabel.Width = 117
       EditLabel.Height = 15
-      EditLabel.Caption = 'N'#250'mero Destino:'
+      EditLabel.Caption = 'Destination Number:'
       TabOrder = 0
     end
     object mem_message: TMemo
@@ -127,23 +127,23 @@ object frameMensagem: TframeMensagem
       Text = '["OP'#199#195'O 1","OP'#199#195'O 2","OP'#199#195'O 3"]'
     end
   end
-  object gbAcoesBasicas: TGroupBox
+  object gbAcoesBasicas: TScrollBox
     AlignWithMargins = True
     Left = 250
     Top = 3
     Width = 231
     Height = 804
+    VertScrollBar.Position = 65
     Align = alLeft
-    Caption = 'Envio de Mensagens'
     TabOrder = 1
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 392
-      Width = 221
+      Left = 3
+      Top = 527
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Agendamento de Liga'#231#227'o'
+      Caption = 'Send Scheduled Event'
       ImageIndex = 11
       Images = ImageList1
       TabOrder = 12
@@ -151,12 +151,12 @@ object frameMensagem: TframeMensagem
     end
     object btnLink: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 206
-      Width = 221
+      Left = 3
+      Top = 279
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar LinkPreview'
+      Caption = 'Send LinkPreview'
       ImageIndex = 6
       Images = ImageList1
       TabOrder = 7
@@ -164,12 +164,12 @@ object frameMensagem: TframeMensagem
     end
     object btnImagemBotao: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 423
-      Width = 221
+      Left = 3
+      Top = 558
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Criar Canal'
+      Caption = 'Criar Canal / Create Newsletter'
       ImageIndex = 5
       Images = ImageList1
       TabOrder = 6
@@ -177,12 +177,12 @@ object frameMensagem: TframeMensagem
     end
     object btnImagem: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 175
-      Width = 221
+      Left = 3
+      Top = 155
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Imagem'
+      Caption = 'Enviar Imagem / Send Image'
       ImageIndex = 5
       Images = ImageList1
       TabOrder = 5
@@ -190,12 +190,12 @@ object frameMensagem: TframeMensagem
     end
     object btnInstantVideo: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 144
-      Width = 221
+      Left = 3
+      Top = 124
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Instant Video'
+      Caption = 'Send Instant Video'
       ImageIndex = 4
       Images = ImageList1
       TabOrder = 4
@@ -203,12 +203,12 @@ object frameMensagem: TframeMensagem
     end
     object btnVideo: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 113
-      Width = 221
+      Left = 3
+      Top = 62
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar V'#237'deo'
+      Caption = 'Enviar V'#237'deo / Send Video'
       HotImageIndex = 3
       ImageIndex = 3
       Images = ImageList1
@@ -217,12 +217,12 @@ object frameMensagem: TframeMensagem
     end
     object btnListaMenu: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 82
-      Width = 221
+      Left = 3
+      Top = 31
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Lista/Menu'
+      Caption = 'Enviar Lista / Send List'
       HotImageIndex = 2
       ImageIndex = 2
       Images = ImageList1
@@ -231,12 +231,12 @@ object frameMensagem: TframeMensagem
     end
     object btnBotaoSimples: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 51
-      Width = 221
+      Left = 3
+      Top = 0
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Criar Vota'#231#227'o'
+      Caption = 'Enviar Bot'#227'o / Send Button '
       HotImageIndex = 2
       ImageIndex = 1
       Images = ImageList1
@@ -245,12 +245,12 @@ object frameMensagem: TframeMensagem
     end
     object btnTextoSimples: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 20
-      Width = 221
+      Left = 3
+      Top = -31
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Texto Simples'
+      Caption = 'Texto Simples / Simple Text'
       ImageIndex = 0
       Images = ImageList1
       TabOrder = 0
@@ -258,12 +258,12 @@ object frameMensagem: TframeMensagem
     end
     object btnAudio: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 237
-      Width = 221
+      Left = 3
+      Top = 310
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar '#193'udio'
+      Caption = 'Enviar '#193'udio / Send Audio'
       ImageIndex = 7
       Images = ImageList1
       TabOrder = 8
@@ -271,12 +271,12 @@ object frameMensagem: TframeMensagem
     end
     object btnContato: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 299
-      Width = 221
+      Left = 3
+      Top = 372
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Contato'
+      Caption = 'Enviar Contato / Send Contact'
       ImageIndex = 9
       Images = ImageList1
       TabOrder = 10
@@ -284,12 +284,12 @@ object frameMensagem: TframeMensagem
     end
     object btnSticker: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 268
-      Width = 221
+      Left = 3
+      Top = 341
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Sticker'
+      Caption = 'Send Sticker'
       ImageIndex = 8
       Images = ImageList1
       TabOrder = 9
@@ -297,12 +297,12 @@ object frameMensagem: TframeMensagem
     end
     object btnLocalizacao: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 330
-      Width = 221
+      Left = 3
+      Top = 403
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Localiza'#231#227'o'
+      Caption = 'Send Location'
       ImageIndex = 10
       Images = ImageList1
       TabOrder = 11
@@ -310,12 +310,12 @@ object frameMensagem: TframeMensagem
     end
     object btnArquivo: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 361
-      Width = 221
+      Left = 3
+      Top = 496
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Arquivo Selecionado Pasta'
+      Caption = 'Send File Folder'
       ImageIndex = 6
       Images = ImageList1
       TabOrder = 13
@@ -323,12 +323,12 @@ object frameMensagem: TframeMensagem
     end
     object btnStatusTexto: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 454
-      Width = 221
+      Left = 3
+      Top = 589
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Texto Status'
+      Caption = 'Send Text Status'
       ImageIndex = 19
       Images = ImageList1
       TabOrder = 14
@@ -336,12 +336,12 @@ object frameMensagem: TframeMensagem
     end
     object btnStatusImagem: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 485
-      Width = 221
+      Left = 3
+      Top = 620
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Imagem Status'
+      Caption = 'Send Image Status'
       ImageIndex = 5
       Images = ImageList1
       TabOrder = 15
@@ -349,12 +349,12 @@ object frameMensagem: TframeMensagem
     end
     object btnVideoStatus: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 516
-      Width = 221
+      Left = 3
+      Top = 651
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Enviar Video Status'
+      Caption = 'Send Video Status'
       ImageIndex = 3
       Images = ImageList1
       TabOrder = 16
@@ -362,12 +362,12 @@ object frameMensagem: TframeMensagem
     end
     object Button2: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 547
-      Width = 221
+      Left = 3
+      Top = 682
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Apagar Mensagem'
+      Caption = 'Delete Message'
       ImageIndex = 15
       Images = ImageList1
       TabOrder = 17
@@ -375,12 +375,12 @@ object frameMensagem: TframeMensagem
     end
     object bTextoMarcandoTodosGrupo: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 578
-      Width = 221
+      Left = 3
+      Top = 713
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Texto Simples Marcando Todos'
+      Caption = 'Simple Text Marking All Group'
       ImageIndex = 0
       Images = ImageList1
       TabOrder = 18
@@ -388,12 +388,12 @@ object frameMensagem: TframeMensagem
     end
     object btnLigar: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 609
-      Width = 221
+      Left = 3
+      Top = 744
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Realizar uma Liga'#231#227'o'
+      Caption = 'Make a Call'
       ImageIndex = 19
       Images = ImageList1
       TabOrder = 19
@@ -401,35 +401,126 @@ object frameMensagem: TframeMensagem
     end
     object btnEncerrarChamada: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 640
-      Width = 221
+      Left = 3
+      Top = 775
+      Width = 204
       Height = 25
       Align = alTop
-      Caption = 'Finalizar uma Liga'#231#227'o'
+      Caption = 'End a Call'
       ImageIndex = 19
       Images = ImageList1
       TabOrder = 20
       OnClick = btnEncerrarChamadaClick
     end
+    object btnSendSimpleTextNew: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = -62
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Texto Simples New / Simple Text'
+      ImageIndex = 0
+      Images = ImageList1
+      TabOrder = 21
+      OnClick = btnSendSimpleTextNewClick
+    end
+    object Button5: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 465
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send File Folder New'
+      ImageIndex = 6
+      Images = ImageList1
+      TabOrder = 22
+      OnClick = Button5Click
+    end
+    object btnPoolMessage: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 434
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Criar Vota'#231#227'o / Create Pool'
+      HotImageIndex = 2
+      ImageIndex = 1
+      Images = ImageList1
+      TabOrder = 23
+      OnClick = btnPoolMessageClick
+    end
+    object btnImageButton: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 248
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send Image Button'
+      ImageIndex = 5
+      Images = ImageList1
+      TabOrder = 24
+      OnClick = btnImageButtonClick
+    end
+    object SendPix: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 186
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send PIX Brazil'
+      ImageIndex = 26
+      Images = ImageList1
+      TabOrder = 25
+      OnClick = SendPixClick
+    end
+    object SendDocumentButton: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 217
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send Document Button'
+      ImageIndex = 27
+      Images = ImageList1
+      TabOrder = 26
+      OnClick = SendDocumentButtonClick
+    end
+    object btnSendVideoButton: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 93
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send Video Button'
+      ImageIndex = 4
+      Images = ImageList1
+      TabOrder = 27
+      OnClick = btnSendVideoButtonClick
+    end
   end
-  object GroupBox2: TGroupBox
+  object gbAcoesChats: TScrollBox
     AlignWithMargins = True
     Left = 487
     Top = 3
     Width = 231
     Height = 804
     Align = alLeft
-    Caption = 'Op'#231#245'es de Chat'
     TabOrder = 2
     object btnLimparConversa: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 237
+      Left = 3
+      Top = 220
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Limpar Conversa'
+      Caption = 'Limpar Conversa / Clean Chat'
       ImageIndex = 15
       Images = ImageList1
       TabOrder = 5
@@ -437,12 +528,12 @@ object frameMensagem: TframeMensagem
     end
     object btnArquivar: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 175
+      Left = 3
+      Top = 158
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Arquivar Chat'
+      Caption = 'Archive Chat'
       ImageIndex = 14
       Images = ImageList1
       TabOrder = 3
@@ -450,12 +541,12 @@ object frameMensagem: TframeMensagem
     end
     object btnResponder: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 51
+      Left = 3
+      Top = 34
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Responder Mensagem'
+      Caption = 'Reply Message'
       ImageIndex = 14
       Images = ImageList1
       TabOrder = 1
@@ -463,12 +554,12 @@ object frameMensagem: TframeMensagem
     end
     object btnReagir: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 20
+      Left = 3
+      Top = 3
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Reagir Mensagem'
+      Caption = 'React Message'
       ImageIndex = 12
       Images = ImageList1
       TabOrder = 0
@@ -476,12 +567,12 @@ object frameMensagem: TframeMensagem
     end
     object btnVerificarNumero: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 268
+      Left = 3
+      Top = 251
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Verificar N'#250'mero'
+      Caption = 'Verificar N'#250'mero / Check Number'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 6
@@ -489,12 +580,12 @@ object frameMensagem: TframeMensagem
     end
     object btnStatus: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 361
+      Left = 3
+      Top = 344
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Verificar Status'
+      Caption = 'Check Status'
       ImageIndex = 18
       Images = ImageList1
       TabOrder = 7
@@ -502,12 +593,12 @@ object frameMensagem: TframeMensagem
     end
     object btnDetalhe: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 144
+      Left = 3
+      Top = 127
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Encaminhar Mensagem'
+      Caption = 'Forward Message'
       ImageIndex = 2
       Images = ImageList1
       TabOrder = 8
@@ -515,12 +606,12 @@ object frameMensagem: TframeMensagem
     end
     object btnBloquear: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 392
+      Left = 3
+      Top = 375
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Bloquear Contato'
+      Caption = 'Block Contact'
       ImageIndex = 20
       Images = ImageList1
       TabOrder = 9
@@ -528,12 +619,12 @@ object frameMensagem: TframeMensagem
     end
     object btnDesbloquear: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 423
+      Left = 3
+      Top = 406
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Desbloquear Contato'
+      Caption = 'UnBlock Contact'
       ImageIndex = 21
       Images = ImageList1
       TabOrder = 10
@@ -541,12 +632,12 @@ object frameMensagem: TframeMensagem
     end
     object btnFixarChat: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 454
+      Left = 3
+      Top = 437
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Fixar Chat'
+      Caption = 'Fix Chat'
       ImageIndex = 22
       Images = ImageList1
       TabOrder = 11
@@ -554,12 +645,12 @@ object frameMensagem: TframeMensagem
     end
     object btnDesfixarChat: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 485
+      Left = 3
+      Top = 468
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Desfixar Chat'
+      Caption = 'Unfix Chat'
       ImageIndex = 23
       Images = ImageList1
       TabOrder = 12
@@ -567,12 +658,12 @@ object frameMensagem: TframeMensagem
     end
     object BitBtn1: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 206
+      Left = 3
+      Top = 189
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Desarquivar Chat'
+      Caption = 'Unarchive Chat'
       ImageIndex = 17
       Images = ImageList1
       TabOrder = 4
@@ -580,12 +671,12 @@ object frameMensagem: TframeMensagem
     end
     object BitBtn2: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 82
+      Left = 3
+      Top = 65
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Status da Mensagem'
+      Caption = 'Status Message'
       ImageIndex = 13
       Images = ImageList1
       TabOrder = 2
@@ -593,12 +684,12 @@ object frameMensagem: TframeMensagem
     end
     object btnArquivarTodosChats: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 516
+      Left = 3
+      Top = 499
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Arquivar todos os Chats'
+      Caption = 'Archive All Chats'
       ImageIndex = 14
       Images = ImageList1
       TabOrder = 13
@@ -606,12 +697,12 @@ object frameMensagem: TframeMensagem
     end
     object btnDeletarTodosChats: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 578
+      Left = 3
+      Top = 561
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Deletar todos os Chats'
+      Caption = 'Delete All Chats'
       ImageIndex = 15
       Images = ImageList1
       TabOrder = 14
@@ -619,12 +710,12 @@ object frameMensagem: TframeMensagem
     end
     object Button1: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 609
+      Left = 3
+      Top = 592
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Visto por '#218'ltimo'
+      Caption = 'Visto por '#218'ltimo / Last Seen'
       ImageIndex = 18
       Images = ImageList1
       TabOrder = 15
@@ -632,13 +723,13 @@ object frameMensagem: TframeMensagem
     end
     object btnValidarListarNumeros: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 640
+      Left = 3
+      Top = 623
       Width = 221
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Validar Lista de N'#250'meros'
+      Caption = 'Validate List of Numbers'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 16
@@ -646,13 +737,13 @@ object frameMensagem: TframeMensagem
     end
     object btnGetMessage: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 671
+      Left = 3
+      Top = 654
       Width = 221
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Get Plataforma'
+      Caption = 'Get Platform'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 17
@@ -660,8 +751,8 @@ object frameMensagem: TframeMensagem
     end
     object Button3: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 702
+      Left = 3
+      Top = 685
       Width = 221
       Height = 25
       Cursor = crHandPoint
@@ -674,13 +765,13 @@ object frameMensagem: TframeMensagem
     end
     object Button4: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 733
+      Left = 3
+      Top = 716
       Width = 221
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Marcar Audio como Escutado'
+      Caption = 'Mark Audio as Listened'
       ImageIndex = 16
       Images = ImageList1
       TabOrder = 19
@@ -688,13 +779,13 @@ object frameMensagem: TframeMensagem
     end
     object bEditMessage: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 113
+      Left = 3
+      Top = 96
       Width = 221
       Height = 25
       Cursor = crHandPoint
       Align = alTop
-      Caption = 'Editar Mensagem'
+      Caption = 'Edit Message'
       ImageIndex = 0
       Images = ImageList1
       TabOrder = 20
@@ -702,12 +793,12 @@ object frameMensagem: TframeMensagem
     end
     object btnDeletarOldChat: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 547
+      Left = 3
+      Top = 530
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Deletar Old Chats Novo'
+      Caption = 'Delete Old Chats New'
       ImageIndex = 15
       Images = ImageList1
       TabOrder = 21
@@ -715,8 +806,8 @@ object frameMensagem: TframeMensagem
     end
     object bGetMe: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 330
+      Left = 3
+      Top = 313
       Width = 221
       Height = 25
       Align = alTop
@@ -728,12 +819,12 @@ object frameMensagem: TframeMensagem
     end
     object bGetMensagem: TButton
       AlignWithMargins = True
-      Left = 5
-      Top = 299
+      Left = 3
+      Top = 282
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'Get Mensagens'
+      Caption = 'Get Messages'
       ImageIndex = 18
       Images = ImageList1
       TabOrder = 23
@@ -744,25 +835,25 @@ object frameMensagem: TframeMensagem
     AlignWithMargins = True
     Left = 724
     Top = 3
-    Width = 231
+    Width = 263
     Height = 804
     Align = alLeft
     Anchors = [akLeft, akTop, akRight, akBottom]
-    Caption = 'Fun'#231#245'es Diversas'
+    Caption = 'Diverse Functions'
     TabOrder = 3
     object groupListaContatos: TGroupBox
       AlignWithMargins = True
       Left = 5
       Top = 20
-      Width = 221
+      Width = 253
       Height = 229
       Align = alTop
-      Caption = 'Listar Contatos'
+      Caption = 'List Contacts'
       TabOrder = 0
       object Panel4: TPanel
         Left = 2
         Top = 17
-        Width = 217
+        Width = 249
         Height = 31
         Align = alTop
         BevelOuter = bvNone
@@ -773,14 +864,14 @@ object frameMensagem: TframeMensagem
           AlignWithMargins = True
           Left = 2
           Top = 2
-          Width = 213
+          Width = 245
           Height = 27
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alTop
-          Caption = 'Listar Contatos'
+          Caption = 'Listar Contatos / List Contacts'
           ImageIndex = 9
           Images = ImageList1
           TabOrder = 0
@@ -791,7 +882,7 @@ object frameMensagem: TframeMensagem
         AlignWithMargins = True
         Left = 5
         Top = 51
-        Width = 211
+        Width = 243
         Height = 173
         Align = alClient
         Columns = <>
@@ -808,10 +899,10 @@ object frameMensagem: TframeMensagem
     object groupListaChats: TGroupBox
       Left = 2
       Top = 252
-      Width = 227
+      Width = 259
       Height = 550
       Align = alClient
-      Caption = 'Listar Chats'
+      Caption = 'Chats List'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -823,7 +914,7 @@ object frameMensagem: TframeMensagem
         AlignWithMargins = True
         Left = 5
         Top = 18
-        Width = 217
+        Width = 249
         Height = 25
         Align = alTop
         Caption = 'Listar Chats / Chat list'
@@ -842,7 +933,7 @@ object frameMensagem: TframeMensagem
         AlignWithMargins = True
         Left = 5
         Top = 49
-        Width = 217
+        Width = 249
         Height = 496
         Align = alClient
         Columns = <>
@@ -862,8 +953,14 @@ object frameMensagem: TframeMensagem
     Left = 759
     Top = 67
     Bitmap = {
-      494C01011A003000040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
-      0000000000003600000028000000400000007000000001002000000000000070
+      494C01011D003000040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000008000000001002000000000000080
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000FF000000FF000000FF0000
@@ -875,123 +972,245 @@ object frameMensagem: TframeMensagem
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FFE9DED300CBA98700B9875600B0794100B7814A00C3976B00DDC3AB000000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
       00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000CBF1FB005AD3F40052D3
-      F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3
-      F60052D3F6005AD4F400CCF2FB0000000000000000FF000000FF000000FFD0AD
-      8B00AE763D00B1773E00B1773E00B1773E00B1773E00B3783E00B4793E00BB87
-      5200EDE0D300000000FF000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000078DCF70052D3F60052D3
-      F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3
-      F60052D3F60052D3F60078DCF70000000000000000FF000000FFC9A17900B479
-      3E00B3783E00B1773E00B1773E00E7DACB00CFAF8D00B1773E00B3783E00B479
-      3E00B47C4300EDE0D300000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000069D6F60052D4F70052D4
-      F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4
-      F70052D4F70052D4F70069D6F60000000000000000FFDDC4AB00B4793E00B479
-      3E00B4793E00B3783E00B1773E00F8F8F800E5D7C800B1773E00B1773E00B378
-      3E00B4793E00BB875200000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000060D2F40053D4F70053D4
-      F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4
-      F70053D4F70053D4F70060D4F50000000000000000FFB7834D00B4793E00B479
-      3E00B4793E00B4793E00B3783E00B1773E00B1773E00B1773E00B1773E00B177
-      3E00B3783E00B4793E00DDC3AB00000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000005FD3F50053D5F80053D5
-      F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5
-      F80053D5F80053D5F8005FD3F50000000000E9DACA00B4793E00B4793E00B479
-      3E00B4793E00B4793E00B4793E00FCFCFC00E6D7C900B1773E00B1773E00B177
-      3E00B1773E00B3783E00C3976B00000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000060D4F60054D6F90054D6
-      F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6
-      F90054D6F90054D6F90060D4F60000000000DDC4AA00B4793E00B4793E00B479
-      3E00B4793E00B4793E00B4793E00F9F8F500F8F7F500B37A4600B1773E00B177
-      3E00B1773E00B1773E00B7814A00000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000065D5F60054D7FA0054D7
-      FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7
-      FA0054D7FA0054D7FA0065D6F60000000000DABEA300B4793E00B4793E00B479
-      3E00B4793E00B4793E00B4793E00C79F7500FBFBFA00F1E8E000B1773E00B177
-      3E00B1773E00B1773E00B0784100000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000069CAF00072E0FD006BDE
-      FC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDE
-      FC006BDEFC0073E0FD0068C9F00000000000E1CAB400B4793E00B4793E00B479
-      3E00B4793E00B4793E00B4793E00B4793E00D6B79800FFFFFF00D8BB9F00B177
-      3E00B1773E00B1773E00B9875600000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000050B7E70038ACE60047B7
-      EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7
-      EA0047B7EA0038ADE60065C1EB0000000000000000FFB1783D00B4793E00B479
-      3E00B4793E00C5986C00B1793E00B4793E00B67E4800FDFDFD00EADBCC00B378
-      3E00B1773E00B1773E00CBA98700000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000052B7E800209DE000209D
-      E000209DE000209DE000209DE0002EA6E40047B7EA0047B7EA0047B7EA0047B7
-      EA0047B7EA0056C0EE00CBF0FB0000000000000000FFC89F7700B4793E00B479
-      3E00B47B4000FBFBFA00F9F6F400EADBCA00F7F3EF00FFFFFF00D5B59400B479
-      3E00B3783E00AE763D00E9DED300000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000007FCDF000209DE000209D
-      E000209DE000209DE000209DE00078CDEF00DAF6FD00DAF6FD00DAF6FD00DAF6
-      FD00DAF6FD00E8F9FD000000000000000000000000FFF2E9E000B57D4700B479
-      3E00B4793E00CDAB8500F4EFE900FBFAFA00FAF8F700E2CCB500B4793E00B479
-      3E00B4793E00D0AD8B00000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000E8F9FD0086DAF6006FCF
-      F5006FCFF5006FCFF50086D9F600E9F9FD000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FFE9DACA00B57D
-      4700B4793E00B4793E00B4793E00B4793E00B4793E00B4793E00B4793E00B479
-      3E00C9A17900000000FF000000FF000000FF0000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000FF000000FF000000FFF2E9
-      E000C89F7700B1783D00B4793E00B4793E00B4793E00B4793E00B7834D00DDC4
-      AB00000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000FF000000FF000000FF0000
-      00FF000000FF000000FFE1CCB600DABFA500DDC3AB00E9DACA00000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
       00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000F7F7EE0000000000000000000000
+      0000000000000000000000000000000000000000000000000000BBBBF9004D4A
+      E5003733E5003733E5003733E5003733E5003733E5003733E5003733E5003733
+      E5004A46E600C2C2F90000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000E9DED300CBA98700B9875600B0794100B7814A00C3976B00DDC3AB000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000E4E7B500B0BD0D00AEBB0900DEE2A100000000000000
+      00000000000000000000000000000000000000000000000000004641E8002A25
+      E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25
+      E5002A25E5004641E700000000000000000000000000CBF1FB005AD3F40052D3
+      F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3
+      F60052D3F6005AD4F400CCF2FB0000000000000000000000000000000000D0AD
+      8B00AE763D00B1773E00B1773E00B1773E00B1773E00B3783E00B4793E00BB87
+      5200EDE0D3000000000000000000000000000000000000000000000000000000
+      000000000000E4E8BA00ACBB0000AFBD0000AFBD0000ACBB0000DDE2A5000000
+      00000000000000000000000000000000000000000000000000003733E5002A25
+      E5002823E5002A25E5002A25E5002722E5002823E5002924E5002823E5002A25
+      E5002A25E5003733E50000000000000000000000000078DCF70052D3F60052D3
+      F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3F60052D3
+      F60052D3F60052D3F60078DCF700000000000000000000000000C9A17900B479
+      3E00B3783E00B1773E00B1773E00E7DACB00CFAF8D00B1773E00B3783E00B479
+      3E00B47C4300EDE0D30000000000000000000000000000000000000000000000
+      0000E1E5B100ABBA0000AFBD0000AFBD0000AFBD0000AFBD0000ABBA0000DADF
+      97000000000000000000000000000000000000000000000000003B35E5002A25
+      E500302BE6002925E5002A25E5003834E7002F2AE6002722E500302BE6002924
+      E5002A25E5003B35E50000000000000000000000000069D6F60052D4F70052D4
+      F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4F70052D4
+      F70052D4F70052D4F70069D6F6000000000000000000DDC4AB00B4793E00B479
+      3E00B4793E00B3783E00B1773E00F8F8F800E5D7C800B1773E00B1773E00B378
+      3E00B4793E00BB8752000000000000000000000000000000000000000000F3F5
+      E100E2E6AD00D4DA7F00ADBC0000AFBD0000AFBD0000ADBC0000C5CE5000E3E7
+      AF00F3F4E30000000000000000000000000000000000000000003B35E500241F
+      E400A19EF3004F4BEA00403CE800C8C7F800AFADF5007D7AEF00918EF200201B
+      E4002A25E5003B35E50000000000000000000000000060D2F40053D4F70053D4
+      F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4F70053D4
+      F70053D4F70053D4F70060D4F5000000000000000000B7834D00B4793E00B479
+      3E00B4793E00B4793E00B3783E00B1773E00B1773E00B1773E00B1773E00B177
+      3E00B3783E00B4793E00DDC3AB00000000000000000000000000E8EBBC00ADBB
+      0000ADBB0400E1E5AE00DCE19E00ADBC0000ADBB0000C9D26200ECEECE00B5C1
+      1D00ACBB0000DDE2A500000000000000000000000000000000003B35E500211C
+      E400B8B6F600C3C1F800A7A5F4009694F2007A77EF00C9C8F900D6D5FA00716E
+      EE00241FE4003B35E5000000000000000000000000005FD3F50053D5F80053D5
+      F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5F80053D5
+      F80053D5F80053D5F8005FD3F50000000000E9DACA00B4793E00B4793E00B479
+      3E00B4793E00B4793E00B4793E00FCFCFC00E6D7C900B1773E00B1773E00B177
+      3E00B1773E00B3783E00C3976B000000000000000000EAEDC100ACBB0000AFBD
+      0000AFBD0000ADBB0000E0E5AD00DBE09900CAD26300ECEFD000AEBC0600AFBD
+      0000AFBD0000ACBA0000DFE3A9000000000000000000000000003B35E500221D
+      E400A6A4F400C5C3F800A6A4F400C2C0F700B1AFF5007C78EF00D0CFF9009998
+      F3002E29E6003833E50000000000000000000000000060D4F60054D6F90054D6
+      F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6F90054D6
+      F90054D6F90054D6F90060D4F60000000000DDC4AA00B4793E00B4793E00B479
+      3E00B4793E00B4793E00B4793E00F9F8F500F8F7F500B37A4600B1773E00B177
+      3E00B1773E00B1773E00B7814A000000000000000000BDCA1700AFBD0000AFBD
+      0000AFBD0000AFBD0000ADBC0000D3DA8100DDE2A100ADBB0100AFBD0000AFBD
+      0000AFBD0000AFBD0000ABBA0100F7F8EF0000000000000000003B35E5002924
+      E5003430E6003D38E7002924E5003D38E700332EE6002621E5003C38E7003F3A
+      E8002B26E5003B35E50000000000000000000000000065D5F60054D7FA0054D7
+      FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7FA0054D7
+      FA0054D7FA0054D7FA0065D6F60000000000DABEA300B4793E00B4793E00B479
+      3E00B4793E00B4793E00B4793E00C79F7500FBFBFA00F1E8E000B1773E00B177
+      3E00B1773E00B1773E00B07841000000000000000000C0CD2100AEBC0000AFBD
+      0000AFBD0000AFBD0000AEBC0000DAE09800E3E7B300B2BE1000AFBD0000AFBD
+      0000AFBD0000AFBD0000AEBB05000000000000000000000000003B35E5002A25
+      E5002722E5002621E5002924E5002621E5002823E5002924E5002621E5002722
+      E5002A25E5003B35E50000000000000000000000000069CAF00072E0FD006BDE
+      FC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDEFC006BDE
+      FC006BDEFC0073E0FD0068C9F00000000000E1CAB400B4793E00B4793E00B479
+      3E00B4793E00B4793E00B4793E00B4793E00D6B79800FFFFFF00D8BB9F00B177
+      3E00B1773E00B1773E00B98756000000000000000000EEF0D100ADBB0000AFBD
+      0000AFBD0000ADBC0000E6E9BD00D4DA8300C1CB4800EFF0D800B2C01400AEBC
+      0000AFBD0000ACBB0000E5E8BC000000000000000000000000003B35E5002A25
+      E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25E5002A25
+      E5002A25E5003B35E50000000000000000000000000050B7E70038ACE60047B7
+      EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7EA0047B7
+      EA0047B7EA0038ADE60065C1EB000000000000000000B1783D00B4793E00B479
+      3E00B4793E00C5986C00B1793E00B4793E00B67E4800FDFDFD00EADBCC00B378
+      3E00B1773E00B1773E00CBA98700000000000000000000000000EDF0D000ACBB
+      0400B3BF1600E6E9BC00D5DC8700ADBC0000ADBC0000C3CC4A00EEF0D400BDC7
+      3600ACBB0300E4E8BA00000000000000000000000000000000003B35E5002A25
+      E5002A25E5002A25E5002A25E5002A25E5002A25E5002923E5002722E5002722
+      E5002822E5002C28E30000000000000000000000000052B7E800209DE000209D
+      E000209DE000209DE000209DE0002EA6E40047B7EA0047B7EA0047B7EA0047B7
+      EA0047B7EA0056C0EE00CBF0FB000000000000000000C89F7700B4793E00B479
+      3E00B47B4000FBFBFA00F9F6F400EADBCA00F7F3EF00FFFFFF00D5B59400B479
+      3E00B3783E00AE763D00E9DED300000000000000000000000000000000000000
+      0000E2E6AB00CCD46800ADBC0000AFBD0000AFBD0000AEBC0000BEC83800E0E5
+      A7000000000000000000000000000000000000000000000000003B35E5002A25
+      E5002A25E5002A25E5002A25E5002A25E5002722E500423EE8005955EA005652
+      EA004D49E900A2A1F2000000000000000000000000007FCDF000209DE000209D
+      E000209DE000209DE000209DE00078CDEF00DAF6FD00DAF6FD00DAF6FD00DAF6
+      FD00DAF6FD00E8F9FD00000000000000000000000000F2E9E000B57D4700B479
+      3E00B4793E00CDAB8500F4EFE900FBFAFA00FAF8F700E2CCB500B4793E00B479
+      3E00B4793E00D0AD8B0000000000000000000000000000000000000000000000
+      0000E7EAC100ACBA0000AFBD0000AFBD0000AFBD0000AFBD0000ACBA0000DFE4
+      AB000000000000000000000000000000000000000000000000003B35E5002A25
+      E5002A25E5002A25E5002A25E5002A25E5002621E5004F4CE900726FED006561
+      EC00ABA9F30000000000000000000000000000000000E8F9FD0086DAF6006FCF
+      F5006FCFF5006FCFF50086D9F600E9F9FD000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000E9DACA00B57D
+      4700B4793E00B4793E00B4793E00B4793E00B4793E00B4793E00B4793E00B479
+      3E00C9A179000000000000000000000000000000000000000000000000000000
+      000000000000EDF0D000ADBC0000AEBD0000AFBD0000ACBB0000E8EBBD000000
+      00000000000000000000000000000000000000000000000000003733E5002A25
+      E5002A25E5002A25E5002A25E5002A25E5002621E5004D4AE9006764ED009F9D
+      F200000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F2E9
+      E000C89F7700B1783D00B4793E00B4793E00B4793E00B4793E00B7834D00DDC4
+      AB00000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000ECEEC900BFCD2400BECB1F00E8EBB700000000000000
+      00000000000000000000000000000000000000000000000000004641E8002A25
+      E5002A25E5002A25E5002A25E5002A25E5002621E5004C48E9009C9AF0000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000E1CCB600DABFA500DDC3AB00E9DACA00000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000C2C0F4004B46
+      E8003733E5003733E5003733E5003733E5003630E5006562ED00000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000D4D4D400717171002B2B2B000B0B0B000B0B0B002B2B2B0072727200D5D5
       D500000000000000000000000000000000000000000000000000000000000000
@@ -1761,12 +1980,16 @@ object frameMensagem: TframeMensagem
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
-      2800000040000000700000000100010000000000800300000000000000000000
-      000000000000000000000000FFFFFF00FFFFFFFF00000000FFFFF01F00000000
-      8001E007000000008001C0030000000080018003000000008001800100000000
-      8001000100000000800100010000000080010001000000008001000100000000
-      80018001000000008001800100000000800380030000000080FFC00700000000
-      FFFFE00F00000000FFFFFC3F00000000F00FFF003FFFFFFFE007FF7E1FFFBFBF
+      2800000040000000800000000100010000000000000400000000000000000000
+      000000000000000000000000FFFFFF00FFFF000000000000FFFF000000000000
+      FFFF000000000000FFFF000000000000FFFF000000000000FFFF000000000000
+      FFFF000000000000FFFF000000000000FFFF000000000000FFFF000000000000
+      FFFF000000000000FFFF000000000000FFFF000000000000FFFF000000000000
+      FFFF000000000000FFFF000000000000FFFFFFFFFF7FC003FFFFF01FFC3FC003
+      8001E007F81FC0038001C003F00FC00380018003E007C00380018001C003C003
+      800100018001C003800100018000C003800100018001C003800100018001C003
+      80018001C003C00380018001F00FC00380038003F00FC00780FFC007F81FC00F
+      FFFFE00FFC3FC01FFFFFFC3FFFFFC03FF00FFF003FFFFFFFE007FF7E1FFFBFBF
       C3C3FF668FBFCF1987F1C066C73FC61103F81F7EE23FE00311F87F00F03FF007
       38FC7FBFF83FF00F3C7C3F9DF01FE00F3E3CBF99E00FC0073F1C8E03C0008001
       1F88E0FFFE00C0011FC0E4FFFF00F0038FE1EE7FFF81E307C3C3CE7FFF83C78F

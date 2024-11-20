@@ -22,6 +22,10 @@
 {$DEFINE APPWINDOWS} 
 {.$DEFINE STANDALONE} 
 
+//CEF Version 120 or Current
+{.$DEFINE CEFCurrentVersion}
+{.$DEFINE Typebot}
+
 {$DEFINE DELPHI_VERSION_UNKNOW}
 
 // Delphi 5

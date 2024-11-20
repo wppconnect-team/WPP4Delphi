@@ -2,7 +2,7 @@ object frameGrupos: TframeGrupos
   Left = 0
   Top = 0
   Width = 934
-  Height = 600
+  Height = 649
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -14,7 +14,7 @@ object frameGrupos: TframeGrupos
     Left = 0
     Top = 0
     Width = 934
-    Height = 600
+    Height = 649
     Align = alClient
     TabOrder = 0
     object gbGrupos: TGroupBox
@@ -22,7 +22,7 @@ object frameGrupos: TframeGrupos
       Left = 258
       Top = 3
       Width = 263
-      Height = 590
+      Height = 639
       Align = alLeft
       Caption = 'Grupos'
       TabOrder = 0
@@ -68,7 +68,7 @@ object frameGrupos: TframeGrupos
         Left = 2
         Top = 172
         Width = 259
-        Height = 416
+        Height = 465
         Align = alClient
         Caption = 'A'#231#245'es para Grupos'
         TabOrder = 2
@@ -201,13 +201,24 @@ object frameGrupos: TframeGrupos
         object btnDescricaoGrupo: TButton
           AlignWithMargins = True
           Left = 5
-          Top = 380
+          Top = 416
           Width = 249
           Height = 30
           Align = alTop
           Caption = 'Descri'#231#227'o do Grupo'
           TabOrder = 10
           OnClick = btnDescricaoGrupoClick
+        end
+        object Button1: TButton
+          AlignWithMargins = True
+          Left = 5
+          Top = 380
+          Width = 249
+          Height = 30
+          Align = alTop
+          Caption = 'Send Invite Code'
+          TabOrder = 11
+          OnClick = Button1Click
         end
       end
     end
@@ -216,7 +227,7 @@ object frameGrupos: TframeGrupos
       Left = 3
       Top = 3
       Width = 249
-      Height = 590
+      Height = 639
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 1
@@ -276,6 +287,13 @@ object frameGrupos: TframeGrupos
         Width = 66
         Height = 15
         Caption = 'Id do Grupo'
+      end
+      object Lbl_InviteCode: TLabel
+        Left = 12
+        Top = 558
+        Width = 226
+        Height = 24
+        AutoSize = False
       end
       object gbNovoGrupo: TGroupBox
         AlignWithMargins = True
@@ -377,7 +395,7 @@ object frameGrupos: TframeGrupos
       Left = 527
       Top = 3
       Width = 400
-      Height = 590
+      Height = 639
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
@@ -386,7 +404,7 @@ object frameGrupos: TframeGrupos
         Left = 3
         Top = 3
         Width = 394
-        Height = 584
+        Height = 633
         Align = alClient
         TabOrder = 0
         object gbAdmin: TGroupBox
@@ -421,7 +439,7 @@ object frameGrupos: TframeGrupos
           Left = 5
           Top = 154
           Width = 384
-          Height = 425
+          Height = 474
           Align = alClient
           Caption = 'Participantes'
           TabOrder = 1
@@ -439,7 +457,7 @@ object frameGrupos: TframeGrupos
             Left = 5
             Top = 88
             Width = 340
-            Height = 332
+            Height = 381
             Align = alClient
             Columns = <>
             LargeImages = ImageList1
@@ -455,7 +473,7 @@ object frameGrupos: TframeGrupos
             Left = 348
             Top = 85
             Width = 34
-            Height = 338
+            Height = 387
             Align = alRight
             TabOrder = 2
             object btnRemovePartici: TButton

@@ -41,7 +41,8 @@ interface
 
 uses
   System.Classes, IniFiles, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
-  Vcl.ExtCtrls, IdHTTP, uTWPPConnect.Diversos,
+  Vcl.ExtCtrls, StrUtils,
+  IdHTTP, uTWPPConnect.Diversos, uTWPPConnect.constant,
 
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
@@ -67,6 +68,7 @@ type
     FAutoUpdate     : Boolean;
     FJSScript       : TstringList;
     FJSURL          : String;
+    FDownloadJSType : TDownloadJSType;
     FJSVersion      : String;
     FReady          : Boolean;
     FOnUpdateJS     : TNotifyEvent;
@@ -77,14 +79,16 @@ type
     Owner: TComponent;
   {$REGION 'uCSV.Import'}
     FStringList: TStringList;
-    FRegistros       : TFDMemTable;
+    FRegistros : TFDMemTable;
     FSeparador : Char;
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
     procedure  SeTWPPConnectScript(const Value: TstringList);
     function   PegarLocalJS_Designer: String;
     function   PegarLocalJS_Web: String;
-    Function   AtualizarInternamente(PForma: TFormaUpdate):Boolean;
+    Function   UpdateExec(PForma: TFormaUpdate):Boolean;
+    // Seleciona e Carrega o arquivo indicado para o JS Class
+    Function   LoadAndValidJSFromFile(const Source: string): Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
     procedure SetSecondsWaitInject(const Value: integer);
 
@@ -114,21 +118,22 @@ type
   {$ENDREGION}
 
  published
-    property   AutoUpdate         : Boolean        read FAutoUpdate           write FAutoUpdate          default True;
-    property   AutoUpdateTimeOut  : Integer        Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
-    property   OnUpdateJS         : TNotifyEvent   Read FOnUpdateJS           Write FOnUpdateJS;
-    property   Ready              : Boolean        read FReady;
-    property   JSURL              : String         read FJSURL                write FJSURL;
-    property   JSScript           : TstringList    read FJSScript             Write SeTWPPConnectScript;
-    property   SecondsWaitInject  : Integer        read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
+    property   AutoUpdate         : Boolean         read FAutoUpdate           write FAutoUpdate          default True;
+    property   AutoUpdateTimeOut  : Integer         Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
+    property   OnUpdateJS         : TNotifyEvent    Read FOnUpdateJS           Write FOnUpdateJS;
+    property   Ready              : Boolean         read FReady;
+    property   JSURL              : String          read FJSURL                write FJSURL;
+    property   DownloadJSType     : TDownloadJSType read FDownloadJSType       write FDownloadJSType;
+    property   JSScript           : TstringList     read FJSScript             Write SeTWPPConnectScript;
+    property   SecondsWaitInject  : Integer         read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
   end;
 
 
 implementation
 
-uses uTWPPConnect.Constant, System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
+uses System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
      IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-     Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs;
+     Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs, uTWPPConnect;
 
 { TWPPConnectAutoUpdate }
 
@@ -140,6 +145,13 @@ begin
   DelFileTemp;
   FreeAndNil(FInjectJSDefine);
   FreeAndNil(FJSScript);
+
+  FreeAndNil(FRegistros);
+
+  {FreeAndNil(FDownloadJSType);
+  FreeAndNil(FOnUpdateJS);
+  FreeAndNil(FOnErrorInternal);}
+
   inherited;
 end;
 
@@ -152,7 +164,7 @@ begin
     DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
     MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
     Caminho_JS           := MyIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
-    //TWPPConnectJS_JSUrlPadrao := Caminho_JS;
+
     MyIniFIle.Free;
   except on E: Exception do
   end;
@@ -161,59 +173,66 @@ begin
   FAutoUpdateTimeOut         := 10;
   FJSScript                  := TstringList.create;
   FAutoUpdate                := True;
-  //FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
-  FJSURL                     := TWPPConnectJS_JSUrlPadrao;
+  FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
+  //FJSURL                     := TWPPConnectJS_JSUrlPadrao;
+  FDownloadJSType            := DT_Indy;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
   FSecondsWaitInject         := 6;
-  UpdateNow;   //UpdateNow; Temis 03-06-2022
+
 end;
-function TWPPConnectJS.AtualizarInternamente(PForma: TFormaUpdate): Boolean;
+function TWPPConnectJS.UpdateExec(PForma: TFormaUpdate): Boolean;
 var
   Ltmp: String;
 begin
   try
     case pforma  of
       Tup_Local:Begin
+                  save_log('TWPPConnectJS.UpdateExec(Tup_Local)');
                   Ltmp := GlobalCEFApp.PathJs;
                 End;
 
       Tup_Web:  Begin
                   if (csDesigning in Owner.ComponentState) then
-                     Ltmp := PegarLocalJS_Designer  Else   //Em modo Desenvolvimento
-                     Ltmp := PegarLocalJS_Web;             //Rodando.. Pega na WEB
+                  begin
+                    save_log('TWPPConnectJS.UpdateExec(Tup_Web) ---> PegarLocalJS_Designer');
+                    Ltmp := PegarLocalJS_Designer;
+                  end
+                  else   //Em modo Desenvolvimento
+                  begin
+                    save_log('TWPPConnectJS.UpdateExec(Tup_Web) ---> PegarLocalJS_Web');
+                    Ltmp := PegarLocalJS_Web;             //Rodando.. Pega na WEB
+                  end;   
                 end;
     end;
 
     if Ltmp = '' then
-       Exit;
+    begin
+      save_log('  Ltmp IsEmpty Exit');
+      Exit;
+    end;
 
-    if FileExists(Ltmp) then
-    Begin
-      //Valida a versao
-      FJSScript.LoadFromFile(Ltmp);
-      if not ValidaJs(FJSScript) then
-      Begin
-        FJSScript.Clear;
-      End else
-      Begin
-        FJSVersion   := FInjectJSDefine.FVersion_JS;
-        if FJSVersion = '' then
-           FJSScript.Clear;
-      End;
-    End;
-  finally
+    // loading file selected to atribute class
+    LoadAndValidJSFromFile(Ltmp);
+
+  finally  
     Result := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
     if Result then
     begin
+      save_log('  TWPPConnectJS.UpdateExec Result = True');
       //Atualzia o arquivo interno
       GlobalCEFApp.UpdateDateIniFile;
       if UpperCase(GlobalCEFApp.PathJs) <> UpperCase(Ltmp) then
-         FJSScript.SaveToFile(GlobalCEFApp.PathJs, TEncoding.UTF8);
+      begin
+        FJSScript.SaveToFile(GlobalCEFApp.PathJs, TEncoding.UTF8);
+        save_log('  FJSScript.SaveToFile('+GlobalCEFApp.PathJs+');');
+      end;
       if Assigned(FOnUpdateJS) Then
          FOnUpdateJS(Self);
-    end else
+    end
+    else
     begin
+      save_log('  TWPPConnectJS.UpdateExec Result = False');
       FJSScript.Clear;
       FJSVersion := '';
     end;
@@ -245,30 +264,29 @@ end;
 
 function TWPPConnectJS.UpdateNow: Boolean;
 begin
+  Result := False;
+
   if FAutoUpdate  Then
-  Begin
-    //Atualiza pela Web  O retorno e o SUCESSO do que esta programado para trabalhar!!
-    //Se nao obter sucesso da WEB.. ele vai usar o arquivo local..
-    //Se estiver tudo ok.. ele esta PRONTO
-    if ( GlobalCEFApp.PathJsOverdue = False) and (FileExists(GlobalCEFApp.PathJs)) Then
-    Begin
-      Result      := AtualizarInternamente(Tup_Local);
-    End
-    else
-    Begin
-      Result      := AtualizarInternamente(Tup_Web);
-      If not Result Then
-         Result      := AtualizarInternamente(Tup_Local);  //Se nao consegui ele pega o arquivo Local
-    end;
-  End
+  begin
+    save_log('TWPPConnectJS.UpdateNow FAutoUpdate: true');
+
+    // script pré pronto para inclusão futura de diretório central para update's
+    if (StrUtils.ContainsText(LowerCase(FJSURL),'http')) then
+      Result := UpdateExec( Tup_Web );
+
+    if not(Result) then
+      Result := UpdateExec( Tup_Local );
+
+    if Result then
+      save_log('TWPPConnectJS.UpdateNow Result: true') else
+      save_log('TWPPConnectJS.UpdateNow Result: false');
+  end
   else
-  Begin
-    //Usando via ARQUIVO
-    Result      := AtualizarInternamente(Tup_Local);
+  begin
+    // carrega o arquivo padrão indicado
+    LoadAndValidJSFromFile( GlobalCEFApp.PathJs )
   end;
 
-  FReady        := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
-  //FReady        := TRUE;
 end;
 
 function TWPPConnectJS.ValidaJs(const TValor: Tstrings): Boolean;
@@ -281,14 +299,24 @@ begin
     if GlobalCEFApp.ErrorInt Then
       Exit;
   end;
+
   if (TValor.Count < TWPPConnectJS_JSLinhasMInimas) then    //nao tem linhas suficiente
+  begin
+    save_log('  ValidaJs "nao tem linhas suficiente" Result = false');
     Exit;
+  end;
 
   If Pos(AnsiUpperCase(';'),  AnsiUpperCase(TValor.Strings[0])) <= 0 then   //Nao tem a variavel
+  begin
+    save_log('  ValidaJs "Nao tem a variavel" Result = false');
     Exit;
+  end;
 
   If not ReadCSV(TValor.Strings[0], TValor.Strings[1]) Then
+  begin
+    save_log('  ValidaJs "ReadCSV" Result = false');
     Exit;
+  end;
 
   If (Pos(AnsiUpperCase('!window.Store'),       AnsiUpperCase(TValor.text))     <= 0) or
      (Pos(AnsiUpperCase('window.WAPI'),         AnsiUpperCase(TValor.text))     <= 0) or
@@ -336,6 +364,8 @@ begin
     LogAdd('Versao  JS.ABR: ' + InjectJSDefine.FVersion_JS);
     LogAdd('Versao     CEF: ' + LVersaoCefFull);
     LogAdd(' ');
+    save_log('  ValidaJs Result = True');
+
     Result := true;
   End;
 end;
@@ -359,38 +389,67 @@ end;
 function TWPPConnectJS.PegarLocalJS_Web: String;
 var
   LHttp        : TUrlIndy;
+  LRest        : TUrlREST;
   LSalvamento  : String;
   LRet         : TStringList;
 begin
   LSalvamento   := IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp';
+  save_log('TWPPConnectJS.PegarLocalJS_Web');
 
   LRet          := TStringList.Create;
   LHttp         := TUrlIndy.Create;
+  LRest         := TUrlREST.Create(nil);
   try
     DeleteFile(PwideChar(LSalvamento));
-    LHttp.HTTPOptions := LHttp.HTTPOptions + [hoForceEncodeParams] ;
-    LHttp.Request.Accept          := 'text/html, */*';
-    LHttp.Request.ContentEncoding := 'raw';
 
-    LHttp.TimeOut     := AutoUpdateTimeOut;
-    //Temis 03-06-2022
-    if LHttp.GetUrl(JSURL) = true Then
-    //if LHttp.GetUrl(TWPPConnectJS_JSUrlPadrao) = true Then
-    Begin
-      LRet.LoadFromStream(LHttp.ReturnUrl);
-      if not ValidaJs(LRet) Then
-         LRet.Clear;
-    End;
+    case FDownloadJSType of
+      DT_Indy:
+      begin
+        LHttp.HTTPOptions := LHttp.HTTPOptions + [hoForceEncodeParams] ;
+        LHttp.Request.Accept          := 'text/html, */*';
+        LHttp.Request.ContentEncoding := 'raw';
+
+        LHttp.TimeOut     := AutoUpdateTimeOut;
+        //Temis 03-06-2022
+        save_log('antes LHttp.GetUrl(' + JSURL + ')');
+        if (LHttp.GetUrl(JSURL)) Then
+          LRet.LoadFromStream(LHttp.ReturnUrl)
+        else
+          save_log('PegarLocalJS_Web Failed');
+      end;
+
+      //Dejorgenes - Buscar arquivo js via Rest 05-08-2024
+      DT_Rest:
+      begin
+        LRest.TimeOut := AutoUpdateTimeOut;
+        save_log('antes LRest.GetUrl(' + JSURL + ')');
+        if (LRest.GetUrl(JSURL)) then
+          LRet.LoadFromStream(LRest.ReturnUrl)
+        else
+          save_log('PegarLocalJS_Web Failed');
+      end;
+    end;
+
+    if not ValidaJs(LRet) Then
+      LRet.Clear
+    else
+      save_log('PegarLocalJS_Web OK');
   finally
     FreeAndNil(LHttp);
+    FreeAndNil(LRest);
     if LRet.Count > 1 then
-    Begin
+    begin
+      save_log('antes LSalvamento: Caminho: ' + LSalvamento);
       if not FileExists(LSalvamento) then
-      Begin
-        LRet.SaveToFile(LSalvamento, TEncoding.UTF8);
+      begin
+        save_log('LSalvamento: ' + LSalvamento);
+        LRet.SaveToFile(LSalvamento, TEncoding.UTF8);        
         Result := LSalvamento;
-      End;
-    End;
+      end;
+    end
+    else
+      save_log('LRet.Count = 0');
+      
     FreeAndNil(LRet);
   end;
 end;
@@ -521,6 +580,39 @@ begin
   ZerarTudo;
   FStringList.Text := PConteudo;
   Result           := ProcessarCriacaoCSV;
+end;
+
+function TWPPConnectJS.LoadAndValidJSFromFile(const Source: string): Boolean;
+begin
+  Result := False;
+
+  save_log('TWPPConnectJS.LoadAndValidJSFromFile(' + Source + ')');
+
+  if FileExists(Source) then
+  begin
+    FJSScript.LoadFromFile(Source);
+
+    if not ValidaJs(FJSScript) then
+    begin
+      FJSScript.Clear;
+      save_log('  ValidaJs --> inválido');
+    end
+    else
+    begin
+      FJSVersion   := FInjectJSDefine.FVersion_JS;
+      save_log('  FJSVersion: ' + FJSVersion);
+
+      if FJSVersion = '' then
+         FJSScript.Clear;
+
+      FReady := (FJSScript.Count >= TWPPConnectJS_JSLinhasMInimas);
+      save_log('  FJSScript.Count: ' + IntToStr(FJSScript.Count));
+
+      Result := FReady;
+    end;
+
+  end;
+
 end;
 
 function TWPPConnectJS.ProcessarCriacaoCSV: Boolean;

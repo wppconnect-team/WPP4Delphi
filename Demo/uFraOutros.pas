@@ -28,7 +28,7 @@ procedure TframeOutros.btnMudarImagemClick(Sender: TObject);
 var
   LNomeArquivo: String;
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
      Exit;
 
 

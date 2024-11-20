@@ -12,7 +12,9 @@
                                             Maio de 2022
 ####################################################################################################################}
 unit uFrDemo;
+{$I TWPPConnectDiretiva.inc}
 interface
+
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,Rtti, strUtils, IniFiles, System.IOUtils,
@@ -27,7 +29,11 @@ uses
   Vcl.CategoryButtons, System.ImageList, Vcl.ImgList, Vcl.Imaging.pngimage,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Buttons, uFraLogin, uFraMensagens, uFraGrupos, uFraComunidades,
   uFraMEnsagensRecebidas, uFraMensagensEnviadas, Winapi.TlHelp32, uFraCatalogo,
-  uFraOutros, uTWPPConnect.ChatList, OpenAIClient, OpenAIDtos;
+  uFraOutros, uTWPPConnect.ChatList, OpenAIClient, OpenAIDtos,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client {$IFDEF Typebot}, uTypebotAPI, uTypeBotResponseStartChat, uTypeBotResponseContinueChat{$ENDIF};
+
 type
   TfrDemo = class(TForm)
     SplitView1: TSplitView;
@@ -53,7 +59,6 @@ type
     BitBtn1: TBitBtn;
     TimerVerificaConexao: TTimer;
     TimerCheckOnline: TTimer;
-    BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     edtApiKeyChatGPT: TEdit;
     SwtChatGPT: TToggleSwitch;
@@ -63,7 +68,11 @@ type
     frameComunidades1: TframeComunidades;
     TimerProgress: TTimer;
     lblNomeConta: TLabel;
-    Timer1: TTimer;
+    TimerBegin: TTimer;
+    TimerIsOnline: TTimer;
+    Label2: TLabel;
+    eUrlTypebot: TEdit;
+    SwtTypebot: TToggleSwitch;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -129,7 +138,6 @@ type
     procedure TimerCheckOnlineTimer(Sender: TObject);
     procedure TWPPConnect1Get_sendVCardContactMessageEx(const RespMensagem: TResponsesendTextMessage);
     procedure TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
-    procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure ctbtnCategories0Items7Click(Sender: TObject);
     procedure TWPPConnect1GetQrCodeDesconectouErroCache(const QrCodeDesconectouErroCache: TQrCodeDesconectouErroCache);
@@ -156,8 +164,26 @@ type
     procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
     procedure TWPPConnect1GetMessages(const Response: TGetMessageClass);
     procedure TWPPConnect1Getmsg_EditedEvento(const MsgEdited: TEditedClass);
-    procedure Timer1Timer(Sender: TObject);
+    procedure TimerBeginTimer(Sender: TObject);
     procedure TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
+    procedure TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
+    procedure TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
+    procedure TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
+    procedure TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
+    procedure TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
+    procedure TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
+    procedure TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
+    procedure TimerIsOnlineTimer(Sender: TObject);
+    procedure TWPPConnect1AfterInjectJS(Sender: TObject);
+    procedure TWPPConnect1Getactive_chat(const response: TGetActiveChatClass);
+    procedure TWPPConnect1Getgroup_participant_changed(const response: TGroupParticipantChangedClass);
+    procedure TWPPConnect1Getlive_location_start(const response: Tlive_location_startClass);
+    procedure TWPPConnect1Getorder_payment_status(const response: Torder_payment_statusClass);
+    procedure TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
+    procedure TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
+    procedure TWPPConnect1GetEnvrequire_auth(Response: TIsRequire_auth);
+    procedure TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
+    procedure SwtTypebotClick(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -173,12 +199,20 @@ type
     function GetAPIKey: string;
     function AskQuestion(const Question, phoneNumber: string): string;
     procedure LerConfiguracoes;
+    procedure gravar_log(linha: string);
     procedure copia_arquivo(arquivo_origem, arquivo_destino: string);
     procedure DeleteFiles(const FileName: String);
     function ConvertUnicodeEscapeToUTF8(const input: string): UTF8String;
     function IsValidUnicodeCodePoint(value: Word): Boolean;
+    function BooleanToStr(Operador: Boolean): String;
   public
     FChatID: string;
+    {$IFDEF Typebot}
+    TypebotAPI1: TTypebotAPI;
+    procedure InitializeTypebotAPI(Sender: TObject);
+    procedure HandleRetSendMessage(Sender: TObject; Response: string);
+    procedure HandleResponse(Sender: TObject; Response: string);
+    {$ENDIF}
     { Public declarations }
     procedure AddChatList(ANumber: String);
     procedure AddContactList(ANumber: String);
@@ -205,8 +239,36 @@ var
 implementation
 uses
   u_Messagem, u_Retorno_SendFileMensagem, System.JSON, System.AnsiStrings, System.DateUtils,
-  System.NetEncoding, System.Generics.Collections;
+  System.NetEncoding, System.Generics.Collections, uDM;
 {$R *.dfm}
+
+{$IFDEF Typebot}
+procedure TfrDemo.InitializeTypebotAPI(Sender: TObject);
+begin
+  // Criar a instância do componente
+  TypebotAPI1 := TTypebotAPI.Create(Self);
+  TypebotAPI1.UrlTypebot := eUrlTypebot.Text;
+
+  // Associar os eventos
+  TypebotAPI1.OnRetSendMessage := HandleRetSendMessage;
+  TypebotAPI1.OnResponse := HandleResponse;
+
+  // Chamada de métodos conforme necessário
+  // Exemplo: iniciar o servidor
+  //TypebotAPI1.StartServer;
+end;
+
+// Implementação dos métodos de eventos
+procedure TfrDemo.HandleRetSendMessage(Sender: TObject; Response: string);
+begin
+  //ShowMessage('Mensagem enviada com sucesso: ' + Response);
+end;
+
+procedure TfrDemo.HandleResponse(Sender: TObject; Response: string);
+begin
+  //ShowMessage('Resposta recebida: ' + Response);
+end;
+{$ENDIF}
 
 function TfrDemo.GetAPIKey: string;
 begin
@@ -233,6 +295,31 @@ begin
   WriteLn(''); }
 end;
 
+procedure TfrDemo.gravar_log(linha: string);
+var
+  nomearq: string;
+  arq: TextFile;
+begin
+  try
+    nomearq := ExtractFilePath(ParamStr(0)) + 'Log' + '\Log' + FormatDateTime('YYYY-MM-DD',now) + '.log';
+    AssignFile(arq, nomearq);
+    try
+      if FileExists(nomearq) then
+        Append(arq)
+      else
+        Rewrite(arq);
+
+      Writeln(arq, FormatDateTime('DD/MM/YYYY', Date) + ' ' +
+        FormatDateTime('HH:MM:SS:ZZ', time) + ' ' + linha);
+      Flush(arq);
+    finally
+      CloseFile(arq);
+    end;
+  except
+  end;
+
+end;
+
 procedure TfrDemo.DeleteFiles(const FileName: String);
 var
   FileOp: TSHFileOpStruct;
@@ -255,7 +342,7 @@ begin
   try
     //Request.User := '17981388414'
     Request.Prompt := Question;
-    Request.Model := 'text-davinci-003';
+    Request.Model := 'gpt-4'; //'text-davinci-003';
     Request.User := phoneNumber;
     Request.MaxTokens := 2048; // Be careful as this can quickly consume your API quota.
 
@@ -347,19 +434,8 @@ procedure TfrDemo.BitBtn1Click(Sender: TObject);
 begin
   try
     TWPPConnect1.RebootWPP;
-    //FrmConsole.RebootChromium;
   except on E: Exception do
   end;
-end;
-
-procedure TfrDemo.BitBtn2Click(Sender: TObject);
-begin
-  //
-  try
-    TWPPConnect1.GetHistorySyncProgress;
-  except on E: Exception do
-  end;
-
 end;
 
 procedure TfrDemo.BitBtn3Click(Sender: TObject);
@@ -375,7 +451,7 @@ begin
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
 
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
 
   //Créditos --> https://github.com/landgraf-dev/openai-delphi
@@ -396,9 +472,17 @@ begin
   frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Pergunta?', options, '123');
 end;
 
+function TfrDemo.BooleanToStr(Operador: Boolean): String;
+begin
+  if Operador then
+    Result := 'True'
+  else
+    Result := 'False';
+end;
+
 procedure TfrDemo.btnAbrirZapClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth then
+  if not frDemo.TWPPConnect1.Auth(False) then
     Exit;
   FrmConsole.StartQrCode(Ft_Http, True);
 end;
@@ -618,9 +702,9 @@ begin
   Sleep(500);
   killtask('WPPConnectDemo.exe')
 end;
+
 procedure TfrDemo.FormCreate(Sender: TObject);
 begin
-
   {$IFDEF DEBUG}
   ReportMemoryLeaksOnShutdown := True;
   {$ENDIF}
@@ -631,38 +715,84 @@ begin
   SetLength(MensagensArray, 50);
   iPosicaoMsgArray := 0;
   LerConfiguracoes;
+
+  if not(DirectoryExists(ExtractFilePath(ParamStr(0)) + 'Log')) then
+    CreateDir(ExtractFilePath(ParamStr(0)) + 'Log');
 end;
 
 procedure TfrDemo.FormShow(Sender: TObject);
+var
+  Query: TFDQuery;
 begin
+  try
+    // Define o nome do arquivo da base de dados
+    dm.FDConnection1.Params.Values['Database'] := 'database.db';
+    dm.FDConnection1.Params.Values['DriverID'] := 'SQLite';
+    dm.FDConnection1.Params.Values['CharacterSet'] := 'UTF8';
+
+    // Verifica se o arquivo da base de dados não existe
+    if not FileExists('database.db') then
+    begin
+      // Conecta para criar a base de dados e a tabela
+      dm.FDConnection1.Connected := True;
+
+      Query := TFDQuery.Create(nil);
+      try
+        Query.Connection := dm.FDConnection1;
+        Query.SQL.Text :=
+          'CREATE TABLE IF NOT EXISTS ticket (' +
+          'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ' +
+          'namecontact VARCHAR(100), ' +
+          'situacion INTEGER, ' +
+          'number VARCHAR(50), ' +
+          'sessionid VARCHAR(100)' +
+          ');';
+        Query.ExecSQL;
+      finally
+        Query.Free;
+      end;
+    end
+    else
+    begin
+      // Se a base já existir, apenas tenta conectar
+      dm.FDConnection1.Connected := True;
+    end;
+  except
+    on E: Exception do
+    begin
+      gravar_log('Failed Connection DataBase SQLITE: ' + E.Message);
+    end;
+  end;
+
   frameLogin1.Visible := True;
   frameLogin1.lblCodeLinkDevice.Caption := '';
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
   timerStatus.Enabled := True;
+  //Timer2.Enabled := True;
+
   //Warsaw e GBPlugin, este processos bloqueia o uso do WhatsAppWeb
   killtask('Gbpsv.exe');
   killtask('core.exe');
 end;
+
 procedure TfrDemo.frameCatalogo1Button1Click(Sender: TObject);
 begin
   frameCatalogo1.Button1Click(Sender);
 end;
+
 procedure TfrDemo.frameComunidades1btnCriarGrupoClick(Sender: TObject);
 begin
   frameComunidades1.btnCriarGrupoClick(Sender);
-
 end;
 
 procedure TfrDemo.frameComunidades1btnListarComunidadesClick(Sender: TObject);
 begin
   frameComunidades1.btnListarComunidadesClick(Sender);
-
 end;
 
 procedure TfrDemo.frameComunidades1btnMsgAllClick(Sender: TObject);
 begin
   frameComunidades1.btnMsgAllClick(Sender);
-
 end;
 
 procedure TfrDemo.frameLogin1SpeedButton1Click(Sender: TObject);
@@ -713,6 +843,7 @@ begin
   ArquivoConfig := TMemIniFile.Create(NomeArquivo);
 
   edtApiKeyChatGPT.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'ApiKeyChatGPT', '');
+  eUrlTypebot.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'UrlTypebot', '');
 
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
@@ -739,6 +870,21 @@ begin
   end;
 end;
 
+procedure TfrDemo.SwtTypebotClick(Sender: TObject);
+var
+  options : string;
+  NomeArquivo: string;
+  ArquivoConfig: TCustomIniFile;
+begin
+  // Atualiza variaveis globais
+  NomeArquivo := TPath.Combine(ExtractFilePath(ParamStr(0)), 'WPP4DelphiDemo.ini ');
+  ArquivoConfig := TMemIniFile.Create(NomeArquivo);
+  ArquivoConfig.writeString('CONFIGURACAO', 'UrlTypebot', eUrlTypebot.Text);
+  ArquivoConfig.UpdateFile;
+  FreeAndNil(ArquivoConfig);
+
+end;
+
 procedure TfrDemo.TimerVerificaConexaoTimer(Sender: TObject);
 begin
   TimerVerificaConexao.Enabled := False;
@@ -762,9 +908,9 @@ begin
   TimerVerificaConexao.Enabled := True;
 end;
 
-procedure TfrDemo.Timer1Timer(Sender: TObject);
+procedure TfrDemo.TimerBeginTimer(Sender: TObject);
 begin
-  Timer1.Enabled := False;
+  TimerBegin.Enabled := False;
 
   try
     if not TWPPConnect1.Auth(False) then
@@ -777,6 +923,25 @@ begin
       TWPPConnect1.FormQrCodeShowing := True;
 
   except on E: Exception do
+  end;
+end;
+
+procedure TfrDemo.TimerIsOnlineTimer(Sender: TObject);
+begin
+  try
+    TimerIsOnline.Enabled := False;
+
+    try
+      if not TWPPConnect1.auth(False) then
+        exit;
+
+      TWPPConnect1.IsOnline;
+
+    except on E: Exception do
+    end;
+
+  finally
+    TimerIsOnline.Enabled := True;
   end;
 end;
 
@@ -887,12 +1052,16 @@ Begin
     Begin
       if whatsappsms = 0 then
       Begin
-        frameLogin1.lblStatus.Caption := 'Offline';
-        frameLogin1.lblStatus.Font.Color := $002894FF;
-        frameLogin1.lblStatus.Font.Color := clGrayText;
-        frameLogin1.whatsOff.Visible := True;
-        frameLogin1.whatsOn.Visible := False;
-        frameLogin1.SpeedButton3.Enabled := True;
+        if TentativaConexao >= 2 then
+        begin
+          frameLogin1.lblStatus.Caption := 'Offline';
+          Label3.Caption := 'Offline Test CheckNumber';
+          frameLogin1.lblStatus.Font.Color := $002894FF;
+          frameLogin1.lblStatus.Font.Color := clGrayText;
+          frameLogin1.whatsOff.Visible := True;
+          frameLogin1.whatsOn.Visible := False;
+          frameLogin1.SpeedButton3.Enabled := True;
+        end;
 
         if TentativaConexao >= 2 then
         begin
@@ -918,35 +1087,49 @@ Begin
 End;
 procedure TfrDemo.timerStatusTimer(Sender: TObject);
 begin
-  case TWPPConnect(Sender).status of
-    Server_ConnectedDown:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Disconnected:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Disconnecting:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Connected:
-      Label3.Caption := '';
-    Server_Connecting:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Initializing:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Initialized:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_ConnectingNoPhone:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_ConnectingReaderCode:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_TimeOut:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Destroying:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Inject_Destroy:
-      Label3.Caption := TWPPConnect(Sender).StatusToStr;
-    Server_Rebooting:
-      Label3.Caption := TWppConnect(Sender).StatusToStr;
+  timerStatus.enabled := False;
+
+  try
+    case TWPPConnect(Sender).status of
+      Server_ConnectedDown:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Disconnected:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Disconnecting:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Connected:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Connecting:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Initializing:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Initialized:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_ConnectingNoPhone:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_ConnectingReaderCode:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_TimeOut:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Destroying:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Inject_Destroy:
+        Label3.Caption := TWPPConnect(Sender).StatusToStr;
+      Server_Rebooting:
+        Label3.Caption := TWppConnect(Sender).StatusToStr;
+
+    end;
+
+  except on E: Exception do
   end;
+
+  timerStatus.enabled := True;
 end;
+procedure TfrDemo.TWPPConnect1AfterInjectJS(Sender: TObject);
+begin
+  TWPPConnect1.GetMyNumber;
+end;
+
 procedure TfrDemo.TWPPConnect1CheckNumberExists(const vCheckNumberExists: TReturnCheckNumberExists);
 var
   vStatus : Boolean;
@@ -981,11 +1164,13 @@ end;
 procedure TfrDemo.TWPPConnect1Connected(Sender: TObject);
 begin
   timerStatus.Enabled := False;
-  lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+  lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
 end;
 procedure TfrDemo.TWPPConnect1Disconnected(Sender: TObject);
 begin
   ShowMessage('Conexão foi finalizada');
+
+  TimerIsOnline.Enabled := False;
 end;
 procedure TfrDemo.TWPPConnect1DisconnectedBrute(Sender: TObject);
 begin
@@ -996,7 +1181,13 @@ begin
   frameLogin1.whatsOn.Visible := False;
   frameLogin1.SpeedButton3.Enabled := True;
 
-  ShowMessage('Conexão foi finalizada pelo celular');
+  TimerIsOnline.Enabled := False;
+  TimerVerificaConexao.Enabled := False;
+
+  ShowMessage('Conexão foi finalizada');
+
+  //Timer1.Enabled := True;
+  TimerBegin.Enabled := True;
 end;
 
 procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
@@ -1036,6 +1227,15 @@ begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('participant: ' + Ack_change.msg.ids[x].participant);
   end;
 
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
+procedure TfrDemo.TWPPConnect1Getactive_chat(const response: TGetActiveChatClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('GetActiveChat');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' from:' + response.msg.msgs[0].from);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' to:' + response.msg.msgs[0].&to);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' NotifyName:' + response.msg.msgs[0].NotifyName);
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
@@ -1122,6 +1322,36 @@ begin
     AddGroupList(TextGroup);
   end;
 end;
+procedure TfrDemo.TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
+var
+  NomeContato, Contato : string;
+  i: Integer;
+begin
+  frameGrupos1.listaParticipantes.Clear;
+  frameComunidades1.listaParticipantes.Clear;
+
+  frameGrupos1.listaAdministradores.Clear;
+  frameComunidades1.listaAdministradores.Clear;
+
+  for i := 0 to Length(response.result) - 1 do
+  begin
+    //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('ChatID: ' + response.result[i].id);
+    NomeContato := response.result[i].name;
+    if NomeContato = '' then
+      NomeContato := response.result[i].pushname;
+
+    if Trim(NomeContato) <> '' then
+      Contato := response.result[i].id + ' - ' + NomeContato else
+      Contato := response.result[i].id;
+
+    AddGroupContacts(Contato);
+
+    if response.result[i].isAdmin then
+      AddGroupAdmins(Contato);
+  end;
+
+end;
+
 procedure TfrDemo.TWPPConnect1GetChatList(const Chats: TChatList);
 var
   AChat: TChatClass;
@@ -1130,6 +1360,7 @@ begin
   frameMensagem1.listaChats.Clear;
   for AChat in Chats.Result do
   begin
+    NomeContato := '';
     if AChat.contact.pushname <> '' then
       NomeContato := AChat.contact.pushname
     else
@@ -1155,7 +1386,7 @@ begin
 end;
 procedure TfrDemo.TWPPConnect1GetEnvIsOnline(Response: TEnvIsOnline);
 begin
-  if Response.IsOnline then
+  {if Response.IsOnline then
   begin
     frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Online"');
 
@@ -1180,13 +1411,68 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
     StatusBar1.Panels[1].Text := 'Offline';
+    //ShowMessage('Conexão está Offline');
+  end;}
+end;
+
+procedure TfrDemo.TWPPConnect1GetEnvneedsUpdate(Response: TEnvneedsUpdate);
+begin
+  if Response.needsUpdate then
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento "Needs Update"');
+
+    ShowMessage('"Needs Update" Reiniciar para Obter a Versão Nova do WhatsAppWeb');
+
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Reiniciar para Obter a Versão Nova');
+    try
+      TWPPConnect1.RebootWPP;
+    except on E: Exception do
+    end;
   end;
+
+end;
+
+procedure TfrDemo.TWPPConnect1GetEnvRequire_auth(Response: TIsRequire_auth);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Disparou Evento Require_auth "Offline"');
+
+  Label3.Caption := 'Offline';
+  frameLogin1.lblStatus.Caption := 'Offline Require Auth';
+  lblMeuNumero.Caption := 'My Number: ';
+  lblNomeConta.Caption := '';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+  StatusBar1.Panels[1].Text := 'Offline';
+
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
 begin
   frameLogin1.lblCodeLinkDevice.Caption := Response.code;
   Update;
+end;
+
+procedure TfrDemo.TWPPConnect1Getgroup_participant_changed(const response: TGroupParticipantChangedClass);
+var
+  i: Integer;
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('GroupParticipantChanged');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' author: ' + response.event.author);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' groupId: ' + response.event.groupId);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' authorPushName: ' + response.event.authorPushName);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' Action: ' + response.event.Action);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' group_participant_changed: ' + response.event.group_participant_changed);
+
+  for i := 0 to Length(response.event.participants) - 1 do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Participant: ' + response.event.participants[i]);
+  end;
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
@@ -1221,6 +1507,7 @@ end;
 procedure TfrDemo.TWPPConnect1GetInviteGroup(const Invite: string);
 begin
   Clipboard.AsText := 'https://chat.whatsapp.com/' + Invite;
+  frameGrupos1.Lbl_InviteCode.Caption := Invite;
   ShowMessage('Link do grupo copiado: ' + 'https://chat.whatsapp.com/' + Invite);
 end;
 procedure TfrDemo.TWPPConnect1GetIsAuthenticated(Sender: TObject; IsAuthenticated: Boolean);
@@ -1234,16 +1521,29 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetIsLoaded(Sender: TObject; IsLoaded: Boolean);
 begin
-  frameLogin1.lblStatus.Caption := 'Carregando...';
-  Label3.Caption := 'Carregando Conversas Aguarde...';
+  frameLogin1.lblStatus.Caption := 'Loading...';
+  Label3.Caption := 'Loading Conversations Please wait...';
   //TimerProgress.Enabled := True;
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsLogout(Sender: TObject; IsLogout: Boolean);
+begin
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+
+  ShowMessage('Conexão foi finalizada / Connection has been closed!  ');
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsOnline(Response: TIsOnline);
 begin
   if Response.IsOnline then
   begin
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Online');
+    //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Online');
 
     frameLogin1.lblStatus.Caption := 'Online';
     frameLogin1.lblStatus.Font.Color := $0000AE11;
@@ -1264,12 +1564,13 @@ begin
     frameLogin1.whatsOn.Visible := False;
     frameLogin1.SpeedButton3.Enabled := True;
     StatusBar1.Panels[1].Text := 'Offline';
+    ShowMessage('Connection is Offline');
   end;
 end;
 
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
 begin
-  Label3.Caption := 'Online Pronto para Uso';
+  Label3.Caption := 'Online Is Ready';
   frameLogin1.lblStatus.Caption := 'Online';
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
@@ -1279,17 +1580,22 @@ begin
   ctbtn.Enabled := True;
   TimerProgress.Enabled := False;
 
+  TWPPConnect1.GetMyNumber;
+  TWPPConnect1.getWAVersion;
+  TWPPConnect1.GetMe;
+
   //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
+  TimerIsOnline.Enabled := True;
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
-
 end;
 
 procedure TfrDemo.TWPPConnect1getLastSeen(const vgetLastSeen: TReturngetLastSeen);
@@ -1463,6 +1769,34 @@ begin
 
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Getlive_location_start(const response: Tlive_location_startClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getlive_location_start');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' chat: ' + response.live.chat);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' latitude: ' + FloatToStr(response.live.lat) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' longitude: ' + FloatToStr(response.live.lng));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' remote: ' + response.live.msgId.remote);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' _serialized: ' + response.live.msgId._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+
+end;
+
+procedure TfrDemo.TWPPConnect1Getlogout_reason(const logout_reason: Tlogout_reason);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('logout_reason: ' + logout_reason.response);
+
+  frameLogin1.lblStatus.Caption := 'Offline';
+  frameLogin1.lblStatus.Font.Color := $002894FF;
+  frameLogin1.lblStatus.Font.Color := clGrayText;
+  frameLogin1.whatsOff.Visible := True;
+  frameLogin1.whatsOn.Visible := False;
+  frameLogin1.SpeedButton3.Enabled := True;
+
+  ShowMessage('Conexão foi finalizada / Connection has been closed!' + #13#10#13#10 + logout_reason.response);
+  TimerIsOnline.Enabled := False;
 end;
 
 procedure TfrDemo.TWPPConnect1GetMe(const vMe: TGetMeClass);
@@ -1713,7 +2047,7 @@ end;
 
 procedure TfrDemo.TWPPConnect1GetMyNumber(Sender: TObject);
 begin
-  lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect(Sender).MyNumber;
+  lblMeuNumero.Caption := 'My Number: ' + TWPPConnect(Sender).MyNumber;
   frameLogin1.lblStatus.Caption := 'Online';
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;
@@ -1730,25 +2064,29 @@ begin
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
 end;
 procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
 var
   wlo_Celular : string;
-  contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
+  contato, telefone, notifyName, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
   Question, Answer, phoneNumber, FChatID, quotedMsg_body, S_Type_origem, DescricaoLista, foto_perfil : string;
   From, idMensagem, body, S_Caption, S_type, filename, mediakey, mimeType, deprecatedMms3Url, Title, Footer: string;
   ChatGroup, mensagemDuplicada, eh_arquivo, isGif : Boolean;
-  latitude, longitude, localidade, base64localidade : String;
+  latitude, longitude, localidade, base64localidade, sessionid, response, options, S_Retorno : String;
   ack: extended;
-  I: Integer;
+  I, x, y, k, j, l, m, n, o, p, q: Integer;
+  {$IFDEF Typebot}
+    ResultTypeBotStartChat: uTypeBotResponseStartChat.TResultTypeBotStartChatClass;
+    ResultTypeBotContinueChat: uTypeBotResponseContinueChat.TResultResponseContinueChatClass;
+  {$ENDIF}
 begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento NewMessage ');
 
@@ -1758,21 +2096,30 @@ begin
 
   end
   else
+  if (pos('@newsletter', NewMessageResponse.msg.id.remote) > 0) then
+  begin
+    //Canais
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.add('newsletter: ' + NewMessageResponse.msg.id.remote);
+  end
+  else
   begin
     if not NewMessageResponse.msg.isGroup then //CHAT USER
     begin
       FChatID := NewMessageResponse.msg.from;
       TWPPConnect1.ReadMessages(FChatID);
-      wlo_Celular := Copy(NewMessageResponse.msg.author,1,  pos('@', NewMessageResponse.msg.author) -1); // nr telefone
+      wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
 
       if NewMessageResponse.msg.id.fromMe then //Foi Enviado por Mim está Mensagem / This message was sent by me
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: False');
 
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Nome Contato: ' + Trim(NewMessageResponse.msg.notifyName));
+      notifyName := NewMessageResponse.msg.notifyName;
 
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Number WhatsApp: ' + wlo_Celular);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('body: ' + AnsiUpperCase(NewMessageResponse.msg.body));
+      body := NewMessageResponse.msg.body;
+
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Unique id: ' + NewMessageResponse.msg.id._serialized);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Type: ' + NewMessageResponse.msg.&type);
 
@@ -1783,10 +2130,36 @@ begin
         quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Caption;
         if Trim(quotedMsg_caption) = '' then
           if Assigned(NewMessageResponse.msg.quotedMsg.list) then
+          begin
             quotedMsg_caption := NewMessageResponse.msg.quotedMsg.list.description;
+            //IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.list.id._serialized;
+          end;
+
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+
+
+        //Obter o Unique ID de Origem
+        if Assigned(NewMessageResponse.msg.quotedMsg.id) then
+          IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized
+        else
+        begin
+          if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.from then
+            IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID
+          else
+          if NewMessageResponse.msg.author <> '' then
+          begin
+            if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.author then
+              IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID else
+              IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+          end
+          else
+            IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+        end;
+
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
+
       end;
 
       ack := 3;
@@ -1847,6 +2220,202 @@ begin
 
       TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+
+      if NewMessageResponse.msg.id.fromMe = False then
+      begin
+        if SwtChatGPT.IsOn then
+        begin
+          if Question <> '' then
+          begin
+            //Créditos --> https://github.com/landgraf-dev/openai-delphi
+            Answer := AskQuestion(Question, wlo_Celular);
+            phoneNumber := Copy(Answer, 1, pos('#', Answer)-1);
+            Answer := StringReplace(Answer, phoneNumber + '#', '',[]);
+
+            if Trim(Answer) <> '' then
+              frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + Answer, 'createChat: true', '123')
+              //frDemo.TWPPConnect1.SendTextMessageEx(frameMensagem1.ed_num.Text, 'Escreva sua Perguanta?', options, '123')
+            else
+              frDemo.TWPPConnect1.SendTextMessageEx(phoneNumber, TWPPConnectEmoticons.robot + ' *ChatGPT* ' + 'Could not retrieve an answer.', 'createChat: true', '123');
+
+          end;
+        end;
+
+        if SwtTypebot.IsOn then
+        begin
+        {$IFDEF Typebot}
+          dm.sqlSearch.Close;
+          dm.sqlSearch.SQL.Clear;
+          dm.sqlSearch.SQL.Add('SELECT * FROM ticket WHERE number = :number AND situacion = 1');
+          dm.sqlSearch.ParamByName('number').AsString := FChatID;
+          try
+            dm.sqlSearch.Open;
+          except
+            on E: Exception do
+              ShowMessage('Erro ao executar a consulta: ' + E.Message);
+          end;
+
+          if dm.sqlSearch.RecordCount > 0 then
+          begin
+            sessionid := dm.sqlSearch.FieldByName('sessionid').AsString;
+            TypebotAPI1.UrlTypebot := eUrlTypebot.Text;
+            TypebotAPI1.ContinueChat(sessionid, body, response);
+            ResultTypeBotContinueChat := uTypeBotResponseContinueChat.TResultResponseContinueChatClass.FromJsonString(response);
+
+            S_Retorno := '';
+            options := 'createChat: true';
+
+            for x := 0 to Length(ResultTypeBotContinueChat.messages) - 1 do
+            begin
+              for y := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText) - 1 do
+              begin
+                if ResultTypeBotContinueChat.messages[x].content.richText[y].&type <> 'variable' then
+                  S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].text + sLineBreak
+                else
+                //ChatGPT
+                if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].children) then
+                  for k := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children) - 1 do
+                  begin
+                    if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'p' then
+                    begin
+                      if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) then
+                      begin
+                        for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
+                        begin
+                          if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].bold then
+                            S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + '*'
+                          else
+                            S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
+                        end;
+                      end
+                      else
+                        S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak;
+                    end
+                    else
+                    if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ul')
+                    or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ol') then
+                    begin
+                      for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
+                      begin
+                        //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
+
+                        //if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[j].children) then
+                        if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].&type = 'li' then
+                        begin
+                          for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                          begin
+                            //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
+                            if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic')
+                            or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ul')
+                            or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ol') then
+                              for m := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children ) - 1 do
+                              begin
+                                if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic') then
+                                begin
+                                  if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].bold) then
+                                    S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + '*'
+                                  else
+                                    S_Retorno := S_Retorno + '' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + sLineBreak
+                                end
+                                else
+                                begin
+                                  if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].&type = 'li' then
+                                  begin
+                                    for n := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children ) - 1 do
+                                    begin
+                                      //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].text + sLineBreak;
+
+                                      if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].&type = 'lic' then
+                                      begin
+                                        for o := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children ) - 1 do
+                                        begin
+                                          if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].bold) then
+                                            S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + '*'
+                                          else
+                                            S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + sLineBreak;
+                                        end;
+                                      end;
+                                    end;
+                                  end;
+
+                                end;
+
+                              end;
+
+                          end;
+                        end;
+
+                      end;
+                    end;
+
+                  end;
+
+              end;
+
+              options := 'createChat: true';
+              frDemo.TWPPConnect1.SendTextMessageEx(FChatID, S_Retorno, options, '123');
+              S_Retorno := '';
+            end;
+
+            if Assigned(ResultTypeBotContinueChat.clientSideActions) then
+            begin
+              //END CHAT
+              dm.sqlSearch.Edit;
+              dm.sqlSearch.FieldByName('situacion').AsInteger := 2;
+              dm.sqlSearch.Post;
+            end;
+          end
+          else
+          begin
+            TypebotAPI1.UrlTypebot := eUrlTypebot.Text;
+            sessionid := TypebotAPI1.StartChat('my-typebot-vu8p5jy', 'richText', response);
+            gravar_log(sessionid);
+
+            if sessionid <> 'Failed' then
+            begin
+              ResultTypebotStartChat := uTypeBotResponseStartChat.TResultTypeBotStartChatClass.FromJsonString(response);
+
+              //dm.sqlSearch.Append;
+              dm.sqlSearch.Close;
+              dm.sqlSearch.SQL.Clear;
+              dm.sqlSearch.SQL.Add('INSERT INTO ticket ( number, namecontact, sessionid, situacion)   ');
+              dm.sqlSearch.SQL.Add('values( :number, :namecontact, :sessionid, :situacion) ');
+              dm.sqlSearch.ParamByName('number').AsString := FChatID;
+              dm.sqlSearch.ParamByName('namecontact').AsString := notifyName;
+              dm.sqlSearch.ParamByName('sessionid').AsString := sessionid;
+              dm.sqlSearch.ParamByName('situacion').AsInteger := 1;
+              try
+                dm.sqlSearch.ExecSQL;
+              except
+                on E: Exception do
+                begin
+                  gravar_log('' + e.Message);
+                end;
+              end;
+
+
+              options := 'createChat: true';
+
+              for x := 0 to Length(ResultTypeBotStartChat.messages) - 1 do
+              begin
+                for y := 0 to Length(ResultTypeBotStartChat.messages[x].content.richText) - 1 do
+                begin
+                  S_Retorno := S_Retorno + ResultTypeBotStartChat.messages[x].content.richText[y].children[0].text + sLineBreak;
+                end;
+
+                frDemo.TWPPConnect1.SendTextMessageEx(FChatID, S_Retorno, options, '123');
+
+                S_Retorno := '';
+                Sleep(1000);
+
+              end;
+            end;
+
+          end;
+        {$ENDIF}
+        end;
+      end;
 
       {ProcessaMsgNaoLida(FChatID, From, idMensagem, '', '', contato,
         body, S_Caption, Title, Footer, DescricaoLista,
@@ -1888,6 +2457,28 @@ begin
         if Trim(quotedMsg_caption) = '' then
           quotedMsg_caption := NewMessageResponse.msg.quotedMsg.Body;
         frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('quotedMsg.caption: ' + quotedMsg_caption);
+
+        //IdMensagemOrigem := 'true_' + NewMessageResponse.msg.from + '_' + NewMessageResponse.msg.quotedStanzaID;
+
+        //Obter o Unique ID de Origem
+        if Assigned(NewMessageResponse.msg.quotedMsg.id) then
+          IdMensagemOrigem := NewMessageResponse.msg.quotedMsg.id._serialized
+        else
+        begin
+          if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.from then
+            IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID
+          else
+          if NewMessageResponse.msg.author <> '' then
+          begin
+            if NewMessageResponse.msg.quotedParticipant <> NewMessageResponse.msg.author then
+              IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID else
+              IdMensagemOrigem := 'true_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+          end
+          else
+            IdMensagemOrigem := 'false_' + NewMessageResponse.msg.quotedParticipant + '_' + NewMessageResponse.msg.quotedStanzaID;
+        end;
+
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('IdMensagemOrigem: ' + IdMensagemOrigem);
       end;
 
       ack := 3;
@@ -1947,11 +2538,41 @@ begin
       end;
       TWPPConnect1.ReadMessages(FChatID);
       frameMensagensRecebidas1.memo_unReadMessage.Lines.add('');
+
+
+
     end;
   end;
 
 
 
+end;
+
+procedure TfrDemo.TWPPConnect1Getorder_payment_status(const response: Torder_payment_statusClass);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getorder_payment_status');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' method: ' + response.msg.method);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' reference_id: ' + response.msg.reference_id);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' remote: ' + response.msg.msgId.remote);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' _serialized: ' + response.msg.msgId._serialized);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
+procedure TfrDemo.TWPPConnect1GetOutgoingCall(const OutgoingCall: TOutgoingCall);
+begin
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team' + ' - Efetuando Ligação: ' + OutgoingCall.sender;
+  Application.ProcessMessages;
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Efetuando Ligação: sender: ' + OutgoingCall.sender + ' peerJid: ' + OutgoingCall.peerJid + ' isGroup: ' + OutgoingCall.isGroup.ToString() + ' isVideo: ' + OutgoingCall.isVideo.ToString()+
+    ' offerTime: ' + DateTimeToStr(UnixToDateTime(OutgoingCall.offerTime, False)) );
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  SleepNoFreeze(2000);
+  TWPPConnect1.EndCall(OutgoingCall.id);
+  ShowMessage('Efetuando Ligação: ' + OutgoingCall.sender);
+  TWPPConnect1.SendTextMessageEx(OutgoingCall.sender,'Este Número Não Efetua Ligações!','','Ligação');
+  Caption := 'WPP4Delphi - Powered by WPPConnect Team';
+  Application.ProcessMessages;
 end;
 
 procedure TfrDemo.TWPPConnect1GetPlatformFromMessage(const PlatformFromMessage: TPlatformFromMessage);
@@ -2006,6 +2627,20 @@ begin
     except on E: Exception do
     end;
   end;
+end;
+
+procedure TfrDemo.TWPPConnect1Getpresence_change(const response: TMsgPresence_change);
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getpresence_change');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.id);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' shortName: ' + response.msg.shortName);
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' state: ' + response.msg.state);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isContact: ' + BooleanToStr(response.msg.isContact));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isOnline: ' + BooleanToStr(response.msg.isOnline));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isGroup: ' + BooleanToStr(response.msg.isGroup));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' isUser: ' + BooleanToStr(response.msg.isUser));
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
 end;
 
 procedure TfrDemo.TWPPConnect1GetProfilePicThumb(Sender: TObject; ProfilePicThumb: TResponseGetProfilePicThumb);
@@ -2077,6 +2712,7 @@ begin
       Label3.Caption := 'Desconectou Erro na Pasta Cache';
       ShowMessage('Desconectou Erro na Pasta Cache' + #13#10#13#10 + ' Restaure a Pasta de Backup ou ' + #13#10 + 'Faça uma nova Leitura do Qrcode');
       TimerRestauraPastaCache.Enabled := True;
+      TimerIsOnline.Enabled := False;
     end;
 
   end;
@@ -2117,11 +2753,13 @@ begin
   StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
   // whatsOn.Visible            := SpeedButton3.enabled;
   // lblNumeroConectado.Visible := whatsOn.Visible;
-  frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+  //frameLogin1.whatsOff.Visible := Not frameLogin1.whatsOn.Visible;
+
+
   if frameLogin1.whatsOn.Visible then
   begin
     ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
-    lblMeuNumero.Caption := 'Meu número: ' + TWPPConnect1.MyNumber;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
   Label3.Visible := False;
   case TWPPConnect(Sender).status of
@@ -2286,7 +2924,7 @@ begin
                               AMessage.mediaKey, Extensao_Documento, AChat.id, Automato_Path + 'Temp\');
 
               SleepNoFreeze(100);
-              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AMessage.Sender.pushname)));
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AChat.Contact.pushname)));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Chat Id: ' + AChat.id));
@@ -2510,9 +3148,181 @@ begin
     end;
   end;
 end;
+procedure TfrDemo.TWPPConnect1Getupdate_label(const response: TupdateLabelClass);
+var
+  i: Integer;
+begin
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Getupdate_label');
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.chat.id);
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' type: ' + response.msg.&type);
+  //frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' formattedName: ' + response.chat.contact.formattedName);
+
+  for i := 0 to Length(response.msg.labels) - 1 do
+  begin
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' name: ' + response.msg.labels[i].name);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' hexColor: ' + response.msg.labels[i].hexColor);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' id: ' + response.msg.labels[i].id);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' colorIndex: ' + FloatToStr(response.msg.labels[i].colorIndex));
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' count: ' + FloatToStr(response.msg.labels[i].count));
+  end;
+
+
+
+
+  frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+end;
+
 procedure TfrDemo.TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
 begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('WhatsAppWebVersion: ' + WhatsAppWebVersion.WAVersion);
+end;
+
+procedure TfrDemo.TWPPConnect1Get_deleteMessageNewResponse(const Response: TdeleteMessageNewResponseClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO, S_messageSendResult : string;
+  jsonString, jsonSendMsgResult: string;
+  jsonObject, jsonObjectMsgResult: TJSONObject;
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Event deleteMessageNewResponse');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  wid: ' + Response.wid);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  uniqueId: ' + Response.uniqueId);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JsonMessage: ' + Response.JsonMessage);
+
+  wlo_Json := Response.JsonMessage;
+  jsonString := Response.JsonMessage;
+
+  jsonObject := TJSONObject.ParseJSONValue(jsonString) as TJSONObject;
+
+  try
+    if jsonObject <> nil then
+    begin
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('isDeleted: ' + jsonObject.GetValue('isDeleted').Value);
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+      jsonSendMsgResult := jsonObject.GetValue('sendMsgResult').ToString;
+
+      try
+        jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
+
+        try
+          if jsonObjectMsgResult <> nil then
+          begin
+            S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
+          end
+          else
+          begin
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+          end;
+
+        finally
+          jsonObjectMsgResult.Free;
+        end;
+      except
+        on E: Exception do
+        begin
+          S_messageSendResult := jsonObjectMsgResult.GetValue('sendMsgResult').Value; //sendMsgResult
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  sendMsgResult: ' + S_messageSendResult + #13#10);
+
+        end;
+
+      end;
+    end
+    else
+    begin
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON inválido.');
+    end;
+  finally
+    jsonObject.Free;
+  end;
+
+end;
+
+procedure TfrDemo.TWPPConnect1Get_editMessageNewResponse(const Response: TeditMessageNewResponseClass);
+var
+  StatusMensagem, wlo_Json, S_NUMERO, S_messageSendResult, wlo_ack , wlo_uniqueid_edit: string;
+  jsonString, jsonSendMsgResult: string;
+  jsonObject, jsonObjectMsgResult, jsonlatestEditMsgKeyObject: TJSONObject;
+  JsonValue, JsonValueAck: TJSONValue;
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Event editMessageNewResponse');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  newmessage: ' + Response.newmessage);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  uniqueId: ' + Response.uniqueId);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  Seuid: ' + Response.Seuid);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  Seuid2: ' + Response.Seuid2);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JsonMessage: ' + Response.JsonMessage);
+
+  wlo_Json := Response.JsonMessage;
+  jsonString := Response.JsonMessage;
+
+  jsonObject := TJSONObject.ParseJSONValue(jsonString) as TJSONObject;
+
+  try
+    if Assigned(jsonObject) then
+    begin
+      wlo_uniqueid_edit := jsonObject.ToJSON; //'';
+      JsonValue := jsonObject.GetValue('id');
+      if Assigned(JsonValue) then
+        wlo_uniqueid_edit := JsonValue.Value;
+
+      JsonValueAck := jsonObject.GetValue('ack');
+      if Assigned(JsonValueAck) then
+        wlo_ack := JsonValueAck.Value;
+
+      //if jsonObject.TryGetValue('id', jsonObject) then
+        //wlo_uniqueid_edit := jsonObject.GetValue('id').ToString;
+
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique id: ' + jsonObject.GetValue('id').Value);
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit origem: ' + wlo_uniqueid_edit);
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ack: ' + wlo_ack);
+
+
+      if jsonObject.TryGetValue('latestEditMsgKey', jsonlatestEditMsgKeyObject) then
+        wlo_uniqueid_edit := jsonlatestEditMsgKeyObject.GetValue('_serialized').Value;
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('uniqueid_edit new: ' + wlo_uniqueid_edit);
+
+      //wlo_ack := jsonObject.GetValue('ack').Value;
+      //frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SendMsgResult: ' + jsonObject.GetValue('sendMsgResult').ToString);
+
+
+
+
+      {try
+        jsonSendMsgResult := jsonObject.GetValue('sendMsgResult').ToString;
+        jsonObjectMsgResult := TJSONObject.ParseJSONValue(jsonSendMsgResult) as TJSONObject;
+
+        try
+          if jsonObjectMsgResult <> nil then
+          begin
+            S_messageSendResult := jsonObjectMsgResult.GetValue('messageSendResult').Value;
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  messageSendResult: ' + S_messageSendResult + #13#10);
+          end
+          else
+          begin
+            frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON messageSendResult inválido.');
+          end;
+
+        finally
+          jsonObjectMsgResult.Free;
+        end;
+      except
+        on E: Exception do
+        begin
+          S_messageSendResult := jsonObjectMsgResult.GetValue('sendMsgResult').Value; //sendMsgResult
+          frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  sendMsgResult: ' + S_messageSendResult + #13#10);
+
+        end;
+
+      end;}
+    end
+    else
+    begin
+      frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  JSON inválido.');
+    end;
+  finally
+    jsonObject.Free;
+  end;
+
 end;
 
 procedure TfrDemo.TWPPConnect1Get_ErrorResponse(const Response: TErrorResponseClass);
@@ -2523,6 +3333,16 @@ begin
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('chatid: ' + Response.chatid);
   if Response.Seuid <> '' then
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid: ' + Response.Seuid);
+
+  if Response.Seuid2 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid2: ' + Response.Seuid2);
+
+  if Response.Seuid3 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid3: ' + Response.Seuid3);
+
+  if Response.Seuid4 <> '' then
+    frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Seuid4: ' + Response.Seuid4);
+
   if Response.UniqueID <> '' then
     frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('UniqueID: ' + Response.UniqueID);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Error: ' + Response.Error);
@@ -2826,6 +3646,11 @@ begin
     StatusMensagem := 'Visualizada';
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID: ' + RespMensagem.SeuID);
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID2: ' + RespMensagem.SeuID2);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID3: ' + RespMensagem.SeuID3);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('SeuID4: ' + RespMensagem.SeuID4);
+
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Telefone: ' + RespMensagem.Telefone);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('ACK: ' + FloatToStr(RespMensagem.Ack) + ' - ' + StatusMensagem);
   frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Unique ID: ' + RespMensagem.ID);
@@ -2860,6 +3685,30 @@ begin
   else
     ShowMessage(vCheckNumber.id + ' é um numero INVÁLIDO');
 end;
+
+procedure TfrDemo.TWPPConnect1RetErrorWhiteScreen(Sender: TObject; Response: string);
+var
+  caminho : string;
+  NomeAplicacao: string;
+begin
+  NomeAplicacao := ExtractFileName(Application.ExeName);
+  NomeAplicacao := Copy(NomeAplicacao,1, pos('.exe', NomeAplicacao) -1);
+
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('RetErrorWhiteScreen: ' + Response);
+
+  gravar_log('RetErrorWhiteScreen: ' + Response);
+  gravar_log('Force Restart Application ' + #13#10);
+
+  if not (FileExists(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat')) then
+  begin
+    CriarArquivoBAT_ReiniciaAplicacao;
+    SleepNoFreeze(1000);
+  end;
+
+  //Forçar Reiniciar a Aplicação  / Force Restart the Application
+  ShellExecute(handle,'open',PChar(ExtractFilePath(Application.ExeName) + 'Reinicia' + NomeAplicacao + '.bat'), '','',SW_MINIMIZE);
+end;
+
 procedure TfrDemo.TWPPConnect1WPPMonitorCrash(Sender: TObject;
   const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean);
 begin

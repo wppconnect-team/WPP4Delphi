@@ -32,6 +32,27 @@ type
 
   end;
 
+
+TPollOptionsClass = class(TClassPadrao)
+private
+  FLocalId: Extended;
+  FName: String;
+public
+  property localId: Extended read FLocalId write FLocalId;
+  property name: String read FName write FName;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TPollOptionsClass;
+end;
+
+TPollVotesSnapshotClass = class(TClassPadrao)
+private
+  FPollVotes: TArray<String>;
+public
+  property pollVotes: TArray<String> read FPollVotes write FPollVotes;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TPollVotesSnapshotClass;
+end;
+
 TUrlButtonClass = class(TClassPadrao)
 private
   FDisplayText: String;
@@ -74,13 +95,14 @@ private
   FLastPlaybackProgress: Extended;
   FMentionedJidList: TArray<String>;
   FPollInvalidated: Boolean;
-  FPollOptions: TArray<String>;
+  //FPollOptions: TArray<String>;
   FProductHeaderImageRejected: Boolean;
   FRequiresDirectConnection: Boolean;
   FStickerSentTs: Extended;
   FTitle: String;
   FType: String;
   Fcaption: String;
+    FPollOptions: TArray<TPollOptionsClass>;
 public
   property body: String read FBody write FBody;
   property caption: String read Fcaption write Fcaption;
@@ -101,12 +123,13 @@ public
   property lastPlaybackProgress: Extended read FLastPlaybackProgress write FLastPlaybackProgress;
   property mentionedJidList: TArray<String> read FMentionedJidList write FMentionedJidList;
   property pollInvalidated: Boolean read FPollInvalidated write FPollInvalidated;
-  property pollOptions: TArray<String> read FPollOptions write FPollOptions;
+  //property pollOptions: TArray<String> read FPollOptions write FPollOptions;
   property productHeaderImageRejected: Boolean read FProductHeaderImageRejected write FProductHeaderImageRejected;
   property requiresDirectConnection: Boolean read FRequiresDirectConnection write FRequiresDirectConnection;
   property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
   property title: String read FTitle write FTitle;
   property &type: String read FType write FType;
+  property pollOptions: TArray<TPollOptionsClass> read FPollOptions write FPollOptions;
   destructor Destroy; override;
   constructor Create(pAJsonString: string);
 end;
@@ -146,7 +169,7 @@ end;
     FAuthor: String;
     FisGroup: Boolean;
     FFilename: String;
-    FPollOptions: TArray<String>;
+    //FPollOptions: TArray<String>;
     FFilehash: String;
     FThumbnailWidth: Extended;
     FRowId: Extended;
@@ -182,6 +205,21 @@ end;
     FFooter: String;
     FgifAttribution: Extended;
     FisGif: Boolean;
+    FselectedId: string;
+    FselectedIndex: integer;
+    FPollVotesSnapshot: TPollVotesSnapshotClass;
+    FtemplateParams: TArray<String>;
+    FInteractiveHeader: TInteractiveHeaderClass;
+    FReportingTokenInfo: TReportingTokenInfoClass;
+    FProtocolMessageKey: TProtocolMessageKeyClass;
+    Frecipients: TArray<String>;
+    FchatlistPreview: TchatlistPreviewClass;
+    FLatestEditMsgKey: TLatestEditMsgKeyClass;
+    FInteractivePayload: TInteractivePayloadClass;
+    FlistResponse: TlistResponseClass;
+    fVCardLIst: TArray<TCardClass>;
+    FButtons: TArray<TButtonsClass>;
+    FPollOptions: TArray<TPollOptionsClass>;
   public
     property ack: Extended read FAck write FAck;
     property author: String read FAuthor write FAuthor;
@@ -230,7 +268,7 @@ end;
      property gifAttribution         : Extended      read FgifAttribution              write FgifAttribution;
      property isGif                  : Boolean       read FisGif                       write FisGif;
     property pageCount: Extended read FPageCount write FPageCount;
-    property pollOptions: TArray<String> read FPollOptions write FPollOptions;
+    //property pollOptions: TArray<String> read FPollOptions write FPollOptions;
     property rowId: Extended read FRowId write FRowId;
     property size: Extended read FSize write FSize;
     property thumbnailDirectPath: String read FThumbnailDirectPath write FThumbnailDirectPath;
@@ -252,7 +290,26 @@ end;
     property quotedStanzaID: String read FQuotedStanzaID write FQuotedStanzaID;
     property richPreviewType: Extended read FRichPreviewType write FRichPreviewType;
     property thumbnail: String read FThumbnail write FThumbnail;
+    property selectedId            : string                  read FselectedId             write FselectedId;
+    property selectedIndex         : integer                 read FselectedIndex          write FselectedIndex;
+    property pollVotesSnapshot     : TPollVotesSnapshotClass read FPollVotesSnapshot      write FPollVotesSnapshot;
 
+    property listResponse        : TlistResponseClass  read FlistResponse      write FlistResponse;
+
+    property recipients          : TArray<String>         read Frecipients          write Frecipients; //Marcelo 14/08/2024
+
+    property templateParams      : TArray<String>                 read FtemplateParams      write FtemplateParams; //Marcelo 14/08/2024
+    property protocolMessageKey  : TProtocolMessageKeyClass       read FProtocolMessageKey  write FProtocolMessageKey; //Marcelo 14/08/2024
+    property interactivePayload  : TInteractivePayloadClass       read FInteractivePayload  write FInteractivePayload;
+    property interactiveHeader   : TInteractiveHeaderClass        read FInteractiveHeader   write FInteractiveHeader;
+    property reportingTokenInfo  : TReportingTokenInfoClass       read FReportingTokenInfo  write FReportingTokenInfo;
+    property LatestEditMsgKey    : TLatestEditMsgKeyClass         read FLatestEditMsgKey    write FLatestEditMsgKey;
+    property chatlistPreview     : TchatlistPreviewClass          read FchatlistPreview     write FchatlistPreview;
+
+    property CardList   : TArray<TCardClass>  read fVCardLIst          write FVCardList;
+    property buttons    : TArray<TButtonsClass>  read FButtons         write FButtons;
+
+    property pollOptions: TArray<TPollOptionsClass> read FPollOptions write FPollOptions;
 
     constructor Create(pAJsonString: string);
     destructor Destroy; override;

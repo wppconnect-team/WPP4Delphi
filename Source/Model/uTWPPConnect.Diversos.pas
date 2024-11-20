@@ -39,7 +39,7 @@ unit uTWPPConnect.Diversos;
 interface
 
 uses
-  System.Classes, Vcl.ExtCtrls, System.UITypes;
+  System.Classes, Vcl.ExtCtrls, System.UITypes, System.RegularExpressions;
 
 function PrettyJSON(JsonString: String):String;
 function CaractersWeb(vText: string): string;
@@ -51,6 +51,9 @@ function AjustNameFile(texto : String) : String;
 Function Convert_Base64ToFile(Const PInBase64, FileSaveName: string):Boolean;
 Procedure WarningDesenv(Pvalor:String);
 Function  TrazApenasNumeros(PValor:String):String;
+function IsDirectoryPath(const Path: string): Boolean;
+function FindUnicodeSequences(const Input: string): TArray<string>;
+function ContainsUnicodeSequence(const Input: string): Boolean;
 
 
 implementation
@@ -185,28 +188,86 @@ Begin
   Result := LClearNum;
 End;
 
+
+function ContainsUnicodeSequence(const Input: string): Boolean;
+var
+  RegEx: TRegEx;
+begin
+  //RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}\\u[A-Fa-f0-9]{4}');
+  RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}');
+  Result := RegEx.IsMatch(Input);
+end;
+
+function FindUnicodeSequences(const Input: string): TArray<string>;
+var
+  RegEx: TRegEx;
+  Match: TMatch;
+  Matches: TMatchCollection;
+  Results: TArray<string>;
+  I: Integer;
+begin
+  RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}\\u[A-Fa-f0-9]{4}');
+  Matches := RegEx.Matches(Input);
+
+  SetLength(Results, Matches.Count);
+  for I := 0 to Matches.Count - 1 do
+  begin
+    Results[I] := Matches[I].Value;
+  end;
+
+  Result := Results;
+end;
+
+function IsDirectoryPath(const Path: string): Boolean;
+var
+  RegEx: TRegEx;
+begin
+  // A expressão regular abaixo verifica caminhos de diretório comuns no Windows
+  // Pode ser ajustada para outros sistemas operacionais se necessário
+  RegEx := TRegEx.Create('^(?:[a-zA-Z]:)?[\\/](?:[a-zA-Z0-9_\-\.]+[\\/])*[a-zA-Z0-9_\-\.]*$');
+  Result := RegEx.IsMatch(Path);
+end;
+
 function CaractersWeb(vText: string): string;
 begin
+  vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
+  vText  := StringReplace(vText, '\n', sLineBreak, [rfReplaceAll] );
+
+  //if IsDirectoryPath(vText) then
+  if not(ContainsUnicodeSequence(vText)) then
+  begin
+    vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
+  end;
+
+  //vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
   vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br />'  ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br/>'   ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, #13       ,''    , [rfReplaceAll] );
-  vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
   vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A       ,' \n'   , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A#$A    ,' \n'   , [rfReplaceAll] );
+
   Result := vText;
 end;
 
 function CaractersQuebraLinha(vText: string): string;
 begin
+  vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
+  vText  := StringReplace(vText, '\n', sLineBreak, [rfReplaceAll] );
+
+  if not(ContainsUnicodeSequence(vText)) then
+  begin
+    vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
+  end;
+
+  //vText  := StringReplace(vText, '\'       ,'\\'  , [rfReplaceAll] );  //Ajust feito para barra invertida
   vText  := StringReplace(vText, sLineBreak,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br>'    ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br />'  ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, '<br/>'   ,' \n' , [rfReplaceAll] );
   vText  := StringReplace(vText, #13       ,''   , [rfReplaceAll] );
-  vText  := StringReplace(vText, '\r'      ,''    , [rfReplaceAll] );
   //vText  := StringReplace(vText, #10       ,''   , [rfReplaceAll] );
   //vText  := StringReplace(vText, '"'       ,'\"' , [rfReplaceAll] );
   vText  := StringReplace(vText, #$A       ,' \n'   , [rfReplaceAll] );
