@@ -1336,6 +1336,7 @@ type
     FrequiresDirectConnection: Boolean;
     FpttForwardedFeaturesEnabled: Boolean;
     FhasReaction: Boolean;
+    FctwaContext: TctwaContextClass;
     FephemeralOutOfSync: Boolean;
     FfromMe: Boolean;
     FquotedMsg: TquotedMsgClass;
@@ -1438,6 +1439,7 @@ type
     property isMdHistoryMsg              : Boolean  read FisMdHistoryMsg               write FisMdHistoryMsg;
     property requiresDirectConnection    : Boolean  read FrequiresDirectConnection     write FrequiresDirectConnection;
     property hasReaction                 : Boolean  read FhasReaction                  write FhasReaction;
+    property ctwaContext                 : TctwaContextClass  read FctwaContext        write FctwaContext;
     property ephemeralOutOfSync          : Boolean  read FephemeralOutOfSync           write FephemeralOutOfSync;
     property fromMe                      : Boolean  read FfromMe                       write FfromMe;
     property quotedMsg                   : TquotedMsgClass  read FquotedMsg            write FquotedMsg;
@@ -2540,6 +2542,7 @@ private
   FFrom: String;
   FGroupMentions: TArray<String>;
   FHasReaction: Boolean;
+  FctwaContext: TctwaContextClass;
   FId: TIdClass;
   FInvis: Boolean;
   FIsAvatar: Boolean;
@@ -2620,7 +2623,7 @@ private
   FInteractivePayload: TInteractivePayloadClass;
   FInteractiveHeader: TInteractiveHeaderClass;
   FselectedButtonId: string;
-    FPollVotesSnapshot: TPollVotesSnapshotClass;
+  FPollVotesSnapshot: TPollVotesSnapshotClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2628,6 +2631,7 @@ public
   property from: String read FFrom write FFrom;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
   property hasReaction: Boolean read FHasReaction write FHasReaction;
+  property ctwaContext: TctwaContextClass read FctwaContext write FctwaContext;
   property id: TIdClass read FId write FId;
   property invis: Boolean read FInvis write FInvis;
   property isAvatar: Boolean read FIsAvatar write FIsAvatar;
