@@ -263,6 +263,7 @@ type
       FMediaUrl: string;
       FSourceUrl: string;
       FThumbnail: string;
+      FThumbnailUrl: string;
       FTitle: string;
     public
       property ConversionData     : string       read FConversionData     write FConversionData;
@@ -272,7 +273,8 @@ type
       property MediaUrl           : string       read FMediaUrl           write FMediaUrl;
       property SourceUrl          : string       read FSourceUrl          write FSourceUrl;
       property Thumbnail          : string       read FThumbnail          write FThumbnail;
-      property Title              : string       read FTitle               write FTitle;
+      property ThumbnailUrl       : string       read FThumbnailUrl       write FThumbnailUrl;
+      property Title              : string       read FTitle              write FTitle;
   end;
 
   TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
