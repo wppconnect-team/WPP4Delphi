@@ -764,6 +764,10 @@ begin
     end;
   end;
 
+{$IFDEF Typebot}
+  InitializeTypebotAPI(Self);
+{$ENDIF}
+
   frameLogin1.Visible := True;
   frameLogin1.lblCodeLinkDevice.Caption := '';
   ctbtn.Categories.Items[0].Items[0].ImageIndex := 1;
