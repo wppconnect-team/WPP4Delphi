@@ -254,6 +254,29 @@ type
     public
   end;
 
+  TctwaContextClass = class(TClassPadrao)
+    private
+      FConversionData: string;
+      FConversionSource: string;
+      FDescription: string;
+      FMediaType: Integer;
+      FMediaUrl: string;
+      FSourceUrl: string;
+      FThumbnail: string;
+      FThumbnailUrl: string;
+      FTitle: string;
+    public
+      property ConversionData     : string       read FConversionData     write FConversionData;
+      property ConversionSource   : string       read FConversionSource   write FConversionSource;
+      property Description        : string       read FDescription        write FDescription;
+      property MediaType          : Integer      read FMediaType          write FMediaType;
+      property MediaUrl           : string       read FMediaUrl           write FMediaUrl;
+      property SourceUrl          : string       read FSourceUrl          write FSourceUrl;
+      property Thumbnail          : string       read FThumbnail          write FThumbnail;
+      property ThumbnailUrl       : string       read FThumbnailUrl       write FThumbnailUrl;
+      property Title              : string       read FTitle              write FTitle;
+  end;
+
   TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
   private
     //Necessário Implementar, no meus testes está sempre vazio este ARRAY
@@ -1315,6 +1338,7 @@ type
     FrequiresDirectConnection: Boolean;
     FpttForwardedFeaturesEnabled: Boolean;
     FhasReaction: Boolean;
+    FctwaContext: TctwaContextClass;
     FephemeralOutOfSync: Boolean;
     FfromMe: Boolean;
     FquotedMsg: TquotedMsgClass;
@@ -1417,6 +1441,7 @@ type
     property isMdHistoryMsg              : Boolean  read FisMdHistoryMsg               write FisMdHistoryMsg;
     property requiresDirectConnection    : Boolean  read FrequiresDirectConnection     write FrequiresDirectConnection;
     property hasReaction                 : Boolean  read FhasReaction                  write FhasReaction;
+    property ctwaContext                 : TctwaContextClass  read FctwaContext        write FctwaContext;
     property ephemeralOutOfSync          : Boolean  read FephemeralOutOfSync           write FephemeralOutOfSync;
     property fromMe                      : Boolean  read FfromMe                       write FfromMe;
     property quotedMsg                   : TquotedMsgClass  read FquotedMsg            write FquotedMsg;
@@ -1612,6 +1637,7 @@ type
     FInteractiveHeader: TInteractiveHeaderClass;
     FPollVotesSnapshot: TPollVotesSnapshotClass;
     FmessageSecret: TmessageSecretClass;
+    FctwaContext: TctwaContextClass;
     FchatlistPreview: TchatlistPreviewClass;
     FunreadMentionCount: Extended;
     FarchiveAtMentionViewedInDrawer: Boolean;
@@ -1726,6 +1752,7 @@ type
     property interactiveHeader           : TInteractiveHeaderClass  read FInteractiveHeader  write FInteractiveHeader;
     property pollVotesSnapshot           : TPollVotesSnapshotClass  read FPollVotesSnapshot  write FPollVotesSnapshot;
     property messageSecret               : TmessageSecretClass      read FmessageSecret      write FmessageSecret;
+    property ctwaContext                 : TctwaContextClass        read FctwaContext        write FctwaContext;
     property chatlistPreview             : TchatlistPreviewClass    read FchatlistPreview    write FchatlistPreview;
 
     property unreadMentionsOfMe  : TArray<TunreadMentionsOfMeClass> read FunreadMentionsOfMe   write FunreadMentionsOfMe;
@@ -2517,6 +2544,7 @@ private
   FFrom: String;
   FGroupMentions: TArray<String>;
   FHasReaction: Boolean;
+  FctwaContext: TctwaContextClass;
   FId: TIdClass;
   FInvis: Boolean;
   FIsAvatar: Boolean;
@@ -2597,7 +2625,7 @@ private
   FInteractivePayload: TInteractivePayloadClass;
   FInteractiveHeader: TInteractiveHeaderClass;
   FselectedButtonId: string;
-    FPollVotesSnapshot: TPollVotesSnapshotClass;
+  FPollVotesSnapshot: TPollVotesSnapshotClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2605,6 +2633,7 @@ public
   property from: String read FFrom write FFrom;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
   property hasReaction: Boolean read FHasReaction write FHasReaction;
+  property ctwaContext: TctwaContextClass read FctwaContext write FctwaContext;
   property id: TIdClass read FId write FId;
   property invis: Boolean read FInvis write FInvis;
   property isAvatar: Boolean read FIsAvatar write FIsAvatar;
