@@ -263,8 +263,11 @@ type
       FMediaUrl: string;
       FSourceUrl: string;
       FThumbnail: string;
-      FThumbnailUrl: string;
+      //FThumbnailUrl: string;
       FTitle: string;
+      FFooter: string;
+      FThumbnailUrl: string;
+      procedure SetThumbnailUrl(const Value: string);
     public
       property ConversionData     : string       read FConversionData     write FConversionData;
       property ConversionSource   : string       read FConversionSource   write FConversionSource;
@@ -273,8 +276,10 @@ type
       property MediaUrl           : string       read FMediaUrl           write FMediaUrl;
       property SourceUrl          : string       read FSourceUrl          write FSourceUrl;
       property Thumbnail          : string       read FThumbnail          write FThumbnail;
-      property ThumbnailUrl       : string       read FThumbnailUrl       write FThumbnailUrl;
+      //property ThumbnailUrl       : string       read FThumbnailUrl       write FThumbnailUrl;
+      property ThumbnailUrl       : string       read FThumbnailUrl       write SetThumbnailUrl;
       property Title              : string       read FTitle              write FTitle;
+      property Footer             : string       read FFooter             write FFooter;
   end;
 
   TmsgRowOpaqueDataClass = class(TClassPadrao) //Marcelo 14/08/2022
@@ -2626,6 +2631,9 @@ private
   FInteractiveHeader: TInteractiveHeaderClass;
   FselectedButtonId: string;
   FPollVotesSnapshot: TPollVotesSnapshotClass;
+  FinviteGrpType: string;
+  FmessageSecret: TmessageSecretClass;
+    FSubtype: String;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2660,8 +2668,9 @@ public
   property star: Boolean read FStar write FStar;
   property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
   property t: Extended read FT write FT;
-  property &to                         : String read FTo write FTo;
-  property &type                       : String read FType write FType;
+  property &to                         : String   read FTo write FTo;
+  property &type                       : String   read FType write FType;
+  property subtype                     : String   read FSubtype write FSubtype;
   property pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
   property pollname                    : string   read Fpollname                      write Fpollname;
   property pollSelectableOptionsCount  : Extended read FpollSelectableOptionsCount    write FpollSelectableOptionsCount;
@@ -2711,6 +2720,7 @@ public
 
   property selectedButtonId      : string                    read FselectedButtonId       write FselectedButtonId;
   property selectedId            : string                    read FselectedId             write FselectedId;
+
   property selectedIndex         : integer                   read FselectedIndex          write FselectedIndex;
   property privacyModeWhenSent   : TPrivacyModeWhenSentClass read FPrivacyModeWhenSent    write FPrivacyModeWhenSent;
   property dynamicReplyButtons   : TArray<TDynamicReplyButtonsClass> read FDynamicReplyButtons write FDynamicReplyButtons;
@@ -2719,6 +2729,10 @@ public
   property interactivePayload    : TInteractivePayloadClass   read FInteractivePayload    write FInteractivePayload;
   property interactiveHeader     : TInteractiveHeaderClass    read FInteractiveHeader     write FInteractiveHeader;
   property pollVotesSnapshot     : TPollVotesSnapshotClass    read FPollVotesSnapshot     write FPollVotesSnapshot;
+
+  property inviteGrpType         : string                     read FinviteGrpType         write FinviteGrpType;
+  property messageSecret         : TmessageSecretClass        read FmessageSecret         write FmessageSecret;
+
 end;
 
 //Marcelo 25/07/2023
@@ -3670,22 +3684,26 @@ var
   lAJsonArray: TJSONArray;
 begin
   lAJsonObj := nil;
-  //lAJsonObj := TJSONObject.ParseJSONValue(TFile.ReadAllBytes(pAJsonString), 0);
+
   lAJsonObj := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(pAJsonString), 0) as TJSONObject;
-  //lAJsonObj      := TJSONObject.ParseJSONValue(pAJsonString);
+
   FInjectWorking := False;
   try
     try
       if NOT Assigned(lAJsonObj) then
-         Exit;
+        Exit;
       //tentar thread aqui...
-      TJson.JsonToObject(Self, TJSONObject(lAJsonObj) ,PJsonOption); //ERRO AQUI
+      TJson.JsonToObject(Self, TJSONObject(lAJsonObj), PJsonOption); //ERRO AQUI
       //tentar thread aqui...
 
       FJsonString := pAJsonString;
-          SleepNoFreeze(10);
+      SleepNoFreeze(10);
+
       If LowerCase(SELF.ClassName) <> LowerCase('TResponseConsoleMessage') Then
-         LogAdd(PrettyJSON(pAJsonString), SELF.ClassName);
+      begin
+        LogAdd(PrettyJSON(pAJsonString), SELF.ClassName);
+      end;
+
       FTypeHeader := StrToTypeHeader(name);
     except
       on E : Exception do
@@ -5010,6 +5028,13 @@ end;
 function THydratedButtonsClass2.ToJsonString: string;
 begin
   result := TJson.ObjectToJsonString(self);
+end;
+
+{ TctwaContextClass }
+
+procedure TctwaContextClass.SetThumbnailUrl(const Value: string);
+begin
+  FThumbnailUrl := StringReplace(Value, '\/', '/', [rfReplaceAll]);
 end;
 
 end.

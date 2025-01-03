@@ -218,6 +218,10 @@ Const
 
   FrmConsole_JS_VAR_sendGroupInviteMessageNew  = 'window.WPP.sendGroupInviteMessageNew("<#CHAT_ID#>","<#GROUP_ID#>","<#INVITE_CODE#>","<#SEUID#>");';
 
+  //WPP.group.reject(12345645@g.us, 5554999999999@c.us);
+  FrmConsole_JS_VAR_GroupMembershipReject  = 'WPP.group.reject("<#GROUP_ID#>","<#CHAT_ID#>");';
+  FrmConsole_JS_VAR_GroupMembershipApprove  = 'WPP.group.approve("<#GROUP_ID#>","<#CHAT_ID#>");';
+
   //FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");'; deprecated
   FrmConsole_JS_VAR_removeGroupInviteLink   = 'WPP.group.revokeInviteCode("<#GROUP_ID#>");';
 

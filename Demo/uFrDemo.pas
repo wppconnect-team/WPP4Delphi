@@ -1471,12 +1471,21 @@ begin
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' Action: ' + response.event.Action);
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(' group_participant_changed: ' + response.event.group_participant_changed);
 
+  gravar_log('GroupParticipantChanged');
+  gravar_log(' author: ' + response.event.author);
+  gravar_log(' groupId: ' + response.event.groupId);
+  gravar_log(' authorPushName: ' + response.event.authorPushName);
+  gravar_log(' Action: ' + response.event.Action);
+  gravar_log(' group_participant_changed: ' + response.event.group_participant_changed);
+
   for i := 0 to Length(response.event.participants) - 1 do
   begin
-    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Participant: ' + response.event.participants[i]);
+    frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('   Participant: ' + response.event.participants[i]);
+    gravar_log('   Participant: ' + response.event.participants[i]);
   end;
 
   frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('');
+  gravar_log('');
 end;
 
 procedure TfrDemo.TWPPConnect1GetHistorySyncProgress(const GetHistorySyncProgress: TResponsegetHistorySyncProgress);
@@ -2437,6 +2446,10 @@ begin
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('id Group: ' + Trim(NewMessageResponse.msg.id.remote));
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('participant: ' + Trim(NewMessageResponse.msg.id.participant));
       frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('Name participant: ' + Trim(NewMessageResponse.msg.notifyName));
+
+      if (NewMessageResponse.msg.&type = 'GP2')
+      and (NewMessageResponse.msg.subtype = 'membership_approval_request') then
+        frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('membership_approval_request');
 
       wlo_Celular := Copy(NewMessageResponse.msg.author,1,  pos('@', NewMessageResponse.msg.author) -1); // nr telefone
 

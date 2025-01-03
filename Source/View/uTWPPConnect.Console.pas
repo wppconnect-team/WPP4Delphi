@@ -388,6 +388,10 @@ type
     procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
     procedure getGroupInviteLink(vIDGroup: string);
     procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
+
+    procedure GroupMembershipReject(vChatID, vIDGroup: string);
+    procedure GroupMembershipApprove(vChatID, vIDGroup: string);
+
     procedure revokeGroupInviteLink(vIDGroup: string);
     procedure setNewName(newName: string);
     procedure setNewStatus(newStatus: string);
@@ -1208,6 +1212,30 @@ begin
 
   LJS   := FrmConsole_JS_VAR_groupLeave;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMembershipApprove(vChatID, vIDGroup: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_GroupMembershipApprove;
+
+  FrmConsole_JS_AlterVar(LJS, '#CHAT_ID#', Trim(vChatID));
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMembershipReject(vChatID, vIDGroup: string);
+var
+  Ljs: string;
+begin
+  LJS   := FrmConsole_JS_VAR_GroupMembershipReject;
+
+  FrmConsole_JS_AlterVar(LJS, '#CHAT_ID#', Trim(vChatID));
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+
   ExecuteJS(LJS, true);
 end;
 

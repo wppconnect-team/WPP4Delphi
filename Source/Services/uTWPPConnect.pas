@@ -524,6 +524,9 @@ type
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure GetGroupInviteLink(PIDGroup : string);
     procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
+    procedure GroupMembershipReject(vChatID, vIDGroup: string);
+    procedure GroupMembershipApprove(vChatID, vIDGroup: string);
+
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
     procedure GetMyNumber;
@@ -2715,6 +2718,52 @@ begin
 
   lThread.FreeOnTerminate := true;
   lThread.Start;
+end;
+
+procedure TWPPConnect.GroupMembershipApprove(vChatID, vIDGroup: string);
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(vChatID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vChatID);
+    Exit;
+  end;
+
+  if Trim(vIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    Exit;
+  end;
+
+  FrmConsole.GroupMembershipApprove(vChatID, vIDGroup);
+end;
+
+procedure TWPPConnect.GroupMembershipReject(vChatID, vIDGroup: string);
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  if Trim(vChatID) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vChatID);
+    Exit;
+  end;
+
+  if Trim(vIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    Exit;
+  end;
+
+  FrmConsole.GroupMembershipReject(vChatID, vIDGroup);
 end;
 
 procedure TWPPConnect.GroupMsgAdminOnly(PIDGroup: string);
