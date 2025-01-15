@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.79;1.0.0.9;78.3.0
+//2.1.0.80;1.0.0.9;78.3.0
 //
 //
 
@@ -2797,9 +2797,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.16.1
+//WPPCONNECT v3.16.0
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.16.1 */
+/*! wppconnect-team/wa-js v3.16.0 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -11801,7 +11801,15 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                                 return !0
                         }
                         return e(...t)
-                    })), "function" == typeof u.Lid1X1MigrationUtils.isLidMigrated && (u.Lid1X1MigrationUtils.isLidMigrated = () => !0)
+                    })), (0, c.wrapModuleFunction)(l.findOrCreateLatestChat, (async (e, ...t) => {
+                        const [r, n] = t;
+                        if (r.isLid() && "username_contactless_search" != n) try {
+                            return await e(...t)
+                        } catch (t) {
+                            return await e(r, "username_contactless_search")
+                        }
+                        return await e(...t)
+                    }))
                 }), 1e3), s.onFullReady((function() {
                     const e = {
                         shouldAppearInList: u.functions.getShouldAppearInList,
@@ -14997,7 +15005,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     c = a(r(72927)),
                     l = r(13691),
                     d = r(26738);
-                s(r(26738), t), t.waVersion = "3.16.1";
+                s(r(26738), t), t.waVersion = "3.16.0";
                 const f = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     p = new d.Tracker("G-MTQ4KY110F"),
                     g = u.config.googleAnalyticsId ? new d.Tracker(u.config.googleAnalyticsId) : null;
@@ -15234,7 +15242,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return l.waitFor
                     }
-                }), t.version = "3.16.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.16.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
@@ -20048,15 +20056,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     isOfficialClient: !0
                 })
             },
-            95604: (e, t, r) => {
-                "use strict";
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                });
-                (0, r(54993).exportModule)(t, {
-                    Lid1X1MigrationUtils: "Lid1X1MigrationUtils"
-                }, (e => e.Lid1X1MigrationUtils.isLidMigrated))
-            },
             4749: (e, t, r) => {
                 "use strict";
                 Object.defineProperty(t, "__esModule", {
@@ -20248,7 +20247,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     };
                 Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(r(84513), t), o(r(48212), t), o(r(91033), t), o(r(35276), t), o(r(46820), t), o(r(19336), t), o(r(42865), t), o(r(26740), t), o(r(33216), t), o(r(47868), t), o(r(95604), t), o(r(4749), t), o(r(32974), t), o(r(78959), t), o(r(69675), t), o(r(91911), t), o(r(33115), t), o(r(18358), t), o(r(36061), t), o(r(19424), t), o(r(84229), t), o(r(74070), t), o(r(65931), t), o(r(82183), t), o(r(40302), t), o(r(43871), t), o(r(32122), t), o(r(59659), t), o(r(70924), t), o(r(94484), t), o(r(43996), t)
+                }), o(r(84513), t), o(r(48212), t), o(r(91033), t), o(r(35276), t), o(r(46820), t), o(r(19336), t), o(r(42865), t), o(r(26740), t), o(r(33216), t), o(r(47868), t), o(r(4749), t), o(r(32974), t), o(r(78959), t), o(r(69675), t), o(r(91911), t), o(r(33115), t), o(r(18358), t), o(r(36061), t), o(r(19424), t), o(r(84229), t), o(r(74070), t), o(r(65931), t), o(r(82183), t), o(r(40302), t), o(r(43871), t), o(r(32122), t), o(r(59659), t), o(r(70924), t), o(r(94484), t), o(r(43996), t)
             },
             10298: (e, t, r) => {
                 "use strict";
@@ -21071,7 +21070,6 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
     var __webpack_exports__ = __webpack_require__(28156);
     self.WPP = __webpack_exports__
 })();
-
 
 
 
