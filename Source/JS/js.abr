@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.78;1.0.0.9;78.3.0
+//2.1.0.79;1.0.0.9;78.3.0
 //
 //
 
@@ -2797,9 +2797,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.16.1-alpha
+//WPPCONNECT v3.16.1
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.16.1-alpha.0 */
+/*! wppconnect-team/wa-js v3.16.1 */
 (() => {
     var __webpack_modules__ = {
             67526: (e, t) => {
@@ -14997,7 +14997,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     c = a(r(72927)),
                     l = r(13691),
                     d = r(26738);
-                s(r(26738), t), t.waVersion = "3.16.1-alpha.0";
+                s(r(26738), t), t.waVersion = "3.16.1";
                 const f = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     p = new d.Tracker("G-MTQ4KY110F"),
                     g = u.config.googleAnalyticsId ? new d.Tracker(u.config.googleAnalyticsId) : null;
@@ -15234,7 +15234,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return l.waitFor
                     }
-                }), t.version = "3.16.1-alpha.0", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.16.1", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             4475: (e, t, r) => {
                 "use strict";
