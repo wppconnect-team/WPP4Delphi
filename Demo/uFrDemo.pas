@@ -19,6 +19,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,Rtti, strUtils, IniFiles, System.IOUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.WinXCtrls, Winapi.ShellAPI, RegularExpressions, System.Character,
+  System.Net.HttpClient, System.Net.URLClient,
+
   // ############ ATENCAO AQUI ####################
   // units adicionais obrigatorias
   uTWPPConnect.ConfigCEF, uTWPPConnect, uTWPPConnect.Constant, uTWPPConnect.JS,
@@ -32,7 +34,7 @@ uses
   uFraOutros, uTWPPConnect.ChatList, OpenAIClient, OpenAIDtos,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client {$IFDEF Typebot}, uTypebotAPI, uTypeBotResponseStartChat, uTypeBotResponseContinueChat{$ENDIF};
+  FireDAC.Comp.Client, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP {$IFDEF Typebot}, uTypebotAPI, uTypeBotResponseStartChat, uTypeBotResponseContinueChat{$ENDIF};
 
 type
   TfrDemo = class(TForm)
@@ -73,6 +75,8 @@ type
     Label2: TLabel;
     eUrlTypebot: TEdit;
     SwtTypebot: TToggleSwitch;
+    ePublicId: TEdit;
+    Label4: TLabel;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -214,6 +218,7 @@ type
     procedure HandleResponse(Sender: TObject; Response: string);
     {$ENDIF}
     { Public declarations }
+    procedure DownloadImagemPNG2(const URL: string; const CaminhoSalvar: string);
     procedure AddChatList(ANumber: String);
     procedure AddContactList(ANumber: String);
     procedure AddGroupList(ANumber: string);
@@ -723,7 +728,14 @@ end;
 procedure TfrDemo.FormShow(Sender: TObject);
 var
   Query: TFDQuery;
+  diretorio: string;
 begin
+  diretorio := ExtractFilePath(ParamStr(0)) + 'temp\';
+  sleep(1);
+
+  if not DirectoryExists(diretorio) then
+    CreateDir(diretorio);
+
   try
     // Define o nome do arquivo da base de dados
     dm.FDConnection1.Params.Values['Database'] := 'database.db';
@@ -847,7 +859,8 @@ begin
   ArquivoConfig := TMemIniFile.Create(NomeArquivo);
 
   edtApiKeyChatGPT.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'ApiKeyChatGPT', '');
-  eUrlTypebot.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'UrlTypebot', '');
+  eUrlTypebot.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'UrlTypebot', 'https://typebot.io');
+  ePublicId.Text := ArquivoConfig.ReadString('CONFIGURACAO', 'PublicId', '');
 
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
@@ -884,6 +897,7 @@ begin
   NomeArquivo := TPath.Combine(ExtractFilePath(ParamStr(0)), 'WPP4DelphiDemo.ini ');
   ArquivoConfig := TMemIniFile.Create(NomeArquivo);
   ArquivoConfig.writeString('CONFIGURACAO', 'UrlTypebot', eUrlTypebot.Text);
+  ArquivoConfig.writeString('CONFIGURACAO', 'PublicId', ePublicId.Text);
   ArquivoConfig.UpdateFile;
   FreeAndNil(ArquivoConfig);
 
@@ -2084,6 +2098,40 @@ begin
     lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
   end;
 end;
+
+procedure TfrDemo.DownloadImagemPNG2(const URL: string; const CaminhoSalvar: string);
+var
+  HttpClient: THTTPClient;
+  Stream: TMemoryStream;
+  Response: IHTTPResponse;
+begin
+  HttpClient := THTTPClient.Create;
+  Stream := TMemoryStream.Create;
+  try
+    try
+      // Faz a requisição HTTP e obtém a resposta
+      Response := HttpClient.Get(URL, Stream);
+
+      // Verifica se a requisição foi bem sucedida (código 200)
+      if Response.StatusCode = 200 then
+      begin
+        // Salva o stream no arquivo
+        Stream.Position := 0;
+        Stream.SaveToFile(CaminhoSalvar);
+      end
+      else
+        raise Exception.CreateFmt('Erro ao baixar imagem. Status: %d', [Response.StatusCode]);
+
+    except
+      on E: Exception do
+        raise Exception.CreateFmt('Erro ao baixar imagem: %s', [E.Message]);
+    end;
+  finally
+    Stream.Free;
+    HttpClient.Free;
+  end;
+end;
+
 procedure TfrDemo.TWPPConnect1GetNewMessageResponseEvento(const NewMessageResponse: TNewMessageResponseClass);
 var
   wlo_Celular : string;
@@ -2093,14 +2141,22 @@ var
   Question, Answer, phoneNumber, FChatID, quotedMsg_body, S_Type_origem, DescricaoLista, foto_perfil : string;
   From, idMensagem, body, S_Caption, S_type, filename, mediakey, mimeType, deprecatedMms3Url, Title, Footer: string;
   ChatGroup, mensagemDuplicada, eh_arquivo, isGif : Boolean;
-  latitude, longitude, localidade, base64localidade, sessionid, response, options, S_Retorno : String;
+  latitude, longitude, localidade, base64localidade, sessionid, response, options, S_Retorno, url : String;
   ack: extended;
-  I, x, y, k, j, l, m, n, o, p, q: Integer;
+  IdHTTP1: TIdHTTP;
+  stream: TMemoryStream;
+  ErroBaixarArquivo, isFigurinha, EnviandoArquivo: Boolean;
+  I, x, y, k, j, l, m, n, o, p, q, Tentativas: Integer;
   {$IFDEF Typebot}
     ResultTypeBotStartChat: uTypeBotResponseStartChat.TResultTypeBotStartChatClass;
     ResultTypeBotContinueChat: uTypeBotResponseContinueChat.TResultResponseContinueChatClass;
   {$ENDIF}
+  diretorio: string;
+  LRest        : TUrlREST;
 begin
+  diretorio := ExtractFilePath(ParamStr(0)) + 'temp\';
+  EnviandoArquivo := False;
+
   frameMensagensRecebidas1.memo_unReadMessage.Lines.add('Evento NewMessage ');
 
   if (NewMessageResponse.msg.id.remote = 'status@broadcast') then
@@ -2258,6 +2314,8 @@ begin
         if SwtTypebot.IsOn then
         begin
         {$IFDEF Typebot}
+          EnviandoArquivo := False;
+
           dm.sqlSearch.Close;
           dm.sqlSearch.SQL.Clear;
           dm.sqlSearch.SQL.Add('SELECT * FROM ticket WHERE number = :number AND situacion = 1');
@@ -2281,94 +2339,301 @@ begin
 
             for x := 0 to Length(ResultTypeBotContinueChat.messages) - 1 do
             begin
-              for y := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText) - 1 do
+              if Assigned(ResultTypeBotContinueChat.messages[x].content.richText) then
               begin
-                if ResultTypeBotContinueChat.messages[x].content.richText[y].&type <> 'variable' then
-                  S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].text + sLineBreak
-                else
-                //ChatGPT
-                if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].children) then
-                  for k := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children) - 1 do
+                for y := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText) - 1 do
+                begin
+                  //if (ResultTypeBotContinueChat.messages[x].content.richText[y].&type <> 'variable')
+                  //and (ResultTypeBotContinueChat.messages[x].content.richText[y].&type <> 'p') then
+                  if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children) then
                   begin
-                    if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'p' then
-                    begin
-                      if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) then
-                      begin
-                        for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
-                        begin
-                          if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].bold then
-                            S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + '*'
-                          else
-                            S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
-                        end;
-                      end
-                      else
-                        S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak;
-                    end
+                    if ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].text <> '' then
+                      S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].text + sLineBreak
                     else
-                    if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ul')
-                    or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ol') then
                     begin
-                      for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
-                      begin
-                        //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
-
-                        //if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[j].children) then
-                        if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].&type = 'li' then
+                      if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].children) then
+                        for k := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children) - 1 do
                         begin
-                          for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                          //if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'p')
+                          //or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type =  'inline-variable') then
+                          if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text = '' then
                           begin
-                            //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
-                            if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic')
-                            or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ul')
-                            or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ol') then
-                              for m := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children ) - 1 do
+                            if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) then
+                            begin
+                              for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
                               begin
-                                if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic') then
+                                if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) then
                                 begin
-                                  if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].bold) then
-                                    S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + '*'
-                                  else
-                                    S_Retorno := S_Retorno + '' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + sLineBreak
+                                  for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                                  begin
+                                    if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].bold then
+                                      S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + '*'
+                                    else
+                                      S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
+                                  end;
                                 end
                                 else
                                 begin
-                                  if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].&type = 'li' then
-                                  begin
-                                    for n := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children ) - 1 do
-                                    begin
-                                      //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].text + sLineBreak;
+                                  if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].bold then
+                                    S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + '*'
+                                  else
+                                    S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
+                                end;
+                              end;
+                            end
+                            else
+                              S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak;
+                          end
+                          else
+                          if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text <> '') then
+                          begin
+                            //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak
+                            if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].bold then
+                              S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + '*'
+                            else
+                              S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak
+                          end
+                          else
+                          if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ul')
+                          or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ol') then
+                          begin
+                            for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
+                            begin
+                              //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
 
-                                      if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].&type = 'lic' then
+                              //if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[j].children) then
+                              if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].&type = 'li' then
+                              begin
+                                for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                                begin
+                                  //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
+                                  if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic')
+                                  or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ul')
+                                  or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ol') then
+                                    for m := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children ) - 1 do
+                                    begin
+                                      if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic') then
                                       begin
-                                        for o := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children ) - 1 do
+                                        if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].bold) then
+                                          S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + '*'
+                                        else
+                                          S_Retorno := S_Retorno + '' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + sLineBreak
+                                      end
+                                      else
+                                      begin
+                                        if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].&type = 'li' then
                                         begin
-                                          if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].bold) then
-                                            S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + '*'
-                                          else
-                                            S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + sLineBreak;
+                                          for n := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children ) - 1 do
+                                          begin
+                                            //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].text + sLineBreak;
+
+                                            if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].&type = 'lic' then
+                                            begin
+                                              for o := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children ) - 1 do
+                                              begin
+                                                if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].bold) then
+                                                  S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + '*'
+                                                else
+                                                  S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + sLineBreak;
+                                              end;
+                                            end;
+                                          end;
+                                        end;
+
+                                      end;
+
+                                    end;
+
+                                end;
+                              end;
+
+                            end;
+                          end;
+
+                        end;
+                    end;
+                  end
+                  else
+                  //ChatGPT
+                  if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[0].children) then
+                    for k := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children) - 1 do
+                    begin
+                      {if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'p')
+                      or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type =  'inline-variable') then}
+                      if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text = '' then
+                      begin
+                        if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) then
+                        begin
+                          for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
+                          begin
+                            if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) then
+                            begin
+                              for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                              begin
+                                if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].bold then
+                                  S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + '*'
+                                else
+                                  S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
+                              end;
+                            end
+                            else
+                            begin
+                              if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].bold then
+                                S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + '*'
+                              else
+                                S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
+                            end;
+                          end;
+                        end
+                        else
+                          S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak;
+                      end
+                      else
+                      if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text <> '') then
+                      begin
+                        //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak
+                        if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].bold then
+                          S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + '*'
+                        else
+                          S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].text + sLineBreak
+                      end
+                      else
+                      if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ul')
+                      or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].&type = 'ol') then
+                      begin
+                        for j := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children) - 1 do
+                        begin
+                          //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].text + sLineBreak;
+
+                          //if Assigned(ResultTypeBotContinueChat.messages[x].content.richText[y].children[j].children) then
+                          if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].&type = 'li' then
+                          begin
+                            for l := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children) - 1 do
+                            begin
+                              //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].text + sLineBreak;
+                              if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic')
+                              or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ul')
+                              or (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'ol') then
+                                for m := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children ) - 1 do
+                                begin
+                                  if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].&type = 'lic') then
+                                  begin
+                                    if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].bold) then
+                                      S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + '*'
+                                    else
+                                      S_Retorno := S_Retorno + '' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].text + sLineBreak
+                                  end
+                                  else
+                                  begin
+                                    if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].&type = 'li' then
+                                    begin
+                                      for n := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children ) - 1 do
+                                      begin
+                                        //S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].text + sLineBreak;
+
+                                        if ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].&type = 'lic' then
+                                        begin
+                                          for o := 0 to Length(ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children ) - 1 do
+                                          begin
+                                            if (ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].bold) then
+                                              S_Retorno := S_Retorno + '*' + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + '*'
+                                            else
+                                              S_Retorno := S_Retorno + ResultTypeBotContinueChat.messages[x].content.richText[y].children[k].children[j].children[l].children[m].children[n].children[o].text + sLineBreak;
+                                          end;
                                         end;
                                       end;
                                     end;
+
                                   end;
 
                                 end;
 
-                              end;
-
+                            end;
                           end;
-                        end;
 
+                        end;
                       end;
+
                     end;
 
+                end;
+              end
+              else
+              begin
+                if ResultTypeBotContinueChat.messages[x].&type = 'image' then
+                begin
+                  url := ResultTypeBotContinueChat.messages[x].content.url;
+                  Tentativas := 0;
+                  Filename := diretorio + '/' + FormatDateTime('IMGYYYYMMDDhhmmsszzz', now) + '.png';
+
+                  while Tentativas < 10 do
+                  begin
+                    DownloadImagemPNG2(url, Filename);
+
+                    {LRest         := TUrlREST.Create(nil);
+                    LRest.TimeOut := 5000;
+                    gravar_log('antes LRest.GetUrl(' + url + ')');
+                    if (LRest.GetUrl(url)) then
+                      //LRet.LoadFromStream(LRest.ReturnUrl)
+                    else
+                      gravar_log('PegarLocalJS_Web Failed');}
+
+                    {IdHTTP1 := TIdHTTP.Create(self);
+
+                    stream := TMemoryStream.Create;
+                    try
+                      try
+                        IdHTTP1.Get(url, stream);
+                        stream.SaveToFile(FileName);
+
+                        // Descriptografar(mediakey, FileName, FileNameFinal, Telefone);
+                        ErroBaixarArquivo := False;
+                        //Result := True;
+                        Break;
+
+                      except
+                        on E: Exception do
+                        begin
+                          ErroBaixarArquivo := True;
+                          //Result := False;
+                          gravar_log('Falhou o DownloadFile Tentativas(' + IntToStr(Tentativas) + ')' + #13#10 + ' MSG. ORIGINAL: ' + E.Message);
+                        end;
+                      end;
+
+                    finally
+                      stream.DisposeOf;
+                      IdHTTP1.DisposeOf;
+                    end;}
+
+                    if FileExists(FileName) then
+                    begin
+                      Break;
+                    end;
+
+                    sleep(500);
+                    Inc(Tentativas);
                   end;
 
+                  if FileExists(FileName) then
+                  begin
+                    isFigurinha := False;
+                    EnviandoArquivo := True;
+
+                    //Arquivo Selecionado da Pasta
+                    TWPPConnect1.SendFileMessageNew(FChatID, FileName, '123', '', isFigurinha);
+                    FileName := '';
+                    //Exit;
+
+                  end;
+                end;
               end;
 
-              options := 'createChat: true';
-              frDemo.TWPPConnect1.SendTextMessageEx(FChatID, S_Retorno, options, '123');
-              S_Retorno := '';
+              if not EnviandoArquivo then
+              begin
+                options := 'createChat: true';
+                frDemo.TWPPConnect1.SendTextMessageEx(FChatID, S_Retorno, options, '123');
+                S_Retorno := '';
+              end;
             end;
 
             if Assigned(ResultTypeBotContinueChat.clientSideActions) then
@@ -2382,7 +2647,8 @@ begin
           else
           begin
             TypebotAPI1.UrlTypebot := eUrlTypebot.Text;
-            sessionid := TypebotAPI1.StartChat('my-typebot-vu8p5jy', 'richText', response);
+            sessionid := TypebotAPI1.StartChat(ePublicId.Text, 'richText', response);
+
             gravar_log(sessionid);
 
             if sessionid <> 'Failed' then
@@ -2420,7 +2686,7 @@ begin
                 frDemo.TWPPConnect1.SendTextMessageEx(FChatID, S_Retorno, options, '123');
 
                 S_Retorno := '';
-                Sleep(1000);
+                SleepNoFreeze(2000);
 
               end;
             end;

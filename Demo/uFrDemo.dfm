@@ -1561,7 +1561,7 @@ object frDemo: TfrDemo
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 606
+      Left = 530
       Top = 63
       Width = 146
       Height = 19
@@ -1586,11 +1586,24 @@ object frDemo: TfrDemo
       ParentFont = False
     end
     object Label2: TLabel
-      Left = 851
+      Left = 775
       Top = 63
-      Width = 93
+      Width = 88
       Height = 19
-      Caption = 'Url Typebot::'
+      Caption = 'Url Typebot:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Roboto'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 956
+      Top = 63
+      Width = 63
+      Height = 19
+      Caption = 'PublicId:'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
       Font.Height = -16
@@ -1601,16 +1614,16 @@ object frDemo: TfrDemo
     object btnAbrirZap: TBitBtn
       Left = 128
       Top = 82
-      Width = 150
+      Width = 141
       Height = 25
       Caption = 'Open WhatsApp Web'
       TabOrder = 0
       OnClick = btnAbrirZapClick
     end
     object BitBtn3: TBitBtn
-      Left = 463
+      Left = 425
       Top = 82
-      Width = 134
+      Width = 94
       Height = 25
       BiDiMode = bdRightToLeft
       Caption = 'Start ChatGPT'
@@ -1619,14 +1632,14 @@ object frDemo: TfrDemo
       OnClick = BitBtn3Click
     end
     object edtApiKeyChatGPT: TEdit
-      Left = 606
+      Left = 530
       Top = 84
       Width = 239
       Height = 23
       TabOrder = 2
     end
     object SwtChatGPT: TToggleSwitch
-      Left = 764
+      Left = 688
       Top = 60
       Width = 79
       Height = 21
@@ -1639,14 +1652,14 @@ object frDemo: TfrDemo
       TabOrder = 3
     end
     object eUrlTypebot: TEdit
-      Left = 851
+      Left = 775
       Top = 84
-      Width = 224
+      Width = 175
       Height = 23
       TabOrder = 4
     end
     object SwtTypebot: TToggleSwitch
-      Left = 995
+      Left = 871
       Top = 60
       Width = 79
       Height = 21
@@ -1658,6 +1671,13 @@ object frDemo: TfrDemo
       ParentFont = False
       TabOrder = 5
       OnClick = SwtTypebotClick
+    end
+    object ePublicId: TEdit
+      Left = 956
+      Top = 84
+      Width = 122
+      Height = 23
+      TabOrder = 6
     end
   end
   object pnlrodape: TPanel
@@ -1714,23 +1734,11 @@ object frDemo: TfrDemo
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
             ExplicitHeight = 264
           end
-          inherited lblCaminhoImagem: TLabel
-            Width = 229
-          end
-        end
-        inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
         end
       end
     end
@@ -2123,9 +2131,9 @@ object frDemo: TfrDemo
     end
   end
   object BitBtn1: TBitBtn
-    Left = 287
+    Left = 275
     Top = 82
-    Width = 150
+    Width = 144
     Height = 25
     Caption = 'Reboot WhatsApp Web'
     TabOrder = 10
