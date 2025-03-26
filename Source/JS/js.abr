@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.82;1.0.0.9;78.3.0
+//2.1.0.83;1.0.0.9;78.3.0
 //
 //
 
@@ -2797,9 +2797,9 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
 /*==================================================================================================*/
 
 
-//WPPCONNECT v3.16.6
+//WPPCONNECT v3.16.7
 /*! For license information please see wppconnect-wa.js.LICENSE.txt */
-/*! wppconnect-team/wa-js v3.16.6 */
+/*! wppconnect-team/wa-js v3.16.7 */
 (() => {
     var __webpack_modules__ = {
             26: function(e, t, r) {
@@ -5283,7 +5283,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     queryGroupInviteCode: "queryGroupInviteCode"
-                }, (e => e.queryGroupInviteCode && e.resetGroupInviteCode))
+                }, (e => e.queryGroupInviteCode))
             },
             9601: (e, t, r) => {
                 "use strict";
@@ -7315,7 +7315,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     c = a(r(72927)),
                     l = r(13691),
                     d = r(26738);
-                s(r(26738), t), t.waVersion = "3.16.6";
+                s(r(26738), t), t.waVersion = "3.16.7";
                 const f = ["W: ", "-", ", WA-JS: ", t.waVersion],
                     p = new d.Tracker("G-MTQ4KY110F"),
                     g = u.config.googleAnalyticsId ? new d.Tracker(u.config.googleAnalyticsId) : null;
@@ -7536,7 +7536,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     ServerPropsModel: "ServerProps"
-                }, (e => e.getMaxFilesSizeServerProp && e.ServerProps))
+                }, (e => e.getMaxFilesSizeServerProp && e.ServerProps || e.getMaxFilesSize && e.ServerProps))
             },
             23807: function(e) {
                 e.exports = function() {
@@ -8974,7 +8974,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                     get: function() {
                         return l.waitFor
                     }
-                }), t.version = "3.16.6", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
+                }), t.version = "3.16.7", t.supportedWhatsappWeb = ">=2.2326.10-beta", t.license = "Apache-2.0", s.injectLoader()
             },
             28227: (e, t, r) => {
                 "use strict";
@@ -16267,7 +16267,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                 });
                 (0, r(54993).exportModule)(t, {
                     ServerProps: "ServerProps"
-                }, (e => e.getMaxFilesSizeServerProp && e.ServerProps))
+                }, (e => e.getMaxFilesSizeServerProp && e.ServerProps || e.getMaxFilesSize && e.ServerProps))
             },
             66604: (e, t) => {
                 "use strict";
@@ -17073,8 +17073,7 @@ window.WAPI.sendListMenu = async function (to, title, subTitle, description, but
                         };
                         const o = t[1],
                             i = t[2];
-                        if (!r.isLid()) return await e(...t);
-                        {
+                        if (r.isLid()) {
                             const e = (0, d.getEnforceCurrentLid)(r);
                             n = await (0, d.selectChatForOneOnOneMessage)({
                                 lid: e
