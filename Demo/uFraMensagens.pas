@@ -2237,6 +2237,7 @@ begin
     options :=
       'createChat: true, ' +
       'keyType: "PHONE", ' +{
+      //'keyType: "EVP", ' +{
           | "CNPJ"
           | "CPF"
           | "PHONE"
