@@ -1582,6 +1582,7 @@ type
     FvCardList       : TArray<TCardClass>;
     FButtons         : TArray<TButtonsClass>;
     FIsForwarded     : Boolean;
+    FViewMode        : String;
     FLabels          : TArray<String>;
     FSender          : TSenderClass;
     FTimestamp       : Extended;
@@ -1667,6 +1668,7 @@ type
     property id         : String              read FId                 write FId;
     property invis      : Boolean             read FInvis              write FInvis;
     property isForwarded: Boolean             read FIsForwarded        write FIsForwarded;
+    property viewMode   : String              read FViewMode           write FViewMode;
     property isGroupMsg : Boolean             read FIsGroupMsg         write FIsGroupMsg;
     property isMMS      : Boolean             read FIsMMS              write FIsMMS;
     property isMedia    : Boolean             read FIsMedia            write FIsMedia;
