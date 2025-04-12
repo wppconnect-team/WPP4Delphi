@@ -181,6 +181,7 @@ begin
   FDownloadJSType            := DT_Indy;
   FInjectJSDefine            := TWPPConnectJSDefine.Create;
   FReady                     := False;
+  FInjetarScript             := True;
   FSecondsWaitInject         := 6;
 
 end;
