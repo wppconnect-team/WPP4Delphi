@@ -1739,6 +1739,9 @@ object frDemo: TfrDemo
             Height = 264
             ExplicitHeight = 264
           end
+          inherited lblCaminhoImagem: TLabel
+            Width = 229
+          end
         end
       end
     end
@@ -5841,7 +5844,6 @@ object frDemo: TfrDemo
     Config.Evento_msg_revoke = True
     Config.Evento_new_message = True
     Config.Evento_new_reaction = True
-    Config.Evento_active_chat = True
     Config.Evento_presence_change = True
     Config.Evento_update_label = True
     Config.Evento_group_participant_changed = True

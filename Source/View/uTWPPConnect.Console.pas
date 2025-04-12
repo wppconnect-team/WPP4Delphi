@@ -783,53 +783,82 @@ begin
       localStorage_debug;
 
       save_log('Server_Connected TFrmConsole.OnTimerConnect');
-
       save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
-      //Marcelo 12/08/2022
-      //Aguardar "X" Segundos Injetar JavaScript
-      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
-      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                   '  const jsonObject = {   ' +
-                   '    dateTime: dataAtual, ' +
-                   '    Inject: true   ' +
-                   '  };   ' +
-                   '  console.log(JSON.stringify(jsonObject)); ');
+      if TWPPConnect(FOwner).InjectJS.InjetarScript then
+      begin
+        //Marcelo 12/08/2022
+        //Aguardar "X" Segundos Injetar JavaScript
+        if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+          SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
 
-      SleepNoFreeze(40);
+        ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-      save_log('Inject js.ABR');
+        ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                     '  const jsonObject = {   ' +
+                     '    dateTime: dataAtual, ' +
+                     '    Inject: true   ' +
+                     '  };   ' +
+                     '  console.log(JSON.stringify(jsonObject)); ');
 
-      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+        SleepNoFreeze(40);
 
-      //Auto monitorar mensagens não lidas
-      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+        save_log('Inject js.ABR');
 
-      //Ativar Eventos add Marcelo 28/09/2023
-      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+        if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+          TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-      //Ativar New Eventos add Marcelo 16/08/2024
-      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+        //Auto monitorar mensagens não lidas
+        StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+        StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+        StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-      SleepNoFreeze(40);
+        //Ativar Eventos add Marcelo 28/09/2023
+        startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+        startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+        startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+        startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-      lNovoStatus    := False;
-      save_log('SendNotificationCenterDirect(Th_Initializing)');
-      SendNotificationCenterDirect(Th_Initializing);
+        //Ativar New Eventos add Marcelo 16/08/2024
+        startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+        startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+        startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+        startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+        startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+        startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
+        SleepNoFreeze(40);
+
+        lNovoStatus    := False;
+        save_log('SendNotificationCenterDirect(Th_Initializing)');
+        SendNotificationCenterDirect(Th_Initializing);
+      end
+      else
+      begin
+        if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+          SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
+
+
+        //ExecuteJSDir('console.log("SCRIPT WA-JS"); ');
+        ExecuteJSDir('console.log("OnTimerConnect");');
+        ExecuteJSDir(FrmConsole_JS_SCRIPT_Basic);
+        ExecuteJSDir(FrmConsole_JS_MonitorChatLoadComplete);
+        ExecuteJSDir(FrmConsole_JS_monitorQRCode);
+
+        SleepNoFreeze(40);
+
+        lNovoStatus    := False;
+        //RebootChromiumNew;
+        //save_log('SendNotificationCenterDirect(Th_Initializing)');
+        SendNotificationCenterDirect(Th_Initializing);
+        SleepNoFreeze(1000);
+        SendNotificationCenterDirect(Th_Initialized);
+        SleepNoFreeze(1000);
+
+        FrmConsole.GetMyNumber;
+        FrmConsole.getWAVersion;
+      end;
     end
     else
     if TWPPConnect(FOwner).Config.AutoStart then
@@ -1690,45 +1719,48 @@ begin
   localStorage_debug;
   save_log('RebootChromiumNew');
 
-  //Aguardar "X" Segundos Injetar JavaScript
-  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+  if TWPPConnect(FOwner).InjectJS.InjetarScript then
+  begin
+    //Aguardar "X" Segundos Injetar JavaScript
+    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-  ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-               '  const jsonObject = {   ' +
-               '    dateTime: dataAtual, ' +
-               '    Inject: true   ' +
-               '  };   ' +
-               '  console.log(JSON.stringify(jsonObject)); ');
-  SleepNoFreeze(40);
+    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                 '  const jsonObject = {   ' +
+                 '    dateTime: dataAtual, ' +
+                 '    Inject: true   ' +
+                 '  };   ' +
+                 '  console.log(JSON.stringify(jsonObject)); ');
+    SleepNoFreeze(40);
 
-  save_log('  Inject js.ABR');
+    save_log('  Inject js.ABR');
 
-  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-  //Auto monitorar mensagens não lidas
-  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-  StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+    //Auto monitorar mensagens não lidas
+    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-  //Ativar Eventos add Marcelo 28/09/2023
-  startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-  startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-  startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-  startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+    //Ativar Eventos add Marcelo 28/09/2023
+    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-  //Ativar New Eventos add Marcelo 16/08/2024
-  startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-  startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-  startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-  startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-  startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-  startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+    //Ativar New Eventos add Marcelo 16/08/2024
+    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
-  SleepNoFreeze(40);
-  SendNotificationCenterDirect(Th_Initialized);
+    SleepNoFreeze(40);
+    SendNotificationCenterDirect(Th_Initialized);
+  end;
 end;
 
 procedure TFrmConsole.rejectCall(id: string);
@@ -2736,6 +2768,9 @@ procedure TFrmConsole.Chromium1BeforePopup(Sender: TObject;
   var settings: TCefBrowserSettings; var extra_info: ICefDictionaryValue;
   var noJavascriptAccess, Result: Boolean);
 begin
+  if not TWPPConnect(FOwner).InjectJS.InjetarScript then
+    Exit;
+
 // bloqueia todas as janelas pop-up e novas guias
   ShellExecute(Handle, 'open', PChar(targetUrl), '', '', 1);
 
@@ -3732,45 +3767,48 @@ begin
 
     localStorage_debug;
 
-    //Aguardar "X" Segundos Injetar JavaScript
-    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    begin
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                 '  const jsonObject = {   ' +
-                 '    dateTime: dataAtual, ' +
-                 '    Inject: true   ' +
-                 '  };   ' +
-                 '  console.log(JSON.stringify(jsonObject)); ');
-    SleepNoFreeze(40);
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
+      SleepNoFreeze(40);
 
-    save_log('  Inject js.ABR again');
+      save_log('  Inject js.ABR again');
 
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-    //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+      //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-    //Ativar Eventos add Marcelo 28/09/2023
-    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-    //Ativar New Eventos add Marcelo 16/08/2024
-    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    end;
   end
   else
   if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
@@ -3783,45 +3821,48 @@ begin
 
     localStorage_debug;
 
-    //Aguardar "X" Segundos Injetar JavaScript
-    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    begin
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                 '  const jsonObject = {   ' +
-                 '    dateTime: dataAtual, ' +
-                 '    Inject: true   ' +
-                 '  };   ' +
-                 '  console.log(JSON.stringify(jsonObject)); ');
-    SleepNoFreeze(40);
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
+      SleepNoFreeze(40);
 
-    save_log('  Inject js.ABR again');
+      save_log('  Inject js.ABR again');
 
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-    //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+      //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-    //Ativar Eventos add Marcelo 28/09/2023
-    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-    //Ativar New Eventos add Marcelo 16/08/2024
-    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    end;
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
@@ -3923,45 +3964,48 @@ begin
 
     localStorage_debug;
 
-    //Aguardar "X" Segundos Injetar JavaScript
-    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    begin
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                 '  const jsonObject = {   ' +
-                 '    dateTime: dataAtual, ' +
-                 '    Inject: true   ' +
-                 '  };   ' +
-                 '  console.log(JSON.stringify(jsonObject)); ');
-    SleepNoFreeze(40);
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
+      SleepNoFreeze(40);
 
-    save_log('  Inject js.ABR again');
+      save_log('  Inject js.ABR again');
 
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-    //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+      //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-    //Ativar Eventos add Marcelo 28/09/2023
-    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-    //Ativar New Eventos add Marcelo 16/08/2024
-    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    end;
   end
   else
   if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
@@ -3974,46 +4018,49 @@ begin
 
     localStorage_debug;
 
-    //Aguardar "X" Segundos Injetar JavaScript
-    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    begin
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                 '  const jsonObject = {   ' +
-                 '    dateTime: dataAtual, ' +
-                 '    Inject: true   ' +
-                 '  };   ' +
-                 '  console.log(JSON.stringify(jsonObject)); ');
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
 
-    SleepNoFreeze(40);
+      SleepNoFreeze(40);
 
-    save_log('  Inject js.ABR again');
+      save_log('  Inject js.ABR again');
 
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-      TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-    //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+      //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-    //Ativar Eventos add Marcelo 28/09/2023
-    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
 
-    //Ativar New Eventos add Marcelo 16/08/2024
-    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    end;
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
@@ -4142,48 +4189,64 @@ begin
 
     save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
-    //Marcelo 12/08/2022
-    //Aguardar "X" Segundos Injetar JavaScript
-    if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-      SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
-    ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
-                 '  const jsonObject = {   ' +
-                 '    dateTime: dataAtual, ' +
-                 '    Inject: true   ' +
-                 '  };   ' +
-                 '  console.log(JSON.stringify(jsonObject)); ');
+    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    begin
+      //Marcelo 12/08/2022
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
-    SleepNoFreeze(40);
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
 
-    save_log('  Inject js.ABR LoadEnd');
+      SleepNoFreeze(40);
 
-    if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
-       TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+      save_log('  Inject js.ABR LoadEnd');
 
-      //Auto monitorar mensagens não lidas
-    StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
-    StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
-    StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+         TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
 
-    //Ativar Eventos add Marcelo 28/09/2023
-    startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
-    startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
-    startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
-    startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+        //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
 
-    //Ativar New Eventos add Marcelo 16/08/2024
-    startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
-    startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
-    startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
-    startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
-    startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
-    startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
 
 
-    SleepNoFreeze(40);
-    SendNotificationCenterDirect(Th_Initialized);
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    end
+    else
+    begin
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
+
+      ExecuteJSDir(FrmConsole_JS_SCRIPT_Basic);
+      ExecuteJSDir(FrmConsole_JS_MonitorChatLoadComplete);
+
+      ExecuteJSDir('console.log("Chromium1LoadEnd");');
+      FTimerConnect.Enabled := False;
+      SendNotificationCenterDirect(Th_Initialized);
+    end;
   end;
 
 end;

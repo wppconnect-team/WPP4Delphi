@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '4.0.0.1'; //  02/10/2024
+  TWPPConnectVersion              = '4.0.0.2'; //  02/10/2024
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -118,6 +118,113 @@ Const
   FrmConsole_JS_monitorQRCode            = ' var canvas = document.getElementsByTagName("canvas")[0]; if (canvas) { var AQrCode = canvas.toDataURL("image/png"); var result = { AQrCode: AQrCode }; ' +
                                                'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {}';
                                                //'console.log(JSON.stringify({ name: "getQrCodeWEB", result: result }));} else {console.log("Canvas element not found.");}';
+
+
+  (*'document.addEventListener("DOMContentLoaded", () => { ' +
+    '  const observer = new MutationObserver(() => { ' +
+    '    element = document.getElementById("pane-side"); ' +
+    '    if (element) { ' +
+    //'      injectScript("js/wa-js.js").then(() => { ' +
+    '        console.log("isReady"); ' +
+    //'        setTimeout(() => { ' +
+    //'          console.log("inject"); ' +
+    //'          console.log("cds inject"); ' +
+    //'          injectScript("js/cds.js"); ' +
+    //'        }, 5000); ' +
+    //'      }); ' +
+
+    '      observer.disconnect(); ' +
+    '    } ' +
+    '  }); ' +
+
+    '  observer.observe(document.body, { ' +
+    '    childList: true, ' +
+    '    subtree: true, ' +
+    '    }); ' +
+    '  }) ';
+
+    *)
+  FrmConsole_JS_MonitorChatLoadComplete =
+    'var observer;' + sLineBreak +
+    '' + sLineBreak +
+
+    'var waitForElement = setInterval(function () {' + sLineBreak +
+    '  var targetElement = document.querySelector(''#pane-side''); // Altere o seletor conforme necessário' + sLineBreak +
+    '' + sLineBreak +
+    '  if (targetElement) {' + sLineBreak +
+    '    clearInterval(waitForElement); // Para de verificar' + sLineBreak +
+    '' + sLineBreak +
+
+    '    if (observer) {' + sLineBreak +
+    '      observer.disconnect();' + sLineBreak +
+    '    }' + sLineBreak +
+    '' + sLineBreak +
+
+    '    observer = new IntersectionObserver(function (entries, obs) {' + sLineBreak +
+    '      entries.forEach(function (entry) {' + sLineBreak +
+    '        if (entry.isIntersecting) {' + sLineBreak +
+    '          console.log(''isReady'');' + sLineBreak +
+    '          SetConsoleMessage("isReady", JSON.stringify({isReady: true})); ' + sLineBreak +
+    '          obs.unobserve(entry.target); // Para observar só uma vez' + sLineBreak +
+    '        }' + sLineBreak +
+    '      });' + sLineBreak +
+    '    }, {' + sLineBreak +
+    '      threshold: 0.1' + sLineBreak +
+    '    });' + sLineBreak +
+    '' + sLineBreak +
+    '    observer.observe(targetElement);' + sLineBreak +
+    '  }' + sLineBreak +
+    '}, 500); // Verifica a cada 500ms';
+
+
+  FrmConsole_JS_SCRIPT_Basic =
+    'window.WAPI = {};' + sLineBreak +
+    '' + sLineBreak +
+    'function localStorageGetItem(item){' + sLineBreak +
+    '	let aJson = localStorage.getItem(item);' + sLineBreak +
+    '	SetConsoleMessage(''getMyNumber'', aJson.replace(/(?=:)(.*.?)(?=@)/g,''''));' + sLineBreak +
+    '};' + sLineBreak +
+    '' + sLineBreak +
+    'function localStorageGetItemID(item){' + sLineBreak +
+    '	let aNumberID = localStorage.getItem(item);' + sLineBreak +
+    '	return aNumberID;' + sLineBreak +
+    '};' + sLineBreak +
+    '' + sLineBreak +
+    'function getMyNumber() {' + sLineBreak +
+    '	localStorage.getItem(''last-wid-md'') ? ' + sLineBreak +
+    '		localStorageGetItem(''last-wid-md'') : ' + sLineBreak +
+    '		localStorageGetItem(''last-wid'')' + sLineBreak +
+    '' + sLineBreak +
+    '	return true;' + sLineBreak +
+    '};' + sLineBreak +
+    '' + sLineBreak +
+    'function getMyNumberID() {' + sLineBreak +
+    '	let numberID =' + sLineBreak +
+    '		localStorage.getItem(''last-wid-md'') ? ' + sLineBreak +
+    '		localStorageGetItemID(''last-wid-md'') : ' + sLineBreak +
+    '		localStorageGetItemID(''last-wid'')' + sLineBreak +
+    '' + sLineBreak +
+    '	return numberID;' + sLineBreak +
+    '};' + sLineBreak +
+    '' + sLineBreak +
+    'function SetConsoleMessage(jsName, resultValue) {' + sLineBreak +
+    '    Obj = {' + sLineBreak +
+    '        name: jsName,' + sLineBreak +
+    '        result: ''{"result":'' + resultValue + ''}''' + sLineBreak +
+    '    }' + sLineBreak +
+    '    console.log(JSON.stringify(Obj));' + sLineBreak +
+    '};' + sLineBreak +
+    '' + sLineBreak +
+    'window.WAPI.getMe = async function(){' + sLineBreak +
+    '  return;' + sLineBreak +
+    '}' + sLineBreak +
+    '' + sLineBreak +
+    'window.WAPI.getWAVersion = function () {' + sLineBreak +
+    '    const Version = window.Debug.VERSION;' + sLineBreak +
+    '    SetConsoleMessage("getWAVersion", JSON.stringify({WAVersion:Version}));' + sLineBreak +
+    '};';
+
+
 
   FrmConsole_JS_StopMonitor              = 'stopMonitor();';
   FrmConsole_JS_StopMonitorNew           = 'stopMonitorNew();'; //Add Marcelo 25/08/2023

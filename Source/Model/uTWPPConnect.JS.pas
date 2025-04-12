@@ -71,6 +71,7 @@ type
     FDownloadJSType : TDownloadJSType;
     FJSVersion      : String;
     FReady          : Boolean;
+    FInjetarScript  : Boolean;
     FOnUpdateJS     : TNotifyEvent;
     FInjectJSDefine : TWPPConnectJSDefine;
     FAutoUpdateTimeOut   : Integer;
@@ -81,6 +82,7 @@ type
     FStringList: TStringList;
     FRegistros : TFDMemTable;
     FSeparador : Char;
+
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
     procedure  SeTWPPConnectScript(const Value: TstringList);
@@ -122,6 +124,7 @@ type
     property   AutoUpdateTimeOut  : Integer         Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
     property   OnUpdateJS         : TNotifyEvent    Read FOnUpdateJS           Write FOnUpdateJS;
     property   Ready              : Boolean         read FReady;
+    property   InjetarScript      : Boolean         read FInjetarScript        write FInjetarScript       default True;
     property   JSURL              : String          read FJSURL                write FJSURL;
     property   DownloadJSType     : TDownloadJSType read FDownloadJSType       write FDownloadJSType;
     property   JSScript           : TstringList     read FJSScript             Write SeTWPPConnectScript;

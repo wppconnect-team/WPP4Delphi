@@ -133,13 +133,12 @@ object frameMensagem: TframeMensagem
     Top = 3
     Width = 231
     Height = 804
-    VertScrollBar.Position = 65
     Align = alLeft
     TabOrder = 1
     object btnLocalizacaoBotao: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 527
+      Top = 592
       Width = 204
       Height = 25
       Align = alTop
@@ -152,7 +151,7 @@ object frameMensagem: TframeMensagem
     object btnLink: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 279
+      Top = 344
       Width = 204
       Height = 25
       Align = alTop
@@ -165,7 +164,7 @@ object frameMensagem: TframeMensagem
     object btnImagemBotao: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 558
+      Top = 623
       Width = 204
       Height = 25
       Align = alTop
@@ -178,7 +177,7 @@ object frameMensagem: TframeMensagem
     object btnImagem: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 155
+      Top = 220
       Width = 204
       Height = 25
       Align = alTop
@@ -191,7 +190,7 @@ object frameMensagem: TframeMensagem
     object btnInstantVideo: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 124
+      Top = 189
       Width = 204
       Height = 25
       Align = alTop
@@ -204,7 +203,7 @@ object frameMensagem: TframeMensagem
     object btnVideo: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 62
+      Top = 127
       Width = 204
       Height = 25
       Align = alTop
@@ -218,7 +217,7 @@ object frameMensagem: TframeMensagem
     object btnListaMenu: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 31
+      Top = 96
       Width = 204
       Height = 25
       Align = alTop
@@ -232,7 +231,7 @@ object frameMensagem: TframeMensagem
     object btnBotaoSimples: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 0
+      Top = 65
       Width = 204
       Height = 25
       Align = alTop
@@ -246,7 +245,7 @@ object frameMensagem: TframeMensagem
     object btnTextoSimples: TButton
       AlignWithMargins = True
       Left = 3
-      Top = -31
+      Top = 34
       Width = 204
       Height = 25
       Align = alTop
@@ -259,7 +258,7 @@ object frameMensagem: TframeMensagem
     object btnAudio: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 310
+      Top = 375
       Width = 204
       Height = 25
       Align = alTop
@@ -272,7 +271,7 @@ object frameMensagem: TframeMensagem
     object btnContato: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 372
+      Top = 437
       Width = 204
       Height = 25
       Align = alTop
@@ -285,7 +284,7 @@ object frameMensagem: TframeMensagem
     object btnSticker: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 341
+      Top = 406
       Width = 204
       Height = 25
       Align = alTop
@@ -298,7 +297,7 @@ object frameMensagem: TframeMensagem
     object btnLocalizacao: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 403
+      Top = 468
       Width = 204
       Height = 25
       Align = alTop
@@ -311,7 +310,7 @@ object frameMensagem: TframeMensagem
     object btnArquivo: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 496
+      Top = 561
       Width = 204
       Height = 25
       Align = alTop
@@ -324,7 +323,7 @@ object frameMensagem: TframeMensagem
     object btnStatusTexto: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 589
+      Top = 654
       Width = 204
       Height = 25
       Align = alTop
@@ -337,7 +336,7 @@ object frameMensagem: TframeMensagem
     object btnStatusImagem: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 620
+      Top = 685
       Width = 204
       Height = 25
       Align = alTop
@@ -350,7 +349,7 @@ object frameMensagem: TframeMensagem
     object btnVideoStatus: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 651
+      Top = 716
       Width = 204
       Height = 25
       Align = alTop
@@ -363,7 +362,7 @@ object frameMensagem: TframeMensagem
     object Button2: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 682
+      Top = 747
       Width = 204
       Height = 25
       Align = alTop
@@ -376,7 +375,7 @@ object frameMensagem: TframeMensagem
     object bTextoMarcandoTodosGrupo: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 713
+      Top = 778
       Width = 204
       Height = 25
       Align = alTop
@@ -389,7 +388,7 @@ object frameMensagem: TframeMensagem
     object btnLigar: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 744
+      Top = 809
       Width = 204
       Height = 25
       Align = alTop
@@ -402,7 +401,7 @@ object frameMensagem: TframeMensagem
     object btnEncerrarChamada: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 775
+      Top = 840
       Width = 204
       Height = 25
       Align = alTop
@@ -415,7 +414,7 @@ object frameMensagem: TframeMensagem
     object btnSendSimpleTextNew: TButton
       AlignWithMargins = True
       Left = 3
-      Top = -62
+      Top = 3
       Width = 204
       Height = 25
       Align = alTop
@@ -428,7 +427,7 @@ object frameMensagem: TframeMensagem
     object Button5: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 465
+      Top = 530
       Width = 204
       Height = 25
       Align = alTop
@@ -441,7 +440,7 @@ object frameMensagem: TframeMensagem
     object btnPoolMessage: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 434
+      Top = 499
       Width = 204
       Height = 25
       Align = alTop
@@ -455,7 +454,7 @@ object frameMensagem: TframeMensagem
     object btnImageButton: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 248
+      Top = 313
       Width = 204
       Height = 25
       Align = alTop
@@ -468,7 +467,7 @@ object frameMensagem: TframeMensagem
     object SendPix: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 186
+      Top = 251
       Width = 204
       Height = 25
       Align = alTop
@@ -481,7 +480,7 @@ object frameMensagem: TframeMensagem
     object SendDocumentButton: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 217
+      Top = 282
       Width = 204
       Height = 25
       Align = alTop
@@ -494,7 +493,7 @@ object frameMensagem: TframeMensagem
     object btnSendVideoButton: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 93
+      Top = 158
       Width = 204
       Height = 25
       Align = alTop
