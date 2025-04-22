@@ -207,8 +207,6 @@ type
     Procedure ResetEvents;
     procedure SetOwner(const Value: TComponent);
 
-    Procedure SendNotificationCenterDirect(PValor: TTypeHeader; Const PSender : TObject= nil);
-
     Procedure Form_Start;
     Procedure Form_Normal;
 
@@ -217,6 +215,7 @@ type
     procedure ExecuteJSDir(PScript: string; Purl:String = 'about:blank'; pStartline: integer=0);
     procedure RebootChromium;
     procedure RebootChromiumNew;
+    Procedure SendNotificationCenterDirect(PValor: TTypeHeader; Const PSender : TObject= nil);
     procedure Console_Clear;
     Function  ConfigureNetWork:Boolean;
     Procedure SetZoom(Pvalue: Integer);

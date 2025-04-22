@@ -3763,13 +3763,19 @@ begin
   if PTypeHeader = Th_IsReady then
   Begin
     if Assigned(OnGetIsReady) then
+    begin
+      FrmConsole.SendNotificationCenterDirect(Th_Initialized);
       OnGetIsReady( TIsReady(PReturnClass), True);
+    end;
   end;
 
   if PTypeHeader = Th_IsLoaded then
   Begin
     if Assigned(OnGetIsLoaded) then
+    begin
       OnGetIsLoaded( TIsLoaded(PReturnClass), True);
+      //FrmConsole.SendNotificationCenterDirect(Th_Initialized);
+    end;
   end;
 
   if PTypeHeader = Th_IsAuthenticated then
