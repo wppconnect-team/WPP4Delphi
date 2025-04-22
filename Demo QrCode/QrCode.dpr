@@ -1,11 +1,6 @@
 ﻿program QrCode;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Vcl.Forms,
   Windows,
   uTWPPConnect.ConfigCEF,

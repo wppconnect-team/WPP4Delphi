@@ -129,7 +129,7 @@
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <DCC_DcuOutput>C:\Executaveis\QrCode\objeto</DCC_DcuOutput>
         <DCC_MapFile>3</DCC_MapFile>
-        <DCC_Define>CEFCurrentVersionX;madExcept;$(DCC_Define)</DCC_Define>
+        <DCC_Define>CEFCurrentVersionX;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -141,6 +141,7 @@
         <DCC_DcuOutput>C:\Executaveis\QrCode64bit\objeto</DCC_DcuOutput>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <DCC_MapFile>3</DCC_MapFile>
+        <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -259,12 +260,6 @@
                 <Platform value="Win64">True</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="C:\Executaveis\WPPConnectDemo\QrCode.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>QrCode.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="C:\Executaveis\WPPConnectDemo\BIN\QrCode.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>QrCode.exe</RemoteName>
@@ -273,6 +268,12 @@
                 </DeployFile>
                 <DeployFile LocalName="C:\Executaveis\WPPConnectDemo64bit\QrCode.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
+                        <RemoteName>QrCode.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Executaveis\WPPConnectDemo\QrCode.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
                         <RemoteName>QrCode.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
