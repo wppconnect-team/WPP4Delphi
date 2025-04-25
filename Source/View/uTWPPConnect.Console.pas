@@ -168,6 +168,7 @@ type
     procedure OnTimerConnect(Sender: TObject);
     procedure OnTimerGetQrCode(Sender: TObject);
     Procedure ExecuteCommandConsole(Const PResponse: TResponseConsoleMessage);
+
   private
     { Private declarations }
     LPaginaId, Fzoom        : integer;
@@ -447,6 +448,7 @@ type
     procedure startEvento_group_participant_changed(active: Boolean);
     procedure startEvento_live_location_start(active: Boolean);
     procedure startEvento_order_payment_status(active: Boolean);
+    procedure InjetScriptNow;
 
     procedure StopMonitor;
     procedure StopMonitorNew;
@@ -777,11 +779,21 @@ begin
   lNovoStatus            := True;
   FTimerConnect.Enabled  := False;
   try
+    if (TWPPConnect(FOwner).Status = Inject_Initializing)
+    or (TWPPConnect(FOwner).Status = Inject_Initialized)
+    or (TWPPConnect(FOwner).Status = Inject_IsWhatsAppWebReady)
+    or (TWPPConnect(FOwner).Status = Inject_IsReady)
+    then  //Th_Initializing or Th_Initialized or Th_IsWhatsAppWebReady or Th_IsReady
+    begin
+      save_log('TFrmConsole.OnTimerConnect Status ---> ' + TWPPConnect(Sender).StatusToStr);
+      lNovoStatus := False;
+    end
+    else
     if TWPPConnect(FOwner).Status = Server_Connected then
     begin
       localStorage_debug;
 
-      save_log('Server_Connected TFrmConsole.OnTimerConnect');
+      save_log('Server_Connected TFrmConsole.OnTimerConnect ') ;
       save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
 
@@ -841,6 +853,7 @@ begin
 
         //ExecuteJSDir('console.log("SCRIPT WA-JS"); ');
         ExecuteJSDir('console.log("OnTimerConnect");');
+        ExecuteJSDir('console.log("Inject SCRIPT Basic");');
         ExecuteJSDir(FrmConsole_JS_SCRIPT_Basic);
         ExecuteJSDir(FrmConsole_JS_MonitorChatLoadComplete);
         ExecuteJSDir(FrmConsole_JS_monitorQRCode);
@@ -3303,6 +3316,25 @@ begin
                             end;
                        end;
 
+    //Marcelo 24/04/2025
+    Th_isWhatsAppWebReady :
+                       begin
+                         LOutClass2 := TisWhatsAppWebReady.Create(PResponse.JsonString);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+
+                           //MARCELO 24/04/2025
+                           if (TWPPConnect(FOwner).InjectJS.InjetarScript = False) then
+                             if (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
+                               FrmConsole.InjetScriptNow;
+
+
+
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
     //Marcelo 17/09/2022
     Th_IsReady :
                        begin
@@ -4406,8 +4438,7 @@ end;
 
 
 
-procedure TFrmConsole.Chromium1TitleChange(Sender: TObject;
-  const browser: ICefBrowser; const title: ustring);
+procedure TFrmConsole.Chromium1TitleChange(Sender: TObject; const browser: ICefBrowser; const title: ustring);
 begin
   LPaginaId := LPaginaId + 1;
 
@@ -4418,6 +4449,14 @@ begin
     begin
       save_log('  Chromium1TitleChange SendNotificationCenterDirect(Th_Connected)');
       SendNotificationCenterDirect(Th_Connected);
+
+      if (TWPPConnect(FOwner).Status = Inject_IsReady) then
+        if (not FTimerConnect.Enabled) then
+        begin
+          save_log('  Chromium1TitleChange Ativar Timer ---> FTimerConnect');
+          FTimerConnect.Enabled  := True;
+        end;
+
     end;
     if (TWPPConnect(FOwner).Config.AutoStart) and (not FTimerConnect.Enabled) then
       FTimerConnect.Enabled := True;
@@ -4753,7 +4792,7 @@ begin
   Version_JS := Copy(TWPPConnect(FOwner).InjectJS.JSScript.Text,53,200);
   Version_JS := Copy(Version_JS,1,pos(';', Version_JS) -1);
 
-  lbl_Versao.Caption := vWAJS + ' / ' + Version_JS;
+  lbl_Versao.Caption := '' + TWPPConnectVersion + ' / ' + vWAJS + ' / ' + Version_JS;
 
 
 end;
@@ -4851,6 +4890,55 @@ begin
 
   SleepNoFreeze(40);
   SendNotificationCenterDirect(Th_Initialized);*)
+end;
+
+procedure TFrmConsole.InjetScriptNow;
+begin
+  //Marcelo 24/04/2025
+  //Aguardar "X" Segundos Injetar JavaScript
+  if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+    SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
+
+  ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+  ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+               '  const jsonObject = {   ' +
+               '    dateTime: dataAtual, ' +
+               '    Inject: true   ' +
+               '  };   ' +
+               '  console.log(JSON.stringify(jsonObject)); ');
+
+  SleepNoFreeze(40);
+
+  save_log('InjetScriptNow js.ABR ');
+
+  if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+    TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+  //Auto monitorar mensagens não lidas
+  StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+  StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+  StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+  //Ativar Eventos add Marcelo 28/09/2023
+  startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+  startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+  startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+  startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+  //Ativar New Eventos add Marcelo 16/08/2024
+  startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+  startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+  startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+  startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+  startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+  startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
+  SleepNoFreeze(40);
+
+  ///lNovoStatus    := False;
+  save_log('InjetScriptNow SendNotificationCenterDirect(Th_Initializing)');
+  SendNotificationCenterDirect(Th_Initializing);
 end;
 
 procedure TFrmConsole.Int_FrmQRCodeClose(Sender: TObject);

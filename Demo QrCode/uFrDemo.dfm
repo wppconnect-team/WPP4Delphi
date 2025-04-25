@@ -2272,6 +2272,15 @@ object frDemo: TfrDemo
       Top = 6
     end
   end
+  object BitBtn2: TBitBtn
+    Left = 425
+    Top = 82
+    Width = 99
+    Height = 25
+    Caption = 'Injetar SCRIPT'
+    TabOrder = 12
+    OnClick = BitBtn2Click
+  end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
     DrawingStyle = dsTransparent
@@ -5854,6 +5863,7 @@ object frDemo: TfrDemo
   object TWPPConnect1: TWPPConnect
     InjectJS.AutoUpdateTimeOut = 6
     InjectJS.InjetarScript = False
+    InjectJS.InjetAfterIsWhatsAppWebReady = True
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
@@ -5890,6 +5900,7 @@ object frDemo: TfrDemo
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall
     OnGetOutgoingCall = TWPPConnect1GetOutgoingCall
+    OnGetIsWhatsAppWebReady = TWPPConnect1GetIsWhatsAppWebReady
     OnGetIsReady = TWPPConnect1GetIsReady
     OnGetIsLoaded = TWPPConnect1GetIsLoaded
     OnGetIsAuthenticated = TWPPConnect1GetIsAuthenticated

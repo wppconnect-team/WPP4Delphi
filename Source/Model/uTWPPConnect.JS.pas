@@ -82,6 +82,7 @@ type
     FStringList: TStringList;
     FRegistros : TFDMemTable;
     FSeparador : Char;
+    FInjetAfterIsWhatsAppWebReady: Boolean;
 
   {$ENDREGION}
     Function   ReadCSV(Const PLineCab, PLineValues: String): Boolean;
@@ -93,7 +94,8 @@ type
     Function   LoadAndValidJSFromFile(const Source: string): Boolean;
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
     procedure SetSecondsWaitInject(const Value: integer);
-
+    procedure SetInjetarScript(const Value: Boolean);
+    procedure SetInjetAfterIsWhatsAppWebReady(const Value: Boolean);
 
   protected
 //    procedure Loaded; override;
@@ -120,15 +122,16 @@ type
   {$ENDREGION}
 
  published
-    property   AutoUpdate         : Boolean         read FAutoUpdate           write FAutoUpdate          default True;
-    property   AutoUpdateTimeOut  : Integer         Read FAutoUpdateTimeOut    Write FAutoUpdateTimeOut   Default 4;
-    property   OnUpdateJS         : TNotifyEvent    Read FOnUpdateJS           Write FOnUpdateJS;
-    property   Ready              : Boolean         read FReady;
-    property   InjetarScript      : Boolean         read FInjetarScript        write FInjetarScript       default True;
-    property   JSURL              : String          read FJSURL                write FJSURL;
-    property   DownloadJSType     : TDownloadJSType read FDownloadJSType       write FDownloadJSType;
-    property   JSScript           : TstringList     read FJSScript             Write SeTWPPConnectScript;
-    property   SecondsWaitInject  : Integer         read FSecondsWaitInject    Write FSecondsWaitInject   Default 6;
+    property   AutoUpdate                   : Boolean         read FAutoUpdate                     write FAutoUpdate          default True;
+    property   AutoUpdateTimeOut            : Integer         Read FAutoUpdateTimeOut              Write FAutoUpdateTimeOut   Default 4;
+    property   OnUpdateJS                   : TNotifyEvent    Read FOnUpdateJS                     Write FOnUpdateJS;
+    property   Ready                        : Boolean         read FReady;
+    property   InjetarScript                : Boolean         read FInjetarScript                  write SetInjetarScript     default True;
+    property   InjetAfterIsWhatsAppWebReady : Boolean         read FInjetAfterIsWhatsAppWebReady   write SetInjetAfterIsWhatsAppWebReady     default False;
+    property   JSURL                        : String          read FJSURL                          write FJSURL;
+    property   DownloadJSType               : TDownloadJSType read FDownloadJSType                 write FDownloadJSType;
+    property   JSScript                     : TstringList     read FJSScript                       Write SeTWPPConnectScript;
+    property   SecondsWaitInject            : Integer         read FSecondsWaitInject              Write FSecondsWaitInject   Default 6;
   end;
 
 
@@ -172,17 +175,18 @@ begin
   except on E: Exception do
   end;
 
-  Owner                      := POwner;
-  FAutoUpdateTimeOut         := 10;
-  FJSScript                  := TstringList.create;
-  FAutoUpdate                := True;
-  FJSURL                     := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
-  //FJSURL                     := TWPPConnectJS_JSUrlPadrao;
-  FDownloadJSType            := DT_Indy;
-  FInjectJSDefine            := TWPPConnectJSDefine.Create;
-  FReady                     := False;
-  FInjetarScript             := True;
-  FSecondsWaitInject         := 6;
+  Owner                         := POwner;
+  FAutoUpdateTimeOut            := 10;
+  FJSScript                     := TstringList.create;
+  FAutoUpdate                   := True;
+  FJSURL                        := Caminho_JS; //TWPPConnectJS_JSUrlPadrao;
+  //FJSURL                      := TWPPConnectJS_JSUrlPadrao;
+  FDownloadJSType               := DT_Indy;
+  FInjectJSDefine               := TWPPConnectJSDefine.Create;
+  FReady                        := False;
+  FInjetarScript                := True;
+  FInjetAfterIsWhatsAppWebReady := False;
+  FSecondsWaitInject            := 6;
 
 end;
 function TWPPConnectJS.UpdateExec(PForma: TFormaUpdate): Boolean;
@@ -248,12 +252,29 @@ begin
   DeleteFile(PwideChar(IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp'));
 end;
 
+procedure TWPPConnectJS.SetInjetAfterIsWhatsAppWebReady(const Value: Boolean);
+begin
+  //Marcelo 24/04/2025
+  FInjetAfterIsWhatsAppWebReady := Value;
+  if Value = True then //Caso Ativar está opção Marcar para Não InjetarScript automático ao Iniciar o Componente, Injetar após o Evento IsWhatsAppWebReady ser disparado
+    FInjetarScript := False;
+
+end;
+
+procedure TWPPConnectJS.SetInjetarScript(const Value: Boolean);
+begin
+  FInjetarScript := Value;
+end;
+
 procedure TWPPConnectJS.SetSecondsWaitInject(const Value: integer);
 begin
   FSecondsWaitInject := Value;
   //Não permitir que fique negativo.
   if Value < 0 then
-     FSecondsWaitInject := 0;
+    FSecondsWaitInject := 0;
+
+  if Value < 6 then //Colocar um Valor Mínímo
+    FSecondsWaitInject := 6;
 end;
 
 procedure TWPPConnectJS.SeTWPPConnectScript(const Value: TstringList);

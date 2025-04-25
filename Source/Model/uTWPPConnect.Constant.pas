@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '4.0.0.2'; //  02/10/2024
+  TWPPConnectVersion              = '5.0.0.0'; //  02/10/2024
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -163,8 +163,8 @@ Const
     '    observer = new IntersectionObserver(function (entries, obs) {' + sLineBreak +
     '      entries.forEach(function (entry) {' + sLineBreak +
     '        if (entry.isIntersecting) {' + sLineBreak +
-    '          console.log(''isReady'');' + sLineBreak +
-    '          SetConsoleMessage("isReady", JSON.stringify({isReady: true})); ' + sLineBreak +
+    '          console.log(''IsWhatsAppWebReady'');' + sLineBreak +
+    '          SetConsoleMessage("IsWhatsAppWebReady", JSON.stringify({IsWhatsAppWebReady: true})); ' + sLineBreak +
     '          obs.unobserve(entry.target); // Para observar só uma vez' + sLineBreak +
     '        }' + sLineBreak +
     '      });' + sLineBreak +
@@ -577,6 +577,8 @@ resourcestring
   Text_Status_Serv_Destroying          = '';
   Text_Status_Serv_Destroy             = '';
   Text_Status_Serv_Rebooting           = '';
+  Text_Status_Serv_IsReady             = '';
+  Text_Status_Serv_IsWhatsAppWebReady  = '';
   MSG_WarningNothingtoSend             = '';
   MSG_WarningErrorFile                 = '';
   MSG_Except_Data_TypeObj              = '';
@@ -641,7 +643,10 @@ type
                              Server_Disconnected,           Server_Disconnecting,
                              Server_Connected,              Server_ConnectedDown,
                              Server_Connecting,             Server_ConnectingNoPhone,
-                             Server_ConnectingReaderCode,   Server_TimeOut, Server_Rebooting
+                             Server_ConnectingReaderCode,   Server_TimeOut,
+                             Server_Rebooting
+                             ,Inject_IsReady
+                             ,Inject_IsWhatsAppWebReady
                             );
 
     TTypeHeader = (Th_None = 0,
@@ -712,6 +717,7 @@ type
                    , Th_Getlive_location_start=93 //Marcelo 13/08/2024
                    , Th_GetEnvrequire_auth=94 //Marcelo 21/08/2024
                    , Th_GetAllParticipantsGroup=95 //Marcelo 01/09/2024
+                   , Th_isWhatsAppWebReady=96 //Marcelo 24/04/2025
                    );
 
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -850,7 +856,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 95; //Marcelo 01/09/2024
+const LmaxCount = 96; //Marcelo 24/04/2025
 var
   I: Integer;
   LNome: String;

@@ -77,6 +77,7 @@ type
     SwtTypebot: TToggleSwitch;
     ePublicId: TEdit;
     Label4: TLabel;
+    BitBtn2: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure frameLogin1SpeedButton1Click(Sender: TObject);
     procedure TWPPConnect1GetQrCode(const Sender: TObject;
@@ -188,6 +189,8 @@ type
     procedure TWPPConnect1GetEnvrequire_auth(Response: TIsRequire_auth);
     procedure TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
     procedure SwtTypebotClick(Sender: TObject);
+    procedure TWPPConnect1GetIsWhatsAppWebReady(Sender: TObject; IsWhatsAppWebReady: Boolean);
+    procedure BitBtn2Click(Sender: TObject);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -441,6 +444,18 @@ begin
     TWPPConnect1.RebootWPP;
   except on E: Exception do
   end;
+end;
+
+procedure TfrDemo.BitBtn2Click(Sender: TObject);
+begin
+  BitBtn2.Enabled := False;
+
+  FrmConsole.InjetScriptNow;
+
+  ctbtn.Visible := True;
+  SplitView1.Visible := True;
+
+  BitBtn2.Enabled := True;
 end;
 
 procedure TfrDemo.BitBtn3Click(Sender: TObject);
@@ -1598,6 +1613,40 @@ end;
 procedure TfrDemo.TWPPConnect1GetIsReady(Sender: TObject; IsReady: Boolean);
 begin
   Label3.Caption := 'Online Is Ready';
+  frameLogin1.lblStatus.Caption := 'Online';
+  frameLogin1.lblStatus.Font.Color := $0000AE11;
+  frameLogin1.SpeedButton3.Enabled := True;
+  frameLogin1.whatsOn.Visible := True;
+  frameLogin1.whatsOff.Visible := False;
+  frameLogin1.imgQrCode.Picture := nil;
+  ctbtn.Enabled := True;
+  TimerProgress.Enabled := False;
+
+
+  ctbtn.Visible := True;
+  SplitView1.Visible := True;
+
+  TWPPConnect1.GetMyNumber;
+  TWPPConnect1.getWAVersion;
+  TWPPConnect1.GetMe;
+
+  //frameLogin1.lblStatus.Caption := 'Online Pronto Para Uso';
+  StatusBar1.Panels[1].Text := frameLogin1.lblStatus.Caption;
+  // whatsOn.Visible            := SpeedButton3.enabled;
+  // lblNumeroConectado.Visible := whatsOn.Visible;
+
+  //TimerIsOnline.Enabled := True;
+
+  if frameLogin1.whatsOn.Visible then
+  begin
+    ctbtn.Categories.Items[0].Items[0].ImageIndex := 0;
+    lblMeuNumero.Caption := 'My Number: ' + TWPPConnect1.MyNumber;
+  end;
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsWhatsAppWebReady(Sender: TObject; IsWhatsAppWebReady: Boolean);
+begin
+  Label3.Caption := 'Online Is WhatsAppWebReady';
   frameLogin1.lblStatus.Caption := 'Online';
   frameLogin1.lblStatus.Font.Color := $0000AE11;
   frameLogin1.SpeedButton3.Enabled := True;

@@ -134,7 +134,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Erro ao conectar (TimeOut)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Destruindo e fechando TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect finalizado');
+
   SetResourceString(@Text_Status_Serv_Rebooting           , 'Reiniciando Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Carregado');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Online Pronto');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Não existe nenhum conteúdo a ser enviado na mensagem');
 
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Tipo de objeto não é compatível');
@@ -256,6 +260,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Unabke to connect (TimeOut)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Destroying and closing the TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect has been terminated');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'There is no content to send in this message');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Object type is not compatible');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'DataSet Type Does Not Have Database Connection');
@@ -344,6 +353,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Error al conectar (TimeOut)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Destruyendo y cerrando la aplicación');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect terminado');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'No hay contenido para enviar en el mensaje');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'El tipo de objeto no es compatible');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'El tipo de conjunto de datos no tiene conexión de base de datos');
@@ -424,6 +438,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'امکان اتصال وجود ندارد (Timeout)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'در حال از بین بردن و بستن TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect خاتمه یافته است');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'هیچ محتوایی برای ارسال در این پیام وجود ندارد');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'نوع شیء سازگار نیست');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'نوع DataSet اتصال به پایگاه داده ندارد');
@@ -510,6 +529,11 @@ begin
 	SetResourceString(@TEXT_STATUS_SERV_TIMEOUT , 'IMPOSSIBILE CONNETTERSI (TIMEOUT)');
 	SetResourceString(@TEXT_STATUS_SERV_DESTROYING , 'DISTRUGGENDO E CHIUDENDO TWPPCONNECT');
 	SetResourceString(@TEXT_STATUS_SERV_DESTROY , 'TWPPCONNECT È STATO TERMINATO');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
 	SetResourceString(@MSG_WARNINGNOTHINGTOSEND , 'NON C''È CONTENUTO DA INVIARE IN QUESTO MESSAGGIO');
 	SetResourceString(@MSG_EXCEPT_DATA_TYPEOBJ , 'IL TIPO DI OGGETTO NON È COMPATIBILE');
 	SetResourceString(@MSG_EXCEPT_DATA_CONNECTREPASS , 'IL TIPO DI DATASET NON HA UNA CONNESSIONE AL DATABASE');
@@ -595,6 +619,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Verbindung nicht möglich (Zeitüberschreitung)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect wird zerstört und geschlossen');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect wurde beendet');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Es gibt keinen Inhalt zum Senden in dieser Nachricht');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Objekttyp ist nicht kompatibel');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'Der DataSet-Typ hat keine Datenbankverbindung');
@@ -681,6 +710,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Impossible de se connecter (délai d''attente dépassé)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Destruction et fermeture de TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect a été terminé');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Il n''y a pas de contenu à envoyer dans ce message');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Le type d''objet n''est pas compatible');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'Le type DataSet n''a pas de connexion à la base de données');
@@ -766,6 +800,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Не удалось подключиться (время ожидания истекло)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect уничтожается и закрывается');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect завершил работу');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'В этом сообщении нет содержимого для отправки');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Тип объекта несовместим');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'Тип DataSet не имеет подключения к базе данных');
@@ -851,6 +890,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Kan nie koppel nie (Tyd verstryk)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect word vernietig en gesluit');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect is beëindig');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Daar is geen inhoud om in hierdie boodskap te stuur nie');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Objekttipe is nie versoenbaar nie');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'DataSet-tipe het geen databasisverbinding nie');
@@ -936,6 +980,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'कनेक्ट नहीं हो सका (टाइमआउट)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect को नष्ट कर बंद कर रहा है');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect समाप्त कर दिया गया है');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'इस संदेश में भेजने के लिए कोई सामग्री नहीं है');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'ऑब्जेक्ट प्रकार संगत नहीं है');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'डेटा सेट प्रकार में डेटाबेस कनेक्शन नहीं है');
@@ -1021,6 +1070,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Tidak dapat terhubung (Timeout)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'Menghancurkan dan menutup TWPPConnect');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect telah dihentikan');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Tidak ada konten untuk dikirim dalam pesan ini');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Tipe objek tidak kompatibel');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'Tipe DataSet Tidak Memiliki Koneksi Database');
@@ -1106,6 +1160,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'Bağlanılamadı (Zaman Aşımı)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect yok ediliyor ve kapatılıyor');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect sonlandırıldı');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'Bu mesajda gönderilecek içerik yok');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'Nesne türü uyumlu değil');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'DataSet Türü Veritabanı Bağlantısına Sahip Değil');
@@ -1191,6 +1250,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'کنکشن نہیں ہو سکا (ٹائم آؤٹ)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect کو ختم اور بند کیا جا رہا ہے');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect ختم کر دیا گیا ہے');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'اس پیغام میں بھیجنے کے لیے کوئی مواد نہیں ہے');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'آبجیکٹ کی قسم مطابقت نہیں رکھتی');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'ڈیٹا سیٹ کی قسم میں ڈیٹا بیس کنکشن نہیں ہے');
@@ -1276,6 +1340,11 @@ begin
   SetResourceString(@Text_Status_Serv_TimeOut             , 'সংযোগ করা সম্ভব নয় (সময় শেষ)');
   SetResourceString(@Text_Status_Serv_Destroying          , 'TWPPConnect ধ্বংস এবং বন্ধ করা হচ্ছে');
   SetResourceString(@Text_Status_Serv_Destroy             , 'TWPPConnect বন্ধ হয়ে গেছে');
+
+  SetResourceString(@Text_Status_Serv_Rebooting           , 'Rebooting Chromium');
+  SetResourceString(@Text_Status_Serv_IsWhatsAppWebReady  , 'WhatsAppWeb Chat Load Complete');
+  SetResourceString(@Text_Status_Serv_IsReady             , 'Is Ready');
+
   SetResourceString(@MSG_WarningNothingtoSend             , 'এই বার্তায় পাঠানোর জন্য কোন সামগ্রী নেই');
   SetResourceString(@MSG_Except_Data_TypeObj              , 'অবজেক্টের ধরন সামঞ্জস্যপূর্ণ নয়');
   SetResourceString(@MSG_Except_DATA_ConnectRepass        , 'ডেটাসেট ধরনে ডাটাবেস সংযোগ নেই');

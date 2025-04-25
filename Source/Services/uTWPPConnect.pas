@@ -156,6 +156,9 @@ type
   //Adicionado por Marcelo 17/06/2024
   TGetOutgoingCall           = procedure(Const OutgoingCall: TOutgoingCall) of object;
 
+  //Marcelo 24/04/2025
+  TGetIsWhatsAppWebReady     = Procedure(Sender : TObject; IsWhatsAppWebReady: Boolean) of object; //Marcelo 24/04/2025
+
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
   TGetIsLoaded               = Procedure(Sender : TObject; IsLoaded: Boolean) of object; //Marcelo 17/08/2022
   TGetIsAuthenticated        = Procedure(Sender : TObject; IsAuthenticated: Boolean) of object; //Marcelo 18/08/2022
@@ -201,8 +204,6 @@ type
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
     FOnGetIsLogout: TGetIsLogout;
     FAuthenticated: boolean;
-
-
 
 
     { Private  declarations }
@@ -308,6 +309,8 @@ type
     //Adicionado Por Marcelo 17/06/2022
     FOnGetIncomingiCall    : TGetIncomingiCall;
     FOnGetOutgoingCall     : TGetOutgoingCall;
+
+    FOnGetIsWhatsAppWebReady: TGetIsWhatsAppWebReady; //Marcelo 24/04/2025
 
     FOnGetIsReady: TGetIsReady; //Marcelo 17/09/2022
     FOnGetIsLoaded: TGetIsLoaded; //Marcelo 17/09/2022
@@ -627,6 +630,9 @@ type
     property OnGetIncomingiCall          : TGetIncomingiCall          read FOnGetIncomingiCall             write FOnGetIncomingiCall;
 
     property OnGetOutgoingCall           : TGetOutgoingCall           read FOnGetOutgoingCall              write FOnGetOutgoingCall;
+
+    //Marcelo 24/04/2025
+    property OnGetIsWhatsAppWebReady     : TGetIsWhatsAppWebReady     read FOnGetIsWhatsAppWebReady        write FOnGetIsWhatsAppWebReady;
 
     //Marcelo 17/09/2022
     property OnGetIsReady                : TGetIsReady                read FOnGetIsReady                   write FOnGetIsReady;
@@ -3734,15 +3740,21 @@ begin
     exit;
   end;
 
+  if (PTypeHeader In [Th_GetQrCodeWEB]) then
+  begin
+    //if FStatus = Inject_IsReady then
+      //RebootWPP;
 
+    //FStatus := Inject_Initializing;
+  end;
 
   if (PTypeHeader In [Th_GetProfilePicThumb]) then
   Begin
     if not Assigned(FrmConsole) then
-       Exit;
+      Exit;
 
     if not Assigned(FOnGetProfilePicThumb) then
-       Exit;
+      Exit;
 
 
    //FOnGetProfilePicThumb(Self, TResponseGetProfilePicThumb(PReturnClass).Base64);
@@ -3759,6 +3771,17 @@ begin
       OnGetMessages(TGetMessageClass(PReturnClass));
   end;
 
+  //Marcelo 24/04/2025
+  if PTypeHeader = Th_isWhatsAppWebReady then
+  Begin
+    if Assigned(OnGetIsWhatsAppWebReady) then
+    begin
+      FrmConsole.SendNotificationCenterDirect(Th_Initialized);
+      OnGetIsWhatsAppWebReady(TisWhatsAppWebReady(PReturnClass), True);
+      FStatus := Inject_IsWhatsAppWebReady;
+    end;
+  end;
+
   //Marcelo 17/09/2022
   if PTypeHeader = Th_IsReady then
   Begin
@@ -3766,6 +3789,7 @@ begin
     begin
       FrmConsole.SendNotificationCenterDirect(Th_Initialized);
       OnGetIsReady( TIsReady(PReturnClass), True);
+      FStatus := Inject_IsReady;
     end;
   end;
 
@@ -7078,6 +7102,8 @@ begin
     Inject_Destroying          : Result := Text_Status_Serv_Destroying;
     Inject_Destroy             : Result := Text_Status_Serv_Destroy;
     Server_Rebooting           : Result := Text_Status_Serv_Rebooting;
+    Inject_IsReady             : Result := Text_Status_Serv_IsReady;
+    Inject_IsWhatsAppWebReady  : Result := Text_Status_Serv_IsWhatsAppWebReady;
   end;
 end;
 

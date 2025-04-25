@@ -35,7 +35,7 @@ interface
 {$I TWPPConnectDiretiva.inc}
 uses Generics.Collections, Rest.Json, uTWPPConnect.FrmQRCode, Vcl.Graphics, System.IOUtils,
   System.Classes, uTWPPConnect.Constant, IdHTTP, Vcl.ExtCtrls,
- {$IFDEF DELPHI25_UP}
+  {$IFDEF DELPHI25_UP}
     Vcl.IdAntiFreeze,
   {$ENDIF}
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, Vcl.Imaging.jpeg,
@@ -2141,6 +2141,14 @@ type
 {##########################################################################################
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
+TisWhatsAppWebReady = class(TClassPadrao)
+private
+  FIsWhatsAppWebReady: Boolean;
+public
+  property IsWhatsAppWebReady:      Boolean    read FIsWhatsAppWebReady     write FIsWhatsAppWebReady;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
 TIsReady = class(TClassPadrao)
 private
   FIsReady: Boolean;
@@ -5037,6 +5045,18 @@ end;
 procedure TctwaContextClass.SetThumbnailUrl(const Value: string);
 begin
   FThumbnailUrl := StringReplace(Value, '\/', '/', [rfReplaceAll]);
+end;
+
+{ TisWhatsAppWebReady }
+
+constructor TisWhatsAppWebReady.Create(pAJsonString: string);
+begin
+  FIsWhatsAppWebReady := True;
+end;
+
+destructor TisWhatsAppWebReady.Destroy;
+begin
+  inherited;
 end;
 
 end.
