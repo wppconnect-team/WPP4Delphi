@@ -3798,7 +3798,7 @@ begin
 
     localStorage_debug;
 
-    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
     begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -3852,7 +3852,7 @@ begin
 
     localStorage_debug;
 
-    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
     begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -3995,7 +3995,7 @@ begin
 
     localStorage_debug;
 
-    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
     begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
@@ -4049,7 +4049,7 @@ begin
 
     localStorage_debug;
 
-    if TWPPConnect(FOwner).InjectJS.InjetarScript then
+    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
     begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
