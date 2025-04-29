@@ -240,6 +240,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 1
       Images = ImageList1
       TabOrder = 1
+      Visible = False
       OnClick = btnBotaoSimplesClick
     end
     object btnTextoSimples: TButton
@@ -488,6 +489,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 27
       Images = ImageList1
       TabOrder = 26
+      Visible = False
       OnClick = SendDocumentButtonClick
     end
     object btnSendVideoButton: TButton
@@ -501,6 +503,7 @@ object frameMensagem: TframeMensagem
       ImageIndex = 4
       Images = ImageList1
       TabOrder = 27
+      Visible = False
       OnClick = btnSendVideoButtonClick
     end
   end

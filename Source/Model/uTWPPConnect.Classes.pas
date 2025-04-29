@@ -204,6 +204,13 @@ type
     property Name: string read FName write FName;
   end;
 
+  TreportingTokenClass = class
+  private
+
+  public
+
+  end;
+
   TReportingTagClass = class
   private
   public
@@ -215,9 +222,11 @@ type
   private
     FReportingTag: TReportingTagClass;
     FVersion: Extended;
+    FreportingToken: TreportingTokenClass;
   public
     property reportingTag: TReportingTagClass read FReportingTag write FReportingTag;
     property version: Extended read FVersion write FVersion;
+    property reportingToken: TreportingTokenClass read FreportingToken write FreportingToken;
     //constructor Create;
     //destructor Destroy; override;
     //function ToJsonString: string;
@@ -241,12 +250,150 @@ type
     //class function FromJsonString(AJsonString: string): TProtocolMessageKeyClass;
   end;
 
-  //Marcelo 27/04/2022
+
+
+  TParentMessageKeyClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FFromMe: Boolean;
+    FId: String;
+    FParticipant: String;
+    FRemoteJid: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property fromMe: Boolean read FFromMe write FFromMe;
+    property id: String read FId write FId;
+    property participant: String read FParticipant write FParticipant;
+    property remoteJid: String read FRemoteJid write FRemoteJid;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TParentMessageKeyClass;
+  end;
+
+  TMessageAssociationClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FAssociationType: Extended;
+    FParentMessageKey: TParentMessageKeyClass;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property associationType: Extended read FAssociationType write FAssociationType;
+    property parentMessageKey: TParentMessageKeyClass read FParentMessageKey write FParentMessageKey;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TMessageAssociationClass;
+  end;
+
+  TMessageContextInfoClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FMessageAssociation: TMessageAssociationClass;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property messageAssociation: TMessageAssociationClass read FMessageAssociation write FMessageAssociation;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TMessageContextInfoClass;
+  end;
+
+  TExtendedTextMessageClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FInviteLinkGroupTypeV2: Extended;
+    FMatchedText: String;
+    FPreviewType: Extended;
+    FText: String;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property inviteLinkGroupTypeV2: Extended read FInviteLinkGroupTypeV2 write FInviteLinkGroupTypeV2;
+    property matchedText: String read FMatchedText write FMatchedText;
+    property previewType: Extended read FPreviewType write FPreviewType;
+    property text: String read FText write FText;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TExtendedTextMessageClass;
+  end;
+
+  TMessageClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FExtendedTextMessage: TExtendedTextMessageClass;
+    FMessageContextInfo: TMessageContextInfoClass;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property extendedTextMessage: TExtendedTextMessageClass read FExtendedTextMessage write FExtendedTextMessage;
+    property messageContextInfo: TMessageContextInfoClass read FMessageContextInfo write FMessageContextInfo;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TMessageClass;
+  end;
+
+  TEmbeddedMessageClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FMessage: TMessageClass;
+    FStanzaId: String;
+  public
+    property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property message: TMessageClass read FMessage write FMessage;
+    property stanzaId: String read FStanzaId write FStanzaId;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TEmbeddedMessageClass;
+  end;
+
+  TEmbeddedContentClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FEmbeddedMessage: TEmbeddedMessageClass;
+  public
+    property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property embeddedMessage: TEmbeddedMessageClass read FEmbeddedMessage write FEmbeddedMessage;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TEmbeddedContentClass;
+  end;
+
+  TPolygonVerticesClass = class
+  private
+    //F$$unknownFieldCount: Extended;
+    FX: Extended;
+    FY: Extended;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property x: Extended read FX write FX;
+    property y: Extended read FY write FY;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TPolygonVerticesClass;
+  end;
+
   TinteractiveAnnotationsClass = class(TClassPadrao)
+  private
+    //F$$unknownFieldCount: Extended;
+    FEmbeddedAction: Boolean;
+    FEmbeddedContent: TEmbeddedContentClass;
+    FPolygonVertices: TArray<TPolygonVerticesClass>;
+  public
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    property embeddedAction: Boolean read FEmbeddedAction write FEmbeddedAction;
+    property embeddedContent: TEmbeddedContentClass read FEmbeddedContent write FEmbeddedContent;
+    property polygonVertices: TArray<TPolygonVerticesClass> read FPolygonVertices write FPolygonVertices;
+    //constructor Create;
+    //destructor Destroy; override;
+    //function ToJsonString: string;
+    //class function FromJsonString(AJsonString: string): TInteractiveAnnotationsClass;
+  end;
+
+  //Marcelo 27/04/2022
+  {TinteractiveAnnotationsClass = class(TClassPadrao)
   private
     //NÃO IMPLEMENTADO VERIFICAR O QUE VEM NO RETORNO DO JSON DESTE NÓ
   public
-  end;
+
+  end;}
 
   TmessageSecretClass = class(TClassPadrao)
     private
