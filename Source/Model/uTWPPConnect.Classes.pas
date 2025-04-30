@@ -335,7 +335,7 @@ type
     FMessage: TMessageClass;
     FStanzaId: String;
   public
-    property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property message: TMessageClass read FMessage write FMessage;
     property stanzaId: String read FStanzaId write FStanzaId;
     //constructor Create;
@@ -349,7 +349,7 @@ type
     //F$$unknownFieldCount: Extended;
     FEmbeddedMessage: TEmbeddedMessageClass;
   public
-    property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
+    //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property embeddedMessage: TEmbeddedMessageClass read FEmbeddedMessage write FEmbeddedMessage;
     //constructor Create;
     //destructor Destroy; override;
