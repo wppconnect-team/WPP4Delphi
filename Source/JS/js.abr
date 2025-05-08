@@ -1341,7 +1341,7 @@ window.WAPI.getAllMessageIdsInChat = function(id, includeMe, includeNotification
 window.WAPI.getMessageById = function(id, done) {
     let result = false;
     try {
-        let msg = WPP.whatsapp.Msg.get(id);
+        let msg = WPP.whatsapp.MsgStore.get(id);
         if (msg) {
             result = WAPI.processMessageObj(msg, true, true);
         }
