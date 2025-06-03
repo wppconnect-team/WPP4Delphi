@@ -431,6 +431,7 @@ type
     procedure ReadMessagesAndDelete(vID: string);
 
     procedure DeleteChat(vID: string);
+    procedure RecreateChat(vID: string);
 
     procedure localStorage_debug;
 
@@ -857,6 +858,11 @@ begin
         ExecuteJSDir(FrmConsole_JS_SCRIPT_Basic);
         ExecuteJSDir(FrmConsole_JS_MonitorChatLoadComplete);
         ExecuteJSDir(FrmConsole_JS_monitorQRCode);
+
+
+        //ExecuteJSDir(FrmConsole_JS_Monitor_Received_Message_Socket);
+
+        //ExecuteJSDir(FrmConsole_JS_Monitor_Received_Message_Socket2);
 
         SleepNoFreeze(40);
 
@@ -1775,6 +1781,18 @@ begin
   end;
 end;
 
+procedure TFrmConsole.RecreateChat(vID: string);
+var
+  LJS: String;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS := FrmConsole_JS_VAR_RecreateChatFix;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#',     Trim(vID));
+  ExecuteJS(LJS, true);
+end;
+
 procedure TFrmConsole.rejectCall(id: string);
 var
   Ljs: string;
@@ -1996,7 +2014,7 @@ begin
       LLine := LLine + LBase64[i];
     content := LLine;
 
-    //SalvaLog(content, 'CONSOLE');
+    SalvaLog(content, 'CONSOLE');
 
     options := CaractersQuebraLinha(options);
 
@@ -3675,6 +3693,31 @@ begin
                              end;
                      end;
 
+    Th_OnReceived_Message_Socket :  //Marcelo 09/05/2025
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TReceived_Message_SocketClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_OnReceived_Message_Socket2 :  //Marcelo 19/05/2025
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TNewMsgClass.Create(LResultStr);
+                             //LOutClass := TReceived_Message_SocketClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
     Th_Getmsg_ack_change :
                      begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
@@ -3986,17 +4029,20 @@ begin
 
   //testa se e um JSON de forma RAPIDA!
 
-  if (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
+
+  //Uncaught TypeError: Cannot read properties of undefined (reading 'sendTextMessage2Ex')
+  if (pos('Uncaught TypeError: Cannot read properties of undefined', message) > 0)
+  and ((pos('sendTextMessage2Ex', message) > 0) or (pos('sendFileMessage2Ex', message) > 0)) then
   begin
-    LogAdd('"WPP IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
+    LogAdd('"Uncaught TypeError: Cannot read properties of undefined (reading "sendTextMessage2Ex" Injeta o JS.ABR de novo ' + UpperCase(message));
 
     Chromium1.StopLoad;
     Chromium1.Browser.ReloadIgnoreCache;
 
     localStorage_debug;
 
-    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
-    begin
+    //if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
+    //begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
         SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
@@ -4036,7 +4082,60 @@ begin
 
       SleepNoFreeze(40);
       SendNotificationCenterDirect(Th_Initialized);
-    end;
+    //end;
+  end
+  else
+  if (Pos('WPP IS NOT DEFINED', UpperCase(message)) > 0) then
+  begin
+    LogAdd('"WPP IS NOT DEFINED" Injeta o JS.ABR de novo ' + UpperCase(message));
+
+    Chromium1.StopLoad;
+    Chromium1.Browser.ReloadIgnoreCache;
+
+    localStorage_debug;
+
+    //if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
+    //begin
+      //Aguardar "X" Segundos Injetar JavaScript
+      if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
+        SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
+      ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
+
+      ExecuteJSDir('  const dataAtual = new Date().toISOString();  ' +
+                   '  const jsonObject = {   ' +
+                   '    dateTime: dataAtual, ' +
+                   '    Inject: true   ' +
+                   '  };   ' +
+                   '  console.log(JSON.stringify(jsonObject)); ');
+      SleepNoFreeze(40);
+
+      save_log('  Inject js.ABR again');
+
+      if Assigned(TWPPConnect(FOwner).OnAfterInjectJs) Then
+        TWPPConnect(FOwner).OnAfterInjectJs(FOwner);
+
+      //Auto monitorar mensagens não lidas
+      StartMonitor(TWPPConnect(FOwner).Config.SecondsMonitor);
+      StartMonitorNew(TWPPConnect(FOwner).Config.SecondsMonitorNew);
+      StartMonitorWPPCrash(TWPPConnect(FOwner).Config.SecondsMonitorWppCrash);
+
+      //Ativar Eventos add Marcelo 28/09/2023
+      startEvento_msg_ack_change(TWPPConnect(FOwner).Config.Evento_msg_ack_change);
+      startEvento_msg_revoke(TWPPConnect(FOwner).Config.Evento_msg_revoke);
+      startEvento_new_message(TWPPConnect(FOwner).Config.Evento_new_message);
+      startEvento_new_reaction(TWPPConnect(FOwner).Config.Evento_new_reaction);
+
+      //Ativar New Eventos add Marcelo 16/08/2024
+      startEvento_active_chat(TWPPConnect(FOwner).Config.Evento_active_chat);
+      startEvento_update_label(TWPPConnect(FOwner).Config.Evento_update_label);
+      startEvento_presence_change(TWPPConnect(FOwner).Config.Evento_presence_change);
+      startEvento_group_participant_changed(TWPPConnect(FOwner).Config.Evento_group_participant_changed);
+      startEvento_live_location_start(TWPPConnect(FOwner).Config.Evento_live_location_start);
+      startEvento_order_payment_status(TWPPConnect(FOwner).Config.Evento_order_payment_status);
+
+      SleepNoFreeze(40);
+      SendNotificationCenterDirect(Th_Initialized);
+    //end;
   end
   else
   if (Pos('WAPI IS NOT DEFINED', UpperCase(message)) > 0) then
@@ -4049,8 +4148,8 @@ begin
 
     localStorage_debug;
 
-    if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
-    begin
+    //if (TWPPConnect(FOwner).InjectJS.InjetarScript) OR (TWPPConnect(FOwner).InjectJS.InjetAfterIsWhatsAppWebReady) then
+    //begin
       //Aguardar "X" Segundos Injetar JavaScript
       if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
         SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000);
@@ -4091,7 +4190,7 @@ begin
 
       SleepNoFreeze(40);
       SendNotificationCenterDirect(Th_Initialized);
-    end;
+    //end;
   end;
 
   if (Copy(message, 0, 2) <> '{"') then
@@ -4273,6 +4372,11 @@ begin
 
       ExecuteJSDir(FrmConsole_JS_SCRIPT_Basic);
       ExecuteJSDir(FrmConsole_JS_MonitorChatLoadComplete);
+
+
+      //ExecuteJSDir(FrmConsole_JS_Monitor_Received_Message_Socket);
+
+      //ExecuteJSDir(FrmConsole_JS_Monitor_Received_Message_Socket2);
 
       ExecuteJSDir('console.log("Chromium1LoadEnd");');
       FTimerConnect.Enabled := False;

@@ -87,6 +87,10 @@ type
 
   TOnGetReactResponseEvento = procedure(Const ReactionResponse: TReactionResponseClass) of object; //Marcelo 25/07/2023
   TOnGetNewMessageResponseEvento = procedure(Const NewMessageResponse: TNewMessageResponseClass) of object; //Marcelo 25/07/2023
+
+  TOnGetReceived_Message_Socket = procedure(Const response: TReceived_Message_SocketClass) of object; //Marcelo 09/05/2025
+  TOnGetReceived_Message_Socket2 = procedure(Const response: TNewMsgClass) of object; //Marcelo 19/05/2025
+
   TOnGet_SendPollMessageResponse = procedure(Const SendPollMessageResponse: TSendPollMessageResponseClass) of object; //Marcelo 25/07/2023
 
   TOnGetAck_changeEvento = procedure(Const Ack_change: TAck_changeClass) of object; //Marcelo 26/07/2023
@@ -270,6 +274,8 @@ type
 
     FOnGetReactResponseEvento      : TOnGetReactResponseEvento; //Marcelo 25/07/2023
     FOnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento; //Marcelo 25/07/2023
+    FOnGetReceived_Message_Socket  : TOnGetReceived_Message_Socket;  //Marcelo 09/05/2025
+    FOnGetReceived_Message_Socket2 : TOnGetReceived_Message_Socket2; //Marcelo 19/05/2025
     FOnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse; //Marcelo 25/07/2023
 
     FOnGetAck_changeEvento      : TOnGetAck_changeEvento; //Marcelo 26/07/2023
@@ -452,6 +458,7 @@ type
 
 
     procedure DeleteChat(PNumberPhone: string);
+    procedure RecreateChat(vID: string);
 
     procedure deleteConversation(PNumberPhone: string);
     procedure SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
@@ -687,6 +694,9 @@ type
 
     property OnGetReactResponseEvento      : TOnGetReactResponseEvento       read FOnGetReactResponseEvento       write FOnGetReactResponseEvento;
     property OnGetNewMessageResponseEvento : TOnGetNewMessageResponseEvento  read FOnGetNewMessageResponseEvento  write FOnGetNewMessageResponseEvento;
+    property OnGetReceived_Message_Socket  : TOnGetReceived_Message_Socket   read FOnGetReceived_Message_Socket   write FOnGetReceived_Message_Socket;
+    property OnGetReceived_Message_Socket2 : TOnGetReceived_Message_Socket2  read FOnGetReceived_Message_Socket2  write FOnGetReceived_Message_Socket2;
+
     property OnGet_SendPollMessageResponse : TOnGet_SendPollMessageResponse  read FOnGet_SendPollMessageResponse  write FOnGet_SendPollMessageResponse;
 
     property OnGetAck_changeEvento      : TOnGetAck_changeEvento       read FOnGetAck_changeEvento       write FOnGetAck_changeEvento;
@@ -4157,6 +4167,21 @@ begin
       FOnGetPoolResponseEvento(TPoolResponseClass(PReturnClass));
   end;
 
+
+  //Marcelo 09/05/2025
+  if PTypeHeader = Th_OnReceived_Message_Socket  then
+  begin
+    if Assigned(FOnGetReceived_Message_Socket) then
+      FOnGetReceived_Message_Socket(TReceived_Message_SocketClass(PReturnClass));
+  end;
+
+  //Marcelo 19/05/2025
+  if PTypeHeader = Th_OnReceived_Message_Socket2  then
+  begin
+    if Assigned(FOnGetReceived_Message_Socket2) then
+      FOnGetReceived_Message_Socket2(TNewMsgClass(PReturnClass));
+  end;
+
   //Marcelo 25/07/2023
   if PTypeHeader = Th_Getnew_message  then
   begin
@@ -4486,6 +4511,31 @@ procedure TWPPConnect.RebootWPP;
 begin
   frmConsole.RebootChromium;
   //frmConsole.RebootChromiumNew;
+end;
+
+procedure TWPPConnect.RecreateChat(vID: string);
+var
+  lThread : TThread;
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+  //Msrcelo 19/05/2025
+  vID := AjustNumber.FormatIn(vID);
+  if (pos('@', vID) = 0) then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vID);
+    Exit;
+  end;
+
+  if Assigned(FrmConsole) then
+  begin
+    FrmConsole.RecreateChat(vID);//Recreate o Chat da conversa
+  end;
+
 end;
 
 procedure TWPPConnect.RebootWhiteScreen(ErrorMessage: string);

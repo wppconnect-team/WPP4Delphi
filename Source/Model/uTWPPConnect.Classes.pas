@@ -204,21 +204,21 @@ type
     property Name: string read FName write FName;
   end;
 
-  TreportingTokenClass = class
+  TreportingTokenClass = class(TClassPadrao)
   private
 
   public
 
   end;
 
-  TReportingTagClass = class
+  TReportingTagClass = class(TClassPadrao)
   private
   public
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TReportingTagClass;
   end;
 
-  TReportingTokenInfoClass = class
+  TReportingTokenInfoClass = class(TClassPadrao)
   private
     FReportingTag: TReportingTagClass;
     FVersion: Extended;
@@ -252,7 +252,7 @@ type
 
 
 
-  TParentMessageKeyClass = class
+  TParentMessageKeyClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FFromMe: Boolean;
@@ -269,7 +269,7 @@ type
     //class function FromJsonString(AJsonString: string): TParentMessageKeyClass;
   end;
 
-  TMessageAssociationClass = class
+  TMessageAssociationClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FAssociationType: Extended;
@@ -284,20 +284,21 @@ type
     //class function FromJsonString(AJsonString: string): TMessageAssociationClass;
   end;
 
-  TMessageContextInfoClass = class
+  TMessageContextInfoClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FMessageAssociation: TMessageAssociationClass;
   public
     //property $$unknownFieldCount: Extended read F$$unknownFieldCount write F$$unknownFieldCount;
     property messageAssociation: TMessageAssociationClass read FMessageAssociation write FMessageAssociation;
+
     //constructor Create;
     //destructor Destroy; override;
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TMessageContextInfoClass;
   end;
 
-  TExtendedTextMessageClass = class
+  TExtendedTextMessageClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FInviteLinkGroupTypeV2: Extended;
@@ -314,7 +315,7 @@ type
     //class function FromJsonString(AJsonString: string): TExtendedTextMessageClass;
   end;
 
-  TMessageClass = class
+  TMessageClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FExtendedTextMessage: TExtendedTextMessageClass;
@@ -329,7 +330,7 @@ type
     //class function FromJsonString(AJsonString: string): TMessageClass;
   end;
 
-  TEmbeddedMessageClass = class
+  TEmbeddedMessageClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FMessage: TMessageClass;
@@ -344,7 +345,7 @@ type
     //class function FromJsonString(AJsonString: string): TEmbeddedMessageClass;
   end;
 
-  TEmbeddedContentClass = class
+  TEmbeddedContentClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FEmbeddedMessage: TEmbeddedMessageClass;
@@ -357,7 +358,7 @@ type
     //class function FromJsonString(AJsonString: string): TEmbeddedContentClass;
   end;
 
-  TPolygonVerticesClass = class
+  TPolygonVerticesClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FX: Extended;
@@ -946,7 +947,7 @@ type
   end;
 
   //Marcelo 09/08/2022
-  TButtonTextClass = class
+  TButtonTextClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FDisplayText: String;
@@ -955,7 +956,7 @@ type
     property displayText: String read FDisplayText write FDisplayText;
   end;
   //Marcelo 09/08/2022
-  TDynamicReplyButtonsClass = class
+  TDynamicReplyButtonsClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FButtonId: String;
@@ -970,7 +971,7 @@ type
     class function FromJsonString(AJsonString: string): TDynamicReplyButtonsClass;
   end;
 
-  TReplyButtonsClass = class
+  TReplyButtonsClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FId: String;
@@ -984,7 +985,7 @@ type
   end;
 
   //Marcelo 09/08/2022
-  TRowsClass = class
+  TRowsClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FDescription: String;
@@ -997,7 +998,7 @@ type
     property title: String read FTitle write FTitle;
   end;
   //Marcelo 09/08/2022
-  TSectionsClass = class
+  TSectionsClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FRows: TArray<TRowsClass>;
@@ -1009,7 +1010,7 @@ type
   end;
 
   //Marcelo 09/08/2022
-  TListClass = class
+  TListClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FButtonText: String;
@@ -1046,7 +1047,7 @@ type
     property participant: String   read FParticipant write FParticipant;
   end;
 
-  TButtonsNativeClass = class
+  TButtonsNativeClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FButtonParamsJson: String;
@@ -1059,7 +1060,7 @@ type
     //class function FromJsonString(AJsonString: string): TButtonsClass;
   end;
 
-  TInteractivePayloadClass = class
+  TInteractivePayloadClass = class(TClassPadrao)
   private
     //F$$unknownFieldCount: Extended;
     FButtons: TArray<TButtonsNativeClass>;
@@ -1075,7 +1076,7 @@ type
     //class function FromJsonString(AJsonString: string): TInteractivePayloadClass;
   end;
 
-  TInteractiveHeaderClass = class
+  TInteractiveHeaderClass = class(TClassPadrao)
   private
     FHasMediaAttachment: Boolean;
     FThumbnail: String;
@@ -1149,6 +1150,7 @@ type
     property    filename        : String     read Ffilename           Write Ffilename;
     property    deprecatedMms3Url  : String  read FdeprecatedMms3Url  Write FdeprecatedMms3Url;
     property    interactiveAnnotations      : TArray<TinteractiveAnnotationsClass>  read  FinteractiveAnnotations write FinteractiveAnnotations; //NOT IMPLEMENT
+
     property    msgRowOpaqueData   : TmsgRowOpaqueDataClass            read FmsgRowOpaqueData       write FmsgRowOpaqueData;
     property    pollOptions                 : TArray<TpollOptionsClass>  read FpollOptions  write FpollOptions;
     property    scansSidecar                : TscansSidecarClass read FscansSidecar       write FscansSidecar; //NOT IMPLEMENT
@@ -1275,7 +1277,7 @@ type
   end;
 
   //Marcelo 06/07/2022
-  TQuotedMsgObjClass = class
+  TQuotedMsgObjClass = class(TClassPadrao)
   private
     Ftype: String;
     FAuthor: String;
@@ -1399,7 +1401,7 @@ type
     property id : TArray<TidClass> read Fid write Fid;
   end;
 
-  TPollOptions = class
+  TPollOptions = class(TClassPadrao)
   private
     FLocalId: Integer;
     FName: string;
@@ -1408,7 +1410,7 @@ type
     property Name: string read FName write FName;
   end;
 
-  TLabelsClass = class
+  TLabelsClass = class(TClassPadrao)
   private
     FColorIndex: Extended;
     FCount: Extended;
@@ -2380,7 +2382,7 @@ Tlogout_reason = class(TClassPadrao)
     property response:      string    read Fresponse     write Fresponse;
 end;
 
-TParticipantsPresenceClass = class
+TParticipantsPresenceClass = class(TClassPadrao)
 private
   FId: String;
   FShortName: String;
@@ -2641,7 +2643,7 @@ TReactionResponseClass = class(TClassPadrao)
 end;
 
 //Marcelo 23/03/2024
-TUrlButtonClass2 = class
+TUrlButtonClass2 = class(TClassPadrao)
 private
   //F$$unknownFieldCount: Extended;
   FDisplayText: String;
@@ -2654,7 +2656,7 @@ public
   //class function FromJsonString(AJsonString: string): TUrlButtonClass;
 end;
 
-THydratedButtonsClass2 = class
+THydratedButtonsClass2 = class(TClassPadrao)
 private
   //F$$unknownFieldCount: Extended;
   FUrlButton: TUrlButtonClass2;
@@ -2687,7 +2689,7 @@ public
   property v1: Extended read F1 write F1;
 end;
 
-TPrivacyModeWhenSentClass = class
+TPrivacyModeWhenSentClass = class(TClassPadrao)
 private
   FActualActors: Extended;
   FHostStorage: Extended;
@@ -2891,6 +2893,779 @@ public
   property messageSecret         : TmessageSecretClass        read FmessageSecret         write FmessageSecret;
 
 end;
+
+{TReceived_Message_Socket = class(TClassPadrao)
+  private
+
+  public
+
+end;}
+{TRET1Class_002 = class(TClassPadrao)
+private
+  FServer: String;
+  FType: Extended;
+  FUser: String;
+public
+  property server: String read FServer write FServer;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+end;
+
+TRecipientClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class_002;
+public
+  property RET1: TRET1Class_002 read FRET1 write FRET1;
+end;
+
+TRET1Class_001 = class(TClassPadrao)
+private
+  FDevice: Extended;
+  FDomainType: Extended;
+  FType: Extended;
+  FUser: String;
+public
+  property device: Extended read FDevice write FDevice;
+  property domainType: Extended read FDomainType write FDomainType;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+end;
+
+TPeer_recipient_lidClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class_001;
+public
+  property RET1: TRET1Class_001 read FRET1 write FRET1;
+end;
+
+TRET1Class = class(TClassPadrao)
+private
+  FServer: String;
+  FType: Extended;
+  FUser: String;
+public
+  property server: String read FServer write FServer;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+end;
+
+TFromClass = class
+private
+  FRET1: TRET1Class;
+public
+  property RET1: TRET1Class read FRET1 write FRET1;
+end;
+
+TReceived_Message_SocketClass = class(TClassPadrao)
+private
+  FFrom: TFromClass;
+  FId: String;
+  FNotify: String;
+  FPeer_recipient_lid: TPeer_recipient_lidClass;
+  FRecipient: TRecipientClass;
+  FT: String;
+  FType: String;
+public
+  property from: TFromClass read FFrom write FFrom;
+  property id: String read FId write FId;
+  property notify: String read FNotify write FNotify;
+  property peer_recipient_lid: TPeer_recipient_lidClass read FPeer_recipient_lid write FPeer_recipient_lid;
+  property recipient: TRecipientClass read FRecipient write FRecipient;
+  property t: String read FT write FT;
+  property &type: String read FType write FType;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TReceived_Message_SocketClass;
+end;}
+
+TRET1Class_002 = class(TClassPadrao)
+private
+  FDevice: Extended;
+  FDomainType: Extended;
+  FType: Extended;
+  FUser: String;
+  FServer: String;
+public
+  property device: Extended read FDevice write FDevice;
+  property domainType: Extended read FDomainType write FDomainType;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+  property server: String read FServer write FServer;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TRET1Class_002;
+end;
+
+TParticipant_lidClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class_002;
+public
+  property RET1: TRET1Class_002 read FRET1 write FRET1;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TParticipant_lidClass;
+end;
+
+TRET1Class_001 = class(TClassPadrao)
+private
+  FDevice: Extended;
+  FDomainType: Extended;
+  FType: Extended;
+  FUser: String;
+  FServer: String;
+public
+  property device: Extended read FDevice write FDevice;
+  property domainType: Extended read FDomainType write FDomainType;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+  property server: String read FServer write FServer;
+end;
+
+TSender_lidClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class_001;
+public
+  property RET1: TRET1Class_001 read FRET1 write FRET1;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TSender_lidClass;
+end;
+
+TContentClass_001 = class(TClassPadrao)
+private
+  //F0: Extended;
+  //F1: Extended;
+public
+  //property 0: Extended read F0 write F0;
+  //property 1: Extended read F1 write F1;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TContentClass_001;
+end;
+
+TAttrsClass_001 = class(TClassPadrao)
+private
+  FMediatype: String;
+  FSender_lid: TSender_lidClass;
+public
+  property mediatype: String read FMediatype write FMediatype;
+  property sender_lid: TSender_lidClass read FSender_lid write FSender_lid;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TAttrsClass_001;
+end;
+
+TContentClass = class(TClassPadrao)
+private
+  FAttrs: TAttrsClass_001;
+  //FContent: TContentClass_001;
+  FTag: String;
+public
+  property attrs: TAttrsClass_001 read FAttrs write FAttrs;
+  //property content: TContentClass_001 read FContent write FContent;
+  property tag: String read FTag write FTag;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TContentClass;
+end;
+
+TParticipantClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class_001;
+public
+  property RET1: TRET1Class_001 read FRET1 write FRET1;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TParticipantClass;
+end;
+
+TRET1Class = class(TClassPadrao)
+private
+  FServer: String;
+  FType: Extended;
+  FUser: String;
+public
+  property server: String read FServer write FServer;
+  property &type: Extended read FType write FType;
+  property user: String read FUser write FUser;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TRET1Class;
+end;
+
+TFromClass = class(TClassPadrao)
+private
+  FRET1: TRET1Class;
+public
+  property RET1: TRET1Class read FRET1 write FRET1;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TFromClass;
+end;
+
+TAttrsClass = class(TClassPadrao)
+private
+  FFrom: TFromClass;
+  FId: String;
+  FOffline: String;
+  FServer_id: String;
+  FT: String;
+  FType: String;
+  FNotify: String;
+  FVerified_name: String;
+  FVerified_level: String;
+  FParticipant: TParticipantClass;
+  FParticipant_lid: TParticipant_lidClass;
+  FAddressing_mode: String;
+public
+  property from: TFromClass read FFrom write FFrom;
+  property id: String read FId write FId;
+  property offline: String read FOffline write FOffline;
+  property server_id: String read FServer_id write FServer_id;
+  property t: String read FT write FT;
+  property &type: String read FType write FType;
+  property notify: String read FNotify write FNotify;
+  property verified_level: String read FVerified_level write FVerified_level;
+  property verified_name: String read FVerified_name write FVerified_name;
+  property participant: TParticipantClass read FParticipant write FParticipant;
+  property participant_lid: TParticipant_lidClass read FParticipant_lid write FParticipant_lid;
+  property addressing_mode: String read FAddressing_mode write FAddressing_mode;
+
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TAttrsClass;
+end;
+
+
+TMessageSecret2Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TRecipientKeyHashClass = class(TClassPadrao)
+private
+public
+
+end;
+
+TSenderKeyHashClass = class(TClassPadrao)
+private
+public
+
+end;
+
+TDeviceListMetadataClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FReceiverAccountType: Extended;
+  FRecipientKeyHash: TRecipientKeyHashClass;
+  FRecipientKeyIndexes: TArray<String>;
+  FRecipientTimestamp: Extended;
+  FSenderAccountType: Extended;
+  FSenderKeyHash: TSenderKeyHashClass;
+  FSenderKeyIndexes: TArray<String>;
+  FSenderTimestamp: Extended;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property receiverAccountType: Extended read FReceiverAccountType write FReceiverAccountType;
+  property recipientKeyHash: TRecipientKeyHashClass read FRecipientKeyHash write FRecipientKeyHash;
+  property recipientKeyIndexes: TArray<String> read FRecipientKeyIndexes write FRecipientKeyIndexes;
+  property recipientTimestamp: Extended read FRecipientTimestamp write FRecipientTimestamp;
+  property senderAccountType: Extended read FSenderAccountType write FSenderAccountType;
+  property senderKeyHash: TSenderKeyHashClass read FSenderKeyHash write FSenderKeyHash;
+  property senderKeyIndexes: TArray<String> read FSenderKeyIndexes write FSenderKeyIndexes;
+  property senderTimestamp: Extended read FSenderTimestamp write FSenderTimestamp;
+end;
+
+TExtendedTextMessage2Class = class;
+TContactMessageClass = class;
+TaudioMessageClass = class;
+TVideoMessageClass = class;
+TImageMessageClass = class;
+TDocumentMessageClass = class;
+TLocationMessageClass = class;
+TptvMessageClass = class;
+TstickerMessageClass = class;
+
+TQuotedMessage2Class = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FConversation: String;
+  FContactMessage: TContactMessageClass;
+  FaudioMessage: TaudioMessageClass;
+  FVideoMessage: TVideoMessageClass;
+  FLocationMessage: TLocationMessageClass;
+  FstickerMessage: TstickerMessageClass;
+  FDocumentMessage: TDocumentMessageClass;
+  FImageMessage: TImageMessageClass;
+  FExtendedTextMessage: TExtendedTextMessage2Class;
+  FptvMessage: TptvMessageClass;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property conversation: String read FConversation write FConversation;
+  property extendedTextMessage: TExtendedTextMessage2Class read FExtendedTextMessage write FExtendedTextMessage;
+  property documentMessage: TDocumentMessageClass read FDocumentMessage write FDocumentMessage;
+  property imageMessage: TImageMessageClass read FImageMessage write FImageMessage;
+  property audioMessage: TaudioMessageClass read FaudioMessage write FaudioMessage;
+  property stickerMessage: TstickerMessageClass read FstickerMessage write FstickerMessage;
+  property videoMessage: TVideoMessageClass read FVideoMessage write FVideoMessage;
+  property ptvMessage: TptvMessageClass read FptvMessage write FptvMessage;
+  property contactMessage: TContactMessageClass read FContactMessage write FContactMessage;
+  property locationMessage: TLocationMessageClass read FLocationMessage write FLocationMessage;
+end;
+
+TMessageContextInfo2Class = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FDeviceListMetadata: TDeviceListMetadataClass;
+  FDeviceListMetadataVersion: Extended;
+  FMessageSecret: TMessageSecret2Class;
+  FExpiration: Extended;
+  FMentionedJid: TArray<String>;
+  FEphemeralSettingTimestamp: Extended;
+  FGroupMentions: TArray<String>;
+  FParticipant: String;
+  FStanzaId: String;
+  FQuotedMessage: TQuotedMessage2Class;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property deviceListMetadata: TDeviceListMetadataClass read FDeviceListMetadata write FDeviceListMetadata;
+  property deviceListMetadataVersion: Extended read FDeviceListMetadataVersion write FDeviceListMetadataVersion;
+  property messageSecret: TMessageSecret2Class read FMessageSecret write FMessageSecret;
+  property ephemeralSettingTimestamp: Extended read FEphemeralSettingTimestamp write FEphemeralSettingTimestamp;
+  property expiration: Extended read FExpiration write FExpiration;
+  property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
+  property mentionedJid: TArray<String> read FMentionedJid write FMentionedJid;
+  property participant: String read FParticipant write FParticipant;
+  property quotedMessage: TQuotedMessage2Class read FQuotedMessage write FQuotedMessage;
+  property stanzaId: String read FStanzaId write FStanzaId;
+end;
+
+TDisappearingModeClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FInitiatedByMe: Boolean;
+  FInitiator: Extended;
+  FTrigger: Extended;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property initiatedByMe: Boolean read FInitiatedByMe write FInitiatedByMe;
+  property initiator: Extended read FInitiator write FInitiator;
+  property trigger: Extended read FTrigger write FTrigger;
+end;
+
+TContextInfoClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FDisappearingMode: TDisappearingModeClass;
+  FEphemeralSettingTimestamp: Extended;
+  FExpiration: Extended;
+  FGroupMentions: TArray<String>;
+  FMentionedJid: TArray<String>;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property disappearingMode: TDisappearingModeClass read FDisappearingMode write FDisappearingMode;
+  property ephemeralSettingTimestamp: Extended read FEphemeralSettingTimestamp write FEphemeralSettingTimestamp;
+  property expiration: Extended read FExpiration write FExpiration;
+  property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
+  property mentionedJid: TArray<String> read FMentionedJid write FMentionedJid;
+end;
+
+
+TFileEncSha256Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TMediaKeyClass = class(TClassPadrao)
+private
+public
+
+end;
+
+TFileSha256Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TMidQualityFileSha256Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TJpegThumbnailClass = class(TClassPadrao)
+private
+public
+
+end;
+
+TThumbnailEncSha256Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TThumbnailSha256Class = class(TClassPadrao)
+private
+public
+
+end;
+
+TFirstFrameSidecarClass = class(TClassPadrao)
+private
+public
+
+end;
+
+TStickerMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileSha256: TFileSha256Class;
+  FFirstFrameLength: Extended;
+  FFirstFrameSidecar: TFirstFrameSidecarClass;
+  FIsAiSticker: Boolean;
+  FIsAnimated: Boolean;
+  FIsAvatar: Boolean;
+  FIsLottie: Boolean;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMimetype: String;
+  FStickerSentTs: Extended;
+  FUrl: String;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property firstFrameLength: Extended read FFirstFrameLength write FFirstFrameLength;
+  property firstFrameSidecar: TFirstFrameSidecarClass read FFirstFrameSidecar write FFirstFrameSidecar;
+  property isAiSticker: Boolean read FIsAiSticker write FIsAiSticker;
+  property isAnimated: Boolean read FIsAnimated write FIsAnimated;
+  property isAvatar: Boolean read FIsAvatar write FIsAvatar;
+  property isLottie: Boolean read FIsLottie write FIsLottie;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property mimetype: String read FMimetype write FMimetype;
+  property stickerSentTs: Extended read FStickerSentTs write FStickerSentTs;
+  property url: String read FUrl write FUrl;
+end;
+
+TDocumentMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  Fcaption: String;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileName: String;
+  FFileSha256: TFileSha256Class;
+  FJpegThumbnail: TJpegThumbnailClass;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMimetype: String;
+  FPageCount: Extended;
+  FThumbnailDirectPath: String;
+  FThumbnailEncSha256: TThumbnailEncSha256Class;
+  FThumbnailHeight: Extended;
+  FThumbnailSha256: TThumbnailSha256Class;
+  FThumbnailWidth: Extended;
+  FUrl: String;
+
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property caption: String read Fcaption write Fcaption;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileName: String read FFileName write FFileName;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property jpegThumbnail: TJpegThumbnailClass read FJpegThumbnail write FJpegThumbnail;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property mimetype: String read FMimetype write FMimetype;
+  property pageCount: Extended read FPageCount write FPageCount;
+  property thumbnailDirectPath: String read FThumbnailDirectPath write FThumbnailDirectPath;
+  property thumbnailEncSha256: TThumbnailEncSha256Class read FThumbnailEncSha256 write FThumbnailEncSha256;
+  property thumbnailHeight: Extended read FThumbnailHeight write FThumbnailHeight;
+  property thumbnailSha256: TThumbnailSha256Class read FThumbnailSha256 write FThumbnailSha256;
+  property thumbnailWidth: Extended read FThumbnailWidth write FThumbnailWidth;
+  property url: String read FUrl write FUrl;
+end;
+
+TPtvMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FAnnotations: TArray<String>;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FExternalShareFullVideoDurationInSeconds: Extended;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileSha256: TFileSha256Class;
+  FHeight: Extended;
+  FInteractiveAnnotations: TArray<String>;
+  FJpegThumbnail: TJpegThumbnailClass;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMimetype: String;
+  FProcessedVideos: TArray<String>;
+  FSeconds: Extended;
+  FStreamingSidecar: TStreamingSidecarClass;
+  FUrl: String;
+  FWidth: Extended;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property annotations: TArray<String> read FAnnotations write FAnnotations;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property externalShareFullVideoDurationInSeconds: Extended read FExternalShareFullVideoDurationInSeconds write FExternalShareFullVideoDurationInSeconds;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property height: Extended read FHeight write FHeight;
+  property interactiveAnnotations: TArray<String> read FInteractiveAnnotations write FInteractiveAnnotations;
+  property jpegThumbnail: TJpegThumbnailClass read FJpegThumbnail write FJpegThumbnail;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property mimetype: String read FMimetype write FMimetype;
+  property processedVideos: TArray<String> read FProcessedVideos write FProcessedVideos;
+  property seconds: Extended read FSeconds write FSeconds;
+  property streamingSidecar: TStreamingSidecarClass read FStreamingSidecar write FStreamingSidecar;
+  property url: String read FUrl write FUrl;
+  property width: Extended read FWidth write FWidth;
+end;
+
+TVideoMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  Fcaption: String;
+  FAnnotations: TArray<String>;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FExternalShareFullVideoDurationInSeconds: Extended;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileSha256: TFileSha256Class;
+  FHeight: Extended;
+  FInteractiveAnnotations: TArray<String>;
+  FJpegThumbnail: TJpegThumbnailClass;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMimetype: String;
+  FProcessedVideos: TArray<String>;
+  FSeconds: Extended;
+  FStreamingSidecar: TStreamingSidecarClass;
+  FUrl: String;
+  FWidth: Extended;
+
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property caption: String read Fcaption write Fcaption;
+  property annotations: TArray<String> read FAnnotations write FAnnotations;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property externalShareFullVideoDurationInSeconds: Extended read FExternalShareFullVideoDurationInSeconds write FExternalShareFullVideoDurationInSeconds;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property height: Extended read FHeight write FHeight;
+  property interactiveAnnotations: TArray<String> read FInteractiveAnnotations write FInteractiveAnnotations;
+  property jpegThumbnail: TJpegThumbnailClass read FJpegThumbnail write FJpegThumbnail;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property mimetype: String read FMimetype write FMimetype;
+  property processedVideos: TArray<String> read FProcessedVideos write FProcessedVideos;
+  property seconds: Extended read FSeconds write FSeconds;
+  property streamingSidecar: TStreamingSidecarClass read FStreamingSidecar write FStreamingSidecar;
+  property url: String read FUrl write FUrl;
+  property width: Extended read FWidth write FWidth;
+end;
+
+TImageMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  Fcaption: String;
+  FAnnotations: TArray<String>;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileSha256: TFileSha256Class;
+  FHeight: Extended;
+  FInteractiveAnnotations: TArray<String>;
+  FJpegThumbnail: TJpegThumbnailClass;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMidQualityFileSha256: TMidQualityFileSha256Class;
+  FMimetype: String;
+  FScanLengths: TArray<Extended>;
+  FScansSidecar: TScansSidecarClass;
+  FUrl: String;
+  FWidth: Extended;
+
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property caption: String read Fcaption write Fcaption;
+  property annotations: TArray<String> read FAnnotations write FAnnotations;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property height: Extended read FHeight write FHeight;
+  property interactiveAnnotations: TArray<String> read FInteractiveAnnotations write FInteractiveAnnotations;
+  property jpegThumbnail: TJpegThumbnailClass read FJpegThumbnail write FJpegThumbnail;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property midQualityFileSha256: TMidQualityFileSha256Class read FMidQualityFileSha256 write FMidQualityFileSha256;
+  property mimetype: String read FMimetype write FMimetype;
+  property scanLengths: TArray<Extended> read FScanLengths write FScanLengths;
+  property scansSidecar: TScansSidecarClass read FScansSidecar write FScansSidecar;
+  property url: String read FUrl write FUrl;
+  property width: Extended read FWidth write FWidth;
+end;
+
+TAudioMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FContextInfo: TMessageContextInfo2Class;
+  FDirectPath: String;
+  FFileEncSha256: TFileEncSha256Class;
+  FFileLength: Extended;
+  FFileSha256: TFileSha256Class;
+  FMediaKey: TMediaKeyClass;
+  FMediaKeyTimestamp: Extended;
+  FMimetype: String;
+  FPtt: Boolean;
+  FSeconds: Extended;
+  FUrl: String;
+  FWaveform: TWaveformClass;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property directPath: String read FDirectPath write FDirectPath;
+  property fileEncSha256: TFileEncSha256Class read FFileEncSha256 write FFileEncSha256;
+  property fileLength: Extended read FFileLength write FFileLength;
+  property fileSha256: TFileSha256Class read FFileSha256 write FFileSha256;
+  property mediaKey: TMediaKeyClass read FMediaKey write FMediaKey;
+  property mediaKeyTimestamp: Extended read FMediaKeyTimestamp write FMediaKeyTimestamp;
+  property mimetype: String read FMimetype write FMimetype;
+  property ptt: Boolean read FPtt write FPtt;
+  property seconds: Extended read FSeconds write FSeconds;
+  property url: String read FUrl write FUrl;
+  property waveform: TWaveformClass read FWaveform write FWaveform;
+end;
+
+TContactMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FContextInfo: TMessageContextInfo2Class;
+  FDisplayName: String;
+  FVcard: String;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property displayName: String read FDisplayName write FDisplayName;
+  property vcard: String read FVcard write FVcard;
+end;
+
+TLocationMessageClass = class(TClassPadrao)
+private
+  FRETunknownFieldCount: Extended;
+  FContextInfo: TMessageContextInfo2Class;
+  FDegreesLatitude: Extended;
+  FDegreesLongitude: Extended;
+  FJpegThumbnail: TJpegThumbnailClass;
+public
+  property RETunknownFieldCount: Extended read FRETunknownFieldCount write FRETunknownFieldCount;
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  property degreesLatitude: Extended read FDegreesLatitude write FDegreesLatitude;
+  property degreesLongitude: Extended read FDegreesLongitude write FDegreesLongitude;
+  property jpegThumbnail: TJpegThumbnailClass read FJpegThumbnail write FJpegThumbnail;
+end;
+
+TExtendedTextMessage2Class = class(TClassPadrao)
+private
+  FContextInfo: TMessageContextInfo2Class;
+  //FmessageContextInfo: TMessageContextInfo2Class;
+  //FContextInfo: TContextInfoClass; //Corrigido para versão V2
+  FInviteLinkGroupTypeV2: String;
+  //FPreviewType: String;
+  FText: String;
+
+public
+  property contextInfo: TMessageContextInfo2Class read FContextInfo write FContextInfo;
+  //property messageContextInfo: TMessageContextInfo2Class read FmessageContextInfo write FmessageContextInfo;
+  //property contextInfo: TContextInfoClass read FContextInfo write FContextInfo; //Corrigido para versão V2
+  property inviteLinkGroupTypeV2: String read FInviteLinkGroupTypeV2 write FInviteLinkGroupTypeV2;
+  //property previewType: String read FPreviewType write FPreviewType;
+  property text: String read FText write FText;
+end;
+
+
+TMessage_SocketClass = class(TClassPadrao)
+private
+  FConversation: String;
+  FMessageContextInfo: TMessageContextInfo2Class;
+  FExtendedTextMessage: TExtendedTextMessage2Class;
+  FDocumentMessage: TDocumentMessageClass;
+  FImageMessage: TImageMessageClass;
+  FaudioMessage: TaudioMessageClass;
+  FstickerMessage: TstickerMessageClass;
+  FVideoMessage: TVideoMessageClass;
+  FptvMessage: TptvMessageClass;
+  FContactMessage: TContactMessageClass;
+  FLocationMessage: TLocationMessageClass;
+
+public
+  property conversation: String read FConversation write FConversation;
+  property contextInfo: TMessageContextInfo2Class read FMessageContextInfo write FMessageContextInfo;
+  property extendedTextMessage: TExtendedTextMessage2Class read FExtendedTextMessage write FExtendedTextMessage;
+  property documentMessage: TDocumentMessageClass read FDocumentMessage write FDocumentMessage;
+  property imageMessage: TImageMessageClass read FImageMessage write FImageMessage;
+  property audioMessage: TaudioMessageClass read FaudioMessage write FaudioMessage;
+  property stickerMessage: TstickerMessageClass read FstickerMessage write FstickerMessage;
+  property videoMessage: TVideoMessageClass read FVideoMessage write FVideoMessage;
+  property ptvMessage: TptvMessageClass read FptvMessage write FptvMessage;
+  property contactMessage: TContactMessageClass read FContactMessage write FContactMessage;
+  property locationMessage: TLocationMessageClass read FLocationMessage write FLocationMessage;
+
+end;
+
+TReceived_Message_SocketClass = class(TClassPadrao)
+private
+  FAttrs: TAttrsClass;
+  FContent: TArray<TContentClass>;
+  FTag: String;
+  FFrom: TFromClass;
+  FMessage: TMessage_SocketClass;
+public
+  property attrs: TAttrsClass read FAttrs write FAttrs;
+  property content: TArray<TContentClass> read FContent write FContent;
+  property tag: String read FTag write FTag;
+  property message: TMessage_SocketClass read FMessage write FMessage;
+  //property from: TFromClass read FFrom write FFrom;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TRootClass;
+end;
+
 
 //Marcelo 25/07/2023
 TNewMessageResponseClass = class(TClassPadrao)
