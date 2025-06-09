@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.1.0.96;1.0.0.9;78.3.0
+//2.1.0.97;1.0.0.9;78.3.0
 //
 //
 
@@ -4266,8 +4266,8 @@ window.WAPI.sendCreatePollMessage2Ex = async function (chatid, name, choices, op
 //Marcelo 07/04/2024
 window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4382,7 +4382,8 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
 window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice, revoke, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes("@g.us");
   try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+    /*const validar = isGroup ? true : await WPP.contact.queryExists(wid);*/
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4507,8 +4508,8 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
 //Marcelo 07/04/2024
 window.WPP.markIsReadNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4607,8 +4608,8 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4707,8 +4708,8 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4810,8 +4811,8 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -4965,8 +4966,8 @@ window.WPP.setKeepAliveNew = async function (Active, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.archiveNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5065,8 +5066,8 @@ window.WPP.archiveNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.unarchiveNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5165,8 +5166,8 @@ window.WPP.unarchiveNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.blockContactNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5265,8 +5266,8 @@ window.WPP.blockContactNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.unblockContact = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5365,8 +5366,8 @@ window.WPP.unblockContact = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.clearNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5464,8 +5465,8 @@ window.WPP.clearNew = async function (wid, xSeuID) {
 
 window.WPP.pinNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5564,8 +5565,8 @@ window.WPP.pinNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.unpinNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
@@ -5664,8 +5665,8 @@ window.WPP.unpinNew = async function (wid, xSeuID) {
 //Marcelo 07/04/2024
 window.WPP.markPlayedNew = async function (wid, xSeuID) {
   var isGroup = wid.includes("@g.us");
-  try {
-    const validar = isGroup ? true : await WPP.contact.queryExists(wid);
+  try {    
+    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
