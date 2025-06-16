@@ -1743,6 +1743,12 @@ object frDemo: TfrDemo
             Width = 229
           end
         end
+        inherited tsBase64: TTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 26
+          ExplicitWidth = 229
+          ExplicitHeight = 191
+        end
       end
     end
     inherited gbAcoesBasicas: TScrollBox
@@ -5833,22 +5839,20 @@ object frDemo: TfrDemo
   end
   object TWPPConnect1: TWPPConnect
     InjectJS.AutoUpdateTimeOut = 6
+    InjectJS.InjetarScript = False
+    InjectJS.InjetAfterIsWhatsAppWebReady = True
     InjectJS.JSURL = 
       'https://raw.githubusercontent.com/wppconnect-team/WPP4Delphi/mai' +
       'n/Source/JS/js.abr'
     InjectJS.DownloadJSType = DT_Indy
+    InjectJS.SecondsWaitInject = 8
     Config.AutoDelay = 500
-    Config.ReceiveAttachmentAuto = False
     Config.ReceiveAttachmentPath = 'C:\Executaveis\TWPPConnectAnexos\'
+    Config.SecondsMonitor = 45
     Config.Evento_msg_ack_change = True
     Config.Evento_msg_revoke = True
     Config.Evento_new_message = True
     Config.Evento_new_reaction = True
-    Config.Evento_presence_change = True
-    Config.Evento_update_label = True
-    Config.Evento_group_participant_changed = True
-    Config.Evento_order_payment_status = True
-    Config.Evento_live_location_start = True
     AjustNumber.LengthPhone = 8
     AjustNumber.DDIDefault = 55
     FormQrCodeType = Ft_Http
@@ -5936,12 +5940,14 @@ object frDemo: TfrDemo
     Top = 8
   end
   object TimerVerificaConexao: TTimer
+    Enabled = False
     Interval = 50000
     OnTimer = TimerVerificaConexaoTimer
     Left = 544
     Top = 8
   end
   object TimerCheckOnline: TTimer
+    Enabled = False
     Interval = 60000
     OnTimer = TimerCheckOnlineTimer
     Left = 636
