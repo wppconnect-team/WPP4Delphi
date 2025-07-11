@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.2'; //  19/05/2025
+  TWPPConnectVersion              = '5.0.0.3'; //  10/07/2025
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -611,13 +611,13 @@ Const
 
   FrmConsole_JS_VAR_genLinkDeviceCodeForPhoneNumber = 'window.WAPI.genLinkDeviceCodeForPhoneNumber2("<#PHONE#>");';
 
-  //FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
+  //FrmConsole_JS_VAR_getGroupInviteLink    = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
   FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getInviteCode2("<#GROUP_ID#>");';
 
   FrmConsole_JS_VAR_sendGroupInviteMessageNew  = 'window.WPP.sendGroupInviteMessageNew("<#CHAT_ID#>","<#GROUP_ID#>","<#INVITE_CODE#>","<#SEUID#>");';
 
   //WPP.group.reject(12345645@g.us, 5554999999999@c.us);
-  FrmConsole_JS_VAR_GroupMembershipReject  = 'WPP.group.reject("<#GROUP_ID#>","<#CHAT_ID#>");';
+  FrmConsole_JS_VAR_GroupMembershipReject   = 'WPP.group.reject("<#GROUP_ID#>","<#CHAT_ID#>");';
   FrmConsole_JS_VAR_GroupMembershipApprove  = 'WPP.group.approve("<#GROUP_ID#>","<#CHAT_ID#>");';
 
   //FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");'; deprecated
@@ -627,6 +627,8 @@ Const
 
   FrmConsole_JS_VAR_SetGroupPicture         = 'WPP.group.setIcon("<#GROUP_ID#>","<#BASE_64#>");';
 
+
+  FrmConsole_JS_VAR_SaveContact             = 'WPP.contact.save("<#PHONE#>", "<#NAME_CONTACT#>", { surname: "<#SURNAME_CONTACT#>", syncAdressBook: true,});';
 
 
   FrmConsole_JS_VAR_checkNumberStatus       = 'window.WAPI.checkNumberStatus("<#PHONE#>");';

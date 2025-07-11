@@ -406,6 +406,8 @@ type
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
     procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
 
+    procedure SaveContact(vNumber, Name, SurName: String);
+
     procedure getWAVersion;
     procedure GetTotalChatsUserRead;
 
@@ -2668,6 +2670,20 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#',  Trim(xSeuID3));
   FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#',  Trim(xSeuID4));
 
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.SaveContact(vNumber, Name, SurName: String);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_SaveContact;
+  FrmConsole_JS_AlterVar(LJS, '#PHONE#',            Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#NAME_CONTACT#',     Trim(Name));
+  FrmConsole_JS_AlterVar(LJS, '#SURNAME_CONTACT#',  Trim(SurName));
   ExecuteJS(LJS, true);
 end;
 

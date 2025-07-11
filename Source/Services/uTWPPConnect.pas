@@ -544,6 +544,8 @@ type
     procedure getWAVersion;
     procedure GetTotalChatsUserRead;
 
+    procedure SaveContact(vNumber, Name, SurName: String);
+
     Function  GetContact(Pindex: Integer): TContactClass;  deprecated;  //Versao 1.0.2.0 disponivel ate Versao 1.0.6.0
     procedure GetAllChats;
     Function  GetChat(Pindex: Integer):TChatClass;
@@ -4580,6 +4582,34 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 
+
+end;
+
+procedure TWPPConnect.SaveContact(vNumber, Name, SurName: String);
+begin
+  if Application.Terminated Then
+    Exit;
+
+  if not Assigned(FrmConsole) then
+    Exit;
+
+
+  vNumber := AjustNumber.FormatIn(vNumber);
+
+  if pos('@', vNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
+    Exit;
+  end;
+
+  if Trim(Name) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, Name);
+    Exit;
+  end;
+
+
+  FrmConsole.SaveContact(vNumber, Name, SurName);
 
 end;
 
