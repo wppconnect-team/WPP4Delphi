@@ -18,7 +18,6 @@ object frameOutros: TframeOutros
     Align = alLeft
     Caption = 'Outras Fun'#231#245'es'
     TabOrder = 0
-    ExplicitHeight = 356
     object btnMudarImagem: TButton
       AlignWithMargins = True
       Left = 5
@@ -39,7 +38,7 @@ object frameOutros: TframeOutros
       EditLabel.Height = 15
       EditLabel.Caption = 'Number Contact'
       TabOrder = 1
-      Text = '557591030305@c.us'
+      TextHint = '558891030999@c.us'
     end
     object edtNameContact: TLabeledEdit
       Left = 17
