@@ -1174,7 +1174,11 @@ begin
   begin
     //Marcelo 18/07/2022
     if vCheckNumberExists.valid then
-      ShowMessage('Número Testado: ' + vCheckNumberExists.NumberOriginal + #13#10#13#10 + 'Número Retornado: ' + vCheckNumberExists.id + ' é um numero Válido')
+      ShowMessage(
+        'Número Testado: ' + vCheckNumberExists.NumberOriginal + #13#10#13#10 +
+        'Número Retornado: ' + vCheckNumberExists.id + ' é um numero Válido' + #13#10#13#10 +
+        'Lid: ' + vCheckNumberExists.lid + #13#10#13#10 +
+        'Status ' + vCheckNumberExists.status )
     else
       ShowMessage(vCheckNumberExists.id + ' é um numero INVÁLIDO');
   end;

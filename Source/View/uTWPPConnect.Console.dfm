@@ -3,7 +3,7 @@ object FrmConsole: TFrmConsole
   Top = 0
   Caption = 'WPPConnect Team - WPP4Delphi - WhatsAppWeb'
   ClientHeight = 519
-  ClientWidth = 885
+  ClientWidth = 925
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -27,7 +27,7 @@ object FrmConsole: TFrmConsole
     AlignWithMargins = True
     Left = 3
     Top = 494
-    Width = 879
+    Width = 919
     Height = 22
     Align = alBottom
     BorderStyle = bsSingle
@@ -36,10 +36,11 @@ object FrmConsole: TFrmConsole
     ParentBackground = False
     ParentCtl3D = False
     TabOrder = 0
+    ExplicitWidth = 879
     object Lbl_Caption: TLabel
       Left = 1
       Top = 1
-      Width = 613
+      Width = 627
       Height = 18
       Align = alClient
       Alignment = taCenter
@@ -52,14 +53,13 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       Layout = tlCenter
       OnClick = Lbl_CaptionClick
-      ExplicitWidth = 106
-      ExplicitHeight = 13
+      ExplicitWidth = 600
     end
     object lbl_Versao: TLabel
       AlignWithMargins = True
-      Left = 704
+      Left = 718
       Top = 4
-      Width = 167
+      Width = 193
       Height = 12
       Margins.Right = 5
       Align = alRight
@@ -77,6 +77,7 @@ object FrmConsole: TFrmConsole
       Layout = tlCenter
       WordWrap = True
       OnMouseEnter = lbl_VersaoMouseEnter
+      ExplicitLeft = 712
     end
     object Img_LogoInject: TImage
       Left = 29
@@ -398,7 +399,7 @@ object FrmConsole: TFrmConsole
     end
     object lblNumber: TLabel
       AlignWithMargins = True
-      Left = 617
+      Left = 631
       Top = 4
       Width = 3
       Height = 12
@@ -413,10 +414,11 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       Layout = tlCenter
       OnClick = Lbl_CaptionClick
+      ExplicitLeft = 617
       ExplicitHeight = 13
     end
     object bInfo: TBitBtn
-      Left = 626
+      Left = 640
       Top = 1
       Width = 75
       Height = 18
@@ -457,13 +459,14 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 0
       OnClick = bInfoClick
+      ExplicitLeft = 626
     end
   end
   object Pnl_Geral: TPanel
     AlignWithMargins = True
     Left = 3
     Top = 1
-    Width = 879
+    Width = 919
     Height = 388
     Margins.Top = 1
     Align = alClient
@@ -473,27 +476,30 @@ object FrmConsole: TFrmConsole
     ParentDoubleBuffered = False
     ShowCaption = False
     TabOrder = 1
+    ExplicitWidth = 879
     object CEFWindowParent1: TCEFWindowParent
       Left = 0
       Top = 0
-      Width = 879
+      Width = 919
       Height = 121
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 879
     end
   end
   object Pnl_quick_maintenance: TPanel
     Left = 0
     Top = 392
-    Width = 885
+    Width = 925
     Height = 99
     Align = alBottom
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
     Visible = False
+    ExplicitWidth = 885
     DesignSize = (
-      885
+      925
       99)
     object Label1: TLabel
       Left = 38
@@ -622,7 +628,7 @@ object FrmConsole: TFrmConsole
       OnClick = bDeleteAllChatClick
     end
     object bFinish: TBitBtn
-      Left = 728
+      Left = 768
       Top = 68
       Width = 145
       Height = 25
@@ -663,6 +669,7 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 3
       OnClick = bFinishClick
+      ExplicitLeft = 728
     end
     object bMarkIsReadChats: TBitBtn
       Left = 189
