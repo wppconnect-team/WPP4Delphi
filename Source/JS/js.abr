@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.1;1.0.0.9;78.3.0
+//2.2.0.2;1.0.0.9;78.3.0
 //
 //
 
@@ -3757,8 +3757,8 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      //console.error("O Contato Não Existe ou é Inválido.");
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -3779,7 +3779,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
     if (error.name === "ContactBlocked") {
       //console.log("Contato estÃ¡ bloqueado:", error.contact);
       // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -3861,8 +3861,8 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      //console.error("O Contato Não Existe ou é Inválido.");
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -3883,7 +3883,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
     if (error.name === "ContactBlocked") {
       //console.log("Contato estÃ¡ bloqueado:", error.contact);
       // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -3965,8 +3965,8 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      //console.error("O Contato Não Existe ou é Inválido.");
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -3987,7 +3987,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
     if (error.name === "ContactBlocked") {
       //console.log("Contato estÃ¡ bloqueado:", error.contact);
       // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -4071,8 +4071,8 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      //console.error("O Contato Não Existe ou é Inválido.");
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         widContacts: widContacts,
@@ -4100,7 +4100,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
     if (error.name === "ContactBlocked") {
       //console.log("Contato estÃ¡ bloqueado:", error.contact);
       // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         widContacts: widContacts,
@@ -4184,8 +4184,8 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', x
         return null;
       }
     } else {
-      //console.error("O contato nÃ£o existe ou Ã© invÃ¡lido.");
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      //console.error("O Contato Não Existe ou é Inválido.");
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -4206,7 +4206,7 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', x
     if (error.name === "ContactBlocked") {
       //console.log("Contato estÃ¡ bloqueado:", error.contact);
       // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato nÃ£o existe ou Ã© invÃ¡lido.";
+      var RetError = "O Contato Não Existe ou é Inválido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
