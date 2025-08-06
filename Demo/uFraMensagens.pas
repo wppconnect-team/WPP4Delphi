@@ -1534,8 +1534,8 @@ begin
   //frDemo.TWPPConnect1.NewCheckIsValidNumber('5517981388414@c.us');
   //frDemo.TWPPConnect1.NewCheckIsValidNumber(ed_num.Text);
   //Marcelo 18/07/2022
-  frDemo.TWPPConnect1.CheckNumberExists(ed_num.Text);
-
+  //frDemo.TWPPConnect1.CheckNumberExists(ed_num.Text);
+  frDemo.TWPPConnect1.CheckNumberExistsNew(ed_num.Text);
 end;
 
 procedure TframeMensagem.btnInstantVideoClick(Sender: TObject);
