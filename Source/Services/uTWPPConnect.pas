@@ -5111,7 +5111,7 @@ begin
        '  mimetype: "application/'+LExtension+'"';
   end;
 
-  SendFileMessageNew( phoneNumber, lBase64, options, xSeuID);
+  SendFileMessageNew(phoneNumber, lBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 
 end;
 
