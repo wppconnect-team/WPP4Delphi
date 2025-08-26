@@ -3446,13 +3446,6 @@ begin
 
 
     Th_getUnreadMessages: begin
-                            {LOutClass := TChatList.Create(LResultStr);
-                            try
-                              SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
-                            finally
-                              FreeAndNil(LOutClass);
-                            end;}
-
                             LOutClass2 := TChatList.Create(LResultStr);
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);

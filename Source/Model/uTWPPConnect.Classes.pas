@@ -166,6 +166,13 @@ type
 //    Property StatusDelivered : string  Read FStatusDelivered  Write FStatusDelivered;
 //  end;
 
+  TlimitSharingClass = class(TClassPadrao)
+    private
+
+    public
+
+  end;
+
   TchatlistPreviewClass = class(TClassPadrao)
   private
     Ftype: String;
@@ -939,13 +946,13 @@ type
   private
     Findex            : Extended;
     FquickReplyButton : TArray<TquickReplyButtonClass>;
-    FurlButton        : TArray<TurlButtonClass>;
-    FcallButton       : TArray<TcallButtonClass>;
+    //FurlButton        : TArray<TurlButtonClass>;
+    //FcallButton       : TArray<TcallButtonClass>;
   public
     property    index            : Extended                       read Findex            write Findex;
     property    quickReplyButton : TArray<TquickReplyButtonClass> read FquickReplyButton write FquickReplyButton;
-    property    urlButton        : TArray<TurlButtonClass>        read FurlButton        write FurlButton;
-    property    callButton       : TArray<TcallButtonClass>       read FcallButton       write FcallButton;
+    //property    urlButton        : TArray<TurlButtonClass>        read FurlButton        write FurlButton;
+    //property    callButton       : TArray<TcallButtonClass>       read FcallButton       write FcallButton;
     function ToJsonString: string;
     class function FromJsonString(AJsonString: string): ThydratedButtonsClass;
   end;
@@ -1802,6 +1809,7 @@ type
     FarchiveAtMentionViewedInDrawer: Boolean;
     FunreadMentionsOfMe: TArray<TunreadMentionsOfMeClass>;
     FhasUnreadMention: Boolean;
+    FlimitSharing: TlimitSharingClass;
     //FMsgs: TArray<TMsgsClass>;
 
     //FLastReceivedKey: TLastReceivedKeyClass;
@@ -1920,6 +1928,7 @@ type
     property hasUnreadMention    : Boolean                read FhasUnreadMention               write FhasUnreadMention;
     property archiveAtMentionViewedInDrawer : Boolean     read FarchiveAtMentionViewedInDrawer write FarchiveAtMentionViewedInDrawer;
 
+    property limitSharing                : TlimitSharingClass       read FlimitSharing         write FlimitSharing;
 
   end;
 
@@ -3863,12 +3872,16 @@ private
   FSeuid: String;
 public
   property JsonMessage: String read FJsonMessage write FJsonMessage;
-  property uniqueId: String read FUniqueId write FUniqueId;
-  property wid: String read FWid write FWid;
   property Seuid: String read FSeuid write FSeuid;
   property Seuid2: String read FSeuid2 write FSeuid2;
   property Seuid3: String read FSeuid3 write FSeuid3;
   property Seuid4: String read FSeuid4 write FSeuid4;
+  property uniqueId: String read FUniqueId write FUniqueId;
+  property wid: String read FWid write FWid;
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TdeleteMessageNewResponseClass;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;       override;
 end;
 
 TeditMessageNewResponseClass = class(TClassPadrao)
@@ -5983,6 +5996,29 @@ end;
 destructor TisWhatsAppWebReady.Destroy;
 begin
   inherited;
+end;
+
+{ TdeleteMessageNewResponseClass }
+
+constructor TdeleteMessageNewResponseClass.Create(pAJsonString: string);
+begin
+  inherited Create(pAJsonString);
+end;
+
+destructor TdeleteMessageNewResponseClass.Destroy;
+begin
+
+  inherited;
+end;
+
+class function TdeleteMessageNewResponseClass.FromJsonString(AJsonString: string): TdeleteMessageNewResponseClass;
+begin
+  result := TJson.JsonToObject<TdeleteMessageNewResponseClass>(AJsonString);
+end;
+
+function TdeleteMessageNewResponseClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 end.
