@@ -580,6 +580,7 @@ type
     property  FormQrCodeShowing  : Boolean              read GetAppShowing                  Write SetAppShowing;
     Procedure FormQrCodeStart(PViewForm:Boolean = true);
     Procedure FormQrCodeStop;
+    Procedure FormConsoleStart; // exibe/oculta formConsole runtime 27-10-25 TP
     Procedure FormQrCodeReloader;
     Function  Auth(PRaise: Boolean = true): Boolean;
 
@@ -7120,6 +7121,54 @@ begin
      Exit;
 
   FrmConsole.StopQrCode(FormQrCodeType);
+end;
+
+
+procedure TWPPConnect.FormConsoleStart;
+var
+   LState: Boolean;
+begin
+  if Application.Terminated Then
+     Exit;
+  LState := Assigned(FrmConsole);
+
+  if Status in [Inject_Destroying, Server_Disconnecting] then
+  begin
+    {$IFNDEF STANDALONE}
+    Application.MessageBox(PWideChar(MSG_WarningQrCodeStart1), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ELSE}
+    raise exception.Create(MSG_WarningQrCodeStart1);
+    {$ENDIF}
+    Exit;
+  end;
+
+  if Status in [Server_Disconnected, Inject_Destroy] then
+  begin
+    SleepNoFreeze(1000);
+    if ConsolePronto then
+    begin
+
+      if not(authenticated) then
+        RebootWPP;
+
+    end else
+    begin
+
+      {$IFNDEF STANDALONE}
+      Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConsoleNaoPronto), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ELSE}
+      Raise exception.Create(MSG_ConfigCEF_ExceptConsoleNaoPronto);
+      {$ENDIF}
+      Exit;
+
+    end;
+
+    //Reseta o FORMULARIO
+    if LState Then
+       FormQrCodeReloader;
+
+  end;
+
 end;
 
 
