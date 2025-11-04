@@ -1032,10 +1032,12 @@ type
                    , Th_OnReceived_Message_Socket2=98 //Marcelo 19/05/2025
                    );
 
+    TSecondCallback = procedure(SecondsRemaining: Integer) of object;
+
     Function   VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
     Function   FrmConsole_JS_AlterVar(var PScript:String;  PNomeVar: String;  Const PValor:String):String;
     function   StrToTypeHeader(PText: string): TTypeHeader;
-    Procedure  SleepNoFreeze(PTimeOut:Integer);
+    procedure  SleepNoFreeze(PTimeOut:Integer; OnSecondPassed: TSecondCallback = nil);// time remaining callback 01-11-25 TP
     Function   StrExtFile_Base64Type(PFileName: String): String;
     procedure  save_log(line: string);
 
@@ -1087,24 +1089,48 @@ Begin
 end;
 
 
-Procedure SleepNoFreeze(PtimeOut:Integer);
+procedure SleepNoFreeze(PtimeOut:Integer; OnSecondPassed: TSecondCallback = nil);
 var
-  LIni: Cardinal;
-  Lpass : Integer;
-Begin
+  LIni, LNow: Cardinal;
+  Lpass: Integer;
+  UltimoSegundo: Integer;
+begin
   LIni := GetTickCount;
-  Lpass:= 0;
+  Lpass := 0;
   Application.ProcessMessages;
-  Repeat
-    inc(Lpass);
+
+  UltimoSegundo := PtimeOut div 1000;
+
+  if Assigned(OnSecondPassed) then
+    OnSecondPassed(UltimoSegundo);
+
+  repeat
+    Inc(Lpass);
     Sleep(1);
+
     if (Lpass > 10) then
-    Begin
-      Lpass:= 0;
+    begin
+      Lpass := 0;
       Application.ProcessMessages;
     end;
-  Until (GetTickCount - LIni) >= Cardinal(PtimeOut) ;
-End;
+
+    LNow := GetTickCount;
+
+    if (PtimeOut > 0) then
+    begin
+      var Elapsed := LNow - LIni;
+      var Remaining := (PtimeOut - Elapsed) div 1000;
+
+      if Remaining < UltimoSegundo then
+      begin
+        UltimoSegundo := Remaining;
+        if Assigned(OnSecondPassed) then
+          OnSecondPassed(Remaining);
+      end;
+    end;
+
+  until (LNow - LIni) >= Cardinal(PtimeOut);
+end;
 
 
 Function  StrExtFile_Base64Type(PFileName: String): String;

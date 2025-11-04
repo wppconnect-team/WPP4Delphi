@@ -805,7 +805,9 @@ begin
         //Marcelo 12/08/2022
         //Aguardar "X" Segundos Injetar JavaScript
         if TWPPConnect(FOwner).InjectJS.SecondsWaitInject > 0 then
-          SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000); //, config.syncAllStatus=False  , syncAllStatus: False
+          SleepNoFreeze(TWPPConnect(FOwner).InjectJS.SecondsWaitInject * 1000,
+              TWPPConnect(FOwner).SetInjectJSSecRemaining
+          ); //, config.syncAllStatus=False  , syncAllStatus: False
 
         ExecuteJSDir('WPPConfig = {poweredBy: "WPP4Delphi"}; ' + TWPPConnect(FOwner).InjectJS.JSScript.Text);
 
