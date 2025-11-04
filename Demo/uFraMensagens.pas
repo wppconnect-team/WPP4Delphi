@@ -22,7 +22,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.ComCtrls, uTWPPConnect.Constant ,
-  EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo, System.DateUtils;
+  EncdDecd, System.NetEncoding, Vcl.Imaging.jpeg, System.TypInfo, System.DateUtils,
+  Vcl.Mask;
 
 type
   TframeMensagem = class(TFrame)

@@ -42,6 +42,7 @@ object frameMensagem: TframeMensagem
       EditLabel.Height = 15
       EditLabel.Caption = 'Destination Number:'
       TabOrder = 0
+      Text = ''
     end
     object mem_message: TMemo
       Left = 11
