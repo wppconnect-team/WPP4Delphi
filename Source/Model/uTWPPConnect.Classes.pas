@@ -1050,11 +1050,15 @@ type
     FId         : String;
     FRemote     : String;
     FParticipant: String;
+    FRemoteJid: String;
+    FRemoteLid: String;
   public
     property _serialized: String   read F_serialized write F_serialized;
     property fromMe:      Boolean  read FFromMe      write FFromMe;
     property id:          String   read FId          write FId;
     property remote:      String   read FRemote      write FRemote;
+    property remoteJid:   String   read FRemoteJid   write FRemoteJid;
+    property remoteLid:   String   read FRemoteLid   write FRemoteLid;
     property participant: String   read FParticipant write FParticipant;
   end;
 
@@ -2805,12 +2809,16 @@ private
   FPollVotesSnapshot: TPollVotesSnapshotClass;
   FinviteGrpType: string;
   FmessageSecret: TmessageSecretClass;
-    FSubtype: String;
+  FSubtype: String;
+  FFromLid: String;
+  FFromJid: String;
 
 public
   property ack: Extended read FAck write FAck;
   property body: String read FBody write FBody;
   property from: String read FFrom write FFrom;
+  property fromJid: String read FFromJid write FFromJid;
+  property fromLid: String read FFromLid write FFromLid;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
   property hasReaction: Boolean read FHasReaction write FHasReaction;
   property ctwaContext: TctwaContextClass read FctwaContext write FctwaContext;

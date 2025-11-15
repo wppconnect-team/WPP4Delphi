@@ -4326,6 +4326,7 @@ begin
 
     save_log('TFrmConsole.Chromium1LoadEnd');
 
+    TWPPConnect(FOwner).InjectJS.LoadAndValidJSFromFile( GlobalCEFApp.PathJs );
     save_log('  Length InjectJS.JSScript.Text: ' + IntToStr(Length(TWPPConnect(FOwner).InjectJS.JSScript.Text)) );
 
 

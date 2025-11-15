@@ -23,7 +23,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, Vcl.ComCtrls, System.ImageList, Vcl.ImgList, clipbrd,
-  Vcl.ExtDlgs;
+  Vcl.ExtDlgs, Vcl.Mask;
 
 type
   TframeGrupos = class(TFrame)
@@ -163,7 +163,8 @@ begin
   end;
 
 
-  frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);end;
+  frDemo.TWPPConnect1.GroupMsgAll(lbl_idGroup.Caption);
+end;
 
 procedure TframeGrupos.btnMudarImagemGrupoClick(Sender: TObject);
 var
@@ -236,7 +237,8 @@ begin
     Abort;
   end;
 
-  frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);end;
+  frDemo.TWPPConnect1.GroupMsgAdminOnly(lbl_idGroup.Caption);
+end;
 
 procedure TframeGrupos.btnCancelaLinkClick(Sender: TObject);
 begin
@@ -320,7 +322,8 @@ end;
 
 procedure TframeGrupos.btnGerarLinkConviteClick(Sender: TObject);
 begin
-  if not frDemo.TWPPConnect1.Auth(False) then    Exit;
+  if not frDemo.TWPPConnect1.Auth(False) then
+    Exit;
 
   if lbl_idGroup.caption = '' then
   begin
@@ -328,7 +331,8 @@ begin
     Abort;
   end;
 
-  frDemo.TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);
+  frDemo.TWPPConnect1.GetGroupInviteLink(lbl_idGroup.Caption);
+
 end;
 
 procedure TframeGrupos.btnListarGruposClick(Sender: TObject);

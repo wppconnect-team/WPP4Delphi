@@ -313,6 +313,7 @@ object frameGrupos: TframeGrupos
           EditLabel.Height = 15
           EditLabel.Caption = 'Nome do Grupo'
           TabOrder = 0
+          Text = ''
         end
         object edtTelefoneNovoParticipante: TLabeledEdit
           Left = 3
@@ -323,6 +324,7 @@ object frameGrupos: TframeGrupos
           EditLabel.Height = 15
           EditLabel.Caption = 'Telefone do Participante'
           TabOrder = 1
+          Text = ''
         end
         object btnCriarGrupo: TBitBtn
           AlignWithMargins = True
@@ -354,6 +356,7 @@ object frameGrupos: TframeGrupos
           EditLabel.Height = 15
           EditLabel.Caption = 'Link do Convite'
           TabOrder = 0
+          Text = ''
         end
         object btnEntrarLink: TBitBtn
           AlignWithMargins = True
@@ -509,6 +512,7 @@ object frameGrupos: TframeGrupos
               EditLabel.Height = 15
               EditLabel.Caption = 'N'#250'mero participante'
               TabOrder = 0
+              Text = ''
             end
           end
           object btnAddPArtici: TButton

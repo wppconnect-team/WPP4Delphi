@@ -63,7 +63,9 @@ requires
   adortl,
   RESTComponents,
   CEF4Delphi,
-  VclSmp;
+  VclSmp,
+  IndyIPCommon,
+  IndyIPClient;
 
 contains
   uSplash in '..\Source\Other\uSplash.pas',

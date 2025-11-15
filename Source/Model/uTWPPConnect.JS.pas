@@ -91,7 +91,7 @@ type
     function   PegarLocalJS_Web: String;
     Function   UpdateExec(PForma: TFormaUpdate):Boolean;
     // Seleciona e Carrega o arquivo indicado para o JS Class
-    Function   LoadAndValidJSFromFile(const Source: string): Boolean;
+
     Function   ValidaJs(Const TValor: Tstrings): Boolean;
     procedure SetSecondsWaitInject(const Value: integer);
     procedure SetInjetarScript(const Value: Boolean);
@@ -106,6 +106,7 @@ type
     destructor  Destroy; override;
     Function    UpdateNow: Boolean;
     Procedure   DelFileTemp;
+    Function    LoadAndValidJSFromFile(const Source: string): Boolean;
 
 
   {$REGION 'uCSV.Import'}
