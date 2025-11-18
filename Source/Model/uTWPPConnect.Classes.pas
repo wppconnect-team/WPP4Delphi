@@ -1260,12 +1260,16 @@ type
     FverifiedName : String;
     //MARCELO 27/04/2022
     FisContactSyncCompleted: Extended;
+    FfromLid: String;
+    FfromJid: String;
   public
     destructor Destroy; override;
     constructor Create(pAJsonString: string);
     property profilePicThumbObj: TProfilePicThumbObjClass read FProfilePicThumbObj write FProfilePicThumbObj;
     property formattedName:   String         read FFormattedName    write FFormattedName;
     property id:              String         read FId               write FId;
+    property fromLid:         String         read FfromLid          write FfromLid;
+    property fromJid:         String         read FfromJid          write FfromJid;
     property isBusiness:      Boolean        read FIsBusiness       write FIsBusiness;
     property isEnterprise:    Boolean        read FIsEnterprise     write FIsEnterprise;
     property isMe:            Boolean        read FIsMe             write FIsMe;
@@ -1814,6 +1818,11 @@ type
     FunreadMentionsOfMe: TArray<TunreadMentionsOfMeClass>;
     FhasUnreadMention: Boolean;
     FlimitSharing: TlimitSharingClass;
+
+    FToJid: String;
+    FToLid: String;
+    FchatLid: String;
+    FchatJid: String;
     //FMsgs: TArray<TMsgsClass>;
 
     //FLastReceivedKey: TLastReceivedKeyClass;
@@ -1830,6 +1839,8 @@ type
     property Caption    : String              Read FCaption            Write FCaption;
     property content    : String              read FContent            write FContent;
     property from       : String              read FFrom               write FFrom;
+    property chatLid    : String              read FchatLid            write FchatLid;
+    property chatJid    : String              read FchatJid            write FchatJid;
     property id         : String              read FId                 write FId;
     property invis      : Boolean             read FInvis              write FInvis;
     property isForwarded: Boolean             read FIsForwarded        write FIsForwarded;
@@ -1878,6 +1889,8 @@ type
     property t          : Extended            read FT                  write FT;
     property timestamp  : Extended            read FTimestamp          write FTimestamp;
     property &to        : String              read FTo                 write FTo;
+    property toLid      : String              read FToLid              write FToLid;
+    property toJid      : String              read FToJid              write FToJid;
     property &type      : String              read FType               write FType;
     property profilePicThumb          : String   read FprofilePicThumb           write FprofilePicThumb;
     //Marcelo 29/01/2022
@@ -2001,6 +2014,8 @@ type
     //FpollOptions: TArray<TpollOptionsClass>;
     FpollOptions: TpollOptionsClass;
     FPollVotesSnapshot: TPollVotesSnapshotClass;
+    FJid: String;
+    FLid: String;
 
     {FInteractiveHeader: TInteractiveHeaderClass;
     FInteractivePayload: TInteractivePayloadClass;
@@ -2015,6 +2030,9 @@ type
     property archive        : Boolean                     read FArchive               write FArchive;
     property contact        : TContactClass               Read FContact               write FContact;
     property id             : String                      read FId                    write FId;
+    property Lid            : String                      read FLid                   write FLid;
+    property Jid            : String                      read FJid                   write FJid;
+
     //property id             : TArray<TidClass>            read Fid                    write Fid; default;
     property isGroup        : Boolean                     read FIsGroup               write FIsGroup;
     property isReadOnly     : Boolean                     read FIsReadOnly            write FIsReadOnly;

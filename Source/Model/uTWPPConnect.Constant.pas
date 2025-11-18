@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.4'; //  26/08/2025
+  TWPPConnectVersion              = '5.0.0.5'; //  18/11/2025
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
