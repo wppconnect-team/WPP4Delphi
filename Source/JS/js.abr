@@ -1542,294 +1542,128 @@ function isChatMessage(message) {
 
 
 // Macelo – 18/11/2025
-window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications, use_unread_count, done) {
-  const options = {
-    onlyWithUnreadMessage: true,
-    onlyUsers: false
-  };
+window.WAPI.getUnreadMessages = async function(includeMe, includeNotifications, use_unread_count, done) {
 
-  let chats = await WPP.chat.list(options).catch(() => null);
+    const options = {
+        onlyWithUnreadMessage: true,    
+        onlyUsers: false 
+      };
+        
+    var chats = await WPP.chat.list(options);
 
-  var isLidMigrated = false;
-  try {
-    const fn = WPP?.whatsapp?.functions?.isLidMigrated;
-    if (typeof fn === 'function') {
-      const val = fn(); // pode ser boolean OU Promise<boolean>
-      isLidMigrated = (val && typeof val.then === 'function') ? await val : !!val;
-    }
-  } catch (_) {
-    isLidMigrated = false;
-  }
-
-  if (chats) {
-    try {
-      for (let i = 0; i < chats.length; i++) {
+    if (chats) {
         try {
-          chats[i] = chats[i].toJSON();
+          for (var i = 0; i < chats.length; i++) {
+              chats[i] = chats[i].toJSON();  
 
-          const chat = chats[i];
-          const jid = chat?.id?._serialized || ''; // <- precisa ser string
-          const isGroup = jid.includes('@g.us');
+              let isGroup = chats[i].id._serialized.includes('@g.us');
+              chats[i].isGroup = isGroup;
+              chats[i].formattedTitle = chats[i].name;
 
-          chat.isGroup = isGroup;
-          chat.formattedTitle = chat.name || '';
+              /*A consulta buscando o contato foi desativado para melhorar a performance*/
+              var contacts = await WPP.contact.get(chats[i].id._serialized);
+	          var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
 
-          const profilePhoto = await WPP.contact.getProfilePictureUrl(jid).catch(() => null);
-
-          if (isLidMigrated && !isGroup) {
-            const pnLidEntry = await WPP.contact.getPnLidEntry(jid).catch(() => null);
-
-            if (pnLidEntry?.phoneNumber?._serialized) {
-              const fromPn = pnLidEntry.phoneNumber._serialized;
-              const contacts = await WPP.contact.get(fromPn).catch(() => null);
-
-              if (contacts && Object.keys(contacts).length > 0) {
-                chat.contact = {
-                  id: contacts.id,
-                  name: contacts.name,
-                  pushname: contacts.name,
-                  formattedName: contacts.name,
-                  profilePicThumb: profilePhoto,
-                  isBusiness: contacts.isBusiness,
-                  isEnterprise: contacts.isEnterprise
-                };
-              } else {
-                chat.contact = {
-                  id: jid,
-                  name: chat.name,
-                  pushname: chat.name,
-                  formattedName: chat.name,
-                  profilePicThumb: profilePhoto
-                };
-              }
-
-              chat.Jid = fromPn;
-              chat.Lid = pnLidEntry.lid?._serialized ?? null;
-            } else {
-              const contacts = await WPP.contact.get(jid).catch(() => null);
-              if (contacts && Object.keys(contacts).length > 0) {
-                chat.contact = {
-                  id: contacts.id,
-                  name: contacts.name,
-                  pushname: contacts.name,
-                  formattedName: contacts.name,
-                  profilePicThumb: profilePhoto,
-                  isBusiness: contacts.isBusiness,
-                  isEnterprise: contacts.isEnterprise
-                };
-              } else {
-                chat.contact = {
-                  id: jid,
-                  name: chat.name,
-                  pushname: chat.name,
-                  formattedName: chat.name,
-                  profilePicThumb: profilePhoto
-                };
-              }
+              // Verifique se os contatos existem e tÃƒÂªm comprimento maior que zero
+              if (contacts && Object.keys(contacts).length > 0) {   
+                  chats[i].contact = {
+                      id: contacts.id,
+                      name: contacts.name,
+                      pushname: contacts.name,
+                      formattedName: contacts.name,
+                      profilePicThumb: profilePhoto,
+                      isBusiness: contacts.isBusiness,
+                      isEnterprise: contacts.isEnterprise
+                    };
+                  //console.log(`Chats[${i}] com propriedade "contact":`, chats[i]);
+              } else{
+                  chats[i].contact = {
+	              id: chats[i].id._serialized,
+	              name: chats[i].name,
+	              pushname: chats[i].name,
+	              formattedName: chats[i].name,
+	              profilePicThumb: profilePhoto 
+	            }
             }
-          } else {
-            const contacts = await WPP.contact.get(jid).catch(() => null);
-            if (contacts && Object.keys(contacts).length > 0) {
-              chats[i].contact = {
-                id: contacts.id,
-                name: contacts.name,
-                pushname: contacts.name,
-                formattedName: contacts.name,
-                profilePicThumb: profilePhoto,
-                isBusiness: contacts.isBusiness,
-                isEnterprise: contacts.isEnterprise
-              };
-            } else {
-              chats[i].contact = {
-                id: jid,
-                name: chats[i].name,
-                pushname: chats[i].name,
-                formattedName: chats[i].name,
-                profilePicThumb: profilePhoto
-              };
-            }
+                            
+              delete chats[i].msgs;
           }
-
-          delete chats[i].msgs; // alivia payload
-        } catch (perChatErr) {
-          // isola erro por chat
-        }
-      }
-    } catch (e) {
-      // erro no loop de chats
-    }
-  } else {
-    chats = [];
-  }
-
-  const output = [];
-
-  for (let idx = 0; idx < chats.length; idx++) {
-    const chat = chats[idx];
-    if (!chat || !chat.id || !chat.id._serialized) continue;
-
-    const messageGroupObj = chat;
-    const messageGroup = chat;
-    messageGroup.messages = [];
-
-    const messages = await WPP.chat
-      .getMessages(chat.id._serialized, { count: -1, onlyUnread: true })
-      .catch(() => []);
-
-    for (let i = messages.length - 1; i >= 0; i--) {
-      let messageObj = messages[i];
-      
-      // marca como processada
-      messageObj.isNewMsg = false;
-
-      // transforma em JSON se disponível
-      if (typeof messageObj?.toJSON === 'function') {
-        try {
-          messageObj = messageObj.toJSON();
-        } catch (_) {}
-      }
-
-      
-      // Enriquecimento PN/LID por mensagem (apenas se migrado e se tivermos JIDs válidos)
-      if (isLidMigrated) {
-        try {
-          //console.log("isLidMigrated parse 01");
-
-          var fromMsgJid = messageObj?.from || '';
-
-          //console.log(" fromMsgJid: " + fromMsgJid);
           
-          if (!isGroupJid(fromMsgJid)) {  
-            //console.log("antes getPnLidEntry");
-            var pnMsgFrom = await WPP.contact.getPnLidEntry(fromMsgJid);
+        } catch (e) {
+          //console.log('Erro:'.concat(e));
+        }
+    } else {
+      //console.log('VAZIO');
+    }
+         
+    
+    var output = [];
+
+    for (var chat in chats) {
+        if (isNaN(chat)) {
+            continue;
+        }
+
+        var messageGroupObj = chats[chat];
+        var messageGroup = chats[chat]; //WAPI._serializeChatObj(messageGroupObj);
+
+        messageGroup.messages = [];
+        
+        var messages = await WPP.chat.getMessages(chats[chat].id._serialized, {count: -1, onlyUnread: true});
+        
+        for (let i = messages.length - 1; i >= 0; i--) {
             
-            //console.log(pnMsgFrom);
+            var messageObj = messages[i];
 
-            if (pnMsgFrom?.phoneNumber?._serialized) {
-              var fromMsgPn = pnMsgFrom.phoneNumber._serialized;
-
-              //console.log(" fromMsgPn: " + fromMsgPn);
-
-              if (messageObj.id && typeof messageObj.id === 'object') {
-                messageObj.id.remotelid = pnMsgFrom.lid?._serialized ?? null;
-                messageObj.id.remoteJid = fromMsgPn;
-              }
-
-              messageObj.fromJid = fromMsgPn;
-              messageObj.fromLid = pnMsgFrom.lid?._serialized ?? null;
+            messageObj.isNewMsg = false;
+                
+            var message = WAPI.processMessageObj(messageObj, includeMe, false); //includeNotifications);// MUDAR PARA "FALSE" AQUI
+            if (message) {
+                messageGroup.messages.push(message);
             }
-          }
 
-          // TO (pode ser indefinido; geralmente é “meu JID”)
-          const toJid = messageObj?.to || '';          
-          if (!isGroupJid(toJid)) {    
-            const pnTo = await WPP.contact.getPnLidEntry(toJid);
-            if (pnTo?.phoneNumber?._serialized) {
-              const toPn = pnTo.phoneNumber._serialized;
-              messageObj.toJid = toPn;
-              messageObj.toLid = pnTo.lid?._serialized ?? null;
-            }
-          }
-        } catch (_) {
-          
-        }
-      }
-
-      const parsed = WAPI.processMessageObj(messageObj, includeMe, false); // force notifications=false
-      if (parsed) {
-        messageGroup.messages.push(parsed);
-      }
-    }
-
-    if (messageGroup.messages.length > 0) {
-      output.push(messageGroup);
-    } else if (use_unread_count) {
-      let n = messageGroupObj.unreadCount || 0;
-      if (n !== 0) {
-        const lastMsgs = await WPP.chat
-          .getMessages(chat.id._serialized, { count: Math.max(n, 1) })
-          .catch(() => []);
-
-        for (let i = lastMsgs.length - 1; i >= 0; i--) {
-          const mObj = lastMsgs[i];
-
-          // transforma em JSON se disponível
-          if (typeof mObj?.toJSON === 'function') {
-            try {
-              mObj = mObj.toJSON();
-            } catch (_) {}
-          }
-
-          // Enriquecimento PN/LID por mensagem (apenas se migrado e se tivermos JIDs válidos)
-          if (isLidMigrated) {
-            try {
-              console.log("isLidMigrated parse 02");
-
-              const fromJid = mObj?.from || '';
-              if (fromJid && typeof fromJid === 'string' && !fromJid.includes('@g.us')) {
-                const pnFrom = await WPP.contact.getPnLidEntry(fromJid);
-                if (pnFrom?.phoneNumber?._serialized) {
-                  const fromPn = pnFrom.phoneNumber._serialized;
-
-                  console.log(" fromPn 02: " + fromPn);
-
-                  if (mObj.id && typeof mObj.id === 'object') {
-                    mObj.id.remotelid = pnFrom.lid?._serialized ?? null;
-                    mObj.id.remoteJid = fromPn;
-                  }
-
-                  mObj.fromJid = fromPn;
-                  mObj.fromlid = pnFrom.lid?._serialized ?? null;
-                }
-              }
-
-              // TO (pode ser indefinido; geralmente é “meu JID”)
-              const toJid = mObj?.to || '';
-              if (toJid && typeof toJid === 'string' && !toJid.includes('@g.us')) {
-                const pnTo = await WPP.contact.getPnLidEntry(toJid);
-                if (pnTo?.phoneNumber?._serialized) {
-                  const toPn = pnTo.phoneNumber._serialized;
-                  mObj.toJid = toPn;
-                  mObj.tolid = pnTo.lid?._serialized ?? null;
-                }
-              }
-            } catch (_) {
-              // enriquecimento por mensagem é best effort
-            }
-          }
-
-
-          if (n > 0) {
-            if (!mObj.fromMe) {
-              const parsed = WAPI.processMessageObj(mObj, includeMe, !!includeNotifications);
-              if (parsed) messageGroup.messages.unshift(parsed);
-              n -= 1;
-            }
-          } else if (n === -1) {
-            if (!mObj.fromMe) {
-              const parsed = WAPI.processMessageObj(mObj, includeMe, !!includeNotifications);
-              if (parsed) messageGroup.messages.unshift(parsed);
-              break;
-            }
-          } else {
-            break;
-          }
+            
         }
 
         if (messageGroup.messages.length > 0) {
-          messageGroupObj.unreadCount = 0;
-          output.push(messageGroup);
+            output.push(messageGroup);
+        } else { // no messages with isNewMsg true
+            if (use_unread_count) {
+                let n = messageGroupObj.unreadCount; // usara o atributo unreadCount para buscar as ultimas n mensagens do remetente
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    let messageObj = messages[i];
+                    if (n > 0) {
+                        if (!messageObj.fromMe) {
+                            let message = WAPI.processMessageObj(messageObj, includeMe, includeNotifications);
+                            messageGroup.messages.unshift(message);
+                            n -= 1;
+                        }
+                    } else if (n === -1) { // chat was marked as unread so will fetch last message as unread
+                        if (!messageObj.fromMe) {
+                            let message = WAPI.processMessageObj(messageObj, includeMe, includeNotifications);
+                            messageGroup.messages.unshift(message);
+                            break;
+                        }
+                    } else { // unreadCount = 0
+                        break;
+                    }
+                }
+                if (messageGroup.messages.length > 0) {
+                    messageGroupObj.unreadCount = 0; // reset unread counter
+                    output.push(messageGroup);
+                }
+            }
         }
-      }
     }
-  }
+    if (done !== undefined) {
+        done(output);
 
-  if (typeof done === 'function') {
-    try { done(output); } catch (_) {}
-  }
-
-  SetConsoleMessage('getUnreadMessages', JSON.stringify(output));
-  return output;
+    }
+	
+	
+    SetConsoleMessage("getUnreadMessages", JSON.stringify(output));
+    return output;
+    
 };
 
 
