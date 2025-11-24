@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.17;1.0.0.9;78.3.0
+//2.2.0.18;1.0.0.9;78.3.0
 //
 //
 
@@ -1571,14 +1571,13 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
 
         var isGroup = chats[i].id._serialized.includes('@g.us');
         var jid = chats[i].id._serialized;
-        console.log('JID:', jid);
+        //console.log('JID:', jid);
         var profilePhoto = await WPP.contact.getProfilePictureUrl(jid);
 
         //let chat = chats[i];
 
         chats[i].isGroup = isGroup;
         chats[i].formattedTitle = chats[i].name;
-
 
         if (isLidMigrated && !isGroup) {
           const pnLidEntry = await WPP.contact.getPnLidEntry(jid).catch(() => null);
@@ -3472,9 +3471,19 @@ window.WAPI.getMessageACK2 = async function(uniqueID) {
 
 //Marcelo 24/11/2025
 window.WAPI.GetisLidMigrated = async function() {    
-  var fn = WPP.whatsapp.functions.isLidMigrated;
+  //var fn = WPP.whatsapp.functions.isLidMigrated;
   //console.log(fn);
-  SetConsoleMessage("GetisLidMigrated", JSON.stringify({isLidMigrated: fn}));   
+  var isLidMigrated = false;
+  try {
+    const fn = WPP?.whatsapp?.functions?.isLidMigrated;
+    if (typeof fn === 'function') {
+      const val = fn(); // pode ser boolean OU Promise<boolean>
+      isLidMigrated = (val && typeof val.then === 'function') ? await val : !!val;
+    }
+  } catch (_) {
+    isLidMigrated = false;
+  }
+  SetConsoleMessage("GetisLidMigrated", JSON.stringify({isLidMigrated: isLidMigrated}));   
 }
 
 //Marcelo 24/11/2025
