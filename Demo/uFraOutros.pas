@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtDlgs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtDlgs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Mask;
 
 type
   TframeOutros = class(TFrame)
@@ -15,8 +16,12 @@ type
     edtNameContact: TLabeledEdit;
     edtSurnameContact: TLabeledEdit;
     btnSaveContacts: TButton;
+    bGetPnLidEntry: TButton;
+    bGetIsLidMigrate: TButton;
     procedure btnMudarImagemClick(Sender: TObject);
     procedure btnSaveContactsClick(Sender: TObject);
+    procedure bGetPnLidEntryClick(Sender: TObject);
+    procedure bGetIsLidMigrateClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -55,6 +60,16 @@ begin
 
   frDemo.TWPPConnect1.SaveContact(edtNumberContact.Text, edtNameContact.Text, edtSurnameContact.Text);
 
+end;
+
+procedure TframeOutros.bGetIsLidMigrateClick(Sender: TObject);
+begin
+  frDemo.TWPPConnect1.GetisLidMigrated;
+end;
+
+procedure TframeOutros.bGetPnLidEntryClick(Sender: TObject);
+begin
+  frDemo.TWPPConnect1.GetPnLidEntry(edtNumberContact.Text);
 end;
 
 end.

@@ -233,6 +233,7 @@ begin
      Exit;
 
     frDemo.TWPPConnect1.GetMe;
+
   finally
   end;
 end;

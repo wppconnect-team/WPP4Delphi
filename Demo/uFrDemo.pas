@@ -188,6 +188,10 @@ type
     procedure TWPPConnect1GetEnvrequire_auth(Response: TIsRequire_auth);
     procedure TWPPConnect1GetAllParticipantsGroup(const response: TParticipantsGroupClass);
     procedure SwtTypebotClick(Sender: TObject);
+    procedure TWPPConnect1GetPnLidEntry(Sender: TObject;
+      Response: TPnLidEntryResponseClass);
+    procedure TWPPConnect1GetIsLidMigrated(Sender: TObject;
+      Response: TIsLidMigrated);
     //procedure frameGrupos1btnMudarImagemGrupoClick(Sender: TObject);
   private
     { Private declarations }
@@ -2148,7 +2152,8 @@ var
   Question, Answer, phoneNumber, FChatID, quotedMsg_body, S_Type_origem, DescricaoLista, foto_perfil : string;
   From, idMensagem, body, S_Caption, S_type, filename, mediakey, mimeType, deprecatedMms3Url, Title, Footer: string;
   ChatGroup, mensagemDuplicada, eh_arquivo, isGif : Boolean;
-  latitude, longitude, localidade, base64localidade, sessionid, response, options, S_Retorno, url : String;
+  latitude, longitude, localidade, base64localidade, sessionid, response, options, S_Retorno, url,
+  fromJid, fromLid, ToJid, ToLid : String;
   ack: extended;
   IdHTTP1: TIdHTTP;
   stream: TMemoryStream;
@@ -2188,6 +2193,12 @@ begin
         FChatID := NewMessageResponse.msg.from;
         TWPPConnect1.ReadMessages(FChatID);
         wlo_Celular := Copy(NewMessageResponse.msg.from,1,  pos('@', NewMessageResponse.msg.from) -1); // nr telefone
+
+        //New fields
+        fromJid :=  NewMessageResponse.msg.fromJid;
+        fromLid :=  NewMessageResponse.msg.fromLid;
+        ToJid :=  NewMessageResponse.msg.toJid;
+        ToLid :=  NewMessageResponse.msg.toLid;
 
         if NewMessageResponse.msg.id.fromMe then //Foi Enviado por Mim está Mensagem / This message was sent by me
           frameMensagensRecebidas1.memo_unReadMessage.Lines.Add('fromMe: True') else
@@ -3137,7 +3148,7 @@ var
   contato, telefone, selectedButtonId, quotedMsg_caption, selectedRowId, IdMensagemOrigem,
     Extensao_Documento, NomeArq_Whats, Automato_Path: string;
   WPPConnectDecrypt: TWPPConnectDecryptFile;
-  Question, Answer, phoneNumber, vSender : string;
+  Question, Answer, phoneNumber, vSender, ChatJid, ChatLid : string;
   x, i, m, a : Integer;
   mensagemDuplicada, ChatGroup: Boolean;
 begin
@@ -3168,6 +3179,11 @@ begin
           begin
             // memo_unReadMessage.Clear;
             FChatID := AChat.id;
+
+            //New Fields
+            ChatJid := AChat.Jid;
+            ChatLid := AChat.Lid;
+
             telefone := Copy(AChat.id, 3, Pos('@', AChat.id) - 3);
             contato := AMessage.Sender.pushname;
 
@@ -3223,6 +3239,7 @@ begin
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Nome Contato: ' + Trim(AChat.Contact.pushname)));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('UniqueID: ' + AMessage.id));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Tipo mensagem: ' + AMessage.&type));
+              frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Content: ' + AMessage.content));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('Chat Id: ' + AChat.id));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(StringReplace(AMessage.body, #$A, #13#10,[rfReplaceAll, rfIgnoreCase]));
               frameMensagensRecebidas1.memo_unReadMessage.Lines.Add(PChar('ACK: ' + FloatToStr(AMessage.ack)));
@@ -4019,9 +4036,12 @@ begin
   if (not(WPPCrash.MainLoaded)) or (not(WPPCrash.Authenticated)) then
     TWppConnect1.RebootWPP;
 end;
+
 function TfrDemo.VerificaPalavraChave(pMensagem, pSessao, pTelefone,
   pContato: String): Boolean;
 begin
+
+
 end;
 
 
@@ -4065,6 +4085,29 @@ function TfrDemo.IsValidUnicodeCodePoint(value: Word): Boolean;
 begin
   // Verifica se o valor Unicode está dentro do intervalo válido (0-10FFFF)
   Result := (value >= $0000) and ((value <= $D7FF) or ((value >= $E000) and (value <= $10FFFF)));
+end;
+
+procedure TfrDemo.TWPPConnect1GetPnLidEntry(Sender: TObject;
+  Response: TPnLidEntryResponseClass);
+begin
+//
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  phoneNumber: ' + Response.phoneNumber._serialized);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  lid: ' + Response.lid._serialized);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  pushname: ' + Response.contact.pushname);
+
+  ShowMessage('  phoneNumber: ' + Response.phoneNumber._serialized + #13#10#13#10 +
+    '  lid: ' + Response.lid._serialized + #13#10#13#10 +
+    '  pushname: ' + Response.contact.pushname);
+end;
+
+procedure TfrDemo.TWPPConnect1GetIsLidMigrated(Sender: TObject;
+  Response: TIsLidMigrated);
+begin
+//
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('  IsLidMigrated: ' + BooleanToStr(Response.IsLidMigrated));
+  ShowMessage('  IsLidMigrated: ' + BooleanToStr(Response.IsLidMigrated));
 end;
 
 end.

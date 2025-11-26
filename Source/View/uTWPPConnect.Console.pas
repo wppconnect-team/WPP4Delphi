@@ -415,6 +415,8 @@ type
     procedure GetUnreadMessages;
     procedure GetBatteryLevel; deprecated; //Não Habilitar Função deprecated GetBatteryLevel
     procedure CheckIsValidNumber(vNumber:string);
+    procedure GetPnLidEntry(vNumber: String);
+    procedure GetisLidMigrated;
     procedure CheckIsConnected;
     procedure GetMyNumber;
     procedure CreateGroup(vGroupName, PParticipantNumber: string);
@@ -2738,6 +2740,32 @@ begin
   ExecuteJS(LJS, False);
 end;
 
+procedure TFrmConsole.GetPnLidEntry(vNumber: String);
+var
+  Ljs: string;
+begin
+  //Marcelo 25/11/2025
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   :=  FrmConsole_JS_VAR_GetPnLidEntry;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_PHONE#', Trim(vNumber));
+  ExecuteJS(LJS, False);
+end;
+
+procedure TFrmConsole.GetisLidMigrated;
+var
+  Ljs: string;
+begin
+  //Marcelo 25/11/2025
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   :=  FrmConsole_JS_VAR_GetisLidMigrated;
+
+  ExecuteJS(LJS, False);
+end;
+
 procedure TFrmConsole.CheckNumberExists(vNumber: String);
 var
   Ljs: string;
@@ -3366,6 +3394,37 @@ begin
 
 
 
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
+
+    //Marcelo 25/11/2025
+    Th_GetisLidMigrated :
+                       begin
+                         LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                         LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                         LResultStr := LResultStr;
+                         //LOutClass2 := TIsLidMigrated.Create(PResponse.JsonString);
+                         LOutClass2 := TIsLidMigrated.Create(LResultStr);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
+                         finally
+                           FreeAndNil(LOutClass2);
+                         end;
+                       end;
+
+    //Marcelo 25/11/2025
+    Th_GetPnLidEntry :
+                       begin
+                         LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                         LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                         LResultStr := LResultStr;
+                         //LOutClass2 := TPnLidEntryResponseClass.Create(PResponse.JsonString);
+                         LOutClass2 := TPnLidEntryResponseClass.Create(LResultStr);
+                         try
+                           SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                          finally
                            FreeAndNil(LOutClass2);
                          end;

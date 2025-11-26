@@ -2325,6 +2325,93 @@ type
 {##########################################################################################
                                 RETORNOS AO CONSOLE
 ##########################################################################################}
+
+TContactPNClass = class(TClassPadrao)
+private
+  FIsBusiness: Boolean;
+  FIsContactSyncCompleted: Extended;
+  FIsEnterprise: Boolean;
+  FName: String;
+  FPushname: String;
+  FShortName: String;
+  FSyncToAddressbook: Boolean;
+  FType: String;
+public
+  property isBusiness: Boolean read FIsBusiness write FIsBusiness;
+  property isContactSyncCompleted: Extended read FIsContactSyncCompleted write FIsContactSyncCompleted;
+  property isEnterprise: Boolean read FIsEnterprise write FIsEnterprise;
+  property name: String read FName write FName;
+  property pushname: String read FPushname write FPushname;
+  property shortName: String read FShortName write FShortName;
+  property syncToAddressbook: Boolean read FSyncToAddressbook write FSyncToAddressbook;
+  property &type: String read FType write FType;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TContactClass;
+end;
+
+TPhoneNumberClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FId: String;
+  FServer: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property id: String read FId write FId;
+  property server: String read FServer write FServer;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TPhoneNumberClass;
+end;
+
+TLidClass = class(TClassPadrao)
+private
+  F_serialized: String;
+  FId: String;
+  FServer: String;
+public
+  property _serialized: String read F_serialized write F_serialized;
+  property id: String read FId write FId;
+  property server: String read FServer write FServer;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TLidClass;
+end;
+
+//TResultClass = class
+TPnLidEntryResponseClass = class(TClassPadrao)
+private
+  FContact: TContactPNClass;
+  FLid: TLidClass;
+  FPhoneNumber: TPhoneNumberClass;
+public
+  property contact: TContactPNClass read FContact write FContact;
+  property lid: TLidClass read FLid write FLid;
+  property phoneNumber: TPhoneNumberClass read FPhoneNumber write FPhoneNumber;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TResultClass;
+end;
+
+{TPnLidEntryResponseClass = class
+private
+  FResult: TResultClass;
+public
+  property result: TResultClass read FResult write FResult;
+  //constructor Create;
+  //destructor Destroy; override;
+  //function ToJsonString: string;
+  //class function FromJsonString(AJsonString: string): TPnLidEntryResponseClass;
+end;}
+
+TIsLidMigrated = class(TClassPadrao)
+private
+  FIsLidMigrated: Boolean;
+public
+  property IsLidMigrated:      Boolean    read FIsLidMigrated     write FIsLidMigrated;
+  constructor Create(pAJsonString: string);
+  destructor  Destroy;
+end;
+
+
 TisWhatsAppWebReady = class(TClassPadrao)
 private
   FIsWhatsAppWebReady: Boolean;
@@ -2333,6 +2420,7 @@ public
   constructor Create(pAJsonString: string);
   destructor  Destroy;
 end;
+
 TIsReady = class(TClassPadrao)
 private
   FIsReady: Boolean;
@@ -2341,6 +2429,7 @@ public
   constructor Create(pAJsonString: string);
   destructor  Destroy;
 end;
+
 TIsLoaded = class(TClassPadrao)
 private
   FIsLoaded: Boolean;
@@ -2830,6 +2919,8 @@ private
   FSubtype: String;
   FFromLid: String;
   FFromJid: String;
+  FtoJid: String;
+  FtoLid: String;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2837,6 +2928,8 @@ public
   property from: String read FFrom write FFrom;
   property fromJid: String read FFromJid write FFromJid;
   property fromLid: String read FFromLid write FFromLid;
+  property toJid: String read FtoJid write FtoJid;
+  property toLid: String read FtoLid write FtoLid;
   property groupMentions: TArray<String> read FGroupMentions write FGroupMentions;
   property hasReaction: Boolean read FHasReaction write FHasReaction;
   property ctwaContext: TctwaContextClass read FctwaContext write FctwaContext;
@@ -6045,6 +6138,18 @@ end;
 function TdeleteMessageNewResponseClass.ToJsonString: string;
 begin
   result := TJson.ObjectToJsonString(self);
+end;
+
+{ TIsLidMigrated }
+
+constructor TIsLidMigrated.Create(pAJsonString: string);
+begin
+
+end;
+
+destructor TIsLidMigrated.Destroy;
+begin
+  inherited;
 end;
 
 end.

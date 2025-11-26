@@ -113,12 +113,16 @@ type
   TGet_deleteMessageNewResponse = procedure(Const Response: TdeleteMessageNewResponseClass) of object;
   //Marcelo 23/05/2024
   TGet_editMessageNewResponse = procedure(Const Response: TeditMessageNewResponseClass) of object;
-  TGet_ProductCatalog        = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
-  TWPPMonitorCrash           = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
+  TGet_ProductCatalog         = procedure(Sender : TObject; Const ProductCatalog: TProductsList) of object;
+  TWPPMonitorCrash            = procedure(Sender : TObject; Const WPPCrash: TWppCrash; AMonitorJSCrash: Boolean=false) of object;
   //Adicionado por Marcelo 17/06/2022
-  TGetIncomingiCall          = procedure(Const IncomingiCall: TIncomingiCall) of object;
+  TGetIncomingiCall           = procedure(Const IncomingiCall: TIncomingiCall) of object;
   //Adicionado por Marcelo 17/06/2024
-  TGetOutgoingCall           = procedure(Const OutgoingCall: TOutgoingCall) of object;
+  TGetOutgoingCall            = procedure(Const OutgoingCall: TOutgoingCall) of object;
+
+  TGetIsLidMigrated           = Procedure(Sender : TObject; Response: TIsLidMigrated) of object; //Marcelo 25/11/2025
+  TGetPnLidEntry              = Procedure(Sender : TObject; Response: TPnLidEntryResponseClass) of object; //Marcelo 25/11/2025
+
   //Marcelo 24/04/2025
   TGetIsWhatsAppWebReady     = Procedure(Sender : TObject; IsWhatsAppWebReady: Boolean) of object; //Marcelo 24/04/2025
   TGetIsReady                = Procedure(Sender : TObject; IsReady: Boolean) of object; //Marcelo 17/08/2022
@@ -165,6 +169,8 @@ type
     FAuthenticated: boolean;
 	
 	FInjectJSSecRemaining: Integer;
+    FOnGet_IsLidMigrated: TGetIsLidMigrated;
+    FOnGet_PnLidEntry: TGetPnLidEntry;
 
     { Private  declarations }
     Function  ConsolePronto:Boolean;
@@ -379,6 +385,10 @@ type
     procedure NewCheckIsValidNumber(PNumberPhone : string);
     procedure CheckNumberExists(PNumberPhone : string);
     procedure CheckNumberExistsNew(PNumberPhone : string);
+
+    procedure GetPnLidEntry(vNumber: String);
+    procedure GetisLidMigrated;
+
     procedure getLastSeen(vNumber:String); //Marcelo 31/07/2022
     procedure getMessage(vNumber, vOptions :String); //Marcelo 14/08/2022
     //Adicionado Por Marcelo 01/03/2022
@@ -519,6 +529,10 @@ type
     property OnGet_SendLocationMessageEx : TGet_sendLocationMessageEx read FOnGet_sendLocationMessageEx    write FOnGet_sendLocationMessageEx;
     //Marcelo 16/01/2023
     property OnGet_sendVCardContactMessageEx : TGet_sendVCardContactMessageEx read FOnGet_sendVCardContactMessageEx    write FOnGet_sendVCardContactMessageEx;
+
+    property OnGetIsLidMigrated          : TGetIsLidMigrated          read FOnGet_IsLidMigrated            write FOnGet_IsLidMigrated;
+    property OnGetPnLidEntry             : TGetPnLidEntry             read FOnGet_PnLidEntry               write FOnGet_PnLidEntry;
+
     //Daniel - 13/06/2022
     property OnGet_ProductCatalog        : TGet_ProductCatalog        read FOnGet_ProductCatalog           write FOnGet_ProductCatalog;
     property OnWPPMonitorCrash           : TWPPMonitorCrash           read FOnWPPMonitorCrash              write FOnWPPMonitorCrash;
@@ -2003,6 +2017,35 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
+procedure TWPPConnect.GetPnLidEntry(vNumber: String);
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+  vNumber := AjustNumber.FormatIn(vNumber);
+  if pos('@', vNumber) = 0 then
+  Begin
+    Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
+    Exit;
+  end;
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetPnLidEntry(vNumber);
+          end;
+        end);
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.GetProductCatalog;
 begin
   if Assigned(FrmConsole) then
@@ -2496,6 +2539,30 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
+procedure TWPPConnect.GetisLidMigrated;
+var
+  lThread : TThread;
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+
+
+  lThread := TThread.CreateAnonymousThread(procedure
+      begin
+        TThread.Synchronize(nil, procedure
+        begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetisLidMigrated;
+          end;
+        end);
+      end);
+  lThread.FreeOnTerminate := true;
+  lThread.Start;
+end;
+
 procedure TWPPConnect.getLastSeen(vNumber: String);
 var
   lThread : TThread;
@@ -3083,6 +3150,21 @@ begin
     if Assigned(OnGetMessages) then
       OnGetMessages(TGetMessageClass(PReturnClass));
   end;
+
+  //Marcelo 25/11/2025
+  if PTypeHeader = Th_GetisLidMigrated then
+  Begin
+    if Assigned(OnGetIsLidMigrated) then
+      OnGetIsLidMigrated(Self, TIsLidMigrated(PReturnClass));
+  end;
+
+  //Marcelo 25/11/2025
+  if PTypeHeader = Th_GetPnLidEntry then
+  Begin
+    if Assigned(OnGetPnLidEntry) then
+      OnGetPnLidEntry(Self, TPnLidEntryResponseClass(PReturnClass));
+  end;
+
   //Marcelo 24/04/2025
   if PTypeHeader = Th_isWhatsAppWebReady then
   Begin

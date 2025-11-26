@@ -2097,6 +2097,16 @@ object frDemo: TfrDemo
       inherited edtSurnameContact: TLabeledEdit
         StyleElements = [seFont, seClient, seBorder]
       end
+      inherited bGetPnLidEntry: TButton
+        ExplicitLeft = 5
+        ExplicitTop = 87
+        ExplicitWidth = 231
+      end
+      inherited bGetIsLidMigrate: TButton
+        ExplicitLeft = 5
+        ExplicitTop = 56
+        ExplicitWidth = 231
+      end
     end
   end
   inline frameGrupos1: TframeGrupos
@@ -6007,6 +6017,8 @@ object frDemo: TfrDemo
     OnGet_sendListMessageEx = TWPPConnect1Get_sendListMessageEx
     OnGet_SendLocationMessageEx = TWPPConnect1Get_SendLocationMessageEx
     OnGet_sendVCardContactMessageEx = TWPPConnect1Get_sendVCardContactMessageEx
+    OnGetIsLidMigrated = TWPPConnect1GetIsLidMigrated
+    OnGetPnLidEntry = TWPPConnect1GetPnLidEntry
     OnGet_ProductCatalog = TWPPConnect1Get_ProductCatalog
     OnWPPMonitorCrash = TWPPConnect1WPPMonitorCrash
     OnGetIncomingiCall = TWPPConnect1GetIncomingiCall

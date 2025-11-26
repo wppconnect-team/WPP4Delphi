@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.5'; //  18/11/2025
+  TWPPConnectVersion              = '5.0.0.6'; //  25/11/2025
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -815,6 +815,11 @@ Const
   FrmConsole_JS_VAR_sendRawStatus    = 'WPP.status.sendRawStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
   FrmConsole_JS_VAR_getMyStatus      = 'getMyStatus();';
 
+  //Marcelo 25/11/2025
+  FrmConsole_JS_VAR_GetisLidMigrated    = 'window.WAPI.GetisLidMigrated();';
+  FrmConsole_JS_VAR_GetPnLidEntry   = 'window.WAPI.GetPnLidEntry("<#MSG_PHONE#>");';
+
+
   FrmConsole_JS_VAR_newsletter_create  = 'WPP.newsletter.create("<#NAME#>",{<#OPTIONS#>} );';
 
   //Marcelo 15/06/2022
@@ -1030,6 +1035,8 @@ type
                    , Th_isWhatsAppWebReady=96 //Marcelo 24/04/2025
                    , Th_OnReceived_Message_Socket=97 //Marcelo 09/05/2025
                    , Th_OnReceived_Message_Socket2=98 //Marcelo 19/05/2025
+                   , Th_GetisLidMigrated=99 //Marcelo 25/11/2025
+                   , Th_GetPnLidEntry=100 //Marcelo 25/11/2025
                    );
 
     TSecondCallback = procedure(SecondsRemaining: Integer) of object;
@@ -1194,7 +1201,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 98; //Marcelo 19/05/2025
+const LmaxCount = 100; //Marcelo 25/11/2025
 var
   I: Integer;
   LNome: String;

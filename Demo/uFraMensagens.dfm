@@ -814,7 +814,7 @@ object frameMensagem: TframeMensagem
       Width = 221
       Height = 25
       Align = alTop
-      Caption = 'GetMe'
+      Caption = 'Get Me'
       ImageIndex = 18
       Images = ImageList1
       TabOrder = 22

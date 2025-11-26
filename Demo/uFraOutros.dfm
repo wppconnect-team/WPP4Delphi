@@ -38,6 +38,7 @@ object frameOutros: TframeOutros
       EditLabel.Height = 15
       EditLabel.Caption = 'Number Contact'
       TabOrder = 1
+      Text = ''
       TextHint = '558891030999@c.us'
     end
     object edtNameContact: TLabeledEdit
@@ -49,6 +50,7 @@ object frameOutros: TframeOutros
       EditLabel.Height = 15
       EditLabel.Caption = 'Name Contact'
       TabOrder = 2
+      Text = ''
     end
     object edtSurnameContact: TLabeledEdit
       Left = 17
@@ -59,6 +61,7 @@ object frameOutros: TframeOutros
       EditLabel.Height = 15
       EditLabel.Caption = 'Surname Contact'
       TabOrder = 3
+      Text = ''
     end
     object btnSaveContacts: TButton
       AlignWithMargins = True
@@ -74,6 +77,34 @@ object frameOutros: TframeOutros
       ImageIndex = 9
       TabOrder = 4
       OnClick = btnSaveContactsClick
+    end
+    object bGetPnLidEntry: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 87
+      Width = 231
+      Height = 25
+      Align = alTop
+      Caption = 'Get PnLidEntry'
+      TabOrder = 5
+      OnClick = bGetPnLidEntryClick
+      ExplicitLeft = 17
+      ExplicitTop = 80
+      ExplicitWidth = 154
+    end
+    object bGetIsLidMigrate: TButton
+      AlignWithMargins = True
+      Left = 5
+      Top = 56
+      Width = 231
+      Height = 25
+      Align = alTop
+      Caption = 'Get IsLidMigrate'
+      TabOrder = 6
+      OnClick = bGetIsLidMigrateClick
+      ExplicitLeft = 17
+      ExplicitTop = 80
+      ExplicitWidth = 154
     end
   end
   object OpenPictureDialog1: TOpenPictureDialog
