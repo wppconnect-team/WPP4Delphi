@@ -2921,6 +2921,8 @@ private
   FFromJid: String;
   FtoJid: String;
   FtoLid: String;
+    FReportingTokenInfo: TReportingTokenInfoClass;
+    FProtocolMessageKey: TProtocolMessageKeyClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -3023,6 +3025,9 @@ public
 
   property inviteGrpType         : string                     read FinviteGrpType         write FinviteGrpType;
   property messageSecret         : TmessageSecretClass        read FmessageSecret         write FmessageSecret;
+
+  property reportingTokenInfo    : TReportingTokenInfoClass   read FReportingTokenInfo    write FReportingTokenInfo;
+  property protocolMessageKey    : TProtocolMessageKeyClass   read FProtocolMessageKey    write FProtocolMessageKey; //Marcelo 14/08/2024
 
 end;
 
@@ -6144,7 +6149,9 @@ end;
 
 constructor TIsLidMigrated.Create(pAJsonString: string);
 begin
-
+  if pos('true', pAJsonString) > 0 then
+    FIsLidMigrated := True else
+    FIsLidMigrated := False;
 end;
 
 destructor TIsLidMigrated.Destroy;

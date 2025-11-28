@@ -3707,6 +3707,7 @@ begin
   Begin
     if PTypeHeader = Th_Connected then
     begin
+      save_log('PTypeHeader in [Th_Connected] ');
       SetAuth(True);
       FAuthenticated := True;
     end
@@ -5336,6 +5337,8 @@ begin
   end;
   if (Not (Fstatus = Server_Connected)) and (Value) then
   Begin
+    save_log('((Fstatus = Server_Connected)) and (Value True) ');
+
     Fstatus := Server_Connected;
     if Assigned(FrmConsole) then
        FrmConsole.FormQrCode.FTimerGetQrCode.Enabled := False;
