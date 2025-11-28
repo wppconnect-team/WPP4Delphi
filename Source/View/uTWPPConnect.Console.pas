@@ -2658,8 +2658,13 @@ begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
-  content := CaractersWeb(content);
-  options := CaractersQuebraLinha(options);
+  // Removido as formatações em 28/11/2025
+  // Não é função do "motor" interferir em formatações diversas.
+  // Em testes onde o conteúdo já vinha com formatações adequadas, era duplicados caracteres.
+  // As funções continuarão existindo e podem ser utilizadas na origem de acordo com
+  // cada projeto de forma personalizada.
+  //content := CaractersWeb(content);
+  //options := CaractersQuebraLinha(options);
 
   if Trim(options) = '' then
     options := 'createChat: true';
