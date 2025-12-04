@@ -2658,7 +2658,6 @@ begin
   if not FConectado then
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
-
   content := CaractersWeb(content);
   options := CaractersQuebraLinha(options);
 

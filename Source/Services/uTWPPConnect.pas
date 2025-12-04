@@ -4225,16 +4225,19 @@ begin
     Exit;
   LExtension   := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
   phoneNumber := AjustNumber.FormatIn(phoneNumber);
-  if pos('@', phoneNumber) = 0 then
+
+  {if pos('@', phoneNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
-  end;
+  end;}
+
   If not FileExists(Trim(PFileName)) then
   begin
     Int_OnErroInterno(Self, 'SendFileMessaEx: ' + Format(MSG_ExceptPath, [phoneNumber]), phoneNumber);
     Exit;
   end;
+
   LStream     := TMemoryStream.Create;
   LBase64File := TBase64Encoding.Create;
   try
@@ -5003,12 +5006,14 @@ begin
     Exit;
   if pos('@', phoneNumber) = 0 then
     phoneNumber := SomenteNumero(phoneNumber);
+
   {phoneNumber := AjustNumber.FormatIn(phoneNumber);
   if pos('@', phoneNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+
   if Trim(content) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
