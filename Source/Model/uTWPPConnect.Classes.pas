@@ -821,6 +821,8 @@ type
   TContactClass = class(TClassPadrao)
   private
     FId           : String;
+    FJid          : String;
+    FLid          : String;
     FName         : String;
     Fpushname     : String;
     FType         : String;
@@ -848,6 +850,7 @@ type
     //Marcelo 30/05/2022
     FprivacyMode: String;
     FverifiedLevel: Extended;
+
   public
     constructor Create(pAJsonString: string);
     destructor Destroy; override;
@@ -855,6 +858,8 @@ type
 //    property Global:               String          read FGlobal                write FGlobal;
     property sectionHeader:          String          read FsectionHeader         write FsectionHeader;
     property id:                     String          read FId                    write FId;
+    property Jid:                    String          read FJid                   write FJid;
+    property Lid:                    String          read FLid                   write FLid;
     property name:                   String          read FName                  write FName;
     property pushname:               String          Read Fpushname              Write Fpushname;
     property verifiedName:           String          Read FverifiedName          Write FverifiedName;
@@ -1953,6 +1958,9 @@ type
   TChatClass = class(TClassPadraoList<TMessagesClass>)
   private
     FId             : String;
+    FJid            : String;
+    FLid            : String;
+
     //FId             : TArray<TidClass>; default;
     FPendingMsgs    : Boolean;
     FLastReceivedKey: TLastReceivedKeyClass;
@@ -2014,8 +2022,6 @@ type
     //FpollOptions: TArray<TpollOptionsClass>;
     FpollOptions: TpollOptionsClass;
     FPollVotesSnapshot: TPollVotesSnapshotClass;
-    FJid: String;
-    FLid: String;
 
     {FInteractiveHeader: TInteractiveHeaderClass;
     FInteractivePayload: TInteractivePayloadClass;

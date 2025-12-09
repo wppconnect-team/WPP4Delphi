@@ -4101,8 +4101,11 @@ begin
 
 
   //Uncaught TypeError: Cannot read properties of undefined (reading 'sendTextMessage2Ex')
+  //Uncaught TypeError: Cannot read properties of undefined (reading 'GetisOnline2')
   if (pos('Uncaught TypeError: Cannot read properties of undefined', message) > 0)
-  and ((pos('sendTextMessage2Ex', message) > 0) or (pos('sendFileMessage2Ex', message) > 0)) then
+  and ((pos('sendTextMessage2Ex', message) > 0) or (pos('sendFileMessage2Ex', message) > 0) or (pos('GetisOnline2', message) > 0) )
+
+  then
   begin
     LogAdd('"Uncaught TypeError: Cannot read properties of undefined (reading "sendTextMessage2Ex" Injeta o JS.ABR de novo ' + UpperCase(message));
 

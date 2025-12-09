@@ -34,12 +34,11 @@ object FrmConsole: TFrmConsole
     ParentBackground = False
     ParentCtl3D = False
     TabOrder = 0
-    ExplicitWidth = 879
     object Lbl_Caption: TLabel
       Left = 1
       Top = 1
-      Width = 106
-      Height = 13
+      Width = 627
+      Height = 18
       Align = alClient
       Alignment = taCenter
       Caption = 'Mega Online Software'
@@ -51,6 +50,8 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       Layout = tlCenter
       OnClick = Lbl_CaptionClick
+      ExplicitWidth = 106
+      ExplicitHeight = 13
     end
     object lbl_Versao: TLabel
       AlignWithMargins = True
@@ -399,7 +400,7 @@ object FrmConsole: TFrmConsole
       Left = 631
       Top = 4
       Width = 3
-      Height = 13
+      Height = 12
       Margins.Right = 6
       Align = alRight
       Alignment = taCenter
@@ -411,6 +412,7 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       Layout = tlCenter
       OnClick = Lbl_CaptionClick
+      ExplicitHeight = 13
     end
     object bInfo: TBitBtn
       Left = 640
@@ -454,7 +456,6 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 0
       OnClick = bInfoClick
-      ExplicitLeft = 626
     end
   end
   object Pnl_Geral: TPanel
@@ -471,7 +472,6 @@ object FrmConsole: TFrmConsole
     ParentDoubleBuffered = False
     ShowCaption = False
     TabOrder = 1
-    ExplicitWidth = 879
     object CEFWindowParent1: TCEFWindowParent
       Left = 0
       Top = 0
@@ -479,7 +479,6 @@ object FrmConsole: TFrmConsole
       Height = 121
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 879
     end
   end
   object Pnl_quick_maintenance: TPanel
@@ -663,7 +662,6 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 3
       OnClick = bFinishClick
-      ExplicitLeft = 728
     end
     object bMarkIsReadChats: TBitBtn
       Left = 189
