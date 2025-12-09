@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.20;1.0.0.9;78.3.0
+//2.2.0.21;1.0.0.9;78.3.0
 //
 //
 
@@ -599,12 +599,19 @@ window.WAPI.getAllContacts = async function(done) {
  * @returns {Array|*} List of contacts
  */
 window.WAPI.getMyContacts = async function(done) {
-    //const contacts = WPP.whatsapp.Contact.filter((contact) => contact.isMyContact === true).map((contact) => WAPI._serializeContactObj(contact));
-    //const contacts = WPP.whatsapp.Contact.filter((contact) => contact.isAddressBookContact === 1).map((contact) => WAPI._serializeContactObj(contact));
     const contacts = await WPP.contact.list({onlyMyContacts: true});
-    //contacts = contacts.map((contacts) => WAPI._serializeContactObj(contacts));
-
+    
     if (done !== undefined) done(contacts);
+
+    //Marcelo 08/12/2025 - Adicionado Lid e Jid
+    for (var i = 0; i < contacts.length; i++) {
+        contacts[i] = contacts[i].toJSON(); 
+        var jid = contacts[i].id;
+        
+        const pnLidEntry = await WPP.contact.getPnLidEntry(jid).catch(() => null);
+        contacts[i].Jid = pnLidEntry?.phoneNumber?._serialized ?? null;
+        contacts[i].Lid = pnLidEntry?.lid?._serialized ?? null;
+    }
 
     SetConsoleMessage("getMyContacts", JSON.stringify(contacts));
 
@@ -649,10 +656,21 @@ window.WAPI.getAllChats = async function(done) {
         for (var i = 0; i < chats.length; i++) {          
             var contacts = await WPP.contact.get(chats[i].id._serialized);
             
+            //Marcelo 08/12/2025 - Adicionado Lid e Jid
+            var jid = chats[i].id._serialized;
+
             chats[i] = chats[i].toJSON();  
-            
+
+            //Deletar JSON Array das Mensagens do msgs
+            delete chats[i].msgs;
+
             //var profilePhoto = ".";
             var profilePhoto = await WPP.contact.getProfilePictureUrl(chats[i].id._serialized);
+
+            //Marcelo 08/12/2025 - Adicionado Lid e Jid
+            const pnLidEntry = await WPP.contact.getPnLidEntry(jid).catch(() => null);
+            chats[i].Jid = pnLidEntry?.phoneNumber?._serialized ?? null;
+            chats[i].Lid = pnLidEntry?.lid?._serialized ?? null;
 
             chats[i].contact = {
                 id: contacts.id,
@@ -678,8 +696,6 @@ window.WAPI.getAllChats = async function(done) {
                 profilePicThumb: profilePhoto                
             };*/
 
-            //Deletar JSON Array das Mensagens do msgs
-            delete chats[i].msgs;
 
             // Verifique se os contatos existem e têm comprimento maior que zero
             /*if (contacts && Object.keys(contacts).length > 0) {   
