@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.22;1.0.0.9;78.3.0
+//2.2.0.23;1.0.0.9;78.3.0
 //
 //
 
@@ -467,8 +467,8 @@ window.WAPI._serializeMessageObj = (obj) => {
 
 		quotedParticipant: obj.quotedParticipant? obj.quotedParticipant._serialized ? obj.quotedParticipant._serialized : undefined : undefined,
         author: obj.author? obj.author._serialized ? obj.author._serialized : undefined : undefined,
-        authorLid: obj.authorLid || "", //10/12/2025
-        authorJid: obj.authorJid || "", //10/12/2025       
+        //authorLid: obj.authorLid || "", //10/12/2025
+        //authorJid: obj.authorJid || "", //10/12/2025       
         chatId: obj.chatId? obj.chatId._serialized ? obj.chatId._serialized : undefined : undefined,
         to: obj.to? obj.to._serialized ? obj.to._serialized : undefined : undefined,
         fromMe: obj.id.fromMe,
