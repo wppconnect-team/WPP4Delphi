@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.21;1.0.0.9;78.3.0
+//2.2.0.22;1.0.0.9;78.3.0
 //
 //
 
@@ -26,7 +26,9 @@ function arrayToJson(array) {
 
 //Marcelo 18/11/2025
 function isGroupJid(jid) {
-  return typeof jid === 'string' && jid.endsWith('@g.us');
+  if (!jid) return false;
+  jid = String(jid).trim().toLowerCase();
+  return jid.endsWith('@g.us') || jid.includes('@g.us');
 }
 
 // Função para remover a propriedade "msgs" de cada objeto
@@ -465,6 +467,8 @@ window.WAPI._serializeMessageObj = (obj) => {
 
 		quotedParticipant: obj.quotedParticipant? obj.quotedParticipant._serialized ? obj.quotedParticipant._serialized : undefined : undefined,
         author: obj.author? obj.author._serialized ? obj.author._serialized : undefined : undefined,
+        authorLid: obj.authorLid || "", //10/12/2025
+        authorJid: obj.authorJid || "", //10/12/2025       
         chatId: obj.chatId? obj.chatId._serialized ? obj.chatId._serialized : undefined : undefined,
         to: obj.to? obj.to._serialized ? obj.to._serialized : undefined : undefined,
         fromMe: obj.id.fromMe,
@@ -503,6 +507,8 @@ window.WAPI._serializeMessageObj = (obj) => {
         reply: body => window.WAPI.reply(_chat.id._serialized, body, obj)
     });
 };
+
+
 
 
 window.WAPI._serializeNumberStatusObj = (obj) => {
@@ -1584,6 +1590,7 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
     try {
       for (var i = 0; i < chats.length; i++) {
         chats[i] = chats[i].toJSON();
+        delete chats[i].msgs;
 
         var isGroup = chats[i].id._serialized.includes('@g.us');
         var jid = chats[i].id._serialized;
@@ -1674,7 +1681,7 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
           }
         }
 
-        delete chats[i].msgs;
+        
       }
 
     } catch (e) {
@@ -1700,6 +1707,22 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
     var messages = await WPP.chat.getMessages(chats[chat].id._serialized, { count: -1, onlyUnread: true });
 
     for (let i = messages.length - 1; i >= 0; i--) {
+
+      //Add Marcelo 10/12/2025------------------------------------------
+      messages[i] = messages[i].toJSON();
+
+      var fromjidmsg = messages[i].from;        
+      const pnLidEntryMsg = await WPP.contact.getPnLidEntry(fromjidmsg).catch(() => null);
+      messages[i].fromJid = pnLidEntryMsg?.phoneNumber?._serialized ?? null;
+      messages[i].fromLid = pnLidEntryMsg?.lid?._serialized ?? null;
+      
+      if (isGroupJid(messages[i].id.remote)) {
+          var authorjidmsg = messages[i].author;        
+          const pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
+          messages[i].authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
+          messages[i].authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
+      }    
+      //-------------------------------------------------------------------
 
       var messageObj = messages[i];
 
@@ -3663,11 +3686,22 @@ WPP.on('chat.new_message', async (_msg) => {
   }
 
   // Detecta grupo
-  const fromSerialized =
+  /*const fromSerialized =
     typeof msg.from === 'string' ? msg.from : msg.from?._serialized;
   const isGroup =
     typeof fromSerialized === 'string' && fromSerialized.includes('@g.us');
-  msg.isGroup = !!isGroup;
+  msg.isGroup = !!isGroup;*/
+
+  if (isGroupJid(msg.id.remote) ) {
+    msg.isGroup = true;
+  }else{msg.isGroup = false;}  
+
+  if (isGroupJid(msg.id.remote)) {
+          var authorjidmsg = msg.author;        
+          const pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
+          msg.authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
+          msg.authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
+  }
 
   msg.formattedTitle = contacts?.name ?? '';
 
