@@ -1709,7 +1709,7 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
     for (let i = messages.length - 1; i >= 0; i--) {
 
       //Add Marcelo 10/12/2025------------------------------------------
-      messages[i] = messages[i].toJSON();
+      /*messages[i] = messages[i].toJSON();
 
       var fromjidmsg = messages[i].from;        
       const pnLidEntryMsg = await WPP.contact.getPnLidEntry(fromjidmsg).catch(() => null);
@@ -1721,7 +1721,7 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
           const pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
           messages[i].authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
           messages[i].authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
-      }    
+      }*/   
       //-------------------------------------------------------------------
 
       var messageObj = messages[i];
