@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.23;1.0.0.9;78.3.0
+//2.2.0.25;1.0.0.9;78.3.0
 //
 //
 
@@ -358,12 +358,29 @@ if (!window.Store||!window.Store.Msg) {
 window.WAPI = {};
 window._WAPI = {};
 
-window.WAPI._serializeRawObj = (obj) => {
+/*window.WAPI._serializeRawObj = (obj) => {
     if (obj && obj.toJSON) {
         return obj.toJSON();
     }
     return {};
+};*/
+
+// Melhora o serializeRawObj para não devolver só {} quando não tem toJSON
+window.WAPI._serializeRawObj = (obj) => {
+  if (!obj) return {};
+
+  if (typeof obj.toJSON === 'function') {
+    try {
+      return obj.toJSON();
+    } catch (e) {
+      // se der erro no toJSON, cai pro fallback abaixo
+    }
+  }
+
+  // Clona as propriedades "cruas" do objeto
+  return Object.assign({}, obj);
 };
+
 
 /**
  * Serializes a chat object
@@ -455,12 +472,92 @@ window.WAPI._serializeContactObj = async (obj) => {
     });
 };
 
-//Marcelo 18/11/2025
-window.WAPI._serializeMessageObj = (obj) => {
+//Marcelo 10/12/2025
+window.WAPI._serializeMessageObj = (obj) => { 
+  if (!obj) {
+    return null;
+  }
+
+  const _chat = obj.chat ? WAPI._serializeChatObj(obj.chat) : {};
+
+  const serialized = Object.assign(window.WAPI._serializeRawObj(obj), {
+    id: obj.id && obj.id._serialized ? obj.id._serialized : undefined,
+
+    quotedParticipant: obj.quotedParticipant
+      ? (obj.quotedParticipant._serialized || undefined)
+      : undefined,
+
+    author: obj.author
+      ? (obj.author._serialized || undefined)
+      : undefined,
+
+    // 10/12/2025 - novos campos
+    authorLid: obj.authorLid || "",
+    authorJid: obj.authorJid || "",
+
+    chatId: obj.chatId && obj.chatId._serialized
+      ? obj.chatId._serialized
+      : (obj.id ? obj.id.remote : null),
+
+    to: obj.to && obj.to._serialized ? obj.to._serialized : undefined,
+
+    fromMe: obj.id ? obj.id.fromMe : false,
+
+    sender: {
+      id: obj.from || undefined,
+      // 18/11/2025
+      fromLid: obj.fromLid || "",
+      fromJid: obj.fromJid || "",
+      isMe: obj.id ? obj.id.fromMe : false,
+      pushname: obj.notifyName || "",
+      name: obj.notifyName || "",
+      FormattedName: obj.notifyName || ""
+    },
+
+    timestamp: obj.t || null,
+    content: obj.body || "",
+    //body: obj.body || "",
+
+    isGroupMsg: obj.isGroupMsg || null,
+    isLink: obj.isLink || null,
+    isMMS: obj.isMMS || null,
+    isMedia: obj.isMedia || null,
+    isNotification: obj.isNotification || null,
+    isPSA: obj.isPSA || null,
+
+    type: obj.type || null,
+    chat: _chat || null,
+    isOnline: _chat.isOnline || null,
+    lastSeen: _chat.lastSeen || null,
+
+    // 18/11/2025 - campos derivados do from/to
+    chatLid: obj.fromLid || "",
+    chatJid: obj.fromJid || "",
+    toLid: obj.toLid || "",
+    toJid: obj.toJid || "",
+
+    quotedMsgObj: WAPI._serializeMessageObj(
+      WPP.whatsapp.functions.getQuotedMsgObj(obj)
+    ),
+
+    mediaData: window.WAPI._serializeRawObj(obj.mediaData),
+
+    reply: (body) => window.WAPI.reply(
+      _chat.id ? _chat.id._serialized : (obj.id ? obj.id.remote : null),
+      body,
+      obj
+    )
+  });
+  
+  return serialized;
+};
+
+
+/*window.WAPI._serializeMessageObj = (obj) => {
     if (obj == undefined) {
         return null;
     }
-    
+
     const _chat = obj['chat'] ? WAPI._serializeChatObj(obj['chat']) : {};
     return Object.assign(window.WAPI._serializeRawObj(obj), {
         id: obj.id._serialized,        
@@ -507,8 +604,7 @@ window.WAPI._serializeMessageObj = (obj) => {
         reply: body => window.WAPI.reply(_chat.id._serialized, body, obj)
     });
 };
-
-
+*/
 
 
 window.WAPI._serializeNumberStatusObj = (obj) => {
@@ -1709,19 +1805,19 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
     for (let i = messages.length - 1; i >= 0; i--) {
 
       //Add Marcelo 10/12/2025------------------------------------------
-      /*messages[i] = messages[i].toJSON();
+      messages[i] = messages[i].toJSON();
 
       var fromjidmsg = messages[i].from;        
-      const pnLidEntryMsg = await WPP.contact.getPnLidEntry(fromjidmsg).catch(() => null);
+      var pnLidEntryMsg = await WPP.contact.getPnLidEntry(fromjidmsg).catch(() => null);
       messages[i].fromJid = pnLidEntryMsg?.phoneNumber?._serialized ?? null;
       messages[i].fromLid = pnLidEntryMsg?.lid?._serialized ?? null;
       
       if (isGroupJid(messages[i].id.remote)) {
           var authorjidmsg = messages[i].author;        
-          const pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
+          var pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
           messages[i].authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
           messages[i].authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
-      }*/   
+      }      
       //-------------------------------------------------------------------
 
       var messageObj = messages[i];
@@ -3698,7 +3794,7 @@ WPP.on('chat.new_message', async (_msg) => {
 
   if (isGroupJid(msg.id.remote)) {
           var authorjidmsg = msg.author;        
-          const pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
+          var pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
           msg.authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
           msg.authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
   }
