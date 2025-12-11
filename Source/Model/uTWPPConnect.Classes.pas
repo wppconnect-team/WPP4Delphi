@@ -1828,6 +1828,9 @@ type
     FToLid: String;
     FchatLid: String;
     FchatJid: String;
+    FAuthor: String;
+    FAuthorJid: String;
+    FAuthorLid: String;
     //FMsgs: TArray<TMsgsClass>;
 
     //FLastReceivedKey: TLastReceivedKeyClass;
@@ -1951,6 +1954,11 @@ type
     property archiveAtMentionViewedInDrawer : Boolean     read FarchiveAtMentionViewedInDrawer write FarchiveAtMentionViewedInDrawer;
 
     property limitSharing                : TlimitSharingClass       read FlimitSharing         write FlimitSharing;
+
+    property author             : String          read FAuthor                      write FAuthor;
+    property authorJid          : String          read FAuthorJid                   write FAuthorJid;
+    property authorLid          : String          read FAuthorLid                   write FAuthorLid;
+
 
   end;
 
@@ -2890,6 +2898,9 @@ private
   FQuotedMsg: TQuotedMsgClass;
   FquotedStanzaID: string;
   FAuthor: String;
+  FAuthorJid: String;
+  FAuthorLid: String;
+
   FTemplateParams: TArray<String>;
   FInteractiveAnnotations: TArray<String>;
   FscansSidecar: TscansSidecarClass;
@@ -2927,8 +2938,8 @@ private
   FFromJid: String;
   FtoJid: String;
   FtoLid: String;
-    FReportingTokenInfo: TReportingTokenInfoClass;
-    FProtocolMessageKey: TProtocolMessageKeyClass;
+  FReportingTokenInfo: TReportingTokenInfoClass;
+  FProtocolMessageKey: TProtocolMessageKeyClass;
 
 public
   property ack: Extended read FAck write FAck;
@@ -2996,6 +3007,9 @@ public
   property quotedParticipant  : String          read FQuotedParticipant           write FQuotedParticipant;
   property quotedStanzaID     : string          read FquotedStanzaID              write FquotedStanzaID;
   property author             : String          read FAuthor                      write FAuthor;
+  property authorJid          : String          read FAuthorJid                   write FAuthorJid;
+  property authorLid          : String          read FAuthorLid                   write FAuthorLid;
+
   property templateParams     : TArray<String>  read FTemplateParams              write FTemplateParams;
   //property groupMentions      : TArray<String>          read FGroupMentions               write FGroupMentions;
   property interactiveAnnotations: TArray<String>         read FInteractiveAnnotations write FInteractiveAnnotations;
