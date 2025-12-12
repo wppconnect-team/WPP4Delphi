@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.26;1.0.0.9;78.3.0
+//2.2.0.27;1.0.0.9;78.3.0
 //
 //
 
@@ -536,9 +536,11 @@ window.WAPI._serializeMessageObj = (obj) => {
     toLid: obj.toLid || "",
     toJid: obj.toJid || "",
 
-    quotedMsgObj: WAPI._serializeMessageObj(
+    quotedMsgObj: null,
+
+    /*quotedMsgObj: WAPI._serializeMessageObj(
       WPP.whatsapp.functions.getQuotedMsgObj(obj)
-    ),
+    ),*/
 
     mediaData: window.WAPI._serializeRawObj(obj.mediaData),
 
