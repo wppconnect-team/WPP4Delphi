@@ -4056,12 +4056,16 @@ private
   FId: String;
   FRemote: String;
   FParticipant: String;
+  FremoteJid: String;
+  FremoteLid: String;
 public
   property _serialized: String read F_serialized write F_serialized;
   property fromMe: Boolean read FFromMe write FFromMe;
   property id: String read FId write FId;
   property remote: String read FRemote write FRemote;
   property participant: String read FParticipant write FParticipant;
+  property remoteJid: String read FremoteJid write FremoteJid;
+  property remoteLid: String read FremoteLid write FremoteLid;
 end;
 
 TMsgAck_changeClass = class(TClassPadrao)
@@ -4083,6 +4087,8 @@ private
   FMsg: TMsgAck_changeClass;
 public
   property msg: TMsgAck_changeClass read FMsg write FMsg;
+  function ToJsonString: string;
+  class function FromJsonString(AJsonString: string): TAck_changeClass;
 end;
 
 
@@ -6177,6 +6183,19 @@ end;
 destructor TIsLidMigrated.Destroy;
 begin
   inherited;
+end;
+
+{ TAck_changeClass }
+
+class function TAck_changeClass.FromJsonString(
+  AJsonString: string): TAck_changeClass;
+begin
+  result := TJson.JsonToObject<TAck_changeClass>(AJsonString);
+end;
+
+function TAck_changeClass.ToJsonString: string;
+begin
+  result := TJson.ObjectToJsonString(self);
 end;
 
 end.
