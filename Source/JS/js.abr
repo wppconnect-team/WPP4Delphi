@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.31;1.0.0.9;78.3.0
+//2.2.0.32;1.0.0.9;78.3.0
 //
 //
 
@@ -4060,7 +4060,8 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 
 
 
-//Marcelo 06/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
@@ -4069,8 +4070,20 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
     if (validar !== null && validar !== undefined) {
       let result;   
       SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      
+      //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
+      let chatid = null;
 
-      result = await WPP.chat.sendTextMessage(validar.wid._serialized, texto, options);
+      // Usa LID apenas se existir e for válido
+      if (typeof validar.lid === 'string' && validar.lid.length > 0 && validar.lid.endsWith('@lid')) {
+        chatid = validar.lid;
+      } else if (validar.wid && typeof validar.wid._serialized === 'string') {
+        chatid = validar.wid._serialized;
+      } else {
+        throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
+      }
+
+      result = await WPP.chat.sendTextMessage(chatid, texto, options);
 
       if (result !== undefined && result !== null) {
         //return result;
@@ -4090,8 +4103,8 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
         }
         return result;
       } else {
-        //console.error("A mensagem nÃ£o pÃ´de ser enviada.");        
-        var RetError = "A mensagem nÃ£o pÃ´de ser enviada.";
+        //console.error("A mensagem nÃƒÂ£o pÃƒÂ´de ser enviada.");        
+        var RetError = "A mensagem nÃƒÂ£o pÃƒÂ´de ser enviada.";
         Obj = {
           chatid: wid,
           Seuid: xSeuID,
@@ -4108,8 +4121,8 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
         return null;
       }
     } else {
-      //console.error("O Contato Não Existe ou é Inválido.");
-      var RetError = "O Contato Não Existe ou é Inválido.";
+      //console.error("O Contato NÃ£o Existe ou Ã© InvÃ¡lido.");
+      var RetError = "O Contato NÃ£o Existe ou Ã© InvÃ¡lido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -4126,11 +4139,11 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
       return null;
     }
   } catch (error) {
-    // Verificar se o erro Ã© causado pelo contato bloqueado
+    // Verificar se o erro ÃƒÂ© causado pelo contato bloqueado
     if (error.name === "ContactBlocked") {
-      //console.log("Contato estÃ¡ bloqueado:", error.contact);
-      // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O Contato Não Existe ou é Inválido.";
+      //console.log("Contato estÃƒÂ¡ bloqueado:", error.contact);
+      // FaÃƒÂ§a alguma aÃƒÂ§ÃƒÂ£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
+      var RetError = "O Contato NÃ£o Existe ou Ã© InvÃ¡lido.";
       Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -4158,12 +4171,13 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
     }
-    // Retorne um valor padrÃ£o ou null para evitar que a aplicaÃ§Ã£o quebre
+    // Retorne um valor padrÃƒÂ£o ou null para evitar que a aplicaÃƒÂ§ÃƒÂ£o quebre
     return null;
   }
 };
 
-//Marcelo 06/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
@@ -4173,7 +4187,20 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
       let result;
       SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
-      result = await WPP.chat.sendFileMessage(validar.wid._serialized, content, options);
+      //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
+      let chatid = null;
+
+      // Usa LID apenas se existir e for válido
+      if (typeof validar.lid === 'string' && validar.lid.length > 0 && validar.lid.endsWith('@lid')) {
+        chatid = validar.lid;
+      } else if (validar.wid && typeof validar.wid._serialized === 'string') {
+        chatid = validar.wid._serialized;
+      } else {
+        throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
+      }
+
+      result = await WPP.chat.sendTextMessage(chatid, content, options);
+      //result = await WPP.chat.sendFileMessage(validar.wid._serialized, content, options);
 
       if (result !== undefined && result !== null) {
         //return result;
@@ -4267,7 +4294,8 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
   }
 };
 
-//Marcelo 06/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
@@ -4277,7 +4305,21 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
       let result;
       SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
-      result = await WPP.chat.sendListMessage(validar.wid._serialized, options);
+      
+      //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
+      let chatid = null;
+
+      // Usa LID apenas se existir e for válido
+      if (typeof validar.lid === 'string' && validar.lid.length > 0 && validar.lid.endsWith('@lid')) {
+        chatid = validar.lid;
+      } else if (validar.wid && typeof validar.wid._serialized === 'string') {
+        chatid = validar.wid._serialized;
+      } else {
+        throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
+      }      
+
+      result = await WPP.chat.sendListMessage(chatid, options);
+      //result = await WPP.chat.sendListMessage(validar.wid._serialized, options);
 
       if (result !== undefined && result !== null) {
         //return result;
@@ -4371,43 +4413,76 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
   }
 };
 
-//Marcelo 06/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
-  var isGroup = wid.includes('@g.us');
+
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === 'string' && validarObj.lid.length > 0 && validarObj.lid.endsWith('@lid')) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === 'string' && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final: o que veio por parâmetro (se for válido)
+    if (typeof fallbackWid === 'string' && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
+  }
+
+  const isGroup = typeof wid === 'string' && wid.includes('@g.us');
+
   try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
     const validarContact = await WPP.contact.queryExists(widcontacts);
 
-    if (validar !== null && validar !== undefined && validarContact !== null && validarContact !== undefined) {
+    if (validar != null && validarContact != null) {
       let result;
-      SetConsoleMessage("CheckNumberExists",  JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
-      SetConsoleMessage("CheckNumberExists",  JSON.stringify({ NumberOriginal : widcontacts, id : validarContact.wid._serialized, valid : true}));
 
-      result = await WPP.chat.sendVCardContactMessage(validar.wid._serialized, validarContact.wid._serialized, options);
+      // Resolve IDs (LID se existir, senão WID)
+      const chatidDestino = resolveChatIdFromQuery(validar, wid);
+      const chatidContatoVCard = resolveChatIdFromQuery(validarContact, widcontacts);
 
-      if (result !== undefined && result !== null) {
-        //return result;
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({
+        NumberOriginal: wid,
+        id: validar?.wid?._serialized ?? wid,
+        valid: true,
+        lid: validar?.lid ?? "",
+        status: validar?.status ?? ""
+      }));
 
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({
+        NumberOriginal: widcontacts,
+        id: validarContact?.wid?._serialized ?? widcontacts,
+        valid: true,
+        lid: validarContact?.lid ?? ""
+      }));
+
+      // Envia para o destino resolvido e com o contato do vCard resolvido
+      result = await WPP.chat.sendVCardContactMessage(chatidDestino, chatidContatoVCard, options);
+
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
             Seuid2: xSeuID2,
             Seuid3: xSeuID3,
             Seuid4: xSeuID4,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("sendVCardContactMessageEx", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
         }
         return result;
       } else {
-        //console.error("A mensagem nÃ£o pÃ´de ser enviada.");
-        //var RetError = error.message ? error.message : (error.stack || "Unknown");
-        var RetError = "A mensagem nÃ£o pÃ´de ser enviada.";
-        Obj = {
+        const RetError = "A mensagem não pôde ser enviada.";
+        const Obj = {
           chatid: wid,
+          widcontacts: widcontacts,
           Seuid: xSeuID,
           Seuid2: xSeuID2,
           Seuid3: xSeuID3,
@@ -4417,16 +4492,13 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O Contato Não Existe ou é Inválido.");
-      var RetError = "O Contato Não Existe ou é Inválido.";
-      Obj = {
+      const RetError = "O Contato Não Existe ou é Inválido.";
+      const Obj = {
         chatid: wid,
-        widContacts: widContacts,
+        widcontacts: widcontacts,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
         Seuid3: xSeuID3,
@@ -4436,25 +4508,22 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      
-      if (validar == null && validar == undefined) {
-        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+
+      if (validar == null) {
+        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      }
+      if (validarContact == null) {
+        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: widcontacts, id: widcontacts, valid: false }));
       }
 
-      if (validarContact == null && validarContact == undefined) {
-        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : widContacts, id : widContacts, valid : false}));
-      }
       return null;
     }
   } catch (error) {
-    // Verificar se o erro Ã© causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato estÃ¡ bloqueado:", error.contact);
-      // FaÃ§a alguma aÃ§Ã£o apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O Contato Não Existe ou é Inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O Contato Não Existe ou é Inválido.";
+      const Obj = {
         chatid: wid,
-        widContacts: widContacts,
+        widcontacts: widcontacts,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
         Seuid3: xSeuID3,
@@ -4463,14 +4532,12 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         statusCode: 302,
         Error: RetError,
       };
-      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message ? error.message : (error.stack || "Unknown Error");
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
-        widContacts: widContacts,
+        widcontacts: widcontacts,
         Seuid: xSeuID,
         Seuid2: xSeuID2,
         Seuid3: xSeuID3,
@@ -4479,14 +4546,15 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
         statusCode: 303,
         Error: RetError,
       };
-      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));      
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    // Retorne um valor padrÃ£o ou null para evitar que a aplicaÃ§Ã£o quebre
+
     return null;
   }
 };
 
-//Marcelo 06/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   var isGroup = wid.includes('@g.us');
   try {
@@ -4495,8 +4563,21 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', x
     if (validar !== null && validar !== undefined) {
       let result;
       SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
+      //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
+      let chatid = null;
 
-      result = await WPP.chat.sendLocationMessage(validar.wid._serialized, options);
+      // Usa LID apenas se existir e for válido
+      if (typeof validar.lid === 'string' && validar.lid.length > 0 && validar.lid.endsWith('@lid')) {
+        chatid = validar.lid;
+      } else if (validar.wid && typeof validar.wid._serialized === 'string') {
+        chatid = validar.wid._serialized;
+      } else {
+        throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
+      }
+
+      
+      result = await WPP.chat.sendLocationMessage(chatid, options);
+      //result = await WPP.chat.sendLocationMessage(validar.wid._serialized, options);
 
       if (result !== undefined && result !== null) {
         //return result;
