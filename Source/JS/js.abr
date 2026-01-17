@@ -6455,8 +6455,21 @@ window.WPP.sendPixKeyMessageNew = async function (wid, params, xSeuID = '', xSeu
     if (validar !== null && validar !== undefined) {
       let result;   
       SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      
+      //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
+      let chatid = null;
 
-      result = await WPP.chat.sendPixKeyMessage(validar.wid._serialized, params);
+      // Usa LID apenas se existir e for vÃ¡lido
+      if (typeof validar.lid === 'string' && validar.lid.length > 0 && validar.lid.endsWith('@lid')) {
+        chatid = validar.lid;
+      } else if (validar.wid && typeof validar.wid._serialized === 'string') {
+        chatid = validar.wid._serialized;
+      } else {
+        throw new Error('NÃ£o foi possÃ­vel determinar o chatid (lid/wid invÃ¡lidos)');
+      }
+
+      result = await WPP.chat.sendPixKeyMessage(chatid, params); 
+      //result = await WPP.chat.sendPixKeyMessage(validar.wid._serialized, params);
 
       if (result !== undefined && result !== null) {
         //return result;
