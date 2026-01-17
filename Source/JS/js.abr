@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.32;1.0.0.9;78.3.0
+//2.2.0.33;1.0.0.9;78.3.0
 //
 //
 
@@ -4199,7 +4199,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
         throw new Error('Não foi possível determinar o chatid (lid/wid inválidos)');
       }
 
-      result = await WPP.chat.sendTextMessage(chatid, content, options);
+      result = await WPP.chat.sendFileMessage(chatid, content, options);
       //result = await WPP.chat.sendFileMessage(validar.wid._serialized, content, options);
 
       if (result !== undefined && result !== null) {
