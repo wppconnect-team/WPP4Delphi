@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.33;1.0.0.9;78.3.0
+//2.2.0.34;1.0.0.9;78.3.0
 //
 //
 
@@ -4812,44 +4812,66 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
   }
 };
 
-//Marcelo 07/04/2024
+//Marcelo 17/01/2026
 window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice, revoke, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
-  var isGroup = wid.includes("@g.us");
+
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final
+    if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error("Não foi possível determinar o chatid (lid/wid inválidos)");
+  }
+
+  const isGroup = typeof wid === "string" && wid.includes("@g.us");
+
   try {
-    /*const validar = isGroup ? true : await WPP.contact.queryExists(wid);*/
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
-    if (validar !== null && validar !== undefined) {
+    if (validar != null) {
       let result;
+
+      // Resolve chatId (LID se existir, senão WID)
+      const chatid = resolveChatIdFromQuery(validar, wid);
+
       SetConsoleMessage(
         "CheckNumberExists",
         JSON.stringify({
           NumberOriginal: wid,
-          id: validar.wid._serialized,
+          id: validar?.wid?._serialized ?? wid,
           valid: true,
-          lid: validar.lid ?? "", 
-          status: validar.status ?? "",
+          lid: validar?.lid ?? "",
+          status: validar?.status ?? "",
         })
       );
 
       result = await WPP.chat.deleteMessage(
-        validar.wid._serialized,
+        chatid,
         uniqueId,
         deleteMediaInDevice,
         revoke
       );
 
-      if (result !== undefined && result !== null) {
-        //return result;
-
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
-	    Seuid2: xSeuID2,
-	    Seuid3: xSeuID3,
-	    Seuid4: xSeuID4,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
             wid: wid,
+            chatid: chatid,
             uniqueId: uniqueId,
+            deleteMediaInDevice: !!deleteMediaInDevice,
+            revoke: !!revoke,
             JsonMessage: JSON.stringify(result),
           };
 
@@ -4859,58 +4881,47 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
         }
         return result;
       } else {
-        //console.error("A mensagem não pôde ser enviada.");
-        var RetError = "A mensagem não pôde ser apagada.";
-        Obj = {
+        const RetError = "A mensagem não pôde ser apagada.";
+        const Obj = {
           chatid: wid,
           Seuid: xSeuID,
-	  Seuid2: xSeuID2,
-	  Seuid3: xSeuID3,
-	  Seuid4: xSeuID4,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
           uniqueId: uniqueId,
           RetEvent: "deleteMessageNew",
           statusCode: 300,
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O contato não existe ou é inválido.");
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
-	Seuid2: xSeuID2,
-	Seuid3: xSeuID3,
-	Seuid4: xSeuID4,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 301,
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage(
-        "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
-      );
-
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
       return null;
     }
   } catch (error) {
-    // Verificar se o erro é causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato está bloqueado:", error.contact);
-      // Faça alguma ação apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
-	Seuid2: xSeuID2,
-	Seuid3: xSeuID3,
-	Seuid4: xSeuID4,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 302,
@@ -4918,17 +4929,13 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message
-        ? error.message
-        : error.stack || "Unknown Error";
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
-	Seuid2: xSeuID2,
-	Seuid3: xSeuID3,
-	Seuid4: xSeuID4,
+        Seuid2: xSeuID2,
+        Seuid3: xSeuID3,
+        Seuid4: xSeuID4,
         uniqueId: uniqueId,
         RetEvent: "deleteMessageNew",
         statusCode: 303,
@@ -4936,50 +4943,69 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    // Retorne um valor padrão ou null para evitar que a aplicação quebre
     return null;
   }
 };
 
-//Marcelo 07/04/2024
+//Marcelo 17/01/2026
 window.WPP.markIsReadNew = async function (wid, xSeuID) {
-  var isGroup = wid.includes("@g.us");
-  try {    
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final
+    if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error("Não foi possível determinar o chatid (lid/wid inválidos)");
+  }
+
+  const isGroup = typeof wid === "string" && wid.includes("@g.us");
+
+  try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
-    if (validar !== null && validar !== undefined) {
+    if (validar != null) {
       let result;
+
+      // Resolve chatId (LID se existir, senão WID)
+      const chatid = resolveChatIdFromQuery(validar, wid);
+
       SetConsoleMessage(
         "CheckNumberExists",
         JSON.stringify({
           NumberOriginal: wid,
-          id: validar.wid._serialized,
+          id: validar?.wid?._serialized ?? wid,
           valid: true,
-          lid: validar.lid ?? "", 
-          status: validar.status ?? "",
+          lid: validar?.lid ?? "",
+          status: validar?.status ?? "",
         })
       );
 
-      result = await WPP.chat.markIsRead(validar.wid._serialized);
+      // Marca como lida usando o chatid resolvido
+      result = await WPP.chat.markIsRead(chatid);
 
-      if (result !== undefined && result !== null) {
-        //return result;
-
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
             wid: wid,
+            chatid: chatid,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("markIsReadNew", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
         }
         return result;
       } else {
-        var RetError = "A conversa nao pode marcar como lida";
-        Obj = {
+        const RetError = "A conversa nao pode marcar como lida";
+        const Obj = {
           chatid: wid,
           Seuid: xSeuID,
           RetEvent: "markIsReadNew",
@@ -4987,14 +5013,11 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O contato não existe ou é inválido.");
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsReadNew",
@@ -5002,20 +5025,13 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage(
-        "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
-      );
-
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
       return null;
     }
   } catch (error) {
-    // Verificar se o erro é causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato está bloqueado:", error.contact);
-      // Faça alguma ação apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsReadNew",
@@ -5024,12 +5040,8 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message
-        ? error.message
-        : error.stack || "Unknown Error";
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsReadNew",
@@ -5038,50 +5050,70 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    // Retorne um valor padrão ou null para evitar que a aplicação quebre
     return null;
   }
 };
 
-//Marcelo 07/04/2024
+//Marcelo 17/01/2026
 window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
-  var isGroup = wid.includes("@g.us");
-  try {    
+
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final
+    if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error("Não foi possível determinar o chatid (lid/wid inválidos)");
+  }
+
+  const isGroup = typeof wid === "string" && wid.includes("@g.us");
+
+  try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
-    if (validar !== null && validar !== undefined) {
+    if (validar != null) {
       let result;
+
+      // Resolve chatId (LID se existir, senão WID)
+      const chatid = resolveChatIdFromQuery(validar, wid);
+
       SetConsoleMessage(
         "CheckNumberExists",
         JSON.stringify({
           NumberOriginal: wid,
-          id: validar.wid._serialized,
+          id: validar?.wid?._serialized ?? wid,
           valid: true,
-          lid: validar.lid ?? "", 
-          status: validar.status ?? "",
+          lid: validar?.lid ?? "",
+          status: validar?.status ?? "",
         })
       );
 
-      result = await WPP.chat.markIsUnread(validar.wid._serialized);
+      // Marca como NÃO lida usando o chatid resolvido
+      result = await WPP.chat.markIsUnread(chatid);
 
-      if (result !== undefined && result !== null) {
-        //return result;
-
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
             wid: wid,
+            chatid: chatid,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("markIsUnreadNew", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
         }
         return result;
       } else {
-        var RetError = "A conversa nao pode marcar como nao lida";
-        Obj = {
+        const RetError = "A conversa nao pode marcar como nao lida";
+        const Obj = {
           chatid: wid,
           Seuid: xSeuID,
           RetEvent: "markIsUnreadNew",
@@ -5089,14 +5121,11 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O contato não existe ou é inválido.");
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsUnreadNew",
@@ -5104,20 +5133,13 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage(
-        "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
-      );
-
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
       return null;
     }
   } catch (error) {
-    // Verificar se o erro é causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato está bloqueado:", error.contact);
-      // Faça alguma ação apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsUnreadNew",
@@ -5126,67 +5148,83 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message
-        ? error.message
-        : error.stack || "Unknown Error";
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsUnreadNew",
         statusCode: 303,
         Error: RetError,
       };
+      SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+
+    return null;
   }
-  return null;
-  // Retorne um valor padrão ou null para evitar que a aplicação quebre
 };
 
-//Marcelo 07/04/2024
+
+//Marcelo 17/01/2026
 window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
-  var isGroup = wid.includes("@g.us");
-  try {    
+
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final
+    if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error("Não foi possível determinar o chatid (lid/wid inválidos)");
+  }
+
+  const isGroup = typeof wid === "string" && wid.includes("@g.us");
+
+  try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
-    if (validar !== null && validar !== undefined) {
+    if (validar != null) {
       let result;
+
+      // Resolve chatId (LID se existir, senão WID)
+      const chatid = resolveChatIdFromQuery(validar, wid);
+
       SetConsoleMessage(
         "CheckNumberExists",
         JSON.stringify({
           NumberOriginal: wid,
-          id: validar.wid._serialized,
+          id: validar?.wid?._serialized ?? wid,
           valid: true,
-          lid: validar.lid ?? "", 
-          status: validar.status ?? "",
+          lid: validar?.lid ?? "",
+          status: validar?.status ?? "",
         })
       );
 
-      result = await WPP.chat.markIsComposing(
-        validar.wid._serialized,
-        duration
-      );
+      // Marca como "escrevendo" usando o chatid resolvido
+      result = await WPP.chat.markIsComposing(chatid, duration);
 
-      if (result !== undefined && result !== null) {
-        //return result;
-
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
             wid: wid,
+            chatid: chatid,
+            duration: duration,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("markIsComposingNew", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
         }
         return result;
       } else {
-        var RetError = "A conversa nao pode marcar como escrevendo";
-        Obj = {
+        const RetError = "A conversa nao pode marcar como escrevendo";
+        const Obj = {
           chatid: wid,
           Seuid: xSeuID,
           RetEvent: "markIsComposingNew",
@@ -5194,14 +5232,11 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O contato não existe ou é inválido.");
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsComposingNew",
@@ -5209,20 +5244,13 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage(
-        "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
-      );
-
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
       return null;
     }
   } catch (error) {
-    // Verificar se o erro é causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato está bloqueado:", error.contact);
-      // Faça alguma ação apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsComposingNew",
@@ -5231,12 +5259,8 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message
-        ? error.message
-        : error.stack || "Unknown Error";
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsComposingNew",
@@ -5245,53 +5269,72 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    // Retorne um valor padrão ou null para evitar que a aplicação quebre
     return null;
   }
 };
 
-//Marcelo 07/04/2024
+
+//Marcelo 17/01/2027
 window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
-  var isGroup = wid.includes("@g.us");
-  try {    
+
+  function resolveChatIdFromQuery(validarObj, fallbackWid) {
+    // Usa LID apenas se existir e for válido
+    if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
+      return validarObj.lid;
+    }
+    // Caso contrário, usa WID
+    if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
+      return validarObj.wid._serialized;
+    }
+    // Fallback final
+    if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
+      return fallbackWid;
+    }
+    throw new Error("Não foi possível determinar o chatid (lid/wid inválidos)");
+  }
+
+  const isGroup = typeof wid === "string" && wid.includes("@g.us");
+
+  try {
     const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
 
-    if (validar !== null && validar !== undefined) {
+    if (validar != null) {
       let result;
+
+      // Resolve chatId (LID se existir, senão WID)
+      const chatid = resolveChatIdFromQuery(validar, wid);
+
       SetConsoleMessage(
         "CheckNumberExists",
         JSON.stringify({
           NumberOriginal: wid,
-          id: validar.wid._serialized,
+          id: validar?.wid?._serialized ?? wid,
           valid: true,
-          lid: validar.lid ?? "", 
-          status: validar.status ?? "",
+          lid: validar?.lid ?? "",
+          status: validar?.status ?? "",
         })
       );
 
-      result = await WPP.chat.markIsRecording(
-        validar.wid._serialized,
-        duration
-      );
+      // Marca como "gravando" usando o chatid resolvido
+      result = await WPP.chat.markIsRecording(chatid, duration);
 
-      if (result !== undefined && result !== null) {
-        //return result;
-
+      if (result != null) {
         try {
-          Obj = {
+          const Obj = {
             Seuid: xSeuID,
             wid: wid,
+            chatid: chatid,
+            duration: duration,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("markIsRecordingNew", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
         }
         return result;
       } else {
-        var RetError = "A conversa nao pode marcar como gravando";
-        Obj = {
+        const RetError = "A conversa nao pode marcar como gravando";
+        const Obj = {
           chatid: wid,
           Seuid: xSeuID,
           RetEvent: "markIsRecordingNew",
@@ -5299,14 +5342,11 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
           Error: RetError,
         };
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-        //return error;
-
         return null;
       }
     } else {
-      //console.error("O contato não existe ou é inválido.");
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsRecordingNew",
@@ -5314,20 +5354,13 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage(
-        "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
-      );
-
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
       return null;
     }
   } catch (error) {
-    // Verificar se o erro é causado pelo contato bloqueado
-    if (error.name === "ContactBlocked") {
-      //console.log("Contato está bloqueado:", error.contact);
-      // Faça alguma ação apropriada, por exemplo, exiba uma mensagem de erro ou registre o erro
-      var RetError = "O contato não existe ou é inválido.";
-      Obj = {
+    if (error && error.name === "ContactBlocked") {
+      const RetError = "O contato não existe ou é inválido.";
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsRecordingNew",
@@ -5336,12 +5369,8 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      // Lidar com outros erros que podem ocorrer
-      //console.error("Erro desconhecido:", error);
-      var RetError = error.message
-        ? error.message
-        : error.stack || "Unknown Error";
-      Obj = {
+      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const Obj = {
         chatid: wid,
         Seuid: xSeuID,
         RetEvent: "markIsRecordingNew",
@@ -5350,7 +5379,6 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     }
-    // Retorne um valor padrão ou null para evitar que a aplicação quebre
     return null;
   }
 };
