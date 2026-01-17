@@ -45,7 +45,7 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.7'; //  04/12/2025
+  TWPPConnectVersion              = '5.0.0.8'; //  17/01/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -648,11 +648,11 @@ Const
   FrmConsole_JS_VAR_markIsUnread        = 'WPP.chat.markIsUnread("<#MSG_PHONE#>");';
 
   //Marcelo 07/04/2024
-  FrmConsole_JS_VAR_markIsComposingNew  = 'window.WPP.markIsComposingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<SEUID>");';
-  FrmConsole_JS_VAR_markIsReadNew       = 'window.WPP.markIsReadNew("<#MSG_PHONE#>", "<SEUID>");';
-  FrmConsole_JS_VAR_markIsRecordingNew  = 'window.WPP.markIsRecordingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<SEUID>");';
-  FrmConsole_JS_VAR_markIsUnreadNew     = 'window.WPP.markIsUnreadNew("<#MSG_PHONE#>", "<SEUID>");';
-  FrmConsole_JS_VAR_markPlayedNew     = 'window.WPP.markPlayedNew("<#MSG_PHONE#>", "<SEUID>");';
+  FrmConsole_JS_VAR_markIsComposingNew  = 'window.WPP.markIsComposingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<#SEUID#>");';
+  FrmConsole_JS_VAR_markIsReadNew       = 'window.WPP.markIsReadNew("<#MSG_PHONE#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_markIsRecordingNew  = 'window.WPP.markIsRecordingNew("<#MSG_PHONE#>", <#MSG_DURATION#>, "<#SEUID#>");';
+  FrmConsole_JS_VAR_markIsUnreadNew     = 'window.WPP.markIsUnreadNew("<#MSG_PHONE#>", "<#SEUID#>");';
+  FrmConsole_JS_VAR_markPlayedNew     = 'window.WPP.markPlayedNew("<#MSG_PHONE#>", "<#SEUID#>");';
 
   //Adicionado Por Marcelo 14/03/2023
   FrmConsole_JS_VAR_markPlayed          = 'WPP.chat.markPlayed("<#MSG_PHONE#>");';
