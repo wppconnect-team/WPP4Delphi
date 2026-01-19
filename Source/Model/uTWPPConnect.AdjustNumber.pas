@@ -111,6 +111,10 @@ begin
     if not AutoAdjust then
       Exit;
 
+    //Marcelo Não Validar Número já com o @lid 18/01/2026
+    if pos('@lid', AnsiLowerCase(PNum) ) > 0 then
+      Exit;
+
     //Marcelo Não Validar Número ja Formatado 02/07/2023
     if pos('@c.us', PNum) > 0 then
       Exit;

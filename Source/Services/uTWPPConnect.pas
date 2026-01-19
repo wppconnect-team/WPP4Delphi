@@ -5072,6 +5072,7 @@ var
 begin
   if Application.Terminated Then
     Exit;
+    
   if not Assigned(FrmConsole) then
     Exit;
     
