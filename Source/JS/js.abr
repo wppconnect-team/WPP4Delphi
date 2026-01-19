@@ -4050,10 +4050,12 @@ window.WAPI.genLinkDeviceCodeForPhoneNumber2 = async function(chatid) {
 
 
 //Marcelo 17/01/2026
-window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
-  var isGroup = wid.includes('@g.us');
+window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {  
+  var isGroup = (typeof wid === 'string') && wid.includes('@g.us');
+  var isLid   = (typeof wid === 'string') && wid.endsWith('@lid');
   try {
-    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+    //const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : isLid ? { wid: { _serialized: wid }, lid: wid, status: 'LID_DIRECT' } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;   
@@ -4166,10 +4168,13 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
 
 
 //Marcelo 17/01/2026
-window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
-  var isGroup = wid.includes('@g.us');
+window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {  
+  var isGroup = (typeof wid === 'string') && wid.includes('@g.us');
+  var isLid   = (typeof wid === 'string') && wid.endsWith('@lid');
+
   try {
-    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+    //const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+    const validar = isGroup ? { wid: { _serialized: wid } } : isLid ? { wid: { _serialized: wid }, lid: wid, status: 'LID_DIRECT' } : await WPP.contact.queryExists(wid);
 
     if (validar !== null && validar !== undefined) {
       let result;
