@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.43;1.0.0.9;78.3.0
+//2.2.0.44;1.0.0.9;78.3.0
 //
 //
 
@@ -958,7 +958,7 @@ window.WAPI.getAllCommunitys = async function(done) {
 
 }; 
  
-window.WAPI.getAllGroups = async function(done) {
+/*window.WAPI.getAllGroups = async function(done) {
     //let groups = WPP.whatsapp.Chat.filter((chat) => chat.isGroup);
     const options = {        
         onlyGroups: true 
@@ -982,6 +982,35 @@ window.WAPI.getAllGroups = async function(done) {
 	//return groups;
     
 }; 
+*/
+
+window.WAPI.getAllGroups = async function(done) {
+    const groups = await WPP.chat.list({ onlyGroups: true });
+    const arrGroups = [];
+
+    for (const chat of groups) {
+        let groupName =
+            chat.name ||
+            chat.groupMetadata?.subject;
+
+        if (!groupName) {
+            try {
+                const contact = await WPP.contact.get(chat.id);
+                groupName = contact?.name || "Grupo sem nome";
+            } catch {
+                groupName = "Grupo sem nome";
+            }
+        }
+
+        arrGroups.push(`${chat.id._serialized} ${groupName}`);
+    }
+
+    if (done) done(arrGroups);
+
+    SetConsoleMessage("getAllGroups", JSON.stringify(arrGroups));
+    return arrGroups;
+};
+
 
 //01/06/2020
 window.WAPI.getAllGroupsList = async function(done) {
