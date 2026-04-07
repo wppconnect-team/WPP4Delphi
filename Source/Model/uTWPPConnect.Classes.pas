@@ -5320,7 +5320,9 @@ begin
 
     if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
-      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToString)-2);
+      //vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+
       //inherited Create(vJson);
       FNumbers      := TStringList.create;
       FNumbers.Text := vJson;
