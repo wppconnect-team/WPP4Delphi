@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.45;1.0.0.9;78.3.0
+//2.2.0.46;1.0.0.9;78.3.0
 //
 //
 
@@ -4833,7 +4833,7 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
   }
 };
 
-//Marcelo 17/01/2026
+//Marcelo 15/04/2026
 window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice, revoke, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
 
   function resolveChatIdFromQuery(validarObj, fallbackWid) {
@@ -4854,8 +4854,39 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
 
   const isGroup = typeof wid === "string" && wid.includes("@g.us");
 
+  // Se o wid já é um @lid, pula toda verificação de contato
+  const isAlreadyLid = typeof wid === "string" && wid.endsWith("@lid");
+
   try {
-    const validar = isGroup ? { wid: { _serialized: wid } } : await WPP.contact.queryExists(wid);
+    let validar = null;
+
+    if (isGroup || isAlreadyLid) {
+      // Grupo ou wid já é @lid: monta objeto direto sem consulta
+      validar = { wid: { _serialized: wid } };
+      if (isAlreadyLid) {
+        validar.lid = wid;
+      }
+    } else {
+      // 1ª tentativa: getPnLidEntry (mais rápido, retorna @lid direto)
+      try {
+        const pnLidEntry = await WPP.contact.getPnLidEntry(wid);
+        if (pnLidEntry != null) {
+          // getPnLidEntry retornou: monta objeto compatível com resolveChatIdFromQuery
+          validar = {
+            wid: { _serialized: pnLidEntry.pn ?? wid },
+            lid: pnLidEntry.lid ?? "",
+          };
+        }
+      } catch (lidErr) {
+        // getPnLidEntry falhou: segue para fallback
+        validar = null;
+      }
+
+      // Fallback: queryExists (caso getPnLidEntry falhe ou retorne null)
+      if (validar == null) {
+        validar = await WPP.contact.queryExists(wid);
+      }
+    }
 
     if (validar != null) {
       let result;
@@ -4895,7 +4926,6 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
             revoke: !!revoke,
             JsonMessage: JSON.stringify(result),
           };
-
           SetConsoleMessage("deleteMessageNew", JSON.stringify(Obj));
         } catch (err) {
           console.log(err);
@@ -4917,6 +4947,7 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
         SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
         return null;
       }
+
     } else {
       const RetError = "O contato não existe ou é inválido.";
       const Obj = {
@@ -4931,9 +4962,13 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      SetConsoleMessage(
+        "CheckNumberExists",
+        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+      );
       return null;
     }
+
   } catch (error) {
     if (error && error.name === "ContactBlocked") {
       const RetError = "O contato não existe ou é inválido.";
@@ -4950,7 +4985,9 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
     } else {
-      const RetError = (error && error.message) ? error.message : ((error && error.stack) || "Unknown Error");
+      const RetError = (error && error.message)
+        ? error.message
+        : ((error && error.stack) || "Unknown Error");
       const Obj = {
         chatid: wid,
         Seuid: xSeuID,
