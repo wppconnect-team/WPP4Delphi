@@ -4217,6 +4217,7 @@ var
 begin
   if Application.Terminated Then
     Exit;
+
   if not Assigned(FrmConsole) then
     Exit;
     
@@ -4246,6 +4247,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
+
 procedure TWPPConnect.SendFileMessageNew(phoneNumber, PFileName, xSeuID, pMessage: String; pIsSticker: boolean;
   xSeuID2, xSeuID3, xSeuID4: string);
 var
@@ -4281,8 +4283,14 @@ begin
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
-  LExtension   := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
-  phoneNumber := AjustNumber.FormatIn(phoneNumber);
+
+  LExtension := LowerCase(Copy(ExtractFileExt(PFileName),2,5));
+
+
+  //phoneNumber := AjustNumber.FormatIn(phoneNumber);
+  if (pos('@lid', AnsiLowerCase(phoneNumber)) = 0) then
+    if pos('@', phoneNumber) = 0 then
+      phoneNumber := SomenteNumero(phoneNumber);
 
   {if pos('@', phoneNumber) = 0 then
   Begin
