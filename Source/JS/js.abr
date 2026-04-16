@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.46;1.0.0.9;78.3.0
+//2.2.0.47;1.0.0.9;78.3.0
 //
 //
 
@@ -4837,15 +4837,12 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
 window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice, revoke, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
 
   function resolveChatIdFromQuery(validarObj, fallbackWid) {
-    // Usa LID apenas se existir e for válido
     if (validarObj && typeof validarObj.lid === "string" && validarObj.lid.length > 0 && validarObj.lid.endsWith("@lid")) {
       return validarObj.lid;
     }
-    // Caso contrário, usa WID
     if (validarObj && validarObj.wid && typeof validarObj.wid._serialized === "string" && validarObj.wid._serialized.length > 0) {
       return validarObj.wid._serialized;
     }
-    // Fallback final
     if (typeof fallbackWid === "string" && fallbackWid.length > 0) {
       return fallbackWid;
     }
@@ -4853,36 +4850,41 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
   }
 
   const isGroup = typeof wid === "string" && wid.includes("@g.us");
-
-  // Se o wid já é um @lid, pula toda verificação de contato
   const isAlreadyLid = typeof wid === "string" && wid.endsWith("@lid");
+
+  let pnLidEntry = null;
 
   try {
     let validar = null;
 
-    if (isGroup || isAlreadyLid) {
-      // Grupo ou wid já é @lid: monta objeto direto sem consulta
+    if (isGroup) {
+      // Grupo: não precisa resolver LID
       validar = { wid: { _serialized: wid } };
-      if (isAlreadyLid) {
-        validar.lid = wid;
+    } else if (isAlreadyLid) {
+      // Wid já é @lid: monta validar direto E também consulta getPnLidEntry
+      // (mesmo sendo @lid) pra termos phoneNumber disponível caso precise do fallback.
+      validar = { wid: { _serialized: wid }, lid: wid };
+
+      try {
+        pnLidEntry = await WPP.contact.getPnLidEntry(wid);
+      } catch (lidErr) {
+        // Se falhar, pnLidEntry continua null e o fallback simplesmente não vai acionar.
+        pnLidEntry = null;
       }
     } else {
-      // 1ª tentativa: getPnLidEntry (mais rápido, retorna @lid direto)
+      // Wid normal (@c.us ou número): fluxo original
       try {
-        const pnLidEntry = await WPP.contact.getPnLidEntry(wid);
+        pnLidEntry = await WPP.contact.getPnLidEntry(wid);
         if (pnLidEntry != null) {
-          // getPnLidEntry retornou: monta objeto compatível com resolveChatIdFromQuery
           validar = {
             wid: { _serialized: pnLidEntry.pn ?? wid },
             lid: pnLidEntry.lid ?? "",
           };
         }
       } catch (lidErr) {
-        // getPnLidEntry falhou: segue para fallback
         validar = null;
       }
 
-      // Fallback: queryExists (caso getPnLidEntry falhe ou retorne null)
       if (validar == null) {
         validar = await WPP.contact.queryExists(wid);
       }
@@ -4890,8 +4892,6 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
 
     if (validar != null) {
       let result;
-
-      // Resolve chatId (LID se existir, senão WID)
       const chatid = resolveChatIdFromQuery(validar, wid);
 
       SetConsoleMessage(
@@ -4988,6 +4988,100 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
       const RetError = (error && error.message)
         ? error.message
         : ((error && error.stack) || "Unknown Error");
+
+      // ============================================================
+      // >>> FALLBACK: "Chat not found for" em conversa INDIVIDUAL <
+      // ============================================================
+      const retStr = (RetError == null) ? "" : String(RetError);
+      const retStrNorm = retStr.toLowerCase();
+
+      const hasChatNotFound = retStrNorm.indexOf("chat not found for") !== -1;
+
+      const hasPhoneNumber =
+        pnLidEntry &&
+        pnLidEntry.phoneNumber &&
+        typeof pnLidEntry.phoneNumber._serialized === "string" &&
+        pnLidEntry.phoneNumber._serialized.length > 0;
+
+      console.log("[deleteMessageNew][FALLBACK-DEBUG] wid:", wid,
+        "| isGroup:", isGroup,
+        "| retStr:", retStr,
+        "| hasChatNotFound:", hasChatNotFound,
+        "| hasPhoneNumber:", hasPhoneNumber,
+        "| pnLidEntry:", JSON.stringify(pnLidEntry));
+
+      if (!isGroup && hasChatNotFound && hasPhoneNumber) {
+        const fallbackChatId = pnLidEntry.phoneNumber._serialized;
+        console.log("[deleteMessageNew][FALLBACK] ACIONADO -> chatId:", fallbackChatId);
+
+        try {
+          const fallbackResult = await WPP.chat.deleteMessage(
+            fallbackChatId,
+            uniqueId,
+            deleteMediaInDevice,
+            revoke
+          );
+
+          if (fallbackResult != null) {
+            try {
+              const Obj = {
+                Seuid: xSeuID,
+                Seuid2: xSeuID2,
+                Seuid3: xSeuID3,
+                Seuid4: xSeuID4,
+                wid: wid,
+                chatid: fallbackChatId,
+                uniqueId: uniqueId,
+                deleteMediaInDevice: !!deleteMediaInDevice,
+                revoke: !!revoke,
+                fallback: true,
+                fallbackReason: "Chat not found for (lid) -> phoneNumber",
+                JsonMessage: JSON.stringify(fallbackResult),
+              };
+              SetConsoleMessage("deleteMessageNew", JSON.stringify(Obj));
+            } catch (err) {
+              console.log(err);
+            }
+            return fallbackResult;
+          } else {
+            const FbErr = "A mensagem não pôde ser apagada (fallback phoneNumber).";
+            const Obj = {
+              chatid: fallbackChatId,
+              Seuid: xSeuID,
+              Seuid2: xSeuID2,
+              Seuid3: xSeuID3,
+              Seuid4: xSeuID4,
+              uniqueId: uniqueId,
+              RetEvent: "deleteMessageNew",
+              statusCode: 304,
+              Error: FbErr,
+            };
+            SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+            return null;
+          }
+        } catch (fallbackError) {
+          const FbErr = (fallbackError && fallbackError.message)
+            ? fallbackError.message
+            : ((fallbackError && fallbackError.stack) || "Unknown Error (fallback)");
+          const Obj = {
+            chatid: fallbackChatId,
+            Seuid: xSeuID,
+            Seuid2: xSeuID2,
+            Seuid3: xSeuID3,
+            Seuid4: xSeuID4,
+            uniqueId: uniqueId,
+            RetEvent: "deleteMessageNew",
+            statusCode: 305,
+            Error: FbErr,
+          };
+          SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+          return null;
+        }
+      }
+      // ============================================================
+      // >>> FIM DO FALLBACK <
+      // ============================================================
+
       const Obj = {
         chatid: wid,
         Seuid: xSeuID,
@@ -5004,6 +5098,7 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
     return null;
   }
 };
+
 
 //Marcelo 17/01/2026
 window.WPP.markIsReadNew = async function (wid, xSeuID) {
