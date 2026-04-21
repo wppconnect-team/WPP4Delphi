@@ -78,7 +78,7 @@ var
   POldProtect: DWORD;
 begin
   VirtualProtect(xOldResourceString, SizeOf(xOldResourceString^), PAGE_EXECUTE_READWRITE, @POldProtect);
-  xOldResourceString^.Identifier := Integer(xValueChanged);
+  xOldResourceString^.Identifier := NativeUInt(xValueChanged);
   VirtualProtect(xOldResourceString,SizeOf(xOldResourceString^),POldProtect, @POldProtect);
 end;
 
