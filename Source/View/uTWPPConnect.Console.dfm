@@ -461,9 +461,9 @@ object FrmConsole: TFrmConsole
   object Pnl_Geral: TPanel
     AlignWithMargins = True
     Left = 3
-    Top = 1
+    Top = 36
     Width = 919
-    Height = 388
+    Height = 353
     Margins.Top = 1
     Align = alClient
     BevelOuter = bvNone
@@ -746,6 +746,73 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 5
       OnClick = bMarkIsUnreadChatsClick
+    end
+  end
+  object AddressPnl: TPanel
+    Left = 0
+    Top = 0
+    Width = 925
+    Height = 35
+    Align = alTop
+    BevelOuter = bvNone
+    Padding.Left = 5
+    Padding.Top = 5
+    Padding.Right = 5
+    Padding.Bottom = 5
+    TabOrder = 3
+    object AddressEdt: TEdit
+      AlignWithMargins = True
+      Left = 170
+      Top = 6
+      Width = 706
+      Height = 23
+      Margins.Top = 1
+      Margins.Right = 5
+      Margins.Bottom = 1
+      Align = alClient
+      TabOrder = 0
+      Text = 'https://web.whatsapp.com/'
+      ExplicitHeight = 21
+    end
+    object GoBtn: TButton
+      AlignWithMargins = True
+      Left = 886
+      Top = 6
+      Width = 31
+      Height = 23
+      Margins.Left = 5
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alRight
+      Caption = 'Go'
+      TabOrder = 1
+      OnClick = GoBtnClick
+    end
+    object BitBtn1: TBitBtn
+      AlignWithMargins = True
+      Left = 89
+      Top = 6
+      Width = 75
+      Height = 23
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alLeft
+      Caption = 'Dev Tools'
+      TabOrder = 2
+      OnClick = BitBtn1Click
+    end
+    object BitBtn2: TBitBtn
+      AlignWithMargins = True
+      Left = 8
+      Top = 6
+      Width = 75
+      Height = 23
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alLeft
+      Caption = 'Extens'#227'o'
+      TabOrder = 3
+      OnClick = BitBtn2Click
     end
   end
   object Chromium1: TChromium

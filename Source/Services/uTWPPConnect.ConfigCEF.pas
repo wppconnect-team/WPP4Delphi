@@ -341,7 +341,7 @@ end;
 
 function TCEFConfig.VersaoCEF4Aceita: Boolean;
 begin
-  if CEF_SUPPORTED_VERSION_MAJOR > VersaoMinima_CF4_Major then
+  if CEF_SUPPORTED_VERSION_MAJOR >= VersaoMinima_CF4_Major then
   Begin
     //Versao e maior!!! entaoo pode1
     Result := True;

@@ -45,17 +45,17 @@ Uses
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.8'; //  17/01/2026
+  TWPPConnectVersion              = '5.0.0.9'; //  06/08/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
   NomeArquivoInject               = 'js.abr';//'wppconnect-wa.js';
   NomeArquivoIni                  = 'ConfTWPPConnect.ini';
   MsMaxFindJSinDesigner           = 15000;//15000;
-  VersaoMinima_CF4_Major          = 78;
-  VersaoMinima_CF4_Minor          = 3;
-  VersaoMinima_CF4_Release        = 0;
-  Versao0porCasas                 = 3;
+  VersaoMinima_CF4_Major          = 109;
+  VersaoMinima_CF4_Minor          = 1;
+  VersaoMinima_CF4_Release        = 18;
+  Versao0porCasas                 = 0;
   MinutosCOnsideradoObsoletooJS   = 50;
   Enter                           = sLineBreak;
   ConfigCEF_Path_Locales          = 'locales';
@@ -846,7 +846,7 @@ resourcestring
   MSG_ConfigCEF_ExceptBrowse           = '';
   MSG_ConfigCEF_ExceptConnetServ       = '';
   MSG_ConfigCEF_ExceptConsoleNaoPronto = '';
-  MSG_ConfigCEF_ExceptVersaoErrada     = '';
+  MSG_ConfigCEF_ExceptVersaoErrada     = 'Sua versão do CEF4 não é compatível, por favor, atualize suas biblioteca em https://github.com/salvadordf/CEF4Delphi' + slinebreak + 'Versão requerida: %s' + slinebreak + 'Versão identificada: %s';
   MSG_ConfigCEF_ExceptVersaoErrada_L2  = '';
   MSG_ExceptSetBatteryLow              = '';
   MSG_ExceptOnAlterQrCodeStyle         = '';

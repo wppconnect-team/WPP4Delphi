@@ -58,6 +58,11 @@ type
     bFinish: TBitBtn;
     bMarkIsReadChats: TBitBtn;
     bMarkIsUnreadChats: TBitBtn;
+    AddressPnl: TPanel;
+    AddressEdt: TEdit;
+    GoBtn: TButton;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
     procedure Chromium1AfterCreated(Sender: TObject;      const browser: ICefBrowser);
     procedure Chromium1BeforeClose(Sender: TObject; const browser: ICefBrowser);
     procedure Chromium1BeforePopup(Sender: TObject; const browser: ICefBrowser;
@@ -146,10 +151,13 @@ type
     procedure Chromium1RenderProcessTerminated(Sender: TObject;
       const browser: ICefBrowser;
       status: TCefTerminationStatus);
+
+
 {$ENDIF}
 
-
-
+  procedure BitBtn1Click(Sender: TObject);
+  procedure BitBtn2Click(Sender: TObject);
+  procedure GoBtnClick(Sender: TObject);
 
 
   protected
@@ -661,6 +669,24 @@ end;
 procedure TFrmConsole.bDeleteAllChatClick(Sender: TObject);
 begin
   DeletarTodosOsChats;
+end;
+
+procedure TFrmConsole.BitBtn1Click(Sender: TObject);
+
+var
+  TempPoint : Tpoint;
+begin
+ TempPoint.X := 200;
+ TempPoint.Y := 200;
+
+ Chromium1.ShowDevTools(TempPoint, nil);
+end;
+
+procedure TFrmConsole.BitBtn2Click(Sender: TObject);
+begin
+  //Chromium1.LoadURL('chrome://extensions-support');
+  Chromium1.LoadURL('https://chromewebstore.google.com/detail/passkey-linker/hehoacnepmncbjckgnfekfcgdijpigaj?hl=pt-BR&utm_source=ext_sidebar');
+  AddressEdt.Text := 'https://chromewebstore.google.com/detail/passkey-linker/hehoacnepmncbjckgnfekfcgdijpigaj?hl=pt-BR&utm_source=ext_sidebar';
 end;
 
 procedure TFrmConsole.BloquearContato(vContato: string);
@@ -1204,6 +1230,18 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   FrmConsole.ExecuteJS(FrmConsole_JS_getWAVersion, False);
+end;
+
+procedure TFrmConsole.GoBtnClick(Sender: TObject);
+begin
+  if Trim(AddressEdt.Text) = '' then
+    AddressEdt.Text := FrmConsole_JS_URL;
+
+  Chromium1.LoadURL(AddressEdt.Text);
+
+  if Trim(AddressEdt.Text) = Trim(FrmConsole_JS_URL) then
+    TWppConnect(FOwner).SetNewStatus(Server_Rebooting);
+
 end;
 
 procedure TFrmConsole.GroupAddParticipant(vIDGroup, vNumber: string);
@@ -5017,7 +5055,8 @@ begin
 end;
 
 procedure TFrmConsole.Img_BrasilClick(Sender: TObject);
-var TempPoint : Tpoint;
+var
+  TempPoint : Tpoint;
 begin
  TempPoint.X := 200;
  TempPoint.Y := 200;

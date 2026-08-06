@@ -3,7 +3,7 @@ object FrmConsole: TFrmConsole
   Top = 0
   Caption = 'WPPConnect Team - WPP4Delphi - WhatsAppWeb'
   ClientHeight = 519
-  ClientWidth = 885
+  ClientWidth = 925
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -12,7 +12,6 @@ object FrmConsole: TFrmConsole
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   ShowHint = True
   OnClose = FormClose
@@ -21,13 +20,12 @@ object FrmConsole: TFrmConsole
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Pnl_Top: TPanel
     AlignWithMargins = True
     Left = 3
     Top = 494
-    Width = 879
+    Width = 919
     Height = 22
     Align = alBottom
     BorderStyle = bsSingle
@@ -39,7 +37,7 @@ object FrmConsole: TFrmConsole
     object Lbl_Caption: TLabel
       Left = 1
       Top = 1
-      Width = 613
+      Width = 627
       Height = 18
       Align = alClient
       Alignment = taCenter
@@ -57,9 +55,9 @@ object FrmConsole: TFrmConsole
     end
     object lbl_Versao: TLabel
       AlignWithMargins = True
-      Left = 704
+      Left = 718
       Top = 4
-      Width = 167
+      Width = 193
       Height = 12
       Margins.Right = 5
       Align = alRight
@@ -77,6 +75,7 @@ object FrmConsole: TFrmConsole
       Layout = tlCenter
       WordWrap = True
       OnMouseEnter = lbl_VersaoMouseEnter
+      ExplicitLeft = 712
     end
     object Img_LogoInject: TImage
       Left = 29
@@ -398,7 +397,7 @@ object FrmConsole: TFrmConsole
     end
     object lblNumber: TLabel
       AlignWithMargins = True
-      Left = 617
+      Left = 631
       Top = 4
       Width = 3
       Height = 12
@@ -416,7 +415,7 @@ object FrmConsole: TFrmConsole
       ExplicitHeight = 13
     end
     object bInfo: TBitBtn
-      Left = 626
+      Left = 640
       Top = 1
       Width = 75
       Height = 18
@@ -462,9 +461,9 @@ object FrmConsole: TFrmConsole
   object Pnl_Geral: TPanel
     AlignWithMargins = True
     Left = 3
-    Top = 1
-    Width = 879
-    Height = 388
+    Top = 36
+    Width = 919
+    Height = 353
     Margins.Top = 1
     Align = alClient
     BevelOuter = bvNone
@@ -473,10 +472,12 @@ object FrmConsole: TFrmConsole
     ParentDoubleBuffered = False
     ShowCaption = False
     TabOrder = 1
+    ExplicitTop = 1
+    ExplicitHeight = 388
     object CEFWindowParent1: TCEFWindowParent
       Left = 0
       Top = 0
-      Width = 879
+      Width = 919
       Height = 121
       Align = alTop
       TabOrder = 0
@@ -485,7 +486,7 @@ object FrmConsole: TFrmConsole
   object Pnl_quick_maintenance: TPanel
     Left = 0
     Top = 392
-    Width = 885
+    Width = 925
     Height = 99
     Align = alBottom
     Color = clWhite
@@ -493,7 +494,7 @@ object FrmConsole: TFrmConsole
     TabOrder = 2
     Visible = False
     DesignSize = (
-      885
+      925
       99)
     object Label1: TLabel
       Left = 38
@@ -622,7 +623,7 @@ object FrmConsole: TFrmConsole
       OnClick = bDeleteAllChatClick
     end
     object bFinish: TBitBtn
-      Left = 734
+      Left = 768
       Top = 68
       Width = 145
       Height = 25
@@ -747,6 +748,77 @@ object FrmConsole: TFrmConsole
       ParentFont = False
       TabOrder = 5
       OnClick = bMarkIsUnreadChatsClick
+    end
+  end
+  object AddressPnl: TPanel
+    Left = 0
+    Top = 0
+    Width = 925
+    Height = 35
+    Align = alTop
+    BevelOuter = bvNone
+    Padding.Left = 5
+    Padding.Top = 5
+    Padding.Right = 5
+    Padding.Bottom = 5
+    TabOrder = 3
+    ExplicitLeft = -113
+    ExplicitWidth = 1038
+    object AddressEdt: TEdit
+      AlignWithMargins = True
+      Left = 170
+      Top = 6
+      Width = 706
+      Height = 23
+      Margins.Top = 1
+      Margins.Right = 5
+      Margins.Bottom = 1
+      Align = alClient
+      TabOrder = 0
+      Text = 'https://web.whatsapp.com/'
+      ExplicitWidth = 819
+      ExplicitHeight = 21
+    end
+    object GoBtn: TButton
+      AlignWithMargins = True
+      Left = 886
+      Top = 6
+      Width = 31
+      Height = 23
+      Margins.Left = 5
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alRight
+      Caption = 'Go'
+      TabOrder = 1
+      OnClick = GoBtnClick
+      ExplicitLeft = 999
+    end
+    object BitBtn1: TBitBtn
+      AlignWithMargins = True
+      Left = 89
+      Top = 6
+      Width = 75
+      Height = 23
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alLeft
+      Caption = 'Dev Tools'
+      TabOrder = 2
+      OnClick = BitBtn1Click
+    end
+    object BitBtn2: TBitBtn
+      AlignWithMargins = True
+      Left = 8
+      Top = 6
+      Width = 75
+      Height = 23
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Align = alLeft
+      Caption = 'Extens'#227'o'
+      TabOrder = 3
+      OnClick = BitBtn2Click
     end
   end
   object Chromium1: TChromium
