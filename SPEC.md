@@ -202,5 +202,6 @@ O repositório inclui skills de projeto em [.claude/skills/](.claude/skills/) qu
 | [wpp-api-reference](.claude/skills/wpp-api-reference/SKILL.md) | Escrever código de aplicação que consome o componente `TWPPConnect` — métodos, eventos assíncronos `On*`, exemplos de uso |
 | [wpp-build](.claude/skills/wpp-build/SKILL.md) | Diagnosticar/guiar build e instalação do pacote (dependências CEF4Delphi/WA-JS, Library Path por versão do Delphi, diretiva `CEFCurrentVersion`) |
 | [wpp-update](.claude/skills/wpp-update/SKILL.md) | Atualizar o código local a partir do `main` do GitHub, compilar e instalar o pacote no Delphi, e resumir o changelog dos commits novos |
+| [wpp-release](.claude/skills/wpp-release/SKILL.md) | Commitar mudanças pendentes, dar push em `main` e publicar uma GitHub Release com a versão do componente (`TWPPConnectVersion`) e changelog resumido |
 
 Essas skills referenciam este SPEC.md e o código-fonte como fonte da verdade, em vez de duplicar conteúdo — mantê-las atualizadas junto quando a arquitetura ou a API pública mudar.
