@@ -96,6 +96,7 @@ type
     }
     function  TestaOk(POldValue, PNewValue: String): Boolean;
     procedure SetChromium(const Value: TChromium);
+    procedure SetIniFIle(const Value: TIniFile);
     Function  VersaoCEF4Aceita: Boolean;
 
   public
@@ -127,7 +128,7 @@ type
 
     Function   PathJsOverdue        : Boolean;
     property   PathJsUpdate         : TdateTime    Read FPathJsUpdate;
-    property   IniFIle              : TIniFile     Read FIniFIle              Write FIniFIle;
+    property   IniFIle              : TIniFile     Read FIniFIle              Write SetIniFIle;
     property   PathFrameworkDirPath : String       Read FPathFrameworkDirPath Write SetPathFrameworkDirPath;
     property   PathResourcesDirPath : String       Read FPathResourcesDirPath Write SetPathResourcesDirPath;
     property   PathLocalesDirPath   : String       Read FPathLocalesDirPath   Write SetPathLocalesDirPath;
@@ -187,6 +188,17 @@ constructor TCEFConfig.Create;
 begin
   FInDesigner          := True;
   inherited;
+end;
+
+procedure TCEFConfig.SetIniFIle(const Value: TIniFile);
+begin
+  if FIniFIle = Value then
+     Exit;
+
+  if Assigned(FIniFIle) then
+     FreeAndNil(FIniFIle);
+
+  FIniFIle := Value;
 end;
 
 procedure TCEFConfig.SetChromium(const Value: TChromium);
@@ -413,11 +425,14 @@ begin
   if (Result) Then
   Begin
     //Ja iniciada!! cai fora!!
+    ctx.Free;
     Exit;
   end;
 
   FInDesigner          := False;
   FDirApp              := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
+  if Assigned(FIniFIle) then
+    FreeAndNil(FIniFIle);
   FIniFIle             := TIniFile.create(FDirApp + NomeArquivoIni);
   Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', '01/01/1500 05:00:00');
   //Lx                   := FIniFIle.ReadString('TWPPConnect Comp', 'Ultima interação', FormatDateTime('dd/mm/yy hh:nn:ss', FPathJsUpdate));
@@ -445,6 +460,7 @@ begin
     raise Exception.Create(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent]));
     {$ENDIF}
     result := False;
+    ctx.Free;
     Exit;
   End;
 

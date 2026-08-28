@@ -154,6 +154,7 @@ begin
   FreeAndNil(FJSScript);
 
   FreeAndNil(FRegistros);
+  FreeAndNil(FStringList);
 
   {FreeAndNil(FDownloadJSType);
   FreeAndNil(FOnUpdateJS);
@@ -167,14 +168,14 @@ var
   MyIniFIle: TIniFile;
   DirApp, Caminho_JS: string;
 begin
+  MyIniFIle := nil;
   try
     DirApp               := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
     MyIniFIle            := TIniFile.create(DirApp + NomeArquivoIni);
     Caminho_JS           := MyIniFIle.ReadString('TWPPConnect Comp', 'Caminho JS', TWPPConnectJS_JSUrlPadrao);
-
-    MyIniFIle.Free;
   except on E: Exception do
   end;
+  FreeAndNil(MyIniFIle);
 
   Owner                         := POwner;
   FAutoUpdateTimeOut            := 10;
@@ -285,7 +286,7 @@ begin
     if Value.text <> FJSScript.text then
        raise Exception.Create(MSG_ExceptAlterDesigner);
   End;
-  FJSScript := Value;
+  FJSScript.Assign(Value);
 end;
 
 function TWPPConnectJS.UpdateNow: Boolean;
@@ -422,10 +423,14 @@ begin
   LSalvamento   := IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp';
   save_log('TWPPConnectJS.PegarLocalJS_Web');
 
-  LRet          := TStringList.Create;
-  LHttp         := TUrlIndy.Create;
-  LRest         := TUrlREST.Create(nil);
+  LRet  := nil;
+  LHttp := nil;
+  LRest := nil;
   try
+    LRet          := TStringList.Create;
+    LHttp         := TUrlIndy.Create;
+    LRest         := TUrlREST.Create(nil);
+
     DeleteFile(PwideChar(LSalvamento));
 
     case FDownloadJSType of
@@ -463,7 +468,7 @@ begin
   finally
     FreeAndNil(LHttp);
     FreeAndNil(LRest);
-    if LRet.Count > 1 then
+    if Assigned(LRet) and (LRet.Count > 1) then
     begin
       save_log('antes LSalvamento: Caminho: ' + LSalvamento);
       if not FileExists(LSalvamento) then

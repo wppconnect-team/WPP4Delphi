@@ -1851,6 +1851,8 @@ begin
   FreeAndNil(FInjectJS);
   if Assigned(FTimerCheckWPPCrash) then
     FreeAndNil(FTimerCheckWPPCrash);
+  if Assigned(FrmConsole) then
+    FreeAndNil(FrmConsole);
   inherited;
 end;
 procedure TWPPConnect.GetAllCommunitys;
@@ -5828,7 +5830,7 @@ begin
   FDestroyTmr.Enabled := False;
   try
     if Assigned  (FrmConsole) then
-       FrmConsole := Nil;
+       FreeAndNil(FrmConsole);
   except
   end;
 end;

@@ -1431,7 +1431,8 @@ begin
 
   if TWPPConnect(FOwner).Config.SecondsMonitorWppCrash > 0 then
   begin
-    TWPPConnect(FOwner).FTimerCheckWPPCrash:= TTimer.Create(Self);
+    if not Assigned(TWPPConnect(FOwner).FTimerCheckWPPCrash) then
+      TWPPConnect(FOwner).FTimerCheckWPPCrash:= TTimer.Create(Self);
     TWPPConnect(FOwner).FTimerCheckWPPCrash.Interval:= 40000;
     TWPPConnect(FOwner).FTimerCheckWPPCrash.OnTimer:= TWPPConnect(FOwner).OnTimerWPPCrash;
     TWPPConnect(FOwner).FTImerCheckWPPCrash.Enabled:= False;
@@ -3084,7 +3085,7 @@ begin
                             try
                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass2);
                             finally
-                              //FreeAndNil(LOutClass2);
+                              FreeAndNil(LOutClass2);
                             end;
                           end;
 
@@ -4981,6 +4982,16 @@ begin
     FTimerConnect.Enabled  := False;
     FreeAndNil(FTimerConnect);
   End;
+
+  if Assigned(FChatList) then
+    FreeAndNil(FChatList);
+
+  if Assigned(FProductList) then
+    FreeAndNil(FProductList);
+
+  if Assigned(FWppCrashClass) then
+    FreeAndNil(FWppCrashClass);
+
   SendNotificationCenterDirect(Th_Destroy);
 end;
 

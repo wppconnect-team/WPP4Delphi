@@ -4416,22 +4416,27 @@ var
   lAJsonObj: TJSONValue;
   lAJsonObj2: TJSONValue;
   lAJsonObj3: TJSONValue;
+  lAJsonObjB: TJSONValue;
   myarr: TJSONArray;
 begin
   vJson := pAJsonString;
+  lAJsonObjB := nil;
   lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-
-  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-  begin
-    vJson := lAJsonObj2.ToJSON;
-    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
-    if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+  try
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
-      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
-      inherited Create(vJson);
+      vJson := lAJsonObj2.ToJSON;
+      lAJsonObjB := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+      if lAJsonObjB.TryGetValue('result', lAJsonObj3) then
+      begin
+        vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+        inherited Create(vJson);
+      end;
     end;
+  finally
+    FreeAndNil(lAJsonObj);
+    FreeAndNil(lAJsonObjB);
   end;
-
 end;
 
 //Marcelo 18/06/2022
@@ -4630,12 +4635,40 @@ begin
         FKindTypeNumber := TypList;
 end;
 destructor TChatClass.Destroy;
+var
+  I: Integer;
 begin
   ClearArray(FMessages);
   FreeAndNil(FPresence);
   FreeAndNil(FLastReceivedKey);//.free;
   FreeAndNil(FContact);//.free;
   FreeAndNil(FGroupMetadata);//.free;
+  FreeAndNil(FtcToken);
+  FreeAndNil(FmsgRowOpaqueData);
+  FreeAndNil(FchatlistPreview);
+  FreeAndNil(FpollOptions);
+  FreeAndNil(FPollVotesSnapshot);
+  for I := Length(FMsgs) - 1 downto 0 do
+    FreeAndNil(FMsgs[I]);
+  SetLength(FMsgs, 0);
+  for I := Length(FunreadMentionsOfMe) - 1 downto 0 do
+    FreeAndNil(FunreadMentionsOfMe[I]);
+  SetLength(FunreadMentionsOfMe, 0);
+  for I := Length(FmsgUnsyncedButtonReplyMsgs) - 1 downto 0 do
+    FreeAndNil(FmsgUnsyncedButtonReplyMsgs[I]);
+  SetLength(FmsgUnsyncedButtonReplyMsgs, 0);
+  for I := Length(FListClass) - 1 downto 0 do
+    FreeAndNil(FListClass[I]);
+  SetLength(FListClass, 0);
+  for I := Length(FhydratedButtonsClass) - 1 downto 0 do
+    FreeAndNil(FhydratedButtonsClass[I]);
+  SetLength(FhydratedButtonsClass, 0);
+  for I := Length(FreplyButtonsClass) - 1 downto 0 do
+    FreeAndNil(FreplyButtonsClass[I]);
+  SetLength(FreplyButtonsClass, 0);
+  for I := Length(FDynamicReplyButtons) - 1 downto 0 do
+    FreeAndNil(FDynamicReplyButtons[I]);
+  SetLength(FDynamicReplyButtons, 0);
   inherited;
 end;
 
@@ -4699,10 +4732,38 @@ begin
   inherited Create(pAJsonString);
 end;
 destructor TMessagesClass.Destroy;
+var
+  I: Integer;
 begin
   FreeAndNil(FSender);//.free;
   FreeAndNil(FChat);//.free;
   FreeAndNil(FMediaData);//.free;
+  FreeAndNil(FquotedMsgObj);
+  FreeAndNil(FquotedMsg);
+  FreeAndNil(FscansSidecar);
+  FreeAndNil(FlistResponse);
+  FreeAndNil(FInteractivePayload);
+  FreeAndNil(FInteractiveHeader);
+  FreeAndNil(FPollVotesSnapshot);
+  FreeAndNil(FmessageSecret);
+  FreeAndNil(FctwaContext);
+  FreeAndNil(FchatlistPreview);
+  FreeAndNil(FlimitSharing);
+  for I := Length(FvCardList) - 1 downto 0 do
+    FreeAndNil(FvCardList[I]);
+  SetLength(FvCardList, 0);
+  for I := Length(FButtons) - 1 downto 0 do
+    FreeAndNil(FButtons[I]);
+  SetLength(FButtons, 0);
+  for I := Length(FpollOptions) - 1 downto 0 do
+    FreeAndNil(FpollOptions[I]);
+  SetLength(FpollOptions, 0);
+  for I := Length(FinteractiveAnnotations) - 1 downto 0 do
+    FreeAndNil(FinteractiveAnnotations[I]);
+  SetLength(FinteractiveAnnotations, 0);
+  for I := Length(FunreadMentionsOfMe) - 1 downto 0 do
+    FreeAndNil(FunreadMentionsOfMe[I]);
+  SetLength(FunreadMentionsOfMe, 0);
   inherited;
 end;
 class function TMessagesClass.FromJsonString(AJsonString: string): TMessagesClass;
@@ -4920,17 +4981,7 @@ var
 begin
    try
     for i:= Length(PArray)-1 downto 0 do
-        {$IFDEF VER300}
-          freeAndNil(PArray[i]);
-        {$ENDIF}
-        {$IFDEF VER330}
-          freeAndNil(PArray[i]);
-        {$ENDIF}
-        {$IFDEF VER340}
-      		// var a: TArray<TClassPadrao>;
-		      // a := TArray<TClassPadrao>(PArray);
-          freeAndNil(TArray<TClassPadrao>(PArray)[i]);
-        {$ENDIF}
+        freeAndNil(TArray<TClassPadrao>(PArray)[i]);
    finally
      SetLength(PArray, 0);
    end;
@@ -5317,20 +5368,24 @@ begin
     vJson := pAJsonString;
     //lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
     lAJsonObj := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(pAJsonString),0) as TJSONObject;
+    try
+      if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+      begin
+        vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToString)-2);
+        //vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
 
-    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-    begin
-      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToString)-2);
-      //vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
-
-      //inherited Create(vJson);
-      FNumbers      := TStringList.create;
-      FNumbers.Text := vJson;
-      //Quebrar linhas de acordo com cada valor separado por virgula
-      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+        //inherited Create(vJson);
+        FreeAndNil(FNumbers);
+        FNumbers      := TStringList.create;
+        FNumbers.Text := vJson;
+        //Quebrar linhas de acordo com cada valor separado por virgula
+        FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+      end;
+    finally
+      FreeAndNil(lAJsonObj);
     end;
   end;
 end;
@@ -5421,18 +5476,22 @@ begin
   begin
     vJson := pAJsonString;
     lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-
-    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-    begin
-      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
-      //inherited Create(vJson);
-      FNumbers      := TStringList.create;
-      FNumbers.Text := vJson;
-      //Quebrar linhas de acordo com cada valor separado por virgula
-      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    try
+      if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+      begin
+        vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+        //inherited Create(vJson);
+        FreeAndNil(FNumbers);
+        FNumbers      := TStringList.create;
+        FNumbers.Text := vJson;
+        //Quebrar linhas de acordo com cada valor separado por virgula
+        FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+      end;
+    finally
+      FreeAndNil(lAJsonObj);
     end;
   end;
 
@@ -5673,10 +5732,13 @@ begin
 end;
 
 destructor TRootClass.Destroy;
+var
+  I: Integer;
 begin
-  //ClearArray(FResult);
-  //FreeAndNil(FPresence);
-  //inherited;
+  for I := Length(FResult) - 1 downto 0 do
+    FreeAndNil(FResult[I]);
+  SetLength(FResult, 0);
+  inherited;
 end;
 
 class function TRootClass.FromJsonString(AJsonString: string): TRootClass;
@@ -5770,18 +5832,22 @@ begin
   begin
     vJson := pAJsonString;
     lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-
-    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-    begin
-      vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
-      //inherited Create(vJson);
-      FNumbers      := TStringList.create;
-      FNumbers.Text := vJson;
-      //Quebrar linhas de acordo com cada valor separado por virgula
-      FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
-      FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+    try
+      if lAJsonObj.TryGetValue('result', lAJsonObj2) then
+      begin
+        vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
+        //inherited Create(vJson);
+        FreeAndNil(FNumbers);
+        FNumbers      := TStringList.create;
+        FNumbers.Text := vJson;
+        //Quebrar linhas de acordo com cada valor separado por virgula
+        FNumbers.Text := StringReplace(FNumbers.Text, '",', Enter, [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '"' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, '{result:[' , '',    [rfReplaceAll]);
+        FNumbers.Text := StringReplace(FNumbers.Text, ']}' , '',    [rfReplaceAll]);
+      end;
+    finally
+      FreeAndNil(lAJsonObj);
     end;
   end;
 end;
@@ -5801,43 +5867,51 @@ var
   lAJsonObj2: TJSONValue;
   lAJsonObj3: TJSONValue;
   lAJsonObj4: TJSONValue;
+  lAJsonObjB: TJSONValue;
+  lAJsonObjC: TJSONValue;
   myarr: TJSONArray;
 begin
   vJson := copy(pAJsonString, 11, length(pAJsonString) - 11);
   fidMessage := '';
 
+  lAJsonObjB := nil;
+  lAJsonObjC := nil;
   lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-
-  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-  begin
-    vJson := lAJsonObj2.ToJSON;
-    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
-
-    fidMessage := '';
-    //{"idMessage":"true_551734226371@c.us_3EB02797217197505925",
-    UniqueID := Copy(vJson,1, pos('"JsonMessage":', vJson)-1);
-
-    //JsonMessage
-    if lAJsonObj.TryGetValue('JsonMessage', lAJsonObj4) then
+  try
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
-      vJson := Copy(lAJsonObj4.ToJSON,2,Length(lAJsonObj4.ToJSON)-2);
-      lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
-      //vJson := lAJsonObj.ToString;
-      //vJson := Copy(lAJsonObj.ToJSON,2,Length(lAJsonObj.ToJSON)-2);
+      vJson := lAJsonObj2.ToJSON;
+      lAJsonObjB := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
 
-      vJson := stringreplace(vJson, '\"', '"', [rfReplaceAll, rfIgnoreCase]);
-      vJson := stringreplace(vJson, '{"ack"', UniqueID + '"ack"', [rfReplaceAll, rfIgnoreCase]);
+      fidMessage := '';
+      //{"idMessage":"true_551734226371@c.us_3EB02797217197505925",
+      UniqueID := Copy(vJson,1, pos('"JsonMessage":', vJson)-1);
 
-      TResponsegetMessageACK.FromJsonString(vJson);
-      inherited Create(vJson);
+      //JsonMessage
+      if lAJsonObjB.TryGetValue('JsonMessage', lAJsonObj4) then
+      begin
+        vJson := Copy(lAJsonObj4.ToJSON,2,Length(lAJsonObj4.ToJSON)-2);
+        lAJsonObjC := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+        //vJson := lAJsonObj.ToString;
+        //vJson := Copy(lAJsonObj.ToJSON,2,Length(lAJsonObj.ToJSON)-2);
+
+        vJson := stringreplace(vJson, '\"', '"', [rfReplaceAll, rfIgnoreCase]);
+        vJson := stringreplace(vJson, '{"ack"', UniqueID + '"ack"', [rfReplaceAll, rfIgnoreCase]);
+
+        inherited Create(vJson);
+      end;
+
+
+      {if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+      begin
+        vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+
+      end;}
     end;
-
-
-    {if lAJsonObj.TryGetValue('result', lAJsonObj3) then
-    begin
-      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
-
-    end;}
+  finally
+    FreeAndNil(lAJsonObj);
+    FreeAndNil(lAJsonObjB);
+    FreeAndNil(lAJsonObjC);
   end;
 
 
@@ -5924,22 +5998,27 @@ var
   lAJsonObj: TJSONValue;
   lAJsonObj2: TJSONValue;
   lAJsonObj3: TJSONValue;
+  lAJsonObjB: TJSONValue;
   myarr: TJSONArray;
 begin
   vJson := pAJsonString;
+  lAJsonObjB := nil;
   lAJsonObj := TJSONObject.ParseJSONValue(pAJsonString) as TJSONObject;
-
-  if lAJsonObj.TryGetValue('result', lAJsonObj2) then
-  begin
-    vJson := lAJsonObj2.ToJSON;
-    lAJsonObj := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
-    if lAJsonObj.TryGetValue('result', lAJsonObj3) then
+  try
+    if lAJsonObj.TryGetValue('result', lAJsonObj2) then
     begin
-      vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
-      inherited Create(vJson);
+      vJson := lAJsonObj2.ToJSON;
+      lAJsonObjB := TJSONObject.ParseJSONValue(vJson) as TJSONObject;
+      if lAJsonObjB.TryGetValue('result', lAJsonObj3) then
+      begin
+        vJson := Copy(lAJsonObj3.ToJSON,2,Length(lAJsonObj3.ToJSON)-2);
+        inherited Create(vJson);
+      end;
     end;
+  finally
+    FreeAndNil(lAJsonObj);
+    FreeAndNil(lAJsonObjB);
   end;
-
 end;
 
 destructor TOutgoingCall.Destroy;
