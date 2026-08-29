@@ -73,3 +73,7 @@ backup/
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
 *.bak
+
+# Base RAG local (Scripts/rag) - gerada localmente, ver .claude/skills/wpp-rag-index
+Scripts/rag/*.sqlite
+Scripts/rag/__pycache__/
