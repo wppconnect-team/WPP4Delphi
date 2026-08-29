@@ -9,9 +9,19 @@
 
 unit UBase64;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
-uses System.Classes, System.netEncoding, System.SysUtils, VCL.Graphics;
+uses
+  {$IFDEF FPC}
+  Classes, base64, SysUtils, Graphics
+  {$ELSE}
+  System.Classes, System.netEncoding, System.SysUtils, VCL.Graphics
+  {$ENDIF};
 
    procedure Base64ToFile  (Arquivo, caminhoSalvar : String);
    function  Base64ToStream(imagem : String) : TMemoryStream;
@@ -35,6 +45,26 @@ begin
 end;
 
 function Base64ToStream(imagem: String): TMemoryStream;
+{$IFDEF FPC}
+var
+  LSrc: TStringStream;
+  LDecoder: TBase64DecodingStream;
+begin
+  Result := TMemoryStream.Create;
+  LSrc := TStringStream.Create(imagem);
+  try
+    LDecoder := TBase64DecodingStream.Create(LSrc, bdmMIME);
+    try
+      Result.CopyFrom(LDecoder, 0);
+      Result.Seek(0, soFromBeginning);
+    finally
+      LDecoder.Free;
+    end;
+  finally
+    LSrc.Free;
+  end;
+end;
+{$ELSE}
 var Base64 : TBase64Encoding;
     bytes : tBytes;
 begin
@@ -48,6 +78,7 @@ begin
     SetLength(bytes, 0);
   End;
 end;
+{$ENDIF}
 
 function BitmapToBase64(imagem: TBitmap): String;
 Var sTream : TMemoryStream;
@@ -81,6 +112,19 @@ begin
 end;
 
 function StreamToBase64(STream: TMemoryStream): String;
+{$IFDEF FPC}
+var
+  vRaw: RawByteString;
+begin
+  Try
+    Stream.Seek(0, 0);
+    SetString(vRaw, PAnsiChar(Stream.Memory), Stream.Size);
+    Result := EncodeStringBase64(vRaw);
+  Finally
+    FreeAndNil(Stream);
+  End;
+end;
+{$ELSE}
 Var Base64 : tBase64Encoding;
 begin
   Try
@@ -91,5 +135,6 @@ begin
     FreeAndNil(Stream);
   End;
 end;
+{$ENDIF}
 
 end.

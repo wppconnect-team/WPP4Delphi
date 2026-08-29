@@ -84,6 +84,8 @@ contains
   uTWPPConnect.Emoticons in '..\Source\Model\uTWPPConnect.Emoticons.pas',
   uTWPPConnect.ExePath in '..\Source\Model\uTWPPConnect.ExePath.pas',
   uTWPPConnect.JS in '..\Source\Model\uTWPPConnect.JS.pas',
+  uTWPPConnect.JsonCompat in '..\Source\Model\uTWPPConnect.JsonCompat.pas',
+  uTWPPConnect.ThreadCompat in '..\Source\Model\uTWPPConnect.ThreadCompat.pas',
   uCSV.Import in '..\Source\Model\uCSV.Import.pas' {u_principal in '..\Demo\u_principal.pas' {frmPrincipal};
 
 end.

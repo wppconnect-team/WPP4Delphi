@@ -31,11 +31,20 @@
 
 unit uTWPPConnect.ExePath;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 {$WARN SYMBOL_PLATFORM OFF}
 uses
+  {$IFDEF FPC}
+  Classes,  SysUtils,  Windows,
+  {$ELSE}
   System.Classes,  SysUtils,  Windows,
+  {$ENDIF}
   {$IFDEF DESIGNER_COMP}
     ToolsAPI,
   {$ENDIF}
@@ -65,7 +74,11 @@ Type
 implementation
 
 uses
+  {$IFDEF FPC}
+  Forms,  Dialogs, uTWPPConnect.Diversos;
+  {$ELSE}
   Vcl.Forms,  Vcl.Dialogs, uTWPPConnect.Diversos;
+  {$ENDIF}
 
 
 

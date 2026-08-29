@@ -18,6 +18,20 @@ unit uTWPPConnect.Console;
 
 interface
 
+{$IFDEF FPC}
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, ExtCtrls, StrUtils,
+
+  uCEFWinControl, uCEFChromiumCore, uCEFTypes,
+  uCEFInterfaces, uCEFConstants, uCEFWindowParent, uCEFChromium, uCEFApplication,
+
+  //units adicionais obrigatórias
+  uTWPPConnect.Classes,  uTWPPConnect.constant, uTWPPConnect.Diversos,
+
+  StdCtrls, ComCtrls, ImgList, fpjson,
+  Buttons, uCEFSentinel, uTWPPConnect.FrmQRCode;
+{$ELSE}
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, StrUtils,
@@ -33,6 +47,7 @@ uses
   Vcl.Buttons, Vcl.Imaging.pngimage, Rest.Json,
   Vcl.Imaging.jpeg, uCEFSentinel, uTWPPConnect.FrmQRCode,
   Vcl.WinXCtrls;
+{$ENDIF}
 
 type
   TProcedure = procedure() of object;
@@ -520,10 +535,17 @@ var
 
 implementation
 
+{$IFDEF FPC}
+uses
+  Dialogs, uTWPPConnect.ConfigCEF, uTWPPConnect, uCEFMiscFunctions,
+  uTWPPConnect.FrmConfigNetWork, ShellAPI,
+  uTWPPConnect.ChatList, uTWPPConnect.ThreadCompat;
+{$ELSE}
 uses
   System.NetEncoding, Vcl.Dialogs, uTWPPConnect.ConfigCEF, uTWPPConnect, uCEFMiscFunctions,
   Data.DB, uTWPPConnect.FrmConfigNetWork, Winapi.ShellAPI,
   uTWPPConnect.ChatList;
+{$ENDIF}
 
 {$R *.dfm}
 
@@ -756,6 +778,17 @@ end;
 procedure TFrmConsole.ExecuteJS(PScript: string;  PDirect:  Boolean; Purl:String; pStartline: integer);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+      if Assigned(FrmConsole) then
+         FrmConsole.Chromium1.Browser.MainFrame.ExecuteJavaScript(PScript, Purl, pStartline)
+    end;
+  begin
+    SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Assigned(GlobalCEFApp) then
   Begin
@@ -774,6 +807,9 @@ begin
        Exit;
      end;
 
+     {$IFDEF FPC}
+     lThread := CreateAnonymousThreadCompat(Trabalho);
+     {$ELSE}
      lThread := TThread.CreateAnonymousThread(procedure
         begin
           TThread.Synchronize(nil, procedure
@@ -782,6 +818,7 @@ begin
                FrmConsole.Chromium1.Browser.MainFrame.ExecuteJavaScript(PScript, Purl, pStartline)
           end);
         end);
+     {$ENDIF}
      lThread.Start;
   end;
 end;
@@ -3378,7 +3415,11 @@ begin
     Th_getList :
                           begin
 
+                            {$IFDEF FPC}
+                            LOutClass2 := TGetChatList.Create(StringReplace(StringReplace(LResultStr, ':[[{', ':[{', []), '}]]}', '}]}', []));
+                            {$ELSE}
                             LOutClass2 := TGetChatList.Create(LResultStr.Replace(':[[{',':[{').Replace('}]]}','}]}'));
+                            {$ENDIF}
 
 
                             //LOutClass2 := TGetChatList.Create(LResultStr);
@@ -4903,10 +4944,16 @@ end;
 procedure TFrmConsole.FormCreate(Sender: TObject);
 var
   Lciclo: Integer;
+  {$IFNDEF FPC}
   lBuffer : Array[0..144] of Char;
+  {$ENDIF}
 begin
+  {$IFDEF FPC}
+  FDirTemp := IncludeTrailingPathDelimiter(GetTempDir);
+  {$ELSE}
   GetTempPath(144,lBuffer);
   FDirTemp  := IncludeTrailingPathDelimiter( StrPas(lBuffer));
+  {$ENDIF}
   Fzoom     := 1;
 
   CEFWindowParent1.Visible  := True;

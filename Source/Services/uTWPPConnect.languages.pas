@@ -35,9 +35,19 @@
 }
 unit uTWPPConnect.languages;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
-uses uTWPPConnect.Constant, Winapi.Windows, System.Classes;
+uses
+  {$IFDEF FPC}
+  uTWPPConnect.Constant, Windows, Classes
+  {$ELSE}
+  uTWPPConnect.Constant, Winapi.Windows, System.Classes
+  {$ENDIF};
 
 Type
 
@@ -74,6 +84,14 @@ implementation
 
 class procedure TTranslatorInject.SetResourceString(
   xOldResourceString: PResStringRec; xValueChanged: PChar);
+{$IFDEF FPC}
+begin
+  //No FPC, TResStringRec = AnsiString (uma resourcestring e apenas uma variavel
+  //de string mutavel em tempo de execucao) - nao precisa do hack de
+  //VirtualProtect usado no Delphi, so a atribuicao direta. Validado nesta sessao.
+  xOldResourceString^ := xValueChanged;
+end;
+{$ELSE}
 var
   POldProtect: DWORD;
 begin
@@ -81,6 +99,7 @@ begin
   xOldResourceString^.Identifier := NativeUInt(xValueChanged);
   VirtualProtect(xOldResourceString,SizeOf(xOldResourceString^),POldProtect, @POldProtect);
 end;
+{$ENDIF}
 
 procedure TTranslatorInject.LanguageDefault;
 begin

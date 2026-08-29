@@ -28,6 +28,16 @@
 unit uTWPPConnect;
 {$I TWPPConnectDiretiva.inc}
 interface
+{$IFDEF FPC}
+uses
+  uTWPPConnect.Classes, uTWPPConnect.constant, uTWPPConnect.Emoticons,
+  uTWPPConnect.Config, uTWPPConnect.JS, uTWPPConnect.Console,
+  uTWPPConnect.languages, uTWPPConnect.AdjustNumber,
+  SysUtils, Classes, Forms, Dialogs,
+  UiTypes,  Generics.Collections, TypInfo, ExtCtrls,
+  uTWPPConnect.Diversos, DateUtils, IniFiles, uTWPPConnect.ChatList,
+  uTWPPConnect.ThreadCompat;
+{$ELSE}
 uses
   uTWPPConnect.Classes, uTWPPConnect.constant, uTWPPConnect.Emoticons,
   uTWPPConnect.Config, uTWPPConnect.JS, uTWPPConnect.Console,
@@ -37,6 +47,7 @@ uses
   System.UiTypes,  Generics.Collections, System.TypInfo, Data.DB, Vcl.ExtCtrls,
   uTWPPConnect.Diversos, Vcl.Imaging.jpeg, DateUtils, IniFiles, uTWPPConnect.ChatList,
   IPPeerClient;
+{$ENDIF}
 
 type
   {Events}
@@ -609,10 +620,17 @@ type
 procedure Register;
 
 implementation
+{$IFDEF FPC}
+uses
+  uCEFTypes, uTWPPConnect.ConfigCEF, Windows, Messages,
+  uCEFConstants, Controls, StdCtrls, Graphics,
+  uTWPPConnect.FrmQRCode, uTWPPConnect.JsonCompat, StrUtils;
+{$ELSE}
 uses
   uCEFTypes, uTWPPConnect.ConfigCEF, Winapi.Windows, Winapi.Messages,
   uCEFConstants, Datasnap.DBClient, Vcl.WinXCtrls, Vcl.Controls, Vcl.StdCtrls,
   uTWPPConnect.FrmQRCode, System.NetEncoding, System.StrUtils;
+{$ENDIF}
 
 procedure Register;
 begin
@@ -628,6 +646,21 @@ end;
 procedure TWPPConnect.AcceptCall(id: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+      if Assigned(FrmConsole) then
+      begin
+        FrmConsole.AcceptCall(id);
+      end;
+    end;
+  begin
+    if Config.AutoDelay > 0 then
+       sleep(random(Config.AutoDelay));
+    SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -641,6 +674,9 @@ begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -653,18 +689,37 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.AcceptCallALL;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+      if Assigned(FrmConsole) then
+      begin
+        FrmConsole.AcceptCallALL;
+      end;
+    end;
+  begin
+    if Config.AutoDelay > 0 then
+       sleep(random(Config.AutoDelay));
+    SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -677,12 +732,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.addSubgroups(PCommunity, PGroupNumbers: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.addSubgroups(PCommunity, PGroupNumbers);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -704,6 +775,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PGroupNumbers);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -716,12 +790,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.ArquivarChat(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ArquivarChat(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -738,6 +826,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -748,12 +839,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.ArquivarChatNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ArquivarChatNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -775,6 +880,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -785,17 +893,34 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.ArquivarTodosOsChats;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ArquivarTodosOsChats();
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -806,6 +931,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -827,6 +953,19 @@ end; }
 procedure TWPPConnect.BloquearContato(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.BloquearContato(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -843,6 +982,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -853,12 +995,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.BloquearContatoNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.BloquearContatoNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
     Exit;
@@ -880,6 +1036,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -890,17 +1049,34 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 function TWPPConnect.CheckDelivered: String;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+            if Assigned(FrmConsole) then
+               FrmConsole.CheckDelivered;
+              end;
+  begin
+          if Config.AutoDelay > 0 then
+             sleep(random(Config.AutoDelay));
+              SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
           if Config.AutoDelay > 0 then
@@ -911,6 +1087,7 @@ begin
                FrmConsole.CheckDelivered;
           end);
       end);
+  {$ENDIF}
   lThread.Start;
 end;
 procedure TWPPConnect.CheckIsConnected;
@@ -921,6 +1098,19 @@ end;
 procedure TWPPConnect.CheckIsValidNumber(PNumberPhone: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CheckIsValidNumber(PNumberPhone);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -933,6 +1123,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -943,6 +1136,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -969,6 +1163,19 @@ end;
 procedure TWPPConnect.CheckNumberExists(PNumberPhone: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CheckNumberExists(PNumberPhone);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 18/07/2022
   If Application.Terminated Then
@@ -982,6 +1189,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -992,12 +1202,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.CheckNumberExistsNew(PNumberPhone: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CheckNumberExists(PNumberPhone);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 18/07/2022
   if Application.Terminated then
@@ -1016,6 +1240,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1026,12 +1253,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.NewCheckIsValidNumber(PNumberPhone: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.NewCheckIsValidNumber(PNumberPhone);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1045,6 +1286,9 @@ begin
     Exit;
   end;
   
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1055,6 +1299,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -1217,6 +1462,21 @@ end;
 procedure TWPPConnect.createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.createcommunity(PcommunityName, Pdescription, PGroupNumbers);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1245,6 +1505,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PGroupNumbers);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1257,12 +1520,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.createGroup(PGroupName, PParticipantNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CreateGroup(PGroupName, PParticipantNumber);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1280,6 +1559,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PParticipantNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1292,18 +1574,37 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.CreateNewsLetter(Content, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.CreateNewsLetter(Content, Options);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 09/10/2023
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1316,12 +1617,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.CreatePool(PID, PDescription, PChoices, POptions: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreate(PID, PDescription, PChoices, POptions);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1348,6 +1663,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1358,12 +1676,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreateEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1390,6 +1722,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1400,12 +1735,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.PoolCreateNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2, PSeuID3, PSeuID4);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1437,6 +1786,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PChoices);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1447,12 +1799,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DeletarOldChats(QtdChatsExcluir: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarOldChats(QtdChatsExcluir);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1460,6 +1828,9 @@ begin
      Exit;
   if QtdChatsExcluir = '' then
     QtdChatsExcluir := '1';
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1472,17 +1843,36 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DeletarTodosOsChats;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarTodosOsChats();
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1495,17 +1885,36 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DeletarTodosOsChatsUsers;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DeletarTodosOsChatsUsers();
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1518,6 +1927,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -1565,6 +1975,22 @@ end;
 procedure TWPPConnect.deleteMessageById(PNumberPhone, UniqueIDs: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.deleteMessageById(PNumberPhone, UniqueIDs);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   if Application.Terminated Then
@@ -1578,6 +2004,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1591,12 +2020,29 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.deleteMessageByIdNew(PNumberPhone, UniqueIDs, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.deleteMessageByIdNew(PNumberPhone, UniqueIDs, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 07/04/2024
   if Application.Terminated Then
@@ -1614,6 +2060,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumberPhone);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1627,12 +2076,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesarquivarChat(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesarquivarChat(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1650,6 +2113,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PIDContato);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1660,12 +2126,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesarquivarChatNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesarquivarChatNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1687,6 +2167,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1697,12 +2180,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesbloquearContato(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesbloquearContato(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1720,6 +2217,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1730,12 +2230,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesbloquearContatoNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesbloquearContatoNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
     Exit;
@@ -1757,6 +2271,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1767,12 +2284,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesfixarChat(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesfixarChat(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1791,6 +2322,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1801,12 +2335,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.DesfixarChatNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.DesfixarChatNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -1828,6 +2376,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1838,6 +2389,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -1873,6 +2425,20 @@ end;
 procedure TWPPConnect.GetAllParticipantsGroup(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetAllParticipantsGroup(PIDGroup);
+            //FrmConsole.listGroupAdmins(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -1883,6 +2449,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1894,6 +2463,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -1925,6 +2495,19 @@ end;
 procedure TWPPConnect.getMessage(vNumber, vOptions: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getMessage(vNumber, vOptions);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 14/08/2022
   if Application.Terminated then
@@ -1938,6 +2521,9 @@ begin
       Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
       Exit;
     end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -1948,12 +2534,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.getMessageACK(UniqueIDs: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getMessageACK(UniqueIDs);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 14/03/2023
   if Application.Terminated Then
@@ -1961,6 +2563,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -1973,6 +2578,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2024,6 +2630,22 @@ end;
 procedure TWPPConnect.getPlatformFromMessage(UniqueIDs, PNumberPhone: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.getPlatformFromMessage(UniqueIDs, PNumberPhone);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   if Application.Terminated Then
@@ -2037,6 +2659,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2050,12 +2675,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GetPnLidEntry(vNumber: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetPnLidEntry(vNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2068,6 +2707,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2078,6 +2720,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2100,11 +2743,27 @@ end;
 function TWPPConnect.GetUnReadMessages: String;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+            if Assigned(FrmConsole) then
+               FrmConsole.GetUnReadMessages;
+              end;
+  begin
+          if Config.AutoDelay > 0 then
+             sleep(random(Config.AutoDelay));
+              SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
           if Config.AutoDelay > 0 then
@@ -2115,12 +2774,28 @@ begin
                FrmConsole.GetUnReadMessages;
           end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.getVotes(UniqueID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getVotes(UniqueID);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 07/07/2023
   if Application.Terminated Then
@@ -2128,6 +2803,9 @@ begin
   if not Assigned(FrmConsole) then
     Exit;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2140,6 +2818,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2151,6 +2830,19 @@ end;
 procedure TWPPConnect.GroupAddParticipant(PIDGroup, PNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupAddParticipant(PIDGroup, PNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2162,6 +2854,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2172,12 +2867,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupPoolCreate(PIDGroup, PDescription, PPoolOptions, POptions);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2198,6 +2907,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PPoolOptions);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2208,12 +2920,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.groupDelete(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupDelete(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2224,6 +2950,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2234,12 +2963,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupDemoteParticipant(PIDGroup, PNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupDemoteParticipant(PIDGroup, PNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2251,6 +2994,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2261,12 +3007,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupJoinViaLink(PLinkGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupJoinViaLink(PLinkGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2277,6 +3037,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PLinkGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2287,12 +3050,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.groupLeave(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupLeave(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2303,6 +3080,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2313,6 +3093,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2355,6 +3136,19 @@ end;
 procedure TWPPConnect.GroupMsgAdminOnly(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupMsgAdminOnly(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2365,6 +3159,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2375,12 +3172,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupMsgAll(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupMsgAll(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2391,6 +3202,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2401,12 +3215,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupPromoteParticipant(PIDGroup, PNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupPromoteParticipant(PIDGroup, PNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2418,6 +3246,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2428,12 +3259,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupRemoveParticipant(PIDGroup, PNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GroupRemoveParticipant(PIDGroup, PNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2445,6 +3290,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2455,6 +3303,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2557,11 +3406,27 @@ end;
 procedure TWPPConnect.getHistorySyncProgress;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getHistorySyncProgress();
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2572,12 +3437,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GetisLidMigrated;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.GetisLidMigrated;
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2585,6 +3464,9 @@ begin
      Exit;
 
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2595,6 +3477,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2602,6 +3485,19 @@ end;
 procedure TWPPConnect.getLastSeen(vNumber: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getLastSeen(vNumber);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 31/07/2022
   If Application.Terminated Then
@@ -2614,6 +3510,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2624,18 +3523,35 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.getList(options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.getList(options);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 25/10/2022
   If Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2646,12 +3562,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.GroupRemoveInviteLink(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.revokeGroupInviteLink(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2662,6 +3592,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2672,6 +3605,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2748,6 +3682,20 @@ end;
 procedure TWPPConnect.listGroupContacts(PIDGroup: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.listGroupContacts(PIDGroup);
+            FrmConsole.listGroupAdmins(PIDGroup);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2758,6 +3706,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2769,6 +3720,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2783,11 +3735,27 @@ end;
 procedure TWPPConnect.Logout;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.Logout();
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -2798,12 +3766,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.markIsComposing(phoneNumber, duration, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsComposing(phoneNumber, duration);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -2821,6 +3805,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2833,12 +3820,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.markIsComposingNew(phoneNumber, duration, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsComposingNew(phoneNumber, duration, vSeuID);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -2861,6 +3864,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2873,12 +3879,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.MarkIsReadChats(NumberChatsIsRead: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.MarkIsReadChats(NumberChatsIsRead);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2886,6 +3908,9 @@ begin
      Exit;
   if NumberChatsIsRead = '' then
     NumberChatsIsRead := '1';
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2898,6 +3923,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -2939,6 +3965,21 @@ end;
 procedure TWPPConnect.markIsUnread(phoneNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsUnread(phoneNumber);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -2951,6 +3992,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2963,12 +4007,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.MarkIsUnreadChats(NumberChatsUnread: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.MarkIsUnreadChats(NumberChatsUnread);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -2976,6 +4036,9 @@ begin
      Exit;
   if NumberChatsUnread = '' then
     NumberChatsUnread := '1';
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -2988,6 +4051,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -3016,6 +4080,21 @@ end;
 procedure TWPPConnect.markIsRecording(phoneNumber, duration, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsRecording(phoneNumber, duration);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -3034,6 +4113,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3046,12 +4128,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.markIsRecordingNew(phoneNumber, duration, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markIsRecordingNew(phoneNumber, duration, vSeuID);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -3074,6 +4172,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3086,12 +4187,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.markPlayed(phoneNumber: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markPlayed(phoneNumber);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 14/03/2023
   if Application.Terminated Then
@@ -3104,6 +4221,9 @@ begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3116,12 +4236,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.markPlayedNew(phoneNumber, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.markPlayedNew(phoneNumber, vSeuID);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 07/04/2024
   if Application.Terminated Then
@@ -3139,6 +4275,9 @@ begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3151,6 +4290,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -3797,7 +4937,7 @@ begin
   begin
     CheckWppCrash(TWppCrashClass(PReturnClass));
   end;
-  if PTypeHeader in [Th_Connecting, Th_Disconnecting, Th_ConnectingNoPhone, Th_getQrCodeForm, Th_getQrCodeForm, TH_Destroy, Th_Destroying]  then
+  if PTypeHeader in [Th_Connecting, Th_Disconnecting, Th_ConnectingNoPhone, Th_getQrCodeForm, TH_Destroy, Th_Destroying]  then
   begin
     case PTypeHeader of
       Th_Connecting            : Fstatus := Server_Connecting;
@@ -3876,12 +5016,30 @@ end;
 procedure TWPPConnect.rejectCall(id: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.rejectCall(id);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3894,6 +5052,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 
@@ -3935,6 +5094,26 @@ end;
 procedure TWPPConnect.send(PNumberPhone, PMessage: string; PEtapa: string = '');
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(PNumberPhone); //Marca como lida a mensagem
+            FrmConsole.Send(PNumberPhone, PMessage);
+            if PEtapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(PNumberPhone);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -3951,6 +5130,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PNumberPhone);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -3968,6 +5150,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -3980,6 +5163,22 @@ var
   LBase64File : TBase64Encoding;
   LExtension  : String;
   LBase64     : String;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(PNumberPhone); //Marca como lida a mensagem
+            FrmConsole.sendBase64(LBase64, PNumberPhone, PFileName, PMessage);
+          end;
+            end;
+  begin
+         if Config.AutoDelay > 0 then
+            sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -4017,6 +5216,9 @@ begin
     FreeAndNil(LStream);
     FreeAndNil(LBase64File);
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
          if Config.AutoDelay > 0 then
@@ -4030,12 +5232,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendFileMessage(phoneNumber, content, options, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendFileMessage(phoneNumber, content, options);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   if Application.Terminated Then
@@ -4053,6 +5276,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4070,6 +5296,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -4185,6 +5412,22 @@ end;
 procedure TWPPConnect.SendFileMessageEx(phoneNumber, pBase64, Options: string; xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendFileMessageEx(phoneNumber, pBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -4197,6 +5440,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4210,12 +5456,29 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendFileMessageNew(phoneNumber, pBase64, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendFileMessageNew(phoneNumber, pBase64, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -4233,6 +5496,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4246,6 +5512,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -4387,12 +5654,30 @@ end;
 procedure TWPPConnect.sendImageStatus(Content, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+      if Assigned(FrmConsole) then
+      begin
+        FrmConsole.sendImageStatus(Content, Options);
+      end;
+    end;
+  begin
+    if Config.AutoDelay > 0 then
+       sleep(random(Config.AutoDelay));
+    SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 28/06/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4405,6 +5690,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -4448,6 +5734,22 @@ end;}
 procedure TWPPConnect.SendLinkPreview(PNumberPhone, PVideoLink, PMessage: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(PNumberPhone); //Marca como lida a mensagem
+            FrmConsole.sendLinkPreview(PNumberPhone, PVideoLink, PMessage);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -4469,6 +5771,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PVideoLink);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4482,12 +5787,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendListMenu(phoneNumber, title, subtitle, description, buttonText, menu, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendListMenu(phoneNumber, title, subtitle, description, buttonText, menu);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   If Application.Terminated Then
@@ -4505,6 +5831,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4522,12 +5851,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendListMessage(phoneNumber, buttonText, description, sections, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendListMessage(phoneNumber, buttonText, description, sections);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   If Application.Terminated Then
@@ -4545,6 +5895,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4562,12 +5915,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendListMessageEx(phoneNumber, buttonText, description, sections, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            {if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;}
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   if Application.Terminated Then
@@ -4585,6 +5959,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, sections);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4602,12 +5979,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendListMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendListMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            {if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;}
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   If Application.Terminated Then
@@ -4630,6 +6028,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, options);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4647,12 +6048,29 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendLocation(PNumberPhone, PLat, PLng, PMessage: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(PNumberPhone); //Marca como lida a mensagem
+            FrmConsole.sendLocation(PNumberPhone, PLat, PLng, PMessage);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -4674,6 +6092,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PLat+PLng);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4687,12 +6108,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendLocationMessage(phoneNumber, options, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendLocationMessage(phoneNumber, options);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 01/03/2022
   if Application.Terminated Then
@@ -4710,6 +6152,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4727,12 +6172,30 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendLocationMessageEx(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendLocationMessageEx(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 17/09/2022
   if Application.Terminated Then
@@ -4745,6 +6208,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4759,12 +6225,30 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendLocationMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 17/09/2022
   if Application.Terminated Then
@@ -4782,6 +6266,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4796,12 +6283,30 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendOrderMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendOrderMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -4818,6 +6323,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4832,12 +6340,30 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendPixKeyMessageNew(phoneNumber, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -4854,6 +6380,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4868,12 +6397,33 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendRawMessage(phoneNumber, rawMessage, options, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendTextMessage(phoneNumber, rawMessage, options);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -4891,6 +6441,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4908,18 +6461,37 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendRawStatus(Content, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendRawStatus(Content, Options);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 28/06/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4932,12 +6504,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendReactionMessage(UniqueID, Reaction, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.SendReactionMessage(UniqueID, Reaction);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 10/05/2022
   if Application.Terminated Then
@@ -4954,6 +6542,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, Reaction);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4966,12 +6557,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendScheduledCallMessage(vID, vOptions: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendScheduledCallMessage(vID, vOptions);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+          sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -4984,6 +6591,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vID);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -4996,12 +6606,33 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendTextMessage(phoneNumber, content, options, etapa: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendTextMessage(phoneNumber, content, options);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 10/05/2022
   if Application.Terminated then
@@ -5019,6 +6650,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5036,12 +6670,30 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendTextMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendTextMessageEx(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4 );
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //temis 03-06-2022
   if Application.Terminated Then
@@ -5059,6 +6711,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5073,12 +6728,30 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendTextMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendTextMessageNew(phoneNumber, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -5102,6 +6775,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5116,18 +6792,37 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendTextStatus(Content, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendTextStatus(Content, Options);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5140,12 +6835,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVCardContactMessageEx(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -5163,6 +6874,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vNumDest);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5175,12 +6889,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVCardContactMessageNew(vNumDest, vNum, vNameContact, vOptions, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -5208,6 +6938,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vNumDest);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5220,18 +6953,37 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendVideoStatus(Content, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.sendVideoStatus(Content, Options);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 28/06/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5244,12 +6996,29 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendBase64(Const vBase64: String; vNum: String;  Const vFileName, vMess: string);
 Var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(vNum); //Marca como lida a mensagem
+            FrmConsole.sendBase64(vBase64, vNum, vFileName, vMess);
+          end;
+            end;
+  begin
+         if Config.AutoDelay > 0 then
+            sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   inherited;
   If Application.Terminated Then
@@ -5267,6 +7036,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vNum);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
          if Config.AutoDelay > 0 then
@@ -5280,6 +7052,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -5288,6 +7061,26 @@ procedure TWPPConnect.SendButtons(phoneNumber, titleText, buttons,
   footerText: string; etapa: string = '');
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.SendButtons(phoneNumber, titleText, buttons, footerText);
+            if etapa <> '' then
+            begin
+              FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+            end;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -5304,6 +7097,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5321,12 +7117,28 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendCall(id, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.SendCall(id, Options);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -5339,6 +7151,9 @@ begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5351,12 +7166,30 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.sendChargeMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            //FrmConsole.ReadMessages(phoneNumber); //Marca como lida a mensagem
+            FrmConsole.sendChargeMessageNew(phoneNumber, items, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+            //FrmConsole.ReadMessagesAndDelete(phoneNumber);//Deleta a conversa
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   if Application.Terminated Then
     Exit;
@@ -5373,6 +7206,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5387,12 +7223,28 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.SendContact(PNumberPhone, PNumber: string; PNameContact: string = '');
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.SendContact(PNumberPhone, PNumber, PNameContact);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -5410,6 +7262,9 @@ begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PNumberPhone);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5422,6 +7277,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -5542,12 +7398,30 @@ end;
 procedure TWPPConnect.setKeepAlive(Ativo: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.setKeepAlive(Ativo);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5560,6 +7434,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -5629,6 +7504,21 @@ end;
 procedure TWPPConnect.editMessage(UniqueID, NewMessage, Options: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.editMessage(UniqueID, NewMessage, options);
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 15/08/2023
   if Application.Terminated Then
@@ -5646,6 +7536,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5658,12 +7551,28 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.editMessageNew(UniqueID, NewMessage, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.editMessageNew(UniqueID, NewMessage, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 15/08/2023
   if Application.Terminated Then
@@ -5681,6 +7590,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5693,12 +7605,28 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.EndCall(id: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.EndCall(id);
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
@@ -5712,6 +7640,9 @@ begin
     //Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5724,18 +7655,37 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.EndCallALL;
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.EndCallALL;
+          end;
+            end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Adicionado Por Marcelo 18/05/2022
   if Application.Terminated Then
     Exit;
   if not Assigned(FrmConsole) then
     Exit;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -5748,6 +7698,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -5861,7 +7812,9 @@ Var
   LForm  : Tform;
   LPanel1: Tpanel;
   LAbel1 : TLabel;
+  {$IFNDEF FPC}
   LActivityIndicator1: TActivityIndicator;
+  {$ENDIF}
 begin
   if PWarning then
   Begin
@@ -5883,16 +7836,22 @@ begin
     LForm.OnCloseQuery                := OnCLoseFrmInt;
     LPanel1                           := Tpanel.Create(LForm);
     LPanel1.Parent                    := LForm;
+    {$IFNDEF FPC}
     LPanel1.ShowCaption               := False;
+    {$ENDIF}
     LPanel1.BevelOuter                := bvNone;
     LPanel1.Width                     := 81;
     LPanel1.Align                     := alLeft;
+    {$IFNDEF FPC}
+    //Vcl.WinXCtrls nao tem equivalente direto na LCL - sob FPC o painel fica sem o
+    //indicador animado, mas o resto do fluxo de shutdown continua igual.
     LActivityIndicator1               := TActivityIndicator.Create(LPanel1);
     LActivityIndicator1.Parent        := LPanel1;
     LActivityIndicator1.IndicatorSize := aisXLarge;
     LActivityIndicator1.Animate       := True;
     LActivityIndicator1.Left          := (LPanel1.Width  - LActivityIndicator1.Width)  div 2;
     LActivityIndicator1.Top           := (LPanel1.Height - LActivityIndicator1.Height) div 2;
+    {$ENDIF}
     LAbel1                            := TLabel.Create(LForm);
     LAbel1.Parent                     := LForm;
     LAbel1.Align                      := alClient;
@@ -5901,7 +7860,9 @@ begin
     LAbel1.Font.Size                  := 10;
     LAbel1.WordWrap                   := True;
     LAbel1.Caption                    := Text_FrmClose_Label;
+    {$IFNDEF FPC}
     LAbel1.AlignWithMargins           := true;
+    {$ENDIF}
     LForm.Visible                     := True;
     SleepNoFreeze(2000);               //alteração em 17/07/2022
     //Marcelo 15/09/2022 Compatibilidade FMX
@@ -5944,6 +7905,19 @@ end;
 procedure TWPPConnect.FixarChat(PIDContato: String);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.FixarChat(PIDContato);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -5961,6 +7935,9 @@ begin
     Exit;
   end;
 
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -5971,12 +7948,26 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
 procedure TWPPConnect.FixarChatNew(vContato, vSeuID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.FixarChatNew(vContato, vSeuID);
+          end;
+            end;
+  begin
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   If Application.Terminated Then
      Exit;
@@ -5997,6 +7988,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, vContato);
     Exit;
   end;}
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         TThread.Synchronize(nil, procedure
@@ -6007,6 +8001,7 @@ begin
           end;
         end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
@@ -6027,7 +8022,11 @@ begin
   if Status in [Inject_Destroying, Server_Disconnecting] then
   begin
     {$IFNDEF STANDALONE}
+    {$IFDEF FPC}
+    Application.MessageBox(PAnsiChar(AnsiString(MSG_WarningQrCodeStart1)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+    {$ELSE}
     Application.MessageBox(PWideChar(MSG_WarningQrCodeStart1), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ENDIF}
     {$ELSE}
     raise exception.Create(MSG_WarningQrCodeStart1);
     {$ENDIF}
@@ -6043,7 +8042,11 @@ begin
     if not ConsolePronto then
     begin
       {$IFNDEF STANDALONE}
+      {$IFDEF FPC}
+      Application.MessageBox(PAnsiChar(AnsiString(MSG_ConfigCEF_ExceptConsoleNaoPronto)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+      {$ELSE}
       Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConsoleNaoPronto), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ENDIF}
       {$ELSE}
       Raise exception.Create(MSG_ConfigCEF_ExceptConsoleNaoPronto);
       {$ENDIF}
@@ -6080,7 +8083,11 @@ begin
   if Status in [Inject_Destroying, Server_Disconnecting] then
   begin
     {$IFNDEF STANDALONE}
+    {$IFDEF FPC}
+    Application.MessageBox(PAnsiChar(AnsiString(MSG_WarningQrCodeStart1)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+    {$ELSE}
     Application.MessageBox(PWideChar(MSG_WarningQrCodeStart1), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+    {$ENDIF}
     {$ELSE}
     raise exception.Create(MSG_WarningQrCodeStart1);
     {$ENDIF}
@@ -6100,7 +8107,11 @@ begin
     begin
 
       {$IFNDEF STANDALONE}
+      {$IFDEF FPC}
+      Application.MessageBox(PAnsiChar(AnsiString(MSG_ConfigCEF_ExceptConsoleNaoPronto)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+      {$ELSE}
       Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConsoleNaoPronto), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+      {$ENDIF}
       {$ELSE}
       Raise exception.Create(MSG_ConfigCEF_ExceptConsoleNaoPronto);
       {$ENDIF}
@@ -6119,6 +8130,21 @@ end;
 procedure TWPPConnect.forwardMessage(phoneNumber, UniqueID: string);
 var
   lThread : TThread;
+  {$IFDEF FPC}
+  procedure Trabalho;
+    procedure Sincronizado;
+    begin
+          if Assigned(FrmConsole) then
+          begin
+            FrmConsole.forwardMessage(phoneNumber, UniqueID);
+          end;
+           end;
+  begin
+        if Config.AutoDelay > 0 then
+           sleep(random(Config.AutoDelay));
+            SynchronizeNested(Sincronizado);
+  end;
+  {$ENDIF}
 begin
   //Marcelo 15/08/2023
   if Application.Terminated Then
@@ -6136,6 +8162,9 @@ begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, phoneNumber);
     Exit;
   end;
+  {$IFDEF FPC}
+  lThread := CreateAnonymousThreadCompat(Trabalho);
+  {$ELSE}
   lThread := TThread.CreateAnonymousThread(procedure
       begin
         if Config.AutoDelay > 0 then
@@ -6148,6 +8177,7 @@ begin
           end;
        end);
       end);
+  {$ENDIF}
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;

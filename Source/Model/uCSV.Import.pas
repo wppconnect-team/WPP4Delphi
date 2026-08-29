@@ -35,23 +35,40 @@
 
 unit UCSV.Import;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
+{$IFDEF FPC}
+uses
+  Classes, ExtCtrls, SysUtils,
+  DB, BufDataset;
+{$ELSE}
 uses
   System.Classes, Vcl.ExtCtrls, System.SysUtils,
   Data.DB,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+{$ENDIF}
 
 Const
   TamPdr = 100;
 
 Type
+  {$IFDEF FPC}
+  TRegistrosDataSet = TBufDataset;
+  {$ELSE}
+  TRegistrosDataSet = TFDMemTable;
+  {$ENDIF}
+
   TCSVImport = Class
   Private
     FStringList: TStringList;
-    FRegistros       : TFDMemTable;
+    FRegistros       : TRegistrosDataSet;
     FSeparador : Char;
     Procedure ZerarTudo;
     Function  CriarCampos: Boolean;
@@ -64,7 +81,7 @@ Type
     Function  ImportarCSV_viaArquivo  (PArquivo:String):Boolean;
     Function  ImportarCSV_viaTexto    (PConteudo:WideString):Boolean;
 
-    Property  Registros:  TFDMemTable Read FRegistros;
+    Property  Registros:  TRegistrosDataSet Read FRegistros;
     Property  Separador : Char        Read FSeparador               Write FSeparador;
   End;
 
@@ -72,7 +89,11 @@ Type
 implementation
 
 uses
+  {$IFDEF FPC}
+  Dialogs;
+  {$ELSE}
   Vcl.Dialogs;
+  {$ENDIF}
 
 { TCSVImport }
 
@@ -86,16 +107,26 @@ function TCSVImport.CriarCampos: Boolean;
 Var
   Lok    : Integer;
   Linha0 : PwideChar;
+  {$IFDEF FPC}
+  Linha0Ansi: AnsiString;
+  {$ENDIF}
   LCampo : String;
   LRetorno: TStringList;
   I: Integer;
 begin
   Result := False;
   LRetorno := TStringList.Create;
+  {$IFNDEF FPC}
   FRegistros.FieldOptions.AutoCreateMode := acCombineComputed;
+  {$ENDIF}
   try
+    {$IFDEF FPC}
+    Linha0Ansi := AnsiString(FStringList.Strings[0]);
+    Lok    := ExtractStrings([AnsiChar(FSeparador)],[' '], PAnsiChar(Linha0Ansi), LRetorno);
+    {$ELSE}
     Linha0 := PwideChar(FStringList.Strings[0]);
     Lok    := ExtractStrings([FSeparador],[' '], Linha0, LRetorno);
+    {$ENDIF}
     try
       if Lok > 0 then
       Begin
@@ -119,6 +150,9 @@ function TCSVImport.CriarValor(PLinha: WideString): Boolean;
 Var
   Lok    : Integer;
   Linha  : PwideChar;
+  {$IFDEF FPC}
+  LinhaAnsi: AnsiString;
+  {$ENDIF}
   LConteudoCampo: WideString;
   LRetorno: TStringList;
   I: Integer;
@@ -131,8 +165,13 @@ begin
       PLinha  := StringReplace(PLinha, (FSeparador + FSeparador), (FSeparador + ' ' + FSeparador), [rfReplaceAll, rfIgnoreCase]);
     End;
 
+    {$IFDEF FPC}
+    LinhaAnsi := AnsiString(PLinha);
+    Lok     := ExtractStrings([AnsiChar(FSeparador)],[], PAnsiChar(LinhaAnsi), LRetorno);
+    {$ELSE}
     Linha   := PwideChar(PLinha);
     Lok     := ExtractStrings([FSeparador],[], Linha, LRetorno);
+    {$ENDIF}
     try
       if Lok > 0 then
       Begin
@@ -214,7 +253,7 @@ begin
   FreeAndNil(FRegistros);
 
   FStringList      := TStringList.Create;
-  FRegistros       := TFDMemTable.Create(nil);
+  FRegistros       := TRegistrosDataSet.Create(nil);
 end;
 
 end.

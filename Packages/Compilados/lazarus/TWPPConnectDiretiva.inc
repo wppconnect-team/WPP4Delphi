@@ -1,5 +1,5 @@
 {####################################################################################################################
-                              WPPCONNECT - Componente de comunicação (Não Oficial)
+                              WPPCONNECT - Componente de comunicaï¿½ï¿½o (Nï¿½o Oficial)
                                            https://wppconnect-team.github.io/
                                             Maio de 2022
 ####################################################################################################################
@@ -8,15 +8,22 @@
             
 ####################################################################################################################
   Obs:
-     - Código aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
+     - Cï¿½digo aberto a comunidade Delphi, desde que mantenha os dados dos autores e mantendo sempre o nome do IDEALIZADOR
        Marcelo;
      
 ####################################################################################################################
 }
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+  {$MODESWITCH ANONYMOUSFUNCTIONS}
+  {$MODESWITCH NESTEDPROCVARS}
+{$ENDIF}
+
 //Uncomment the directive for the type of application you will use. If it is a standalone application, use STANDALONE, and if it is operated by a user, use APPWINDOWS.
 //DO NOT USE BOTH DIRECTIVES AT THE SAME TIME.
-//Descomente a diretiva para o tipo de aplicação que for usar, se for uma aplicação que irá executar sozinha em um servidor, utilize STANDALONE, se é uma aplicação que vai ser operada por um usuário 
+//Descomente a diretiva para o tipo de aplicaï¿½ï¿½o que for usar, se for uma aplicaï¿½ï¿½o que irï¿½ executar sozinha em um servidor, utilize STANDALONE, se ï¿½ uma aplicaï¿½ï¿½o que vai ser operada por um usuï¿½rio 
 //utilize APPWINDOWS. 
 //NAO USE AS DUAS DIRETIVAS AO MESMO TEMPO
 {$DEFINE APPWINDOWS} 

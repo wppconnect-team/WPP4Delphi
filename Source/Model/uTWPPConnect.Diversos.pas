@@ -36,10 +36,19 @@
 
 unit uTWPPConnect.Diversos;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 uses
-  System.Classes, Vcl.ExtCtrls, System.UITypes, System.RegularExpressions;
+  {$IFDEF FPC}
+  Classes, RegExpr
+  {$ELSE}
+  System.Classes, Vcl.ExtCtrls, System.UITypes, System.RegularExpressions
+  {$ENDIF};
 
 function PrettyJSON(JsonString: String):String;
 function CaractersWeb(vText: string): string;
@@ -59,8 +68,12 @@ function ContainsUnicodeSequence(const Input: string): Boolean;
 implementation
 
 uses
+  {$IFDEF FPC}
+  fpjson, jsonparser, base64, SysUtils, Dialogs, uTWPPConnect.Constant
+  {$ELSE}
   System.JSON, REST.Json, Vcl.Imaging.GIFImg,   Vcl.Graphics, System.NetEncoding, System.SysUtils,
-  Vcl.Imaging.pngimage, Vcl.Dialogs, uTWPPConnect.Constant;
+  Vcl.Imaging.pngimage, Vcl.Dialogs, uTWPPConnect.Constant
+  {$ENDIF};
 
 Procedure WarningDesenv(Pvalor:String);
 begin
@@ -68,6 +81,18 @@ begin
 end;
 
 function PrettyJSON(JsonString: String):String;
+{$IFDEF FPC}
+var
+  AObj: TJSONData;
+begin
+  AObj := GetJSON(JsonString);
+  try
+    Result := AObj.FormatJSON;
+  finally
+    AObj.Free;
+  end;
+end;
+{$ELSE}
 var
   AObj: TJSONObject;
 begin
@@ -78,12 +103,16 @@ begin
     AObj.Free;
   end;
 end;
+{$ENDIF}
 
 Function Convert_Base64ToFile(Const PInBase64, FileSaveName: string): Boolean;
 var
   LInput : TMemoryStream;
   LOutput: TMemoryStream;
   stl    : TStringList;
+  {$IFDEF FPC}
+  LDecoder: TBase64DecodingStream;
+  {$ENDIF}
 begin
   LInput  := TMemoryStream.Create;
   LOutput := TMemoryStream.Create;
@@ -98,7 +127,16 @@ begin
       if LInput.Size < 1 then
         Exit;
 
+      {$IFDEF FPC}
+      LDecoder := TBase64DecodingStream.Create(LInput, bdmMIME);
+      try
+        LOutput.CopyFrom(LDecoder, 0);
+      finally
+        LDecoder.Free;
+      end;
+      {$ELSE}
       TNetEncoding.Base64.Decode( LInput, LOutput );
+      {$ENDIF}
       if LOutput.Size < 1 then
          Exit;
 
@@ -126,22 +164,39 @@ end;
 function Convert_StrToBase64(vFile: string): string;
 var
   vFilestream: TMemoryStream;
+  {$IFNDEF FPC}
   vBase64File: TBase64Encoding;
+  {$ENDIF}
+  vRaw: RawByteString;
 begin
-  vBase64File := TBase64Encoding.Create;
   vFilestream := TMemoryStream.Create;
   try
     vFilestream.LoadFromFile(vFile);
-    result :=  vBase64File.EncodeBytesToString(vFilestream.Memory, vFilestream.Size);
+    {$IFDEF FPC}
+    SetString(vRaw, PAnsiChar(vFilestream.Memory), vFilestream.Size);
+    result := EncodeStringBase64(vRaw);
+    {$ELSE}
+    vBase64File := TBase64Encoding.Create;
+    try
+      result :=  vBase64File.EncodeBytesToString(vFilestream.Memory, vFilestream.Size);
+    finally
+      FreeAndNil(vBase64File);
+    end;
+    {$ENDIF}
   finally
-    FreeAndNil(vBase64File);
     FreeAndNil(vFilestream);
   end;
 end;
 
 function Convert_StrToBase64Stream(Var vMemo: TMemoryStream): string;
+{$IFNDEF FPC}
 var
   vBase64File: TBase64Encoding;
+{$ENDIF}
+{$IFDEF FPC}
+var
+  vRaw: RawByteString;
+{$ENDIF}
 begin
   Result := '';
   try
@@ -149,12 +204,17 @@ begin
        Exit;
 
     vMemo.Position := 0;
+    {$IFDEF FPC}
+    SetString(vRaw, PAnsiChar(vMemo.Memory), vMemo.Size);
+    Result := EncodeStringBase64(vRaw);
+    {$ELSE}
     vBase64File := TBase64Encoding.Create;
     try
       result :=  vBase64File.EncodeBytesToString(vMemo.Memory, vMemo.Size);
     finally
       FreeAndNil(vBase64File);
     end;
+    {$ENDIF}
   Except
   end;
 end;
@@ -190,6 +250,18 @@ End;
 
 
 function ContainsUnicodeSequence(const Input: string): Boolean;
+{$IFDEF FPC}
+var
+  RegEx: TRegExpr;
+begin
+  RegEx := TRegExpr.Create('\\u[A-Fa-f0-9]{4}');
+  try
+    Result := RegEx.Exec(Input);
+  finally
+    RegEx.Free;
+  end;
+end;
+{$ELSE}
 var
   RegEx: TRegEx;
 begin
@@ -197,8 +269,31 @@ begin
   RegEx := TRegEx.Create('\\u[A-Fa-f0-9]{4}');
   Result := RegEx.IsMatch(Input);
 end;
+{$ENDIF}
 
 function FindUnicodeSequences(const Input: string): TArray<string>;
+{$IFDEF FPC}
+var
+  RegEx: TRegExpr;
+  Results: TArray<string>;
+  Cnt: Integer;
+begin
+  RegEx := TRegExpr.Create('\\u[A-Fa-f0-9]{4}\\u[A-Fa-f0-9]{4}');
+  try
+    Cnt := 0;
+    SetLength(Results, 0);
+    if RegEx.Exec(Input) then
+    repeat
+      Inc(Cnt);
+      SetLength(Results, Cnt);
+      Results[Cnt - 1] := RegEx.Match[0];
+    until not RegEx.ExecNext;
+    Result := Results;
+  finally
+    RegEx.Free;
+  end;
+end;
+{$ELSE}
 var
   RegEx: TRegEx;
   Match: TMatch;
@@ -217,8 +312,23 @@ begin
 
   Result := Results;
 end;
+{$ENDIF}
 
 function IsDirectoryPath(const Path: string): Boolean;
+{$IFDEF FPC}
+var
+  RegEx: TRegExpr;
+begin
+  // A expressão regular abaixo verifica caminhos de diretório comuns no Windows
+  // Pode ser ajustada para outros sistemas operacionais se necessário
+  RegEx := TRegExpr.Create('^(?:[a-zA-Z]:)?[\\/](?:[a-zA-Z0-9_\-\.]+[\\/])*[a-zA-Z0-9_\-\.]*$');
+  try
+    Result := RegEx.Exec(Path);
+  finally
+    RegEx.Free;
+  end;
+end;
+{$ELSE}
 var
   RegEx: TRegEx;
 begin
@@ -227,6 +337,7 @@ begin
   RegEx := TRegEx.Create('^(?:[a-zA-Z]:)?[\\/](?:[a-zA-Z0-9_\-\.]+[\\/])*[a-zA-Z0-9_\-\.]*$');
   Result := RegEx.IsMatch(Path);
 end;
+{$ENDIF}
 
 function CaractersWeb(vText: string): string;
 begin

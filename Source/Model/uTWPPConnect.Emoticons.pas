@@ -43,6 +43,11 @@
 
 unit uTWPPConnect.Emoticons;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 type
@@ -340,7 +345,7 @@ type
     const Melancia = '🍉';
     const Morango = '🍓';
     const Peach = '🍑';
-    const Melão = '🍈';
+    const Melao = '🍈';
     const Banana = '🍌';
     const Pear = '🍐';
     const Abacaxi = '🍍';
@@ -487,8 +492,8 @@ type
     const PotofFood = '🍲';
     const Oden = '🍢';
     const Dango = '🍡';
-    const Culinária = '🍳';
-    const Pão = '🍞';
+    const Culinaria = '🍳';
+    const Pao = '🍞';
     const Donut = '🍩';
     const Creme = '🍮';
     const SoftIceCream = '🍦';
@@ -833,8 +838,8 @@ type
     const Virgo = '♍';
     const Libra = '♎';
     const Scorpius = '♏';
-    const Sagitário = '♐';
-    const Capricórnio = '♑';
+    const Sagitario = '♐';
+    const Capricornio = '♑';
     const Aquario = '♒';
     const Peixes = '♓';
     const Ophiuchus = '⛎';
@@ -922,7 +927,7 @@ type
     const Boca = '👄';
     const Pedestre = '🚶';
     const Runner = '🏃';
-    const Dançarino = '💃';
+    const Dancarino = '💃';
     const WomanBunnyEars = '👯';
     const OKGesture = '🙆';
     const NoGoodGesture = '🙅';

@@ -34,6 +34,11 @@
 }
 unit uTWPPConnect.Constant;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 Uses
@@ -42,10 +47,21 @@ Uses
   {$else}
     Winapi.Messages, System.SysUtils, typinfo, REST.Json
   {$ENDIF};
+
+{$IFDEF FPC}
+type
+  //Equivalente minimo a REST.Json.Types.TJsonOptions (Delphi), so para manter a
+  //assinatura dos construtores de uTWPPConnect.Classes.pas identica nos dois
+  //compiladores. No FPC essas opcoes nao tem efeito (o parse manual sob
+  //{$IFDEF FPC} nao usa REST.Json), servem so de compatibilidade de tipo.
+  TJsonOption  = (joDateIsUTC, joDateFormatISO8601, joIgnoreEmptyStrings, joIgnoreEmptyArrays);
+  TJsonOptions = set of TJsonOption;
+{$ENDIF}
+
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.0.10'; //  28/08/2026
+  TWPPConnectVersion              = '5.0.0.11'; //  29/08/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -1051,7 +1067,11 @@ type
 implementation
 
 uses
-  System.JSON, System.Classes, Vcl.Dialogs, Vcl.Forms, Winapi.Windows, uTWPPConnect.ConfigCEF;
+  {$IFDEF FPC}
+  Classes, Forms, uTWPPConnect.ConfigCEF
+  {$ELSE}
+  System.JSON, System.Classes, Vcl.Dialogs, Vcl.Forms, Winapi.Windows, uTWPPConnect.ConfigCEF
+  {$ENDIF};
 
 
 Function VerificaCompatibilidadeVersao(PVersaoExterna:String; PversaoInterna:String):Boolean;
@@ -1067,8 +1087,13 @@ Begin
     PVersaoExterna   := StringReplace(PVersaoExterna, ',', '.',    [rfReplaceAll, rfIgnoreCase]);
     PversaoInterna   := StringReplace(PversaoInterna, ',', '.',    [rfReplaceAll, rfIgnoreCase]);
 
+    {$IFDEF FPC}
+    ExtractStrings(['.'],[], PAnsiChar(AnsiString(PversaoInterna)), LVersionInt);
+    ExtractStrings(['.'],[], PAnsiChar(AnsiString(PVersaoExterna)), LVersionExt);
+    {$ELSE}
     ExtractStrings(['.'],[], PWideChar(PversaoInterna), LVersionInt);
     ExtractStrings(['.'],[], PWideChar(PVersaoExterna), LVersionExt);
+    {$ENDIF}
     for I := 0 to LVersionInt.count -1 do
       LInt := LInt + Copy(LVersionInt.Strings[i] + '00000000', 0, Versao0porCasas);
 
@@ -1101,6 +1126,8 @@ var
   LIni, LNow: Cardinal;
   Lpass: Integer;
   UltimoSegundo: Integer;
+  Elapsed: Cardinal;
+  Remaining: Integer;
 begin
   LIni := GetTickCount;
   Lpass := 0;
@@ -1125,8 +1152,8 @@ begin
 
     if (PtimeOut > 0) then
     begin
-      var Elapsed := LNow - LIni;
-      var Remaining := (PtimeOut - Elapsed) div 1000;
+      Elapsed := LNow - LIni;
+      Remaining := (PtimeOut - Integer(Elapsed)) div 1000;
 
       if Remaining < UltimoSegundo then
       begin

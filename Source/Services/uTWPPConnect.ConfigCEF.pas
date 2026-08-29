@@ -43,6 +43,21 @@ unit uTWPPConnect.ConfigCEF;
 
 interface
 
+{$IFDEF FPC}
+uses
+  Classes,
+  SysUtils,
+  Rtti,
+  Windows,
+  Forms,
+  DateUtils,
+  IniFiles,
+  uCEFApplication, uCEFConstants,
+  uCEFChromium,
+
+  uTWPPConnect,
+  uTWPPConnect.constant, ExtCtrls, uTWPPConnect.Classes ;
+{$ELSE}
 uses
   System.Classes,
   System.SysUtils,
@@ -56,6 +71,7 @@ uses
 
   uTWPPConnect,
   uTWPPConnect.constant, Vcl.ExtCtrls, uTWPPConnect.Classes ;
+{$ENDIF}
 
 
 
@@ -155,7 +171,11 @@ var
 implementation
 
 uses
+  {$IFDEF FPC}
+  uCEFTypes, Dialogs, uTWPPConnect.Diversos;
+  {$ELSE}
   uCEFTypes, Vcl.Dialogs, uTWPPConnect.Diversos;
+  {$ENDIF}
 
 { TCEFConfig }
 
@@ -346,7 +366,11 @@ begin
   if not DirectoryExists(LDir) then
     //raise Exception.Create(Format(MSG_ExceptPath, [LDir]));
     //Aurino 11/07/2022
+    {$IFDEF FPC}
+    deletefile(PAnsiChar(AnsiString(ExtractFilePath(Application.ExeName) + NomeArquivoIni))) ;
+    {$ELSE}
     deletefile(pwidechar(ExtractFilePath(Application.ExeName) + NomeArquivoIni)) ;
+    {$ENDIF}
   Result := true;
 end;
 
@@ -453,9 +477,15 @@ begin
     LVReque   := IntToStr(VersaoMinima_CF4_Major)      + '.' + IntToStr(VersaoMinima_CF4_Minor)      + '.' + IntToStr(VersaoMinima_CF4_Release);
     LVerIdent := IntToStr(CEF_SUPPORTED_VERSION_MAJOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_MINOR) + '.' + IntToStr(CEF_SUPPORTED_VERSION_BUILD);
     {$IFNDEF STANDALONE}
+    {$IFDEF FPC}
+    Application.MessageBox(PAnsiChar(AnsiString(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent]))),
+                           PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok
+                          );
+    {$ELSE}
     Application.MessageBox(PWideChar(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent])),
                            PWideChar(Application.Title), MB_ICONERROR + mb_ok
                           );
+    {$ENDIF}
     {$ELSE}
     raise Exception.Create(Format(MSG_ConfigCEF_ExceptVersaoErrada, [LVReque, LVerIdent]));
     {$ENDIF}
@@ -549,7 +579,11 @@ begin
     Result  := (Self.status = asInitialized);
     if not Result then
     {$IFNDEF STANDALONE}
+       {$IFDEF FPC}
+       Application.MessageBox(PAnsiChar(AnsiString(MSG_ConfigCEF_ExceptConnection)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+       {$ELSE}
        Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptConnection), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+       {$ENDIF}
     {$ELSE}
       raise exception.Create(MSG_ConfigCEF_ExceptConnection);
     {$ENDIF}

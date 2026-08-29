@@ -17,7 +17,14 @@
 
 unit uTWPPConnect.FrmConfigNetWork;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
+{$IFNDEF FPC}
 {$I cef.inc}
+{$ENDIF}
 
 interface
 
@@ -74,7 +81,12 @@ implementation
 
 {$R *.dfm}
 
-uses uTWPPConnect.Constant, uTWPPConnect.Diversos, uTWPPConnect.languages, System.UITypes;
+uses
+  {$IFDEF FPC}
+  uTWPPConnect.Constant, uTWPPConnect.Diversos, uTWPPConnect.languages
+  {$ELSE}
+  uTWPPConnect.Constant, uTWPPConnect.Diversos, uTWPPConnect.languages, System.UITypes
+  {$ENDIF};
 
 
 procedure TFrmConfigNetWork.BntOkClick(Sender: TObject);

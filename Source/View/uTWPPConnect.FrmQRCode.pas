@@ -34,6 +34,11 @@
 }
 unit uTWPPConnect.FrmQRCode;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 uses
@@ -50,7 +55,7 @@ type
   TFrmQRCode = class(TForm)
     Timg_QrCode: TImage;
     Timg_Animacao: TImage;
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormClose(Sender: TObject; var AAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -77,15 +82,20 @@ var
 
 implementation
 
-uses System.NetEncoding, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
-  uTWPPConnect.ConfigCEF, uTWPPConnect.Console;
+uses
+  {$IFDEF FPC}
+  uTWPPConnect.ConfigCEF, uTWPPConnect.Console
+  {$ELSE}
+  System.NetEncoding, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
+  uTWPPConnect.ConfigCEF, uTWPPConnect.Console
+  {$ENDIF};
 
 {$R *.dfm}
 
-procedure TFrmQRCode.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TFrmQRCode.FormClose(Sender: TObject; var AAction: TCloseAction);
 begin
   if not FpodeFechar then
-    action    := caHide;
+    AAction    := caHide;
 
   FTimerGetQrCode.Enabled := False;
 end;
@@ -118,8 +128,11 @@ begin
   Timg_Animacao.Visible := True;
   Timg_QrCode.Visible   := False;
   FpodeFechar           := False;
+  {$IFNDEF FPC}
+  //Controle de animacao do GIF - Vcl.Imaging.GIFImg nao tem equivalente direto na LCL.
   (Timg_Animacao.Picture.Graphic as TGIFImage).AnimationSpeed  := 400;
   (Timg_Animacao.Picture.Graphic as TGIFImage).Animate         := True;
+  {$ENDIF}
 
 
   FTimerGetQrCode          := TTimer.Create(nil);
@@ -179,12 +192,21 @@ begin
       Caption := Text_FrmQRCode_CaptionSucess;
     end;
 
+    {$IFDEF FPC}
+    LImage.Top       := Timg_QrCode.BorderSpacing.Top;
+    LImage.Left      := Timg_QrCode.BorderSpacing.Left;
+    LImage.AutoSize  := true;
+    LImage.AutoSize  := False;
+    LImage.Width     := LImage.Width  + Timg_QrCode.BorderSpacing.Left;
+    LImage.Height    := LImage.Height + Timg_QrCode.BorderSpacing.Top;
+    {$ELSE}
     LImage.Top       := Timg_QrCode.Margins.Top;
     LImage.Left      := Timg_QrCode.Margins.Left;
     LImage.AutoSize  := true;
     LImage.AutoSize  := False;
     LImage.Width     := LImage.Width  + Timg_QrCode.Margins.Left;
     LImage.Height    := LImage.Height + Timg_QrCode.Margins.Top;
+    {$ENDIF}
     LImage.Center    := True;
     AutoSize := True;
   end;

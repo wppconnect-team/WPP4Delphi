@@ -38,10 +38,19 @@
 
 unit uTWPPConnect.Config;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 uses
-  System.Classes, uTWPPConnect.Classes, uTWPPConnect.Diversos, uTWPPConnect.Constant;
+  {$IFDEF FPC}
+  Classes, uTWPPConnect.Classes, uTWPPConnect.Diversos, uTWPPConnect.Constant
+  {$ELSE}
+  System.Classes, uTWPPConnect.Classes, uTWPPConnect.Diversos, uTWPPConnect.Constant
+  {$ENDIF};
 
 {$M+}{$TYPEINFO ON}
 Type
@@ -124,8 +133,13 @@ Type
 implementation
 
 uses
+  {$IFDEF FPC}
+  SysUtils, Forms, uTWPPConnect.ExePath,
+  uTWPPConnect.ConfigCEF, uTWPPConnect
+  {$ELSE}
   System.SysUtils, Vcl.Forms, uTWPPConnect.ExePath,
-  uTWPPConnect.ConfigCEF, uTWPPConnect;
+  uTWPPConnect.ConfigCEF, uTWPPConnect
+  {$ENDIF};
 
 { TWPPConnectConfig }
 

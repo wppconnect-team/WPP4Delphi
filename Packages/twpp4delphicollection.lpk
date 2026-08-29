@@ -71,6 +71,14 @@
         <UnitName Value="uTWPPConnect.JS"/>
       </Item>
       <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.JsonCompat.pas"/>
+        <UnitName Value="uTWPPConnect.JsonCompat"/>
+      </Item>
+      <Item>
+        <Filename Value="..\Source\Model\uTWPPConnect.ThreadCompat.pas"/>
+        <UnitName Value="uTWPPConnect.ThreadCompat"/>
+      </Item>
+      <Item>
         <Filename Value="..\Source\Model\uWPPConnectDecryptFile.pas"/>
         <UnitName Value="uWPPConnectDecryptFile"/>
       </Item>
@@ -94,6 +102,9 @@
     <RequiredPkgs>
       <Item>
         <PackageName Value="CEF4Delphi_Lazarus"/>
+      </Item>
+      <Item>
+        <PackageName Value="indylaz"/>
       </Item>
       <Item>
         <PackageName Value="FCL"/>

@@ -17,10 +17,20 @@
 
 unit uWPPConnectDecryptFile;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
-uses System.Classes, Vcl.ExtCtrls, System.Generics.Collections,
+uses
+  {$IFDEF FPC}
+  Classes, IdHTTP, Windows, uTWPPConnect.Constant;
+  {$ELSE}
+  System.Classes, Vcl.ExtCtrls, System.Generics.Collections,
   shellapi, Winapi.UrlMon, IdHTTP, Winapi.Windows, uTWPPConnect.Constant;
+  {$ENDIF}
 
 type
   TWPPConnectDecryptFile = class(TComponent)
@@ -45,7 +55,11 @@ type
 implementation
 
 uses
+  {$IFDEF FPC}
+  StrUtils, SysUtils, Forms;
+  {$ELSE}
   System.StrUtils, System.SysUtils, Vcl.Forms;
+  {$ENDIF}
 
 { TImagem }
 
@@ -84,7 +98,11 @@ begin
   {$I+}
   Sleep(200);
   Application.ProcessMessages;
+  {$IFDEF FPC}
+  ShellExecute(0, 'Open', 'cmd', PAnsiChar(AnsiString('/C ' + '"' + BatFileName+'"')), nil, SW_HIDE);
+  {$ELSE}
   ShellExecute(0, 'Open', 'cmd', PChar('/C ' + '"' + BatFileName+'"'), nil, SW_HIDE);
+  {$ENDIF}
 {
     DeleteFile(BatFileName);
 }
@@ -171,6 +189,17 @@ begin
 end;
 
 function TWPPConnectDecryptFile.DownLoadInternetFile(Source, Dest: String): Boolean;
+{$IFDEF FPC}
+begin
+  //Winapi.UrlMon nao existe no FPC - vai direto pelo fallback via IdHTTP
+  try
+    DownloadFile(Source, Dest);
+    Result := FileExists(Dest);
+  except
+    Result := False;
+  end;
+end;
+{$ELSE}
 var ret:integer;
 begin
   try
@@ -187,6 +216,7 @@ begin
     Result := False;
   end;
 end;
+{$ENDIF}
 
 function TWPPConnectDecryptFile.idUnique(id: string): String;
 var

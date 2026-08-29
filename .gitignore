@@ -38,6 +38,12 @@
 *.rsm
 *.tds
 *.dcu
+
+# FPC/Lazarus compiler-generated binaries (safe to delete)
+*.ppu
+*.compiled
+*.rsj
+Packages/lib/
 *.lib
 *.a
 *.o

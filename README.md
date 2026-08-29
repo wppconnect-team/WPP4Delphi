@@ -2,7 +2,14 @@
 
 ![WPPConnect Banner](./img/wppconnect-banner.jpeg)
 
-> WPPConnect/WPP4Delphi is an open-source project with the aim of exporting functions from WhatsApp Web for Delphi/Lazarus, which can be used to support the creation of any interaction.
+> WPP4Delphi is a Delphi/Lazarus (VCL/LCL) component that exposes WhatsApp Web as a native API. It embeds a Chromium browser ([CEF4Delphi](https://github.com/salvadordf/CEF4Delphi)) that loads `web.whatsapp.com` and injects [WA-JS](https://github.com/wppconnect-team/wa-js) into it — `TWPPConnect` then calls WA-JS from Object Pascal and translates its async responses back into Delphi/Lazarus objects and events. No paid external API required.
+
+## What's in this repo
+
+- **`TWPP4DelphiCollection`** — the component package (`Packages/`), installable in Delphi or Lazarus.
+- **`TWPPConnect`** — the public component (~180 methods covering messages, chats, groups, communities, media, polls, calls, etc.) plus a large set of `On*` events for async callbacks.
+- **Demo apps** (`Demo`, `Demo QrCode`) — sample Delphi projects showing the component in use.
+- A full technical write-up lives in [SPEC.md](SPEC.md).
 
 ## Our online channels
 
@@ -79,10 +86,32 @@ Instalação Passo a Passo:
   - Extraia todos eles e copie para junto do executável do DEMO ou da sua aplicação, lembrar de copiar o binários, da mesma versão correspondente. 
   
 
-## ⚡️ Quickstart Lazarus
-```delphi
-// under construction
+## ⚡️ Lazarus / Free Pascal compatibility
+
+`TWPP4DelphiCollection` compiles and links cleanly under **Lazarus with FPC 3.2.2** (`Packages/twpp4delphicollection.lpk`), in addition to Delphi. The same `Source/` units are shared between both compilers via `{$IFDEF FPC}` branches — there is no separate Lazarus fork to maintain.
+
+What that means in practice:
+- All ~180 `TWPPConnect` methods, the ~100 WA-JS data classes, threading (async callbacks), and JSON (de)serialization work the same way on both compilers.
+- JSON marshaling on FPC is handled by a purpose-built RTTI engine ([`uTWPPConnect.JsonCompat.pas`](Source/Model/uTWPPConnect.JsonCompat.pas)) that replaces Delphi's `REST.Json`, since that unit doesn't exist in FPC.
+- Anonymous-method async callbacks (`TThread.CreateAnonymousThread` + `TThread.Synchronize`) are replaced on FPC by an equivalent built on Free Pascal's native closures — nested procedures ([`uTWPPConnect.ThreadCompat.pas`](Source/Model/uTWPPConnect.ThreadCompat.pas)).
+- `TFDMemTable` (FireDAC) is swapped for FPC's built-in `TBufDataset` where used.
+
+### Required Lazarus packages
+
+Install these (in order) via **Package → Install/Uninstall Packages**, or register them for `lazbuild` with `lazbuild --add-package-link <path-to-lpk>`:
+
+1. [`dcpcrypt`](https://github.com/SystemRage/pascal-dcpcrypt) (or an equivalent DCPcrypt fork with a Lazarus `.lpk`)
+2. `indylaz` (Indy for Lazarus — ships with Lazarus)
+3. [`CEF4Delphi`](https://github.com/salvadordf/CEF4Delphi) — build its `packages/cef4delphi_lazarus.lpk`
+4. `Packages/twpp4delphicollection.lpk` (this repo)
+
+Then, from `Packages/`, a full build looks like:
+```sh
+lazbuild --build-ide= twpp4delphicollection.lpk
 ```
+
+The same CEF binaries and `ConfTWPPConnect.ini` setup described above for Delphi apply unchanged to a Lazarus project.
+
 <img align="Left" alt="Csharp" height="80" width="500" src="https://user-images.githubusercontent.com/26030963/216707873-68d32738-3c21-4a31-a7ef-98e0d3906e04.png">
 <br><br><br><p><p><p>
 ## ⚡️ Quickstart OpenAI for Delphi in WPP4Delphi<p>

@@ -12,8 +12,9 @@ uses
   uCSV.Import, uTWPPConnect.AdjustNumber, uTWPPConnect.ChatList, 
   uTWPPConnect.Classes, uTWPPConnect.Config, uTWPPConnect.Constant, 
   uTWPPConnect.Diversos, uTWPPConnect.Emoticons, uTWPPConnect.ExePath, 
-  uTWPPConnect.JS, uWPPConnectDecryptFile, uTWPPConnect.Console, 
-  uTWPPConnect.FrmConfigNetWork, uTWPPConnect.FrmQRCode, LazarusPackageIntf;
+  uTWPPConnect.JS, uTWPPConnect.JsonCompat, uTWPPConnect.ThreadCompat, 
+  uWPPConnectDecryptFile, uTWPPConnect.Console, uTWPPConnect.FrmConfigNetWork, 
+  uTWPPConnect.FrmQRCode, LazarusPackageIntf;
 
 implementation
 

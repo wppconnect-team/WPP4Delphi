@@ -39,6 +39,13 @@ unit uTWPPConnect.JS;
 {$I TWPPConnectDiretiva.inc}
 interface
 
+{$IFDEF FPC}
+uses
+  Classes, IniFiles, uTWPPConnect.Classes, DB, {uCSV.Import,}
+  ExtCtrls, StrUtils,
+  IdHTTP, uTWPPConnect.Diversos, uTWPPConnect.constant,
+  BufDataset;
+{$ELSE}
 uses
   System.Classes, IniFiles, uTWPPConnect.Classes, System.MaskUtils, Data.DB, {uCSV.Import,}
   Vcl.ExtCtrls, StrUtils,
@@ -47,11 +54,20 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
+{$ENDIF}
 
 {$M+}{$TYPEINFO ON}
+{$IFNDEF FPC}
 {$I cef.inc}
+{$ENDIF}
 
 type
+    {$IFDEF FPC}
+    TRegistrosDataSet = TBufDataset;
+    {$ELSE}
+    TRegistrosDataSet = TFDMemTable;
+    {$ENDIF}
+
     TWPPConnectJSDefine  = class
     private
       FVersion_JS: String;
@@ -80,7 +96,7 @@ type
     Owner: TComponent;
   {$REGION 'uCSV.Import'}
     FStringList: TStringList;
-    FRegistros : TFDMemTable;
+    FRegistros : TRegistrosDataSet;
     FSeparador : Char;
     FInjetAfterIsWhatsAppWebReady: Boolean;
 
@@ -118,7 +134,7 @@ type
         Function  ProcessarCriacaoCSV:Boolean;
         Function  ImportarCSV_viaArquivo  (PArquivo:String):Boolean;
         Function  ImportarCSV_viaTexto    (PConteudo:WideString):Boolean;
-        Property  Registros:  TFDMemTable Read FRegistros;
+        Property  Registros:  TRegistrosDataSet Read FRegistros;
         Property  Separador : Char        Read FSeparador               Write FSeparador;
   {$ENDREGION}
 
@@ -138,9 +154,15 @@ type
 
 implementation
 
+{$IFDEF FPC}
+uses SysUtils, uTWPPConnect.ExePath, Forms,
+     IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
+     Windows, uTWPPConnect.ConfigCEF, Dialogs, uTWPPConnect;
+{$ELSE}
 uses System.SysUtils, uTWPPConnect.ExePath, Vcl.Forms,
      IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
      Winapi.Windows, uTWPPConnect.ConfigCEF, Vcl.Dialogs, uTWPPConnect;
+{$ENDIF}
 
 { TWPPConnectAutoUpdate }
 
@@ -251,7 +273,11 @@ end;
 
 procedure TWPPConnectJS.DelFileTemp;
 begin
+  {$IFDEF FPC}
+  DeleteFile(PAnsiChar(AnsiString(IncludeTrailingPathDelimiter(SysUtils.GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp')));
+  {$ELSE}
   DeleteFile(PwideChar(IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp'));
+  {$ENDIF}
 end;
 
 procedure TWPPConnectJS.SetInjetAfterIsWhatsAppWebReady(const Value: Boolean);
@@ -365,7 +391,11 @@ begin
          GlobalCEFApp.SetError;
       if Assigned(FOnErrorInternal) then
       {$IFNDEF STANDALONE}
+         {$IFDEF FPC}
+         Application.MessageBox(PAnsiChar(AnsiString(MSG_ExceptConfigVersaoCompInvalida)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+         {$ELSE}
          Application.MessageBox(PWideChar(MSG_ExceptConfigVersaoCompInvalida), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+         {$ENDIF}
       {$ELSE}
          raise exception.create(MSG_ExceptConfigVersaoCompInvalida);
       {$ENDIF}
@@ -380,7 +410,11 @@ begin
 
       if Assigned(FOnErrorInternal) then
       {$IFNDEF STANDALONE}
+         {$IFDEF FPC}
+         Application.MessageBox(PAnsiChar(AnsiString(MSG_ConfigCEF_ExceptVersaoErrada)), PAnsiChar(AnsiString(Application.Title)), MB_ICONERROR + mb_ok);
+         {$ELSE}
          Application.MessageBox(PWideChar(MSG_ConfigCEF_ExceptVersaoErrada), PWideChar(Application.Title), MB_ICONERROR + mb_ok);
+         {$ENDIF}
       {$ELSE}
         raise exception.create( MSG_ConfigCEF_ExceptVersaoErrada);
       {$ENDIF}
@@ -416,22 +450,36 @@ end;
 function TWPPConnectJS.PegarLocalJS_Web: String;
 var
   LHttp        : TUrlIndy;
+  {$IFNDEF FPC}
   LRest        : TUrlREST;
+  {$ENDIF}
   LSalvamento  : String;
   LRet         : TStringList;
 begin
+  {$IFDEF FPC}
+  LSalvamento   := IncludeTrailingPathDelimiter(SysUtils.GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp';
+  {$ELSE}
   LSalvamento   := IncludeTrailingPathDelimiter(GetEnvironmentVariable('Temp'))+'GetTWPPConnect.tmp';
+  {$ENDIF}
   save_log('TWPPConnectJS.PegarLocalJS_Web');
 
   LRet  := nil;
   LHttp := nil;
+  {$IFNDEF FPC}
   LRest := nil;
+  {$ENDIF}
   try
     LRet          := TStringList.Create;
     LHttp         := TUrlIndy.Create;
+    {$IFNDEF FPC}
     LRest         := TUrlREST.Create(nil);
+    {$ENDIF}
 
+    {$IFDEF FPC}
+    DeleteFile(PAnsiChar(AnsiString(LSalvamento)));
+    {$ELSE}
     DeleteFile(PwideChar(LSalvamento));
+    {$ENDIF}
 
     case FDownloadJSType of
       DT_Indy:
@@ -449,7 +497,10 @@ begin
           save_log('PegarLocalJS_Web Failed');
       end;
 
+      {$IFNDEF FPC}
       //Dejorgenes - Buscar arquivo js via Rest 05-08-2024
+      //Nao portado para FPC: caminho alternativo de download (DT_Rest); DT_Indy
+      //continua disponivel nos dois compiladores.
       DT_Rest:
       begin
         LRest.TimeOut := AutoUpdateTimeOut;
@@ -459,6 +510,7 @@ begin
         else
           save_log('PegarLocalJS_Web Failed');
       end;
+      {$ENDIF}
     end;
 
     if not ValidaJs(LRet) Then
@@ -467,7 +519,9 @@ begin
       save_log('PegarLocalJS_Web OK');
   finally
     FreeAndNil(LHttp);
+    {$IFNDEF FPC}
     FreeAndNil(LRest);
+    {$ENDIF}
     if Assigned(LRet) and (LRet.Count > 1) then
     begin
       save_log('antes LSalvamento: Caminho: ' + LSalvamento);
@@ -517,17 +571,33 @@ end;
 function TWPPConnectJS.CriarCampos: Boolean;
 Var
   Lok    : Integer;
+  {$IFDEF FPC}
+  Linha0Ansi : AnsiString; //mantem o buffer vivo enquanto Linha0 (PAnsiChar) e usado
+  Linha0 : PAnsiChar;
+  {$ELSE}
   Linha0 : PwideChar;
+  {$ENDIF}
   LCampo : String;
   LRetorno: TStringList;
   I: Integer;
 begin
   Result := False;
   LRetorno := TStringList.Create;
+  {$IFNDEF FPC}
   FRegistros.FieldOptions.AutoCreateMode := acCombineComputed;
+  {$ENDIF}
   try
+    {$IFDEF FPC}
+    Linha0Ansi := AnsiString(FStringList.Strings[0]);
+    Linha0 := PAnsiChar(Linha0Ansi);
+    {$ELSE}
     Linha0 := PwideChar(FStringList.Strings[0]);
+    {$ENDIF}
+    {$IFDEF FPC}
+    Lok    := ExtractStrings([AnsiChar(FSeparador)],[' '], Linha0, LRetorno);
+    {$ELSE}
     Lok    := ExtractStrings([FSeparador],[' '], Linha0, LRetorno);
+    {$ENDIF}
     try
       if Lok > 0 then
       Begin
@@ -550,7 +620,12 @@ end;
 function TWPPConnectJS.CriarValor(PLinha: WideString): Boolean;
 Var
   Lok    : Integer;
+  {$IFDEF FPC}
+  LinhaAnsi : AnsiString; //mantem o buffer vivo enquanto Linha (PAnsiChar) e usado
+  Linha  : PAnsiChar;
+  {$ELSE}
   Linha  : PwideChar;
+  {$ENDIF}
   LConteudoCampo: WideString;
   LRetorno: TStringList;
   I: Integer;
@@ -563,8 +638,17 @@ begin
       PLinha  := StringReplace(PLinha, (FSeparador + FSeparador), (FSeparador + ' ' + FSeparador), [rfReplaceAll, rfIgnoreCase]);
     End;
 
+    {$IFDEF FPC}
+    LinhaAnsi := AnsiString(PLinha);
+    Linha := PAnsiChar(LinhaAnsi);
+    {$ELSE}
     Linha   := PwideChar(PLinha);
+    {$ENDIF}
+    {$IFDEF FPC}
+    Lok     := ExtractStrings([AnsiChar(FSeparador)],[], Linha, LRetorno);
+    {$ELSE}
     Lok     := ExtractStrings([FSeparador],[], Linha, LRetorno);
+    {$ENDIF}
     try
       if Lok > 0 then
       Begin
@@ -674,7 +758,7 @@ begin
   FreeAndNil(FRegistros);
 
   FStringList      := TStringList.Create;
-  FRegistros       := TFDMemTable.Create(nil);
+  FRegistros       := TRegistrosDataSet.Create(nil);
 end;
 
 {$ENDREGION}

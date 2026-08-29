@@ -38,10 +38,19 @@
 
 unit uTWPPConnect.AdjustNumber;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$MODESWITCH UNICODESTRINGS}
+{$ENDIF}
+
 interface
 
 uses
-  System.Classes, uTWPPConnect.Classes, System.MaskUtils, uTWPPConnect.Diversos;
+  {$IFDEF FPC}
+  Classes, uTWPPConnect.Classes, MaskEdit, uTWPPConnect.Diversos
+  {$ELSE}
+  System.Classes, uTWPPConnect.Classes, System.MaskUtils, uTWPPConnect.Diversos
+  {$ENDIF};
 
 
 {$M+}{$TYPEINFO ON}
@@ -91,7 +100,11 @@ type
 implementation
 
 uses
-  System.SysUtils, uTWPPConnect.Constant;
+  {$IFDEF FPC}
+  SysUtils, uTWPPConnect.Constant
+  {$ELSE}
+  System.SysUtils, uTWPPConnect.Constant
+  {$ENDIF};
 
 { TAdjustNumber }
 
