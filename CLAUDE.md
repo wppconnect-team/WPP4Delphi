@@ -55,6 +55,23 @@ The package (`TWPP4DelphiCollection`) contains units under `Source/`, organized 
 ### Versioning across Delphi/RAD Studio versions
 `Packages/Compilados` has one subfolder per compiler version (`VD23` = Delphi/RAD Studio version per delphidabbler.com's numbering, up to `VD30`), since compiled units (`.dcu`) are not compiler-version-compatible. When adding library paths or troubleshooting "package not found" issues, verify the correct `VDxx` folder is on the path for the IDE version in use.
 
+## Local RAG index (semantic search over this repo)
+
+`Scripts/rag/` has a local semantic-search tool over this repository — useful for finding the right file/method/doc section by meaning rather than exact grep, e.g. "where is the QR code login handled" or "how does group creation flow work". It indexes `README.md`, `SPEC.md`, `CLAUDE.md`, every `.claude/skills/*/SKILL.md`, and all of `Source/**/*.pas` into a local SQLite database (`sqlite-vec`) with multilingual (PT/EN) embeddings computed locally via `sentence-transformers` — nothing is sent to an external API. Full details (chunking strategy, schema, environment notes) are in the [wpp-rag-index skill](.claude/skills/wpp-rag-index/SKILL.md).
+
+**When to use it**: prefer it over a blind multi-term `grep`/`Glob` sweep when the task is "find where X is handled/implemented" and X is a concept rather than a known identifier — it surfaces the right file/line-range even when you don't know the exact method or class name. It's a starting point for orientation, not a replacement for reading the actual matched code before editing it.
+
+**Query**:
+```bash
+cd Scripts/rag
+python query.py "sua pergunta em português ou inglês" --top-k 5
+```
+Each hit reports `file_path` (+ line range for Pascal chunks, or the heading for doc chunks) and a distance score (lower = closer). Read the referenced file/lines directly afterward — the RAG output is a pointer, not a substitute for the source.
+
+**When to reindex**: the database (`Scripts/rag/wpp4delphi.rag.sqlite`, gitignored, not versioned) is a point-in-time snapshot — it does **not** auto-update. Reindex (`python build_index.py` from `Scripts/rag/`) after a body of changes to `Source/**/*.pas` or to the docs it covers, before relying on RAG results to reflect the current code. Don't reindex speculatively on every small edit — it takes about a minute; batch it with other work.
+
+**First-time setup**: `pip install -r Scripts/rag/requirements.txt` (pulls `torch`/`transformers` — a real download) and the first `build_index.py`/`query.py` run downloads the embedding model (~470MB) from Hugging Face and caches it under `~/.cache/huggingface`.
+
 ### Component version constant
 
 Every code change to the component (any edit under `Source/`) must bump `TWPPConnectVersion` in [uTWPPConnect.Constant.pas](Source/Model/uTWPPConnect.Constant.pas) — do this as part of the same change, not as an afterthought. The constant is `'Major.I.III.IV'`-ish four-part string with a comment right above it explaining the scheme: `I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW`. Bump the rightmost digit whose severity matches the change (small bugfix/leak fix → last digit `IV`; behavior change without breaking the public API → `III`; new method/event or notable feature → `II`; breaking API change → `I`), and zero out every digit to its right. Also update the date comment next to it (`DD/MM/YYYY`, today's date) in the same edit. Ask the user which digit to bump only when the severity is genuinely ambiguous — otherwise infer it from the change and mention which one you picked.
