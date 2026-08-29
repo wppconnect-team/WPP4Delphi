@@ -1,7 +1,7 @@
 {
 	"name": "WPP4Delphi",
 	"description": "WPP4Delphi is an open-source project with the aim of exporting functions from WhatsApp Web for Delphi/Lazarus, which can be used to support the creation of any interaction.",
-	"version": "1.0.0",
+	"version": "5.0.0.11",
 	"homepage": "https://github.com/wppconnect-team/WPP4Delphi",
 	"mainsrc": "./Source",
 	"projects": [
