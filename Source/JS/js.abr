@@ -3447,20 +3447,30 @@ WPP.on("call.outgoing_call", (call) => {
 
 //Checar se NÃºmero Existe e caso Tenha Digito Nove Retorna com o NÃºmero acrescido do Digito 9 
 window.WAPI.CheckNumberExists = async function(chatid) {
-    const result = await WPP.contact.queryExists(chatid);    
+    const result = await WPP.contact.queryExists(chatid);
 
     if (result) {
-        try {            
-			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : result.wid,  valid : true, lid: result.lid ?? "", status: result.status ?? ""}));
-			
+        try {
+			// 21/09/2026 - fromJid: numero @c.us equivalente, resolvido via
+			// getPnLidEntry quando o "wid" retornado ja vier como "@lid"
+			let fromJid = "";
+			if (typeof result.wid === 'string' && result.wid.includes('@c.us')) {
+				fromJid = result.wid;
+			} else if (result.lid) {
+				const pnLidEntry = await WPP.contact.getPnLidEntry(result.lid).catch(() => null);
+				fromJid = pnLidEntry?.phoneNumber?._serialized ?? pnLidEntry?.phoneNumber?.$1 ?? "";
+			}
+
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : result.wid, fromJid : fromJid, valid : true, lid: result.lid ?? "", status: result.status ?? ""}));
+
         } catch (err) {
             //console.log(err);
-			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid,  valid : false}));
+			SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid, fromJid : "", valid : false}));
         };
 
     } else {
         //console.log(err);
-	SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid,  valid : false}));
+	SetConsoleMessage("CheckNumberExists", JSON.stringify({NumberOriginal : chatid, id : chatid, fromJid : "", valid : false}));
 
     }
 };

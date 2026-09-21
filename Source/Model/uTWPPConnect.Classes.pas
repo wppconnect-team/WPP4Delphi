@@ -749,12 +749,14 @@ type
    Fvalid : boolean;
    Flid: String;
     Fstatus: String;
+   FfromJid: String; //Add Marcelo 21/09/2026
  public
    property NumberOriginal  : String read FNumberOriginal  write FNumberOriginal; //Add Marcelo 14/12/2022
    property id : String read Fid write Fid;
    property lid : String read Flid write Flid;
    property status : String read Fstatus write Fstatus;
    property valid : boolean  read Fvalid write Fvalid;
+   property fromJid : String read FfromJid write FfromJid; //Add Marcelo 21/09/2026
  end;
 
  TReturngetLastSeen = class(TClassPadrao) //Marcelo 06/01/2023 Alterado
