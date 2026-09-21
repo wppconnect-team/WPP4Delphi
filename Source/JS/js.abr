@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.53;1.0.0.9;78.3.0
+//2.2.0.54;1.0.0.9;78.3.0
 //
 //
 
@@ -481,25 +481,27 @@ window.WAPI._serializeMessageObj = (obj) => {
   const _chat = obj.chat ? WAPI._serializeChatObj(obj.chat) : {};
 
   const serialized = Object.assign(window.WAPI._serializeRawObj(obj), {
-    id: obj.id && obj.id._serialized ? obj.id._serialized : undefined,
+    // 21/09/2026 - fallback "$1": versoes novas do WhatsApp Web ofuscam
+    // o campo "_serialized" do Wid como "$1"
+    id: obj?.id?._serialized ?? obj?.id?.$1 ?? undefined,
 
-    quotedParticipant: obj.quotedParticipant
-      ? (obj.quotedParticipant._serialized || undefined)
-      : undefined,
+    quotedParticipant: obj?.quotedParticipant?._serialized
+      ?? obj?.quotedParticipant?.$1
+      ?? undefined,
 
-    author: obj.author
-      ? (obj.author._serialized || undefined)
-      : undefined,
+    author: obj?.author?._serialized
+      ?? obj?.author?.$1
+      ?? undefined,
 
     // 10/12/2025 - novos campos
     authorLid: obj.authorLid || "",
     authorJid: obj.authorJid || "",
 
-    chatId: obj.chatId && obj.chatId._serialized
-      ? obj.chatId._serialized
-      : (obj.id ? obj.id.remote : null),
+    chatId: obj?.chatId?._serialized
+      ?? obj?.chatId?.$1
+      ?? (obj?.id ? obj.id.remote : null),
 
-    to: obj.to && obj.to._serialized ? obj.to._serialized : undefined,
+    to: obj?.to?._serialized ?? obj?.to?.$1 ?? undefined,
 
     fromMe: obj.id ? obj.id.fromMe : false,
 
@@ -545,7 +547,7 @@ window.WAPI._serializeMessageObj = (obj) => {
     mediaData: window.WAPI._serializeRawObj(obj.mediaData),
 
     reply: (body) => window.WAPI.reply(
-      _chat.id ? _chat.id._serialized : (obj.id ? obj.id.remote : null),
+      _chat?.id?._serialized ?? _chat?.id?.$1 ?? (obj?.id ? obj.id.remote : null),
       body,
       obj
     )
@@ -3830,40 +3832,45 @@ WPP.on('chat.new_message', async (_msg) => {
   let contactsTo = null;
 
   
+  // 21/09/2026 - fallback "$1": versoes novas do WhatsApp Web ofuscam
+  // o campo "_serialized" do Wid como "$1"
+
   //from
   let PnLidEntry = await WPP.contact.getPnLidEntry(msg.from).catch(() => null);
-  if (PnLidEntry?.phoneNumber?._serialized) {
-      const fromPn = PnLidEntry.phoneNumber._serialized;
+  const fromPnSerialized = PnLidEntry?.phoneNumber?._serialized ?? PnLidEntry?.phoneNumber?.$1;
+  if (fromPnSerialized) {
+      const fromPn = fromPnSerialized;
       contacts = await WPP.contact.get(fromPn).catch(() => null);
 
-      if (msg.id && typeof msg.id === 'object') {        
-        msg.id.remotelid = PnLidEntry.lid?._serialized ?? null;
+      if (msg.id && typeof msg.id === 'object') {
+        msg.id.remotelid = PnLidEntry.lid?._serialized ?? PnLidEntry.lid?.$1 ?? null;
         msg.id.remoteJid = fromPn;
       }
 
-      msg.fromJid = fromPn;     
-      msg.fromlid = PnLidEntry.lid?._serialized ?? null;
+      msg.fromJid = fromPn;
+      msg.fromlid = PnLidEntry.lid?._serialized ?? PnLidEntry.lid?.$1 ?? null;
   }
 
   //to
   let PnLidEntryTo = await WPP.contact.getPnLidEntry(msg.to).catch(() => null);
-  if (PnLidEntryTo?.phoneNumber?._serialized) {
-      const toPn = PnLidEntryTo.phoneNumber._serialized;
+  const toPnSerialized = PnLidEntryTo?.phoneNumber?._serialized ?? PnLidEntryTo?.phoneNumber?.$1;
+  if (toPnSerialized) {
+      const toPn = toPnSerialized;
       contactsTo = await WPP.contact.get(toPn).catch(() => null);
-      
+
       msg.toJid = toPn;
-      msg.tolid = PnLidEntryTo.lid?._serialized ?? null;
+      msg.tolid = PnLidEntryTo.lid?._serialized ?? PnLidEntryTo.lid?.$1 ?? null;
   }
-  
+
   if (isGroupJid(msg.id.remote) ) {
     msg.isGroup = true;
-  }else{msg.isGroup = false;}  
+  }else{msg.isGroup = false;}
 
   if (isGroupJid(msg.id.remote)) {
-          var authorjidmsg = msg.author;        
+          var authorjidmsg = msg.author;
           var pnLidEntryMsgAuthor = await WPP.contact.getPnLidEntry(authorjidmsg).catch(() => null);
-          msg.authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? null;
-          msg.authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? null;  
+          msg.authorJid = pnLidEntryMsgAuthor?.phoneNumber?._serialized ?? pnLidEntryMsgAuthor?.phoneNumber?.$1 ?? null;
+          msg.authorLid = pnLidEntryMsgAuthor?.lid?._serialized ?? pnLidEntryMsgAuthor?.lid?.$1 ?? null;
   }
 
   msg.formattedTitle = contacts?.name ?? '';
