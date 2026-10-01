@@ -3460,6 +3460,20 @@ WPP.on("call.outgoing_call", (call) => {
         console.log('{"name":"OutgoingCall",' + '"result":{"result":[{"id":"' + call.id +'", "sender":"' + call.sender + '", "peerJid":"' + call.peerJid + '", "isGroup":' + call.isGroup + ', "isVideo":' + call.isVideo + ', "offerTime":' + call.offerTime + ' }]}}');
 });
 
+//Resolve o numero @c.us (fromJid) a partir do retorno de WPP.contact.queryExists
+window.WAPI.ResolveFromJid = async function(validar) {
+	try {
+		const wid = validar?.wid?._serialized ?? validar?.wid?.$1 ?? (typeof validar?.wid === 'string' ? validar.wid : "");
+		if (wid.includes('@c.us')) return wid;
+		const lid = validar?.lid?._serialized ?? validar?.lid?.$1 ?? (typeof validar?.lid === 'string' ? validar.lid : "") ?? "";
+		if (!lid) return "";
+		const entry = await WPP.contact.getPnLidEntry(lid).catch(() => null);
+		return entry?.phoneNumber?._serialized ?? entry?.phoneNumber?.$1 ?? "";
+	} catch (e) {
+		return "";
+	}
+};
+
 //Checar se NÃºmero Existe e caso Tenha Digito Nove Retorna com o NÃºmero acrescido do Digito 9 
 window.WAPI.CheckNumberExists = async function(chatid) {
     const result = await WPP.contact.queryExists(chatid);
@@ -4103,7 +4117,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
 
     if (validar !== null && validar !== undefined) {
       let result;   
-      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
       
       //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
       let chatid = null;
@@ -4168,7 +4182,7 @@ window.WPP.SendTextMessageNew = async function (wid, texto, options, xSeuID = ''
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -4222,7 +4236,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
 
     if (validar !== null && validar !== undefined) {
       let result;
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
       //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
       let chatid = null;
@@ -4289,7 +4303,7 @@ window.WPP.SendFileMessageNew = async function (wid, content, options, xSeuID = 
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -4340,7 +4354,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
 
     if (validar !== null && validar !== undefined) {
       let result;
-      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
       
       //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
@@ -4408,7 +4422,7 @@ window.WPP.SendListMessageNew = async function (wid, options, xSeuID = '', xSeuI
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -4486,6 +4500,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
       SetConsoleMessage("CheckNumberExists", JSON.stringify({
         NumberOriginal: wid,
         id: validar?.wid?._serialized ?? wid,
+        fromJid: await WAPI.ResolveFromJid(validar),
         valid: true,
         lid: validar?.lid ?? "",
         status: validar?.status ?? ""
@@ -4494,6 +4509,7 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
       SetConsoleMessage("CheckNumberExists", JSON.stringify({
         NumberOriginal: widcontacts,
         id: validarContact?.wid?._serialized ?? widcontacts,
+        fromJid: await WAPI.ResolveFromJid(validarContact),
         valid: true,
         lid: validarContact?.lid ?? ""
       }));
@@ -4547,10 +4563,10 @@ window.WPP.sendVCardContactMessageNew = async function (wid, widcontacts, option
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
 
       if (validar == null) {
-        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, fromJid : "", valid : false }));
       }
       if (validarContact == null) {
-        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: widcontacts, id: widcontacts, valid: false }));
+        SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: widcontacts, id: widcontacts, fromJid : "", valid : false }));
       }
 
       return null;
@@ -4599,7 +4615,7 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', x
 
     if (validar !== null && validar !== undefined) {
       let result;
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true}));
       //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
       let chatid = null;
 
@@ -4666,7 +4682,7 @@ window.WPP.SendLocationMessageNew = async function (wid, options, xSeuID = '', x
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -4745,6 +4761,7 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true, 
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -4804,7 +4821,7 @@ window.WPP.SendCreatePollMessageNew = async function (wid, name, choices, option
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -4915,6 +4932,7 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
         JSON.stringify({
           NumberOriginal: wid,
           id: validar?.wid?._serialized ?? wid,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar?.lid ?? "",
           status: validar?.status ?? "",
@@ -4980,7 +4998,7 @@ window.WPP.deleteMessageNew = async function (wid, uniqueId, deleteMediaInDevice
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
       return null;
     }
@@ -5150,6 +5168,7 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar?.wid?._serialized ?? wid,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar?.lid ?? "",
           status: validar?.status ?? "",
@@ -5194,7 +5213,7 @@ window.WPP.markIsReadNew = async function (wid, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, fromJid : "", valid : false }));
       return null;
     }
   } catch (error) {
@@ -5258,6 +5277,7 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar?.wid?._serialized ?? wid,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar?.lid ?? "",
           status: validar?.status ?? "",
@@ -5302,7 +5322,7 @@ window.WPP.markIsUnreadNew = async function (wid, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, fromJid : "", valid : false }));
       return null;
     }
   } catch (error) {
@@ -5368,6 +5388,7 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar?.wid?._serialized ?? wid,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar?.lid ?? "",
           status: validar?.status ?? "",
@@ -5413,7 +5434,7 @@ window.WPP.markIsComposingNew = async function (wid, duration, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, fromJid : "", valid : false }));
       return null;
     }
   } catch (error) {
@@ -5478,6 +5499,7 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar?.wid?._serialized ?? wid,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar?.lid ?? "",
           status: validar?.status ?? "",
@@ -5523,7 +5545,7 @@ window.WPP.markIsRecordingNew = async function (wid, duration, xSeuID) {
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, valid: false }));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal: wid, id: wid, fromJid : "", valid : false }));
       return null;
     }
   } catch (error) {
@@ -5617,6 +5639,7 @@ window.WPP.archiveNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -5667,7 +5690,7 @@ window.WPP.archiveNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -5719,6 +5742,7 @@ window.WPP.unarchiveNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -5769,7 +5793,7 @@ window.WPP.unarchiveNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -5821,6 +5845,7 @@ window.WPP.blockContactNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -5871,7 +5896,7 @@ window.WPP.blockContactNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -5923,6 +5948,7 @@ window.WPP.unblockContact = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -5973,7 +5999,7 @@ window.WPP.unblockContact = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -6025,6 +6051,7 @@ window.WPP.clearNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -6075,7 +6102,7 @@ window.WPP.clearNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -6126,6 +6153,7 @@ window.WPP.pinNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -6176,7 +6204,7 @@ window.WPP.pinNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -6228,6 +6256,7 @@ window.WPP.unpinNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -6278,7 +6307,7 @@ window.WPP.unpinNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -6330,6 +6359,7 @@ window.WPP.markPlayedNew = async function (wid, xSeuID) {
         JSON.stringify({
           NumberOriginal: wid,
           id: validar.wid._serialized,
+          fromJid: await WAPI.ResolveFromJid(validar),
           valid: true,
           lid: validar.lid ?? "", 
           status: validar.status ?? "",
@@ -6380,7 +6410,7 @@ window.WPP.markPlayedNew = async function (wid, xSeuID) {
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
       SetConsoleMessage(
         "CheckNumberExists",
-        JSON.stringify({ NumberOriginal: wid, id: wid, valid: false })
+        JSON.stringify({ NumberOriginal: wid, id: wid, fromJid: "", valid: false })
       );
 
       return null;
@@ -6605,7 +6635,7 @@ window.WPP.sendGroupInviteMessageNew = async function (wid, groupId, inviteCode 
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -6651,7 +6681,7 @@ window.WPP.sendPixKeyMessageNew = async function (wid, params, xSeuID = '', xSeu
 
     if (validar !== null && validar !== undefined) {
       let result;   
-      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
       
       //Enviar a mensagem pelo lid se existir, caso contrario usar o wid
       let chatid = null;
@@ -6717,7 +6747,7 @@ window.WPP.sendPixKeyMessageNew = async function (wid, params, xSeuID = '', xSeu
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -6765,7 +6795,7 @@ window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '
 
     if (validar !== null && validar !== undefined) {
       let result;   
-      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
       result = await WPP.chat.sendOrderMessage(validar.wid._serialized, items, options);
 
@@ -6818,7 +6848,7 @@ window.WPP.sendOrderMessageNew = async function (wid, items, options, xSeuID = '
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
@@ -6866,7 +6896,7 @@ window.WPP.sendChargeMessageNew = async function (wid, items, options, xSeuID = 
 
     if (validar !== null && validar !== undefined) {
       let result;   
-      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
+      SetConsoleMessage("CheckNumberExists",    JSON.stringify({ NumberOriginal : wid, id : validar.wid._serialized, fromJid : await WAPI.ResolveFromJid(validar), valid : true, lid: validar.lid ?? "", status: validar.status ?? ""}));
 
       result = await WPP.chat.sendChargeMessage(validar.wid._serialized, items, options);
 
@@ -6919,7 +6949,7 @@ window.WPP.sendChargeMessageNew = async function (wid, items, options, xSeuID = 
         Error: RetError,
       };
       SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
-      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, valid : false}));
+      SetConsoleMessage("CheckNumberExists", JSON.stringify({ NumberOriginal : wid, id : wid, fromJid : "", valid : false}));
 
       return null;
     }
