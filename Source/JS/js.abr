@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.55;1.0.0.9;78.3.0
+//2.2.0.56;1.0.0.9;78.3.0
 //
 //
 
@@ -107,6 +107,7 @@ var gettingUnreadMessagesNew = false;
 var habilitaEvento_msg_ack_change;
 var habilitaEvento_msg_revoke;
 var habilitaEvento_new_message;
+var ignorarStatusBroadcast = true; // true = descarta status@broadcast no evento new_message
 var habilitaEvento_new_reaction;
 
 //Add Marcelo 16/08/2024 opcao de habilitar esses Eventos, Disparado no Console
@@ -1779,6 +1780,14 @@ window.WAPI.getUnreadMessages = async function (includeMe, includeNotifications,
   var isLidMigrated = true;
 
   var chats = await WPP.chat.list(options);
+
+  // Ignora o chat de Status/Stories (status@broadcast) - ver ignorarStatusBroadcast
+  if (chats && ignorarStatusBroadcast) {
+    chats = chats.filter(function (c) {
+      var sid = c?.id?._serialized ?? c?.id?.$1 ?? '';
+      return !(sid === 'status@broadcast' || c?.isStatusV3 === true);
+    });
+  }
 
   if (chats) {
     try {
@@ -3864,7 +3873,15 @@ WPP.on('chat.msg_revoke', (msg) => {
 WPP.on('chat.new_message', async (_msg) => {
   if (!habilitaEvento_new_message) return;
 
-  const msg = _msg.toJSON();  
+  // Ignora Status/Stories (status@broadcast) antes de serializar: evita
+  // processar centenas de objetos grandes/nao mapeados no Delphi.
+  // Para receber status novamente: ignorarStatusBroadcast = false
+  if (ignorarStatusBroadcast) {
+    const _remote = _msg?.id?.remote?._serialized ?? _msg?.id?.remote?.$1 ?? _msg?.from?._serialized ?? _msg?.from?.$1 ?? String(_msg?.from ?? '');
+    if (_msg?.isStatusV3 || _msg?.id?.remote?.server === 'broadcast' && String(_remote).startsWith('status@') || String(_remote) === 'status@broadcast') return;
+  }
+
+  const msg = _msg.toJSON();
   //const isLidMigrated = await (WPP.whatsapp.functions.isLidMigrated?.() ?? false);
 
   let contacts = null;
