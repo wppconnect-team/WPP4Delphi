@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.1.2'; //  05/10/2026
+  TWPPConnectVersion              = '5.0.2.0'; //  08/10/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -805,6 +805,9 @@ Const
   //Marcelo 29/06/2024
   FrmConsole_JS_VAR_sendOrderMessageNew    = 'window.WPP.sendOrderMessageNew("<#MSG_PHONE#>",[{<#MSG_ITEMS#>}], {<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
   FrmConsole_JS_VAR_sendChargeMessageNew   = 'window.WPP.sendChargeMessageNew("<#MSG_PHONE#>",[{<#MSG_ITEMS#>}], {<#MSG_OPTIONS#>},"<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
+  //Adicionado Por Marcelo 08/10/2026
+  FrmConsole_JS_VAR_sendCarouselMessageNew = 'window.WPP.sendCarouselMessageNew("<#MSG_PHONE#>", {<#MSG_OPTIONS#>}, "<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
+  FrmConsole_JS_VAR_sendBookingMessageNew  = 'window.WPP.sendBookingMessageNew("<#MSG_PHONE#>", {<#MSG_OPTIONS#>}, "<#MSG_SEUID#>", "<#MSG_SEUID2#>", "<#MSG_SEUID3#>", "<#MSG_SEUID4#>" );';
 
   FrmConsole_JS_VAR_editMessage         = 'WPP.chat.editMessage("<#MSG_UNIQUE_ID#>","<#MSG_NEW_MESSAGE#>",{<#MSG_OPTIONS#>} );';
 
