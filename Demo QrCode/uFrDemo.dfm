@@ -10,13 +10,11 @@ object frDemo: TfrDemo
   Font.Height = -13
   Font.Name = 'Roboto'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
   object SplitView1: TSplitView
     Left = 0
@@ -1739,15 +1737,27 @@ object frDemo: TfrDemo
     inherited GroupBox1: TGroupBox
       Height = 589
       ExplicitHeight = 589
+      inherited Label1: TLabel
+        StyleElements = [seFont, seClient, seBorder]
+      end
+      inherited Label2: TLabel
+        StyleElements = [seFont, seClient, seBorder]
+      end
+      inherited ed_num: TLabeledEdit
+        StyleElements = [seFont, seClient, seBorder]
+      end
+      inherited mem_message: TMemo
+        StyleElements = [seFont, seClient, seBorder]
+      end
+      inherited edtURL: TLabeledEdit
+        StyleElements = [seFont, seClient, seBorder]
+      end
       inherited PageControl1: TPageControl
         Top = 278
         Height = 309
         ExplicitTop = 278
         ExplicitHeight = 309
         inherited tsImage: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
           ExplicitHeight = 279
           inherited Image1: TImage
             Height = 264
@@ -1755,14 +1765,17 @@ object frDemo: TfrDemo
           end
           inherited lblCaminhoImagem: TLabel
             Width = 229
+            StyleElements = [seFont, seClient, seBorder]
           end
         end
         inherited tsBase64: TTabSheet
-          ExplicitLeft = 4
-          ExplicitTop = 26
-          ExplicitWidth = 229
-          ExplicitHeight = 191
+          inherited Memo1: TMemo
+            StyleElements = [seFont, seClient, seBorder]
+          end
         end
+      end
+      inherited eChoicesPool: TEdit
+        StyleElements = [seFont, seClient, seBorder]
       end
     end
     inherited gbAcoesBasicas: TScrollBox
@@ -1878,6 +1891,9 @@ object frDemo: TfrDemo
       inherited groupListaContatos: TGroupBox
         Height = 227
         ExplicitHeight = 227
+        inherited Panel4: TPanel
+          StyleElements = [seFont, seClient, seBorder]
+        end
         inherited listaContatos: TListView
           Height = 171
           ExplicitHeight = 171
@@ -1911,6 +1927,7 @@ object frDemo: TfrDemo
       Width = 1008
       Height = 595
       WordWrap = False
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitWidth = 1008
       ExplicitHeight = 595
     end
@@ -1930,11 +1947,13 @@ object frDemo: TfrDemo
     inherited memo_unReadMessage: TMemo
       Width = 1008
       Height = 506
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitWidth = 1008
       ExplicitHeight = 506
     end
     inherited Panel1: TPanel
       Width = 1008
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitWidth = 1008
       inherited Image2: TImage
         Left = 903
@@ -1945,6 +1964,7 @@ object frDemo: TfrDemo
         Top = 59
         Width = 759
         Height = 23
+        StyleElements = [seFont, seClient, seBorder]
         ExplicitLeft = 39
         ExplicitTop = 59
         ExplicitWidth = 759
@@ -1983,6 +2003,7 @@ object frDemo: TfrDemo
     inherited lblStatus: TLabel
       Left = 14
       Anchors = [akLeft, akTop, akRight]
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitLeft = 14
     end
     inherited whatsOff: TImage
@@ -1996,6 +2017,12 @@ object frDemo: TfrDemo
       Width = 118
       ExplicitLeft = 5
       ExplicitWidth = 118
+    end
+    inherited lblCodeLinkDevice: TLabel
+      StyleElements = [seFont, seClient, seBorder]
+    end
+    inherited eNumberWhats: TEdit
+      StyleElements = [seFont, seClient, seBorder]
     end
   end
   inline frameCatalogo1: TframeCatalogo
@@ -2018,6 +2045,7 @@ object frDemo: TfrDemo
     ExplicitHeight = 595
     inherited pnlGridCatalogo: TPanel
       Width = 1008
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitWidth = 1008
       inherited DBGrid1: TDBGrid
         Width = 1006
@@ -2046,6 +2074,9 @@ object frDemo: TfrDemo
           ExplicitHeight = 207
         end
       end
+    end
+    inherited ed_num: TLabeledEdit
+      StyleElements = [seFont, seClient, seBorder]
     end
   end
   inline frameOutros1: TframeOutros
@@ -2097,6 +2128,9 @@ object frDemo: TfrDemo
       inherited gbGrupos: TGroupBox
         Height = 585
         ExplicitHeight = 585
+        inherited pnlTopoGrupos: TPanel
+          StyleElements = [seFont, seClient, seBorder]
+        end
         inherited gbacoes: TGroupBox
           Height = 411
           ExplicitHeight = 411
@@ -2104,11 +2138,53 @@ object frDemo: TfrDemo
       end
       inherited pnlEsquerda: TPanel
         Height = 585
+        StyleElements = [seFont, seClient, seBorder]
         ExplicitHeight = 585
+        inherited lbl_idParticipant: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited lbl_idGroup: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Label1: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Label2: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Label3: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Lbl_InviteCode: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited gbNovoGrupo: TGroupBox
+          inherited edtNomeGrupo: TLabeledEdit
+            StyleElements = [seFont, seClient, seBorder]
+          end
+          inherited edtTelefoneNovoParticipante: TLabeledEdit
+            StyleElements = [seFont, seClient, seBorder]
+          end
+        end
+        inherited gbGrupoLink: TGroupBox
+          inherited edtLinkConvite: TLabeledEdit
+            StyleElements = [seFont, seClient, seBorder]
+          end
+        end
+        inherited eChoicesPool: TEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Memo1: TMemo
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited edtIdGrupo: TEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
       end
       inherited pnlGruposParticipantes: TPanel
         Width = 474
         Height = 585
+        StyleElements = [seFont, seClient, seBorder]
         ExplicitWidth = 474
         ExplicitHeight = 585
         inherited GroupBox1: TGroupBox
@@ -2131,6 +2207,7 @@ object frDemo: TfrDemo
             ExplicitHeight = 420
             inherited lblIdParticipante: TLabel
               Width = 448
+              StyleElements = [seFont, seClient, seBorder]
             end
             inherited listaParticipantes: TListView
               Width = 414
@@ -2141,12 +2218,17 @@ object frDemo: TfrDemo
             inherited pnlParticipantesBotoes: TPanel
               Left = 422
               Height = 333
+              StyleElements = [seFont, seClient, seBorder]
               ExplicitLeft = 422
               ExplicitHeight = 333
             end
             inherited pnltopopartici: TPanel
               Width = 448
+              StyleElements = [seFont, seClient, seBorder]
               ExplicitWidth = 448
+              inherited edtNovoParticipante: TLabeledEdit
+                StyleElements = [seFont, seClient, seBorder]
+              end
             end
           end
         end
@@ -2189,6 +2271,7 @@ object frDemo: TfrDemo
         Height = 585
         ExplicitHeight = 585
         inherited pnlTopoGrupos: TPanel
+          StyleElements = [seFont, seClient, seBorder]
           inherited btnListarComunidades: TBitBtn
             OnClick = frameComunidades1btnListarComunidadesClick
           end
@@ -2203,23 +2286,53 @@ object frDemo: TfrDemo
       end
       inherited pnlEsquerda: TPanel
         Height = 585
+        StyleElements = [seFont, seClient, seBorder]
         ExplicitHeight = 585
+        inherited lbl_idParticipant: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited lbl_idGroup: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Label1: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
+        inherited Label2: TLabel
+          StyleElements = [seFont, seClient, seBorder]
+        end
         inherited gbNovoGrupo: TGroupBox
           inherited edtNomeComunidade: TLabeledEdit
             EditLabel.ExplicitWidth = 87
+            StyleElements = [seFont, seClient, seBorder]
+          end
+          inherited edtGrupoParticipante: TLabeledEdit
+            StyleElements = [seFont, seClient, seBorder]
           end
           inherited btnCriarGrupo: TBitBtn
             OnClick = frameComunidades1btnCriarGrupoClick
           end
         end
+        inherited gbGrupoLink: TGroupBox
+          inherited edtLinkConvite: TLabeledEdit
+            StyleElements = [seFont, seClient, seBorder]
+          end
+        end
+        inherited eChoicesPool: TEdit
+          StyleElements = [seFont, seClient, seBorder]
+        end
         inherited Memo1: TMemo
           Top = 368
+          StyleElements = [seFont, seClient, seBorder]
           ExplicitTop = 368
+        end
+        inherited edtAddSubGrupo: TLabeledEdit
+          StyleElements = [seFont, seClient, seBorder]
         end
       end
       inherited pnlGruposParticipantes: TPanel
         Width = 474
         Height = 585
+        StyleElements = [seFont, seClient, seBorder]
         ExplicitWidth = 474
         ExplicitHeight = 585
         inherited GroupBox1: TGroupBox
@@ -2242,6 +2355,7 @@ object frDemo: TfrDemo
             ExplicitHeight = 420
             inherited lblIdParticipante: TLabel
               Width = 448
+              StyleElements = [seFont, seClient, seBorder]
             end
             inherited listaParticipantes: TListView
               Width = 414
@@ -2252,12 +2366,17 @@ object frDemo: TfrDemo
             inherited pnlParticipantesBotoes: TPanel
               Left = 422
               Height = 333
+              StyleElements = [seFont, seClient, seBorder]
               ExplicitLeft = 422
               ExplicitHeight = 333
             end
             inherited pnltopopartici: TPanel
               Width = 448
+              StyleElements = [seFont, seClient, seBorder]
               ExplicitWidth = 448
+              inherited edtNovoParticipante: TLabeledEdit
+                StyleElements = [seFont, seClient, seBorder]
+              end
             end
           end
         end

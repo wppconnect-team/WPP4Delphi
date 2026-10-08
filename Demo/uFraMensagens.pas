@@ -836,7 +836,6 @@ begin
       options :=
         'createChat: true, ' +
         ///'useTemplateButtons: undefined, ' +
-        'useTemplateButtons: true, ' + //Crash iOS True
         //'title: "Novidades",  ' +
         //'footer: "Imagem com Botão",  ' +
         'caption: "My image", ' +
@@ -847,15 +846,7 @@ begin
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
         '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
-
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
+        //Reply Buttons (id) não podem ser misturados com Action Buttons (url/phoneNumber)
         ']  ';
 
       options_Figurinha := 'type: "sticker"';
@@ -1392,15 +1383,8 @@ begin
         '    url: "https://wppconnect-team.github.io/", ' +
         '    text: "Acesse Nosso Site" ' +
         '  }, ' +
-        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"},' +
-        '  { ' +
-        '    id: "001",  ' +
-        '    text: "Show de Bola"  ' +
-        '  },  ' +
-        '  {  ' +
-        '    id: "002",  ' +
-        '    text: "Curti"  ' +
-        '  }  ' +
+        '{phoneNumber: "551734265560", text: "☎️ Qualquer Dúvida Ligue"}' +
+        //Reply Buttons (id) não podem ser misturados com Action Buttons (url/phoneNumber)
         ']  ';
 
       options_Figurinha := 'type: "sticker"';
