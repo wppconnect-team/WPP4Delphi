@@ -10,7 +10,7 @@ Core dependencies that are NOT vendored in this repo and must be installed separ
 - **CEF4Delphi** (pinned to Chromium 109.0.5414.120 binaries for Windows 7/8/2012 compatibility) — provides the embedded browser.
 - **WA-JS** — the JS bundle injected into the browser; a copy lives at [Source/JS/js.abr](Source/JS/js.abr).
 
-Ignored/excluded folders (see [.claudeignore](.claudeignore) and [.gitignore](.gitignore)): `Demo`, `Demo QrCode`, `Instalador`.
+Ignored/excluded folder (see [.claudeignore](.claudeignore)): `Instalador`. `Demo` and `Demo QrCode` are readable (the live demo code is `uFraMensagens.pas`; `u_principal.pas` is legacy and not in the `.dpr`).
 
 ## Build / install
 
@@ -21,7 +21,7 @@ Typical setup (see [README.md](README.md) for the full step-by-step in Portugues
 2. Add these to Library Path: `Source\Model`, `Source\Services`, `Source\View`, `Source\Other`, and `Packages\Compilados\<Dxx>` (the subfolder matching your Delphi/RAD Studio version, e.g. `VD27` for Delphi 27/12).
 3. Open [Packages/TWPP4DelphiCollection.dpk](Packages/TWPP4DelphiCollection.dpk), Build (Shift+F9), then Install.
 4. For CEF4Delphi versions > 120, define the `CEFCurrentVersion` compiler directive on the package before building.
-5. Demo project (folder is claude-ignored but present on disk) needs `ConfTWPPConnect.ini` and the matching CEF binaries copied next to the compiled exe.
+5. Demo project needs `ConfTWPPConnect.ini` and the matching CEF binaries copied next to the compiled exe.
 
 Via [boss.json](boss.json): `boss install github.com/wppconnect-team/WPP4Delphi` — `mainsrc` is `./Source`, the package project is `./Packages/TWPP4DelphiCollection.dproj`.
 
