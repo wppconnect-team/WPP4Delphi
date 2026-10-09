@@ -120,6 +120,9 @@ type
   TGet_sendVCardContactMessageEx = procedure(Const RespMensagem: TResponsesendTextMessage) of object;
   //Marcelo 14/03/2024
   TGet_ErrorResponse       = procedure(Const Response: TErrorResponseClass) of object;
+  //Marcelo 09/10/2026 - Acompanhamento de Status publicado (Ack: 1=servidor, 2=entregue, 3=visto; Sender vazio no ack 1)
+  TOnStatusAckChange       = procedure(Const Status: TStatusTrackClass; Const Sender: string; Ack: Integer) of object;
+  TOnStatusReaction        = procedure(Const Status: TStatusTrackClass; Const Sender, Reaction: string) of object;
   //Marcelo 26/04/2024
   TGet_deleteMessageNewResponse = procedure(Const Response: TdeleteMessageNewResponseClass) of object;
   //Marcelo 23/05/2024
@@ -173,6 +176,10 @@ type
     FWAJS_Version           : String;
     FgenLinkDeviceCode      : string;
     FOnGet_ErrorResponse    : TGet_ErrorResponse;
+    FStatusTrackList        : TObjectList<TStatusTrackClass>;
+    FStatusTrackEnabled     : Boolean;
+    FOnStatusAckChange      : TOnStatusAckChange;
+    FOnStatusReaction       : TOnStatusReaction;
     FOnGet_deleteMessageNewResponse: TGet_deleteMessageNewResponse;
     FOnGet_editMessageNewResponse: TGet_editMessageNewResponse;
     FOnRetErrorWhiteScreen: TOnRetErrorWhiteScreen;
@@ -288,6 +295,9 @@ type
     FOnGetAllParticipantsGroup: TOnGetAllParticipantsGroup;
     procedure saveInfoConfTWPPConnect(SectionName, key, value: string);
     procedure Loaded; override;
+    procedure StatusTrackRegister(Const RespMensagem: TResponsesendTextMessage);
+    procedure StatusTrackAck(Const AckClass: TAck_changeClass);
+    procedure StatusTrackReaction(Const ReactionClass: TReactionResponseClass);
   public
     FTimerCheckWPPCrash      : TTimer;
     constructor Create(AOwner: TComponent); override;
@@ -505,6 +515,9 @@ type
     procedure RebootWhiteScreen(ErrorMessage: string);
 	  property InjectJSSecRemaining: Integer 							              read FInjectJSSecRemaining;
     procedure SetInjectJSSecRemaining(I: integer);
+    //Marcelo 09/10/2026 - Busca o acompanhamento de um Status publicado (chave = ids[0].id do ack / ver TStatusTrackClass.ExtractStatusKey)
+    function GetStatusTrack(const AStatusKey: string): TStatusTrackClass;
+    procedure StatusTrackClear;
   published
     { Published declarations }
     Property Version                     : String                     read Fversion;
@@ -616,6 +629,10 @@ type
     property OnGetHistorySyncProgress   : TOnGetHistorySyncProgress  read FOnGetHistorySyncProgress       write FOnGetHistorySyncProgress;
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
     property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
+    //Marcelo 09/10/2026 - Acompanhamento de Status (requer Evento_msg_ack_change / Evento_new_reaction habilitados)
+    property StatusTrackEnabled         : Boolean                    read FStatusTrackEnabled             write FStatusTrackEnabled default True;
+    property OnStatusAckChange          : TOnStatusAckChange         read FOnStatusAckChange              write FOnStatusAckChange;
+    property OnStatusReaction           : TOnStatusReaction          read FOnStatusReaction               write FOnStatusReaction;
     property OnGet_deleteMessageNewResponse   : TGet_deleteMessageNewResponse     read FOnGet_deleteMessageNewResponse   write FOnGet_deleteMessageNewResponse;
     property OnGet_editMessageNewResponse     : TGet_editMessageNewResponse       read FOnGet_editMessageNewResponse     write FOnGet_editMessageNewResponse;
   end;
@@ -1358,6 +1375,8 @@ begin
   FDestroyTmr.OnTimer                 := OnDestroyConsole;
   FTranslatorInject                   := TTranslatorInject.create;
   FDestruido                          := False;
+  FStatusTrackList                    := TObjectList<TStatusTrackClass>.Create(True);
+  FStatusTrackEnabled                 := True;
   FGetBatteryLevel                    := -1;
   FFormQrCodeType                     := Ft_Http;
   LanguageInject                      := Tl_Portugues_BR;
@@ -2398,6 +2417,7 @@ end;
 destructor TWPPConnect.Destroy;
 begin
   FormQrCodeStop;
+  FreeAndNil(FStatusTrackList);
   FreeAndNil(FDestroyTmr);
   FreeAndNil(FTranslatorInject);
   FreeAndNil(FInjectConfig);
@@ -2409,6 +2429,89 @@ begin
     FreeAndNil(FrmConsole);
   inherited;
 end;
+//Marcelo 09/10/2026
+function TWPPConnect.GetStatusTrack(const AStatusKey: string): TStatusTrackClass;
+var
+  i: Integer;
+begin
+  Result := nil;
+  if (AStatusKey = '') or (FStatusTrackList = nil) then
+    Exit;
+  for i := FStatusTrackList.Count - 1 downto 0 do
+    if SameText(FStatusTrackList[i].StatusKey, AStatusKey) then
+    begin
+      Result := FStatusTrackList[i];
+      Exit;
+    end;
+end;
+
+procedure TWPPConnect.StatusTrackClear;
+begin
+  if Assigned(FStatusTrackList) then
+    FStatusTrackList.Clear;
+end;
+
+procedure TWPPConnect.StatusTrackRegister(Const RespMensagem: TResponsesendTextMessage);
+const
+  cMaxStatusTrack = 200;
+var
+  LKey: string;
+  i: Integer;
+begin
+  if (not FStatusTrackEnabled) or (FStatusTrackList = nil) or (RespMensagem = nil) then
+    Exit;
+  LKey := TStatusTrackClass.ExtractStatusKey(RespMensagem.ID);
+  if LKey = '' then
+    Exit;  //Nao e retorno de publicacao de Status
+  //Status expiram em 24h: descarta registros antigos e limita o tamanho da lista
+  for i := FStatusTrackList.Count - 1 downto 0 do
+    if (Now - FStatusTrackList[i].SentAt) > 1 then
+      FStatusTrackList.Delete(i);
+  while FStatusTrackList.Count >= cMaxStatusTrack do
+    FStatusTrackList.Delete(0);
+  if GetStatusTrack(LKey) = nil then
+    FStatusTrackList.Add(TStatusTrackClass.Create(LKey, RespMensagem.ID, RespMensagem.SeuID,
+                                                  RespMensagem.Seuid2, RespMensagem.Seuid3, RespMensagem.Seuid4));
+end;
+
+procedure TWPPConnect.StatusTrackAck(Const AckClass: TAck_changeClass);
+var
+  LStatus: TStatusTrackClass;
+  LSender: string;
+  LAck: Integer;
+begin
+  if (not FStatusTrackEnabled) or (AckClass = nil) or (AckClass.msg = nil) then
+    Exit;
+  if not SameText(AckClass.msg.chat, 'status@broadcast') then
+    Exit;
+  if (Length(AckClass.msg.ids) = 0) or (AckClass.msg.ids[0] = nil) then
+    Exit;
+  LStatus := GetStatusTrack(AckClass.msg.ids[0].id);
+  if LStatus = nil then
+    Exit;  //Status nao publicado por este componente
+  LAck    := Trunc(AckClass.msg.ack);
+  LSender := AckClass.msg.sender;
+  if LStatus.RegisterAck(LSender, LAck) then
+    if Assigned(FOnStatusAckChange) then
+      FOnStatusAckChange(LStatus, LSender, LAck);
+end;
+
+procedure TWPPConnect.StatusTrackReaction(Const ReactionClass: TReactionResponseClass);
+var
+  LStatus: TStatusTrackClass;
+begin
+  if (not FStatusTrackEnabled) or (ReactionClass = nil) or (ReactionClass.msg = nil) or (ReactionClass.msg.msgId = nil) then
+    Exit;
+  if not SameText(ReactionClass.msg.msgId.remote, 'status@broadcast') then
+    Exit;
+  LStatus := GetStatusTrack(ReactionClass.msg.msgId.id);
+  if LStatus = nil then
+    Exit;
+  if LStatus.RegisterReaction(ReactionClass.msg.sender, ReactionClass.msg.reactionText) then
+    if Assigned(FOnStatusReaction) then
+      FOnStatusReaction(LStatus, ReactionClass.msg.sender, ReactionClass.msg.reactionText);
+end;
+
 procedure TWPPConnect.GetAllCommunitys;
 begin
   if Assigned(FrmConsole) then
@@ -4476,6 +4579,7 @@ begin
     //Temis 03-06-2022
     if PTypeHeader = Th_sendTextMessageEx then
     Begin
+      StatusTrackRegister(TResponsesendTextMessage(PReturnClass));
       if Assigned(OnGet_sendTextMessageEx) then
         OnGet_sendTextMessageEx(TResponsesendTextMessage(PReturnClass));
     end;
@@ -4709,12 +4813,14 @@ begin
   //Marcelo 25/07/2023
   if PTypeHeader = Th_Getnew_reaction  then
   begin
+    StatusTrackReaction(TReactionResponseClass(PReturnClass));
     if Assigned(FOnGetReactResponseEvento) then
       FOnGetReactResponseEvento(TReactionResponseClass(PReturnClass));
   end;
   //Marcelo 26/07/2023
   if PTypeHeader = Th_Getmsg_ack_change  then
   begin
+    StatusTrackAck(TAck_changeClass(PReturnClass));
     if Assigned(FOnGetAck_changeEvento) then
       FOnGetAck_changeEvento(TAck_changeClass(PReturnClass));
   end;

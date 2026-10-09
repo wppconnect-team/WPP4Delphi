@@ -4228,6 +4228,49 @@ Public
   class function FromJsonString(AJsonString: string): TResponsesendTextMessage;
 end;
 
+//Marcelo 09/10/2026 - Acompanhamento de Status publicado pelo componente (entrega / visualizacao / reacao)
+TStatusTrackClass = class
+private
+  FStatusKey: String;
+  FStatusID: String;
+  FSeuID: String;
+  FSeuID2: String;
+  FSeuID3: String;
+  FSeuID4: String;
+  FSentAt: TDateTime;
+  FServerReceived: Boolean;
+  FDelivered: TStringList;
+  FViewed: TStringList;
+  FReactions: TStringList;
+  function GetDeliveredCount: Integer;
+  function GetViewedCount: Integer;
+  function GetReactionCount: Integer;
+public
+  constructor Create(const AStatusKey, AStatusID, ASeuID, ASeuID2, ASeuID3, ASeuID4: String);
+  destructor  Destroy; override;
+  //Extrai a chave curta do Status (ex.: 00CE7E2A4BB2D31FC7FACB2BD1A4B22E) do id retornado na publicacao
+  //(true_status@broadcast_<CHAVE>_<participante>) - mesma chave que vem em ids[0].id do ack e em msgId.id da reacao
+  class function ExtractStatusKey(const AMessageID: String): String;
+  //Retorna True quando o ack trouxe informacao nova (1=servidor, 2=entregue, 3=visto)
+  function RegisterAck(const ASender: String; AAck: Integer): Boolean;
+  //Retorna True quando a reacao e nova/alterada/removida (AReaction vazio remove)
+  function RegisterReaction(const ASender, AReaction: String): Boolean;
+  property StatusKey: String read FStatusKey;
+  property StatusID: String read FStatusID;
+  property SeuID: String read FSeuID;
+  property SeuID2: String read FSeuID2;
+  property SeuID3: String read FSeuID3;
+  property SeuID4: String read FSeuID4;
+  property SentAt: TDateTime read FSentAt;
+  property ServerReceived: Boolean read FServerReceived;
+  property Delivered: TStringList read FDelivered;   //contatos com ack >= 2
+  property Viewed: TStringList read FViewed;         //contatos com ack >= 3
+  property Reactions: TStringList read FReactions;   //Name=contato, Value=reacao
+  property DeliveredCount: Integer read GetDeliveredCount;
+  property ViewedCount: Integer read GetViewedCount;
+  property ReactionCount: Integer read GetReactionCount;
+end;
+
 TRetornoAllContacts = class(TClassPadraoList<TContactClass>)
 Public
   constructor Create(pAJsonString: string);
@@ -5838,6 +5881,116 @@ function TResponsesendTextMessage.ToJsonString: string;
 
 begin
   {$IFDEF FPC}result := ObjectToJsonCompat(Self);{$ELSE}result := TJson.ObjectToJsonString(self);{$ENDIF}
+end;
+
+{ TStatusTrackClass }
+
+constructor TStatusTrackClass.Create(const AStatusKey, AStatusID, ASeuID, ASeuID2, ASeuID3, ASeuID4: String);
+begin
+  inherited Create;
+  FStatusKey := AStatusKey;
+  FStatusID  := AStatusID;
+  FSeuID     := ASeuID;
+  FSeuID2    := ASeuID2;
+  FSeuID3    := ASeuID3;
+  FSeuID4    := ASeuID4;
+  FSentAt    := Now;
+  FDelivered := TStringList.Create;
+  FDelivered.Sorted := True;
+  FDelivered.Duplicates := dupIgnore;
+  FViewed := TStringList.Create;
+  FViewed.Sorted := True;
+  FViewed.Duplicates := dupIgnore;
+  FReactions := TStringList.Create;
+end;
+
+destructor TStatusTrackClass.Destroy;
+begin
+  FreeAndNil(FDelivered);
+  FreeAndNil(FViewed);
+  FreeAndNil(FReactions);
+  inherited;
+end;
+
+class function TStatusTrackClass.ExtractStatusKey(const AMessageID: String): String;
+const
+  cPrefix = 'status@broadcast_';
+var
+  p: Integer;
+  LRest: String;
+begin
+  Result := '';
+  p := Pos(cPrefix, AMessageID);
+  if p = 0 then
+    Exit;
+  LRest := Copy(AMessageID, p + Length(cPrefix), MaxInt);
+  p := Pos('_', LRest);
+  if p > 0 then
+    Result := Copy(LRest, 1, p - 1)
+  else
+    Result := LRest;
+end;
+
+function TStatusTrackClass.GetDeliveredCount: Integer;
+begin
+  Result := FDelivered.Count;
+end;
+
+function TStatusTrackClass.GetViewedCount: Integer;
+begin
+  Result := FViewed.Count;
+end;
+
+function TStatusTrackClass.GetReactionCount: Integer;
+begin
+  Result := FReactions.Count;
+end;
+
+function TStatusTrackClass.RegisterAck(const ASender: String; AAck: Integer): Boolean;
+begin
+  Result := False;
+  if AAck = 1 then
+  begin
+    Result := not FServerReceived;
+    FServerReceived := True;
+    Exit;
+  end;
+  if (AAck < 2) or (ASender = '') then
+    Exit;
+  //Quem viu (ack 3) tambem recebeu
+  if FDelivered.IndexOf(ASender) < 0 then
+  begin
+    FDelivered.Add(ASender);
+    Result := True;
+  end;
+  if (AAck >= 3) and (FViewed.IndexOf(ASender) < 0) then
+  begin
+    FViewed.Add(ASender);
+    Result := True;
+  end;
+end;
+
+function TStatusTrackClass.RegisterReaction(const ASender, AReaction: String): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if ASender = '' then
+    Exit;
+  i := FReactions.IndexOfName(ASender);
+  if AReaction = '' then
+  begin
+    if i >= 0 then
+    begin
+      FReactions.Delete(i);
+      Result := True;
+    end;
+    Exit;
+  end;
+  if (i >= 0) and (FReactions.ValueFromIndex[i] = AReaction) then
+    Exit;
+  FReactions.Values[ASender] := AReaction;
+  Result := True;
 end;
 
 { TProductList }
