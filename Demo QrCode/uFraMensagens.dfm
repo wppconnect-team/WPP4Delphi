@@ -503,6 +503,32 @@ object frameMensagem: TframeMensagem
       TabOrder = 27
       OnClick = btnSendVideoButtonClick
     end
+    object btnCarouselMessage: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 871
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send Carousel Message'
+      ImageIndex = 1
+      Images = ImageList1
+      TabOrder = 28
+      OnClick = btnCarouselMessageClick
+    end
+    object btnBookingMessage: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 902
+      Width = 204
+      Height = 25
+      Align = alTop
+      Caption = 'Send Booking Message'
+      ImageIndex = 1
+      Images = ImageList1
+      TabOrder = 29
+      OnClick = btnBookingMessageClick
+    end
   end
   object gbAcoesChats: TScrollBox
     AlignWithMargins = True
