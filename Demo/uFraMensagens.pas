@@ -1303,7 +1303,7 @@ begin
       //options := 'backgroundColor: "#0275d8", font: 2';
       //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
 
-      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options);
+      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options, 'STATUS_IMG');
 
     finally
       freeAndNil(LBase64);
@@ -1329,7 +1329,7 @@ begin
     //options := 'backgroundColor: "#0275d8", font: 2';
     //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
 
-    frDemo.TWPPConnect1.sendTextStatus(content, options);
+    frDemo.TWPPConnect1.sendTextStatus(content, options, 'STATUS_TXT');
 
   finally
     ed_num.SelectAll;
@@ -1657,7 +1657,7 @@ begin
       //options := 'backgroundColor: "#0275d8", font: 2';
       //https://wppconnect-team.github.io/wa-js/interfaces/status.TextStatusOptions.html
 
-      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options);
+      frDemo.TWPPConnect1.sendImageStatus(LBase64.Text, options, 'STATUS_IMG');
 
     finally
       freeAndNil(LBase64);

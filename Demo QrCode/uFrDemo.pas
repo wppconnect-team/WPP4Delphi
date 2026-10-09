@@ -164,6 +164,8 @@ type
     procedure TWPPConnect1Get_SendPollMessageResponse(const SendPollMessageResponse: TSendPollMessageResponseClass);
     procedure TWPPConnect1Getmsg_revokeEvento(const RevokeMsg: TRevokeClass);
     procedure TWPPConnect1GetAck_changeEvento(const Ack_change: TAck_changeClass);
+    procedure TWPPConnect1StatusAckChange(const Status: TStatusTrackClass; const Sender: string; Ack: Integer);
+    procedure TWPPConnect1StatusReaction(const Status: TStatusTrackClass; const Sender, Reaction: string);
     procedure TWPPConnect1GetTotalChatsUserRead(const TotalChatsUserRead: TTotalChatsUserRead);
     procedure TWPPConnect1GetWAVersion(const WhatsAppWebVersion: TWAVersion);
     procedure TWPPConnect1GetgenLinkDeviceCodeForPhoneNumber(const Response: TGenLinkDeviceCodeForPhoneNumber);
@@ -1227,6 +1229,36 @@ procedure TfrDemo.TWPPConnect1ErroAndWarning(Sender: TObject;
   const PError, PInfoAdc: string);
 begin
   raise Exception.Create(PError + ' - ' + PInfoAdc);
+end;
+
+//Marcelo 09/10/2026 - Acompanhamento do Status publicado (entregues / vistos / reacoes)
+procedure TfrDemo.TWPPConnect1StatusAckChange(const Status: TStatusTrackClass; const Sender: string; Ack: Integer);
+var
+  StatusAck: string;
+begin
+  case Ack of
+    1: StatusAck := 'Enviado ao servidor';
+    2: StatusAck := 'Entregue';
+    3: StatusAck := 'Visualizado';
+  else
+    StatusAck := 'Ack ' + IntToStr(Ack);
+  end;
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('STATUS: ' + Status.StatusKey + ' (SeuID: ' + Status.SeuID + ')');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add(StatusAck + ' - contato: ' + Sender);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Entregues: ' + IntToStr(Status.DeliveredCount) +
+                                                          ' | Vistos: ' + IntToStr(Status.ViewedCount) +
+                                                          ' | Reacoes: ' + IntToStr(Status.ReactionCount));
+end;
+
+procedure TfrDemo.TWPPConnect1StatusReaction(const Status: TStatusTrackClass; const Sender, Reaction: string);
+begin
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('STATUS: ' + Status.StatusKey + ' (SeuID: ' + Status.SeuID + ')');
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Reacao "' + Reaction + '" - contato: ' + Sender);
+  frameMensagensEnviadas1.memo_unReadMessageEnv.Lines.Add('Entregues: ' + IntToStr(Status.DeliveredCount) +
+                                                          ' | Vistos: ' + IntToStr(Status.ViewedCount) +
+                                                          ' | Reacoes: ' + IntToStr(Status.ReactionCount));
 end;
 
 procedure TfrDemo.TWPPConnect1GetAck_changeEvento(const Ack_change: TAck_changeClass);

@@ -6069,6 +6069,8 @@ object frDemo: TfrDemo
     OnGet_ErrorResponse = TWPPConnect1Get_ErrorResponse
     OnGet_deleteMessageNewResponse = TWPPConnect1Get_deleteMessageNewResponse
     OnGet_editMessageNewResponse = TWPPConnect1Get_editMessageNewResponse
+    OnStatusAckChange = TWPPConnect1StatusAckChange
+    OnStatusReaction = TWPPConnect1StatusReaction
     Left = 298
     Top = 8
   end
