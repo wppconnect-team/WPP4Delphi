@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.0.2.1'; //  08/10/2026
+  TWPPConnectVersion              = '5.0.3.0'; //  09/10/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -826,11 +826,11 @@ Const
   FrmConsole_JS_VAR_GetProductCatalog   = 'window.WAPI.ProductCatalog();';
 
   //Marcelo 14/06/2022
-  FrmConsole_JS_VAR_sendTextStatus   = 'WPP.status.sendTextStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
+  FrmConsole_JS_VAR_sendTextStatus   = 'window.WPP.sendTextStatusNew("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");'; //Marcelo 09/10/2026 - retorno via sendTextMessageEx / ErrorResponse
 
   //Marcelo 28/06/2022
-  FrmConsole_JS_VAR_sendImageStatus  = 'WPP.status.sendImageStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
-  FrmConsole_JS_VAR_sendVideoStatus  = 'WPP.status.sendVideoStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
+  FrmConsole_JS_VAR_sendImageStatus  = 'window.WPP.sendImageStatusNew("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");'; //Marcelo 09/10/2026 - retorno via sendTextMessageEx / ErrorResponse
+  FrmConsole_JS_VAR_sendVideoStatus  = 'window.WPP.sendVideoStatusNew("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");'; //Marcelo 09/10/2026 - retorno via sendTextMessageEx / ErrorResponse
   FrmConsole_JS_VAR_sendRawStatus    = 'WPP.status.sendRawStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
   FrmConsole_JS_VAR_getMyStatus      = 'getMyStatus();';
 

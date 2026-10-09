@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.59;1.0.0.9;78.3.0
+//2.2.0.60;1.0.0.9;78.3.0
 //
 //
 
@@ -7065,6 +7065,65 @@ window.WPP.sendCarouselMessageNew = async function (wid, options, xSeuID = '', x
 
 window.WPP.sendBookingMessageNew = async function (wid, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   return await WPP._sendNativeFlowNew("sendBookingMessageNew", WPP.chat.sendBookingMessage, wid, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+};
+
+//Marcelo 09/10/2026 - Publicacao de Status com retorno (SeuID)
+//Sucesso: SetConsoleMessage("sendTextMessageEx") com { Seuid..Seuid4, JsonMessage } - JsonMessage traz id/ack/sendMsgResult da publicacao (id.remote = status@broadcast)
+//Falha  : SetConsoleMessage("ErrorResponse") com { chatid: "status@broadcast", Seuid..Seuid4, RetEvent, statusCode, Error }
+//  RetEvent   : sendTextStatusNew | sendImageStatusNew | sendVideoStatusNew
+//  statusCode : 300 = publicacao nao retornou resultado | 302 = contato bloqueado | 303 = erro do WA-JS (Error traz a mensagem) | error.code do WA-JS quando existir
+window.WPP._sendStatusNew = async function (retEvent, wpFunc, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4) {
+  var Obj;
+  var fail = function (code, msg) {
+    Obj = {
+      chatid: "status@broadcast",
+      Seuid: xSeuID,
+      Seuid2: xSeuID2,
+      Seuid3: xSeuID3,
+      Seuid4: xSeuID4,
+      RetEvent: retEvent,
+      statusCode: code,
+      Error: msg,
+    };
+    SetConsoleMessage("ErrorResponse", JSON.stringify(Obj));
+    return null;
+  };
+  try {
+    const result = await wpFunc(content, options);
+
+    if (result !== undefined && result !== null) {
+      try {
+        Obj = {
+          Seuid: xSeuID,
+          Seuid2: xSeuID2,
+          Seuid3: xSeuID3,
+          Seuid4: xSeuID4,
+          JsonMessage: JSON.stringify(result),
+        };
+        SetConsoleMessage("sendTextMessageEx", JSON.stringify(Obj));
+      } catch (err) {
+        console.log(err);
+      }
+      return result;
+    }
+    return fail(300, "O status não pode ser publicado.");
+  } catch (error) {
+    if (error.name === "ContactBlocked")
+      return fail(302, "Contato está bloqueado.");
+    return fail(error.code ? error.code : 303, error.message ? error.message : (error.stack || "Unknown Error"));
+  }
+};
+
+window.WPP.sendTextStatusNew = async function (content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._sendStatusNew("sendTextStatusNew", WPP.status.sendTextStatus, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+};
+
+window.WPP.sendImageStatusNew = async function (content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._sendStatusNew("sendImageStatusNew", WPP.status.sendImageStatus, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+};
+
+window.WPP.sendVideoStatusNew = async function (content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._sendStatusNew("sendVideoStatusNew", WPP.status.sendVideoStatus, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 };
 
 //Marcelo 10/07/2024

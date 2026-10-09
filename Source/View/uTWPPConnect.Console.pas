@@ -322,9 +322,9 @@ type
     procedure CreateNewsLetter(Content, Options: string);
 
     //MARCELO 28/06/2022
-    procedure sendTextStatus(Content, Options: string);
-    procedure sendImageStatus(Content, Options: string);
-    procedure sendVideoStatus(Content, Options: string);
+    procedure sendTextStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendImageStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendVideoStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendRawStatus(Content, Options: string);
 
     //Adicionado Por Marcelo 10/05/2022
@@ -2227,7 +2227,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.sendImageStatus(Content, Options: string);
+procedure TFrmConsole.sendImageStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
   LLine: string;
@@ -2248,6 +2248,10 @@ begin
     LJS   := FrmConsole_JS_VAR_sendImageStatus;
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
 
     ExecuteJS(LJS, true);
   FINALLY
@@ -5445,7 +5449,7 @@ begin
   ExecuteJS(LJS, True);
 end;
 
-procedure TFrmConsole.sendTextStatus(Content, Options: string);
+procedure TFrmConsole.sendTextStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -5456,6 +5460,10 @@ begin
   LJS   := FrmConsole_JS_VAR_sendTextStatus;
   FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
   FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
 
   ExecuteJS(LJS, true);
 end;
@@ -5507,7 +5515,7 @@ begin
 
 end;
 
-procedure TFrmConsole.sendVideoStatus(Content, Options: string);
+procedure TFrmConsole.sendVideoStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
   LLine: string;
@@ -5528,6 +5536,10 @@ begin
     LJS   := FrmConsole_JS_VAR_sendVideoStatus;
     FrmConsole_JS_AlterVar(LJS, '#MSG_CONTENT#',  Trim(Content));
     FrmConsole_JS_AlterVar(LJS, '#MSG_OPTIONS#',  Trim(options));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
 
     ExecuteJS(LJS, true);
 

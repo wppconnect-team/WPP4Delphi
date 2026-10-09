@@ -365,11 +365,11 @@ type
     procedure CleanChatNew(vTelefone: string; vSeuID: string = '');
     //Adicionado Por Marcelo 13/06/2022
     procedure setKeepAlive(Ativo: string);
-    procedure sendTextStatus(Content, Options: string);
+    procedure sendTextStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure CreateNewsLetter(Content, Options: string);
     //MARCELO 28/06/2022
-    procedure sendImageStatus(Content, Options: string);
-    procedure sendVideoStatus(Content, Options: string);
+    procedure sendImageStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure sendVideoStatus(Content, Options: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendRawStatus(Content, Options: string);
     procedure rejectCall(id: string);
     procedure SendCall(id, Options: string); //Adicionado Marcelo 02/04/2023
@@ -5653,7 +5653,7 @@ begin
   end;
   FrmConsole.sendGroupInviteMessage(vChatID, vIDGroup, vInviteCode, xSeuID);
 end;
-procedure TWPPConnect.sendImageStatus(Content, Options: string);
+procedure TWPPConnect.sendImageStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -5662,7 +5662,7 @@ var
     begin
       if Assigned(FrmConsole) then
       begin
-        FrmConsole.sendImageStatus(Content, Options);
+        FrmConsole.sendImageStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
       end;
     end;
   begin
@@ -5688,7 +5688,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendImageStatus(Content, Options);
+            FrmConsole.sendImageStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -6798,7 +6798,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.sendTextStatus(Content, Options: string);
+procedure TWPPConnect.sendTextStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -6807,7 +6807,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendTextStatus(Content, Options);
+            FrmConsole.sendTextStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -6833,7 +6833,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendTextStatus(Content, Options);
+            FrmConsole.sendTextStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -6959,7 +6959,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.sendVideoStatus(Content, Options: string);
+procedure TWPPConnect.sendVideoStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -6968,7 +6968,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendVideoStatus(Content, Options);
+            FrmConsole.sendVideoStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -6994,7 +6994,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.sendVideoStatus(Content, Options);
+            FrmConsole.sendVideoStatus(Content, Options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
