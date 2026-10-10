@@ -2593,10 +2593,17 @@ private
   FGroupId: String;
   FGroup_participant_changed: String;
   FParticipants: TArray<String>;
+  FOperation: String;
+  FAuthorPhone: String;
+  FParticipantsPhone: TArray<String>;
 public
+  //action: add | remove | promote | demote | join (entrou por convite) | leave (saiu); operation = acao original do WhatsApp
   property action: String read FAction write FAction;
-  property author: String read FAuthor write FAuthor;
+  property operation: String read FOperation write FOperation;
+  property author: String read FAuthor write FAuthor;                    //quem fez a acao (LID ou @c.us)
+  property authorPhone: String read FAuthorPhone write FAuthorPhone;     //@c.us de quem agiu (vazio quando nao resolvido)
   property authorPushName: String read FAuthorPushName write FAuthorPushName;
+  property participantsPhone: TArray<String> read FParticipantsPhone write FParticipantsPhone; //mesma ordem de participants; '' quando nao resolvido
   property groupId: String read FGroupId write FGroupId;
   property group_participant_changed: String read FGroup_participant_changed write FGroup_participant_changed;
   property participants: TArray<String> read FParticipants write FParticipants;
@@ -4023,6 +4030,188 @@ public
   property UniqueID: String read FUniqueID write FUniqueID;
   property statusCode: Integer read FstatusCode write FstatusCode;
   property widContacts: String read FwidContacts write FwidContacts;
+end;
+
+//Marcelo 10/10/2026 - Gerenciamento de grupos com retorno correlacionavel (SeuID)
+//Retorno de createGroup, GroupAddParticipant, GroupRemoveParticipant, GroupPromote/DemoteParticipant, SetGroupDescription, GroupSetSubject,
+//GroupMsgAdminOnly/All, GroupEditAdminOnly/All, GroupRemoveInviteLink, GroupLeave, GroupMembershipApprove/Reject e falhas das consultas
+//  statusCode: 0 sucesso | 303 erro do WA-JS/WhatsApp (ErrorCode) | 304 ADD_PARTICIPANT recusado | 305 parametro invalido (validado no componente, nada foi enviado ao navegador)
+//  Lista completa de Action, statusCode e ErrorCode: Docs/GestaoDeGrupos.md
+TGroupActionResponseClass = class(TClassPadrao)
+private
+  FSeuid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FAction: String;
+  FGroupId: String;
+  FSuccess: Boolean;
+  FstatusCode: Integer;
+  FErrorCode: String;
+  FError: String;
+  FData: String;
+public
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+  property Action: String read FAction write FAction;          //CREATE, ADD_PARTICIPANT, REMOVE_PARTICIPANT, ...
+  property GroupId: String read FGroupId write FGroupId;       //no CREATE traz o jid do grupo criado
+  property Success: Boolean read FSuccess write FSuccess;
+  property statusCode: Integer read FstatusCode write FstatusCode;
+  property ErrorCode: String read FErrorCode write FErrorCode; //codigo do WA-JS (ex.: group_you_are_not_admin)
+  property Error: String read FError write FError;
+  property Data: String read FData write FData;               //JSON do retorno do WA-JS (ver js.abr)
+end;
+
+TGroupParticipantClass = class(TClassPadrao)
+private
+  FId: String;
+  FJid: String;
+  FLid: String;
+  FPhone: String;
+  FPushname: String;
+  FName: String;
+  FIsAdmin: Boolean;
+  FIsSuperAdmin: Boolean;
+public
+  property Id: String read FId write FId;               //id original (@lid ou @c.us)
+  property Jid: String read FJid write FJid;            //@c.us (vazio quando so o LID e conhecido)
+  property Lid: String read FLid write FLid;
+  property Phone: String read FPhone write FPhone;      //somente digitos (vazio quando so o LID e conhecido)
+  property Pushname: String read FPushname write FPushname;
+  property Name: String read FName write FName;
+  property IsAdmin: Boolean read FIsAdmin write FIsAdmin;
+  property IsSuperAdmin: Boolean read FIsSuperAdmin write FIsSuperAdmin; //criador do grupo
+end;
+
+//Metadados do grupo (GetGroupInfo)
+TGroupInfoClass = class(TClassPadrao)
+private
+  FSeuid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FGroupId: String;
+  FSubject: String;
+  FDescription: String;
+  FOwner: String;
+  FOwnerPhone: String;
+  FCreation: Extended;
+  FAnnounce: Boolean;
+  FRestrict: Boolean;
+  FMemberAddMode: String;
+  FMembershipApprovalMode: String;
+  FIsLidAddressingMode: Boolean;
+  FEphemeralDuration: Extended;
+  FSize: Integer;
+  FInviteCode: String;
+  FInviteLink: String;
+  FParticipants: TArray<TGroupParticipantClass>;
+public
+  destructor Destroy; override;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+  property GroupId: String read FGroupId write FGroupId;
+  property Subject: String read FSubject write FSubject;
+  property Description: String read FDescription write FDescription;
+  property Owner: String read FOwner write FOwner;
+  property OwnerPhone: String read FOwnerPhone write FOwnerPhone;
+  property Creation: Extended read FCreation write FCreation;                 //epoch em segundos
+  property Announce: Boolean read FAnnounce write FAnnounce;                  //somente admins enviam mensagens
+  property Restrict: Boolean read FRestrict write FRestrict;                  //somente admins editam os dados do grupo
+  property MemberAddMode: String read FMemberAddMode write FMemberAddMode;    //admin_add | all_member_add
+  property MembershipApprovalMode: String read FMembershipApprovalMode write FMembershipApprovalMode; //on | off | vazio (WhatsApp Web nao expos)
+  property IsLidAddressingMode: Boolean read FIsLidAddressingMode write FIsLidAddressingMode;
+  property EphemeralDuration: Extended read FEphemeralDuration write FEphemeralDuration;
+  property Size: Integer read FSize write FSize;
+  property InviteCode: String read FInviteCode write FInviteCode;             //vazio se nao for admin
+  property InviteLink: String read FInviteLink write FInviteLink;
+  property Participants: TArray<TGroupParticipantClass> read FParticipants write FParticipants;
+end;
+
+TGroupMembershipRequestClass = class(TClassPadrao)
+private
+  FId: String;
+  FJid: String;
+  FLid: String;
+  FPhone: String;
+  FPushname: String;
+  FName: String;
+  FAddedBy: String;
+  FRequestMethod: String;
+  FT: Extended;
+public
+  property Id: String read FId write FId;
+  property Jid: String read FJid write FJid;
+  property Lid: String read FLid write FLid;
+  property Phone: String read FPhone write FPhone;
+  property Pushname: String read FPushname write FPushname;
+  property Name: String read FName write FName;
+  property AddedBy: String read FAddedBy write FAddedBy;
+  property RequestMethod: String read FRequestMethod write FRequestMethod;
+  property T: Extended read FT write FT;                                      //epoch em segundos
+end;
+
+//Pedidos de entrada pendentes (GetGroupMembershipRequests)
+TGroupMembershipRequestsClass = class(TClassPadrao)
+private
+  FSeuid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FGroupId: String;
+  FRequests: TArray<TGroupMembershipRequestClass>;
+public
+  destructor Destroy; override;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+  property GroupId: String read FGroupId write FGroupId;
+  property Requests: TArray<TGroupMembershipRequestClass> read FRequests write FRequests;
+end;
+
+//Lista de grupos (GetGroupList)
+TGroupListItemClass = class(TClassPadrao)
+private
+  FId: String;
+  FName: String;
+  FSubject: String;
+  FOwner: String;
+  FCreation: Extended;
+  FSize: Integer;
+  FAnnounce: Boolean;
+  FRestrict: Boolean;
+  FIsAdmin: Boolean;
+public
+  property Id: String read FId write FId;                   //jid do grupo (@g.us)
+  property Name: String read FName write FName;
+  property Subject: String read FSubject write FSubject;
+  property Owner: String read FOwner write FOwner;
+  property Creation: Extended read FCreation write FCreation; //epoch em segundos (0 se o metadata nao foi carregado)
+  property Size: Integer read FSize write FSize;              //0 se o metadata nao foi carregado
+  property Announce: Boolean read FAnnounce write FAnnounce;
+  property Restrict: Boolean read FRestrict write FRestrict;
+  property IsAdmin: Boolean read FIsAdmin write FIsAdmin;     //se a conta conectada e admin do grupo
+end;
+
+TGroupListClass = class(TClassPadrao)
+private
+  FSeuid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FGroups: TArray<TGroupListItemClass>;
+public
+  destructor Destroy; override;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+  property Groups: TArray<TGroupListItemClass> read FGroups write FGroups;
 end;
 
 TdeleteMessageNewResponseClass = class(TClassPadrao)
@@ -5881,6 +6070,42 @@ function TResponsesendTextMessage.ToJsonString: string;
 
 begin
   {$IFDEF FPC}result := ObjectToJsonCompat(Self);{$ELSE}result := TJson.ObjectToJsonString(self);{$ENDIF}
+end;
+
+{ TGroupInfoClass }
+
+destructor TGroupInfoClass.Destroy;
+var
+  i: Integer;
+begin
+  for i := 0 to High(FParticipants) do
+    FParticipants[i].Free;
+  SetLength(FParticipants, 0);
+  inherited;
+end;
+
+{ TGroupListClass }
+
+destructor TGroupListClass.Destroy;
+var
+  i: Integer;
+begin
+  for i := 0 to High(FGroups) do
+    FGroups[i].Free;
+  SetLength(FGroups, 0);
+  inherited;
+end;
+
+{ TGroupMembershipRequestsClass }
+
+destructor TGroupMembershipRequestsClass.Destroy;
+var
+  i: Integer;
+begin
+  for i := 0 to High(FRequests) do
+    FRequests[i].Free;
+  SetLength(FRequests, 0);
+  inherited;
 end;
 
 { TStatusTrackClass }

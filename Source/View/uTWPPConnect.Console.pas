@@ -394,30 +394,37 @@ type
     procedure GetMyContacts(PIgnorarLeitura1: Boolean = False);
     procedure GetAllGroups(PIgnorarLeitura1: Boolean = False);
     procedure GetAllCommunitys(PIgnorarLeitura1: Boolean = False);
-    procedure GroupAddParticipant(vIDGroup, vNumber: string);
-    procedure GroupRemoveParticipant(vIDGroup, vNumber: string);
-    procedure GroupPromoteParticipant(vIDGroup, vNumber: string);
-    procedure GroupDemoteParticipant(vIDGroup, vNumber: string);
-    procedure GroupLeave(vIDGroup: string);
-    procedure GroupDelete(vIDGroup: string);
-    procedure GroupJoinViaLink(vLinkGroup: string);
+    procedure GroupAddParticipant(vIDGroup, vNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupRemoveParticipant(vIDGroup, vNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupPromoteParticipant(vIDGroup, vNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupDemoteParticipant(vIDGroup, vNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupLeave(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupDelete(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupJoinViaLink(vLinkGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendScheduledCallMessage(vID, vOptions: string);
     procedure GroupPoolCreate(vIDGroup, vDescription, vPoolOptions, vOptions: string);
     procedure PoolCreate(vID, vDescription, vChoices, vOptions: string);
     procedure PoolCreateEx(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string; vSeuID3: string = ''; vSeuID4: string = '');
     procedure PoolCreateNew(vID, vDescription, vChoices, vOptions, vSeuID, vSeuID2: string; vSeuID3: string = ''; vSeuID4: string = '');
-    procedure SetGroupPicture(vIDGroup, vBase64:string);
-    procedure GroupMsgAdminOnly(vIDGroup: string);
-    procedure GroupMsgAll(vIDGroup: string);
+    procedure SetGroupPicture(vIDGroup, vBase64: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMsgAdminOnly(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    //Marcelo 10/10/2026 - Gerenciamento de grupos
+    procedure GroupEditAdminOnly(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupEditAll(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure SetGroupSubject(vIDGroup, vSubject: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GetGroupInfo(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GetGroupMembershipRequests(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GetGroupList(xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMsgAll(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
-    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
-    procedure getGroupInviteLink(vIDGroup: string);
+    procedure SetGroupDescription(vIDGroup, vDescription: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Marcelo 11/01/2023
+    procedure getGroupInviteLink(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
 
-    procedure GroupMembershipReject(vChatID, vIDGroup: string);
-    procedure GroupMembershipApprove(vChatID, vIDGroup: string);
+    procedure GroupMembershipReject(vChatID, vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMembershipApprove(vChatID, vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
 
-    procedure revokeGroupInviteLink(vIDGroup: string);
+    procedure revokeGroupInviteLink(vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure setNewName(newName: string);
     procedure setNewStatus(newStatus: string);
     procedure SetProfilePicture(ABase64: String);
@@ -444,7 +451,7 @@ type
     procedure GetisLidMigrated;
     procedure CheckIsConnected;
     procedure GetMyNumber;
-    procedure CreateGroup(vGroupName, PParticipantNumber: string);
+    procedure CreateGroup(vGroupName, PParticipantNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
     procedure addSubgroups(PCommunity, PGroupNumbers: string);
 
@@ -1283,7 +1290,7 @@ begin
 
 end;
 
-procedure TFrmConsole.GroupAddParticipant(vIDGroup, vNumber: string);
+procedure TFrmConsole.GroupAddParticipant(vIDGroup, vNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1293,10 +1300,14 @@ begin
   LJS   := FrmConsole_JS_VAR_groupAddParticipant;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupDelete(vIDGroup: string);
+procedure TFrmConsole.GroupDelete(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1305,10 +1316,14 @@ begin
 
   LJS   := FrmConsole_JS_VAR_groupDelete;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupDemoteParticipant(vIDGroup, vNumber: string);
+procedure TFrmConsole.GroupDemoteParticipant(vIDGroup, vNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1318,10 +1333,14 @@ begin
   LJS   := FrmConsole_JS_VAR_groupDemoteParticipant;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupJoinViaLink(vLinkGroup: string);
+procedure TFrmConsole.GroupJoinViaLink(vLinkGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1330,10 +1349,14 @@ begin
 
   LJS   := FrmConsole_JS_VAR_groupJoinViaLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_LINK#', Trim(vLinkGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupLeave(vIDGroup: string);
+procedure TFrmConsole.GroupLeave(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1342,10 +1365,14 @@ begin
 
   LJS   := FrmConsole_JS_VAR_groupLeave;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupMembershipApprove(vChatID, vIDGroup: string);
+procedure TFrmConsole.GroupMembershipApprove(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1354,10 +1381,14 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#CHAT_ID#', Trim(vChatID));
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
 
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupMembershipReject(vChatID, vIDGroup: string);
+procedure TFrmConsole.GroupMembershipReject(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1366,10 +1397,14 @@ begin
   FrmConsole_JS_AlterVar(LJS, '#CHAT_ID#', Trim(vChatID));
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
 
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupMsgAdminOnly(vIDGroup: string);
+procedure TFrmConsole.GroupMsgAdminOnly(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1378,10 +1413,111 @@ begin
 
   LJS   := FrmConsole_JS_VAR_GroupMsgAdminOnly;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupMsgAll(vIDGroup: string);
+procedure TFrmConsole.GroupEditAdminOnly(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupEditAdminOnly;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupEditAll(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GroupEditAll;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.SetGroupSubject(vIDGroup, vSubject, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+  vSubject := CaractersWeb(vSubject);
+
+  LJS   := FrmConsole_JS_VAR_SetGroupSubject;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#Subject#', Trim(vSubject));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GetGroupInfo(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GetGroupInfo;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GetGroupMembershipRequests(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GetGroupMembershipRequests;
+  FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GetGroupList(xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+var
+  Ljs: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS   := FrmConsole_JS_VAR_GetGroupList;
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#',  Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
+  ExecuteJS(LJS, true);
+end;
+
+procedure TFrmConsole.GroupMsgAll(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1390,6 +1526,10 @@ begin
 
   LJS   := FrmConsole_JS_VAR_GroupMsgAll;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
@@ -1408,7 +1548,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupPromoteParticipant(vIDGroup, vNumber: string);
+procedure TFrmConsole.GroupPromoteParticipant(vIDGroup, vNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1418,10 +1558,14 @@ begin
   LJS   := FrmConsole_JS_VAR_groupPromoteParticipant;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.GroupRemoveParticipant(vIDGroup, vNumber: string);
+procedure TFrmConsole.GroupRemoveParticipant(vIDGroup, vNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -1431,6 +1575,10 @@ begin
   LJS   := FrmConsole_JS_VAR_groupRemoveParticipant;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#',           Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(vNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
@@ -3952,6 +4100,55 @@ begin
                              end;
                      end;
 
+    //Marcelo 10/10/2026 - Gerenciamento de grupos com retorno
+    Th_GroupActionResponse :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TGroupActionResponseClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_GroupInfoResponse :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TGroupInfoClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_GroupListResponse :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TGroupListClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
+    Th_GroupMembershipRequestsResponse :
+                     begin
+                             LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
+                             LResultStr := copy(LResultStr, 0, length(LResultStr)-1); // REMOVENDO }
+                             LOutClass := TGroupMembershipRequestsClass.Create(LResultStr);
+                             try
+                               SendNotificationCenterDirect(PResponse.TypeHeader, LOutClass);
+                             finally
+                               FreeAndNil(LOutClass);
+                             end;
+                     end;
+
     Th_ErrorResponse :
                      begin
                              LResultStr := copy(LResultStr, 11, length(LResultStr)); //REMOVENDO RESULT
@@ -4915,7 +5112,7 @@ begin
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.CreateGroup(vGroupName, PParticipantNumber: string);
+procedure TFrmConsole.CreateGroup(vGroupName, PParticipantNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -4925,6 +5122,10 @@ begin
   LJS := FrmConsole_JS_VAR_CreateGroup;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_NAME#',         Trim(vGroupName));
   FrmConsole_JS_AlterVar(LJS, '#PARTICIPANT_NUMBER#', Trim(PParticipantNumber));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
@@ -5334,7 +5535,7 @@ begin
   //ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.SetGroupDescription(vIDGroup, vDescription : string);
+procedure TFrmConsole.SetGroupDescription(vIDGroup, vDescription, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
@@ -5343,15 +5544,23 @@ begin
 
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
   FrmConsole_JS_AlterVar(LJS, '#Description#', Trim(vDescription));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
-procedure TFrmConsole.revokeGroupInviteLink(vIDGroup: string);
+procedure TFrmConsole.revokeGroupInviteLink(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
   LJS   := FrmConsole_JS_VAR_removeGroupInviteLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
@@ -5364,12 +5573,16 @@ begin
   ExecuteJS(LJS, false);
 end;
 
-procedure TFrmConsole.getGroupInviteLink(vIDGroup: string);
+procedure TFrmConsole.getGroupInviteLink(vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs: string;
 begin
   LJS   := FrmConsole_JS_VAR_getGroupInviteLink;
   FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+  FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
   ExecuteJS(LJS, true);
 end;
 
@@ -5548,7 +5761,7 @@ begin
   END;
 end;
 
-procedure TFrmConsole.SetGroupPicture(vIDGroup, vBase64: string);
+procedure TFrmConsole.SetGroupPicture(vIDGroup, vBase64, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   Ljs, LLine: string;
   LBase64: TStringList;
@@ -5563,6 +5776,10 @@ begin
     vBase64 := LLine;
     FrmConsole_JS_AlterVar(LJS, '#GROUP_ID#', Trim(vIDGroup));
     FrmConsole_JS_AlterVar(LJS, '#BASE_64#', Trim(vBase64));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID#', Trim(xSeuID));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID2#', Trim(xSeuID2));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID3#', Trim(xSeuID3));
+    FrmConsole_JS_AlterVar(LJS, '#MSG_SEUID4#', Trim(xSeuID4));
     ExecuteJS(LJS, False);
   FINALLY
     LBase64.Free;

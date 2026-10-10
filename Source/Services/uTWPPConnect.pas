@@ -121,6 +121,11 @@ type
   //Marcelo 14/03/2024
   TGet_ErrorResponse       = procedure(Const Response: TErrorResponseClass) of object;
   //Marcelo 09/10/2026 - Acompanhamento de Status publicado (Ack: 1=servidor, 2=entregue, 3=visto; Sender vazio no ack 1)
+  //Marcelo 10/10/2026 - Gerenciamento de grupos com retorno (SeuID)
+  TGet_GroupActionResponse = procedure(Const Response: TGroupActionResponseClass) of object;
+  TGet_GroupInfoResponse   = procedure(Const Response: TGroupInfoClass) of object;
+  TGet_GroupListResponse   = procedure(Const Response: TGroupListClass) of object;
+  TGet_GroupMembershipRequestsResponse = procedure(Const Response: TGroupMembershipRequestsClass) of object;
   TOnStatusAckChange       = procedure(Const Status: TStatusTrackClass; Const Sender: string; Ack: Integer) of object;
   TOnStatusReaction        = procedure(Const Status: TStatusTrackClass; Const Sender, Reaction: string) of object;
   //Marcelo 26/04/2024
@@ -177,6 +182,10 @@ type
     FgenLinkDeviceCode      : string;
     FOnGet_ErrorResponse    : TGet_ErrorResponse;
     FStatusTrackList        : TObjectList<TStatusTrackClass>;
+    FOnGet_GroupActionResponse: TGet_GroupActionResponse;
+    FOnGet_GroupInfoResponse: TGet_GroupInfoResponse;
+    FOnGet_GroupListResponse: TGet_GroupListResponse;
+    FOnGet_GroupMembershipRequestsResponse: TGet_GroupMembershipRequestsResponse;
     FStatusTrackEnabled     : Boolean;
     FOnStatusAckChange      : TOnStatusAckChange;
     FOnStatusReaction       : TOnStatusReaction;
@@ -295,6 +304,8 @@ type
     FOnGetAllParticipantsGroup: TOnGetAllParticipantsGroup;
     procedure saveInfoConfTWPPConnect(SectionName, key, value: string);
     procedure Loaded; override;
+    procedure GroupActionFail(const AAction, AGroupID, ASeuID, ASeuID2, ASeuID3, ASeuID4, AError: string);
+    function  GroupFormatParticipants(const AList: string): string;
     procedure StatusTrackRegister(Const RespMensagem: TResponsesendTextMessage);
     procedure StatusTrackAck(Const AckClass: TAck_changeClass);
     procedure StatusTrackReaction(Const ReactionClass: TReactionResponseClass);
@@ -422,19 +433,19 @@ type
     procedure GetMyContacts;
     procedure GetAllGroups;
     procedure GetAllCommunitys;
-    procedure GroupAddParticipant(PIDGroup, PNumber: string);
-    procedure GroupRemoveParticipant(PIDGroup, PNumber: string);
-    procedure GroupPromoteParticipant(PIDGroup, PNumber: string);
-    procedure GroupDemoteParticipant(PIDGroup, PNumber: string);
-    procedure GroupLeave(PIDGroup: string);
-    procedure GroupDelete(PIDGroup: string);
+    procedure GroupAddParticipant(PIDGroup, PNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupRemoveParticipant(PIDGroup, PNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupPromoteParticipant(PIDGroup, PNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupDemoteParticipant(PIDGroup, PNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupLeave(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupDelete(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure GroupCreatePool(PIDGroup, PDescription, PPoolOptions, POptions: string);
     procedure CreatePool(PID, PDescription, PChoices, POptions: string);
     procedure CreatePoolEx(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string; PSeuID3: string = ''; PSeuID4: string = '');
     procedure CreatePoolNew(PID, PDescription, PChoices, POptions, PSeuID, PSeuID2: string; PSeuID3: string = ''; PSeuID4: string = '');
-    procedure SetGroupPicture(PIDGroup, PFileName: string);
-    procedure GroupMsgAdminOnly(PIDGroup: string);
-    procedure GroupMsgAll(PIDGroup: string);
+    procedure SetGroupPicture(PIDGroup, PFileName: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMsgAdminOnly(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMsgAll(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendScheduledCallMessage(vID, vOptions: string);
     procedure BloquearContato(PIDContato: String);
     procedure DesbloquearContato(PIDContato: String);
@@ -457,18 +468,18 @@ type
     procedure MarkIsReadChats(NumberChatsIsRead: string);
     procedure MarkIsUnreadChats(NumberChatsUnread: string);
 
-    procedure SetGroupDescription(vIDGroup, vDescription: string); //Marcelo 11/01/2023
-    procedure GroupJoinViaLink(PLinkGroup: string);
-    procedure GroupRemoveInviteLink(PIDGroup: string);
+    procedure SetGroupDescription(vIDGroup, vDescription: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = ''); //Marcelo 11/01/2023
+    procedure GroupJoinViaLink(PLinkGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupRemoveInviteLink(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure SetProfileName(vName : String);
     procedure SetProfilePicture(vFileName: string);
     procedure SetStatus(vStatus: String);
     procedure GetStatusContact(PNumber: String);
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
-    procedure GetGroupInviteLink(PIDGroup : string);
+    procedure GetGroupInviteLink(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
-    procedure GroupMembershipReject(vChatID, vIDGroup: string);
-    procedure GroupMembershipApprove(vChatID, vIDGroup: string);
+    procedure GroupMembershipReject(vChatID, vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GroupMembershipApprove(vChatID, vIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure CleanALLChat(PNumber: String);
     procedure GetMe;
     procedure GetMyNumber;
@@ -481,7 +492,7 @@ type
     function  GetUnReadMessages: String;
     function  CheckDelivered: String;
     procedure getProfilePicThumb(AProfilePicThumbURL: string);
-    procedure createGroup(PGroupName, PParticipantNumber: string);
+    procedure createGroup(PGroupName, PParticipantNumber: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure createcommunity(PcommunityName, Pdescription, PGroupNumbers: string);
     procedure addSubgroups(PCommunity, PGroupNumbers: string);
     procedure listGroupContacts(PIDGroup: string);
@@ -517,6 +528,13 @@ type
     procedure SetInjectJSSecRemaining(I: integer);
     //Marcelo 09/10/2026 - Busca o acompanhamento de um Status publicado (chave = ids[0].id do ack / ver TStatusTrackClass.ExtractStatusKey)
     function GetStatusTrack(const AStatusKey: string): TStatusTrackClass;
+    //Marcelo 10/10/2026 - Gerenciamento de grupos (resultado em OnGet_GroupActionResponse; consultas em OnGet_GroupInfoResponse / OnGet_GroupMembershipRequestsResponse)
+    procedure GroupEditAdminOnly(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');  //somente admins editam os dados do grupo
+    procedure GroupEditAll(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');       //todos editam os dados do grupo
+    procedure GroupSetSubject(PIDGroup, PSubject: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GetGroupInfo(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
+    procedure GetGroupList(xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');  //lista de grupos com nome/tamanho/flags (OnGet_GroupListResponse)
+    procedure GetGroupMembershipRequests(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure StatusTrackClear;
   published
     { Published declarations }
@@ -630,6 +648,11 @@ type
     property OnGetQrCodeDesconectouErroCache  : TOnGetQrCodeDesconectouErroCache  read FOnGetQrCodeDesconectouErroCache       write FOnGetQrCodeDesconectouErroCache;
     property OnGet_ErrorResponse        : TGet_ErrorResponse         read FOnGet_ErrorResponse            write FOnGet_ErrorResponse;
     //Marcelo 09/10/2026 - Acompanhamento de Status (requer Evento_msg_ack_change / Evento_new_reaction habilitados)
+    //Marcelo 10/10/2026 - Gerenciamento de grupos
+    property OnGet_GroupActionResponse  : TGet_GroupActionResponse   read FOnGet_GroupActionResponse     write FOnGet_GroupActionResponse;
+    property OnGet_GroupInfoResponse    : TGet_GroupInfoResponse     read FOnGet_GroupInfoResponse       write FOnGet_GroupInfoResponse;
+    property OnGet_GroupListResponse    : TGet_GroupListResponse     read FOnGet_GroupListResponse       write FOnGet_GroupListResponse;
+    property OnGet_GroupMembershipRequestsResponse : TGet_GroupMembershipRequestsResponse read FOnGet_GroupMembershipRequestsResponse write FOnGet_GroupMembershipRequestsResponse;
     property StatusTrackEnabled         : Boolean                    read FStatusTrackEnabled             write FStatusTrackEnabled default True;
     property OnStatusAckChange          : TOnStatusAckChange         read FOnStatusAckChange              write FOnStatusAckChange;
     property OnStatusReaction           : TOnStatusReaction          read FOnStatusReaction               write FOnStatusReaction;
@@ -1545,7 +1568,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.createGroup(PGroupName, PParticipantNumber: string);
+procedure TWPPConnect.createGroup(PGroupName, PParticipantNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -1554,7 +1577,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.CreateGroup(PGroupName, PParticipantNumber);
+            FrmConsole.CreateGroup(PGroupName, PParticipantNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -1568,16 +1591,18 @@ begin
      Exit;
   if not Assigned(FrmConsole) then
      Exit;
-  PParticipantNumber := AjustNumber.FormatIn(PParticipantNumber);
+  PParticipantNumber := GroupFormatParticipants(PParticipantNumber); //aceita varios numeros separados por virgula
   
   if pos('@', PParticipantNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PParticipantNumber);
+    GroupActionFail('CREATE', '', xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_ExceptPhoneNumberError);
     Exit;
   end;
   if Trim(PGroupName) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PParticipantNumber);
+    GroupActionFail('CREATE', '', xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -1591,7 +1616,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.CreateGroup(PGroupName, PParticipantNumber);
+            FrmConsole.CreateGroup(PGroupName, PParticipantNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -2429,6 +2454,152 @@ begin
     FreeAndNil(FrmConsole);
   inherited;
 end;
+//Marcelo 10/10/2026
+function GroupJsonEsc(const S: string): string;
+begin
+  Result := StringReplace(S, '\', '\\', [rfReplaceAll]);
+  Result := StringReplace(Result, '"', '\"', [rfReplaceAll]);
+  Result := StringReplace(Result, #13, '\r', [rfReplaceAll]);
+  Result := StringReplace(Result, #10, '\n', [rfReplaceAll]);
+  Result := StringReplace(Result, #9, '\t', [rfReplaceAll]);
+end;
+
+//Falha de validacao local (nada foi enviado ao navegador): devolve GroupActionResponse com statusCode 305
+procedure TWPPConnect.GroupActionFail(const AAction, AGroupID, ASeuID, ASeuID2, ASeuID3, ASeuID4, AError: string);
+var
+  LResp: TGroupActionResponseClass;
+begin
+  if not Assigned(FOnGet_GroupActionResponse) then
+    Exit;
+  LResp := TGroupActionResponseClass.Create(
+    '{"Seuid":"' + GroupJsonEsc(ASeuID) + '","Seuid2":"' + GroupJsonEsc(ASeuID2) +
+    '","Seuid3":"' + GroupJsonEsc(ASeuID3) + '","Seuid4":"' + GroupJsonEsc(ASeuID4) +
+    '","Action":"' + AAction + '","GroupId":"' + GroupJsonEsc(AGroupID) +
+    '","Success":false,"statusCode":305,"ErrorCode":"invalid_parameter","Error":"' + GroupJsonEsc(AError) + '","Data":""}');
+  try
+    FOnGet_GroupActionResponse(LResp);
+  finally
+    FreeAndNil(LResp);
+  end;
+end;
+
+//Formata uma lista de numeros (separados por virgula ou ponto e virgula); retorna '' se algum for invalido
+function TWPPConnect.GroupFormatParticipants(const AList: string): string;
+var
+  LItems: TStringList;
+  i: Integer;
+  LNum: string;
+begin
+  Result := '';
+  LItems := TStringList.Create;
+  try
+    LItems.StrictDelimiter := True;
+    LItems.Delimiter := ',';
+    LItems.DelimitedText := StringReplace(AList, ';', ',', [rfReplaceAll]);
+    for i := 0 to LItems.Count - 1 do
+    begin
+      LNum := Trim(LItems[i]);
+      if LNum = '' then
+        Continue;
+      LNum := AjustNumber.FormatIn(LNum);
+      if Pos('@', LNum) = 0 then
+      begin
+        Result := '';
+        Exit;
+      end;
+      if Result <> '' then
+        Result := Result + ',';
+      Result := Result + LNum;
+    end;
+  finally
+    FreeAndNil(LItems);
+  end;
+end;
+
+procedure TWPPConnect.GroupEditAdminOnly(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_RESTRICT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.GroupEditAdminOnly(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GroupEditAll(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_RESTRICT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.GroupEditAll(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GroupSetSubject(PIDGroup, PSubject, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if (Trim(PIDGroup) = '') or (Trim(PSubject) = '') then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_SUBJECT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.SetGroupSubject(PIDGroup, PSubject, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GetGroupInfo(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('INFO', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.GetGroupInfo(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GetGroupList(xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  FrmConsole.GetGroupList(xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GetGroupMembershipRequests(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if Trim(PIDGroup) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('MEMBERSHIP_REQUESTS', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.GetGroupMembershipRequests(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
 //Marcelo 09/10/2026
 function TWPPConnect.GetStatusTrack(const AStatusKey: string): TStatusTrackClass;
 var
@@ -2932,7 +3103,7 @@ begin
   if Assigned(FrmConsole) then
     FrmConsole.getWAVersion;
 end;
-procedure TWPPConnect.GroupAddParticipant(PIDGroup, PNumber: string);
+procedure TWPPConnect.GroupAddParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -2941,7 +3112,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupAddParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupAddParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -2957,6 +3128,7 @@ begin
   if pos('@', PNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
+    GroupActionFail('ADD_PARTICIPANT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_ExceptPhoneNumberError);
     Exit;
   end;
   {$IFDEF FPC}
@@ -2968,7 +3140,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupAddParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupAddParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3029,7 +3201,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.groupDelete(PIDGroup: string);
+procedure TWPPConnect.groupDelete(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3038,7 +3210,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupDelete(PIDGroup);
+            FrmConsole.GroupDelete(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3053,6 +3225,7 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('DELETE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3064,7 +3237,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupDelete(PIDGroup);
+            FrmConsole.GroupDelete(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3072,7 +3245,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupDemoteParticipant(PIDGroup, PNumber: string);
+procedure TWPPConnect.GroupDemoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3081,7 +3254,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupDemoteParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupDemoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3097,6 +3270,7 @@ begin
   if pos('@', PNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
+    GroupActionFail('DEMOTE_PARTICIPANT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_ExceptPhoneNumberError);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3108,7 +3282,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupDemoteParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupDemoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3116,7 +3290,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupJoinViaLink(PLinkGroup: string);
+procedure TWPPConnect.GroupJoinViaLink(PLinkGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3125,7 +3299,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupJoinViaLink(PLinkGroup);
+            FrmConsole.GroupJoinViaLink(PLinkGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3140,6 +3314,7 @@ begin
   if Trim(PLinkGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PLinkGroup);
+    GroupActionFail('JOIN', '', xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3151,7 +3326,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupJoinViaLink(PLinkGroup);
+            FrmConsole.GroupJoinViaLink(PLinkGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3159,7 +3334,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.groupLeave(PIDGroup: string);
+procedure TWPPConnect.groupLeave(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3168,7 +3343,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupLeave(PIDGroup);
+            FrmConsole.GroupLeave(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3183,6 +3358,7 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('LEAVE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3194,7 +3370,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupLeave(PIDGroup);
+            FrmConsole.GroupLeave(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3202,7 +3378,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupMembershipApprove(vChatID, vIDGroup: string);
+procedure TWPPConnect.GroupMembershipApprove(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 begin
   if Application.Terminated Then
     Exit;
@@ -3211,16 +3387,18 @@ begin
   if Trim(vChatID) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vChatID);
+    GroupActionFail('MEMBERSHIP_APPROVE', vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   if Trim(vIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    GroupActionFail('MEMBERSHIP_APPROVE', vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
-  FrmConsole.GroupMembershipApprove(vChatID, vIDGroup);
+  FrmConsole.GroupMembershipApprove(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 end;
-procedure TWPPConnect.GroupMembershipReject(vChatID, vIDGroup: string);
+procedure TWPPConnect.GroupMembershipReject(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 begin
   if Application.Terminated Then
     Exit;
@@ -3229,16 +3407,18 @@ begin
   if Trim(vChatID) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vChatID);
+    GroupActionFail('MEMBERSHIP_REJECT', vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   if Trim(vIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    GroupActionFail('MEMBERSHIP_REJECT', vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
-  FrmConsole.GroupMembershipReject(vChatID, vIDGroup);
+  FrmConsole.GroupMembershipReject(vChatID, vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 end;
-procedure TWPPConnect.GroupMsgAdminOnly(PIDGroup: string);
+procedure TWPPConnect.GroupMsgAdminOnly(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3247,7 +3427,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupMsgAdminOnly(PIDGroup);
+            FrmConsole.GroupMsgAdminOnly(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3262,6 +3442,7 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_ANNOUNCE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3273,7 +3454,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupMsgAdminOnly(PIDGroup);
+            FrmConsole.GroupMsgAdminOnly(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3281,7 +3462,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupMsgAll(PIDGroup: string);
+procedure TWPPConnect.GroupMsgAll(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3290,7 +3471,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupMsgAll(PIDGroup);
+            FrmConsole.GroupMsgAll(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3305,6 +3486,7 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_ANNOUNCE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3316,7 +3498,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupMsgAll(PIDGroup);
+            FrmConsole.GroupMsgAll(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3324,7 +3506,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupPromoteParticipant(PIDGroup, PNumber: string);
+procedure TWPPConnect.GroupPromoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3333,7 +3515,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupPromoteParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupPromoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3349,6 +3531,7 @@ begin
   if pos('@', PNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
+    GroupActionFail('PROMOTE_PARTICIPANT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_ExceptPhoneNumberError);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3360,7 +3543,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupPromoteParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupPromoteParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3368,7 +3551,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupRemoveParticipant(PIDGroup, PNumber: string);
+procedure TWPPConnect.GroupRemoveParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3377,7 +3560,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupRemoveParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupRemoveParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3393,6 +3576,7 @@ begin
   if pos('@', PNumber) = 0 then
   Begin
     Int_OnErroInterno(Self, MSG_ExceptPhoneNumberError, PNumber);
+    GroupActionFail('REMOVE_PARTICIPANT', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_ExceptPhoneNumberError);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3404,7 +3588,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.GroupRemoveParticipant(PIDGroup, PNumber);
+            FrmConsole.GroupRemoveParticipant(PIDGroup, PNumber, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -3495,7 +3679,7 @@ begin
   if Assigned(FrmConsole) then
     FrmConsole.GetTotalChatsUserRead;
 end;
-procedure TWPPConnect.GetGroupInviteLink(PIDGroup : string);
+procedure TWPPConnect.GetGroupInviteLink(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 begin
   If Application.Terminated Then
      Exit;
@@ -3504,9 +3688,10 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('INVITE_LINK', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
-  FrmConsole.getGroupInviteLink(PIDGroup);
+  FrmConsole.getGroupInviteLink(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 end;
 procedure TWPPConnect.getHistorySyncProgress;
 var
@@ -3671,7 +3856,7 @@ begin
   lThread.FreeOnTerminate := true;
   lThread.Start;
 end;
-procedure TWPPConnect.GroupRemoveInviteLink(PIDGroup: string);
+procedure TWPPConnect.GroupRemoveInviteLink(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   lThread : TThread;
   {$IFDEF FPC}
@@ -3680,7 +3865,7 @@ var
     begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.revokeGroupInviteLink(PIDGroup);
+            FrmConsole.revokeGroupInviteLink(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
             end;
   begin
@@ -3695,6 +3880,7 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('REVOKE_INVITE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   {$IFDEF FPC}
@@ -3706,7 +3892,7 @@ begin
         begin
           if Assigned(FrmConsole) then
           begin
-            FrmConsole.revokeGroupInviteLink(PIDGroup);
+            FrmConsole.revokeGroupInviteLink(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
           end;
         end);
       end);
@@ -4947,6 +5133,27 @@ begin
       FOnGetAllParticipantsGroup(TParticipantsGroupClass(PReturnClass));
   end;
 
+  //Marcelo 10/10/2026 - Gerenciamento de grupos com retorno
+  if PTypeHeader = Th_GroupActionResponse  then
+  begin
+    if Assigned(FOnGet_GroupActionResponse) then
+      FOnGet_GroupActionResponse(TGroupActionResponseClass(PReturnClass));
+  end;
+  if PTypeHeader = Th_GroupInfoResponse  then
+  begin
+    if Assigned(FOnGet_GroupInfoResponse) then
+      FOnGet_GroupInfoResponse(TGroupInfoClass(PReturnClass));
+  end;
+  if PTypeHeader = Th_GroupListResponse  then
+  begin
+    if Assigned(FOnGet_GroupListResponse) then
+      FOnGet_GroupListResponse(TGroupListClass(PReturnClass));
+  end;
+  if PTypeHeader = Th_GroupMembershipRequestsResponse  then
+  begin
+    if Assigned(FOnGet_GroupMembershipRequestsResponse) then
+      FOnGet_GroupMembershipRequestsResponse(TGroupMembershipRequestsClass(PReturnClass));
+  end;
   if PTypeHeader = Th_ErrorResponse  then
   begin
     if Assigned(FOnGet_ErrorResponse) then
@@ -7546,7 +7753,7 @@ procedure TWPPConnect.SetdjustNumber(const Value: TWPPConnectAdjusteNumber);
 begin
   FAdjustNumber.Assign(Value);
 end;
-procedure TWPPConnect.SetGroupDescription(vIDGroup, vDescription: string);
+procedure TWPPConnect.SetGroupDescription(vIDGroup, vDescription, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 begin
   If Application.Terminated Then
     Exit;
@@ -7555,11 +7762,12 @@ begin
   if Trim(vIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, vIDGroup);
+    GroupActionFail('SET_DESCRIPTION', vIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
-  FrmConsole.SetGroupDescription(vIDGroup, vDescription);
+  FrmConsole.SetGroupDescription(vIDGroup, vDescription, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 end;
-procedure TWPPConnect.SetGroupPicture(PIDGroup, PFileName: string);
+procedure TWPPConnect.SetGroupPicture(PIDGroup, PFileName, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
 var
   LStream     : TMemoryStream;
   LBase64File : TBase64Encoding;
@@ -7574,11 +7782,13 @@ begin
   if Trim(PIDGroup) = '' then
   begin
     Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PIDGroup);
+    GroupActionFail('SET_PICTURE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
     Exit;
   end;
   If not FileExists(Trim(PFileName)) then
   begin
     Int_OnErroInterno(Self, 'SetGroupPicture: ' + Format(MSG_ExceptPath, [PIDGroup]), PFileName);
+    GroupActionFail('SET_PICTURE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, 'SetGroupPicture: ' + Format(MSG_ExceptPath, [PIDGroup]));
     Exit;
   end;
   LStream     := TMemoryStream.Create;
@@ -7589,6 +7799,7 @@ begin
       if LStream.Size = 0 then
       Begin
         Int_OnErroInterno(Self, 'SetGroupPicture: ' + Format(MSG_WarningErrorFile, [PFileName]), PIDGroup);
+        GroupActionFail('SET_PICTURE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, 'SetGroupPicture: ' + Format(MSG_WarningErrorFile, [PFileName]));
         Exit;
       end;
       LStream.Position := 0;
@@ -7596,12 +7807,13 @@ begin
       LBase64      := StrExtFile_Base64Type(PFileName) + LBase64;
     except
       Int_OnErroInterno(Self, 'SetGroupPicture: ' + MSG_ExceptMisc, PIDGroup);
+      GroupActionFail('SET_PICTURE', PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4, 'SetGroupPicture: ' + MSG_ExceptMisc);
     end;
   finally
     FreeAndNil(LStream);
     FreeAndNil(LBase64File);
   end;
-  frmConsole.SetGroupPicture(PIDGroup,LBase64);
+  FrmConsole.SetGroupPicture(PIDGroup,LBase64, xSeuID, xSeuID2, xSeuID3, xSeuID4);
 end;
 procedure TWPPConnect.SetInjectConfig(const Value: TWPPConnectConfig);
 begin

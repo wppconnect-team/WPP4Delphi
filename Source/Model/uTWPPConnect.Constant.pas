@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.1.0.0'; //  09/10/2026
+  TWPPConnectVersion              = '5.2.0.0'; //  10/10/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -601,22 +601,22 @@ Const
   FrmConsole_JS_VAR_CreateCommunity         = 'WPP.community.create("<#COMMUNITY_NAME#>", "<#DESCRIPTION#>", <#GROUP_NUMBERS#>);setTimeout(function(){ window.WAPI.getAllCommunitys(); }, 3000);';
   FrmConsole_JS_VAR_addSubgroups            = 'WPP.community.addSubgroups("<#COMMUNITY#>", <#GROUP_NUMBERS#>);setTimeout(function(){ window.WAPI.getAllCommunitys(); }, 3000);';
 
-  FrmConsole_JS_VAR_CreateGroup             = 'WPP.group.create("<#GROUP_NAME#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
-  FrmConsole_JS_VAR_GroupMsgAdminOnly       = 'WPP.group.setProperty("<#GROUP_ID#>", ''announcement'', true);';
-  FrmConsole_JS_VAR_GroupMsgAll             = 'WPP.group.setProperty("<#GROUP_ID#>", ''announcement'', false);';
+  FrmConsole_JS_VAR_CreateGroup             = 'window.WPP.createGroupNew("<#GROUP_NAME#>","<#PARTICIPANT_NUMBER#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);'; //Marcelo 10/10/2026 - retorno via GroupActionResponse
+  FrmConsole_JS_VAR_GroupMsgAdminOnly       = 'window.WPP.groupSetPropertyNew("<#GROUP_ID#>","announcement",true,"SET_ANNOUNCE","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GroupMsgAll             = 'window.WPP.groupSetPropertyNew("<#GROUP_ID#>","announcement",false,"SET_ANNOUNCE","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
   FrmConsole_JS_GetAllGroups                = 'window.WAPI.getAllGroups();';//'window.WAPI.listMyGroups();';
   FrmConsole_JS_GetGroupAdmins              = 'window.WAPI.getGroupAdmins("<#GROUP_ID#>");';
   FrmConsole_JS_VAR_listGroupContacts       = 'window.WAPI.getGroupParticipantIDs("<#GROUP_ID#>");';
   FrmConsole_JS_VAR_GetAllParticipantsGroup = 'window.WAPI.getAllParticipantsGroup("<#GROUP_ID#>");';
 
-  FrmConsole_JS_VAR_groupAddParticipant     = 'WPP.group.addParticipants("<#GROUP_ID#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getGroupParticipantIDs("<#GROUP_ID#>"); }, 3000);';
-  FrmConsole_JS_VAR_groupRemoveParticipant  = 'WPP.group.removeParticipants("<#GROUP_ID#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getGroupParticipantIDs("<#GROUP_ID#>"); }, 3000);';
-  FrmConsole_JS_VAR_groupPromoteParticipant = 'WPP.group.promoteParticipants("<#GROUP_ID#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getGroupAdmins("<#GROUP_ID#>"); }, 3000);';
-  FrmConsole_JS_VAR_groupDemoteParticipant  = 'WPP.group.demoteParticipants("<#GROUP_ID#>", "<#PARTICIPANT_NUMBER#>");setTimeout(function(){ window.WAPI.getGroupAdmins("<#GROUP_ID#>"); }, 3000);';
-  FrmConsole_JS_VAR_groupLeave              = 'window.WAPI.leaveGroup("<#GROUP_ID#>");';
-  FrmConsole_JS_VAR_groupDelete             = 'window.WAPI.deleteConversation("<#GROUP_ID#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
-  FrmConsole_JS_VAR_groupJoinViaLink        = 'window.WAPI.joinGroupViaLink("<#GROUP_LINK#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
+  FrmConsole_JS_VAR_groupAddParticipant     = 'window.WPP.groupAddParticipantNew("<#GROUP_ID#>","<#PARTICIPANT_NUMBER#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getGroupParticipantIDs("<#GROUP_ID#>"); }, 3000);';
+  FrmConsole_JS_VAR_groupRemoveParticipant  = 'window.WPP.groupRemoveParticipantNew("<#GROUP_ID#>","<#PARTICIPANT_NUMBER#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getGroupParticipantIDs("<#GROUP_ID#>"); }, 3000);';
+  FrmConsole_JS_VAR_groupPromoteParticipant = 'window.WPP.groupPromoteParticipantNew("<#GROUP_ID#>","<#PARTICIPANT_NUMBER#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getGroupAdmins("<#GROUP_ID#>"); }, 3000);';
+  FrmConsole_JS_VAR_groupDemoteParticipant  = 'window.WPP.groupDemoteParticipantNew("<#GROUP_ID#>","<#PARTICIPANT_NUMBER#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getGroupAdmins("<#GROUP_ID#>"); }, 3000);';
+  FrmConsole_JS_VAR_groupLeave              = 'window.WPP.groupLeaveNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_groupDelete             = 'window.WPP.groupDeleteNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
+  FrmConsole_JS_VAR_groupJoinViaLink        = 'window.WPP.groupJoinViaLinkNew("<#GROUP_LINK#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");setTimeout(function(){ window.WAPI.getAllGroups(); }, 3000);';
   FrmConsole_JS_VAR_setProfileName          = 'window.WAPI.setMyName("<#NEW_NAME#>");';
   FrmConsole_JS_VAR_setProfilePicture       = 'WPP.profile.setMyProfilePicture("<#BASE_64#>")';
   FrmConsole_JS_VAR_setMyStatus             = 'window.WAPI.setMyStatus("<#NEW_STATUS#>");';
@@ -628,20 +628,27 @@ Const
   FrmConsole_JS_VAR_genLinkDeviceCodeForPhoneNumber = 'window.WAPI.genLinkDeviceCodeForPhoneNumber2("<#PHONE#>");';
 
   //FrmConsole_JS_VAR_getGroupInviteLink    = 'window.WAPI.getGroupInviteLink("<#GROUP_ID#>");'; deprecated
-  FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WAPI.getInviteCode2("<#GROUP_ID#>");';
+  FrmConsole_JS_VAR_getGroupInviteLink      = 'window.WPP.groupInviteLinkNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
   FrmConsole_JS_VAR_sendGroupInviteMessageNew  = 'window.WPP.sendGroupInviteMessageNew("<#CHAT_ID#>","<#GROUP_ID#>","<#INVITE_CODE#>","<#SEUID#>");';
 
   //WPP.group.reject(12345645@g.us, 5554999999999@c.us);
-  FrmConsole_JS_VAR_GroupMembershipReject   = 'WPP.group.reject("<#GROUP_ID#>","<#CHAT_ID#>");';
-  FrmConsole_JS_VAR_GroupMembershipApprove  = 'WPP.group.approve("<#GROUP_ID#>","<#CHAT_ID#>");';
+  FrmConsole_JS_VAR_GroupMembershipReject   = 'window.WPP.groupMembershipRejectNew("<#GROUP_ID#>","<#CHAT_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GroupMembershipApprove  = 'window.WPP.groupMembershipApproveNew("<#GROUP_ID#>","<#CHAT_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
   //FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WAPI.revokeGroupInviteLink("<#GROUP_ID#>");'; deprecated
-  FrmConsole_JS_VAR_removeGroupInviteLink   = 'WPP.group.revokeInviteCode("<#GROUP_ID#>");';
+  FrmConsole_JS_VAR_removeGroupInviteLink   = 'window.WPP.groupRevokeInviteNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
-  FrmConsole_JS_VAR_SetGroupDescription     = 'WPP.group.setDescription("<#GROUP_ID#>","<#Description#>");';
+  FrmConsole_JS_VAR_SetGroupDescription     = 'window.WPP.groupSetDescriptionNew("<#GROUP_ID#>","<#Description#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  //Marcelo 10/10/2026 - Gerenciamento de grupos (retorno via OnGet_GroupActionResponse / OnGet_GroupInfoResponse / OnGet_GroupMembershipRequestsResponse)
+  FrmConsole_JS_VAR_GroupEditAdminOnly      = 'window.WPP.groupSetPropertyNew("<#GROUP_ID#>","restrict",true,"SET_RESTRICT","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GroupEditAll            = 'window.WPP.groupSetPropertyNew("<#GROUP_ID#>","restrict",false,"SET_RESTRICT","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_SetGroupSubject         = 'window.WPP.groupSetSubjectNew("<#GROUP_ID#>","<#Subject#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GetGroupInfo            = 'window.WPP.getGroupInfoNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GetGroupMembershipRequests = 'window.WPP.getGroupMembershipRequestsNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GetGroupList            = 'window.WPP.getGroupListNew("<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
-  FrmConsole_JS_VAR_SetGroupPicture         = 'WPP.group.setIcon("<#GROUP_ID#>","<#BASE_64#>");';
+  FrmConsole_JS_VAR_SetGroupPicture         = 'window.WPP.groupSetPictureNew("<#GROUP_ID#>","<#BASE_64#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
 
   FrmConsole_JS_VAR_SaveContact             = 'WPP.contact.save("<#PHONE#>", "<#NAME_CONTACT#>", { surname: "<#SURNAME_CONTACT#>", syncAdressBook: true,});';
@@ -1056,6 +1063,10 @@ type
                    , Th_OnReceived_Message_Socket2=98 //Marcelo 19/05/2025
                    , Th_GetisLidMigrated=99 //Marcelo 25/11/2025
                    , Th_GetPnLidEntry=100 //Marcelo 25/11/2025
+                   , Th_GroupActionResponse=101 //Marcelo 10/10/2026
+                   , Th_GroupInfoResponse=102 //Marcelo 10/10/2026
+                   , Th_GroupMembershipRequestsResponse=103 //Marcelo 10/10/2026
+                   , Th_GroupListResponse=104 //Marcelo 10/10/2026
                    );
 
     TSecondCallback = procedure(SecondsRemaining: Integer) of object;
@@ -1231,7 +1242,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 100; //Marcelo 25/11/2025
+const LmaxCount = 104; //Marcelo 10/10/2026 (= ultimo valor de TTypeHeader; nao pode passar disso)
 var
   I: Integer;
   LNome: String;

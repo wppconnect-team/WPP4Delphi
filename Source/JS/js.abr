@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.60;1.0.0.9;78.3.0
+//2.2.0.63;1.0.0.9;78.3.0
 //
 //
 
@@ -681,9 +681,8 @@ window.WAPI.createGroup = async function (name, contactsId) {
 };
 
 window.WAPI.leaveGroup = function(groupId) {
-    /*groupId = typeof groupId == "string" ? groupId : groupId._serialized;
-    var group = WAPI.getChat(groupId);
-    return Store.GroupActions.sendExitGroup(group)*/
+    //Marcelo 10/10/2026 - antes era um stub vazio (nao saia do grupo)
+    return WPP.group.leave(groupId);
 };
 
 
@@ -6574,8 +6573,15 @@ WPP.on('chat.live_location_start', (live) => {
 });
 
 //Marcelo 13/08/2024
-WPP.on('group.participant_changed', (event) => {
+WPP.on('group.participant_changed', async (event) => {
     if (habilitaEvento_group_participant_changed){
+        //Marcelo 10/10/2026 - resolve o telefone (@c.us) de quem agiu e dos participantes quando o WhatsApp entrega so o LID
+        try {
+            event.authorPhone = event.author ? await WPP._grpPhone(event.author) : "";
+            event.participantsPhone = await Promise.all((event.participants || []).map(function (p) { return WPP._grpPhone(p); }));
+        } catch (err) {
+            console.log(err);
+        }
         SetConsoleMessage("Getgroup_participant_changed", JSON.stringify({event}));
     }
 });
@@ -7124,6 +7130,327 @@ window.WPP.sendImageStatusNew = async function (content, options, xSeuID = '', x
 
 window.WPP.sendVideoStatusNew = async function (content, options, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   return await WPP._sendStatusNew("sendVideoStatusNew", WPP.status.sendVideoStatus, content, options, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+};
+
+//Marcelo 10/10/2026 - Gerenciamento de grupos com retorno correlacionavel (SeuID)
+//Evento: SetConsoleMessage("GroupActionResponse", { Seuid..Seuid4, Action, GroupId, Success, statusCode, ErrorCode, Error, Data })
+//  Action     : CREATE | ADD_PARTICIPANT | REMOVE_PARTICIPANT | PROMOTE_PARTICIPANT | DEMOTE_PARTICIPANT | SET_DESCRIPTION | SET_SUBJECT |
+//               SET_ANNOUNCE | SET_RESTRICT | REVOKE_INVITE | LEAVE | MEMBERSHIP_APPROVE | MEMBERSHIP_REJECT | INFO | MEMBERSHIP_REQUESTS |
+//               JOIN | SET_PICTURE | DELETE | INVITE_LINK | LIST
+//  Success    : true quando concluiu (ADD_PARTICIPANT: true somente se o participante retornou code 200)
+//  statusCode : 0 = sucesso | 303 = erro do WA-JS/WhatsApp (ErrorCode traz o codigo do WA-JS, ex.: group_you_are_not_admin, participant_not_exists)
+//               | 304 = ADD_PARTICIPANT recusado (Error traz "<id>: <mensagem>", code 403 restrito / 409 ja e membro / 421 pendente de aprovacao)
+//  Data       : JSON (string) com o retorno do WA-JS. CREATE: {gid, participants:{id:{code,invite_code}}} | ADD_PARTICIPANT: {id:{code,message}} | REVOKE_INVITE: {inviteCode, inviteLink}
+//  statusCode : 305 (validacao local feita no Delphi, nada chega ao navegador; ErrorCode = invalid_parameter)
+//Consultas (INFO / MEMBERSHIP_REQUESTS / LIST): sucesso -> "GroupInfoResponse" / "GroupMembershipRequestsResponse" / "GroupListResponse"; falha -> "GroupActionResponse" (Success=false)
+//Codigos de erro do WA-JS (ErrorCode) documentados em Docs/GestaoDeGrupos.md
+window.WPP._grpSer = function (w) {
+  if (!w) return "";
+  if (typeof w === 'string') return w;
+  return w._serialized ?? w.$1 ?? (w.toString ? String(w.toString()) : "");
+};
+
+window.WPP._grpPhone = async function (w) {
+  var id = WPP._grpSer(w);
+  if (!id) return "";
+  if (id.indexOf("@c.us") > -1) return id;
+  try {
+    const entry = await WPP.contact.getPnLidEntry(id).catch(function () { return null; });
+    return entry ? WPP._grpSer(entry.phoneNumber) : "";
+  } catch (e) {
+    return "";
+  }
+};
+
+//Pessoa (participante/solicitante): Jid (@c.us, vazio se so o LID e conhecido), Lid, Phone (digitos), Pushname, Name
+window.WPP._grpPerson = async function (w) {
+  var id = WPP._grpSer(w);
+  var out = { Id: id, Jid: "", Lid: "", Phone: "", Pushname: "", Name: "" };
+  if (!id) return out;
+  if (id.indexOf("@lid") > -1) out.Lid = id;
+  else if (id.indexOf("@c.us") > -1) out.Jid = id;
+  try {
+    const entry = await WPP.contact.getPnLidEntry(id).catch(function () { return null; });
+    if (entry) {
+      var pn = WPP._grpSer(entry.phoneNumber);
+      var ld = WPP._grpSer(entry.lid);
+      if (pn) out.Jid = pn;
+      if (ld) out.Lid = ld;
+    }
+  } catch (e) { }
+  if (out.Jid) out.Phone = out.Jid.split("@")[0];
+  try {
+    const c = await WPP.contact.get(id);
+    if (c) {
+      out.Pushname = c.pushname || "";
+      out.Name = c.name || "";
+    }
+  } catch (e) { }
+  return out;
+};
+
+window.WPP._groupActionNew = async function (action, groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, fn, evalFn, okEvent) {
+  var Obj = {
+    Seuid: xSeuID,
+    Seuid2: xSeuID2,
+    Seuid3: xSeuID3,
+    Seuid4: xSeuID4,
+    Action: action,
+    GroupId: groupId,
+    Success: false,
+    statusCode: 0,
+    ErrorCode: "",
+    Error: "",
+    Data: "",
+  };
+  try {
+    const data = await fn();
+    Obj.Success = true;
+    if (data && data.gid) {
+      Obj.GroupId = WPP._grpSer(data.gid) || Obj.GroupId;
+      data.gid = Obj.GroupId;
+    }
+    if (data && typeof data.id === 'string' && data.id.indexOf("@g.us") > -1 && !Obj.GroupId) {
+      Obj.GroupId = data.id;  //JOIN: {id, pendingApproval}
+    }
+    if (evalFn) {
+      const ev = evalFn(data);
+      if (ev && ev.ok === false) {
+        Obj.Success = false;
+        Obj.statusCode = ev.code || 304;
+        Obj.Error = ev.error || "";
+      }
+    }
+    if (Obj.Success && okEvent && data && typeof data === 'object') {
+      try {
+        SetConsoleMessage(okEvent, JSON.stringify(Object.assign({ Seuid: xSeuID, Seuid2: xSeuID2, Seuid3: xSeuID3, Seuid4: xSeuID4, GroupId: Obj.GroupId }, data)));
+      } catch (err) {
+        console.log(err);
+      }
+      return Obj;
+    }
+    try {
+      Obj.Data = (data === undefined || data === null) ? "" : JSON.stringify(data);
+    } catch (err) {
+      Obj.Data = "";
+    }
+  } catch (error) {
+    Obj.Success = false;
+    Obj.statusCode = 303;
+    Obj.ErrorCode = (error && error.code) ? String(error.code) : "";
+    Obj.Error = (error && error.message) ? error.message : ((error && error.stack) ? error.stack : "Unknown Error");
+  }
+  try {
+    SetConsoleMessage("GroupActionResponse", JSON.stringify(Obj));
+  } catch (err) {
+    console.log(err);
+  }
+  return Obj;
+};
+
+window.WPP.createGroupNew = async function (name, participants, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  //participants: um ou mais ids separados por virgula/ponto e virgula
+  var list = String(participants || '').split(/[,;]/).map(function (x) { return x.trim(); }).filter(Boolean);
+  return await WPP._groupActionNew("CREATE", "", xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.create(name, list);
+  });
+};
+
+window.WPP._grpEvalAdd = function (data) {
+  var bad = [];
+  for (var k in (data || {})) {
+    var it = data[k];
+    if (it && Number(it.code) !== 200) bad.push(k + ": " + (it.message || it.code));
+  }
+  return bad.length ? { ok: false, code: 304, error: bad.join("; ") } : { ok: true };
+};
+
+window.WPP.groupAddParticipantNew = async function (groupId, participant, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("ADD_PARTICIPANT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.addParticipants(groupId, participant);
+  }, WPP._grpEvalAdd);
+};
+
+window.WPP.groupRemoveParticipantNew = async function (groupId, participant, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("REMOVE_PARTICIPANT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.removeParticipants(groupId, participant);
+  });
+};
+
+window.WPP.groupPromoteParticipantNew = async function (groupId, participant, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("PROMOTE_PARTICIPANT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.promoteParticipants(groupId, participant);
+  });
+};
+
+window.WPP.groupDemoteParticipantNew = async function (groupId, participant, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("DEMOTE_PARTICIPANT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.demoteParticipants(groupId, participant);
+  });
+};
+
+window.WPP.groupSetDescriptionNew = async function (groupId, description, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("SET_DESCRIPTION", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.setDescription(groupId, description);
+  });
+};
+
+window.WPP.groupSetSubjectNew = async function (groupId, subject, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("SET_SUBJECT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.setSubject(groupId, subject);
+  });
+};
+
+//prop: "announcement" (so admins enviam mensagens) | "restrict" (so admins editam dados do grupo)
+window.WPP.groupSetPropertyNew = async function (groupId, prop, value, action, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew(action, groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.setProperty(groupId, prop, value);
+  });
+};
+
+window.WPP.groupRevokeInviteNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("REVOKE_INVITE", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    var code = await WPP.group.revokeInviteCode(groupId);
+    try {
+      code = await WPP.group.getInviteCode(groupId);
+    } catch (e) { }
+    code = (typeof code === 'string') ? code : ((code && code.code) ? code.code : "");
+    return { inviteCode: code, inviteLink: code ? ("https://chat.whatsapp.com/" + code) : "" };
+  });
+};
+
+window.WPP.groupLeaveNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("LEAVE", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.leave(groupId);
+  });
+};
+
+window.WPP.groupMembershipApproveNew = async function (groupId, chatId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("MEMBERSHIP_APPROVE", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.approve(groupId, chatId);
+  });
+};
+
+window.WPP.groupMembershipRejectNew = async function (groupId, chatId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("MEMBERSHIP_REJECT", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.reject(groupId, chatId);
+  });
+};
+
+//Metadados do grupo -> "GroupInfoResponse"
+//  Subject, Description, Owner/OwnerPhone, Creation (epoch s), Announce (so admin envia), Restrict (so admin edita dados),
+//  MemberAddMode, MembershipApprovalMode ("on"/"off"/"" quando o WhatsApp Web nao expoe), IsLidAddressingMode, EphemeralDuration,
+//  Size, InviteCode, InviteLink (vazio se nao for admin) e Participants [{Id, Jid, Lid, Phone, Pushname, Name, IsAdmin, IsSuperAdmin}]
+window.WPP.getGroupInfoNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("INFO", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    const md = await WPP.whatsapp.GroupMetadataStore.find(WPP.util.createWid(groupId));
+    if (!md) throw new Error("Group metadata not found");
+    var parts = (md.participants && md.participants.getModelsArray) ? md.participants.getModelsArray() : [];
+    var participants = await Promise.all(parts.map(async function (p) {
+      var person = await WPP._grpPerson(p.id);
+      person.IsAdmin = !!p.isAdmin;
+      person.IsSuperAdmin = !!p.isSuperAdmin;
+      return person;
+    }));
+    var owner = await WPP._grpPerson(md.owner);
+    var approval = md.membershipApprovalMode ?? md.joinApprovalMode;
+    var inviteCode = "";
+    try {
+      inviteCode = await WPP.group.getInviteCode(groupId);
+      if (typeof inviteCode !== 'string') inviteCode = "";
+    } catch (e) { }
+    return {
+      Subject: md.subject || "",
+      Description: md.desc || "",
+      Owner: owner.Id,
+      OwnerPhone: owner.Phone,
+      Creation: Number(md.creation) || 0,
+      Announce: !!md.announce,
+      Restrict: !!md.restrict,
+      MemberAddMode: md.memberAddMode ? String(md.memberAddMode) : "",
+      MembershipApprovalMode: (approval === undefined || approval === null) ? "" : ((approval === true || approval === 1 || approval === 'on') ? "on" : "off"),
+      IsLidAddressingMode: !!md.isLidAddressingMode,
+      EphemeralDuration: Number(md.ephemeralDuration) || 0,
+      Size: participants.length,
+      InviteCode: inviteCode,
+      InviteLink: inviteCode ? ("https://chat.whatsapp.com/" + inviteCode) : "",
+      Participants: participants,
+    };
+  }, undefined, "GroupInfoResponse");
+};
+
+//Pedidos de entrada pendentes -> "GroupMembershipRequestsResponse"
+//  Requests [{Id, Jid, Lid, Phone, Pushname, Name, AddedBy, RequestMethod, T (epoch s)}]
+window.WPP.getGroupMembershipRequestsNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("MEMBERSHIP_REQUESTS", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    const list = await WPP.group.getMembershipRequests(groupId);
+    var requests = await Promise.all((list || []).map(async function (it) {
+      var person = await WPP._grpPerson(it.id);
+      person.AddedBy = WPP._grpSer(it.addedBy);
+      person.RequestMethod = it.requestMethod ? String(it.requestMethod) : "";
+      person.T = Number(it.t) || 0;
+      return person;
+    }));
+    return { Requests: requests };
+  }, undefined, "GroupMembershipRequestsResponse");
+};
+
+//Lista de grupos -> "GroupListResponse"  Groups [{Id, Name, Subject, Owner, Creation (epoch s), Size, Announce, Restrict, IsAdmin}]
+//Usa so dados ja carregados (sem consulta por participante): rapido, mas Size/flags podem vir 0/false para grupos cujo metadata ainda nao foi carregado
+window.WPP.getGroupListNew = async function (xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("LIST", "", xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    const chats = await WPP.chat.list({ onlyGroups: true });
+    var groups = (chats || []).map(function (chat) {
+      var md = chat.groupMetadata || {};
+      var isAdmin = false;
+      try { isAdmin = !!(md.participants && md.participants.iAmAdmin && md.participants.iAmAdmin()); } catch (e) { }
+      return {
+        Id: WPP._grpSer(chat.id),
+        Name: chat.name || md.subject || "",
+        Subject: md.subject || "",
+        Owner: WPP._grpSer(md.owner),
+        Creation: Number(md.creation) || 0,
+        Size: (md.participants && md.participants.length) ? Number(md.participants.length) : 0,
+        Announce: !!md.announce,
+        Restrict: !!md.restrict,
+        IsAdmin: isAdmin,
+      };
+    });
+    return { Groups: groups };
+  }, undefined, "GroupListResponse");
+};
+
+//Entrar por link/codigo de convite. Data: {id, pendingApproval} (pendingApproval=true -> aguardando aprovacao dos admins)
+window.WPP.groupJoinViaLinkNew = async function (link, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("JOIN", "", xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.join(link);
+  });
+};
+
+window.WPP.groupSetPictureNew = async function (groupId, base64, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("SET_PICTURE", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.group.setIcon(groupId, base64);
+  });
+};
+
+//Exclui a conversa do grupo (nao e "sair do grupo": para sair use groupLeaveNew)
+window.WPP.groupDeleteNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  return await WPP._groupActionNew("DELETE", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    return await WPP.chat.delete(groupId);
+  });
+};
+
+//Link de convite. Sem nenhum SeuID mantem o comportamento antigo (evento "GetGroupInviteLink" -> OnGetInviteGroup, so o codigo);
+//com algum SeuID devolve GroupActionResponse (Action INVITE_LINK, Data {inviteCode, inviteLink})
+window.WPP.groupInviteLinkNew = async function (groupId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  if (!xSeuID && !xSeuID2 && !xSeuID3 && !xSeuID4) {
+    return await WAPI.getInviteCode2(groupId);
+  }
+  return await WPP._groupActionNew("INVITE_LINK", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    var code = await WPP.group.getInviteCode(groupId);
+    code = (typeof code === 'string') ? code : ((code && code.code) ? code.code : "");
+    return { inviteCode: code, inviteLink: code ? ("https://chat.whatsapp.com/" + code) : "" };
+  });
 };
 
 //Marcelo 10/07/2024
