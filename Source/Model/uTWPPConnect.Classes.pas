@@ -5775,6 +5775,7 @@ TRetornoAllGroups }
 constructor TRetornoAllGroups.Create(pAJsonString: string);
 var
   vJson : string;
+  i : Integer;
   {$IFDEF FPC}
   lAJsonObj: TJSONData;
   lAJsonObj2: TJSONData;
@@ -5803,6 +5804,15 @@ begin
         lAJsonObj2 := TJSONObject(lAJsonObj).Find('result');
         if Assigned(lAJsonObj2) then
         begin
+          //Marcelo 10/10/2026 - le o array item a item: decodifica os escapes unicode e nao quebra nomes com virgula/aspas
+          if lAJsonObj2 is TJSONArray then
+          begin
+            FreeAndNil(FNumbers);
+            FNumbers := TStringList.Create;
+            for i := 0 to TJSONArray(lAJsonObj2).Count - 1 do
+              FNumbers.Add(StringReplace(StringReplace(TJSONArray(lAJsonObj2).Items[i].AsString, #13, ' ', [rfReplaceAll]), #10, ' ', [rfReplaceAll]));
+            Exit;
+          end;
           vJson := Copy(lAJsonObj2.AsJSON, 2, Length(lAJsonObj2.AsJSON) - 2);
 
           FreeAndNil(FNumbers);
@@ -5823,6 +5833,15 @@ begin
     try
       if lAJsonObj.TryGetValue('result', lAJsonObj2) then
       begin
+        //Marcelo 10/10/2026 - le o array item a item: decodifica os escapes unicode e nao quebra nomes com virgula/aspas
+        if lAJsonObj2 is TJSONArray then
+        begin
+          FreeAndNil(FNumbers);
+          FNumbers := TStringList.Create;
+          for i := 0 to TJSONArray(lAJsonObj2).Count - 1 do
+            FNumbers.Add(StringReplace(StringReplace(TJSONArray(lAJsonObj2).Items[i].Value, #13, ' ', [rfReplaceAll]), #10, ' ', [rfReplaceAll]));
+          Exit;
+        end;
         vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToString)-2);
         //vJson := Copy(lAJsonObj2.ToJSON,2,Length(lAJsonObj2.ToJSON)-2);
 

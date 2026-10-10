@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.63;1.0.0.9;78.3.0
+//2.2.0.64;1.0.0.9;78.3.0
 //
 //
 
@@ -990,22 +990,13 @@ window.WAPI.getAllGroups = async function(done) {
     const groups = await WPP.chat.list({ onlyGroups: true });
     const arrGroups = [];
 
-    for (const chat of groups) {
-        let groupName =
-            chat.name ||
-            chat.groupMetadata?.subject;
+    //Marcelo 10/10/2026 - resolve o nome (chat.name > formattedTitle > subject > metadata do grupo > contato) em lotes;
+    //antes grupos sem metadata carregado vinham como "Grupo sem nome"
+    const names = await WPP._grpNames(groups);
 
-        if (!groupName) {
-            try {
-                const contact = await WPP.contact.get(chat.id);
-                groupName = contact?.name || "Grupo sem nome";
-            } catch {
-                groupName = "Grupo sem nome";
-            }
-        }
-
-        arrGroups.push(`${chat.id._serialized} ${groupName}`);
-    }
+    groups.forEach(function (chat, i) {
+        arrGroups.push(`${chat.id._serialized} ${names[i] || "Grupo sem nome"}`);
+    });
 
     if (done) done(arrGroups);
 
@@ -7150,6 +7141,36 @@ window.WPP._grpSer = function (w) {
   return w._serialized ?? w.$1 ?? (w.toString ? String(w.toString()) : "");
 };
 
+//Nome do grupo: chat.name > formattedTitle > subject carregado > metadata consultado (timeout 5 s) > contato; "" se nao achar
+window.WPP._grpName = async function (chat) {
+  var n = chat.name || chat.formattedTitle || (chat.groupMetadata && chat.groupMetadata.subject);
+  if (n) return n;
+  try {
+    const md = await Promise.race([
+      WPP.whatsapp.GroupMetadataStore.find(chat.id),
+      new Promise(function (resolve) { setTimeout(function () { resolve(null); }, 5000); })
+    ]);
+    if (md && md.subject) return md.subject;
+  } catch (e) { }
+  try {
+    const c = await WPP.contact.get(chat.id);
+    var cn = c && (c.name || c.formattedName || c.pushname);
+    if (cn) return cn;
+  } catch (e) { }
+  return "";
+};
+
+//Resolve os nomes de uma lista de chats, 10 por vez (mantem a ordem)
+window.WPP._grpNames = async function (chats) {
+  var out = new Array(chats.length);
+  for (var i = 0; i < chats.length; i += 10) {
+    var slice = chats.slice(i, i + 10);
+    var res = await Promise.all(slice.map(function (c) { return WPP._grpName(c); }));
+    for (var j = 0; j < res.length; j++) out[i + j] = res[j];
+  }
+  return out;
+};
+
 window.WPP._grpPhone = async function (w) {
   var id = WPP._grpSer(w);
   if (!id) return "";
@@ -7399,14 +7420,15 @@ window.WPP.getGroupMembershipRequestsNew = async function (groupId, xSeuID = '',
 //Usa so dados ja carregados (sem consulta por participante): rapido, mas Size/flags podem vir 0/false para grupos cujo metadata ainda nao foi carregado
 window.WPP.getGroupListNew = async function (xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   return await WPP._groupActionNew("LIST", "", xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
-    const chats = await WPP.chat.list({ onlyGroups: true });
-    var groups = (chats || []).map(function (chat) {
+    const chats = (await WPP.chat.list({ onlyGroups: true })) || [];
+    const names = await WPP._grpNames(chats);
+    var groups = chats.map(function (chat, idx) {
       var md = chat.groupMetadata || {};
       var isAdmin = false;
       try { isAdmin = !!(md.participants && md.participants.iAmAdmin && md.participants.iAmAdmin()); } catch (e) { }
       return {
         Id: WPP._grpSer(chat.id),
-        Name: chat.name || md.subject || "",
+        Name: names[idx] || md.subject || "",
         Subject: md.subject || "",
         Owner: WPP._grpSer(md.owner),
         Creation: Number(md.creation) || 0,
