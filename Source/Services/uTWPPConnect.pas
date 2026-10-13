@@ -2602,9 +2602,11 @@ begin
 end;
 
 //Marcelo 13/10/2026 - dispara OnGroupMessageAck para recibos de mensagens que ENVIAMOS a grupos
+//Um recibo pode cobrir varias mensagens (ids[]): dispara um evento por mensagem
 procedure TWPPConnect.GroupMessageAck(Const AckClass: TAck_changeClass);
 var
   LInfo: TGroupMessageAckClass;
+  i: Integer;
 begin
   if not Assigned(FOnGroupMessageAck) then
     Exit;
@@ -2612,23 +2614,31 @@ begin
     Exit;
   if Pos('@g.us', LowerCase(AckClass.msg.chat)) = 0 then
     Exit;
-  if (Length(AckClass.msg.ids) = 0) or (AckClass.msg.ids[0] = nil) or (AckClass.msg.sender = '') then
+  if (Length(AckClass.msg.ids) = 0) or (AckClass.msg.sender = '') then
     Exit;
   if Trunc(AckClass.msg.ack) < 2 then
     Exit;
-  LInfo := TGroupMessageAckClass.Create;
-  try
-    LInfo.GroupId        := AckClass.msg.chat;
-    LInfo.MessageShortId := AckClass.msg.ids[0].id;
-    LInfo.MessageKey     := 'true_' + AckClass.msg.chat + '_' + AckClass.msg.ids[0].id;
-    LInfo.MessageId      := AckClass.msg.messageId;
-    LInfo.Sender         := AckClass.msg.sender;
-    LInfo.SenderPhone    := AckClass.msg.senderPhone;
-    LInfo.Ack            := Trunc(AckClass.msg.ack);
-    LInfo.AckAt          := Trunc(AckClass.msg.ackAt);
-    FOnGroupMessageAck(LInfo);
-  finally
-    FreeAndNil(LInfo);
+  for i := 0 to High(AckClass.msg.ids) do
+  begin
+    if (AckClass.msg.ids[i] = nil) or (AckClass.msg.ids[i].id = '') then
+      Continue;
+    LInfo := TGroupMessageAckClass.Create;
+    try
+      LInfo.GroupId        := AckClass.msg.chat;
+      LInfo.MessageShortId := AckClass.msg.ids[i].id;
+      LInfo.MessageKey     := 'true_' + AckClass.msg.chat + '_' + AckClass.msg.ids[i].id;
+      if i <= High(AckClass.msg.messageIds) then
+        LInfo.MessageId    := AckClass.msg.messageIds[i]
+      else if i = 0 then
+        LInfo.MessageId    := AckClass.msg.messageId;
+      LInfo.Sender         := AckClass.msg.sender;
+      LInfo.SenderPhone    := AckClass.msg.senderPhone;
+      LInfo.Ack            := Trunc(AckClass.msg.ack);
+      LInfo.AckAt          := Trunc(AckClass.msg.ackAt);
+      FOnGroupMessageAck(LInfo);
+    finally
+      FreeAndNil(LInfo);
+    end;
   end;
 end;
 

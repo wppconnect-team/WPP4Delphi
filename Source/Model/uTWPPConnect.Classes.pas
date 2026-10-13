@@ -4367,6 +4367,7 @@ private
   FSenderPhone: String;
   FAckAt: Extended;
   FMessageId: String;
+  FMessageIds: TArray<String>;
 
 public
   property ack: Extended read FAck write FAck;
@@ -4376,7 +4377,8 @@ public
   //Marcelo 13/10/2026 - somente em mensagens de grupo
   property senderPhone: String read FSenderPhone write FSenderPhone;   //@c.us de quem recebeu/leu (vazio quando so o LID e conhecido)
   property ackAt: Extended read FAckAt write FAckAt;                   //epoch (s) em que o evento chegou (o WA-JS nao informa o horario do recibo)
-  property messageId: String read FMessageId write FMessageId;         //id completo true_<grupo>_<ID>_<remetente>; vazio se nao encontrado
+  property messageId: String read FMessageId write FMessageId;         //id completo true_<grupo>_<ID>_<remetente> da primeira mensagem; vazio se nao encontrado
+  property messageIds: TArray<String> read FMessageIds write FMessageIds; //idem para cada item de ids[] (mesma ordem)
 end;
 
 TAck_changeClass = class(TClassPadrao)
