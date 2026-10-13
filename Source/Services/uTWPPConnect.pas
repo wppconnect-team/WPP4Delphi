@@ -125,6 +125,8 @@ type
   TGet_GroupActionResponse = procedure(Const Response: TGroupActionResponseClass) of object;
   TGet_GroupInfoResponse   = procedure(Const Response: TGroupInfoClass) of object;
   TGet_GroupListResponse   = procedure(Const Response: TGroupListClass) of object;
+  TGet_GroupMessageInfoResponse = procedure(Const Response: TGroupMessageInfoClass) of object;
+  TOnGroupMessageAck       = procedure(Const Info: TGroupMessageAckClass) of object;  //Marcelo 13/10/2026
   TGet_GroupMembershipRequestsResponse = procedure(Const Response: TGroupMembershipRequestsClass) of object;
   TOnStatusAckChange       = procedure(Const Status: TStatusTrackClass; Const Sender: string; Ack: Integer) of object;
   TOnStatusReaction        = procedure(Const Status: TStatusTrackClass; Const Sender, Reaction: string) of object;
@@ -185,6 +187,8 @@ type
     FOnGet_GroupActionResponse: TGet_GroupActionResponse;
     FOnGet_GroupInfoResponse: TGet_GroupInfoResponse;
     FOnGet_GroupListResponse: TGet_GroupListResponse;
+    FOnGet_GroupMessageInfoResponse: TGet_GroupMessageInfoResponse;
+    FOnGroupMessageAck: TOnGroupMessageAck;
     FOnGet_GroupMembershipRequestsResponse: TGet_GroupMembershipRequestsResponse;
     FStatusTrackEnabled     : Boolean;
     FOnStatusAckChange      : TOnStatusAckChange;
@@ -306,6 +310,7 @@ type
     procedure Loaded; override;
     procedure GroupActionFail(const AAction, AGroupID, ASeuID, ASeuID2, ASeuID3, ASeuID4, AError: string);
     function  GroupFormatParticipants(const AList: string): string;
+    procedure GroupMessageAck(Const AckClass: TAck_changeClass);
     procedure StatusTrackRegister(Const RespMensagem: TResponsesendTextMessage);
     procedure StatusTrackAck(Const AckClass: TAck_changeClass);
     procedure StatusTrackReaction(Const ReactionClass: TReactionResponseClass);
@@ -534,6 +539,8 @@ type
     procedure GroupSetSubject(PIDGroup, PSubject: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure GetGroupInfo(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure GetGroupList(xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');  //lista de grupos com nome/tamanho/flags (OnGet_GroupListResponse)
+    //Entrega/leitura por participante de uma mensagem enviada ao grupo (id completo true_<grupo>@g.us_<ID>_<remetente>) -> OnGet_GroupMessageInfoResponse
+    procedure GetGroupMessageInfo(PMsgId: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure GetGroupMembershipRequests(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure StatusTrackClear;
   published
@@ -652,6 +659,9 @@ type
     property OnGet_GroupActionResponse  : TGet_GroupActionResponse   read FOnGet_GroupActionResponse     write FOnGet_GroupActionResponse;
     property OnGet_GroupInfoResponse    : TGet_GroupInfoResponse     read FOnGet_GroupInfoResponse       write FOnGet_GroupInfoResponse;
     property OnGet_GroupListResponse    : TGet_GroupListResponse     read FOnGet_GroupListResponse       write FOnGet_GroupListResponse;
+    property OnGet_GroupMessageInfoResponse : TGet_GroupMessageInfoResponse read FOnGet_GroupMessageInfoResponse write FOnGet_GroupMessageInfoResponse;
+    //Marcelo 13/10/2026 - um evento por participante que recebeu/leu mensagem enviada a grupo (requer Evento_msg_ack_change habilitado)
+    property OnGroupMessageAck          : TOnGroupMessageAck         read FOnGroupMessageAck             write FOnGroupMessageAck;
     property OnGet_GroupMembershipRequestsResponse : TGet_GroupMembershipRequestsResponse read FOnGet_GroupMembershipRequestsResponse write FOnGet_GroupMembershipRequestsResponse;
     property StatusTrackEnabled         : Boolean                    read FStatusTrackEnabled             write FStatusTrackEnabled default True;
     property OnStatusAckChange          : TOnStatusAckChange         read FOnStatusAckChange              write FOnStatusAckChange;
@@ -2574,6 +2584,52 @@ begin
     Exit;
   end;
   FrmConsole.GetGroupInfo(PIDGroup, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+procedure TWPPConnect.GetGroupMessageInfo(PMsgId, xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
+begin
+  If Application.Terminated Then
+    Exit;
+  if not Assigned(FrmConsole) then
+    Exit;
+  if Trim(PMsgId) = '' then
+  begin
+    Int_OnErroInterno(Self, MSG_WarningNothingtoSend, PMsgId);
+    GroupActionFail('MESSAGE_INFO', '', xSeuID, xSeuID2, xSeuID3, xSeuID4, MSG_WarningNothingtoSend);
+    Exit;
+  end;
+  FrmConsole.GetGroupMessageInfo(PMsgId, xSeuID, xSeuID2, xSeuID3, xSeuID4);
+end;
+
+//Marcelo 13/10/2026 - dispara OnGroupMessageAck para recibos de mensagens que ENVIAMOS a grupos
+procedure TWPPConnect.GroupMessageAck(Const AckClass: TAck_changeClass);
+var
+  LInfo: TGroupMessageAckClass;
+begin
+  if not Assigned(FOnGroupMessageAck) then
+    Exit;
+  if (AckClass = nil) or (AckClass.msg = nil) then
+    Exit;
+  if Pos('@g.us', LowerCase(AckClass.msg.chat)) = 0 then
+    Exit;
+  if (Length(AckClass.msg.ids) = 0) or (AckClass.msg.ids[0] = nil) or (AckClass.msg.sender = '') then
+    Exit;
+  if Trunc(AckClass.msg.ack) < 2 then
+    Exit;
+  LInfo := TGroupMessageAckClass.Create;
+  try
+    LInfo.GroupId        := AckClass.msg.chat;
+    LInfo.MessageShortId := AckClass.msg.ids[0].id;
+    LInfo.MessageKey     := 'true_' + AckClass.msg.chat + '_' + AckClass.msg.ids[0].id;
+    LInfo.MessageId      := AckClass.msg.messageId;
+    LInfo.Sender         := AckClass.msg.sender;
+    LInfo.SenderPhone    := AckClass.msg.senderPhone;
+    LInfo.Ack            := Trunc(AckClass.msg.ack);
+    LInfo.AckAt          := Trunc(AckClass.msg.ackAt);
+    FOnGroupMessageAck(LInfo);
+  finally
+    FreeAndNil(LInfo);
+  end;
 end;
 
 procedure TWPPConnect.GetGroupList(xSeuID, xSeuID2, xSeuID3, xSeuID4: string);
@@ -5007,6 +5063,7 @@ begin
   if PTypeHeader = Th_Getmsg_ack_change  then
   begin
     StatusTrackAck(TAck_changeClass(PReturnClass));
+    GroupMessageAck(TAck_changeClass(PReturnClass));
     if Assigned(FOnGetAck_changeEvento) then
       FOnGetAck_changeEvento(TAck_changeClass(PReturnClass));
   end;
@@ -5143,6 +5200,11 @@ begin
   begin
     if Assigned(FOnGet_GroupInfoResponse) then
       FOnGet_GroupInfoResponse(TGroupInfoClass(PReturnClass));
+  end;
+  if PTypeHeader = Th_GroupMessageInfoResponse  then
+  begin
+    if Assigned(FOnGet_GroupMessageInfoResponse) then
+      FOnGet_GroupMessageInfoResponse(TGroupMessageInfoClass(PReturnClass));
   end;
   if PTypeHeader = Th_GroupListResponse  then
   begin

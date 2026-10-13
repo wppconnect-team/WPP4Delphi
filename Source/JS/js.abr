@@ -1,5 +1,5 @@
 //Version_JS;Version_TInjectMin;Version_CEF4Min;
-//2.2.0.65;1.0.0.9;78.3.0
+//2.2.0.66;1.0.0.9;78.3.0
 //
 //
 
@@ -3824,10 +3824,21 @@ window.WAPI.sendCreatePollMessage2Ex = async function(chatid, name, choices, opt
 };
 
 //Marcelo 26/07/2023
-WPP.on('chat.msg_ack_change', (msg) => {
+WPP.on('chat.msg_ack_change', async (msg) => {
     if (habilitaEvento_msg_ack_change){
+        //Marcelo 13/10/2026 - mensagens enviadas a GRUPO: o WA-JS emite um evento por participante (sender = quem recebeu/leu; ack 2 entregue, 3 lido, 4 reproduzido).
+        //Acrescenta senderPhone (@c.us quando resolvido), ackAt (epoch s do evento; o WA-JS nao informa o horario do recibo) e messageId (id completo da mensagem, "" se nao achar)
+        try {
+            if (msg && typeof msg.chat === 'string' && msg.chat.indexOf('@g.us') > -1 && msg.sender) {
+                msg.senderPhone = await WPP._grpPhone(msg.sender);
+                msg.ackAt = Math.floor(Date.now() / 1000);
+                msg.messageId = WPP._grpFullMsgId(msg);
+            }
+        } catch (err) {
+            console.log(err);
+        }
         SetConsoleMessage("Getmsg_ack_change", JSON.stringify({msg}));
-    }    
+    }
 });
 
 //Marcelo 26/07/2023
@@ -3925,8 +3936,14 @@ WPP.on('chat.new_message', async (_msg) => {
 });
 
 //Evento Recebendo Nova ReaÃ§Ã£o Marcelo 25/07/2023
-WPP.on("chat.new_reaction", (msg) => {
+WPP.on("chat.new_reaction", async (msg) => {
     if (habilitaEvento_new_reaction){
+        //Marcelo 13/10/2026 - senderPhone: @c.us de quem reagiu quando o WhatsApp entrega so o LID (vazio se nao resolvido)
+        try {
+            msg.senderPhone = msg.sender ? await WPP._grpPhone(msg.sender) : "";
+        } catch (err) {
+            console.log(err);
+        }
         SetConsoleMessage("Getnew_reaction", JSON.stringify({msg}));
     }
 });
@@ -7127,13 +7144,13 @@ window.WPP.sendVideoStatusNew = async function (content, options, xSeuID = '', x
 //Evento: SetConsoleMessage("GroupActionResponse", { Seuid..Seuid4, Action, GroupId, Success, statusCode, ErrorCode, Error, Data })
 //  Action     : CREATE | ADD_PARTICIPANT | REMOVE_PARTICIPANT | PROMOTE_PARTICIPANT | DEMOTE_PARTICIPANT | SET_DESCRIPTION | SET_SUBJECT |
 //               SET_ANNOUNCE | SET_RESTRICT | REVOKE_INVITE | LEAVE | MEMBERSHIP_APPROVE | MEMBERSHIP_REJECT | INFO | MEMBERSHIP_REQUESTS |
-//               JOIN | SET_PICTURE | DELETE | INVITE_LINK | LIST
+//               JOIN | SET_PICTURE | DELETE | INVITE_LINK | LIST | MESSAGE_INFO
 //  Success    : true quando concluiu (ADD_PARTICIPANT: true somente se o participante retornou code 200)
 //  statusCode : 0 = sucesso | 303 = erro do WA-JS/WhatsApp (ErrorCode traz o codigo do WA-JS, ex.: group_you_are_not_admin, participant_not_exists)
 //               | 304 = ADD_PARTICIPANT recusado (Error traz "<id>: <mensagem>", code 403 restrito / 409 ja e membro / 421 pendente de aprovacao)
 //  Data       : JSON (string) com o retorno do WA-JS. CREATE: {gid, participants:{id:{code,invite_code}}} | ADD_PARTICIPANT: {id:{code,message}} | REVOKE_INVITE: {inviteCode, inviteLink}
 //  statusCode : 305 (validacao local feita no Delphi, nada chega ao navegador; ErrorCode = invalid_parameter)
-//Consultas (INFO / MEMBERSHIP_REQUESTS / LIST): sucesso -> "GroupInfoResponse" / "GroupMembershipRequestsResponse" / "GroupListResponse"; falha -> "GroupActionResponse" (Success=false)
+//Consultas (INFO / MEMBERSHIP_REQUESTS / LIST / MESSAGE_INFO): sucesso -> "GroupInfoResponse" / "GroupMembershipRequestsResponse" / "GroupListResponse" / "GroupMessageInfoResponse"; falha -> "GroupActionResponse" (Success=false)
 //Codigos de erro do WA-JS (ErrorCode) documentados em Docs/GestaoDeGrupos.md
 window.WPP._grpSer = function (w) {
   if (!w) return "";
@@ -7169,6 +7186,25 @@ window.WPP._grpNames = async function (chats) {
     for (var j = 0; j < res.length; j++) out[i + j] = res[j];
   }
   return out;
+};
+
+//Id completo da mensagem enviada por nos ao grupo (true_<grupo>_<ID>_<nosso id>); tenta o nosso telefone e o nosso LID; "" se nao estiver no MsgStore
+window.WPP._grpFullMsgId = function (msg) {
+  try {
+    var id = msg.ids && msg.ids[0] && msg.ids[0].id;
+    if (!id || !msg.chat) return "";
+    var mine = [];
+    try { mine.push(WPP._grpSer(WPP.conn.getMyUserId())); } catch (e) { }
+    try { mine.push(WPP._grpSer(WPP.conn.getMyUserLid())); } catch (e) { }
+    for (var i = 0; i < mine.length; i++) {
+      if (!mine[i]) continue;
+      var key = "true_" + msg.chat + "_" + id + "_" + mine[i];
+      try {
+        if (WPP.whatsapp.MsgStore.get(WPP.whatsapp.MsgKey.fromString(key))) return key;
+      } catch (e) { }
+    }
+  } catch (e) { }
+  return "";
 };
 
 window.WPP._grpPhone = async function (w) {
@@ -7418,6 +7454,35 @@ window.WPP.getGroupMembershipRequestsNew = async function (groupId, xSeuID = '',
 
 //Lista de grupos -> "GroupListResponse"  Groups [{Id, Name, Subject, Owner, Creation (epoch s), Size, Announce, Restrict, IsAdmin}]
 //Usa so dados ja carregados (sem consulta por participante): rapido, mas Size/flags podem vir 0/false para grupos cujo metadata ainda nao foi carregado
+//Entrega/leitura POR PARTICIPANTE de uma mensagem enviada ao grupo -> "GroupMessageInfoResponse"
+//  msgId: id completo (true_<grupo>@g.us_<ID>_<remetente>); a mensagem precisa estar carregada no WhatsApp Web
+//  Ack, FromMe, DeliveryRemaining / ReadRemaining / PlayedRemaining (participantes que ainda nao receberam / leram / reproduziram),
+//  Participants [{Id, Jid, Lid, Phone, Pushname, Name, DeliveredAt, ReadAt, PlayedAt}] (epoch s; 0 = ainda nao)
+//  Falha -> "GroupActionResponse" (Action MESSAGE_INFO)
+window.WPP.getGroupMessageInfoNew = async function (msgId, xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
+  var m = /^(?:true|false)_([\d-]+@g\.us)_/.exec(String(msgId || ''));
+  var groupId = m ? m[1] : "";
+  return await WPP._groupActionNew("MESSAGE_INFO", groupId, xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
+    const info = await WPP.chat.getMessageACK(msgId);
+    var participants = await Promise.all((info.participants || []).map(async function (p) {
+      var person = await WPP._grpPerson(p.wid || p.id);
+      person.DeliveredAt = Number(p.deliveredAt) || 0;
+      person.ReadAt = Number(p.readAt) || 0;
+      person.PlayedAt = Number(p.playedAt) || 0;
+      return person;
+    }));
+    return {
+      MessageId: String(msgId),
+      Ack: Number(info.ack) || 0,
+      FromMe: !!info.fromMe,
+      DeliveryRemaining: Number(info.deliveryRemaining) || 0,
+      ReadRemaining: Number(info.readRemaining) || 0,
+      PlayedRemaining: Number(info.playedRemaining) || 0,
+      Participants: participants,
+    };
+  }, undefined, "GroupMessageInfoResponse");
+};
+
 window.WPP.getGroupListNew = async function (xSeuID = '', xSeuID2 = '', xSeuID3 = '', xSeuID4 = '') {
   return await WPP._groupActionNew("LIST", "", xSeuID, xSeuID2, xSeuID3, xSeuID4, async function () {
     const chats = (await WPP.chat.list({ onlyGroups: true })) || [];

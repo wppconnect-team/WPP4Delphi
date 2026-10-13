@@ -2712,11 +2712,13 @@ end;
     FFromMe: Boolean;
     FId: String;
     FRemote: String;
+    FParticipant: String;
   public
     property _serialized: String read F_serialized write F_serialized;
     property fromMe: Boolean read FFromMe write FFromMe;
     property id: String read FId write FId;
     property remote: String read FRemote write FRemote;
+    property participant: String read FParticipant write FParticipant;   //Marcelo 13/10/2026 - autor da mensagem em grupos/status
     //function ToJsonString: string;
     //class function FromJsonString(AJsonString: string): TMsgIdClass;
   end;
@@ -2786,10 +2788,13 @@ private
   FReactionText: String;
   FRead: Boolean;
   FSender: String;
+  FSenderPhone: String;
   FTimestamp: Extended;
 public
   property id: TIdClass read FId write FId;
+  //msgId = chave da mensagem reagida (remote = grupo/chat, participant = autor da mensagem reagida, _serialized = id completo)
   property msgId: TMsgIdClass read FMsgId write FMsgId;
+  property senderPhone: String read FSenderPhone write FSenderPhone;   //@c.us de quem reagiu (vazio quando so o LID e conhecido)
   property orphan: Extended read FOrphan write FOrphan;
   property reactionText: String read FReactionText write FReactionText;
   property read: Boolean read FRead write FRead;
@@ -4175,6 +4180,82 @@ public
 end;
 
 //Lista de grupos (GetGroupList)
+//Marcelo 13/10/2026 - Entrega/leitura POR PARTICIPANTE de mensagem enviada a grupo (evento OnGroupMessageAck)
+TGroupMessageAckClass = class
+private
+  FGroupId: String;
+  FMessageShortId: String;
+  FMessageKey: String;
+  FMessageId: String;
+  FSender: String;
+  FSenderPhone: String;
+  FAck: Integer;
+  FAckAt: Int64;
+public
+  property GroupId: String read FGroupId write FGroupId;                   //jid do grupo (@g.us)
+  property MessageShortId: String read FMessageShortId write FMessageShortId; //so o <ID> da mensagem
+  property MessageKey: String read FMessageKey write FMessageKey;          //true_<grupo>_<ID> (sem remetente)
+  property MessageId: String read FMessageId write FMessageId;             //true_<grupo>_<ID>_<remetente>; vazio se nao encontrado no WhatsApp Web
+  property Sender: String read FSender write FSender;                      //quem recebeu/leu (@lid ou @c.us)
+  property SenderPhone: String read FSenderPhone write FSenderPhone;       //@c.us (vazio quando so o LID e conhecido)
+  property Ack: Integer read FAck write FAck;                              //2 entregue, 3 lido, 4 reproduzido
+  property AckAt: Int64 read FAckAt write FAckAt;                          //epoch (s) em que o evento chegou
+end;
+
+//Resposta de GetGroupMessageInfo (OnGet_GroupMessageInfoResponse)
+TGroupMessageParticipantClass = class(TClassPadrao)
+private
+  FId: String;
+  FJid: String;
+  FLid: String;
+  FPhone: String;
+  FPushname: String;
+  FName: String;
+  FDeliveredAt: Extended;
+  FReadAt: Extended;
+  FPlayedAt: Extended;
+public
+  property Id: String read FId write FId;
+  property Jid: String read FJid write FJid;
+  property Lid: String read FLid write FLid;
+  property Phone: String read FPhone write FPhone;
+  property Pushname: String read FPushname write FPushname;
+  property Name: String read FName write FName;
+  property DeliveredAt: Extended read FDeliveredAt write FDeliveredAt;   //epoch (s); 0 = ainda nao
+  property ReadAt: Extended read FReadAt write FReadAt;
+  property PlayedAt: Extended read FPlayedAt write FPlayedAt;
+end;
+
+TGroupMessageInfoClass = class(TClassPadrao)
+private
+  FSeuid: String;
+  FSeuid2: String;
+  FSeuid3: String;
+  FSeuid4: String;
+  FGroupId: String;
+  FMessageId: String;
+  FAck: Extended;
+  FFromMe: Boolean;
+  FDeliveryRemaining: Extended;
+  FReadRemaining: Extended;
+  FPlayedRemaining: Extended;
+  FParticipants: TArray<TGroupMessageParticipantClass>;
+public
+  destructor Destroy; override;
+  property Seuid: String read FSeuid write FSeuid;
+  property Seuid2: String read FSeuid2 write FSeuid2;
+  property Seuid3: String read FSeuid3 write FSeuid3;
+  property Seuid4: String read FSeuid4 write FSeuid4;
+  property GroupId: String read FGroupId write FGroupId;
+  property MessageId: String read FMessageId write FMessageId;
+  property Ack: Extended read FAck write FAck;                            //ack agregado da mensagem
+  property FromMe: Boolean read FFromMe write FFromMe;
+  property DeliveryRemaining: Extended read FDeliveryRemaining write FDeliveryRemaining; //participantes que ainda nao receberam
+  property ReadRemaining: Extended read FReadRemaining write FReadRemaining;
+  property PlayedRemaining: Extended read FPlayedRemaining write FPlayedRemaining;
+  property Participants: TArray<TGroupMessageParticipantClass> read FParticipants write FParticipants;
+end;
+
 TGroupListItemClass = class(TClassPadrao)
 private
   FId: String;
@@ -4283,12 +4364,19 @@ private
   FChat: String;
   FIds: TArray<TIdsClass>;
   FSender: String;
+  FSenderPhone: String;
+  FAckAt: Extended;
+  FMessageId: String;
 
 public
   property ack: Extended read FAck write FAck;
   property chat: String read FChat write FChat;
   property ids: TArray<TIdsClass> read FIds write FIds;
   property sender: String read FSender write FSender;
+  //Marcelo 13/10/2026 - somente em mensagens de grupo
+  property senderPhone: String read FSenderPhone write FSenderPhone;   //@c.us de quem recebeu/leu (vazio quando so o LID e conhecido)
+  property ackAt: Extended read FAckAt write FAckAt;                   //epoch (s) em que o evento chegou (o WA-JS nao informa o horario do recibo)
+  property messageId: String read FMessageId write FMessageId;         //id completo true_<grupo>_<ID>_<remetente>; vazio se nao encontrado
 end;
 
 TAck_changeClass = class(TClassPadrao)
@@ -6094,6 +6182,18 @@ end;
 { TGroupInfoClass }
 
 destructor TGroupInfoClass.Destroy;
+var
+  i: Integer;
+begin
+  for i := 0 to High(FParticipants) do
+    FParticipants[i].Free;
+  SetLength(FParticipants, 0);
+  inherited;
+end;
+
+{ TGroupMessageInfoClass }
+
+destructor TGroupMessageInfoClass.Destroy;
 var
   i: Integer;
 begin

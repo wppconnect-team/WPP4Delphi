@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.2.2.0'; //  10/10/2026
+  TWPPConnectVersion              = '5.3.0.0'; //  13/10/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -647,6 +647,7 @@ Const
   FrmConsole_JS_VAR_GetGroupInfo            = 'window.WPP.getGroupInfoNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
   FrmConsole_JS_VAR_GetGroupMembershipRequests = 'window.WPP.getGroupMembershipRequestsNew("<#GROUP_ID#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
   FrmConsole_JS_VAR_GetGroupList            = 'window.WPP.getGroupListNew("<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
+  FrmConsole_JS_VAR_GetGroupMessageInfo     = 'window.WPP.getGroupMessageInfoNew("<#MSGKEY#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
   FrmConsole_JS_VAR_SetGroupPicture         = 'window.WPP.groupSetPictureNew("<#GROUP_ID#>","<#BASE_64#>","<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");';
 
@@ -1067,6 +1068,7 @@ type
                    , Th_GroupInfoResponse=102 //Marcelo 10/10/2026
                    , Th_GroupMembershipRequestsResponse=103 //Marcelo 10/10/2026
                    , Th_GroupListResponse=104 //Marcelo 10/10/2026
+                   , Th_GroupMessageInfoResponse=105 //Marcelo 13/10/2026
                    );
 
     TSecondCallback = procedure(SecondsRemaining: Integer) of object;
@@ -1242,7 +1244,7 @@ Begin
 End;
 
 function  StrToTypeHeader(PText: string): TTypeHeader;
-const LmaxCount = 104; //Marcelo 10/10/2026 (= ultimo valor de TTypeHeader; nao pode passar disso)
+const LmaxCount = 105; //Marcelo 10/10/2026 (= ultimo valor de TTypeHeader; nao pode passar disso)
 var
   I: Integer;
   LNome: String;
