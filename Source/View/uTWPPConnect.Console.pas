@@ -431,6 +431,7 @@ type
     procedure SetProfilePicture(ABase64: String);
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure getStatus(vTelefone: string);
+    procedure markAllStatusRead(ABatchSize, ADelayMs, AMaxStatus: Integer; const vSeuID: string = '');
     procedure CleanChat(vTelefone: string);
     procedure CleanChatNew(vTelefone: string; vSeuID: string = '');
     procedure fGetMe;
@@ -5856,6 +5857,22 @@ begin
     raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
 
   LJS   := FrmConsole_JS_VAR_getMe;
+  ExecuteJS(LJS, true);
+end;
+
+//Marcelo 25/11/2026 - Marca todos os Status como vistos (lotes com pausa)
+procedure TFrmConsole.markAllStatusRead(ABatchSize, ADelayMs, AMaxStatus: Integer; const vSeuID: string);
+var
+  LJS: string;
+begin
+  if not FConectado then
+    raise Exception.Create(MSG_ConfigCEF_ExceptConnetServ);
+
+  LJS := FrmConsole_JS_VAR_markAllStatusRead;
+  FrmConsole_JS_AlterVar(LJS, '#BATCH#',  IntToStr(ABatchSize));
+  FrmConsole_JS_AlterVar(LJS, '#DELAY#',  IntToStr(ADelayMs));
+  FrmConsole_JS_AlterVar(LJS, '#MAX#',    IntToStr(AMaxStatus));
+  FrmConsole_JS_AlterVar(LJS, '#SEUID#',  Trim(vSeuID));
   ExecuteJS(LJS, true);
 end;
 

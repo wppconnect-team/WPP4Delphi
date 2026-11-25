@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.3.2.4'; //  25/11/2026
+  TWPPConnectVersion              = '5.3.3.0'; //  25/11/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
@@ -841,6 +841,8 @@ Const
   FrmConsole_JS_VAR_sendVideoStatus  = 'window.WPP.sendVideoStatusNew("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>},"<#MSG_SEUID#>","<#MSG_SEUID2#>","<#MSG_SEUID3#>","<#MSG_SEUID4#>");'; //Marcelo 09/10/2026 - retorno via sendTextMessageEx / ErrorResponse
   FrmConsole_JS_VAR_sendRawStatus    = 'WPP.status.sendRawStatus("<#MSG_CONTENT#>",{<#MSG_OPTIONS#>} );';
   FrmConsole_JS_VAR_getMyStatus      = 'getMyStatus();';
+  //Marcelo 25/11/2026 - Marca todos os Status (stories) como vistos em lotes; retorno via ErrorResponse (RetEvent=markAllStatusRead, statusCode 200 = concluido)
+  FrmConsole_JS_VAR_markAllStatusRead = 'window.WPP.markAllStatusRead(<#BATCH#>, <#DELAY#>, <#MAX#>, "<#SEUID#>");';
 
   //Marcelo 25/11/2025
   FrmConsole_JS_VAR_GetisLidMigrated    = 'window.WAPI.GetisLidMigrated();';

@@ -480,6 +480,8 @@ type
     procedure SetProfilePicture(vFileName: string);
     procedure SetStatus(vStatus: String);
     procedure GetStatusContact(PNumber: String);
+    //Marcelo 25/11/2026 - Marca TODOS os Status (stories) como vistos, em lotes com pausa. Resultado via OnGet_ErrorResponse (RetEvent='markAllStatusRead', statusCode=200 -> Error='total=X;read=Y;failed=Z;contacts=N')
+    procedure MarkAllStatusRead(ABatchSize: Integer = 20; ADelayMs: Integer = 300; AMaxStatus: Integer = 0; const vSeuID: string = '');
     procedure getgenLinkDeviceCodeForPhoneNumber(vTelefone: string);
     procedure GetGroupInviteLink(PIDGroup: string; xSeuID: string = ''; xSeuID2: string = ''; xSeuID3: string = ''; xSeuID4: string = '');
     procedure sendGroupInviteMessage(vChatID, vIDGroup: string; vInviteCode: string = ''; xSeuID: string = '');
@@ -3740,6 +3742,15 @@ begin
   end;
   FrmConsole.getStatus(PNumber);
 end;
+procedure TWPPConnect.MarkAllStatusRead(ABatchSize, ADelayMs, AMaxStatus: Integer; const vSeuID: string);
+begin
+  If Application.Terminated Then
+     Exit;
+  if not Assigned(FrmConsole) then
+     Exit;
+  FrmConsole.markAllStatusRead(ABatchSize, ADelayMs, AMaxStatus, vSeuID);
+end;
+
 procedure TWPPConnect.GetTotalChatsUserRead;
 begin
   if Assigned(FrmConsole) then
