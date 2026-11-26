@@ -61,7 +61,7 @@ type
 Const
   //Uso GLOBAL
                                   //Version updates I=HIGH, II=MEDIUM, III=LOW, IV=VERY LOW
-  TWPPConnectVersion              = '5.3.3.0'; //  25/11/2026
+  TWPPConnectVersion              = '5.3.3.1'; //  26/11/2026
   CardContact                     = '@c.us';
   CardGroup                       = '@g.us';
   CardList                        = '@broadcast';
